@@ -1500,11 +1500,13 @@ def report_project_month(request, project_id, year, month):
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
-    
+    p = open(filename,'w+')
+    p.close()
     demand = Demand.objects.get(project__id = project_id, year = year, month = month)
     MonthDemandWriter(demand).build(filename)
     p = open(filename,'r')
     response.write(p.read())
+    p.close()
     return response
 
 @permission_required('Management.report_projects_month')
