@@ -1,4 +1,5 @@
-﻿from datetime import datetime, date
+﻿import settings
+from datetime import datetime, date
 from templatetags.management_extras import commaise
 import reportlab.rl_config
 reportlab.rl_config.warnOnMissingFontGlyphs = 0
@@ -13,8 +14,8 @@ from reportlab.lib import colors
 from reportlab.lib.enums import *
 from pyfribidi import log2vis
 #register Hebrew fonts
-pdfmetrics.registerFont(TTFont('David', '/var/www/NiceHouse/Management/DavidCLM-Medium.ttf'))
-pdfmetrics.registerFont(TTFont('David-Bold', '/var/www/NiceHouse/Management/DavidCLM-Bold.ttf'))
+pdfmetrics.registerFont(TTFont('David', settings.MEDIA_ROOT + 'fonts/DavidCLM-Medium.ttf'))
+pdfmetrics.registerFont(TTFont('David-Bold', settings.MEDIA_ROOT + 'fonts/DavidCLM-Bold.ttf'))
 pdfmetrics.registerFontFamily('David', normal='David', bold='David-Bold')
 #template styles
 styleN = ParagraphStyle('normal', fontName='David',fontSize=16, leading=15, alignment=TA_RIGHT)
@@ -56,14 +57,14 @@ def tableCaption():
                      ParagraphStyle(name='tableCaption', fontName='David-Bold', fontSize=15,
                                     alignment=TA_CENTER))
 def nhLogo():
-    return Image('/var/www/NiceHouse/media/images/nh_logo.jpg', 300, 50)
+    return Image(settings.MEDIA_ROOT + 'images/nh_logo.jpg', 300, 50)
 def sigPara():
     s = log2vis('ברגשי כבוד,') + '<br/>'
     s += log2vis('אלי בר-און')
     return Paragraph(s, ParagraphStyle(name='sig', fontName='David-Bold', fontSize=15,
                                        alignment=TA_LEFT))
 def nhAddr():
-    return Image('/var/www/NiceHouse/media/images/nh_addr.jpg', 300, 50)
+    return Image(settings.MEDIA_ROOT + 'images/nh_addr.jpg', 300, 50)
 
 class MonthDemandWriter:
     @property
