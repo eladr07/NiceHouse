@@ -4,10 +4,10 @@
 <script>
 $(document).ready(function () {
 	$("#demandFind").click(function (event) {
-		window.open("/reports/project_month/" + $("#id_project").val() + "/" + $("#id_year").val() + "/" + $("#id_month").val());
+		location.replace("/reports/project_month/" + $("#id_project").val() + "/" + $("#id_year").val() + "/" + $("#id_month").val());
 	});
 	$("#monthDemands").click(function (event) {
-		window.open("/reports/projects_month/" + $("#id_2-year").val() + "/" + $("#id_2-month").val());
+		location.replace("/reports/projects_month/" + $("#id_2-year").val() + "/" + $("#id_2-month").val());
 	});
 });
 </script>
