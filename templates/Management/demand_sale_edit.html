@@ -1,0 +1,162 @@
+﻿{% extends "./template.html" %}
+{% block header %}
+	<script>
+		houseDetails = "";
+		$(document).ready(function() {
+			$("input[type!='submit']").attr("class", "inputText");
+			$("select").attr("class", "inputText");
+			buildingSelect = $("#id_building");
+			houseSelect = $("#id_house");
+			houseDetails = $("#houseDetails");
+			employeeSelect = $("#id_employee");
+			//add click event to buildings select : use ajax to get related houses.
+			buildingSelect.change(onChangeBuilding);
+			getBuildings();
+		});
+		
+		function getBuildings()
+		{
+			$("option[value!='']", buildingSelect).remove();
+			var selectedProject = {{project.id}};
+			$.getJSON("/xml/buildings/" + selectedProject, function(data){
+					for (i in data)
+					{
+						obj = data[i];
+						buildingSelect.append(
+							"<option value='" + obj.pk + "'>" + obj.fields['num'] + "</option>");
+					}
+				});
+		}
+		
+		function onChangeBuilding()
+		{
+			$("option[value!='']", houseSelect).remove();
+			var selectedBuilding = buildingSelect.val();
+			$.getJSON("/xml/houses/" + selectedBuilding, function(data){
+					for (i in data)
+					{
+						obj = data[i];
+						houseSelect.append(
+							"<option value='" + obj.pk + "'>" + obj.fields['num'] + "</option>");
+					}
+				});
+		}
+								
+		$(document).ready(function() {
+			houseSelect.change(function () {
+				//fill house details
+				$("#houseDetails").empty();
+				var selectedHouse = houseSelect.val();
+				$.get("/house_details/" + selectedHouse, function(data){
+					$("#houseDetails").append(data);
+				});
+				//fill signup details
+				$("#signupDetails").empty();
+				var selectedHouse = houseSelect.val();
+				$.get("/signup_details/" + selectedHouse, function(data){
+					$("#signupDetails").append(data);
+				});
+			});
+		});
+	</script>
+{% endblock header %}
+{% block page %}
+<div id="content">
+	<div id="rightSide">{{form.errors}}
+		<form method="POST">
+		<table cellspacing="2" cellpadding="2" class="formTable">
+			<tr>
+				<th>בניין</th>
+				<td><select id="id_building"><option value="">----</option></select></td>
+			<tr>
+				<th>{{ form.house.label_tag }}</th>
+				<td>
+				{{ form.house }}
+				{% for error in form.house.errors %}
+					{{ error|escape }}
+				{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				<th>{{ form.employee.label_tag }}</th>
+				<td>
+				{{ form.employee }}
+				{% for error in form.employee.errors %}
+					{{ error|escape }}
+				{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				<th>{{ form.signup_date.label_tag }}</th>
+				<td>
+				{{ form.signup_date }}
+				{% for error in form.signup_date.errors %}
+					{{ error|escape }}
+				{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				<th>{{ form.sale_date.label_tag }}</th>
+				<td>
+				{{ form.sale_date }}
+				{% for error in form.sale_date.errors %}
+					{{ error|escape }}
+				{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				<th>{{ form.price.label_tag }}</th>
+				<td>
+				{{ form.price }}
+				{% for error in form.price.errors %}
+					{{ error|escape }}
+				{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				<th>{{ form.clients.label_tag }}</th>
+				<td>
+				{{ form.clients }}
+				{% for error in form.clients.errors %}
+					{{ error|escape }}
+				{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				<th>{{ form.clients_phone.label_tag }}</th>
+				<td>
+				{{ form.clients_phone }}
+				{% for error in form.clients_phone.errors %}
+					{{ error|escape }}
+				{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				<th>{{ form.remarks.label_tag }}</th>
+				<td>
+				{{ form.remarks }}
+				{% for error in form.remarks.errors %}
+					{{ error|escape }}
+				{% endfor %}
+				</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="submit" value="אישור" class="button" /></td>
+			</tr>
+		</table>
+		</form>
+	</div>
+	<div id="leftSide">
+		<fieldset class="cardFieldset">
+		<legend>פרטי דירה</legend>
+			<div id="houseDetails"></div>
+		</fieldset>
+		<fieldset class="cardFieldset">
+		<legend>פרטי הרשמה</legend>
+			<div id="signupDetails"></div>
+		</fieldset>
+	</div>
+	<div class="clearBoth"></div> 
+</div>
+{% endblock page %}

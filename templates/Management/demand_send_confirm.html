@@ -1,0 +1,29 @@
+﻿{% extends "./base.html" %}
+{% block header %}
+<script>
+	$(document).ready(function() {		
+		$("input[type!='submit']").attr("class", "inputText");
+	});
+</script>
+{% endblock header %}
+{% block content %}
+<div id="rightSide">
+	לפרוייקטים הבאים לא נפתחו דרישות לתשלום נכון ל{% now "M Y" %}<br>
+	{% for p in projects %}
+		<a href="/projects/{{p.id}}">{{p}}</a>
+	{% endfor %}
+	</table>
+</div>
+<div id="leftSide">
+	העובדים הבאים לא מכרו דירות נכון ל{% now "M Y" %}<br>
+	{% for e in employees %}
+		<a href="/employees/{{e.id}}">{{e}}</a>
+	{% endfor %}
+</div>
+<div class="clearBoth"/>
+<a href="/demands/add">פתח דרישה</a>
+<form method="POST">
+	האם אתה בטוח שברצונך להמשיך ?  
+	<input type="submit" class="button" value="כן"/>
+</form>
+{% endblock content %}

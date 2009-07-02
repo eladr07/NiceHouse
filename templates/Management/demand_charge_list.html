@@ -1,0 +1,73 @@
+﻿{% extends "./base.html" %}
+{% block header %}
+{{ block.super }}
+<script>
+	var selectedID = 0;
+	var prev_class;
+	$(document).ready(function() {
+		$("#demandTable tr").click(function() { 
+			var tr = $(this);
+			if (selectedID > 0)
+				$("#demandTable tr[objid='"+selectedID+"']").attr("class", prev_class);
+			selectedID = tr.attr("objid");
+			prev_class = tr.attr("class");
+			tr.attr("class","selectedRow");
+			//sync links
+			if (selectedID > 0)
+				$("#invoiceAdd").attr("href", "demands/" + selectedID + "/invoice/add");
+				$("#paymentAdd").attr("href", "demands/" + selectedID + "/payment/add");
+			});
+		$(".fancybox").fancybox();
+	});
+</script>
+{% endblock header %}
+{% block content %}
+	<div class="title">
+		<div class="pageTitle">ריכוז גביית דרישות לתשלום</div>
+	</div>
+	<div class="someIcon" style="width:100px;">
+		<img src="http://www.nicehouse.co.il/site_media/images/add_48.png" width="20" height="20"  alt="חדש" /> 
+		<a class="fancybox" id="invoiceAdd">הוסף חשבונית</a>
+	</div>
+	<div class="someIcon" style="width:100px;">
+		<img src="http://www.nicehouse.co.il/site_media/images/add_48.png" width="20" height="20"  alt="חדש" /> 
+		<a class="fancybox" id="paymentAdd">הוסף תשלום</a>
+	</div>
+	<div class="clearBoth"></div>	
+<table id="demandTable" class="dataTable" border="1">
+<caption>מציג סה"כ {{demands|length}} דרישות לתשלום</caption>
+	<tr>
+		<th>מס'</th>
+		<th>יזם</th>
+		<th>שם פרוייקט</th>
+		<th>עיר</th>
+		<th>מס' מכירות</th>
+		<th>סה"כ מכירות</th>
+		<th>מצב תשלום</th>
+	</tr>
+    {% for d in demands %}
+    	<tr class="{% cycle 'row1' 'row2' %}" objid={{d.id}}>
+			<td><a href="demands/{{d.id}}">{{d.id}}</a></td>
+			<td>{{ d.project.initiator }}</td>
+			<td><a href="/projects/{{d.project.id}}">{{ d.project.name }}</a></td>
+			<td>{{ d.project.city }}</td>
+			<td>{{ d.get_sales.count }}</td>
+			<td>{{ d.get_total_amount }}</td>
+			<td>
+				{% ifequal d.state 1 %}
+					לא הוצאה חשבונית
+				{% endifequal %}
+				{% ifequal d.state 2 %}
+					לא התקבל תשלום
+				{% endifequal %}
+				{% ifequal d.state 3 %}
+					התקבל תשלום בעודף של {{d.diff}} ש"ח
+				{% endifequal %}
+				{% ifequal d.state 4 %}
+					התקבל תשלום בחסר של {{d.diff}} ש"ח
+				{% endifequal %}
+			</td>
+		</tr>
+	{% endfor %}
+</table>
+{% endblock content %}

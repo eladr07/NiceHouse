@@ -1,0 +1,235 @@
+﻿{% extends "./base.html" %}
+
+{% block header %}	
+{{ block.super }}
+<script>
+	$(document).ready(function() {
+		$("input[type!='submit']").attr("class", "inputText");
+		$("select").attr("class", "inputText");
+		$("button[id^='add_commissions']").click(function (event) {
+			$("#new_commissions").toggle();//show/hide new commission
+		});
+		$("a[id*='commission_delete']").click(function (event) { 
+			var answer = confirm("האם אתה בטוח שברצונך למחוק את העמלה שנבחרה ?");
+			if (!answer)
+				event.preventDefault();
+		});
+		
+		$(".fancybox").fancybox();
+		$(".bigfancybox").fancybox({'frameWidth':800});
+	});
+</script>
+{% endblock header %}
+{% block content %}	
+	<div class="title">
+	{% if form.instance.id %}
+		<div class="pageTitle">כרטיס עובד - {{form.instance}} ({{form.instance.id}})</div>	
+	{% else %}
+		<div class="pageTitle">הוספת עובד</div>	
+	{% endif %}
+	</div>
+	<div id="rightSide">
+		<form method="POST">
+		<fieldset class="cardFieldset">
+			<legend>פרטים כלליים</legend>
+			<table cellspacing="2" cellpadding="2" class="formTable">
+			{% for field in form %}
+				<tr>
+					<th>{{ field.label_tag }}</th>
+					<td>{{ field }}</td>
+					<td>{{ field.errors|join:" ,"}}</td>
+				</tr>
+			{% endfor %}
+			</table>
+		</fieldset>
+			<tr>
+				<td></td>
+				<td><input type="submit" value="שמירת כרטיס" class="button"/></td>
+			</tr>
+		</table>
+		</form>
+	</div>
+	<div id="leftSide"> 
+	{% if form.instance.id %}
+		{% if user.is_staff %}
+			<fieldset class="cardFieldset">
+				<legend>תנאי העסקה</legend>
+				{% if form.instance.employment_terms %}
+					<table class="formTable">
+					{% with form.instance.employment_terms as terms %}
+						<tr>
+							<th>שכר בסיס</th>
+							<td>{{terms.salary_base}} ש"ח</td>
+						</tr>
+						<tr>
+							<th>שכר נטו</th>
+							<td>{% if terms.salary_net %}נטו{%else%}ברוטו{%endif%}</td>
+						</tr>
+						<tr>
+							<th>רשת בטחון</th>
+							<td>{{terms.safety}} ש"ח</td>
+						</tr>
+						<tr>
+							<th>סוג העסקה</th>
+							<td>{{terms.hire_type}}</td>
+						</tr>
+					{% endwith %}
+					</table>
+					<a href="/employees/{{form.instance.id}}/employmentterms" class="fancybox" style="text-decoration:none;">
+						שינוי תנאי העסקה 
+						<img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="15" height="15" border="0" alt="שינוי" />
+					</a>
+				{% else %}
+					<a href="/employees/{{form.instance.id}}/employmentterms" class="fancybox" style="text-decoration:none;">
+						הזנת תנאי העסקה 
+						<img src="http://www.nicehouse.co.il/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" />
+					</a>
+				{% endif %}
+			</fieldset>
+			{% for c in form.instance.commissions.all %}
+			<fieldset class="cardFieldset">
+				<legend>עמלות למנהל מכירות בגין פרוייקט {{c.project}}</legend>
+				{% if c.c_var %}
+					<div>
+						עמלה משתנה (בשקלים)		
+						<a id="edit_cv" href="cv/project/{{c.project.id}}" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+						<a href="cv/project/{{c.project.id}}/del"><img src="http://www.nicehouse.co.il/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+					</div>
+				{% endif %}
+				{% if c.c_var_precentage %} 
+					<div>
+						עמלה משתנה (באחוזים)			
+						<a id="edit_cvp" href="cvp/project/{{c.project.id}}" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+						<a href="cvp/project/{{c.project.id}}/del"><img src="http://www.nicehouse.co.il/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+					</div>
+				{% endif %}
+				{% if c.c_by_price %}	
+					<div>
+						עמלה לפי מחיר דירה		
+						<a id="edit_cbp" href="cbp/project/{{c.project.id}}" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+						<a href="cbp/project/{{c.project.id}}/del"><img src="http://www.nicehouse.co.il/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+					</div>
+				{% endif %}
+				{% if c.b_sale_rate %}
+					<div>
+						בונוס קצב מכירות			
+						<a id="edit_bsr" href="bsr/project/{{c.project.id}}" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+						<a href="bsr/project/{{c.project.id}}/del"><img src="http://www.nicehouse.co.il/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+					</div>
+				{% endif %}
+				{% if c.b_house_type %}		
+					<div>
+						בונוס סוג דירה	
+						<a id="edit_bht" href="bht/project/{{c.project.id}}" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+						<a href="bht/project/{{c.project.id}}/del"><img src="http://www.nicehouse.co.il/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+					</div>
+				{% endif %}
+				{% if c.b_discount_save %}	
+					<div>
+						בונוס חיסכון בהנחה (בשקלים)
+						<a id="edit_bds" href="bds/project/{{c.project.id}}" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+						<a href="bds/project/{{c.project.id}}/del"><img src="http://www.nicehouse.co.il/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+					</div>
+				{% endif %}
+				<div>
+					<button id="add_commissions{{c.project.id}}" class="button">הוספה</button>
+				</div>
+				<div id="new_commissions">
+					{% if not c.c_var %}
+						עמלה משתנה (בשקלים)
+						<a id="add_cv" href="cv/project/{{c.project.id}}" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" /></a> 
+						{% endif %}
+					{% if not c.c_var_precentage %}
+						<br>עמלה משתנה (באחוזים)
+						<a id="add_cvp" href="cvp/project/{{c.project.id}}" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" /></a> 
+					{% endif %}
+					{% if not c.c_by_price %}
+						<br>עמלה משתנה לפי מחיר דירה
+						<a id="add_cbp" href="cbp/project/{{c.project.id}}" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" /></a> 
+					{% endif %}
+					{% if not c.b_sale_rate %}
+						<br>בונוס קצב מכירות
+						<a id="add_bsr" href="bsr/project/{{c.project.id}}" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" /></a> 
+					{% endif %}
+					{% if not c.b_house_type %}
+						<br>בונוס סוג דירה
+						<a id="add_bht" href="bht/project/{{c.project.id}}" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" /></a> 
+					{% endif %}
+					{% if not c.b_discount_save %}
+						<br>בונוס חיסכון בהנחה (בשקלים)
+						<a id="add_bds" href="bds/project/{{c.project.id}}" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" /></a> 
+					{% endif %}
+				</div>
+			</fieldset>
+			{% endfor %}
+		{% endif %}
+		<fieldset class="cardFieldset">
+			<legend>פרטי חשבון</legend>
+			{% if form.instance.account %}
+				<table class="formTable">
+				{% with form.instance.account as a %}
+					<tr>
+						<th>מס' חשבון</th>
+						<td>{{a.num}}</td>
+					</tr>
+					<tr>
+						<th>בנק</th>
+						<td>{{a.bank}}</td>
+					</tr>
+					<tr>
+						<th>סניף</th>
+						<td>{{a.branch}}</td>
+					</tr>
+					<tr>
+						<th>מס' סניף</th>
+						<td>{{a.branch_num}}</td>
+					</tr>
+					<tr>
+						<th>שם המוטב</th>
+						<td>{{a.payee}}</td>
+					</tr>						
+				{% endwith %}
+				</table>
+				<a href="account" class="fancybox" style="text-decoration:none;">
+					שינוי פרטי חשבון
+					<img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="15" height="15" border="0" alt="שינוי" />
+				</a>
+				<a href="account/del" style="text-decoration:none;">
+					מחיקת פרטי חשבון
+					<img src="http://www.nicehouse.co.il/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" />
+				</a>
+			{% else %}
+				<a href="account" class="fancybox" style="text-decoration:none;">
+					הזנת פרטי חשבון
+					<img src="http://www.nicehouse.co.il/site_media/images/add_48.png" width="15" height="15" border="0" alt="חדש" />
+				</a>
+			{% endif %}
+		</fieldset>
+		<fieldset class="cardFieldset">
+			<legend>הלוואות</legend>
+			<table style="width:90%; font-size:12px">
+				<tr>
+					<td><a href="loans" class="fancybox">כרטיס הלוואות</a></td>
+					<td><a href="addloan" class="fancybox">הלוואה חדשה</a></td>
+					<td><a href="loanpay" class="fancybox">קיזוז הלוואה</a></td>
+				</tr>
+			</table>
+		</fieldset>
+		<fieldset class="cardFieldset">
+		<legend>תזכורות</legend>
+			קיימות <a id="list_reminders" href="reminders" class="fancybox">{{form.instance.get_open_reminders|length}}</a> תזכורות שטרם טופלו.<br>
+			<a id="add_reminder" href="addreminder" class="fancybox">תזכורת חדשה</a>
+		</fieldset>
+		<fieldset class="cardFieldset">
+		<legend>מסמכים מצורפים</legend>
+			סה"כ
+			{{form.instance.attachments.count}}
+			מסמכים מצורפים.
+			<br><br>
+			<a id="list_attachments" href="attachments" class="bigfancybox">ארכיב מסמכים</a><br>
+			<a id="add_attachment" href="attachment/add" class="bigfancybox">צרף מסמך</a>
+		</fieldset>
+	{% endif %}
+	</div>
+	<div class="clearBoth"></div> 
+{% endblock content %}

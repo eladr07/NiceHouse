@@ -1,0 +1,97 @@
+﻿{% extends "./Management/report_demand_base.html" %}
+{% load management_extras %}
+{% block header %}
+{{block.super}}
+<script>
+$(document).ready(function() {
+	$("#saleTable td,#saleTable th").attr("style","border-bottom: 1px solid #000000; border-left: 1px solid #000000;");
+});
+</script>
+{% endblock header %}
+{% block sale_table %}
+<table id="saleTable" class="reportTable">
+	<th>מס"ד</th>
+	{% if demand.get_sales.0.contract_num %}
+	<th>מס' <br>חוזה</th>
+	{% endif %}
+	<th>שם <br>הרוכשים</th>
+	<th>בניין</th>
+	<th>דירה</th>
+	<th>תאריך<br> מכירה</th>
+	<th>מחיר <br>חוזה</th>
+	{% if demand.get_sales.0.discount %}
+	<th>מחיר כולל מע"מ</th>
+	<th>% הנחה <br>ניתן</th>
+	<th>% הנחה <br>מותר</th>
+	{% endif %}
+	<th>% עמלת <br>בסיס</th>
+	<th>שווי עמלת בסיס</th>
+	{% if demand.project.commissions.b_discount_save_precentage %}
+	<th>% בונוס <br>חסכון</th>
+	<th>שווי בונוס <br>חסכון</th>
+	{% endif %}
+	<th>% עמלה <br>סופי</th>
+	<th>שווי עמלה <br>סופי</th>
+	{% for s in demand.get_sales %}
+	<tr height="25px">
+		<td>{{demand.id}}-{{forloop.counter}}</td>
+		{% if s.contract_num %}
+		<td>{{s.contract_num}}</td>
+		{% endif %}
+		<td {% if s.old_sale %}{% ifnotequal s.clients s.old_sale.clients %}style="background-color: #F69F9F;"{% endifnotequal %}{% endif %}>
+			{{s.clients}}{% if s.old_sale %}{% ifnotequal s.clients s.old_sale.clients %} ({{s.old_sale.clients}}){% endifnotequal %}{% endif %}
+		</td>
+		<td>{{s.house.building}}</td>
+		<td {% if s.old_sale %}{% ifnotequal s.house s.old_sale.house %}style="background-color: #F69F9F;"{% endifnotequal %}{% endif %}>
+			{{s.house}}
+			{% if s.old_sale %}{% ifnotequal s.house s.old_sale.house %} ({{s.old_sale.house}}){% endifnotequal %}{% endif %}
+		</td>
+		<td>{{s.sale_date|date:"j/m/Y"}}</td>
+		<td {% if s.old_sale %}{% ifnotequal s.price s.old_sale.price %}style="background-color: #F69F9F;"{% endifnotequal %}{% endif %}>
+			{{s.price|commaise}} ש"ח {% if s.old_sale %}{% ifnotequal s.price s.old_sale.price %} ({{s.old_sale.price|commaise}}){% endifnotequal %}{% endif %}
+		</td>
+		{% if s.discount %}
+		<td>{{s.price_final|commaise}}</td>
+		<td>{{s.discount|floatformat:3}}</td>
+		<td>{{s.allowed_discount|floatformat:3}}</td>
+		{% endif %}
+		<td>{{s.pc_base}}</td>
+		<td>{{s.pc_base_worth|commaise}} ש"ח</td>
+		{% if demand.project.commissions.b_discount_save_precentage %}
+		<td>{{s.pb_dsp|floatformat:3|default:"----"}}</td>
+		<td>{% if s.pb_dsp_worth %} {{s.pb_dsp_worth|commaise}} ש"ח {% else %}----{% endif %}</td>
+		{% endif %}
+		<td>{{s.c_final|floatformat:3}}</td>
+		<td><b>{{s.c_final_worth|commaise}} ש"ח</b></td>
+	</tr>
+	{% endfor %}
+</table>
+<div style="float:left;">
+	<table style="font-size: 14px;">
+		<tr>
+			<th>סה"כ עמלה בגין שיווק</th>
+			<td>{{demand.get_sales_commission|commaise}} ש"ח</td>
+		</tr>
+		{% if demand.fixed_pay %}
+		<tr>
+			<th>תוספת קבועה</th>
+			<td>{{demand.fixed_pay|default_if_none:"0"|commaise}} ש"ח</td>
+		</tr>
+		{% endif %}
+		{% if demand.var_pay %}
+		<tr>
+			<th>תוספת משתנה</th>
+			<td>{{demand.var_pay|default_if_none:"0"|commaise}} ש"ח - {{demand.var_pay_type}}</td>
+		</tr>
+		{% endif %}
+		<tr>
+			<th></th>
+			<th>=</th>
+		</tr>
+		<tr>
+			<th>סה"כ עמלה לדרישה כולל מע"מ</th>
+			<th><u style="color:#1A339C;">{{demand.get_total_amount|commaise}} ש"ח</u></th>
+		</tr>
+	</table>
+</div>
+{% endblock sale_table %}

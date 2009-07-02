@@ -1,0 +1,67 @@
+﻿{% extends "./template.html" %}
+{% block header %}
+<script>
+	$(document).ready(function() {		
+		$("input[type!='submit']").attr("class", "inputText");
+		$("input[type='submit']").click(function (event) {
+			parent.$("#fancy_close").click(function(event) {
+					parent.location.reload();
+				});	
+			});
+	});
+</script>
+{% endblock header %}
+{% block page %}
+<div id="content">
+{% if obj %}
+	<div class="title">
+		<div class="pageTitle">הוספת מסמך עבור - {{obj}}</div>
+	</div>
+{% endif %}
+	<form method="POST" enctype="multipart/form-data">
+		<table class="formTable">
+			<tr>
+				<th>{{form.file.label_tag}}</th>
+				<td>{{form.file}}</td>
+				<td>{{form.file.errors|join:" "}}</td>
+			</tr>
+			<tr>
+				<th>{{form.type.label_tag}}</th>
+				<td>{{form.type}}</td>
+				<td>{{form.type.errors|join:" "}}</td>
+			</tr>
+			<tr>
+				<th>{{form.sr_name.label_tag}}</th>
+				<td>{{form.sr_name}}</td>
+				<td>{{form.sr_name.errors|join:" "}}</td>
+			</tr>
+			{% if user.is_staff %}
+			<tr>
+				<th>{{form.is_private.label_tag}}</th>
+				<td>{{form.is_private}}</td>
+				<td>{{form.is_private.errors|join:" "}}</td>
+			</tr>
+			{% endif %}
+			<tr>
+				<th>{{form.tags.label_tag}}</th>
+				<td>{{form.tags}}</td>
+				<td>{{form.tags.errors|join:" "}}</td>
+			</tr>
+			<tr>
+				<th>{{form.tag_new.label_tag}}</th>
+				<td>{{form.tag_new}}</td>
+				<td>{{form.tag_new.errors|join:" "}}</td>
+			</tr>
+			<tr>
+				<th>{{form.remarks.label_tag}}</th>
+				<td>{{form.remarks}}</td>
+				<td>{{form.remarks.errors|join:" "}}</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><input type="submit" value="אישור" class="button"/></td>
+			</tr>
+		</table>
+	</form>
+</div>
+{% endblock page %}

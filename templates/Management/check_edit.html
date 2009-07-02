@@ -1,0 +1,49 @@
+﻿{% extends "./template.html" %}
+{% block header %}
+<script>
+	$(document).ready(function() {		
+		$("input[type!='submit']").attr("class", "inputText");
+		$("input[type='submit']").click(function (event) {
+			parent.$("#fancy_close").click(function(event) {
+					parent.location.reload();
+				});	
+			});
+	});
+</script>
+{% endblock header %}
+{% block page %}
+<div id="content">
+	<form method="POST">
+	<div id="leftSide">
+		<fieldset class="cardFieldset">
+			<table class="formTable">
+				<legend>פרטי חשבון</legend>
+				{% for field in accountForm %}
+				<tr>
+					<th>{{field.label_tag}}</th>
+					<td>{{field}}</td>
+					<td>{{field.errors|join:" "}}</td>
+				</tr>
+				{% endfor %}
+			</table>
+		</fieldset>
+	</div>
+	<div id="rightSide">
+		<table class="formTable">
+			{% for field in form %}
+			<tr>
+				<th>{{field.label_tag}}</th>
+				<td>{{field}}</td>
+				<td>{{field.errors|join:" "}}</td>
+			</tr>
+			{% endfor %}
+			<tr>
+				<td></td>
+				<td><input type="submit" value="אישור" class="button"/></td>
+			</tr>
+		</table>
+	</div>
+	<div class="clearBoth"/>
+	</form>
+</div>
+{% endblock page %}

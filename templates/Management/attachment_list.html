@@ -1,0 +1,62 @@
+﻿{% extends "./base.html" %}
+
+{% block header %}
+<script>
+var selectedID = 0;
+var prevClass;
+$(document).ready(function () {
+	$("#attachmentTable tr").click(function() {
+		var tr = $(this);
+		if (selectedID > 0)
+			$("#attachmentTable tr[objid='"+selectedID+"']").attr("class", prevClass);
+		selectedID = tr.attr("objid");
+		if (!selectedID) return;
+		prevClass = tr.attr("class");
+		tr.attr("class","selectedRow");
+		if (selectedID > 0)
+		{//sync links
+			$("#attachmentEdit").attr("href", "/attachment/" + selectedID);
+			$("#attachmentDelete").attr("href", "/attachment/" + selectedID + "/del");
+		}
+	});
+});
+</script>
+{% endblock header %}
+
+{% block content %}
+	<div class="title">
+		<div class="pageTitle">ארכיב מסמכים</div>
+	</div>
+	<div class="someIcon">
+		<img src="http://www.nicehouse.co.il/site_media/images/add_48.png" width="20" height="20"  alt="חדש" /> 
+		<a href="/attachment/add">חדש</a>
+	</div>
+	<div class="someIcon">
+		<img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
+		<a id="attachmentEdit" class="fancybox" >שינוי</a>
+	</div>
+	<div class="someIcon">
+		<img src="http://www.nicehouse.co.il/site_media/images/delete_48.png" width="20" height="20"  alt="מחיקה" /> 
+		<a id="attachmentDelete">מחיקה</a>
+	</div>
+	<div class="clearBoth"> </div>
+	<br /> 		
+	<table id="attachmentTable" class="dataTable" border="1">
+		<tr>
+			<th>תאריך הוספה</th>
+			<th>משתמש מוסיף</th>
+			<th>שם</th>
+			<th>גודל</th>
+			<th>תגיות</th>
+		</tr>
+		{% for a in attachments %}
+			<tr class="{% cycle 'row1' 'row2' %}" objid={{a.id}}>
+				<td>{{ a.add_time }}</td>
+				<td>{{ a.user_added }}</td>
+				<td><a href="{{a.file.url}}" target="_blank">{{ a.name }}</a></td>
+				<td>{{a.file.size|filesizeformat}}</td>
+				<td>{{a.tags.all|join:", "}}</td>
+			</tr>
+		{% endfor %}
+	</table>
+{% endblock content %}

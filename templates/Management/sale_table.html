@@ -1,0 +1,45 @@
+﻿<table id="sales_table" class="dataTable" border="1">
+	<caption>	
+		סה"כ מכירות : 
+		<b>{{sales|length}}</b>
+		על סך כולל של 
+		<b>{{salesTotal}}</b>
+		ש"ח
+	</caption>
+	<th>פרטים</th>
+	<th>מס"ד</th>
+	<th>ת. חוזה</th>
+	<th style="width:150px;">שם הרוכשים</th>
+	<th>מס' בניין</th>
+	<th>מס' דירה</th>
+	<th>סוכן מכירות</th>
+	<th>מחיר חוזה</th>
+	{% for sale in sales %}
+		<tr>
+			<td><a href="/sale/{{sale.id}}">פרטים</a></td>
+			<td>{{sale.id}}</td>
+			<td>{{sale.sale_date|date:"j/m"}}</td>
+			<td>{{sale.clients}}</td>
+			{% with sale.house.building as b %}
+			<td><a href="/buildings/{{b.id}}/pricelist/type1">{{sale.house.building.num}}</a></td>
+			<td><a href="/buildings/{{b.id}}/house/{{sale.house.id}}/type1">{{sale.house.num}}</a></td>
+			{% endwith %}
+			<td>
+				{% if sale.employee %}
+					<a href="/employees/{{sale.employee.id}}">{{sale.employee}}</a>
+				{% else %}
+					{% for e in sale.house.building.project.employees.all %}
+						<a href="/employees/{{e.id}}">{{e}}</a><br>
+					{% endfor %}
+				{% endif %}
+			</td>
+			<td>
+				{{sale.price}}<br>
+				{{sale.include_tax|yesno:"כולל מע\"מ, לא כולל מע\"מ"}}, 
+				{% ifnotequal sale.house.building.project.commissions.include_lawyer None %}
+					{{sale.house.building.project.commissions.include_lawyer|yesno:"כולל עו\"ד, לא כולל עו\"ד"}}
+				{% endifnotequal %}
+			</td>
+		</tr>
+	{% endfor %}
+</table>

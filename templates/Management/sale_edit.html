@@ -1,0 +1,256 @@
+﻿{% extends "./base.html" %}
+{% block header %}
+{{ block.super }}
+<script>
+	var projectSelect;
+	var buildingSelect;
+	var houseSelect;
+	var employeeSelect;
+	var priceInput;
+	var priceIncludeLawyerChk;
+	var priceNoLawyerInput;
+	$(document).ready(function() {
+		$("input[type!='submit']").attr("class", "inputText");
+		$("select").attr("class", "inputText");
+		
+		projectSelect = $("#id_project");
+		buildingSelect = $("#id_building");
+		houseSelect = $("#id_house");
+		employeeSelect = $("#id_employee");
+		priceInput = $("#id_price");
+		priceIncludeLawyerChk = $("#id_price_include_lawyer");
+		priceNoLawyerInput = $("#id_price_no_lawyer");
+		
+		//add click event to projects select : use ajax to get related buildings and employees
+		projectSelect.change(onChangeProject);
+		//add click event to buildings select : use ajax to get related houses.
+		buildingSelect.change(onChangeBuilding);
+		houseSelect.change(showHouseDetails);
+		// add price manipulation events
+		priceInput.change(fillPriceNoLawyer);
+		priceIncludeLawyerChk.change(fillPriceNoLawyer);
+		
+		var selectedProject = projectSelect.val();
+		var selectedBuilding = buildingSelect.val();
+		$("#projectCard").attr("href", "/projects/" + selectedProject);
+		$("#buildingCard").attr("href", "/buildings/" + selectedBuilding + "/pricelist/type1");
+		showMonthSales();
+		showHouseDetails();
+	});
+	
+	function onChangeBuilding()
+	{
+		$("option[value!='']", houseSelect).remove();
+		var selectedBuilding = buildingSelect.val();
+		$("#buildingCard").attr("href", "/buildings/" + selectedBuilding + "/pricelist/type1");
+		$.getJSON("/xml/houses/" + selectedBuilding, function(data){
+				for (i in data)
+				{
+					obj = data[i];
+					houseSelect.append(
+						"<option value='" + obj.pk + "'>" + obj.fields['num'] + "</option>");
+				}
+			});
+	}
+	
+	function onChangeProject()
+	{
+		$("option[value!='']", buildingSelect).remove();
+		$("option[value!='']", houseSelect).remove();
+		$("option", employeeSelect).remove();
+		var selectedProject = projectSelect.val();
+		$("#projectCard").attr("href", "/projects/" + selectedProject);
+		$.getJSON("/xml/buildings/" + selectedProject, function(data){
+			for (i in data)
+			{
+				obj = data[i];
+				buildingSelect.append(
+					"<option value='" + obj.pk + "'>" + obj.fields['num'] + "</option>");
+			}
+			onChangeBuilding();
+		});
+		$.getJSON("/xml/employees/" + selectedProject, function(data){
+			if (data.length > 1)
+				employeeSelect.append("<option value=''>מכירה משותפת</option>");
+			for (i in data)
+			{
+				obj = data[i];
+				text = obj.fields['pid'] + " : " + obj.fields['first_name'] + " " + obj.fields['last_name'];
+				employeeSelect.append(
+					"<option value='" + obj.pk + "'>" + text + "</option>");
+			}
+			if (data.length == 1)
+				employeeSelect.attr("value", data[0].pk);
+		});
+		showMonthSales();
+	}
+
+	function showMonthSales()
+	{
+		var selectedProject = projectSelect.val();
+		$("#sales").empty();
+		$.get("/project_sales/" + selectedProject, function(data){
+			$("#sales").append(data);
+		});
+	}
+	
+	function showHouseDetails()
+	{
+		$("#houseDetails").empty();
+		var selectedHouse = houseSelect.val();
+		$.get("/house_details/" + selectedHouse, function(data){
+			$("#houseDetails").append(data);
+		});
+	}
+	
+	function fillPriceNoLawyer()
+	{
+		var p = priceInput.val();
+		var include = priceIncludeLawyerChk.val();
+		if (include == 1)
+			priceNoLawyerInput.attr("value", Math.round(p / 1.015));
+		else
+			priceNoLawyerInput.attr("value", p);
+	}
+</script>
+{% endblock header %}
+{% block content %}
+	<div class="title">
+		<div class="pageTitle">
+			{% if form.instance.id %}
+				עדכון מכירה מס' 
+				{{form.instance.id}} 
+				לחודש 
+				{{form.instance.demand.month}}/{{form.instance.demand.year}}
+			{% else %}
+				מכירה חדשה
+			{% endif %}
+		</div>
+		{% ifequal form.instance.demand.statuses.latest.type.id 3 %}
+		<i>לתשומת לבך, הדרישה כבר נשלחה ליזם! עדכון הבניין\הדירה\מחיר המכירה יוזן כתיקון דרישה</i>
+		{% endifequal %}
+	</div>
+	<br>
+	<div id="rightSide">
+		<form method="POST">
+		<table cellspacing="2" cellpadding="2" class="formTable">
+			<tr>
+				<th>{{ form.project.label_tag }}</th>
+				<td>{{ form.project }} <a id="projectCard"><img src="http://www.nicehouse.co.il/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
+				<td>{{ form.project.errors|join:" " }}</td>
+			</tr>
+			<tr>
+			<tr>
+				<th>{{ form.building.label_tag }}</th>
+				<td>{{ form.building }} <a id="buildingCard"><img src="http://www.nicehouse.co.il/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
+				<td>{{ form.building.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ form.house.label_tag }}</th>
+				<td>{{ form.house }}</td>
+				<td>{{ form.house.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ form.employee.label_tag }}</th>
+				<td>{{ form.employee }}</td>
+				<td>{{ form.employee.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><u><b>נתוני מכירה</b></u></td>
+			</tr>
+			<tr>
+				<th>{{ form.clients.label_tag }}</th>
+				<td>{{ form.clients }}</td>
+				<td>{{ form.clients.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ form.clients_phone.label_tag }}</th>
+				<td>{{ form.clients_phone }}</td>
+				<td>{{ form.clients_phone.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ form.sale_date.label_tag }}</th>
+				<td>{{ form.sale_date }}</td>
+				<td>{{ form.sale_date.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ form.price.label_tag }}</th>
+				<td>{{ form.price }}</td>
+				<td>{{ form.price.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ form.min_price.label_tag }}</th>
+				<td>{{ form.min_price }}</td>
+				<td>{{ form.min_price.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ form.price_include_lawyer.label_tag }}</th>
+				<td>{{ form.price_include_lawyer }}</td>
+				<td>{{ form.price_include_lawyer.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ form.price_no_lawyer.label_tag }}</th>
+				<td>{{ form.price_no_lawyer }}</td>
+				<td>{{ form.price_no_lawyer.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><u><b>נתוני שיכון עובדים</b></u></td>
+			</tr>
+			<tr>
+				<th>{{ form.contract_num.label_tag }}</th>
+				<td>{{ form.contract_num }}</td>
+				<td>{{ form.contract_num.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ form.include_tax.label_tag }}</th>
+				<td>{{ form.include_tax }}</td>
+				<td>{{ form.include_tax.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ form.discount.label_tag }}</th>
+				<td>{{ form.discount }}</td>
+				<td>{{ form.discount.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ form.allowed_discount.label_tag }}</th>
+				<td>{{ form.allowed_discount }}</td>
+				<td>{{ form.allowed_discount.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><u><b>נתוני זילברמינץ</b></u></td>
+			</tr>
+			<tr>
+				<th>{{ form.company_price.label_tag }}</th>
+				<td>{{ form.company_price }}</td>
+				<td>{{ form.company_price.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><u><b>נתונים נוספים</b></u></td>
+			</tr>
+			<tr>
+				<th>{{ form.remarks.label_tag }}</th>
+				<td>{{ form.remarks }}</td>
+				<td>{{ form.remarks.errors|join:" " }}</td>
+			</tr>
+		</table>
+		<input name="addanother" type="submit" value="שמור והמשך בהזנה" class="button" />
+		<input name="todemand" type="submit" value="שמור וחזור לכרטיס הדרישה" class="button" />
+		</form>
+	</div>
+	<div id="leftSide">
+		<fieldset class="cardFieldset">
+		<legend>פרטי דירה</legend>
+			<div id="houseDetails"></div>
+		</fieldset>
+		<br>
+		<fieldset class="cardFieldset">
+		<legend>עסקאות לדרישה לתשלום לחודש נוכחי</legend>
+			<div id="sales"></div>
+		</fieldset>
+	</div>
+	<div class="clearBoth"></div> 
+{% endblock content %}

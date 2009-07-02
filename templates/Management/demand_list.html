@@ -1,0 +1,149 @@
+﻿{% extends "./base.html" %}
+{% load management_extras %}
+{% block header %}
+{{ block.super }}
+<script>
+	var selectedID = 0;
+	var prev_class;
+	$(document).ready(function() {
+		$("#demandTable tr").click(function() { 
+			var tr = $(this);
+			if (selectedID > 0)
+				$("#demandTable tr[objid='"+selectedID+"']").attr("class", prev_class);
+			selectedID = tr.attr("objid");
+			if (!selectedID)
+				return;
+			prev_class = tr.attr("class");
+			tr.attr("class","selectedRow");
+			//sync links
+			if (selectedID > 0)
+				$("#saleAdd").attr("href", "/demands/" + selectedID + "/sale/add");
+				$("#saleZero").attr("href", "/demands/" + selectedID + "/zero");
+				$("#demandClose").attr("href", selectedID + "/close");
+				$("#demandRemarks").attr("href", selectedID + "/remarks");
+			});
+		$(".fancybox").fancybox();
+		$("#demandClose").click(function (event) {
+			if (!confirm("האם אתה בטוח שברצונך לאשר את הדרישה?"))
+				event.preventDefault();
+		});
+		$("#demandCloseAll").click(function (event) {
+			if (!confirm("האם אתה בטוח שברצונך לאשר את כל הדרישות?"))
+				event.preventDefault();
+		});
+	});
+</script>
+{% endblock header %}
+{% block content %}
+<div class="title">
+	<div class="pageTitle">ריכוז הזנת דרישות לתשלום לחודש {{month|date:"M Y"}}</div>
+</div>
+<form method="POST">
+	<table class="dataTable" style="width: 30%;">
+		<tr class="row1">
+			<td colspan="3" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש</td>
+		</tr>
+		<tr class="row2">
+			{% for field in filterForm %}
+			<td>
+				{{ field.label_tag }} : 
+				{{ field }}
+			</td>
+			{% endfor %}
+			<td><input type="submit" value="חפש" class="button"/></td>
+		</tr>
+	</table>
+</form>
+<div class="someIcon" style="width:90px;">
+	<img src="http://www.nicehouse.co.il/site_media/images/add_48.png" width="20" height="20"  alt="חדש" /> 
+	<a id="saleAdd">הזנת מכירות</a>
+</div>
+<div class="someIcon" style="width:90px;">
+	<img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="20" height="20"  alt="חדש" /> 
+	<a id="saleZero">אין מכירות</a>
+</div>
+<div class="someIcon" style="width:100px;">
+	<img src="http://www.nicehouse.co.il/site_media/images/Note_48.png" width="20" height="20"  alt="שינוי" /> 
+	<a id="demandRemarks" class="fancybox">הערות לדרישה</a>
+</div>
+<div class="someIcon" style="width:90px;">
+	<img src="http://www.nicehouse.co.il/site_media/images/thumbs_up_48.png" width="20" height="20"  alt="סגירה" /> 
+	<a id="demandClose">אשר דרישה</a>
+</div>
+<div class="someIcon" style="width: 80px;">
+	<img src="http://www.nicehouse.co.il/site_media/images/thumbs_up_48.png" width="20" height="20"  alt="סגירה" /> 
+	<a id="demandCloseAll" href="/demands/closeall">אשר הכל</a>
+</div>
+<div class="someIcon" style="width:100px; float:left;">
+	<img src="http://www.nicehouse.co.il/site_media/images/Note_48.png" width="20" height="20"  alt="שינוי" /> 
+	<a href="/employee/remarks/{{month.year}}/{{month.month}}" class="fancybox">הערות לעובד</a>
+</div>
+<div class="someIcon" style="width:130px; float:left;">
+	<img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
+	<a href="/employee/refund/{{month.year}}/{{month.month}}" class="fancybox">החזר הוצאות לעובד</a>
+</div>
+<div class="someIcon" style="width:140px; float:left;">
+	<img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
+	<a href="#" >ימי חופש ומחלה לעובד</a>
+</div>
+<div class="clearBoth"></div>	
+<p>
+לתשומת לבך, ל-
+<u>{{unhandled_projects|length}}</u>
+פרוייקטים דרישה לא סופית ומאושרת בגין חודש זה : 
+{% for p in unhandled_projects %}
+{{p}} ,
+{% endfor %}
+</p>
+<br>
+<table id="demandTable" class="dataTable" style="text-align:center;" border="1">
+<caption>מציג סה"כ {{demands.count}} דרישות לתשלום</caption>
+	<tr>
+		<th>מס'</th>
+		<th>יזם</th>
+		<th>שם פרוייקט</th>
+		<th>עיר</th>
+		<th>מס' מכירות</th>
+		<th>מכירות כולל מע"מ</th>
+		<th>הערות</th>
+		<th>תזכורות לפרוייקט</th>
+		<th>נתוני שכר עובד</th>
+		<th>סטטוס דרישה</th>
+	</tr>
+    {% for d in demands %}
+	{% if not d.statuses.count %}
+    	<tr class="row3" objid={{d.id}}>
+	{% else %}
+		{% ifnotequal d.statuses.latest.type.id 1 %}
+			<tr class="row4" objid={{d.id}}>
+		{% else %}
+			<tr class="{% cycle 'row1' 'row2' %}" objid={{d.id}}>
+		{% endifnotequal %}
+	{% endif %}
+			<td>{{d.id}}</td>
+			<td>{{ d.project.initiator }}</td>
+			<td><a href="/projects/{{d.project.id}}">{{ d.project.name }}</a></td>
+			<td>{{ d.project.city }}</td>
+			<td><a href="/demands/{{d.id}}/sales" class="fancybox">{{ d.get_sales.count }}</a></td>
+			<td>{% if d.get_total_final_prices %}{{ d.get_total_final_prices|commaise }} ש"ח {% endif %}</td>
+			<td>{{ d.remarks|default_if_none:"" }}</td>
+			<td>
+			{% if d.get_open_reminders|length %}
+				<a href="/demands/{{d.id}}/reminders" class="fancybox">{{d.get_open_reminders|length}} תזכורות</a>
+			{% endif %}
+				<a href="/demands/{{d.id}}/addreminder" class="fancybox">
+					<img src="http://www.nicehouse.co.il/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" />
+				</a>
+			</td>
+			<td>
+			{% for s in d.get_salaries %}
+			{% if s.refund or s.remarks %}
+				<u>{{s.employee}}</u> : {% if s.refund %}{{s.refund}} - {{s.refund_type}}{%endif%}. {{s.remarks|default_if_none:""}}
+			{% endif %}
+			{% endfor %}
+			</td>
+			<td>{{ d.statuses.latest.type }}</td>
+		</tr>
+	{% endfor %}
+</table>
+{% endblock content %}

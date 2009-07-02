@@ -1,0 +1,28 @@
+﻿{% load management_extras %}
+<table class="formTable">
+	<tr>
+		<th>סכום דרישה</th>
+		<td>{{demand.get_total_amount|commaise}} ש"ח</td>
+	</tr>
+</table>
+{% if demand.payments.count %}
+<table class="formTable">
+	<caption>צ'קים שהוקלדו</caption>
+	<th>מס' צ'ק</th>
+	<th>מס' אסמכתא</th>
+	<th>סוג תשלום</th>
+	<th>ת. תשלום</th>
+	<th>סכום</th>
+	<th>הערות</th>
+	{% for p in demand.payments.all %}
+	<tr>
+		<td>{{p.num}}</td>
+		<td>{{p.support_num}}</td>
+		<td>{{p.payment_type}}</td>
+		<td>{{p.payment_date}}</td>
+		<td>{{p.amount|commaise}} ש"ח</td>
+		<td>{{p.remarks|default_if_none:""}}</td>
+	</tr>
+	{% endfor %}
+</table>
+{% endif %}

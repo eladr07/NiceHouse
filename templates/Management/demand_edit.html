@@ -1,0 +1,313 @@
+﻿{% extends "./base.html" %}
+{% load management_extras %}
+{% block header %}
+{{ block.super }}
+<script>
+	var selectedID = 0;
+	var prevClass;
+	$(document).ready(function() {		
+		$("input[type!='submit']").attr("class", "inputText");	
+		$("#saleTable tr").click(function() {
+			var tr = $(this);
+			if (selectedID > 0)
+				$("#saleTable tr[objid='"+selectedID+"']").attr("class", prevClass);
+			selectedID = tr.attr("objid");
+			if (!selectedID) return;
+			prevClass = tr.attr("class");
+			tr.attr("class","selectedRow");
+			if (selectedID > 0)
+			{//sync links
+				$("#saleEdit").attr("href", "/sale/" + selectedID);
+				$("#saleDelete").attr("href", "{{form.instance.id}}/sale/" + selectedID + "/del");
+				$("#saleReject").attr("href", "{{form.instance.id}}/sale/" + selectedID + "/reject");
+			}
+		});
+		$("#saleTable td").attr("style","border-bottom: 1px solid; border-left: 1px solid;");
+		$("#saleDelete").click(function (event) {
+			if (!confirm("האם אתה בטוח שברצונך לבטל את המכירה?"))
+				event.preventDefault();			
+		});
+		$("#saleReject").click(function (event) {
+			if (!confirm("האם אתה בטוח שברצונך לדחות את המכירה?"))
+				event.preventDefault();			
+		});
+		$(".fancybox").fancybox();
+	});
+</script>
+{% endblock header %}
+{% block content %}
+{% if form.instance.id %}
+	<div class="title">
+		<div class="pageTitle">
+			ריכוז מכירות {{form.instance.month}}/{{form.instance.year}}
+			לפרוייקט
+			{{form.instance.project}}<br>
+			מצב - 
+			{{form.instance.statuses.latest.type}}
+		</div>
+	</div>
+	<div class="clearBoth"></div>
+	<table class="pageSubTitle" align="center">
+		<tr>
+			<th>יזם</th>
+			<td>{{form.instance.project.initiator}}</td>
+		</tr>
+		<tr>
+			<th>פרוייקט</th>
+			<td><a href="/projects/{{form.instance.project.id}}">{{form.instance.project.name}}</a></td>
+		</tr>
+		<tr>
+			<th>עיר</th>
+			<td>{{form.instance.project.city}}</td>
+		</tr>
+		<tr>
+			<th>אנשי מכירות בפרוייקט</th>
+			<td>
+			{% for e in form.instance.project.employees.all %}
+				<a href="/employees/{{e.id}}">{{e}}</a> ,
+			{% endfor %}
+			</td>
+		</tr>
+	</table>
+{% else %}
+	<div class="title">
+		<div class="pageTitle">פתיחת דרישה חדשה</div>
+	</div>
+{% endif %}
+<div id="rightSide">
+	<form method="POST" class="formTable">
+		<table class="formTable" >
+		{% for field in form %}
+			<tr>
+				<th>{{field.label_tag}}</th>
+				<td>{{field}}</td>
+				<td>{{field.errors|join:" ,"}}</td>
+			</tr>
+		{% endfor %}
+		</table>
+		<input type="submit" value="אישור" class="button"/>
+	</form>
+</div>
+<div id="leftSide">
+	<table class="formTable">
+		<tr>
+			<th>עמלה בגין מכירות</th>
+			<td>{{form.instance.get_sales_commission|commaise}} ש"ח</td>
+		</tr>
+		<tr>
+			<th>סה"כ תשלום לחברה</th>
+			<td>{{form.instance.get_total_amount|commaise}} ש"ח</td>
+		</tr>
+	</table>
+	<fieldset class="cardFieldset">
+		<legend>תיקונים לדרישה</legend>
+		<ul>
+			{% for s in form.instance.get_pricemodsales %}
+				<li>המחיר עבור מכירה מס'
+				<a href="/sale/{{s.id}}">{{s.id}}</a>
+				שונה מ- 
+				{{s.salepricemod.old_price|commaise}} 
+				ל - 
+				<b>{{s.price|commaise}}</b>. 
+				<a href="{{ s.salepricemod.get_absolute_url }}">פרטים</a>
+				</li>
+			{% endfor %}
+			{% for s in form.instance.get_housemodsales %}
+				<li>הדירה עבור מכירה מס'
+				<a href="/sale/{{s.id}}">{{s.id}}</a>
+				 שונתה מבניין
+				<a href="/buildings/{{s.salehousemod.old_house.building.id}}/pricelist/type1">{{s.salehousemod.old_house.building.num}}</a>
+				 דירה 
+				<a href="/buildings/{{s.salehousemod.old_house.building.id}}/house/{{s.salehousemod.old_house.id}}/type1">{{s.salehousemod.old_house.num}}</a>			
+				 לבניין 
+				<a href="/buildings/{{s.house.building.id}}/pricelist/type1"><b>{{s.house.building.num}}</b></a>
+				 דירה 
+				<a href="/buildings/{{s.house.building.id}}/house/{{s.house.id}}/type1"><b>{{s.house.num}}</b></a>. 
+				<a href="{{ s.salehousemod.get_absolute_url }}">פרטים</a>
+				</li>
+			{% endfor %}
+			{% for s in form.instance.get_presales %}
+				<li>מכירה מס' 
+				<a href="/sale/{{s.id}}">{{s.id}}</a> - ({{s}})
+				הוקדמה לחודש זה. העובד יקבל תשלום בחודש
+				<b>{{s.salepre.employee_pay.month}}/{{s.salepre.employee_pay.year}}</b>. 
+				<a href="{{ s.salepre.get_absolute_url }}">פרטים</a>
+				</li>
+			{% endfor %}
+			{% for s in form.instance.get_rejectedsales %}
+				<li>מכירה מס' 
+				<a href="/sale/{{s.id}}">{{s.id}}</a> - ({{s}})
+				נדחתה לחודש
+				<b>{{s.salereject.to_month.month}}/{{s.salereject.to_month.year}}</b>
+				העובד יקבל תשלום בחודש
+				<b>{{s.salereject.employee_pay.month}}/{{s.salereject.employee_pay.year}}</b>. 
+				<a href="{{ s.salereject.get_absolute_url }}">פרטים</a>
+				</li>			
+			{% endfor %}
+		</ul>
+	</fieldset>
+</div>
+{% ifequal form.instance.statuses.latest.type.id 3 %}
+<div id="leftSide">
+	<fieldset class="cardFieldset" >
+		<legend>חשבוניות</legend>
+		{% for i in form.instance.invoices.all %}
+			{{ i.num }}
+			- בתאריך
+			<b>{{i.date}}</b>
+			על סך
+			<b>{{i.amount}} ש"ח</b>  				
+			<a id="edit_invoice" href="/invoices/{{i.id}}" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+			<a href="/invoices/{{i.id}}/del"><img src="http://www.nicehouse.co.il/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+		{% endfor %}
+		<br><a class="fancybox" href="{{form.instance.id}}/invoice/add">חשבונית חדשה</a><br>
+	</fieldset>
+	<fieldset class="cardFieldset" >
+		<legend>תשלומים מהיזם</legend>
+		{% for p in form.instance.payments.all %}
+			{{ p.num }}
+			- לתאריך
+			<b>{{p.payment_date}}</b>
+			על סך
+			<b>{{p.amount}} ש"ח</b>  				
+			<a id="edit_invoice" href="/payments/{{p.id}}" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+			<a href="/payments/{{p.id}}/del"><img src="http://www.nicehouse.co.il/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+		{% endfor %}
+		<br><a class="fancybox" href="{{form.instance.id}}/payment/add">הוסף תשלום</a><br>
+	</fieldset>
+</div>
+	<div class="clearBoth"/>
+	<p style="color: #CC0000; font-weight: bold;">
+		{% if not form.instance.invoices.count %}
+			לתשומת לבך ! לא הוצאה חשבונית בגין הדרישה<br>
+		{% endif %}
+		{% if not form.instance.payments.count %}
+			לתשומת לבך ! לא התקבל תשלום בגין הדרישה<br>
+		{% endif %}	{% ifnotequal form.instance.payments.latest.amount form.instance.invoices.latest.amount %}
+			לתשומת לבך ! קיים פער בין הסכום בחשבונית שהוצאה, לסכום בתשלום שהתקבל מהיזם<br>
+		{% endifnotequal %}
+	</p>
+	{% ifequal form.instance.statuses.latest.type.id 1 %}
+		<a href="close">סגור דרישה</a><br><br>
+	{% endifequal %}
+{% endifequal %}
+<div class="clearBoth"></div>
+{% if user.is_staff %}
+	<fieldset class="cardFieldset">
+		<legend>פירוט מכירות - {{form.instance.project}} לחודש {{form.instance.month}}/{{form.instance.year}}</legend>
+		<div class="someIcon" style="width:100px;">
+			<img src="http://www.nicehouse.co.il/site_media/images/add_48.png" width="20" height="20"  alt="הוספה" /> 
+				<a href="{{form.instance.id}}/sale/add" >הזנת מכירה</a>
+		</div>	
+		<div class="someIcon" style="width:100px;">
+			<img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="20" height="20"  alt="עריכה" /> 
+			<a id="saleEdit" >עדכון מכירה</a>
+		</div>
+		<div class="someIcon" style="width:100px;">
+			<img src="http://www.nicehouse.co.il/site_media/images/delete_48.png" width="20" height="20"  alt="מחיקה" /> 
+			<a id="saleReject">דחיית מכירה</a>
+		</div>
+		<div class="someIcon" style="width:100px;">
+			<img src="http://www.nicehouse.co.il/site_media/images/delete_48.png" width="20" height="20"  alt="מחיקה" /> 
+			<a id="saleDelete">ביטול מכירה</a>
+		</div>
+		<div class="someIcon" style="width:120px;">
+			<img src="http://www.nicehouse.co.il/site_media/images/print-48.png" width="20" height="20"  alt="הדפסה" /> 
+			<a href="/reports/project_month/{{form.instance.project.id}}/{{form.instance.year}}/{{form.instance.month}}">לגרסת ההדפסה</a>
+		</div>		
+		<table class="formTable" style="float:left;">
+			<tr>
+				<th>נתון שהשתנה</th>
+				<td style="width:20px; background-color:#F69F9F;"></td>
+			</tr>
+			<tr>
+				<th>מכירה מחודש קודם</th>
+				<td style="width:20px; background-color:#F7E1AF;"></td>
+			</tr>
+		</table>
+		<div class="clearBoth"></div> 
+		<br>
+		<table class="dataTable" id="saleTable" >
+			<caption>סה"כ {{form.instance.get_sales.count}} מכירות בדרישה</caption>
+			<th>מזהה <br>מכירה</th>
+			{% if form.instance.get_sales.0.contract_num %}
+			<th>מס' <br>חוזה</th>
+			{% endif %}
+			<th>שם <br>הרוכשים</th>
+			<th>בניין</th>
+			<th>דירה</th>
+			<th>תאריך<br> הרשמה</th>
+			<th>תאריך<br> מכירה</th>
+			<th>מחיר <br>חוזה</th>
+			<th>מחיר חוזה<br>לעמלה</th>
+			{% if form.instance.get_sales.0.discount %}
+			<th>מחיר כולל <br>מע"מ</th>
+			<th>% הנחה <br>ניתן</th>
+			<th>% הנחה <br>מותר</th>
+			{% endif %}
+			<th>% עמלת <br>בסיס</th>
+			<th>שווי עמלת <br>בסיס</th>
+			{% if form.instance.project.commissions.b_discount_save_precentage %}
+			<th>% בונוס <br>חסכון</th>
+			<th>שווי בונוס <br>חסכון</th>
+			{% endif %}
+			<th>% עמלה <br>סופי</th>
+			<th>שווי עמלה <br>סופי</th>
+			<th>הערות</th>
+			{% for s in form.instance.get_sales %}
+			{% if not s.is_cp_ok %}
+				<tr class="row3" objid={{s.id}}>
+			{% else %}
+				<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}}>
+			{% endif %}
+				<td><a href="/sale/{{s.id}}">{{form.instance.id}}-{{forloop.counter}}</a></td>
+				{% if s.contract_num %}
+				<td>{{s.contract_num}}</td>
+				{% endif %}
+				<td>
+					{{s.clients}}
+				</td>
+				<td>
+					<a href="/buildings/{{s.house.building.id}}/pricelist/type1">
+					{{s.house.building}}
+					</a>
+				</td>
+				<td {% if s.salehousemod.id %}style="background-color: #F69F9F;"{% endif %}>
+					<a href="/buildings/{{s.house.building.id}}/house/{{s.house.id}}/type1">
+						{{s.house}}
+					</a>
+				</td>
+				<td>{{s.house.get_signup.date}}</td>
+				<td>{{s.sale_date|date:"j/m/Y"}}</td>
+				<td {% if s.salepricemod.id %}style="background-color: #F69F9F;"{% endif %}>
+					{{s.price|commaise}} ש"ח
+				</td>
+				<td>{{s.price_final|commaise}} ש"ח</td>
+				{% if s.discount %}
+				<td>{{s.price_final|commaise}}</td>
+				<td>{{s.discount|floatformat:3}}</td>
+				<td>{{s.allowed_discount|floatformat:3}}</td>
+				{% endif %}
+				<td>{{s.pc_base}}</td>
+				<td>{{s.pc_base_worth|commaise}} ש"ח</td>
+				{% if form.instance.project.commissions.b_discount_save_precentage %}
+				<td>{{s.pb_dsp|floatformat:3|default:"----"}}</td>
+				<td>{% if s.pb_dsp_worth %} {{s.pb_dsp_worth|commaise}} ש"ח {% else %}----{% endif %}</td>
+				{% endif %}
+				<td>{{s.c_final|floatformat:3}}</td>
+				<td><b>{{s.c_final_worth|commaise}} ש"ח</b></td>
+				<td>{{s.remarks}}</td>
+			</tr>
+			{% endfor %}
+			<tr height="40px">
+				<td colspan={% if form.instance.get_sales.0.discount %}"7"{%else%}"6"{%endif%}></td>
+				<td><b><u>{{form.instance.get_sales_amount|commaise}} ש"ח</u></b></td>
+				<td colspan={% if form.instance.get_sales.0.discount %}"6"{%else%}"3"{%endif%}></td>
+				<td colspan={% if form.instance.project.commissions.b_discount_save_precentage %}"3"{%else%}"1"{%endif%}></td>
+				<td colspan="2"><b><u style="color:#1A339C;">{{form.instance.get_sales_commission|commaise}} ש"ח</u></b></td>
+			</tr>
+		</table>
+	</fieldset>
+{% endif %}
+<div class="clearBoth"></div>
+{% endblock content%}

@@ -1,0 +1,310 @@
+﻿{% extends "./base.html" %}
+{% load management_extras %}
+{% block header %}
+{{ block.super }}
+<script>
+	var selectedID = 0;
+	var prevClass;
+	$(document).ready(function() {		
+		$("input[type!='submit']").attr("class", "inputText");	
+		$("#houseTable tr").click(function() {
+			var tr = $(this);
+			if (selectedID > 0)
+				$("#houseTable tr[objid='"+selectedID+"']").attr("class", prevClass);
+			selectedID = tr.attr("objid");
+			if (!selectedID)
+				return;
+			prevClass = tr.attr("class");
+			tr.attr("class","selectedRow");
+			if (selectedID > 0)
+			{//sync links
+				$("#houseEdit").attr("href", "../house/" + selectedID + "/type{{type.id}}");
+				$("#houseDelete").attr("href", "./house/" + selectedID + "/del");
+			}
+		});
+		$(".fancybox").fancybox();
+		$("#changeType").change(function() {
+			location.replace("type" + $(this).val());
+		});
+		$("#show_parkings").click(function (event) {
+			$("#parkings_table").toggle();// show/hide the parkings/storages table
+		});
+		$("#show_storages").click(function (event) {
+			$("#storages_table").toggle();// show/hide the parkings/storages table
+		});
+		$("#show_parking_costs").click(function (event) {
+			$("#parking_costs_table").toggle();// show/hide the parking costs table
+		});
+		
+		$("#storages_table, #parkings_table, #parking_costs_table").hide();//hide the parkings/storages table
+	});
+</script>
+{% endblock header %}
+{% block content %}
+
+{% with form.instance.building as b %}
+<div class="title">
+{% if b.is_cottage %}
+	<div class="pageTitle">מחירון קוטג'ים - {{type}}</div>
+{% else %}
+	<div class="pageTitle">מחירון לבניין - {{type}}</div>
+{% endif %}
+</div>
+<table class="pageSubTitle" cellspacing="5" align="center" style="text-align:right;cellpadding:5px;" >
+	<tr>
+		<th>יזם</th>
+		<td>{{b.project.initiator}}</td>
+		<th>פרוייקט</th>
+		<td colspan="0.5">
+			<a href="/projects/{{b.project.id}}">{{b.project.name}}</a>
+		</td>
+		<th>עיר</th>
+		<td>{{b.project.city}}</td>
+	</tr>
+	<tr>
+		<th>{% if b.is_cottage %}מס' מגרש{% else %}מס' בניין{% endif %}</th>
+		<td><a href="/buildings/{{b.id}}" class="fancybox">{{b.num}}</a></td>
+		<th>מס' קומות</th>
+		<td>{{b.floors}}</td>
+		<th>מס' יחידות</th>
+		<td>{{b.house_count}}</td>
+	</tr>
+	<tr>
+		<th>הערות</th>
+		<td colspan="7">{{b.remarks}}</td>
+	</tr>
+	<tr>
+		<th colspan="6"><a href="/projects/{{b.project.id}}/buildings" class="fancybox">בניינים ומחירונים בפרוייקט</a></th>
+		<td>שנה סוג מחירון : </td>
+		<td>
+			<select id="changeType">
+			{% for t in types.all %}
+				<option value="{{t.id}}" {% ifequal t type %}selected="selected"{% endifequal %}>{{t}}</option>
+			{% endfor %}
+			</select>
+		</td>
+	</tr>
+</table>
+{% endwith %}
+<fieldset class="cardFieldset">
+	<legend>פירוט יחידות</legend>
+	<div class="someIcon"  style="width:165px;">
+		<img src="http://www.nicehouse.co.il/site_media/images/add_48.png" width="20" height="20"  alt="הוספה" /> 
+			<a href="../addhouse/type{{type.id}}">הוספת דירה חדשה למחירון</a>
+	</div>	
+	<div class="someIcon">
+		<img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="20" height="20"  alt="עריכה" /> 
+		<a id="houseEdit">שינוי</a>
+	</div>
+	<div class="someIcon">
+		<img src="http://www.nicehouse.co.il/site_media/images/delete_48.png" width="20" height="20"  alt="מחיקה" /> 
+		<a id="houseDelete">מחיקה</a>
+	</div>
+		<table class="formTable" style="float:left;">
+			<tr>
+				<th>מס' יחידות פנויות</th>
+				<td>{{avaliable_count}}</td>
+			</tr>
+			<tr>
+				<th>מס' יחידות בהרשמה</th>
+				<td>{{signup_count}}</td>
+				<td style="width:20px; background-color:#F7E1AF;"></td>
+			</tr>
+			<tr>
+				<th>מס' יחידות שנמכרו</th>
+				<td>{{sale_count}}</td>
+				<td style="width:20px; background-color:#FAA99E;"></td>
+			</tr>
+		</table>
+	<br>
+	<div class="clearBoth"></div> 
+	<table class="dataTable" border="1" id="houseTable" style="text-align:center;">
+		<th></th>
+		<th>מס'</th>
+		<th>קומה</th>
+		<th>סוג הנכס</th>
+		<th>חדרים</th>
+		<th>שטח נטו</th>
+		<th>גודל מרפסת/גינה</th>
+		<th>מחיר</th>
+		<th>מס' חנייה</th>
+		<th>סוג חנייה</th>
+		<th>מס' מחסן</th>
+		<th>הערות</th>
+		{% for h in houses %}
+			{% ifchanged h.get_cottage_num %}
+				{% if not forloop.first and form.instance.building.is_cottage %}
+					<tr height="10"><td style="background-color:#5F7172;" colspan="12"></td></tr>
+				{% endif %}
+			{% endifchanged %}
+		{% if h.get_sale or h.is_sold %}
+			<tr class="deletedRow" objid={{h.id}}>
+		{% endif %}
+		{% if h.get_signup and not h.get_sale and not h.is_sold %}
+			<tr class="row3" objid={{h.id}}>
+		{% endif %}
+		{% if not h.get_signup and not h.get_sale and not h.is_sold %}
+			<tr class="{% cycle 'row1' 'row2' %}" objid={{h.id}}>
+		{% endif %}
+			<td><a href="../house/{{h.id}}/type{{type.id}}"><img src="http://www.nicehouse.co.il/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
+			<td>{{h.num}}</td>
+			<td>{{h.floor}}</td>
+			<td>{{h.type}}</td>
+			<td>{{h.rooms}}</td>
+			<td>{{h.net_size}} מ"ר</td>
+			<td>{% if h.garden_size %}{{h.garden_size}} מ"ר{% endif %}</td>
+			<td>{% if h.price %}{{h.price|commaise}} ש"ח{% endif %}</td>
+			<td>
+				{% for p in h.parkings.all %}
+					{{p.num}}<br>
+				{% endfor %}
+			</td>
+			<td>
+				{% for p in h.parkings.all %}
+					{{p.type}}<br>
+				{% endfor %}
+			</td>
+			<td>
+				{% for s in h.storages.all %}
+					{{s.num}}<br>
+				{% endfor %}
+			</td>
+			<td>{{h.remarks}}</td>
+		</tr>
+		{% endfor %}
+	</table>
+</fieldset>
+<form method="POST" class="formTable">
+	<div style="width:27%; float:right;">
+		<fieldset class="cardFieldset">
+			<legend>הבהרות למחירון</legend>
+			<table class="formTable" >
+				<tr>
+					<th>{{form.include_tax.label_tag}}</th>
+					<td>{{form.include_tax}}</td>
+					<td>{{form.include_tax.errors|join:" ,"}}</td>
+				</tr>
+				<tr>
+					<th>{{form.include_lawyer.label_tag}}</th>
+					<td>{{form.include_lawyer}}</td>
+					<td>{{form.include_lawyer.errors|join:" ,"}}</td>
+				</tr>
+				<tr>
+					<th>{{form.include_parking.label_tag}}</th>
+					<td>{{form.include_parking}}</td>
+					<td>{{form.include_parking.errors|join:" ,"}}</td>
+				</tr>
+				<tr>
+					<th>{{form.include_storage.label_tag}}</th>
+					<td>{{form.include_storage}}</td>
+					<td>{{form.include_storage.errors|join:" ,"}}</td>
+				</tr>
+				<tr>
+					<th>{{form.settle_date.label_tag}}</th>
+					<td>{{form.settle_date}}</td>
+					<td>{{form.settle_date.errors|join:" ,"}}</td>
+				</tr>
+				<tr>
+					<th>{{form.allowed_discount.label_tag}}</th>
+					<td>{{form.allowed_discount}}</td>
+					<td>{{form.allowed_discount.errors|join:" ,"}}</td>
+				</tr>
+				<tr>
+					<th>{{form.is_permit.label_tag}}</th>
+					<td>{{form.is_permit}}</td>
+					<td>{{form.is_permit.errors|join:" ,"}}</td>
+				</tr>
+				<tr>
+					<th>{{form.permit_date.label_tag}}</th>
+					<td>{{form.permit_date}}</td>
+					<td>{{form.permit_date.errors|join:" ,"}}</td>
+				</tr>
+				<tr>
+					<th>{{form.remarks.label_tag}}</th>
+					<td>{{form.remarks}}</td>
+					<td>{{form.remarks.errors|join:" ,"}}</td>
+				</tr>
+			</table>
+		</fieldset>
+	</div>
+	<div style="width:27%; float:right;">
+		<fieldset class="cardFieldset">
+			<legend>הוצאות</legend>
+			<table class="formTable" >
+				<tr>
+					<th>מס רכישה</th>
+					<td>כחוק</td>
+				</tr>
+				<tr>
+					<th>{{form.lawyer_fee.label_tag}}</th>
+					<td>{{form.lawyer_fee}}</td>
+					<td>{{form.lawyer_fee.errors|join:" ,"}}</td>
+				</tr>
+				<tr>
+					<th>{{form.register_expense.label_tag}}</th>
+					<td>{{form.register_expense}}</td>
+					<td>{{form.register_expense.errors|join:" ,"}}</td>
+				</tr>
+				<tr>
+					<th>{{form.storage_cost.label_tag}}</th>
+					<td>{{form.storage_cost}}</td>
+					<td>{{form.storage_cost.errors|join:" ,"}}</td>
+				</tr>	
+			</table>
+			<button type="button" class="button" id="show_parking_costs">עלות חנייה נוספת</button><br>
+			<table class="formTable" id="parking_costs_table">
+				<tr>
+					<td></td>
+					<td><u><b>עלות חנייה נוספת</b></u></td>
+				</tr>
+				{{formset}}
+			</table>
+		</fieldset>
+		<br>
+		<input type="submit" value="שמור הבהרות והוצאות" class="button"/>
+	</div>
+	<fieldset class="cardFieldset" style="width:15%; float:left;">
+		<legend>מחסנים</legend>
+		{% if form.instance.building.storages.count %}
+		<button id="show_storages" type="button" class="button">הצג\הסתר מחסנים</button><br>
+		<table id="storages_table" class="formTable">
+			<th>מס'</th>
+			<th>גודל</th>
+			<th>מס' דירה</th>
+			<th></th>
+			{% for s in form.instance.building.storages.all %}
+			<tr>
+				<td>{{s.num}}</td>
+				<td>{{s.size|default_if_none:""}}</td>
+				<td style="text-align:center;">{{s.house.num}}</td>
+				<td><a href="/storages/{{s.id}}" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a></td>
+			</tr>
+			{% endfor %}
+		</table>
+		{% endif %}
+		<a href="../addstorage" class="fancybox">מחסן חדש</a>
+	</fieldset>
+	<fieldset class="cardFieldset" style="width:18%; float:left;">
+		<legend>חניות</legend>
+		{% if form.instance.building.parkings.count %}
+		<button id="show_parkings" type="button" class="button">הצג\הסתר חניות</button><br>
+		<table id="parkings_table" class="formTable">
+			<th>מס'</th>
+			<th>סוג</th>
+			<th>מס' דירה</th>
+			<th></th>
+			{% for p in form.instance.building.parkings.all %}
+			<tr>
+				<td>{{p.num}}</td>
+				<td>{{p.type}}</td>
+				<td style="text-align:center;">{{p.house.num}}</td>
+				<td><a href="/parkings/{{p.id}}" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a></td>
+			</tr>
+			{% endfor %}
+		</table>
+		{% endif %}
+		<a href="../addparking" class="fancybox">חנייה חדשה</a>
+	</fieldset>
+</form>
+<div class="clearBoth"></div>
+{% endblock content%}

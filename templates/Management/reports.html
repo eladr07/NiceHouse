@@ -1,0 +1,43 @@
+﻿{% extends "./base.html" %}
+{% block header %}
+{{ block.super }}
+<script>
+$(document).ready(function () {
+	$("#demandFind").click(function (event) {
+		window.open("/reports/project_month/" + $("#id_project").val() + "/" + $("#id_year").val() + "/" + $("#id_month").val());
+	});
+	$("#monthDemands").click(function (event) {
+		window.open("/reports/projects_month/" + $("#id_2-year").val() + "/" + $("#id_2-month").val());
+	});
+});
+</script>
+{% endblock header %}
+{% block content %}
+<div id="rightSide">
+	<fieldset class="cardFieldset">
+		<legend>דו"ח דרישה לתשלום ליזם בגין פרוייקט</legend>
+		<form method="POST" action="project_month">
+			{{form.project.label_tag}} : {{form.project}}<br>
+			{{form.year.label_tag}} : {{form.year}}<br>
+			{{form.month.label_tag}} : {{form.month}}<br>
+			<input id="demandFind" type="button" value="פתח ריכוז מבוקש" class="button"/>
+		</form>
+	</fieldset>
+	<fieldset class="cardFieldset">
+		<legend>דו"ח ריכוז דרישות לתשלום לכל הפרוייקטים חודשי</legend>
+		<form method="POST" action="projects_month">
+			{{form2.year.label_tag}} : {{form2.year}}<br>
+			{{form2.month.label_tag}} : {{form2.month}}<br>
+			<input id="monthDemands" type="button" value="פתח ריכוז מבוקש" class="button"/>
+		</form>
+	</fieldset>
+	<fieldset class="cardFieldset">
+		<legend>דו"ח ריכוז דרישות לתשלום תקופתי לפרוייקט יחיד</legend>
+		<form method="POST" action="project_time">
+			{{form.project.label_tag}} : {{form.project}}<br>
+			<input type="button" value="פתח ריכוז מבוקש" class="button"/>
+		</form>
+	</fieldset>
+</div>
+<div class="clearBoth"></div>
+{% endblock content %}

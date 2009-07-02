@@ -1,0 +1,85 @@
+﻿{% extends "./template.html" %}
+{% block header %}
+<script>
+	$(document).ready(function() {		
+		$("input[type!='submit']").attr("class", "inputText");
+		$("input[type='submit']").click(function (event) {
+			parent.$("#fancy_close").click(function(event) {
+					parent.location.reload();
+				});	
+			});
+		$("#id_project, #id_year, #id_month").change(loadDetails);
+	});
+	function loadDetails()
+	{
+		var project = $("#id_project").val();
+		var year = $("#id_year").val();
+		var month = $("#id_month").val();
+		$("#leftSide").empty();
+		$.get("/invoice_details/" + project + "/" + year + "/" + month, function(data){
+			$("#leftSide").append(data);
+		});
+	}
+</script>
+{% endblock header %}
+{% block page %}
+<div id="content">
+	<div class="title">
+		<div class="pageTitle">הוספת חשבונית לדרישה</div>
+	</div>
+	<div class="clearBoth"> </div>
+	<br /> 	
+	<div id="rightSide">
+		<form method="POST">
+			<table class="formTable">
+				<tr>
+					<th>{{form.project.label_tag}}</th>
+					<td>{{form.project}}</td>
+					<td>{{form.project.errors|join:" "}}</td>
+				</tr>
+				<tr>
+					<th>{{form.year.label_tag}}</th>
+					<td>{{form.year}}</td>
+					<td>{{form.year.errors|join:" "}}</td>
+				</tr>
+				<tr>
+					<th>{{form.month.label_tag}}</th>
+					<td>{{form.month}}</td>
+					<td>{{form.month.errors|join:" "}}</td>
+				</tr>
+				<tr>
+					<th>{{form.num.label_tag}}</th>
+					<td>{{form.num}}</td>
+					<td>{{form.num.errors|join:" "}}</td>
+				</tr>
+				<tr>
+					<th>{{form.date.label_tag}}</th>
+					<td>{{form.date}}</td>
+					<td>{{form.date.errors|join:" "}}</td>
+				</tr>
+				<tr>
+					<th>{{form.amount.label_tag}}</th>
+					<td>{{form.amount}}</td>
+					<td>{{form.amount.errors|join:" "}}</td>
+				</tr>
+				<tr>
+					<th>{{form.remarks.label_tag}}</th>
+					<td>{{form.remarks}}</td>
+					<td>{{form.remarks.errors|join:" "}}</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td>
+						<input type="submit" value="אישור" class="button"/>
+						<input name="addanother" type="submit" value="אישור והמשך הזנה" class="button"/>
+					</td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div id="leftSide">
+
+	</div>	
+	<div class="clearBoth"></div>
+</div>
+{% endblock page %}

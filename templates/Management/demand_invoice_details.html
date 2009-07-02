@@ -1,0 +1,28 @@
+﻿{% load management_extras %}
+<table class="formTable">
+	<tr>
+		<th>סכום דרישה</th>
+		<td>{{demand.get_total_amount|commaise}} ש"ח</td>
+	</tr>
+	<tr>
+		<th>סכום צ'ק (אחרון)</th>
+		<td>{% if demand.payments.count %}{{demand.payments.latest.amount}} ש"ח {% else %}----{% endif %}</td>
+	</tr>
+</table>
+{% if demand.invoices.count %}
+<table class="formTable">
+	<caption>חשבוניות שהוקלדו</caption>
+	<th>מס' צ'ק</th>
+	<th>ת. תשלום</th>
+	<th>סכום</th>
+	<th>הערות</th>
+	{% for i in demand.invoices.all %}
+	<tr>
+		<td>{{i.num}}</td>
+		<td>{{i.date}}</td>
+		<td>{{i.amount|commaise}} ש"ח</td>
+		<td>{{i.remarks|default_if_none:""}}</td>
+	</tr>
+	{% endfor %}
+</table>
+{% endif %}
