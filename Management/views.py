@@ -1,3 +1,4 @@
+import settings
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.forms.models import inlineformset_factory, modelformset_factory
@@ -1495,7 +1496,7 @@ def project_demands(request, project_id, func, template_name):
 
 @permission_required('Management.report_project_month')
 def report_project_month(request, project_id, year, month):
-    filename = 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
