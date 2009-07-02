@@ -86,3 +86,5 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'Management',
 )
+LOGIN_URL = '/nh/accounts/login/'
+LOGOUT_URL = '/nh/accounts/logout/'
