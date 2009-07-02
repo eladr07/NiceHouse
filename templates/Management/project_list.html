@@ -66,27 +66,27 @@
 		</fieldset>
 	</div>
 	<div class="someIcon" style="width:140px;">
-		<img src="http://www.nicehouse.co.il/site_media/images/add_48.png" width="20" height="20"  alt="חדש" /> 
+		<img src="/site_media/images/add_48.png" width="20" height="20"  alt="חדש" /> 
 		<a href="add">הוספת פרוייקט חדש</a>
 	</div>
 	<div class="someIcon" style="width:120px;">
-		<img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
+		<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
 		<a id="projectEdit">לכרטיס פרוייקט</a>
 	</div>
 	<div class="someIcon" style="width:100px;">
-		<img src="http://www.nicehouse.co.il/site_media/images/Briefcase_48.png" width="20" height="20"  alt="שינוי" /> 
+		<img src="/site_media/images/Briefcase_48.png" width="20" height="20"  alt="שינוי" /> 
 		<a id="projectEdit">תיק פרוייקט</a>
 	</div>
 	<div class="someIcon" style="width:100px">
-		<img src="http://www.nicehouse.co.il/site_media/images/Archive-Add-48.png" width="20" height="20"  alt="מחיקה" /> 
+		<img src="/site_media/images/Archive-Add-48.png" width="20" height="20"  alt="מחיקה" /> 
 		<a id="projectEnd">העבר לארכיון</a>
 	</div>
 	<div class="someIcon" style="width:120px">
-		<img src="http://www.nicehouse.co.il/site_media/images/Archive-48.png" width="20" height="20"  alt="מחיקה" /> 
+		<img src="/site_media/images/Archive-48.png" width="20" height="20"  alt="מחיקה" /> 
 		<a href="archive">ארכיון פרוייקטים</a>
 	</div>
 	<div class="someIcon" style="width:100px">
-		<img src="http://www.nicehouse.co.il/site_media/images/print-48.png" width="20" height="20"  alt="מחיקה" /> 
+		<img src="/site_media/images/print-48.png" width="20" height="20"  alt="מחיקה" /> 
 		<a href="archive">גרסת הדפסה</a>
 	</div>
 	<div class="clearBoth"></div>
@@ -108,7 +108,7 @@
 	</tr>
     {% for i in projects %}
     	<tr class="{% cycle 'row1' 'row2' %}" objid={{i.id}}>
-			<td><a href="{{i.id}}"><img src="http://www.nicehouse.co.il/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
+			<td><a href="{{i.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
 			<td>{{ i.initiator }}</td>
 			<td>{{ i.name }}</td>
 			<td>{{ i.city }}</td>
@@ -136,9 +136,9 @@
 				{% endif%}
 			</td>
 			<td>
-				<a href="{{i.id}}/buildings/add" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/add_48.png" width="20" height="20" border="0" alt="חדש" /> </a>
+				<a href="{{i.id}}/buildings/add" class="fancybox"><img src="/site_media/images/add_48.png" width="20" height="20" border="0" alt="חדש" /> </a>
 				{% if i.non_deleted_buildings|length %}
-					<a href="{{i.id}}/buildings" class="bigfancybox"><img src="http://www.nicehouse.co.il/site_media/images/home-48.png" width="20" height="20" alt="פרטים" border="0" /></a>
+					<a href="{{i.id}}/buildings" class="bigfancybox"><img src="/site_media/images/home-48.png" width="20" height="20" alt="פרטים" border="0" /></a>
 				{% endif %}
 			</td>
 			<td>
@@ -152,7 +152,7 @@
 			</td>
 			<td style="text-align:center;">
 				{% if i.details.url %}
-					<a href="{{i.details.url}}" target="_blank"><img src="http://www.nicehouse.co.il/site_media/images/network-48.png" width="20" height="20" alt="פרטים" border="0" /></a>
+					<a href="{{i.details.url}}" target="_blank"><img src="/site_media/images/network-48.png" width="20" height="20" alt="פרטים" border="0" /></a>
 				{% endif %}
 			</td>
 		</tr>

@@ -17,7 +17,7 @@
 		<th>מחיר חוזה</th>
 		{% for sale in demand.get_sales.all %}
 			<tr>
-				<td><a target="_parent" href="/sale/{{sale.id}}"><img src="http://www.nicehouse.co.il/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a></td>
+				<td><a target="_parent" href="/sale/{{sale.id}}"><img src="/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a></td>
 				<td>{{sale.id}}</td>
 				<td>{{sale.sale_date|date:"j/m/Y"}}</td>
 				<td>{{sale.clients}}</td>

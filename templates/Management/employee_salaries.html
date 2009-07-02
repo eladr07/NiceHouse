@@ -62,31 +62,31 @@
 </form>
 <br>
 <div class="someIcon" style="width:100px;">
-	<img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="20" height="20"  alt="החזר הלוואה" /> 
+	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="החזר הלוואה" /> 
 	<a id="loanAdd" class="fancybox">הלוואה חדשה</a>
 </div>
 <div class="someIcon" style="width:120px;">
-	<img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="20" height="20"  alt="החזר הלוואה" /> 
+	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="החזר הלוואה" /> 
 	<a id="loanPay" class="fancybox">עדכון החזר הלוואה</a>
 </div>
 <div class="someIcon" style="width:170px;">
-	<img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
+	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
 	<a id="edit" class="fancybox">שינוי מרכיבי שכר - חד פעמי</a>
 </div>
 <div class="someIcon" style="width:120px;">
-	<img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
+	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
 	<a id="approve" >אישור שכר לתשלום</a>
 </div>
 <div class="someIcon" style="width:100px;">
-	<img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
+	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
 	<a id="approve" >תיק עובד</a>
 </div>
 <div class="someIcon" style="width:100px;">
-	<img src="http://www.nicehouse.co.il/site_media/images/print-48.png" width="20" height="20"  alt="שינוי" /> 
+	<img src="/site_media/images/print-48.png" width="20" height="20"  alt="שינוי" /> 
 	<a id="approve" >שלח להנה"ח</a>
 </div>
 <div class="someIcon" style="width:100px;">
-	<img src="http://www.nicehouse.co.il/site_media/images/print-48.png" width="20" height="20"  alt="שינוי" /> 
+	<img src="/site_media/images/print-48.png" width="20" height="20"  alt="שינוי" /> 
 	<a id="approve" >גרסת הדפסה</a>
 </div>
 <div class="clearBoth"></div>
@@ -116,7 +116,7 @@
 		<tr style="text-align:center; color:#4669D6; font-size:14px"><td colspan="15"><b>{{rank.grouper|default:"-- לא הוגדר דרג --"}}</b></td></tr>
 		{% for s in rank.list %}
     	<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.employee.id}}>
-			<td><a href="/employees/{{s.employee.id}}"><img src="http://www.nicehouse.co.il/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
+			<td><a href="/employees/{{s.employee.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
 			<td>{{ s.employee }}</td>
 			<td>
 				{% for p in s.employee.projects.all %}

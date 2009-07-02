@@ -157,8 +157,8 @@
 			<b>{{i.date}}</b>
 			על סך
 			<b>{{i.amount}} ש"ח</b>  				
-			<a id="edit_invoice" href="/invoices/{{i.id}}" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
-			<a href="/invoices/{{i.id}}/del"><img src="http://www.nicehouse.co.il/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+			<a id="edit_invoice" href="/invoices/{{i.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+			<a href="/invoices/{{i.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
 		{% endfor %}
 		<br><a class="fancybox" href="{{form.instance.id}}/invoice/add">חשבונית חדשה</a><br>
 	</fieldset>
@@ -170,8 +170,8 @@
 			<b>{{p.payment_date}}</b>
 			על סך
 			<b>{{p.amount}} ש"ח</b>  				
-			<a id="edit_invoice" href="/payments/{{p.id}}" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
-			<a href="/payments/{{p.id}}/del"><img src="http://www.nicehouse.co.il/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+			<a id="edit_invoice" href="/payments/{{p.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+			<a href="/payments/{{p.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
 		{% endfor %}
 		<br><a class="fancybox" href="{{form.instance.id}}/payment/add">הוסף תשלום</a><br>
 	</fieldset>
@@ -196,23 +196,23 @@
 	<fieldset class="cardFieldset">
 		<legend>פירוט מכירות - {{form.instance.project}} לחודש {{form.instance.month}}/{{form.instance.year}}</legend>
 		<div class="someIcon" style="width:100px;">
-			<img src="http://www.nicehouse.co.il/site_media/images/add_48.png" width="20" height="20"  alt="הוספה" /> 
+			<img src="/site_media/images/add_48.png" width="20" height="20"  alt="הוספה" /> 
 				<a href="{{form.instance.id}}/sale/add" >הזנת מכירה</a>
 		</div>	
 		<div class="someIcon" style="width:100px;">
-			<img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="20" height="20"  alt="עריכה" /> 
+			<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="עריכה" /> 
 			<a id="saleEdit" >עדכון מכירה</a>
 		</div>
 		<div class="someIcon" style="width:100px;">
-			<img src="http://www.nicehouse.co.il/site_media/images/delete_48.png" width="20" height="20"  alt="מחיקה" /> 
+			<img src="/site_media/images/delete_48.png" width="20" height="20"  alt="מחיקה" /> 
 			<a id="saleReject">דחיית מכירה</a>
 		</div>
 		<div class="someIcon" style="width:100px;">
-			<img src="http://www.nicehouse.co.il/site_media/images/delete_48.png" width="20" height="20"  alt="מחיקה" /> 
+			<img src="/site_media/images/delete_48.png" width="20" height="20"  alt="מחיקה" /> 
 			<a id="saleDelete">ביטול מכירה</a>
 		</div>
 		<div class="someIcon" style="width:120px;">
-			<img src="http://www.nicehouse.co.il/site_media/images/print-48.png" width="20" height="20"  alt="הדפסה" /> 
+			<img src="/site_media/images/print-48.png" width="20" height="20"  alt="הדפסה" /> 
 			<a href="/reports/project_month/{{form.instance.project.id}}/{{form.instance.year}}/{{form.instance.month}}">לגרסת ההדפסה</a>
 		</div>		
 		<table class="formTable" style="float:left;">

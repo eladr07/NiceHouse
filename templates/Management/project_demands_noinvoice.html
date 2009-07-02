@@ -20,30 +20,30 @@
 		</tr>
 		{% for d in demands %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{a.id}}>
-				<td><a target="_parent" href="/demands/{{d.id}}"><img src="http://www.nicehouse.co.il/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a></td>
+				<td><a target="_parent" href="/demands/{{d.id}}"><img src="/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a></td>
 				<td>{{ d.month }}/{{ d.year }}</td>
 				<td><a href="/demands/{{d.id}}/sales">{{d.get_sales.count}}</a></td>
 				<td>{{ d.get_sales_amount|commaise }} ש"ח</td>
 				<td>{{ d.get_total_amount|commaise }} ש"ח</td>
 				<td>
 				{% for p in d.payments.all %}
-					<a href="/payments/{{p.id}}"><img src="http://www.nicehouse.co.il/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a>
+					<a href="/payments/{{p.id}}"><img src="/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a>
 					{{p}}
 				{% endfor %}
 				</td>
 				<td>
 				{% if d.is_fixed %}
-				<img src="http://www.nicehouse.co.il/site_media/images/update_48.png" width="20" height="20"  alt="תיקון" />
+				<img src="/site_media/images/update_48.png" width="20" height="20"  alt="תיקון" />
 				{% endif %}
 				</td>
 				<td>
 				{% for r in d.get_open_reminders %}
 					{{ r.content|truncatewords:5 }}
-					<a href="/reminders/{{r.id}}"><img src="http://www.nicehouse.co.il/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a>
-					<a href="/reminders/{{r.id}}"><img src="http://www.nicehouse.co.il/site_media/images/thumbs_up_48" width="15" height="15" alt="בצע" border="0" /></a>
+					<a href="/reminders/{{r.id}}"><img src="/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a>
+					<a href="/reminders/{{r.id}}"><img src="/site_media/images/thumbs_up_48" width="15" height="15" alt="בצע" border="0" /></a>
 				{% endfor %}
 					<a href="/demands/{{d.id}}/addreminder" class="fancybox">
-						<img src="http://www.nicehouse.co.il/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" />
+						<img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" />
 					</a>
 				</td>
 			</tr>

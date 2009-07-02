@@ -73,7 +73,7 @@
 		{% for e in project.employees.all %}
 			<tr>
 				<td>{{ e }}</td>
-				<td><a href="/employees/{{e.id}}"><img src="http://www.nicehouse.co.il/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
+				<td><a href="/employees/{{e.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
 			</tr>
 		{% endfor %}
 		</table>
@@ -85,7 +85,7 @@
 				{{project.demand_contact|default_if_none:" --- "}} 
 				<a href="demandcontact" class="fancybox">הגדר</a>
 				{% if project.demand_contact %}
-					<a href="/contact/{{project.demand_contact.id}}" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a>
+					<a href="/contact/{{project.demand_contact.id}}" class="fancybox"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a>
 					<a href="contact/{{project.demand_contact.id}}/remove">מחיקה מהפרוייקט</a>
 					<a href="contact/{{project.demand_contact.id}}/delete">מחיקה מהמערכת</a>
 				{% endif %}
@@ -94,7 +94,7 @@
 				{{project.payment_contact|default_if_none:" --- "}} 
 				<a href="paymentcontact" class="fancybox">הגדר</a>
 				{% if project.payment_contact %}
-					<a href="/contact/{{project.payment_contact.id}}" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a>
+					<a href="/contact/{{project.payment_contact.id}}" class="fancybox"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a>
 					<a href="contact/{{project.payment_contact.id}}/remove">מחיקה מהפרוייקט</a>
 					<a href="contact/{{project.payment_contact.id}}/delete">מחיקה מהמערכת</a>
 				{% endif %}
@@ -102,7 +102,7 @@
 				<u>אנשי קשר נוספים:</u><br>
 				{% for c in project.contacts.all %}
 					{{c}} 
-					<a href="/contact/{{c.id}}" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a>
+					<a href="/contact/{{c.id}}" class="fancybox"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a>
 					<a href="contact/{{c.id}}/remove">מחיקה מהפרוייקט</a>
 					<a href="contact/{{c.id}}/delete">מחיקה מהמערכת</a>
 					<br>
@@ -150,29 +150,29 @@
 			{% if project.commissions.c_var_precentage %}	
 				<div>		
 					עמלה משתנה (באחוזים)
-					<a id="edit_cvp" href="cvp" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
-					<a href="cvp/del"><img src="http://www.nicehouse.co.il/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
+					<a id="edit_cvp" href="cvp" class="fancybox"><img src="/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
+					<a href="cvp/del"><img src="/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
 				</div>
 			{% endif %}
 			{% if project.commissions.c_var_precentage_fixed %}		
 				<div>
 					עמלה משתנה בקצב קבוע (באחוזים)
-					<a id="edit_cvpf" href="cvpf" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
-					<a href="cvpf/del"><img src="http://www.nicehouse.co.il/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
+					<a id="edit_cvpf" href="cvpf" class="fancybox"><img src="/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
+					<a href="cvpf/del"><img src="/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
 				</div>
 			{% endif %}
 			{% if project.commissions.c_zilber %}		
 				<div>
 					עמלת זילברמינץ
-					<a id="edit_cz" href="cz" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
-					<a href="cz/del"><img src="http://www.nicehouse.co.il/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
+					<a id="edit_cz" href="cz" class="fancybox"><img src="/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
+					<a href="cz/del"><img src="/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
 				</div>
 			{% endif %}
 			{% if project.commissions.b_discount_save_precentage %}	
 				<div>
 					בונוס חיסכון בהנחה (באחוזים)	
-					<a id="edit_bdsp" href="bdsp" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
-					<a href="bdsp/del"><img src="http://www.nicehouse.co.il/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
+					<a id="edit_bdsp" href="bdsp" class="fancybox"><img src="/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
+					<a href="bdsp/del"><img src="/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
 				</div>
 			{% endif %}
 			<div>
@@ -181,19 +181,19 @@
 			<div id="new_commissions">
 				{% if not project.commissions.c_var_precentage %}
 					עמלה משתנה (באחוזים)
-					<a id="add_cvp" href="cvp" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/add_48.png" width="20" height="20" border="0" alt="הוספה" /></a> 
+					<a id="add_cvp" href="cvp" class="fancybox"><img src="/site_media/images/add_48.png" width="20" height="20" border="0" alt="הוספה" /></a> 
 				{% endif %}
 				{% if not project.commissions.c_var_precentage_fixed %}
 					<br>עמלה משתנה בקצב קבוע (באחוזים)
-					<a id="add_cvpf" href="cvpf" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/add_48.png" width="20" height="20" border="0" alt="הוספה" /></a> 
+					<a id="add_cvpf" href="cvpf" class="fancybox"><img src="/site_media/images/add_48.png" width="20" height="20" border="0" alt="הוספה" /></a> 
 				{% endif %}
 				{% if not project.commissions.c_zilber %}
 					<br>עמלת זילברמינץ
-					<a id="add_cz" href="cz" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/add_48.png" width="20" height="20" border="0" alt="הוספה" /></a> 
+					<a id="add_cz" href="cz" class="fancybox"><img src="/site_media/images/add_48.png" width="20" height="20" border="0" alt="הוספה" /></a> 
 				{% endif %}
 				{% if not project.commissions.b_discount_save_precentage %}
 					<br>בונוס חיסכון בהנחה (באחוזים)
-					<a id="add_bdsp" href="bdsp" class="fancybox"><img src="http://www.nicehouse.co.il/site_media/images/add_48.png" width="20" height="20" border="0" alt="הוספה" /></a> 
+					<a id="add_bdsp" href="bdsp" class="fancybox"><img src="/site_media/images/add_48.png" width="20" height="20" border="0" alt="הוספה" /></a> 
 				{% endif %}
 			</div>
 			{% if project.commissions.agreement %}
