@@ -37,12 +37,12 @@ USE_I18N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = '/hsphere/local/home/nicehouse/nicehouse.co.il/NiceHouse/media/'
+MEDIA_ROOT = '/var/www/NiceHouse/trunk/media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = 'http://www.nicehouse.co.il/site_media/'
+MEDIA_URL = 'http://62.90.102.41/site_media/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -72,7 +72,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/hsphere/local/home/nicehouse/nicehouse.co.il/NiceHouse/templates',
+    '/var/www/NiceHouse/trunk/templates',
     'templates',
 )
 
