@@ -1493,16 +1493,10 @@ def project_demands(request, project_id, func, template_name):
     return render_to_response(template_name,
                                {'demands':demands(), 'project':p},
                                context_instance=RequestContext(request))
-@permission_required('Management.report_project_month')
-def report_project_month(request, project_id, year, month):
-    demand = Demand.objects.get(project__id = project_id, year = year, month = month)
-    return render_to_response('Management/report_demand_default.html', 
-                              {'demand':demand},
-                              context_instance=RequestContext(request))
 
 @permission_required('Management.report_project_month')
-def report_project_month_pdf(request, project_id, year, month):
-    filename = '/var/pdfs/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+def report_project_month(request, project_id, year, month):
+    filename = 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
