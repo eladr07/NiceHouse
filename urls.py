@@ -1,6 +1,7 @@
 from django.conf.urls.defaults import *
 from Management.models import *
 import Management.forms
+import settings
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
