@@ -1501,6 +1501,7 @@ def report_project_month(request, project_id, year, month):
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
     p = open(filename,'w+')
+    p.flush()
     p.close()
     demand = Demand.objects.get(project__id = project_id, year = year, month = month)
     MonthDemandWriter(demand).build(filename)
