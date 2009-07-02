@@ -8,8 +8,7 @@ from django.core import serializers
 from django.views.generic.create_update import create_object, update_object
 from django.views.generic.list_detail import object_list 
 from django.contrib.auth.decorators import login_required, permission_required
-#from pdf import MonthDemandWriter
-import os
+from pdf import MonthDemandWriter
 
 HouseFormset = modelformset_factory(House, HouseForm, exclude=('building'))
 
