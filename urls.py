@@ -387,5 +387,6 @@ urlpatterns = patterns('',
     (r'^signup_details/(?P<house_id>\d+)$', 'Management.views.signup_details'),
     (r'^project_sales/(?P<id>\d+)$', 'Management.views.project_sales'),
     (r'^site_media/(?P<path>.*)$', 'django.views.static.serve',
-        {'show_indexes': True}),
+        {'document_root': '/var/www/NiceHouse/trunk/media',
+         'show_indexes': True}),
 )
