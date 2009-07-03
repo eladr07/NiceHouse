@@ -64,7 +64,7 @@ def sigPara():
     return Paragraph(s, ParagraphStyle(name='sig', fontName='David-Bold', fontSize=15,
                                        alignment=TA_LEFT))
 def nhAddr():
-    return Image(settings.MEDIA_ROOT + 'media/images/nh_addr.jpg', 300, 50)
+    return Image(settings.MEDIA_ROOT + 'images/nh_addr.jpg', 300, 50)
 
 class MonthDemandWriter:
     @property
