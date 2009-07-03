@@ -26,9 +26,11 @@
 				<td><a target="_parent" href="/buildings/{{b.id}}/house/{{sale.house.id}}/type1">{{sale.house.num}}</a></td>
 				{% endwith %}
 				<td>
-					{{sale.price}}<br>
+					{{sale.price|commaise}}<br>
 					{{sale.include_tax|yesno:"כולל מע\"מ, לא כולל מע\"מ"}}, 
-					{{sale.include_lawyer|yesno:"כולל עו\"ד, לא כולל עו\"ד"}}
+					{% ifnotequal sale.house.building.project.commissions.include_lawyer None %}
+						{{sale.price_include_lawyer|yesno:"כולל עו\"ד, לא כולל עו\"ד"}}
+					{% endifnotequal %}
 				</td>
 			</tr>
 		{% endfor %}
