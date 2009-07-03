@@ -14,8 +14,8 @@ from reportlab.lib import colors
 from reportlab.lib.enums import *
 from pyfribidi import log2vis
 #register Hebrew fonts
-pdfmetrics.registerFont(TTFont('David', settings.MEDIA_ROOT + 'fonts/DavidCLM-Medium.ttf'))
-pdfmetrics.registerFont(TTFont('David-Bold', settings.MEDIA_ROOT + 'fonts/DavidCLM-Bold.ttf'))
+pdfmetrics.registerFont(TTFont('David', '/var/www/NiceHouse/Management/DavidCLM-Medium.ttf'))
+pdfmetrics.registerFont(TTFont('David-Bold', '/var/www/NiceHouse/Management/DavidCLM-Bold.ttf'))
 pdfmetrics.registerFontFamily('David', normal='David', bold='David-Bold')
 #template styles
 styleN = ParagraphStyle('normal', fontName='David',fontSize=16, leading=15, alignment=TA_RIGHT)
@@ -64,12 +64,13 @@ def sigPara():
     return Paragraph(s, ParagraphStyle(name='sig', fontName='David-Bold', fontSize=15,
                                        alignment=TA_LEFT))
 def nhAddr():
-    return Image(settings.MEDIA_ROOT + 'images/nh_addr.jpg', 300, 50)
+    return Image(settings.MEDIA_ROOT + 'media/images/nh_addr.jpg', 300, 50)
 
 class MonthDemandWriter:
     @property
     def pages_count(self):
-        return self.demand.get_sales().count() / 12 + 1
+        count = self.demand.get_sales().count()
+        return count / 10 + (count % 10 != 0 and 1 or 0)
     def __init__(self, demand):
         self.demand = demand
     def toPara(self):
@@ -83,20 +84,26 @@ class MonthDemandWriter:
         return Paragraph(s, styleN)
     def addLater(self, canv, doc):
         self.current_page += 1
+        frame1 = Frame(50, 20, 150, 40)
+        frame1.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
+                            ParagraphStyle('pages', fontName='David', fontSize=15,))], canv)
         frame2 = Frame(0, 680, 650, 150)
         frame2.addFromList([nhLogo(), datePara()], canv)
         if self.current_page == self.pages_count:
-            frame3 = Frame(50, 30, 100, 100)
+            frame3 = Frame(50, 40, 100, 100)
             frame3.addFromList([sigPara()], canv)
         frame4 = Frame(50, 30, 500, 70)
         frame4.addFromList([nhAddr()], canv)
     def addFirst(self, canv, doc):
         self.current_page = 1
         contact = self.demand.project.demand_contact
-        frame1 = Frame(300, 620, 250, 200)
+        frame1 = Frame(300, 590, 250, 200)
         frame1.addFromList([self.toPara()], canv)
         frame2 = Frame(0, 680, 650, 150)
         frame2.addFromList([nhLogo(), datePara()], canv)
+        frame3 = Frame(50, 20, 150, 40)
+        frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
+                            ParagraphStyle('pages', fontName='David', fontSize=15,))], canv)
         frame4 = Frame(50, 30, 500, 70)
         frame4.addFromList([nhAddr()], canv)
     def introPara(self):
@@ -108,7 +115,10 @@ class MonthDemandWriter:
                       commaise(self.demand.get_sales_amount()))) + '<br/>'
         s += log2vis(u'ג. עמלתנו (כולל מע"מ) - %s ש"ח (ראה פירוט רצ"ב).' % 
                     commaise(self.demand.get_total_amount())) + '<br/>'
-        s += log2vis(u'ד. נא בדיקתכם ואישורכם לתאריך %s.' % datetime.now().strftime('31/%m/%Y'))
+        s += log2vis(u'ד. נא בדיקתכם ואישורכם לתשלום לתאריך %s.' % datetime.now().strftime('31/%m/%Y')) + '<br/>'
+        s += log2vis(u'ה. במידה ויש שינוי במחירי הדירות ו\או שינוי אחר') + '<br/>'
+        s += log2vis(u'   אנא עדכנו אותנו בפקס ו\או בטלפון הרצ"ב.') + '<br/>'
+        s += log2vis(u'ו. לנוחיותכם, הדרישה מועברת אליכם גם במייל וגם בפקס.')
         return Paragraph(s, ParagraphStyle(name='into', fontName='David', fontSize=14,
                                            alignment=TA_RIGHT, leading=16))
     def saleFlows(self):
@@ -159,17 +169,17 @@ class MonthDemandWriter:
                 row.extend([s.pb_dsp, commaise(s.pb_dsp_worth), s.c_final, commaise(s.c_final_worth)])
             row.reverse()#reportlab prints columns ltr
             rows.append(row)
-            if i % 12==0 or i == sales.count():
+            if i % 10==0 or i == sales.count():
                 if i == sales.count():# insert column summaries
                     if contract_num:
-                        row = [None,None,None,None,None]
+                        row = [None,None,None,log2vis('סה"כ %s' % self.demand.get_sales().count()),None]
                     else:
-                        row = [None,None,None,None]
+                        row = [None,None,log2vis('סה"כ %s' % self.demand.get_sales().count()),None]
                     row.append(commaise(self.demand.get_sales_amount()))
                     if discount:
                         row.extend([None,None])
                     if final:
-                        row.extend([None,None,None,commaise(self.demand.get_sales_commission())])
+                        row.extend([None,None,None,None,None,commaise(self.demand.get_sales_commission())])
                     else:
                         row.extend([None,commaise(self.demand.get_sales_commission())])
                     row.reverse()
@@ -212,7 +222,7 @@ class MonthDemandWriter:
         story.append(Paragraph(subTitle, styleSubTitle))
         story.extend([Spacer(0,20), self.introPara(), Spacer(0,20)])
         story.extend(self.saleFlows())
-        story.append(Spacer(0, 80))
+        story.append(Spacer(0, 40))
         if self.demand.fixed_pay or self.demand.var_pay or self.demand.bonus:
             story.extend([self.addsPara(), Spacer(0, 10)])    
         if self.demand.remarks:
