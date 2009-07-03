@@ -14,8 +14,8 @@ from reportlab.lib import colors
 from reportlab.lib.enums import *
 from pyfribidi import log2vis
 #register Hebrew fonts
-pdfmetrics.registerFont(TTFont('David', '/var/www/NiceHouse/Management/DavidCLM-Medium.ttf'))
-pdfmetrics.registerFont(TTFont('David-Bold', '/var/www/NiceHouse/Management/DavidCLM-Bold.ttf'))
+pdfmetrics.registerFont(TTFont('David', settings.MEDIA_ROOT + 'fonts/DavidCLM-Medium.ttf'))
+pdfmetrics.registerFont(TTFont('David-Bold', settings.MEDIA_ROOT + 'fonts/DavidCLM-Bold.ttf'))
 pdfmetrics.registerFontFamily('David', normal='David', bold='David-Bold')
 #template styles
 styleN = ParagraphStyle('normal', fontName='David',fontSize=16, leading=15, alignment=TA_RIGHT)
