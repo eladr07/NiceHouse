@@ -28,9 +28,7 @@
 				<td>
 					{{sale.price}}<br>
 					{{sale.include_tax|yesno:"כולל מע\"מ, לא כולל מע\"מ"}}, 
-					{% if sale.house.building.project.commissions.include_lawyer %}
-						{{sale.include_lawyer|yesno:"כולל עו\"ד, לא כולל עו\"ד"}}
-					{% endif %}
+					{{sale.include_lawyer|yesno:"כולל עו\"ד, לא כולל עו\"ד"}}
 				</td>
 			</tr>
 		{% endfor %}
