@@ -21,7 +21,7 @@
 				$("#demandSend").attr("href", "demands/" + selectedID + "/send");
 			});
 		$(".fancybox").fancybox();
-		$("#demandEdit").click(function(event) {
+		$("#demandSend").click(function(event) {
 			event.preventDefault();
 			$("#demandTable input[type='checkbox']").each(function () {
 				var row = $(this).parent();
