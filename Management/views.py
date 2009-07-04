@@ -1507,7 +1507,6 @@ def write_demand_pdf(demand, filename):
     p = open(filename,'w+')
     p.flush()
     p.close()
-    demand = Demand.objects.get(project__id = project_id, year = year, month = month)
     MonthDemandWriter(demand).build(filename)    
 
 @permission_required('Management.report_project_month')
@@ -1516,8 +1515,8 @@ def report_project_month(request, project_id, year, month):
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
-    write_demand_pdf(Demand.objects.get(project = project, year = year, month = month),
-                     filename)
+    demand = Demand.objects.get(project__id = project_id, year = year, month = month)
+    write_demand_pdf(demand, filename)
     p = open(filename,'r')
     response.write(p.read())
     p.close()
