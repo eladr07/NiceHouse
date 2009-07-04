@@ -445,7 +445,7 @@ def demand_sales(request, id):
 @permission_required('Management.change_demand')
 def demand_close(request, id):
     d = Demand.objects.get(pk=id)
-    if d.statuses.latest().type.id == DemandFeed:
+    if d.statuses.count() == 0 or d.statuses.latest().type.id == DemandFeed:
         d.close()
     return HttpResponseRedirect('/demands')
 
