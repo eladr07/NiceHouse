@@ -267,13 +267,13 @@ class MonthProjectsWriter:
             rows.append(row)
         data = [headers]
         data.extend(rows)
-        t = Table(data, [150,100])
+        t = Table(data, [120,100,100,100,60,60,60,60])
         t.setStyle(projectTableStyle)
         return [t]
     def build(self, filename):
         self.current_page = 1
         doc = SimpleDocTemplate(filename)
-        story = [Spacer(0,100)]
+        story = [Spacer(0,50)]
         title = u'ריכוז דרישות לפרוייקטים לחודש %s\%s' % (self.year, self.month)
         story.append(titlePara(title))
         story.append(Spacer(0, 10))
