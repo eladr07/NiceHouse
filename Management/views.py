@@ -12,8 +12,6 @@ from django.contrib.auth.decorators import login_required, permission_required
 from pdf import MonthDemandWriter, MonthProjectsWriter
 from mail import mail
 
-HouseFormset = modelformset_factory(House, HouseForm, exclude=('building'))
-
 @login_required
 def index(request):
     return render_to_response('Management/index.html',
@@ -460,10 +458,10 @@ def demand_zero(request, id):
 @permission_required('Management.change_demand')
 def demand_send(request, id):
     d = Demand.objects.get(pk=id)
-    #d.send()
+    d.send()
     filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
     write_demand_pdf(d, filename)
-    mail('adush07@gmail.com',#d.project.demand_contact.mail,
+    mail(d.project.demand_contact.mail,
          u'עמלה לפרויקט %s לחודש %s/%s' % (d.project, d.month, d.year),
          '', filename)
     return HttpResponseRedirect('/demandsold')

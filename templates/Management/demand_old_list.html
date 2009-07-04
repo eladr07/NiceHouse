@@ -87,6 +87,7 @@
 		<th>עמלה מחושב בגין שיווק</th>
 		<th>תוספת קבועה</th>
 		<th>תוספת משתנה</th>
+		<th>קיזוז</th>
 		<th>סה"כ תשלום לחברה</th>
 		<th>תיקון</th>
 		<th>תזכורות</th>
@@ -109,8 +110,9 @@
 			<td><a href="/demands/{{d.id}}/sales" class="fancybox">{{ d.get_sales.count|default:"אין מכירות" }}</a></td>
 			<td>{% if d.get_sales_amount %} {{ d.get_sales_amount|commaise }} ש"ח {% else %}----{% endif %}</td>
 			<td>{% if d.get_sales_commission %} {{ d.get_sales_commission|commaise }} ש"ח {% else %}----{% endif %}</td>
-			<td>{% if d.fixed_pay %} {{ d.fixed_pay }} ש"ח {% endif %}</td>
-			<td width="150px">{% if d.var_pay %} {{ d.var_pay }} ש"ח - {{ d.var_pay_type }} {% endif %}</td>
+			<td style="color:#08A600;">{% if d.fixed_pay %} {{ d.fixed_pay }} ש"ח {% endif %}</td>
+			<td style="color:#08A600; width:150px;">{% if d.var_pay %} {{ d.var_pay }} ש"ח - {{ d.var_pay_type }} {% endif %}</td>
+			<td style="color:#D50808;">{% if d.fee %} {{ d.fee }} ש"ח - {{ d.fee_type }} {% endif %}</td>
 			<td><b>{% if d.get_total_amount %} {{ d.get_total_amount|commaise }} ש"ח {% else %}----{% endif %}</b></td>
 			<td>
 			{% if d.is_fixed %}
