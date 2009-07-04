@@ -259,6 +259,7 @@ class MonthProjectsWriter:
                    log2vis(u'מס צק'), log2vis(u'סך צק')]
         headers.reverse()
         rows = []
+        rowHeights = []
         for d in models.Demand.objects.filter(year = self.year, month= self.month):
             project_name = d.project.name.count(d.project.city) > 0 and log2vis(d.project.name) or log2vis(u'%s %s' % (d.project.name, d.project.city))
             row = [log2vis(d.project.initiator), project_name, 
@@ -266,11 +267,12 @@ class MonthProjectsWriter:
                    None,None,None,None]
             row.reverse()
             rows.append(row)
+            rowHeights.append(30)
         data = [headers]
         data.extend(rows)
         colWidths = [90,140,None,None,None,None,None,None]
         colWidths.reverse()
-        t = Table(data, colWidths)
+        t = Table(data, colWidths, rowHeights)
         t.setStyle(projectTableStyle)
         return [t]
     def build(self, filename):
