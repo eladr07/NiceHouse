@@ -460,13 +460,13 @@ def demand_zero(request, id):
 @permission_required('Management.change_demand')
 def demand_send(request, id):
     d = Demand.objects.get(pk=id)
-    if True or d.statuses.latest().type.id != DemandSent:
-        #d.send()
-        filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
-        write_demand_pdf(d, filename)
-        mail('adush07@gmail.com',#d.project.demand_contact.mail,
-             u'עמלה לפרויקט %s לחודש %s',
-             '', filename)
+    #d.send()
+    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    write_demand_pdf(d, filename)
+    mail('adush07@gmail.com',#d.project.demand_contact.mail,
+         u'עמלה לפרויקט %s לחודש %s' % (demand.project, demand.month + "/" + 
+                                        demand.year),
+         '', filename)
     return HttpResponseRedirect('/demandsold')
 
 @permission_required('Management.change_demand')
