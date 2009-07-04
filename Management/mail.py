@@ -14,7 +14,7 @@ def mail(to, subject, text, attach):
    msg['From'] = gmail_user
    msg['To'] = to
    msg['Subject'] = subject
-   msg.set_charset('utf-8')
+
    msg.attach(MIMEText(text))
    
    part = MIMEBase('application', 'octet-stream')

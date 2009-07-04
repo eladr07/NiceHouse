@@ -464,7 +464,7 @@ def demand_send(request, id):
     filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
     write_demand_pdf(d, filename)
     mail('adush07@gmail.com',#d.project.demand_contact.mail,
-         u'òîìä ìôøåé÷è %s ìçåãù %s/%s' % (d.project, d.month, d.year),
+         u'×¢××œ×” ×œ×¤×¨×•×™×§×˜ %s ×œ×—×•×“×© %s/%s' % (d.project, d.month, d.year),
          '', filename)
     return HttpResponseRedirect('/demandsold')
 
