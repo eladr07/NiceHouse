@@ -1410,8 +1410,8 @@ def sale_edit(request, id):
             project = form.cleaned_data['project']
             next = None
             #temp fix. should remove
-            if demand.statuses.count() == 0:
-                demand.feed()
+            if sale.demand.statuses.count() == 0:
+                sale.demand.feed()
             if sale.demand.statuses.latest().type.id == DemandSent:
                 #check for mods:
                 if sale.price != form.cleaned_data['price']:
