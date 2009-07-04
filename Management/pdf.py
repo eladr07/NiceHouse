@@ -33,6 +33,15 @@ saleTableStyle = TableStyle(
                              ('RIGHTPADDING', (0,0), (-1,-1), 8),
                              ]
                             )
+projectTableStyle = TableStyle(
+                               [('FONTNAME', (0,0), (-1,0), 'David-Bold'),
+                                ('FONTNAME', (0,1), (-1,-1), 'David'),
+                                ('FONTSIZE', (0,0), (-1,-1), 13),
+                                ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+                                ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
+                                ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+                                ]
+                               )
 
 def clientsPara(str):
     str2=''
@@ -258,14 +267,14 @@ class MonthProjectsWriter:
             rows.append(row)
         data = [headers]
         data.extend(rows)
-        t = Table(data)
-        t.setStyle(saleTableStyle)
+        t = Table(data, [150,100])
+        t.setStyle(projectTableStyle)
         return [t]
     def build(self, filename):
         self.current_page = 1
         doc = SimpleDocTemplate(filename)
         story = [Spacer(0,100)]
-        title = u'ריכוז דרישות לפרוייקטים לחודש %s\%s' % (self.month, self.year)
+        title = u'ריכוז דרישות לפרוייקטים לחודש %s\%s' % (self.year, self.month)
         story.append(titlePara(title))
         story.append(Spacer(0, 10))
         story.extend(self.projectsFlows())
