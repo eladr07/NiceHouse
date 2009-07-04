@@ -1409,6 +1409,9 @@ def sale_edit(request, id):
         if form.is_valid():
             project = form.cleaned_data['project']
             next = None
+            #temp fix. should remove
+            if demand.statuses.count() == 0:
+                demand.feed()
             if sale.demand.statuses.latest().type.id == DemandSent:
                 #check for mods:
                 if sale.price != form.cleaned_data['price']:
@@ -1445,14 +1448,14 @@ def sale_add(request, demand_id=None):
             form.instance.demand = demand
             form.save()
             next = None
+            if demand.statuses.count() == 0:
+                demand.feed()
             if demand.statuses.latest().type.id == DemandSent:
                 y,m = (demand.year, demand,month)
                 sp = SalePre(sale = form.instance, date=date.today(),
                              employee_pay = date(m+1==13 and y+1 or y,m+1==13 and 1 or m, 1))
                 sp.save()
                 next = '/salepre/%s' % sp.id 
-            if demand.statuses.count() == 0:
-                demand.feed()
             demand.calc_sales_commission()
             for employee in project.employees.all():
                 es = employee.salaries.get_or_create(year = demand.year, month = demand.month)
