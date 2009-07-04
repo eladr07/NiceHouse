@@ -62,7 +62,7 @@ def datePara():
     s = log2vis(u'תאריך : %s' % date.today().strftime('%d/%m/%Y'))
     return Paragraph('%s' % s, styleDate)
 def tableCaption():
-    return Paragraph(u'<u>%s</u>' % log2vis(u'להלן פירוט העסקאות'), 
+    return Paragraph(u'<u>%s</u>' % log2vis(u'ולהלן פירוט העסקאות'), 
                      ParagraphStyle(name='tableCaption', fontName='David-Bold', fontSize=15,
                                     alignment=TA_CENTER))
 def nhLogo():
@@ -260,14 +260,14 @@ class MonthProjectsWriter:
         headers.reverse()
         rows = []
         for d in models.Demand.objects.filter(year = self.year, month= self.month):
-            row = [log2vis(d.project.initiator), u'%s %s' % (log2vis(d.project.name), log2vis(d.project.city)), 
+            row = [log2vis(d.project.initiator), log2vis(u'%s %s' % (d.project.name, d.project.city)), 
                    commaise(d.get_sales_amount()), commaise(d.get_total_amount()),
                    None,None,None,None]
             row.reverse()
             rows.append(row)
         data = [headers]
         data.extend(rows)
-        colWidths = [90,130,None,None,None,None,None,None]
+        colWidths = [90,140,None,None,None,None,None,None]
         colWidths.reverse()
         t = Table(data, colWidths)
         t.setStyle(projectTableStyle)
