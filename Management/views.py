@@ -10,6 +10,7 @@ from django.views.generic.create_update import create_object, update_object
 from django.views.generic.list_detail import object_list 
 from django.contrib.auth.decorators import login_required, permission_required
 from pdf import MonthDemandWriter, MonthProjectsWriter
+from mail import mail
 
 HouseFormset = modelformset_factory(House, HouseForm, exclude=('building'))
 
@@ -460,7 +461,12 @@ def demand_zero(request, id):
 def demand_send(request, id):
     d = Demand.objects.get(pk=id)
     if d.statuses.latest().type.id != DemandSent:
-        d.send()
+        #d.send()
+        filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+        write_demand_pdf(d, filename)
+        mail('adush07@gmail.com',#d.project.demand_contact.mail,
+             u'עמלה לפרויקט %s לחודש %s',
+             '', filename)
     return HttpResponseRedirect('/demandsold')
 
 @permission_required('Management.change_demand')
@@ -1497,17 +1503,21 @@ def project_demands(request, project_id, func, template_name):
                                {'demands':demands(), 'project':p},
                                context_instance=RequestContext(request))
 
+def write_demand_pdf(demand, filename):
+    p = open(filename,'w+')
+    p.flush()
+    p.close()
+    demand = Demand.objects.get(project__id = project_id, year = year, month = month)
+    MonthDemandWriter(demand).build(filename)    
+
 @permission_required('Management.report_project_month')
 def report_project_month(request, project_id, year, month):
     filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
-    p = open(filename,'w+')
-    p.flush()
-    p.close()
-    demand = Demand.objects.get(project__id = project_id, year = year, month = month)
-    MonthDemandWriter(demand).build(filename)
+    write_demand_pdf(Demand.objects.get(project = project, year = year, month = month),
+                     filename)
     p = open(filename,'r')
     response.write(p.read())
     p.close()
