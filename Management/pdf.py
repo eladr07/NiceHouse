@@ -60,7 +60,7 @@ def datePara():
     returns a paragraph containing date with the date style
     '''
     s = log2vis(u'תאריך : %s' % date.today().strftime('%d/%m/%Y'))
-    return Paragraph('<u>%s</u>' % s, styleDate)
+    return Paragraph('%s' % s, styleDate)
 def tableCaption():
     return Paragraph(u'<u>%s</u>' % log2vis(u'להלן פירוט העסקאות'), 
                      ParagraphStyle(name='tableCaption', fontName='David-Bold', fontSize=15,
@@ -95,7 +95,7 @@ class MonthDemandWriter:
         self.current_page += 1
         frame1 = Frame(50, 20, 150, 40)
         frame1.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
-                            ParagraphStyle('pages', fontName='David', fontSize=15,))], canv)
+                            ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
         frame2 = Frame(0, 680, 650, 150)
         frame2.addFromList([nhLogo(), datePara()], canv)
         if self.current_page == self.pages_count:
@@ -125,7 +125,7 @@ class MonthDemandWriter:
                     commaise(self.demand.get_total_amount())) + '<br/>'
         s += log2vis(u'ד. נא בדיקתכם ואישורכם לתשלום לתאריך %s אודה.' % datetime.now().strftime('31/%m/%Y')) + '<br/>'
         s += log2vis(u'ה. במידה ויש שינוי במחירי הדירות ו\או שינוי אחר') + '<br/>'
-        s += log2vis(u'אנא עדכנו אותנו בפקס ו\או בטלפון הרצ"ב על גבי דרישה זו.') + '<br/>'
+        s += log2vis(u'אנא עדכנו אותנו בפקס ו\או בטלפון הרצ"ב על גבי דרישה זו.   ') + '<br/>'
         s += log2vis(u'ו. לנוחיותכם, הדרישה מועברת אליכם גם במייל וגם בפקס.')
         return Paragraph(s, ParagraphStyle(name='into', fontName='David', fontSize=14,
                                            alignment=TA_RIGHT, leading=16))
@@ -249,25 +249,25 @@ class MonthProjectsWriter:
         frame2.addFromList([nhLogo(), datePara()], canv)
         frame3 = Frame(50, 20, 150, 40)
         frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
-                            ParagraphStyle('pages', fontName='David', fontSize=15,))], canv)
+                            ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
         frame4 = Frame(50, 30, 500, 70)
         frame4.addFromList([nhAddr()], canv)
         self.current_page += 1
     def projectsFlows(self):
-        headers = [log2vis(u'שם הפרוייקט'), log2vis(u'עיר'), log2vis(u'סה"כ מכירות'),
+        headers = [log2vis(u'שם היזם'), log2vis(u'שם הפרוייקט'), log2vis(u'סה"כ מכירות'),
                    log2vis(u'סה"כ עמלה'), log2vis(u'מס ח-ן'), log2vis(u'סך ח-ן'),
                    log2vis(u'מס צק'), log2vis(u'סך צק')]
         headers.reverse()
         rows = []
         for d in models.Demand.objects.filter(year = self.year, month= self.month):
-            row = [log2vis(d.project.name), log2vis(d.project.city), 
+            row = [log2vis(d.project.initiator), u'%s %s' % (log2vis(d.project.name), log2vis(d.project.city)), 
                    commaise(d.get_sales_amount()), commaise(d.get_total_amount()),
                    None,None,None,None]
             row.reverse()
             rows.append(row)
         data = [headers]
         data.extend(rows)
-        colWidths = [130,90,None,None,None,None,None,None]
+        colWidths = [90,130,None,None,None,None,None,None]
         colWidths.reverse()
         t = Table(data, colWidths)
         t.setStyle(projectTableStyle)
