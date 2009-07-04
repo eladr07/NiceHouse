@@ -19,7 +19,7 @@ pdfmetrics.registerFont(TTFont('David-Bold', settings.MEDIA_ROOT + 'fonts/DavidC
 pdfmetrics.registerFontFamily('David', normal='David', bold='David-Bold')
 #template styles
 styleN = ParagraphStyle('normal', fontName='David',fontSize=16, leading=15, alignment=TA_RIGHT)
-styleDate = ParagraphStyle('date', fontName='David',fontSize=16, leading=15)
+styleDate = ParagraphStyle('date', fontName='David',fontSize=14, leading=15)
 styleSubj = ParagraphStyle('subject', fontName='David',fontSize=16, leading=15, alignment=TA_CENTER)
 styleSubTitle = ParagraphStyle('subtitle', fontName='David-Bold', fontSize=15, alignment=TA_CENTER)
 saleTableStyle = TableStyle(
@@ -105,13 +105,13 @@ class MonthDemandWriter:
         frame4.addFromList([nhAddr()], canv)
     def addFirst(self, canv, doc):
         self.current_page = 1
-        frame1 = Frame(300, 590, 250, 200)
+        frame1 = Frame(300, 580, 250, 200)
         frame1.addFromList([self.toPara()], canv)
         frame2 = Frame(0, 680, 650, 150)
         frame2.addFromList([nhLogo(), datePara()], canv)
         frame3 = Frame(50, 20, 150, 40)
         frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
-                            ParagraphStyle('pages', fontName='David', fontSize=15,))], canv)
+                            ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
         frame4 = Frame(50, 30, 500, 70)
         frame4.addFromList([nhAddr()], canv)
     def introPara(self):
@@ -123,9 +123,9 @@ class MonthDemandWriter:
                       commaise(self.demand.get_sales_amount()))) + '<br/>'
         s += log2vis(u'ג. עמלתנו (כולל מע"מ) - %s ש"ח (ראה פירוט רצ"ב).' % 
                     commaise(self.demand.get_total_amount())) + '<br/>'
-        s += log2vis(u'ד. נא בדיקתכם ואישורכם לתשלום לתאריך %s.' % datetime.now().strftime('31/%m/%Y')) + '<br/>'
+        s += log2vis(u'ד. נא בדיקתכם ואישורכם לתשלום לתאריך %s אודה.' % datetime.now().strftime('31/%m/%Y')) + '<br/>'
         s += log2vis(u'ה. במידה ויש שינוי במחירי הדירות ו\או שינוי אחר') + '<br/>'
-        s += log2vis(u'   אנא עדכנו אותנו בפקס ו\או בטלפון הרצ"ב.') + '<br/>'
+        s += log2vis(u'אנא עדכנו אותנו בפקס ו\או בטלפון הרצ"ב על גבי דרישה זו.') + '<br/>'
         s += log2vis(u'ו. לנוחיותכם, הדרישה מועברת אליכם גם במייל וגם בפקס.')
         return Paragraph(s, ParagraphStyle(name='into', fontName='David', fontSize=14,
                                            alignment=TA_RIGHT, leading=16))
@@ -226,7 +226,7 @@ class MonthDemandWriter:
                                                           self.demand.year)
         story.append(titlePara(title))
         story.append(Spacer(0, 10))
-        subTitle = log2vis(u"דרישה מס' %s" % self.demand.id)
+        subTitle = '<u>%s</u>' % log2vis(u"דרישה מס' %s" % self.demand.id)
         story.append(Paragraph(subTitle, styleSubTitle))
         story.extend([Spacer(0,20), self.introPara(), Spacer(0,20)])
         story.extend(self.saleFlows())
