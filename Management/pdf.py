@@ -260,7 +260,8 @@ class MonthProjectsWriter:
         headers.reverse()
         rows = []
         for d in models.Demand.objects.filter(year = self.year, month= self.month):
-            row = [log2vis(d.project.initiator), log2vis(u'%s %s' % (d.project.name, d.project.city)), 
+            project_name = d.project.name.count(d.project.city) > 0 and log2vis(d.project.name) or log2vis(u'%s %s' % (d.project.name, d.project.city))
+            row = [log2vis(d.project.initiator), project_name, 
                    commaise(d.get_sales_amount()), commaise(d.get_total_amount()),
                    None,None,None,None]
             row.reverse()
