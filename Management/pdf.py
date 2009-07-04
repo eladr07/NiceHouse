@@ -1,4 +1,4 @@
-﻿import settings
+﻿import settings, models
 from datetime import datetime, date
 from templatetags.management_extras import commaise
 import reportlab.rl_config
@@ -96,7 +96,6 @@ class MonthDemandWriter:
         frame4.addFromList([nhAddr()], canv)
     def addFirst(self, canv, doc):
         self.current_page = 1
-        contact = self.demand.project.demand_contact
         frame1 = Frame(300, 590, 250, 200)
         frame1.addFromList([self.toPara()], canv)
         frame2 = Frame(0, 680, 650, 150)
@@ -227,5 +226,45 @@ class MonthDemandWriter:
             story.extend([self.addsPara(), Spacer(0, 10)])    
         if self.demand.remarks:
             story.append(self.remarkPara())    
-        doc.build(story, onFirstPage = self.addFirst, onLaterPages = self.addLater)
+        doc.build(story, self.addFirst, self.addLater)
+        return doc.canv
+
+class MonthProjectsWriter:
+    def __init__(self, year, month):
+        self.year, self.month = (year, month)
+    def addTemplate(self, canv, doc):
+        frame2 = Frame(0, 680, 650, 150)
+        frame2.addFromList([nhLogo(), datePara()], canv)
+        frame3 = Frame(50, 20, 150, 40)
+        frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
+                            ParagraphStyle('pages', fontName='David', fontSize=15,))], canv)
+        frame4 = Frame(50, 30, 500, 70)
+        frame4.addFromList([nhAddr()], canv)
+        self.current_page += 1
+    def projectFlows(self):
+        headers = [log2vis(u'שם הפרוייקט'), log2vis(u'עיר'), log2vis(u'סה"כ מכירות'),
+                   log2vis(u'סה"כ עמלה'), log2vis(u'מס ח-ן'), log2vis(u'סך ח-ן'),
+                   log2vis(u'מס צק'), log2vis(u'סך צק')]
+        headers.reverse()
+        rows = []
+        for d in models.Demand.objects.filter(year = self.year, month= self.month):
+            row = [log2vis(d.project.name), log2vis(d.project.city), 
+                   commaise(d.get_sales_amount()), commaise(d.get_total_amount()),
+                   None,None,None,None]
+            row.reverse()
+            rows.append(row)
+        data = [headers]
+        data.extend(rows)
+        t = Table(data)
+        t.setStyle(saleTableStyle)
+        return [t]
+    def build(self, filename):
+        self.current_page = 1
+        doc = SimpleDocTemplate(filename)
+        story = [Spacer(0,100)]
+        title = u'ריכוז דרישות לפרוייקטים לחודש %s\%s' % (self.month, self.year)
+        story.append(titlePara(title))
+        story.append(Spacer(0, 10))
+        story.extend(self.projectsFlows())
+        doc.build(story, self.addTemplate, self.addTemplate)
         return doc.canv

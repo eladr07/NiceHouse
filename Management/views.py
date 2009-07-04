@@ -9,7 +9,7 @@ from django.core import serializers
 from django.views.generic.create_update import create_object, update_object
 from django.views.generic.list_detail import object_list 
 from django.contrib.auth.decorators import login_required, permission_required
-from pdf import MonthDemandWriter
+from pdf import MonthDemandWriter, MonthProjectsWriter
 
 HouseFormset = modelformset_factory(House, HouseForm, exclude=('building'))
 
@@ -1515,15 +1515,19 @@ def report_project_month(request, project_id, year, month):
 
 @permission_required('Management.report_projects_month')
 def report_projects_month(request, year, month):
-    demands = Demand.objects.filter(year = year, month = month)
-    salesAmount, totalAmount = (0, 0)
-    for d in demands.all():
-        salesAmount += d.get_sales_amount()
-        totalAmount += d.get_total_amount()
-    return render_to_response('Management/report_projects_month.html', 
-                              {'demands':demands, 'salesAmount':salesAmount, 'totalAmount':totalAmount,
-                               'month':datetime(int(year), int(month), 1)},
-                              context_instance=RequestContext(request))
+    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    
+    response = HttpResponse(mimetype='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=' + filename
+    p = open(filename,'w+')
+    p.flush()
+    p.close()
+    MonthProjectsWriter(year, month).build(filename)
+    p = open(filename,'r')
+    response.write(p.read())
+    p.close()
+    return response
+
 @login_required
 def report_project_time(request):
     if request.method=='POST':
