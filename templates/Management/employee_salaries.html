@@ -126,9 +126,9 @@
 			<td>{{s.employee.employment_terms.hire_type}}</td>
 			<td><a class="fancybox" href="/employee/{{s.employee.id}}/sales/{{month.year}}/{{month.month}}">{{ s.sales_count }}</a></td>
 			<td>{{s.base}} + {{s.commissions}}</td>
-			<td>{{s.safety_net|default_if_none:""}}</td>
-			<td>{% if s.var_pay %}{{s.var_pay}} ש"ח {% endif %}</td>
-			<td>{% if s.deduction %}{{s.deduction}} - {{s.deduction_type}} {% endif %}</td>
+			<td style="color:#08A600;">{{s.safety_net|default_if_none:""}}</td>
+			<td style="color:#08A600;">{% if s.var_pay %}{{s.var_pay}} ש"ח {% endif %}</td>
+			<td style="color:#D50808;">{% if s.deduction %}{{s.deduction}} - {{s.deduction_type}} {% endif %}</td>
 			<td>{{s.total_amount|commaise}}</td>
 			<td>
 				החזר - {{s.loan_pay|commaise}} ש"ח
