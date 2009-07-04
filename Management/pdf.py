@@ -259,7 +259,7 @@ class MonthProjectsWriter:
                    log2vis(u'מס צק'), log2vis(u'סך צק')]
         headers.reverse()
         rows = []
-        rowHeights = []
+        rowHeights = [30]
         for d in models.Demand.objects.filter(year = self.year, month= self.month):
             project_name = d.project.name.count(d.project.city) > 0 and log2vis(d.project.name) or log2vis(u'%s %s' % (d.project.name, d.project.city))
             row = [log2vis(d.project.initiator), project_name, 
