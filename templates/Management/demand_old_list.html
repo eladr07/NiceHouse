@@ -24,6 +24,8 @@
 		$("#demandSend").click(function(event) {
 			event.preventDefault();
 			$("#demandTable input[type='checkbox']").each(function () {
+				if (!$(this).attr("checked"))
+					return;
 				var row = $(this).parent().parent();
 				alert(row.attr("objid"));
 			});
