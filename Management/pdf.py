@@ -267,7 +267,9 @@ class MonthProjectsWriter:
             rows.append(row)
         data = [headers]
         data.extend(rows)
-        t = Table(data, [120,100,100,100,60,60,60,60])
+        colWidths = [120,100,100,100,60,60,60,60]
+        colWidths.reverse()
+        t = Table(data, colWidths)
         t.setStyle(projectTableStyle)
         return [t]
     def build(self, filename):
