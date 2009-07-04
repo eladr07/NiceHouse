@@ -36,7 +36,7 @@ saleTableStyle = TableStyle(
 projectTableStyle = TableStyle(
                                [('FONTNAME', (0,0), (-1,0), 'David-Bold'),
                                 ('FONTNAME', (0,1), (-1,-1), 'David'),
-                                ('FONTSIZE', (0,0), (-1,-1), 13),
+                                ('FONTSIZE', (0,0), (-1,-1), 12),
                                 ('ALIGN', (0,0), (-1,-1), 'CENTER'),
                                 ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
                                 ('BOX', (0,0), (-1,-1), 0.25, colors.black),
@@ -267,7 +267,7 @@ class MonthProjectsWriter:
             rows.append(row)
         data = [headers]
         data.extend(rows)
-        colWidths = [100,70,100,100,60,60,60,60]
+        colWidths = [120,100,100,100,60,60,60,60]
         colWidths.reverse()
         t = Table(data, colWidths)
         t.setStyle(projectTableStyle)
