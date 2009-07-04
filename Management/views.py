@@ -460,7 +460,7 @@ def demand_zero(request, id):
 @permission_required('Management.change_demand')
 def demand_send(request, id):
     d = Demand.objects.get(pk=id)
-    if d.statuses.latest().type.id != DemandSent:
+    if True or d.statuses.latest().type.id != DemandSent:
         #d.send()
         filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
         write_demand_pdf(d, filename)
