@@ -232,6 +232,9 @@ class MonthDemandWriter:
 class MonthProjectsWriter:
     def __init__(self, year, month):
         self.year, self.month = (year, month)
+    @property
+    def pages_count(self):
+        return 1
     def addTemplate(self, canv, doc):
         frame2 = Frame(0, 680, 650, 150)
         frame2.addFromList([nhLogo(), datePara()], canv)
