@@ -241,7 +241,7 @@ class MonthProjectsWriter:
         frame4 = Frame(50, 30, 500, 70)
         frame4.addFromList([nhAddr()], canv)
         self.current_page += 1
-    def projectFlows(self):
+    def projectsFlows(self):
         headers = [log2vis(u'שם הפרוייקט'), log2vis(u'עיר'), log2vis(u'סה"כ מכירות'),
                    log2vis(u'סה"כ עמלה'), log2vis(u'מס ח-ן'), log2vis(u'סך ח-ן'),
                    log2vis(u'מס צק'), log2vis(u'סך צק')]
