@@ -343,7 +343,7 @@ def demands_all(request):
                                           building__num = houseForm.cleaned_data['building_num'],
                                           num = houseForm.cleaned_data['house_num'])
             if houses.count() > 0:
-                return HttpResponseRedirect('/buildings/%s/house/%s' % (houses[0].building.id, houses[0].id))
+                return HttpResponseRedirect('/buildings/%s/house/%s/type1' % (houses[0].building.id, houses[0].id))
             else:
                 error = u'לא נמצאה דירה מס %s בבניין מס %s בפרוייקט %s' % (houseForm.cleaned_data['house_num'],
                                                                            houseForm.cleaned_data['building_num'],
