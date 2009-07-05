@@ -345,9 +345,9 @@ def demands_all(request):
             if houses.count() > 0:
                 return HttpResponseRedirect('/buildings/%s/house/%s' % (houses[0].building.id, houses[0].id))
             else:
-                error = u'לא נמצאה דירה מס %s בבניין מס %s בפרוייקט %s' % (form.cleaned_data['house_num'],
-                                                                           form.cleaned_data['building_num'],
-                                                                           project)
+                error = u'לא נמצאה דירה מס %s בבניין מס %s בפרוייקט %s' % (houseForm.cleaned_data['house_num'],
+                                                                           houseForm.cleaned_data['building_num'],
+                                                                           houseForm.cleaned_data['project'])
         if demandForm.is_valid():
             demands = Demand.objects.filter(project = demandForm.cleaned_data['project'], 
                                             month = demandForm.cleaned_data['month'],
