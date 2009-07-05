@@ -25,8 +25,8 @@ def locate_house(request):
         if form.is_valid():
             project = form.cleaned_data['project']
             try:
-                building = project.buildings.get(pk=form.cleaned_data['building_num'])
-                house = building.houses.get(pk = form.cleaned_data['house_num'])
+                building = project.buildings.get(num=form.cleaned_data['building_num'])
+                house = building.houses.get(num=form.cleaned_data['house_num'])
                 return HttpResponseRedirect('/projects/%s/buildings/%s/house/%s/type1' % (project.id, building.id, house.id))
             except:
                 error = u'לא נמצאה דירה מס %s בבניין מס %s בפרוייקט %s' % (form.cleaned_data['house_num'],
