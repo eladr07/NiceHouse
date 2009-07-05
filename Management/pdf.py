@@ -113,7 +113,10 @@ class MonthDemandWriter:
         frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
                             ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
         frame4 = Frame(50, 30, 500, 70)
-        frame4.addFromList([nhAddr()], canv)
+        frame4.addFromList([nhAddr()], canv)        
+        if self.pages_count == 1:
+            frame5 = Frame(50, 40, 100, 100)
+            frame5.addFromList([sigPara()], canv)
     def introPara(self):
         s = log2vis(u'א. רצ"ב פירוט דרישתנו לתשלום בגין %i עסקאות שנחתמו החודש.' %
                     self.demand.get_sales().count()) + '<br/>'
