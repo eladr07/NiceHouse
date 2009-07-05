@@ -335,6 +335,7 @@ def employee_salary_list(request):
 @permission_required('Management.list_demand')
 def demands_all(request):
     if request.method == 'POST':
+        error = None
         houseForm = LocateHouseForm(request.POST)
         demandForm = LocateDemandForm(request.POST)
         if houseForm.is_valid():
@@ -343,6 +344,10 @@ def demands_all(request):
                                           num = houseForm.cleaned_data['house_num'])
             if houses.count() > 0:
                 return HttpResponseRedirect('/buildings/%s/house/%s' % (houses[0].building.id, houses[0].id))
+            else:
+                error = u'לא נמצאה דירה מס %s בבניין מס %s בפרוייקט %s' % (form.cleaned_data['house_num'],
+                                                                           form.cleaned_data['building_num'],
+                                                                           project)
         if demandForm.is_valid():
             demands = Demand.objects.filter(project = demandForm.cleaned_data['project'], 
                                             month = demandForm.cleaned_data['month'],
@@ -351,7 +356,10 @@ def demands_all(request):
                 return HttpResponseRedirect('/reports/project_month/%s/%s/%s' % (demands[0].project.id,
                                                                          demands[0].year, demands[0].month))
     return render_to_response('Management/demands_all.html', 
-                              { 'projects':Project.objects.all(),'houseForm':LocateHouseForm(), 'demandForm':LocateDemandForm() },
+                              { 'projects':Project.objects.all(),
+                               'houseForm':LocateHouseForm(), 
+                               'demandForm':LocateDemandForm(),
+                               'error':error },
                               context_instance=RequestContext(request))
 
 @permission_required('Management.add_demand')
