@@ -239,7 +239,7 @@ urlpatterns = patterns('',
          {'form_class' : Management.forms.DemandRemarksForm,
           'template_name' : 'Management/demand_remarks_edit.html',
           'permission':'add_demand',
-          'post_save_redirect' : '%(id)s'}),
+          'post_save_redirect' : 'remarks'}),
 
     (r'^employeesalaries/$', 'Management.views.employee_salary_list'),
     (r'^employeesalaries/(?P<object_id>\d+)$', 'Management.views.limited_update_object',
