@@ -256,8 +256,9 @@ class InvoiceForm(forms.ModelForm):
     def save(self, *args, **kw):
         d = Demand.objects.get(project = self.cleaned_data['project'], year = self.cleaned_data['year'],
                                month = self.cleaned_data['month'])
-        self.instance.demand = d
-        return forms.ModelForm.save(self, *args, **kw)
+        i = forms.ModelForm.save(self, *args, **kw)
+        d.invoices.add(i)
+        return i
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
@@ -275,8 +276,9 @@ class PaymentForm(forms.ModelForm):
     def save(self, *args, **kw):
         d = Demand.objects.get(project = self.cleaned_data['project'], year = self.cleaned_data['year'],
                                month = self.cleaned_data['month'])
-        self.instance.demand = d
-        return forms.ModelForm.save(self, *args, **kw)
+        p = forms.ModelForm.save(self, *args, **kw)
+        d.payments.add(p)
+        return p
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
