@@ -1089,9 +1089,9 @@ class Demand(models.Model):
     is_finished = models.BooleanField(default=False, editable=False)
     reminders = models.ManyToManyField('Reminder', null=True, editable=False)
 
-    invoices = models.ManyToManyField('Invoice',  related_name = 'demand', 
+    invoices = models.ManyToManyField('Invoice',  related_name = 'demands', 
                                       editable=False, null=True, blank=True)
-    payments = models.ManyToManyField('Payment',  related_name = 'demand', 
+    payments = models.ManyToManyField('Payment',  related_name = 'demands', 
                                       editable=False, null=True, blank=True)
 
     objects = DemandManager()
