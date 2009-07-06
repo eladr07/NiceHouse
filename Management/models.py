@@ -456,7 +456,6 @@ class Employee(Person):
     
     projects = models.ManyToManyField('Project', verbose_name=ugettext('projects'), related_name='employees', 
                                       null=True, blank=True)
-
     work_start = models.DateField(ugettext('work start'))
     work_end = models.DateField(ugettext('work end'), null=True, blank=True)
     
@@ -1090,9 +1089,9 @@ class Demand(models.Model):
     is_finished = models.BooleanField(default=False, editable=False)
     reminders = models.ManyToManyField('Reminder', null=True, editable=False)
 
-    invoices = models.ManyToManyField('Invoice',  related_name = 'demands', 
+    invoices = models.ManyToManyField('Invoice',  related_name = 'demand', 
                                       editable=False, null=True, blank=True)
-    payments = models.ManyToManyField('Payment',  related_name = 'demands', 
+    payments = models.ManyToManyField('Payment',  related_name = 'demand', 
                                       editable=False, null=True, blank=True)
 
     objects = DemandManager()
@@ -1230,6 +1229,7 @@ class Madad(models.Model):
         db_table = 'Madad'
         get_latest_by = 'date'
         ordering = ['-date']
+
 
 
 class SaleMod(models.Model):
