@@ -557,8 +557,9 @@ def project_invoice_add(request, id):
 @permission_required('Management.delete_invoice')
 def invoice_del(request, id):
     i = Invoice.objects.get(pk=id)
+    demand_id = i.demands[0].id
     i.delete()
-    return HttpResponseRedirect('/demands/%s' % i.demands[0].id)
+    return HttpResponseRedirect('/demands/%s' % demand_id)
 
 @permission_required('Management.add_payment')
 def payment_add(request, initial=None):
@@ -599,8 +600,9 @@ def project_payment_add(request, id):
 @permission_required('Management.delete_payment')
 def payment_del(request, id):
     p = Payment.objects.get(pk=id)
+    demand_id = p.demands[0].id
     p.delete()
-    return HttpResponseRedirect('/demands/%s' % p.demands[0].id)
+    return HttpResponseRedirect('/demands/%s' % demand_id)
 
 @login_required
 def project_list(request):    
