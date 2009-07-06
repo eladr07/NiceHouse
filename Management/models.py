@@ -456,6 +456,7 @@ class Employee(Person):
     
     projects = models.ManyToManyField('Project', verbose_name=ugettext('projects'), related_name='employees', 
                                       null=True, blank=True)
+
     work_start = models.DateField(ugettext('work start'))
     work_end = models.DateField(ugettext('work end'), null=True, blank=True)
     
@@ -1010,7 +1011,6 @@ class ProjectCommission(models.Model):
         db_table = 'ProjectCommission'
   
 class Invoice(models.Model):
-    demand = models.ForeignKey('Demand', related_name='invoices', editable=False)
     num = models.IntegerField(ugettext('invoice_num'), unique=True)
     creation_date = models.DateField(auto_now_add = True)
     date = models.DateField(ugettext('invoice_date'))
@@ -1030,7 +1030,6 @@ class PaymentType(models.Model):
         db_table = 'PaymentType'
 
 class Payment(models.Model):
-    demand = models.ForeignKey('Demand', related_name='payments', editable=False)
     num = models.IntegerField(ugettext('check_num'), unique=True, null=True, blank=True)
     support_num = models.IntegerField(ugettext('support_num'), null=True, blank=True)
     payment_type = models.ForeignKey('PaymentType', verbose_name=ugettext('payment_type'))
@@ -1090,6 +1089,11 @@ class Demand(models.Model):
     remarks = models.TextField(ugettext('remarks'), null=True,blank=True)
     is_finished = models.BooleanField(default=False, editable=False)
     reminders = models.ManyToManyField('Reminder', null=True, editable=False)
+
+    invoices = models.ManyToManyField('Invoice',  related_name = 'demands', 
+                                      editable=False, null=True, blank=True)
+    payments = models.ManyToManyField('Payment',  related_name = 'demands', 
+                                      editable=False, null=True, blank=True)
 
     objects = DemandManager()
     
@@ -1226,6 +1230,7 @@ class Madad(models.Model):
         db_table = 'Madad'
         get_latest_by = 'date'
         ordering = ['-date']
+
 
 class SaleMod(models.Model):
     sale = models.OneToOneField('Sale', unique=True, editable=False, related_name='%(class)s')
