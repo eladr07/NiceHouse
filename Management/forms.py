@@ -207,7 +207,7 @@ class SaleForm(forms.ModelForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label=ugettext('project'))
     building = forms.ModelChoiceField(queryset = Building.objects.all(), label=ugettext('building'))
     def save(self, *args, **kw):
-        if self.instance.id and self.cleaned_data['house'].get_sale() != None:
+        if not self.instance.id and self.cleaned_data['house'].get_sale() != None:
             raise AttributeError
         allowed_discount = self.cleaned_data['allowed_discount']
         '''checks if entered a allowed discount but not discount -> will fill
