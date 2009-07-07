@@ -336,6 +336,7 @@ class NHSaleSideForm(forms.ModelForm):
             nhp.save()
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self, *args, **kw)
+        self.fields['voucher_date'].widget.attrs = {'class':'vDateField'}
         if self.instance.id:
             nhsale = self.instance.nhsale
             if self.instance.employee1:
