@@ -337,6 +337,8 @@ class NHSaleSideForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self, *args, **kw)
         self.fields['voucher_date'].widget.attrs = {'class':'vDateField'}
+        self.files['employee1'].queryset = Employee.objects.filter(rank__name__contains=u'נייס האוס')
+        self.files['employee2'].queryset = Employee.objects.filter(rank__name__contains=u'נייס האוס')
         if self.instance.id:
             nhsale = self.instance.nhsale
             if self.instance.employee1:
