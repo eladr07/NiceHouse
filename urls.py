@@ -376,6 +376,8 @@ urlpatterns = patterns('',
           'permission':'change_salecancel',          
           'post_save_redirect' : '%(id)s'}),
           
+    (r'^nhsale/add$', 'Management.views.nhsale_add'),
+    
     (r'^xml/buildings/(?P<project_id>\d+)$', 'Management.views.json_buildings'),
     (r'^xml/employees/(?P<project_id>\d+)$', 'Management.views.json_employees'),
     (r'^xml/houses/(?P<building_id>\d+)$', 'Management.views.json_houses'),

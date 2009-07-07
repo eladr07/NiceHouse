@@ -1230,7 +1230,52 @@ class Madad(models.Model):
         get_latest_by = 'date'
         ordering = ['-date']
 
+class NHPay(models.Model):
+    nhsale = models.ForeignKey('NHSale', editable=False, related_name='pays')
+    employee = models.ForeignKey('Employee', editable=False, related_name='nhpays', null=True)
+    lawyer = models.ForeignKey('Employee', editable=False, related_name='nhpays', null=True)
+    amount = models.FloatField(ugettext('amount'))
+    class Meta:
+        db_table='NHPay'
 
+class Lawyer(Person):
+    class Meta:
+        db_table='Lawyer'
+
+class NHSaleSide(models.Model):
+    name1 = models.CharField(ugettext('name'), max_length=20, null=True, blank=True)
+    name2 = models.CharField(ugettext('name'), max_length=20, null=True, blank=True)
+    phone1 = models.CharField(ugettext('phone'), max_length=20, null=True, blank=True)
+    phone2 = models.CharField(ugettext('phone'), max_length=20, null=True, blank=True)
+    employee1 = models.ForeignKey('Employee', verbose_name=ugettext('advisor'))
+    employee2 = models.ForeignKey('Employee', verbose_name=ugettext('advisor'))
+    lawyer1 = models.ForeignKey('Lawyer', verbose_name=ugettext('lawyer'))
+    lawyer2 = models.ForeignKey('Lawyer', verbose_name=ugettext('lawyer'))
+    signed_commission = models.FloatField(ugettext('signed_commission'))
+    actual_commission = models.FloatField(ugettext('actual_commission'))
+    voucher_num = models.IntegerField(ugettext('voucher_num'))
+    voucher_date = models.DateField(ugettext('voucher_date'))
+    temp_receipt_num = models.IntegerField(ugettext('temp_receipt_num'))
+    invoices = models.ManyToManyField('Invoice', null=True, editable=False)
+    payments = models.ManyToManyField('Payment', null=True, editable=False)
+    remarks = models.TextField(ugettext('remarks'))
+    class Meta:
+        db_table = 'NHSaleSide'
+
+class NHSale(models.Model):
+    side1 = models.ForeignKey('NHSaleSide')
+    side2 = models.ForeignKey('NHSaleSide')
+    
+    address = models.CharField(ugettest('address'), max_length=50)
+    hood = models.CharField(ugettest('hood'), max_length=50)
+    rooms = models.PositiveSmallIntegerField(ugettext('rooms'))
+    floor = models.PositiveSmallIntegerField(ugettext('floor'))
+    type = models.ForeignKey('HouseType', verbose_name = ugettext('house_type'))
+    
+    price = models.FloatField(ugettext('price'))
+        
+    class Meta:
+        db_table='NHSale'
 
 class SaleMod(models.Model):
     sale = models.OneToOneField('Sale', unique=True, editable=False, related_name='%(class)s')

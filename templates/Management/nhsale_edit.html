@@ -1,0 +1,299 @@
+﻿{% extends "./base.html" %}
+{% block content %}
+	<div class="title">
+		<div class="pageTitle">
+			{% if form.instance.id %}
+				עדכון מכירה מס' 
+				{{form.instance.id}}
+			{% else %}
+				מכירה חדשה
+			{% endif %}
+		</div>
+	</div>
+	<br>
+	<form method="POST">
+	<table cellspacing="2" cellpadding="2" class="formTable">
+		<tr>
+			<td>{{ saleForm.id }}</td>
+			<td>{{ side1Form.id }}</td>
+			<td>{{ side2Form.id }}</td>
+		</tr>
+		<tr>
+			<th>{{ saleForm.address.label_tag }}</th>
+			<td>{{ saleForm.address }}</td>
+			<td>{{ saleForm.address.errors|join:" " }}</td>
+		</tr>
+		<tr>
+			<th>{{ saleForm.hood.label_tag }}</th>
+			<td>{{ saleForm.hood }}</td>
+			<td>{{ saleForm.hood.errors|join:" " }}</td>
+		</tr>
+		<tr>
+			<th>{{ saleForm.type.label_tag }}</th>
+			<td>{{ saleForm.type }}</td>
+			<td>{{ saleForm.type.errors|join:" " }}</td>
+		</tr>
+		<tr>
+			<th>{{ saleForm.rooms.label_tag }}</th>
+			<td>{{ saleForm.rooms }}</td>
+			<td>{{ saleForm.rooms.errors|join:" " }}</td>
+		</tr>
+		<tr>
+			<th>{{ saleForm.floor.label_tag }}</th>
+			<td>{{ saleForm.floor }}</td>
+			<td>{{ saleForm.floor.errors|join:" " }}</td>
+		</tr>
+		<tr>
+			<th>{{ saleForm.price.label_tag }}</th>
+			<td>{{ saleForm.price }}</td>
+			<td>{{ saleForm.price.errors|join:" " }}</td>
+		</tr>
+	</table>
+	<div id="rightSide">
+		<table cellspacing="2" cellpadding="2" class="formTable">
+			<tr>
+				<td></td>
+				<td><u><b>בעל הנכס</b></u></td>
+			</tr>
+			<tr>
+				<th>{{ side1form.name1.label_tag }}</th>
+				<td>{{ side1form.name1 }}</td>
+				<td>{{ side1form.name1.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side1form.name2.label_tag }}</th>
+				<td>{{ side1form.name2 }}</td>
+				<td>{{ side1form.name2.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side1form.phone1.label_tag }}</th>
+				<td>{{ side1form.phone1 }}</td>
+				<td>{{ side1form.phone1.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side1form.phone2.label_tag }}</th>
+				<td>{{ side1form.phone2 }}</td>
+				<td>{{ side1form.phone2.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><u><b>נתוני מכירה</b></u></td>
+			</tr>
+			<tr>
+				<th>{{ side1form.signed_commission.label_tag }}</th>
+				<td>{{ side1form.signed_commission }}</td>
+				<td>{{ side1form.signed_commission.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side1form.actual_commission.label_tag }}</th>
+				<td>{{ side1form.actual_commission }}</td>
+				<td>{{ side1form.actual_commission.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side1form.voucher_num.label_tag }}</th>
+				<td>{{ side1form.voucher_num }}</td>
+				<td>{{ side1form.voucher_num.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side1form.voucher_date.label_tag }}</th>
+				<td>{{ side1form.voucher_date }}</td>
+				<td>{{ side1form.voucher_date.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side1form.temp_receipt_num.label_tag }}</th>
+				<td>{{ side1form.temp_receipt_num }}</td>
+				<td>{{ side1form.temp_receipt_num.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><u><b>פרטי חשבונית</b></u></td>
+			</tr>
+			{% for field in invoice1Form %}
+			<tr>
+				<th>{{ field.label_tag }}</th>
+				<td>{{ field }}</td>
+				<td>{{ field.errors|join:" " }}</td>
+			</tr>
+			{% endfor %}
+			<tr>
+				<td></td>
+				<td><u><b>פרטי תשלום</b></u></td>
+			</tr>
+			{% for field in payment1Form %}
+			<tr>
+				<th>{{ field.label_tag }}</th>
+				<td>{{ field }}</td>
+				<td>{{ field.errors|join:" " }}</td>
+			</tr>
+			{% endfor %}
+			<tr>
+				<td></td>
+				<td><u><b>תשלום לעו"ד</b></u></td>
+			</tr>
+			<tr>
+				<th>{{ side1form.lawyer1.label_tag }}</th>
+				<td>{{ side1form.lawyer1 }}</td>
+				<td>{{ side1form.lawyer1.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side1form.lawyer1_pay.label_tag }}</th>
+				<td>{{ side1form.lawyer1_pay }}</td>
+				<td>{{ side1form.lawyer1_pay.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side1form.lawyer2.label_tag }}</th>
+				<td>{{ side1form.lawyer2 }}</td>
+				<td>{{ side1form.lawyer2.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side1form.lawyer2_pay.label_tag }}</th>
+				<td>{{ side1form.lawyer2_pay }}</td>
+				<td>{{ side1form.lawyer2_pay.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><u><b>תשלום ליועץ נדל"ן</b></u></td>
+			</tr>
+			<tr>
+				<th>{{ side1form.employee1.label_tag }}</th>
+				<td>{{ side1form.employee1 }}</td>
+				<td>{{ side1form.employee1.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side1form.employee1_commission.label_tag }}</th>
+				<td>{{ side1form.employee1_commission }}</td>
+				<td>{{ side1form.employee1_commission.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side1form.employee2_commission.label_tag }}</th>
+				<td>{{ side1form.employee2_commission }}</td>
+				<td>{{ side1form.employee2_commission.errors|join:" " }}</td>
+			</tr>
+		</table>
+	</div>
+	<div id="leftSide">
+		<table cellspacing="2" cellpadding="2" class="formTable">
+			<tr>
+				<td></td>
+				<td><u><b>בעל הנכס</b></u></td>
+			</tr>
+			<tr>
+				<th>{{ side2form.name1.label_tag }}</th>
+				<td>{{ side2form.name1 }}</td>
+				<td>{{ side2form.name1.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side2form.name2.label_tag }}</th>
+				<td>{{ side2form.name2 }}</td>
+				<td>{{ side2form.name2.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side2form.phone1.label_tag }}</th>
+				<td>{{ side2form.phone1 }}</td>
+				<td>{{ side2form.phone1.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side2form.phone2.label_tag }}</th>
+				<td>{{ side2form.phone2 }}</td>
+				<td>{{ side2form.phone2.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><u><b>נתוני מכירה</b></u></td>
+			</tr>
+			<tr>
+				<th>{{ side2form.signed_commission.label_tag }}</th>
+				<td>{{ side2form.signed_commission }}</td>
+				<td>{{ side2form.signed_commission.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side2form.actual_commission.label_tag }}</th>
+				<td>{{ side2form.actual_commission }}</td>
+				<td>{{ side2form.actual_commission.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side2form.voucher_num.label_tag }}</th>
+				<td>{{ side2form.voucher_num }}</td>
+				<td>{{ side2form.voucher_num.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side2form.voucher_date.label_tag }}</th>
+				<td>{{ side2form.voucher_date }}</td>
+				<td>{{ side2form.voucher_date.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side2form.temp_receipt_num.label_tag }}</th>
+				<td>{{ side2form.temp_receipt_num }}</td>
+				<td>{{ side2form.temp_receipt_num.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><u><b>פרטי חשבונית</b></u></td>
+			</tr>
+			{% for field in invoice2Form %}
+			<tr>
+				<th>{{ field.label_tag }}</th>
+				<td>{{ field }}</td>
+				<td>{{ field.errors|join:" " }}</td>
+			</tr>
+			{% endfor %}
+			<tr>
+				<td></td>
+				<td><u><b>פרטי תשלום</b></u></td>
+			</tr>
+			{% for field in payment2Form %}
+			<tr>
+				<th>{{ field.label_tag }}</th>
+				<td>{{ field }}</td>
+				<td>{{ field.errors|join:" " }}</td>
+			</tr>
+			{% endfor %}
+			<tr>
+				<td></td>
+				<td><u><b>תשלום לעו"ד</b></u></td>
+			</tr>
+			<tr>
+				<th>{{ side2form.lawyer1.label_tag }}</th>
+				<td>{{ side2form.lawyer1 }}</td>
+				<td>{{ side2form.lawyer1.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side2form.lawyer1_pay.label_tag }}</th>
+				<td>{{ side2form.lawyer1_pay }}</td>
+				<td>{{ side2form.lawyer1_pay.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side2form.lawyer2.label_tag }}</th>
+				<td>{{ side2form.lawyer2 }}</td>
+				<td>{{ side2form.lawyer2.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side2form.lawyer2_pay.label_tag }}</th>
+				<td>{{ side2form.lawyer2_pay }}</td>
+				<td>{{ side2form.lawyer2_pay.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><u><b>תשלום ליועץ נדל"ן</b></u></td>
+			</tr>
+			<tr>
+				<th>{{ side2form.employee1.label_tag }}</th>
+				<td>{{ side2form.employee1 }}</td>
+				<td>{{ side2form.employee1.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side2form.employee1_commission.label_tag }}</th>
+				<td>{{ side2form.employee1_commission }}</td>
+				<td>{{ side2form.employee1_commission.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side2form.employee2_commission.label_tag }}</th>
+				<td>{{ side2form.employee2_commission }}</td>
+				<td>{{ side2form.employee2_commission.errors|join:" " }}</td>
+			</tr>
+		</table>
+	</div>
+		<input name="addanother" type="submit" value="שמור והמשך בהזנה" class="button" />
+	</form>
+	<div class="clearBoth"></div> 
+{% endblock content %}

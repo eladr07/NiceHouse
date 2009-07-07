@@ -618,6 +618,55 @@ def project_archive(request):
                               {'projects': projects}, 
                               context_instance=RequestContext(request))
 
+def nhsale_add(request):
+    if request.method=='POST':
+        saleForm = NHSaleForm(request.POST, prefix='sale')
+        side1form = NHSaleSideForm(request.POST, prefix='side1')
+        side2form = NHSaleSideForm(request.POST, prefix='side2')
+        invoice1Form = InvoiceForm(request.POST, prefix='invoice1')
+        payment1Form = PaymentForm(request.POST, prefix='payment1')
+        invoice2Form = InvoiceForm(request.POST, prefix='invoice2')
+        payment2Form = PaymentForm(request.POST, prefix='payment2')
+        if saleForm.is_valid() and side1Form.is_valid() and side2Form.is_valid():
+            nhsale = saleForm.save()
+            side1Form.instance.nhsale = side2Form.instance.nhsale = nhsale
+            side1, side2 = (side1Form.save(), side2Form.save())
+            error = False
+            if invoice1Form.is_valid():
+                side1.invoices.add(invoice1Form.save())
+            else:
+                error = invoice1Form.has_changed()
+            if payment1Form.is_valid():
+                side1.payments.add(payment1Form.save())
+            else:
+                error = payment1Form.has_changed()
+            if invoice2Form.is_valid():
+                side1.invoices.add(invoice2Form.save())
+            else:
+                error = invoice2Form.has_changed()
+            if payment2Form.is_valid():
+                side1.payments.add(payment2Form.save())
+            else:
+                error = payment2Form.has_changed()
+            if not error:
+                if request.POST.has_key('addanother'):
+                    return HttpResponseRedirect('add')
+    else:
+        saleForm = NHSaleForm(prefix='sale')
+        side1Form = NHSaleSideForm(prefix='side1')
+        side2Form = NHSaleSideForm(prefix='side2')
+        invoice1Form = InvoiceForm(prefix='invoice1')
+        payment1Form = PaymentForm(prefix='payment1')
+        invoice2Form = InvoiceForm(prefix='invoice2')
+        payment2Form = PaymentForm(prefix='payment2')
+        
+    return render_to_response('Management/nhsale_edit.html',
+                              {'saleForm':saleForm, 'side1form':side1form,
+                               'side2form':side2form, 'invoice1Form':invoice1Form,
+                               'payment1Form':payment1Form, 'invoice2Form':invoice2Form, 
+                               'payment2Form':payment2Form}, 
+                              context_instance=RequestContext(request))
+
 @permission_required('Management.change_pricelist')
 def building_pricelist(request, object_id, type_id):
     b = Building.objects.get(pk = object_id)
