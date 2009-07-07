@@ -307,10 +307,10 @@ class NHSaleForm(forms.ModelForm):
         model = NHSale
 
 class NHSaleSideForm(forms.ModelForm):
-    employee1_commission = forms.FloatField(ugettext('commission_precent'))
-    employee2_commission = forms.FloatField(ugettext('commission_precent'))
-    lawyer1_pay = forms.FloatField(ugettext('lawyer_pay'))
-    lawyer2_pay = forms.FloatField(ugettext('lawyer_pay'))
+    employee1_commission = forms.FloatField(label=ugettext('commission_precent'))
+    employee2_commission = forms.FloatField(label=ugettext('commission_precent'), required=False)
+    lawyer1_pay = forms.FloatField(label=ugettext('lawyer_pay'))
+    lawyer2_pay = forms.FloatField(label=ugettext('lawyer_pay'), required=False)
     def save(self, *args, **kw):
         e1, e2 = (self.cleaned_data['employee1'], self.cleaned_data['employee2'])
         ec1, ec2 = (self.cleaned_data['employee1_commission'], self.cleaned_data['employee2_commission'])
