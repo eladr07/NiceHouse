@@ -653,8 +653,8 @@ def nhsale_add(request):
                     return HttpResponseRedirect('add')
     else:
         saleForm = NHSaleForm(prefix='sale')
-        side1Form = NHSaleSideForm(prefix='side1')
-        side2Form = NHSaleSideForm(prefix='side2')
+        side1form = NHSaleSideForm(prefix='side1')
+        side2form = NHSaleSideForm(prefix='side2')
         invoice1Form = InvoiceForm(prefix='invoice1')
         payment1Form = PaymentForm(prefix='payment1')
         invoice2Form = InvoiceForm(prefix='invoice2')
