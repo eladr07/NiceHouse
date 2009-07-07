@@ -1248,9 +1248,12 @@ class NHSaleSide(models.Model):
     phone1 = models.CharField(ugettext('phone'), max_length=20, null=True, blank=True)
     phone2 = models.CharField(ugettext('phone'), max_length=20, null=True, blank=True)
     employee1 = models.ForeignKey('Employee', verbose_name=ugettext('advisor'), related_name='nhsaleside1s')
-    employee2 = models.ForeignKey('Employee', verbose_name=ugettext('advisor'), related_name='nhsaleside2s')
-    lawyer1 = models.ForeignKey('Lawyer', verbose_name=ugettext('lawyer'), related_name='nhsaleside1s')
-    lawyer2 = models.ForeignKey('Lawyer', verbose_name=ugettext('lawyer'), related_name='nhsaleside2s')
+    employee2 = models.ForeignKey('Employee', verbose_name=ugettext('advisor'), related_name='nhsaleside2s', 
+                                null=True, blank=True)
+    lawyer1 = models.ForeignKey('Lawyer', verbose_name=ugettext('lawyer'), related_name='nhsaleside1s', 
+                                null=True, blank=True)
+    lawyer2 = models.ForeignKey('Lawyer', verbose_name=ugettext('lawyer'), related_name='nhsaleside2s', 
+                                null=True, blank=True)
     signed_commission = models.FloatField(ugettext('signed_commission'))
     actual_commission = models.FloatField(ugettext('actual_commission'))
     voucher_num = models.IntegerField(ugettext('voucher_num'))
