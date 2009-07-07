@@ -1233,7 +1233,7 @@ class Madad(models.Model):
 class NHPay(models.Model):
     nhsale = models.ForeignKey('NHSale', editable=False, related_name='pays')
     employee = models.ForeignKey('Employee', editable=False, related_name='nhpays', null=True)
-    lawyer = models.ForeignKey('Employee', editable=False, related_name='nhpays', null=True)
+    lawyer = models.ForeignKey('Lawyer', editable=False, related_name='nhpays', null=True)
     amount = models.FloatField(ugettext('amount'))
     class Meta:
         db_table='NHPay'
@@ -1263,8 +1263,8 @@ class NHSaleSide(models.Model):
         db_table = 'NHSaleSide'
 
 class NHSale(models.Model):
-    side1 = models.ForeignKey('NHSaleSide')
-    side2 = models.ForeignKey('NHSaleSide')
+    side1 = models.ForeignKey('NHSaleSide', related_name='nhsaleside1s')
+    side2 = models.ForeignKey('NHSaleSide', related_name='nhsaleside2s')
     
     address = models.CharField(ugettext('address'), max_length=50)
     hood = models.CharField(ugettext('hood'), max_length=50)
