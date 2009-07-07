@@ -508,7 +508,7 @@ class AdvancePayment(models.Model):
     amount = models.IntegerField(ugettext('amount'))
     date = models.DateField(ugettext('date'))
     date_paid = models.DateField(editable=False, null=True)
-    is_paid = models.BooleanField(null = True, editable=False)
+    is_paid = models.NullBooleanField(editable=False)
     def pay(self):
         self.is_paid = True
         self.date_paid = datetime.now()
@@ -958,8 +958,8 @@ class ProjectCommission(models.Model):
    
     add_amount = models.PositiveIntegerField(ugettext('add_amount'), null=True, blank=True)
     add_type = models.CharField(ugettext('add_type'), max_length = 20, null=True, blank=True)
-    include_tax = models.BooleanField(ugettext('commission_include_tax'), null=True, blank=True)
-    include_lawyer = models.BooleanField(ugettext('commission_include_lawyer'), null=True, blank=True,
+    include_tax = models.NullBooleanField(ugettext('commission_include_tax'), blank=True)
+    include_lawyer = models.NullBooleanField(ugettext('commission_include_lawyer'), blank=True,
                                          choices = (
                                                     ('','לא משנה'),
                                                     (0, 'לא'),
