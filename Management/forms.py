@@ -246,7 +246,7 @@ class DemandForm(forms.ModelForm):
     class Meta:
         model = Demand
 
-class InvoiceForm(forms.ModelForm):
+class DemandInvoiceForm(forms.ModelForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label = ugettext('project'))
     year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
                              label = ugettext('year'), initial = datetime.now().year)
@@ -266,7 +266,23 @@ class InvoiceForm(forms.ModelForm):
     class Meta:
         model = Invoice
 
+class InvoiceForm(forms.ModelForm):
+    def __init__(self, *args, **kw):
+        forms.ModelForm.__init__(self,*args,**kw)
+        self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
+        self.fields['date'].widget.attrs = {'class':'vDateField'}
+    class Meta:
+        model = Invoice
+        
 class PaymentForm(forms.ModelForm):
+    def __init__(self, *args, **kw):
+        forms.ModelForm.__init__(self,*args,**kw)
+        self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
+        self.fields['payment_date'].widget.attrs = {'class':'vDateField'}
+    class Meta:
+        model = Payment
+
+class DemandPaymentForm(forms.ModelForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label = ugettext('project'))
     year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
                              label = ugettext('year'), initial = datetime.now().year)

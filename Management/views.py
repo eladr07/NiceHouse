@@ -541,7 +541,7 @@ def invoice_add(request, initial=None):
             if request.POST.has_key('addanother'):
                 form = InvoiceForm(initial=initial)
     else:
-        form = InvoiceForm(initial=initial)
+        form = DemandInvoiceForm(initial=initial)
     return render_to_response('Management/invoice_edit.html', {'form':form}, context_instance=RequestContext(request))
 
 
@@ -568,7 +568,7 @@ def payment_add(request, initial=None):
         if form.is_valid():
             form.save()
             if request.POST.has_key('addanother'):
-                form = PaymentForm(initial=initial)
+                form = DemandPaymentForm(initial=initial)
     else:
         form = PaymentForm(initial=initial)
     return render_to_response('Management/payment_edit.html', 
