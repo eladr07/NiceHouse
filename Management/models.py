@@ -1266,8 +1266,8 @@ class NHSale(models.Model):
     side1 = models.ForeignKey('NHSaleSide')
     side2 = models.ForeignKey('NHSaleSide')
     
-    address = models.CharField(ugettest('address'), max_length=50)
-    hood = models.CharField(ugettest('hood'), max_length=50)
+    address = models.CharField(ugettext('address'), max_length=50)
+    hood = models.CharField(ugettext('hood'), max_length=50)
     rooms = models.PositiveSmallIntegerField(ugettext('rooms'))
     floor = models.PositiveSmallIntegerField(ugettext('floor'))
     type = models.ForeignKey('HouseType', verbose_name = ugettext('house_type'))
