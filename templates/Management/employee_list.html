@@ -128,4 +128,37 @@
 			{% endfor %}
 		{% endfor %}
 	</table>
+	<br><br>
+	<table id="employee_table" class="dataTable" border="1">
+		<caption>מציג סה"כ {{nhemployee_list.count}} עובדים בנייס האוס</caption>
+		<th/>
+		<th>מספר</th>
+		<th>שם פרטי</th>
+		<th>שם משפחה</th>
+		<th>טלפון</th>
+		<th>כתובת</th>
+		<th>תחילת העסקה</th>
+		<th>סוג העסקה</th>
+		<th>הערות</th>
+		{% regroup employee_list by branch as branch_list %}
+		{% for branch in branch_list %}
+			<tr style="text-align:center; color:#4669D6; font-size:14px"><td colspan="10"><b>{{branch.grouper}}</b></td></tr>
+			{% for e in branch.list %}
+				<tr class="{% cycle 'row1' 'row2' %}" objid={{e.id}}>
+					<td><a href="/employees/{{e.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
+					<td>{{ e.id }}</td>
+					<td>{{ e.first_name }}</td>
+					<td>{{ e.last_name }}</td>
+					<td>{{ e.phone }}</td>
+					<td>{{ e.address }}</td>
+					<td>{{ e.work_start }}</td>
+					<td {% ifequal e.employment_terms.hire_type.id 1 %}style="color:#1AA337;"{%endifequal%}>
+					{{e.employment_terms.hire_type}}
+					{% ifequal e.employment_terms.hire_type.id 2 %} - {{e.employment_terms.salary_net|yesno:"נטו, ברוטו"}} {%endifequal%}
+					</td>
+					<td>{{ e.remarks }}</td>
+				</tr>
+			{% endfor %}
+		{% endfor %}
+	</table>
 {% endblock content %}

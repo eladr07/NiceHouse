@@ -146,11 +146,18 @@
 			<li><a href="#">תזכורות</a></li>
 			<li><a href="#">טפסי חברה - סטנדרט</a></li>
 		</ul>
+		<div class="listTitle">נייס האוס</div>
+		<ul>
+			<li><a href="nhemployee/add">עובד חדש</a></li>
+			<li><a href="#">ריכוז מכירות לחודש לכל הסניפים</a></li>
+			<li><a href="nhbranch/add">ריכוז מכירות לחודש לכל הסניפים</a></li>
+		</ul>
 		{% for b in nhbranches %}
 		<div class="listTitle">{{b.name}}</div>
 		<ul>
 			<li><a href="/nhbranch/{{b.id}}">פרטי הסניף</a></li>
 			<li><a href="/nhbranch/{{b.id}}/nhsale/add">עסקה חדשה</a></li>
+			<li><a href="#">ריכוז מכירות לחודש</a></li>
 		</ul>
 		{% endfor %}
 		<li><a href="links">שימושון נדל"ן</a></li>

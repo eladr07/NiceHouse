@@ -1138,7 +1138,8 @@ def employee_archive(request):
 @login_required
 def employee_list(request):
     return render_to_response('Management/employee_list.html', 
-                              { 'employee_list': Employee.objects.active()},
+                              { 'employee_list': Employee.objects.active(),
+                               'nhemployee_list': NHEmployee.objects.active()},
                               context_instance=RequestContext(request)) 
 
 @permission_required('Management.add_loan')
