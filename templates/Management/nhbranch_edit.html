@@ -19,9 +19,11 @@
 	<form method="POST">
 		<table class="formTable" cellspacing="5" align="center">
 		{% for field in form %}
+		<tr>
 			<th>{{field.label_tag}}</th>
 			<td>{{field}}</td>
 			<td>{{field.errors|join:" ,"}}</td>
+		</tr>
 		{% endfor %}
 		</table>
 		<input name="finish" type="submit" value="אישור" class="button"/>
