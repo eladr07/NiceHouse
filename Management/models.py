@@ -562,7 +562,7 @@ class NHEmployee(Person):
         return '/nhemployees/%s' % self.id
     class Meta:
         db_table = 'NHEmployee'
-        ordering = ['rank','-work_start']
+        ordering = ['-work_start']
         
 class AdvancePayment(models.Model):
     employee = models.ForeignKey('Employee', related_name = 'advance_payments', verbose_name=ugettext('employee'))
