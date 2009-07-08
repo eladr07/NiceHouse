@@ -141,6 +141,15 @@ class EmployeeForm(forms.ModelForm):
         self.fields['work_end'].widget = forms.TextInput(attrs={'class':'vDateField'})
     class Meta:
         model = Employee
+
+class NHEmployeeForm(forms.ModelForm):
+    def __init__(self, *args, **kw):
+        forms.ModelForm.__init__(self,*args,**kw)
+        self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
+        self.fields['work_start'].widget = forms.TextInput(attrs={'class':'vDateField'})
+        self.fields['work_end'].widget = forms.TextInput(attrs={'class':'vDateField'})
+    class Meta:
+        model = NHEmployee
       
 class ProjectCommissionForm(forms.ModelForm):
     def __init__(self, *args, **kw):
@@ -303,17 +312,23 @@ class DemandPaymentForm(forms.ModelForm):
         model = Payment
 
 class NHSaleForm(forms.ModelForm):
+    def __init__(self, *args, **kw):
+        forms.ModelForm.__init__(self, *args, **kw)
+        self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
     class Meta:
         model = NHSale
 
 class NHSaleSideForm(forms.ModelForm):
     employee1_commission = forms.FloatField(label=ugettext('commission_precent'))
     employee2_commission = forms.FloatField(label=ugettext('commission_precent'), required=False)
+    director_commission = forms.FloatField(label=ugettext('commission_precent'), required=False)
     lawyer1_pay = forms.FloatField(label=ugettext('lawyer_pay'))
     lawyer2_pay = forms.FloatField(label=ugettext('lawyer_pay'), required=False)
     def save(self, *args, **kw):
-        e1, e2 = (self.cleaned_data['employee1'], self.cleaned_data['employee2'])
-        ec1, ec2 = (self.cleaned_data['employee1_commission'], self.cleaned_data['employee2_commission'])
+        e1, e2, d = (self.cleaned_data['employee1'], self.cleaned_data['employee2'],
+                     self.cleaned_data['director'])
+        ec1, ec2, dc = (self.cleaned_data['employee1_commission'], self.cleaned_data['employee2_commission'],
+                        self.cleaned_data['director_commission'])
         l1, l2 = (self.cleaned_data['lawyer1'], self.cleaned_data['lawyer2'])
         lp1, lp2 = (self.cleaned_data['lawyer1_pay'], self.cleaned_data['lawyer2_pay'])
         side = forms.ModelForm.save(self, *args,**kw)
@@ -326,6 +341,10 @@ class NHSaleSideForm(forms.ModelForm):
             nhp = e2.nhpays.get_or_create(nhsale = nhsale)[0]
             nhp.amount = nhsale.price * ec2 / 100
             nhp.save()
+        if d and dc:
+            nhp = d.nhpays.get_or_create(nhsale = nhsale)[0]
+            nhp.amount = nhsale.price * ec2 / 100
+            nhp.save()
         if l1 and lp1:
             nhp = l1.nhpays.get_or_create(nhsale = nhsale)[0]
             nhp.amount = lp1
@@ -336,9 +355,8 @@ class NHSaleSideForm(forms.ModelForm):
             nhp.save()
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self, *args, **kw)
+        self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
         self.fields['voucher_date'].widget.attrs = {'class':'vDateField'}
-        self.fields['employee1'].queryset = Employee.objects.filter(rank__name__contains=u'נייס האוס')
-        self.fields['employee2'].queryset = Employee.objects.filter(rank__name__contains=u'נייס האוס')
         if self.instance.id:
             nhsale = self.instance.nhsale
             if self.instance.employee1:

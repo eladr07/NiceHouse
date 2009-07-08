@@ -503,6 +503,68 @@ class Employee(Person):
         db_table = 'Employee'
         ordering = ['rank','-work_start']
 
+class NHBranch(models.Model):
+    name = models.CharField(ugettext('name'), max_length=30, unique=True)
+    manager = models.ForeignKey('NHEmployee', null=True, blank=True)
+    mail = models.EmailField(ugettext('mail'), null=True, blank=True)
+    phone = models.CharField(ugettext('phone'), max_length=20, null=True, blank=True)
+    url = models.URLField(ugettext('url'), null=True, blank=True)
+    def __unicode__(self):
+        return unicode(self.name)
+    class Meta:
+        db_table='NHBranch'
+    
+class NHEmployee(Person):
+    pid = models.PositiveIntegerField(ugettext('pid'), unique=True)
+    rank = models.ForeignKey('RankType', verbose_name=ugettext('rank'))
+    birth_date = models.DateField(ugettext('birth_date'))
+    home_phone = models.CharField(ugettext('home phone'), max_length=10)
+    mate_phone = models.CharField(ugettext('mate phone'), max_length=10, null=True, blank=True)
+    family_state = models.PositiveIntegerField(ugettext('family state'), choices = Family_State_Types)
+    child_num = models.PositiveIntegerField(ugettext('child num'), null=True, blank=True)
+    
+    nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'), related_name='nhemployees')
+    
+    work_start = models.DateField(ugettext('work start'))
+    work_end = models.DateField(ugettext('work end'), null=True, blank=True)
+    
+    remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
+    reminders = models.ManyToManyField('Reminder', null=True, editable=False)
+    account = models.OneToOneField('Account', related_name='nhemployee',editable=False, null=True, blank=True)
+    employment_terms = models.OneToOneField('EmploymentTerms',editable=False, related_name='nhemployee', null=True, blank=True)
+    
+    objects = EmployeeManager()
+    
+    def get_open_reminders(self):
+        return [r for r in self.reminders.all() if r.statuses.latest().type.id 
+                not in (ReminderStatusDeleted,ReminderStatusDone)]
+    def end(self):
+        self.work_end = datetime.now()
+    def loan_left(self):
+        n = 0
+        for loan in self.loans.all():
+            n += loan.amount
+        for pay in self.loan_pays.all():
+            n -= pay.amount
+        return n
+    def loans_and_pays(self):
+        l = [l for l in self.loans.all()]
+        l.extend([p for p in self.loan_pays.all()])
+        l.sort(lambda x,y: cmp(x.date, y.date))
+        left = 0
+        for o in l:
+            if isinstance(o, Loan):
+                left += o.amount
+            elif isinstance(o, LoanPay):
+                left -= o.amount
+            o.left = left
+        return l
+    def get_absolute_url(self):
+        return '/nhemployees/%s' % self.id
+    class Meta:
+        db_table = 'NHEmployee'
+        ordering = ['rank','-work_start']
+        
 class AdvancePayment(models.Model):
     employee = models.ForeignKey('Employee', related_name = 'advance_payments', verbose_name=ugettext('employee'))
     amount = models.IntegerField(ugettext('amount'))
@@ -523,6 +585,7 @@ class AdvancePayment(models.Model):
         
 class Loan(models.Model):
     employee = models.ForeignKey('Employee', related_name = 'loans', verbose_name=ugettext('employee'))
+    nhemployee = models.ForeignKey('NHEmployee', related_name = 'loans', verbose_name=ugettext('nhemployee'))
     amount = models.IntegerField(ugettext('amount'))
     date = models.DateField(ugettext('date'), default=date.today())
     pay_num = models.PositiveSmallIntegerField(ugettext('pay_num'))
@@ -538,6 +601,7 @@ class Loan(models.Model):
 
 class LoanPay(models.Model):
     employee = models.ForeignKey('Employee', related_name='loan_pays', editable=False)
+    nhemployee = models.ForeignKey('NHEmployee', related_name = 'loans', verbose_name=ugettext('nhemployee'))
     date = models.DateField(ugettext('date'), auto_now_add=True)
     amount = models.FloatField(ugettext('amount'))
     remarks = models.TextField(ugettext('remarks'), blank=True, null=True)
@@ -1232,7 +1296,7 @@ class Madad(models.Model):
 
 class NHPay(models.Model):
     nhsale = models.ForeignKey('NHSale', editable=False, related_name='pays')
-    employee = models.ForeignKey('Employee', editable=False, related_name='nhpays', null=True)
+    employee = models.ForeignKey('NHEmployee', editable=False, related_name='nhpays', null=True)
     lawyer = models.ForeignKey('Lawyer', editable=False, related_name='nhpays', null=True)
     amount = models.FloatField(ugettext('amount'))
     class Meta:
@@ -1247,8 +1311,10 @@ class NHSaleSide(models.Model):
     name2 = models.CharField(ugettext('name'), max_length=20, null=True, blank=True)
     phone1 = models.CharField(ugettext('phone'), max_length=20, null=True, blank=True)
     phone2 = models.CharField(ugettext('phone'), max_length=20, null=True, blank=True)
-    employee1 = models.ForeignKey('Employee', verbose_name=ugettext('advisor'), related_name='nhsaleside1s')
-    employee2 = models.ForeignKey('Employee', verbose_name=ugettext('advisor'), related_name='nhsaleside2s', 
+    employee1 = models.ForeignKey('NHEmployee', verbose_name=ugettext('advisor'), related_name='nhsaleside1s')
+    employee2 = models.ForeignKey('NHEmployee', verbose_name=ugettext('advisor'), related_name='nhsaleside2s', 
+                                null=True, blank=True)
+    director = models.ForeignKey('NHEmployee', verbose_name=ugettext('director'), related_name='nhsaleside_director', 
                                 null=True, blank=True)
     lawyer1 = models.ForeignKey('Lawyer', verbose_name=ugettext('lawyer'), related_name='nhsaleside1s', 
                                 null=True, blank=True)
@@ -1266,6 +1332,7 @@ class NHSaleSide(models.Model):
         db_table = 'NHSaleSide'
 
 class NHSale(models.Model):
+    nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'))
     side1 = models.ForeignKey('NHSaleSide', related_name='nhsaleside1s')
     side2 = models.ForeignKey('NHSaleSide', related_name='nhsaleside2s')
     
@@ -1276,6 +1343,7 @@ class NHSale(models.Model):
     type = models.ForeignKey('HouseType', verbose_name = ugettext('house_type'))
     
     price = models.FloatField(ugettext('price'))
+    remarks = models.TextField(ugettext('remarks'))
         
     class Meta:
         db_table='NHSale'

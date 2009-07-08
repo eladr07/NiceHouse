@@ -15,7 +15,8 @@ from mail import mail
 @login_required
 def index(request):
     return render_to_response('Management/index.html',
-                              {'locateHouseForm':LocateHouseForm()},
+                              {'locateHouseForm':LocateHouseForm(),
+                               'nhbranches':Branch.objects.all()},
                               context_instance=RequestContext(request))
   
 @login_required  
@@ -237,8 +238,8 @@ def signup_cancel(request, id):
                               context_instance=RequestContext(request))
 
 @permission_required('Management.add_account')
-def employee_account(request, id):
-    employee = Employee.objects.get(pk=id)
+def employee_account(request, id, model):
+    employee = model.objects.get(pk=id)
     try:
         acc = employee.account
     except Account.DoesNotExist:
@@ -254,12 +255,6 @@ def employee_account(request, id):
     return render_to_response('Management/object_edit.html', 
                               { 'form':form },
                               context_instance=RequestContext(request))
-    
-@permission_required('Management.delete_account')
-def employee_account_delete(request, id):
-    e = Employee.objects.get(pk=id)
-    e.account.delete()
-    return HttpResponseRedirect('./')
 
 @permission_required('Management.list_demand')
 def demand_function(request,id , function):
@@ -618,9 +613,10 @@ def project_archive(request):
                               {'projects': projects}, 
                               context_instance=RequestContext(request))
 
-def nhsale_add(request):
+def nhsale_add(request, branch_id):
     if request.method=='POST':
         saleForm = NHSaleForm(request.POST, prefix='sale')
+        saleForm.instance.nhbranch = NHBranch.objects.get(pk=branch_id)
         side1form = NHSaleSideForm(request.POST, prefix='side1')
         side2form = NHSaleSideForm(request.POST, prefix='side2')
         invoice1Form = InvoiceForm(request.POST, prefix='invoice1')
@@ -653,6 +649,7 @@ def nhsale_add(request):
                     return HttpResponseRedirect('add')
     else:
         saleForm = NHSaleForm(prefix='sale')
+        saleForm.instance.nhbranch = NHBranch.objects.get(pk=branch_id)
         side1form = NHSaleSideForm(prefix='side1')
         side2form = NHSaleSideForm(prefix='side2')
         invoice1Form = InvoiceForm(prefix='invoice1')
@@ -1145,11 +1142,11 @@ def employee_list(request):
                               context_instance=RequestContext(request)) 
 
 @permission_required('Management.add_loan')
-def employee_loans(request, employee_id):
+def employee_loans(request, employee_id, model):
     return render_to_response('Management/employee_loans.html', 
-                              { 'employee': Employee.objects.get(pk=employee_id)},
+                              { 'employee': model.objects.get(pk=employee_id)},
                               context_instance=RequestContext(request))
-    
+        
 @permission_required('Management.add_loan')
 def employee_addloan(request, employee_id):
     employee = Employee.objects.get(pk = employee_id)
@@ -1175,10 +1172,36 @@ def employee_loanpay(request, employee_id):
         form = LoanPayForm()
     return render_to_response('Management/object_edit.html',
                               {'form' : form}, context_instance=RequestContext(request))
+    
+@permission_required('Management.add_loan')
+def nhemployee_addloan(request, employee_id):
+    employee = NHEmployee.objects.get(pk = employee_id)
+    if request.method=='POST':
+        form = LoanForm(request.POST)
+        if form.is_valid():
+            form.save() 
+    else:
+        form = LoanForm(initial={'nhemployee':employee.id})
+    
+    return render_to_response('Management/object_edit.html',
+                              {'form' : form}, context_instance=RequestContext(request))
+    
+@permission_required('Management.add_loanpay')
+def nhemployee_loanpay(request, employee_id):
+    e = NHEmployee.objects.get(pk=employee_id)
+    if request.method == 'POST':
+        form = LoanPayForm(request.POST)
+        if form.is_valid():
+            form.instance.nhemployee = e
+            form.save()
+    else:
+        form = LoanPayForm()
+    return render_to_response('Management/object_edit.html',
+                              {'form' : form}, context_instance=RequestContext(request))
 
 @permission_required('Management.add_employmentterms')
-def employee_employmentterms(request, id):
-    employee = Employee.objects.get(pk = id)
+def employee_employmentterms(request, id, model):
+    employee = model.objects.get(pk = id)
     terms = employee.employment_terms or EmploymentTerms()
     if request.method == "POST":
         form = EmploymentTermsForm(request.POST, instance=terms)

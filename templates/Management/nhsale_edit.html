@@ -19,6 +19,11 @@
 			<td>{{ side2Form.id }}</td>
 		</tr>
 		<tr>
+			<th>{{ saleForm.branch.label_tag }}</th>
+			<td>{{ saleForm.branch }}</td>
+			<td>{{ saleForm.branch.errors|join:" " }}</td>
+		</tr>
+		<tr>
 			<th>{{ saleForm.address.label_tag }}</th>
 			<td>{{ saleForm.address }}</td>
 			<td>{{ saleForm.address.errors|join:" " }}</td>
@@ -48,12 +53,17 @@
 			<td>{{ saleForm.price }}</td>
 			<td>{{ saleForm.price.errors|join:" " }}</td>
 		</tr>
+		<tr>
+			<th>{{ saleForm.remarks.label_tag }}</th>
+			<td>{{ saleForm.remarks }}</td>
+			<td>{{ saleForm.remarks.errors|join:" " }}</td>
+		</tr>
 	</table>
 	<div id="rightSide">
 		<table cellspacing="2" cellpadding="2" class="formTable">
 			<tr>
 				<td></td>
-				<td><u><b>בעל הנכס</b></u></td>
+				<td><u><b>בעל הנכס\משכיר</b></u></td>
 			</tr>
 			<tr>
 				<th>{{ side1form.name1.label_tag }}</th>
@@ -165,14 +175,29 @@
 				<td>{{ side1form.employee1_commission.errors|join:" " }}</td>
 			</tr>
 			<tr>
-				<th>{{ side2form.employee2.label_tag }}</th>
-				<td>{{ side2form.employee2 }}</td>
-				<td>{{ side2form.employee2.errors|join:" " }}</td>
+				<th>{{ side1form.employee2.label_tag }}</th>
+				<td>{{ side1form.employee2 }}</td>
+				<td>{{ side1form.employee2.errors|join:" " }}</td>
 			</tr>
 			<tr>
 				<th>{{ side1form.employee2_commission.label_tag }}</th>
 				<td>{{ side1form.employee2_commission }}</td>
 				<td>{{ side1form.employee2_commission.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side1form.director.label_tag }}</th>
+				<td>{{ side1form.director }}</td>
+				<td>{{ side1form.director.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side1form.director_commission.label_tag }}</th>
+				<td>{{ side1form.director_commission }}</td>
+				<td>{{ side1form.director_commission.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side1form.remarks.label_tag }}</th>
+				<td>{{ side1form.remarks }}</td>
+				<td>{{ side1form.remarks.errors|join:" " }}</td>
 			</tr>
 		</table>
 	</div>
@@ -180,7 +205,7 @@
 		<table cellspacing="2" cellpadding="2" class="formTable">
 			<tr>
 				<td></td>
-				<td><u><b>בעל הנכס</b></u></td>
+				<td><u><b>רוכש\שוכר</b></u></td>
 			</tr>
 			<tr>
 				<th>{{ side2form.name1.label_tag }}</th>
@@ -300,6 +325,21 @@
 				<th>{{ side2form.employee2_commission.label_tag }}</th>
 				<td>{{ side2form.employee2_commission }}</td>
 				<td>{{ side2form.employee2_commission.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side1form.director.label_tag }}</th>
+				<td>{{ side1form.director }}</td>
+				<td>{{ side1form.director.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side1form.director_commission.label_tag }}</th>
+				<td>{{ side1form.director_commission }}</td>
+				<td>{{ side1form.director_commission.errors|join:" " }}</td>
+			</tr>
+			<tr>
+				<th>{{ side2form.remarks.label_tag }}</th>
+				<td>{{ side2form.remarks }}</td>
+				<td>{{ side2form.remarks.errors|join:" " }}</td>
 			</tr>
 		</table>
 	</div>

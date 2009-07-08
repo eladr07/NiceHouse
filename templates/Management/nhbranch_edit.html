@@ -1,0 +1,37 @@
+﻿{% extends "./base.html" %}
+{% block header %}
+{{ block.super }}
+<script>
+	$(document).ready(function() {		
+		$("input[type!='submit']").attr("class", "inputText");
+	});
+</script>
+{% endblock header %}
+{% block content %}
+<div class="title">
+{% if form.instance.id %}
+	<div class="pageTitle">{{form.instance.name}}</div>
+{% else %}
+	<div class="pageTitle">פתיחת סניף נייס האוס</div>
+{% endif %}
+</div>
+<div id="rightSide">
+	<form method="POST">
+		<table class="formTable" cellspacing="5" align="center">
+		{% for field in form %}
+			<th>{{field.label_tag}}</th>
+			<td>{{field}}</td>
+			<td>{{field.errors|join:" ,"}}</td>
+		{% endfor %}
+		</table>
+		<input name="finish" type="submit" value="אישור" class="button"/>
+	</form>
+</div>
+<div id="leftSide">
+	<fieldset class="cardFieldset">
+		<legend>סוכני מכירות</legend>
+		{% for e in form.instance.nhemployees %}
+			<a href="{{e.get_absolute_url}}">{{e}}</a><br>
+		{% endfor %}
+	</fieldset>	
+{% endblock content%}

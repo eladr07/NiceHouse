@@ -1,0 +1,146 @@
+﻿{% extends "./base.html" %}
+
+{% block header %}	
+{{ block.super }}
+<script>
+	$(document).ready(function() {
+		$("input[type!='submit']").attr("class", "inputText");
+		$("select").attr("class", "inputText");
+		$(".fancybox").fancybox();
+		$(".bigfancybox").fancybox({'frameWidth':800});
+	});
+</script>
+{% endblock header %}
+{% block content %}	
+	<div class="title">
+	{% if form.instance.id %}
+		<div class="pageTitle">כרטיס עובד - {{form.instance}} ({{form.instance.id}})</div>	
+	{% else %}
+		<div class="pageTitle">הוספת עובד</div>	
+	{% endif %}
+	</div>
+	<div id="rightSide">
+		<form method="POST">
+		<fieldset class="cardFieldset">
+			<legend>פרטים כלליים</legend>
+			<table cellspacing="2" cellpadding="2" class="formTable">
+			{% for field in form %}
+				<tr>
+					<th>{{ field.label_tag }}</th>
+					<td>{{ field }}</td>
+					<td>{{ field.errors|join:" ,"}}</td>
+				</tr>
+			{% endfor %}
+			</table>
+		</fieldset>
+			<tr>
+				<td></td>
+				<td><input type="submit" value="שמירת כרטיס" class="button"/></td>
+			</tr>
+		</table>
+		</form>
+	</div>
+	<div id="leftSide"> 
+	{% if form.instance.id %}
+		{% if user.is_staff %}
+			<fieldset class="cardFieldset">
+				<legend>תנאי העסקה</legend>
+				{% if form.instance.employment_terms %}
+					<table class="formTable">
+					{% with form.instance.employment_terms as terms %}
+						<tr>
+							<th>שכר בסיס</th>
+							<td>{{terms.salary_base}} ש"ח</td>
+						</tr>
+						<tr>
+							<th>שכר נטו</th>
+							<td>{% if terms.salary_net %}נטו{%else%}ברוטו{%endif%}</td>
+						</tr>
+						<tr>
+							<th>רשת בטחון</th>
+							<td>{{terms.safety}} ש"ח</td>
+						</tr>
+						<tr>
+							<th>סוג העסקה</th>
+							<td>{{terms.hire_type}}</td>
+						</tr>
+					{% endwith %}
+					</table>
+					<a href="/employees/{{form.instance.id}}/employmentterms" class="fancybox" style="text-decoration:none;">
+						שינוי תנאי העסקה 
+						<img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="שינוי" />
+					</a>
+				{% else %}
+					<a href="/employees/{{form.instance.id}}/employmentterms" class="fancybox" style="text-decoration:none;">
+						הזנת תנאי העסקה 
+						<img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" />
+					</a>
+				{% endif %}
+			</fieldset>
+		{% endif %}
+		<fieldset class="cardFieldset">
+			<legend>פרטי חשבון</legend>
+			{% if form.instance.account %}
+				<table class="formTable">
+				{% with form.instance.account as a %}
+					<tr>
+						<th>מס' חשבון</th>
+						<td>{{a.num}}</td>
+					</tr>
+					<tr>
+						<th>בנק</th>
+						<td>{{a.bank}}</td>
+					</tr>
+					<tr>
+						<th>סניף</th>
+						<td>{{a.branch}}</td>
+					</tr>
+					<tr>
+						<th>מס' סניף</th>
+						<td>{{a.branch_num}}</td>
+					</tr>
+					<tr>
+						<th>שם המוטב</th>
+						<td>{{a.payee}}</td>
+					</tr>						
+				{% endwith %}
+				</table>
+				<a href="account" class="fancybox" style="text-decoration:none;">
+					שינוי פרטי חשבון
+					<img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="שינוי" />
+				</a>
+			{% else %}
+				<a href="account" class="fancybox" style="text-decoration:none;">
+					הזנת פרטי חשבון
+					<img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="חדש" />
+				</a>
+			{% endif %}
+		</fieldset>
+		<fieldset class="cardFieldset">
+			<legend>הלוואות</legend>
+			<table style="width:90%; font-size:12px">
+				<tr>
+					<td><a href="loans" class="fancybox">כרטיס הלוואות</a></td>
+					<td><a href="addloan" class="fancybox">הלוואה חדשה</a></td>
+					<td><a href="loanpay" class="fancybox">קיזוז הלוואה</a></td>
+				</tr>
+			</table>
+		</fieldset>
+		<fieldset class="cardFieldset">
+		<legend>תזכורות</legend>
+			קיימות <a id="list_reminders" href="reminders" class="fancybox">{{form.instance.get_open_reminders|length}}</a> תזכורות שטרם טופלו.<br>
+			<a id="add_reminder" href="addreminder" class="fancybox">תזכורת חדשה</a>
+		</fieldset>
+		<fieldset class="cardFieldset">
+		<legend>מסמכים מצורפים</legend>
+			סה"כ
+			{{form.instance.attachments.count}}
+			מסמכים מצורפים.
+			<br><br>
+			<a id="list_attachments" href="attachments" class="bigfancybox">ארכיב מסמכים</a><br>
+			<a id="add_attachment" href="attachment/add" class="bigfancybox">צרף מסמך</a>
+		</fieldset>
+	{% endif %}
+	</div>
+	<div class="clearBoth"></div> 
+{% endblock content %}
