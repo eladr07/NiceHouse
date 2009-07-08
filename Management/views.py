@@ -16,7 +16,7 @@ from mail import mail
 def index(request):
     return render_to_response('Management/index.html',
                               {'locateHouseForm':LocateHouseForm(),
-                               'nhbranches':Branch.objects.all()},
+                               'nhbranches':NHBranch.objects.all()},
                               context_instance=RequestContext(request))
   
 @login_required  
