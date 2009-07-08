@@ -505,7 +505,7 @@ class Employee(Person):
 
 class NHBranch(models.Model):
     name = models.CharField(ugettext('name'), max_length=30, unique=True)
-    manager = models.ForeignKey('NHEmployee', null=True, blank=True)
+    manager = models.ForeignKey('NHEmployee', null=True, blank=True,related_name='branch_manager')
     mail = models.EmailField(ugettext('mail'), null=True, blank=True)
     phone = models.CharField(ugettext('phone'), max_length=20, null=True, blank=True)
     url = models.URLField(ugettext('url'), null=True, blank=True)
