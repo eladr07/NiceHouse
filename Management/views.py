@@ -616,7 +616,7 @@ def project_archive(request):
 def nhsale_add(request, branch_id):
     if request.method=='POST':
         saleForm = NHSaleForm(request.POST, prefix='sale')
-        saleForm.instance.nhbranch = NHBranch.objects.get(pk=branch_id)
+        saleForm.fields['nhbranch'].initial = NHBranch.objects.get(pk=branch_id)
         side1form = NHSaleSideForm(request.POST, prefix='side1')
         side2form = NHSaleSideForm(request.POST, prefix='side2')
         invoice1Form = InvoiceForm(request.POST, prefix='invoice1')
@@ -649,7 +649,7 @@ def nhsale_add(request, branch_id):
                     return HttpResponseRedirect('add')
     else:
         saleForm = NHSaleForm(prefix='sale')
-        saleForm.instance.nhbranch = NHBranch.objects.get(pk=branch_id)
+        saleForm.fields['nhbranch'].initial = NHBranch.objects.get(pk=branch_id)
         side1form = NHSaleSideForm(prefix='side1')
         side2form = NHSaleSideForm(prefix='side2')
         invoice1Form = InvoiceForm(prefix='invoice1')
