@@ -30,7 +30,7 @@
 <div id="leftSide">
 	<fieldset class="cardFieldset">
 		<legend>סוכני מכירות</legend>
-		{% for e in form.instance.nhemployees %}
+		{% for e in form.instance.nhemployees.all %}
 			<a href="{{e.get_absolute_url}}">{{e}}</a><br>
 		{% endfor %}
 	</fieldset>	
