@@ -516,7 +516,6 @@ class NHBranch(models.Model):
     
 class NHEmployee(Person):
     pid = models.PositiveIntegerField(ugettext('pid'), unique=True)
-    rank = models.ForeignKey('RankType', verbose_name=ugettext('rank'))
     birth_date = models.DateField(ugettext('birth_date'))
     home_phone = models.CharField(ugettext('home phone'), max_length=10)
     mate_phone = models.CharField(ugettext('mate phone'), max_length=10, null=True, blank=True)
