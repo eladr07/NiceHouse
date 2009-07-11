@@ -456,26 +456,24 @@ def demands_send(request):
     forms=[]
     if request.method == 'POST':
         form = MonthFilterForm(request.POST)
-        if form.has_changed():
-            if form.is_valid():
-                ds = Demand.objects.filter(year = form.cleaned_data['year'], month = form.cleaned_data['month'])
-                month = datetime(int(form.cleaned_data['year']),int(form.cleaned_data['month']),1)
-        else:
-            error = False
-            for d in Demand.objects.current():
-                f = DemandSendForm(request.POST, instance=d, prefix = '%i' % d.id)
-                if f.is_valid():
-                    if f.cleaned_data['is_finished']:
-                        d.finish()
-                    if f.cleaned_data['by_mail']:
-                        demand_send_mail(d, f.cleaned_data['mail'])
-                    if f.cleaned_data['by_fax']:
-                        pass
-                else:
-                    error=True
-                forms.append(f)
-                if not error:
-                    return HttpResponseRedirect('/demandsold')
+        if form.is_valid():
+            ds = Demand.objects.filter(year = form.cleaned_data['year'], month = form.cleaned_data['month'])
+            month = datetime(int(form.cleaned_data['year']),int(form.cleaned_data['month']),1)
+        error = False
+        for d in Demand.objects.filter(year=month.year, month=month.month):
+            f = DemandSendForm(request.POST, instance=d, prefix = '%i' % d.id)
+            if f.is_valid():
+                if f.cleaned_data['is_finished']:
+                    d.finish()
+                if f.cleaned_data['by_mail']:
+                    demand_send_mail(d, f.cleaned_data['mail'])
+                if f.cleaned_data['by_fax']:
+                    pass
+            else:
+                error=True
+            forms.append(f)
+            if not error:
+                return HttpResponseRedirect('/demandsold')
     else:
         month = demand_month()
         form = MonthFilterForm()
