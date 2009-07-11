@@ -957,7 +957,8 @@ class CZilber(models.Model):
             for s in prev_sales[m].all():
                 prev_adds += (base - s.pc_base) * s.price_final / 100
         d.var_pay = prev_adds
-        d.var_pay_type = u'תוספת בגין %s עד %s' % (start, date(month.month == 1 and month.year-1 or month.year, month.month == 1 and 12 or month.month, 1))
+        d.var_pay_type = u'תוספת בגין %s עד %s' % (start.strftime('%d/%m/%Y'), 
+                                                   date(month.month == 1 and month.year-1 or month.year, month.month == 1 and 12 or month.month, 1).strftime('%d/%m/%Y %H:%M'))
         d.save()
     class Meta:
         db_table = 'CZilber'

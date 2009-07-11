@@ -22,7 +22,7 @@
 </form>
 <form method="post">
 	<table class="dataTable" border="1">
-		<th></th>
+		<th>מס'</th>
 		<th>שם הפרוייקט</th>
 		<th>חודש</th>
 		<th>סופית?</th>
@@ -35,7 +35,7 @@
 			<tr class="{% cycle 'row1' 'row2' %}">
 				<td>
 					{{f.id}}
-					<a href="{{f.instance.get_absolute_url}}">
+					<a href="{{f.instance.get_absolute_url}}">{{f.instance.id}}</a>
 				</td>
 				<td><a href="{{f.instance.project.get_absolute_url}}">{{ f.instance.project }}</a></td>
 				<td>{{ f.instance.month }}/{{f.instance.year}}</a></td>
