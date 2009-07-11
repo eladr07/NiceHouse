@@ -393,7 +393,6 @@ class DemandSendForm(forms.ModelForm):
     fax = forms.CharField(max_length=20, required=False)
     class Meta:
         model = Demand
-        fields = ('id',)
         
 class LoanPayForm(forms.ModelForm):
     class Meta:
