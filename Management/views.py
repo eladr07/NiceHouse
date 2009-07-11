@@ -459,6 +459,8 @@ def demands_send(request):
         if form.is_valid():
             ds = Demand.objects.filter(year = form.cleaned_data['year'], month = form.cleaned_data['month'])
             month = datetime(int(form.cleaned_data['year']),int(form.cleaned_data['month']),1)
+        else:
+            month = demand_month()
         error = False
         for d in Demand.objects.filter(year=month.year, month=month.month):
             f = DemandSendForm(request.POST, instance=d, prefix = '%i' % d.id)
