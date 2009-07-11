@@ -166,6 +166,7 @@ class MonthDemandWriter:
         colWidths.reverse()
         headers.reverse()#reportlab prints columns ltr
         i=1
+        next_break = 10
         flows = [tableCaption(), Spacer(0,20)]
         rows = []
         for s in sales:
@@ -180,7 +181,7 @@ class MonthDemandWriter:
                 row.extend([s.pb_dsp, commaise(s.pb_dsp_worth), s.c_final, commaise(s.c_final_worth)])
             row.reverse()#reportlab prints columns ltr
             rows.append(row)
-            if i % 10==0 or i == sales.count():
+            if i % next_break == 0 or i == sales.count():
                 if i == sales.count():# insert column summaries
                     if contract_num:
                         row = [None,None,None,log2vis('סה"כ %s' % self.demand.get_sales().count()),None]
@@ -202,6 +203,7 @@ class MonthDemandWriter:
                 flows.append(t)
                 if i < sales.count():
                     flows.extend([PageBreak(), Spacer(0,70)])
+                    next_break += 15
                 rows = []
             i+=1
         return flows
