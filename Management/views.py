@@ -479,7 +479,7 @@ def demands_send(request):
     else:
         month = demand_month()
         form = MonthFilterForm()
-    for d in Demand.objects.current():
+    for d in Demand.objects.filter(year=month.year, month=month.month):
         if d.project.demand_contact:
             initial = {'mail':d.project.demand_contact.mail,
                        'fax':d.project.demand_contact.fax}
