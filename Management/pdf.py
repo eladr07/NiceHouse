@@ -79,7 +79,7 @@ class MonthDemandWriter:
     @property
     def pages_count(self):
         count = self.demand.get_sales().count()
-        return count / 10 + (count % 10 != 0 and 1 or 0)
+        return count / 10 + ((count + 1) % 10 != 0 and 1 or 0)
     def __init__(self, demand):
         self.demand = demand
     def toPara(self):
