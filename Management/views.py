@@ -369,9 +369,8 @@ def demand_list(request):
     else:
         ds = Demand.objects.current()
         form = MonthFilterForm()
-        month = datetime.now()
-        if month.day <= 22:
-            month = datetime(month.year, month.month == 1 and 12 or month.month - 1, month.day)
+        month = demand_month()
+ 
     unhandled_projects = list(Project.objects.active())
     '''loop through all active projects and create demands for them if havent
     alredy created. if project has status other than Feed, it is handled'''        
@@ -478,6 +477,7 @@ def demands_send(request):
                 if not error:
                     return HttpResponseRedirect('/demandsold')
     else:
+        month = demand_month()
         form = MonthFilterForm()
     for d in Demand.objects.current():
         if d.project.demand_contact:
@@ -489,7 +489,7 @@ def demands_send(request):
         forms.append(f)
             
     return render_to_response('Management/demands_send.html', 
-                              { 'forms':forms,'filterForm':form },
+                              { 'forms':forms,'filterForm':form, 'month':month },
                               context_instance=RequestContext(request))
 
 @permission_required('Management.change_demand')
