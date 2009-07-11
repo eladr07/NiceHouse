@@ -207,8 +207,9 @@ class MonthDemandWriter:
         return flows
     def remarkPara(self):
         s = '<b><u>%s</u></b><br/>' % log2vis(u'הערות לדרישה')
-        if self.demand.remarks != None and len(self.demand.remarks)>0:
-            s += log2vis(self.demand.remarks)
+        remarks = self.demand.remarks.lstrip().rstrip()
+        if remarks != None and len(remarks)>0:
+            s += log2vis(remarks)
         else:
             s += log2vis(u'אין')
         return Paragraph(s, ParagraphStyle(name='remarkPara', fontName='David', fontSize=15, 
@@ -236,10 +237,9 @@ class MonthDemandWriter:
         story.append(Paragraph(subTitle, styleSubTitle))
         story.extend([Spacer(0,20), self.introPara(), Spacer(0,20)])
         story.extend(self.saleFlows())
-        story.append(Spacer(0, 40))
         if self.demand.fixed_pay or self.demand.var_pay or self.demand.bonus:
-            story.extend([self.addsPara(), Spacer(0, 10)])    
-        story.append(self.remarkPara())    
+            story.extend([Spacer(0, 20), self.addsPara()])    
+        story.extend([Spacer(0, 20), self.remarkPara()])    
         doc.build(story, self.addFirst, self.addLater)
         return doc.canv
 
