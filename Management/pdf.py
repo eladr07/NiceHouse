@@ -129,7 +129,7 @@ class MonthDemandWriter:
         s += log2vis(u'ב. סה"כ מכירות (%s, %s) - %s ש"ח.' %
                      (self.demand.project.commissions.include_tax and u'כולל מע"מ' or u'לא כולל מע"מ',
                       self.demand.project.commissions.include_lawyer and u'כולל שכ"ט עו"ד' or u'לא כולל שכ"ט עו"ד',
-                      commaise(self.demand.get_sales_amount()))) + '<br/>'
+                      commaise(self.demand.get_final_sales_amount()))) + '<br/>'
         s += log2vis(u'ג. עמלתנו (כולל מע"מ) - %s ש"ח (ראה פירוט רצ"ב).' % 
                     commaise(self.demand.get_total_amount())) + '<br/>'
         s += log2vis(u'ד. נא בדיקתכם ואישורכם לתשלום לתאריך %s אודה.' % datetime.now().strftime('31/%m/%Y')) + '<br/>'
@@ -182,7 +182,7 @@ class MonthDemandWriter:
             row.extend([clientsPara(s.clients), '%s/%s' % (s.house.building.num, s.house.num), s.sale_date.strftime('%d/%m/%y'), commaise(s.price)])
             if zilber:
                 lawyer_pay = s.price_include_lawyer and (s.price - s.price_no_lawyer) or s.price * 0.015
-                row.extend([lawyer_pay, s.price_final])
+                row.extend([commaise(lawyer_pay), commaise(s.price_final)])
             if discount:
                 row.extend([s.discount, s.allowed_discount])
             row.extend([s.pc_base, commaise(s.pc_base_worth)])

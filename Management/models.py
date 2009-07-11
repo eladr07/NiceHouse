@@ -958,7 +958,9 @@ class CZilber(models.Model):
                 prev_adds += (base - s.pc_base) * s.price_final / 100
         d.var_pay = prev_adds
         d.var_pay_type = u'תוספת בגין %s עד %s' % (start.strftime('%d/%m/%Y'), 
-                                                   date(month.month == 1 and month.year-1 or month.year, month.month == 1 and 12 or month.month, 1).strftime('%d/%m/%Y %H:%M'))
+                                                   date(month.month == 1 and month.year-1 or month.year, 
+                                                        month.month == 1 and 12 or month.month, 
+                                                        1).strftime('%d/%m/%Y'))
         d.save()
     class Meta:
         db_table = 'CZilber'
@@ -1171,7 +1173,7 @@ class Demand(models.Model):
     objects = DemandManager()
     
     def get_absolute_url(self):
-        return 'demands/%s' % self.id
+        return '/demands/%s' % self.id
     def get_salaries(self):
         s = []
         for e in self.project.employees.all():
@@ -1206,6 +1208,11 @@ class Demand(models.Model):
         amount = 0
         for s in self.get_sales():
             amount = amount + s.price
+        return amount
+    def get_final_sales_amount(self):
+        amount = 0
+        for s in self.get_sales():
+            amount = amount + s.price_final
         return amount
     def get_total_final_prices(self):
         amount = 0
