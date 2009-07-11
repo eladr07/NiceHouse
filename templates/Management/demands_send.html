@@ -22,14 +22,14 @@
 				<td>
 					{{f.mail}}
 					{% if f.mail.errors %}
-						<img src="/site_media/images/error-48.png" width="20" height="20"  alt="{{f.mail.errors.join:','}}" /> 
+						<img src="/site_media/images/error-48.png" width="20" height="20"  alt='{{f.mail.errors.join:","}}' /> 
 					{% endif %}
 				</td>
 				<td>{{f.by_fax}}</td>
 				<td>
 					{{f.fax}}
 					{% if f.fax.errors %}
-						<img src="/site_media/images/error-48.png" width="20" height="20"  alt="{{f.fax.errors.join:','}}" /> 
+						<img src="/site_media/images/error-48.png" width="20" height="20"  alt='{{f.fax.errors.join:","}}' /> 
 					{% endif %}
 				</td>
 			</tr>
