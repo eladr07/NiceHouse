@@ -1126,6 +1126,8 @@ class DemandStatus(models.Model):
     demand = models.ForeignKey('Demand', related_name='statuses')
     date = models.DateTimeField(default=datetime.now())
     type = models.ForeignKey('DemandStatusType')
+    def __unicode__(self):
+        return '%s - %s' % (self.type, self.date.strftime('%Y/%m/%d %H:%M'))
     class Meta:
         db_table = 'DemandStatus'
         get_latest_by = 'date'
