@@ -2,8 +2,24 @@
 {% load management_extras %}
 {% block content %}
 	<div class="title">
-		<div class="pageTitle">אישור ושליחת דרישות במייל ובפקס</div>
+		<div class="pageTitle">אישור ושליחת דרישות במייל ובפקס לחודש {{month|date:"M Y"}}</div>
 	</div>
+<form method="POST">
+	<table class="dataTable" style="width: 30%;">
+		<tr class="row1">
+			<td colspan="3" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש</td>
+		</tr>
+		<tr class="row2">
+			{% for field in filterForm %}
+			<td>
+				{{ field.label_tag }} : 
+				{{ field }}
+			</td>
+			{% endfor %}
+			<td><input type="submit" value="חפש" class="button"/></td>
+		</tr>
+	</table>
+</form>
 <form method="post">
 	<table class="dataTable" border="1">
 		<th></th>
@@ -14,6 +30,7 @@
 		<th>כתובת מייל</th>
 		<th>פקס?</th>
 		<th>מס' פקס</th>
+		<th>סטטוס</th>
 		{% for f in forms %}
 			<tr class="{% cycle 'row1' 'row2' %}">
 				<td>{{f.id}}</td>
@@ -34,6 +51,7 @@
 						<img src="/site_media/images/error-48.png" width="15 height="15" /> 
 					{% endif %}
 				</td>
+				<td>{{d.statuses.latest}}</td>
 			</tr>
 		{% endfor %}
 	</table>
