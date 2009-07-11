@@ -1,0 +1,30 @@
+﻿{% extends "./base.html" %}
+{% load management_extras %}
+{% block content %}
+	<div class="title">
+		<div class="pageTitle">שליחת דרישות במייל ובפקס</div>
+	</div>
+<form method="post">
+	<table class="dataTable" border="1">
+		<th>שם הפרוייקט</th>
+		<th>חודש</th>
+		<th>סופית?</th>
+		<th>מייל?</th>
+		<th>כתובת מייל</th>
+		<th>פקס?</th>
+		<th>מס' פקס</th>
+		{% for f in forms %}
+			<tr class="{% cycle 'row1' 'row2' %}" objid={{t.id}}>
+				<td><a href="{{f.instance.project.get_absolute_url}}">{{ f.instance.project }}</a></td>
+				<td>{{ f.instance.month }}/{{f.instance.year}}</a></td>
+				<td>{{f.is_finished}}</td>
+				<td>{{f.by_mail}}</td>
+				<td>{{f.mail}}</td>
+				<td>{{f.by_fax}}</td>
+				<td>{{f.fax}}</td>
+			</tr>
+		{% endfor %}
+	</table>
+	<input type="submit">אישור</input>
+</form>
+{% endblock content %}

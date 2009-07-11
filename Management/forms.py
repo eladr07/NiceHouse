@@ -384,6 +384,16 @@ class LoanForm(forms.ModelForm):
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'30', 'rows':'6'})
     class Meta:
         model= Loan
+
+class DemandSendForm(forms.ModelForm):
+    is_finished = forms.BooleanField()
+    by_mail = forms.BooleanField()
+    mail = forms.EmailField()
+    by_fax = forms.BooleanField()
+    fax = forms.CharField(max_length=20)
+    class Meta:
+        model = Demand
+        fields = ['id']
         
 class LoanPayForm(forms.ModelForm):
     class Meta:

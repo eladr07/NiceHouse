@@ -18,7 +18,6 @@
 			//sync links
 			if (selectedID > 0)
 				$("#demandEdit").attr("href", "demands/" + selectedID);
-				$("#demandSend").attr("href", "demands/" + selectedID + "/send");
 			});
 		$(".fancybox").fancybox();
 		$("#demandSend").click(function(event) {
@@ -59,13 +58,9 @@
 	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
 	<a id="demandEdit">שינוי דרישה</a>
 </div>
-<div class="someIcon" style="width:100px;">
-	<img src="/site_media/images/thumbs_up_48.png" width="20" height="20"  alt="שליחה" /> 
-	<a id="demandSend">שלח דרישות</a>
-</div>
 <div class="someIcon"style="width:80px;">
 	<img src="/site_media/images/thumbs_up_48.png" width="20" height="20"  alt="שליחה" /> 
-	<a href="/demands/sendall">שלח הכל</a>
+	<a href="/demands/sendall">שלח דרישות</a>
 </div>
 <div class="someIcon" style="width:100px;">
 	<img src="/site_media/images/print-48.png" width="20" height="20"  alt="הדפסה" /> 

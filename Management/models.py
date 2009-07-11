@@ -212,6 +212,8 @@ class Project(models.Model):
     @property
     def is_active(self):
         return self.is_marketing and not self.end_date
+    def get_absolute_url(self):
+        return '/projects/%s' % self.id
     class Meta:
         verbose_name = ugettext('project')
         verbose_name_plural = ugettext('projects')

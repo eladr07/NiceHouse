@@ -387,22 +387,6 @@ def demand_list(request):
                                'filterForm':form },
                               context_instance=RequestContext(request))
 
-@permission_required('Management.list_demand')
-def demand_unpaid_list(request):
-    ds = Demand.objects.current()
-    ds = [d for d in ds.all() if d.statuses.latest().type.id == 3 and d.payments.count() == 0]
-    return render_to_response('Management/demand_charge_list.html', 
-                              { 'demands':ds },
-                              context_instance=RequestContext(request))
-
-@permission_required('Management.list_demand')
-def demand_paidsome_list(request):
-    ds = Demand.objects.current()
-    ds = [d for d in ds.all() if d.statuses.latest().type.id == 3 and d.diff() != 0]
-    return render_to_response('Management/demand_charge_list.html', 
-                              { 'demands':ds },
-                              context_instance=RequestContext(request))
-
 def employee_sales(request, id, year, month):
     es = EmployeeSalary.objects.get(employee__id = id, year = year, month = month)
     return render_to_response('Management/employee_sales.html', 
@@ -460,16 +444,46 @@ def demand_zero(request, id):
         d.feed()
     return HttpResponseRedirect('/demands')
 
-@permission_required('Management.change_demand')
-def demand_send(request, id):
-    d = Demand.objects.get(pk=id)
-    d.send()
+def demand_send_mail(demand, mail):
+    demand.send()
     filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
-    write_demand_pdf(d, filename)
-    mail(d.project.demand_contact.mail,
-         u'עמלה לפרויקט %s לחודש %s/%s' % (d.project, d.month, d.year),
+    write_demand_pdf(demand, filename)
+    mail(mail,
+         u'עמלה לפרויקט %s לחודש %s/%s' % (demand.project, demand.month, demand.year),
          '', filename)
-    return HttpResponseRedirect('/demandsold')
+
+@permission_required('Management.change_demand')
+def demands_send(request):
+    forms=[]
+    if request.method == 'POST':
+        error = False
+        for d in Demand.objects.current():
+            f = DemandSendForm(request.POST, instance=d, prefix = '%i' % d.id)
+            if f.is_valid():
+                if f.cleaned_data['is_finished']:
+                    d.finish()
+                if f.cleaned_data['by_mail']:
+                    demand_send_mail(d, f.cleaned_data['mail'])
+                if f.cleaned_data['by_fax']:
+                    pass
+            else:
+                error=True
+            forms.append(f)
+            if not error:
+                return HttpResponseRedirect('/demandsold')
+    else:
+        for d in Demand.objects.current():
+            if d.project.demand_contact:
+                initial = {'mail':d.project.demand_contact.mail,
+                           'fax':d.project.demand_contact.fax}
+            else:
+                initial = {}
+            f = DemandSendForm(instance=d, prefix='%i' % d.id, initial = initial)
+            forms.append(f)
+            
+    return render_to_response('Management/demands_send.html', 
+                              { 'forms':forms },
+                              context_instance=RequestContext(request))
 
 @permission_required('Management.change_demand')
 def demand_closeall(request):
@@ -496,16 +510,12 @@ def demand_sendall(request):
                 employees.append(e)
         if len(employees) == 0 and len(projects) == 0:
             for d in Demand.objects.current():
-                finish_demand(d)
                 d.send()
             return HttpResponseRedirect('/reports')
         else:
             return render_to_response('Management/demand_send_confirm.html', 
                                       { 'projects':projects, 'employees' : employees },
                                       context_instance=RequestContext(request))
-            
-def finish_demand(demand):
-    demand.finish()
         
 @permission_required('Management.delete_sale')
 def demand_sale_del(request, id):
