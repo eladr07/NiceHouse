@@ -943,7 +943,7 @@ class CZilber(models.Model):
                 discount_bonus = 0
                 if Madad.objects.count() > 0 and self.base_madad:
                     memudad = (Madad.objects.latest().value / self.base_madad * 0.6 + 1) * s.company_price
-                    discount_bonus += (s.price_final - mumdad) * 0.1
+                    discount_bonus += (s.price_final - mumdad) * b_discount
                     d.bonus = discount_bonus
                     d.bonus_type = u'חסכון בהנחה'
             s.pc_base = base

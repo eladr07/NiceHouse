@@ -144,9 +144,7 @@ class MonthDemandWriter:
             raise AttributeError()
         headers = [log2vis(u'מס"ד')]
         colWidths = [35]
-        contract_num = False
-        discount = False
-        final = False
+        contract_num, discount, final, zilber = (False, False, False, False)
         for s in sales:
             if s.contract_num:
                 headers.append(log2vis(u"חוזה\nמס'"))
@@ -156,12 +154,14 @@ class MonthDemandWriter:
         headers.extend([log2vis(u'שם הרוכשים'),log2vis(u'ודירה\nבניין'),
                         log2vis(u'מכירה\nתאריך'), log2vis(u'חוזה\nמחיר')])
         colWidths.extend([70, None,None,None])
-        for s in sales:
-            if s.discount or s.allowed_discount:
-                headers.extend([log2vis(u'ניתן\nהנחה\n%'),log2vis(u'מותר\nהנחה\n%')])
-                colWidths.extend([None,None])
-                discount = True
-                break
+        if self.demand.project.commissions.c_zilber:
+            headers.extend([log2vis(u'עו"ד\nשכ"ט'), log2vis(u'לחישוב\nמחיר')])
+            colWidths.extend([None,None])
+            zilber = True
+        if sales.count() > 0 and (sales[0].discount or sales[0].allowed_discount):
+            headers.extend([log2vis(u'ניתן\nהנחה\n%'),log2vis(u'מותר\nהנחה\n%')])
+            colWidths.extend([None,None])
+            discount = True
         headers.extend([log2vis(u'בסיס\nעמלת\n%'),log2vis(u'בסיס\nעמלת\nשווי')])
         colWidths.extend([None,None])
         if self.demand.project.commissions.b_discount_save_precentage:
@@ -180,6 +180,9 @@ class MonthDemandWriter:
             if contract_num:
                 row.append(s.contract_num)
             row.extend([clientsPara(s.clients), '%s/%s' % (s.house.building.num, s.house.num), s.sale_date.strftime('%d/%m/%y'), commaise(s.price)])
+            if zilber:
+                lawyer_pay = s.price_include_lawyer and (s.price - s.price_no_lawyer) or s.price * 0.015
+                row.extend([lawyer_pay, s.price_final])
             if discount:
                 row.extend([s.discount, s.allowed_discount])
             row.extend([s.pc_base, commaise(s.pc_base_worth)])
