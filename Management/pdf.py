@@ -197,6 +197,8 @@ class MonthDemandWriter:
                     else:
                         row = [None,None,log2vis('סה"כ %s' % self.demand.get_sales().count()),None]
                     row.append(commaise(self.demand.get_sales_amount()))
+                    if zilber:
+                        row.extend([None,None])
                     if discount:
                         row.extend([None,None])
                     if final:

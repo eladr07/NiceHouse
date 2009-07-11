@@ -1169,6 +1169,8 @@ class Demand(models.Model):
 
     objects = DemandManager()
     
+    def get_absolute_url(self):
+        return 'demands/%s' % self.id
     def get_salaries(self):
         s = []
         for e in self.project.employees.all():
