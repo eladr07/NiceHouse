@@ -58,7 +58,7 @@
 	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
 	<a id="demandEdit">שינוי דרישה</a>
 </div>
-<div class="someIcon"style="width:80px;">
+<div class="someIcon"style="width:100px;">
 	<img src="/site_media/images/thumbs_up_48.png" width="20" height="20"  alt="שליחה" /> 
 	<a href="/demands/sendall">שלח דרישות</a>
 </div>
@@ -83,7 +83,6 @@
 <table id="demandTable" class="dataTable" border="1">
 <caption>מציג סה"כ {{demands.count}} דרישות לתשלום</caption>
 	<tr>
-		<th></th>
 		<th>מס'</th>
 		<th>יזם</th>
 		<th>שם פרוייקט</th>
@@ -108,7 +107,6 @@
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{d.id}}>
 		{% endifequal %}
 	{% endif %}
-			<td><input type="checkbox"></input></td>
 			<td><a href="/demands/{{d.id}}">{{d.id}}</a></td>
 			<td>{{ d.project.initiator }}</td>
 			<td><a href="/projects/{{d.project.id}}">{{ d.project.name }}</a></td>
