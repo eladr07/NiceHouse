@@ -14,7 +14,8 @@
 		<th>פקס?</th>
 		<th>מס' פקס</th>
 		{% for f in forms %}
-			<tr class="{% cycle 'row1' 'row2' %}" objid={{t.id}}>
+			<tr class="{% cycle 'row1' 'row2' %}">
+				<td>{{f.id}}</td>
 				<td><a href="{{f.instance.project.get_absolute_url}}">{{ f.instance.project }}</a></td>
 				<td>{{ f.instance.month }}/{{f.instance.year}}</a></td>
 				<td>{{f.is_finished}}</td>
@@ -35,6 +36,6 @@
 			</tr>
 		{% endfor %}
 	</table>
-	<input type="submit" value="אישור"/>
+	<input type="submit" value="אישור" class="button"/>
 </form>
 {% endblock content %}
