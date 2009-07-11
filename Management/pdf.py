@@ -225,13 +225,13 @@ class MonthDemandWriter:
     def addsPara(self):
         s = ''#'<b><u>%s</u></b><br/>' % log2vis(u'תוספות לדרישה')
         if self.demand.fixed_pay:
-            s += log2vis(u'%s - %s' % (commaise(self.demand.fixed_pay), self.demand.fixed_pay_type)) + '<br/>'
+            s += log2vis(u'%s - %s' % (self.demand.fixed_pay_type, commaise(self.demand.fixed_pay))) + '<br/>'
         if self.demand.var_pay:
-            s += log2vis(u'%s - %s' % (commaise(self.demand.var_pay), self.demand.var_pay_type)) + '<br/>'
+            s += log2vis(u'%s - %s' % (self.demand.var_pay_type, commaise(self.demand.var_pay))) + '<br/>'
         if self.demand.bonus:
-            s += log2vis(u'%s - %s' % (commaise(self.demand.bonus), self.demand.bonus_type)) + '<br/>'
+            s += log2vis(u'%s - %s' % (self.demand.bonus_type, commaise(self.demand.bonus))) + '<br/>'
         s += '<b>%s</b>' % log2vis(u'סה"כ : %s ש"ח' % commaise(self.demand.get_total_amount())) 
-        return Paragraph(s, ParagraphStyle(name='addsPara', fontName='David', fontSize=15, 
+        return Paragraph(s, ParagraphStyle(name='addsPara', fontName='David', fontSize=14, 
                                            leading=16, alignment=TA_LEFT))
     def build(self, filename):
         doc = SimpleDocTemplate(filename)
