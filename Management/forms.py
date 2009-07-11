@@ -388,9 +388,9 @@ class LoanForm(forms.ModelForm):
 class DemandSendForm(forms.ModelForm):
     is_finished = forms.BooleanField()
     by_mail = forms.BooleanField()
-    mail = forms.EmailField()
+    mail = forms.EmailField(required=False)
     by_fax = forms.BooleanField()
-    fax = forms.CharField(max_length=20)
+    fax = forms.CharField(max_length=20, required=False)
     class Meta:
         model = Demand
         fields = ['id']
