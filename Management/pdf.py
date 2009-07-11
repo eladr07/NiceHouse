@@ -237,8 +237,10 @@ class MonthDemandWriter:
         story.append(Paragraph(subTitle, styleSubTitle))
         story.extend([Spacer(0,20), self.introPara(), Spacer(0,20)])
         story.extend(self.saleFlows())
+        if self.demand.get_sales().count() == 10:
+            story.append(PageBreak())
         if self.demand.fixed_pay or self.demand.var_pay or self.demand.bonus:
-            story.extend([Spacer(0, 20), self.addsPara()])    
+            story.extend([Spacer(0, 20), self.addsPara()])
         story.extend([Spacer(0, 20), self.remarkPara()])    
         doc.build(story, self.addFirst, self.addLater)
         return doc.canv
