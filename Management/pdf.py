@@ -223,7 +223,7 @@ class MonthDemandWriter:
         return Paragraph(s, ParagraphStyle(name='remarkPara', fontName='David', fontSize=15, 
                                            leading=16, alignment=TA_RIGHT))
     def addsPara(self):
-        s = '<b><u>%s</u></b><br/>' % log2vis(u'תוספות לדרישה')
+        s = ''#'<b><u>%s</u></b><br/>' % log2vis(u'תוספות לדרישה')
         if self.demand.fixed_pay:
             s += log2vis(u'%s - %s' % (commaise(self.demand.fixed_pay), self.demand.fixed_pay_type)) + '<br/>'
         if self.demand.var_pay:
@@ -232,7 +232,7 @@ class MonthDemandWriter:
             s += log2vis(u'%s - %s' % (commaise(self.demand.bonus), self.demand.bonus_type)) + '<br/>'
         s += '<b>%s</b>' % log2vis(u'סה"כ : %s ש"ח' % commaise(self.demand.get_total_amount())) 
         return Paragraph(s, ParagraphStyle(name='addsPara', fontName='David', fontSize=15, 
-                                           leading=16, alignment=TA_RIGHT))
+                                           leading=16, alignment=TA_LEFT))
     def build(self, filename):
         doc = SimpleDocTemplate(filename)
         story = [Spacer(0,100)]
