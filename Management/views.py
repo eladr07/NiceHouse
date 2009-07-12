@@ -468,7 +468,6 @@ def demands_send(request):
                 if f.cleaned_data['is_finished']:
                     d.finish()
                 if f.cleaned_data['by_mail']:
-                    return HttpResponse(f.cleaned_data['mail'])
                     demand_send_mail(d, f.cleaned_data['mail'])
                 if f.cleaned_data['by_fax']:
                     pass
@@ -480,14 +479,14 @@ def demands_send(request):
     else:
         month = demand_month()
         form = MonthFilterForm()
-    for d in Demand.objects.filter(year=month.year, month=month.month):
-        if d.project.demand_contact:
-            initial = {'mail':d.project.demand_contact.mail,
-                       'fax':d.project.demand_contact.fax}
-        else:
-            initial = {}
-        f = DemandSendForm(instance=d, prefix='%i' % d.id, initial = initial)
-        forms.append(f)
+        for d in Demand.objects.filter(year=month.year, month=month.month):
+            if d.project.demand_contact:
+                initial = {'mail':d.project.demand_contact.mail,
+                           'fax':d.project.demand_contact.fax}
+            else:
+                initial = {}
+            f = DemandSendForm(instance=d, prefix='%i' % d.id, initial = initial)
+            forms.append(f)
             
     return render_to_response('Management/demands_send.html', 
                               { 'forms':forms,'filterForm':form, 'month':month },
