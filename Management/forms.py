@@ -386,13 +386,14 @@ class LoanForm(forms.ModelForm):
         model= Loan
 
 class DemandSendForm(forms.ModelForm):
-    is_finished = forms.BooleanField()
-    by_mail = forms.BooleanField()
+    is_finished = forms.BooleanField(required=False)
+    by_mail = forms.BooleanField(required=False)
     mail = forms.EmailField(required=False)
-    by_fax = forms.BooleanField()
+    by_fax = forms.BooleanField(required=False)
     fax = forms.CharField(max_length=20, required=False)
     class Meta:
         model = Demand
+        exclude = ('project','year','month')
         
 class LoanPayForm(forms.ModelForm):
     class Meta:
