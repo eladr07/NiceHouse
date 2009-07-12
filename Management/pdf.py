@@ -155,8 +155,10 @@ class MonthDemandWriter:
                         log2vis(u'מכירה\nתאריך'), log2vis(u'חוזה\nמחיר')])
         colWidths.extend([70, None,None,None])
         if self.demand.project.commissions.c_zilber:
-            headers.extend([log2vis(u'עו"ד\nשכ"ט'), log2vis(u'לחישוב\nמחיר')])
-            colWidths.extend([None,None])
+            headers.extend([log2vis(u'מזומן\nהנחת'), log2vis(u'מפרט\nהוצאות'),
+                            log2vis(u'עו"ד\nשכ"ט'), log2vis(u'לחישוב\nמחיר'),
+                            log2vis(u'נוספות\nהוצאות')])
+            colWidths.extend([None,None,None,None,None])
             zilber = True
         if sales.count() > 0 and (sales[0].discount or sales[0].allowed_discount):
             headers.extend([log2vis(u'ניתן\nהנחה\n%'),log2vis(u'מותר\nהנחה\n%')])
@@ -182,7 +184,7 @@ class MonthDemandWriter:
             row.extend([clientsPara(s.clients), '%s/%s' % (s.house.building.num, s.house.num), s.sale_date.strftime('%d/%m/%y'), commaise(s.price)])
             if zilber:
                 lawyer_pay = s.price_include_lawyer and (s.price - s.price_no_lawyer) or s.price * 0.015
-                row.extend([commaise(lawyer_pay), commaise(s.price_final)])
+                row.extend([None,None,commaise(lawyer_pay), commaise(s.price_final), commaise(2000)])
             if discount:
                 row.extend([s.discount, s.allowed_discount])
             row.extend([s.pc_base, commaise(s.pc_base_worth)])
