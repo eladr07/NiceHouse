@@ -99,7 +99,7 @@ class MonthDemandWriter:
         return Paragraph(s, styleN)
     def addLater(self, canv, doc):
         self.current_page += 1
-        frame1 = Frame(50, 20, 150, 40)
+        frame1 = Frame(50, 30, 150, 40)
         frame1.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
                             ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
         frame2 = Frame(0, 680, 650, 150)
@@ -115,7 +115,7 @@ class MonthDemandWriter:
         frame1.addFromList([self.toPara()], canv)
         frame2 = Frame(0, 680, 650, 150)
         frame2.addFromList([nhLogo(), datePara()], canv)
-        frame3 = Frame(50, 20, 150, 40)
+        frame3 = Frame(50, 30, 150, 40)
         frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
                             ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
         frame4 = Frame(50, 20, 500, 70)
@@ -225,7 +225,7 @@ class MonthDemandWriter:
             s += log2vis(remarks)
         else:
             s += log2vis(u'אין')
-        return Paragraph(s, ParagraphStyle(name='remarkPara', fontName='David', fontSize=15, 
+        return Paragraph(s, ParagraphStyle(name='remarkPara', fontName='David', fontSize=13, 
                                            leading=16, alignment=TA_RIGHT))
     def addsPara(self):
         s = ''#'<b><u>%s</u></b><br/>' % log2vis(u'תוספות לדרישה')
