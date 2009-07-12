@@ -48,7 +48,7 @@
 			{% endif %}
 		{% endwith %}
 				<td>
-					{{f.id}}
+					{{f.pk}}
 					<a href="{{f.instance.get_absolute_url}}">{{f.instance.id}}</a>
 				</td>
 				<td><a href="{{f.instance.project.get_absolute_url}}">{{ f.instance.project }}</a></td>
