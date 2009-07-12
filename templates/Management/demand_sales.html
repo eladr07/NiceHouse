@@ -1,5 +1,21 @@
 ﻿{% extends "./template.html" %}
 {% load management_extras %}
+{% block header %}
+{{ block.super }}
+<script>
+	$(document).ready(function() {
+		$("#locateDemandLgnd, #locateHouseLgnd").click(function (event) {
+			$(this).next().toggle();
+		});
+		$("#locateDemandLgnd, #locateHouseLgnd").next().hide();
+		$("a[id*='reject']").click(function(event) {
+			if (!confirm("האם אתה בטוח שברצונך לדחות את הדירה ?"))
+				event.preventDefault();
+		});
+		$(".fancybox").fancybox();
+	});
+</script>
+{% endblock header %}
 {% block page %}
 <div id="content">
 	<div class="title">
@@ -15,6 +31,7 @@
 		<th>מס' בניין</th>
 		<th>מס' דירה</th>
 		<th>מחיר חוזה</th>
+		<th>דחייה</th>
 		{% for sale in demand.get_sales.all %}
 			<tr>
 				<td><a target="_parent" href="/sale/{{sale.id}}"><img src="/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a></td>
@@ -32,6 +49,7 @@
 						{{sale.price_include_lawyer|yesno:"כולל עו\"ד, לא כולל עו\"ד"}}
 					{% endifnotequal %}
 				</td>
+				<td><a id="reject{{sale.id}}" href="s/demands/{{sale.demand.id}}/sale/{{sale.id}}/reject"><img src="/site_media/images/agt_back-48.png" width="15" height="15" alt="דחייה" border="0" /></a></td>
 			</tr>
 		{% endfor %}
 		<tr>
