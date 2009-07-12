@@ -465,11 +465,11 @@ def demands_send(request):
         for d in Demand.objects.filter(year=month.year, month=month.month):
             f = DemandSendForm(request.POST, instance=d, prefix = '%i' % d.id)
             if f.is_valid():
-                if f.cleaned_data['is_finished']:
+                if f.cleaned_data['is_finished'] == True:
                     d.finish()
-                if f.cleaned_data['by_mail']:
+                if f.cleaned_data['by_mail'] == True:
                     demand_send_mail(d, f.cleaned_data['mail'])
-                if f.cleaned_data['by_fax']:
+                if f.cleaned_data['by_fax'] == True:
                     pass
             else:
                 error=True
