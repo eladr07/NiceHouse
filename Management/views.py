@@ -468,6 +468,7 @@ def demands_send(request):
                 if f.cleaned_data['is_finished']:
                     d.finish()
                 if f.cleaned_data['by_mail']:
+                    return HttpResponse(f.cleaned_data['mail'])
                     demand_send_mail(d, f.cleaned_data['mail'])
                 if f.cleaned_data['by_fax']:
                     pass
