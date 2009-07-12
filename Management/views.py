@@ -463,7 +463,7 @@ def demands_send(request):
             month = demand_month()
         error = False
         for d in Demand.objects.filter(year=month.year, month=month.month):
-            f = DemandSendForm(request.POST, instance=d, prefix = '%i' % d.id)
+            f = DemandSendForm(request.POST, instance=d, prefix = str(d.id))
             if f.is_valid():
                 if f.cleaned_data['is_finished'] == True:
                     d.finish()
@@ -486,7 +486,7 @@ def demands_send(request):
                            'fax':d.project.demand_contact.fax}
             else:
                 initial = {}
-            f = DemandSendForm(instance=d, prefix='%i' % d.id, initial = initial)
+            f = DemandSendForm(instance=d, prefix=str(d.id), initial = initial)
             forms.append(f)
             
     return render_to_response('Management/demands_send.html', 
