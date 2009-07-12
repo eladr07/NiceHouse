@@ -158,7 +158,7 @@ class MonthDemandWriter:
             headers.extend([log2vis(u'מזומן\nהנחת'), log2vis(u'מפרט\nהוצאות'),
                             log2vis(u'עו"ד\nשכ"ט'), log2vis(u'לחישוב\nמחיר'),
                             log2vis(u'נוספות\nהוצאות')])
-            colWidths.extend([None,None,None,None,None])
+            colWidths.extend([35,35,None,None,None])
             zilber = True
         if sales.count() > 0 and (sales[0].discount or sales[0].allowed_discount):
             headers.extend([log2vis(u'ניתן\nהנחה\n%'),log2vis(u'מותר\nהנחה\n%')])
