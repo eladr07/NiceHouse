@@ -463,6 +463,7 @@ def demands_send(request):
             month = demand_month()
         error = False
         for d in Demand.objects.filter(year=month.year, month=month.month):
+            raise AttributeError()
             f = DemandSendForm(request.POST, instance=d, prefix = '%i' % d.id)
             if f.is_valid():
                 if f.cleaned_data['is_finished'] == True:
