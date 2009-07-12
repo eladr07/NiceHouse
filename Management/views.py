@@ -463,13 +463,12 @@ def demands_send(request):
             month = demand_month()
         error = False
         for d in Demand.objects.filter(year=month.year, month=month.month):
-            raise AttributeError()
             f = DemandSendForm(request.POST, instance=d, prefix = '%i' % d.id)
             if f.is_valid():
                 if f.cleaned_data['is_finished'] == True:
                     d.finish()
-                return HttpResponse(f.cleaned_data['by_mail'])
                 if f.cleaned_data['by_mail'] == True:
+                    return HttpResponse(d.project.name)
                     demand_send_mail(d, f.cleaned_data['mail'])
                 if f.cleaned_data['by_fax'] == True:
                     pass
