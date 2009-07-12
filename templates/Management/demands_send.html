@@ -48,6 +48,7 @@
 			{% endif %}
 		{% endwith %}
 				<td>
+				{{f.errors}}
 					{{f.id}}
 					<a href="{{f.instance.get_absolute_url}}">{{f.instance.id}}</a>
 				</td>
