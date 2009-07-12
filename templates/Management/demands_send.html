@@ -32,7 +32,21 @@
 		<th>מס' פקס</th>
 		<th>סטטוס</th>
 		{% for f in forms %}
-			<tr class="{% cycle 'row1' 'row2' %}">
+		{% with f.instance as d %}
+			{% if not d.statuses.count %}
+				<tr class="row3" objid={{d.id}}>
+			{% else %}
+				{% ifequal d.statuses.latest.type.id 1 %}
+					<tr class="{% cycle 'row1' 'row2' %}" objid={{d.id}}>
+				{% endifequal %}
+				{% ifequal d.statuses.latest.type.id 2 %}
+					<tr class="row4" objid={{d.id}}>
+				{% endifequal %}
+				{% ifequal d.statuses.latest.type.id 3 %}
+					<tr class="row5" objid={{d.id}}>
+				{% endifequal %}
+			{% endif %}
+		{% endwith %}
 				<td>
 					{{f.id}}
 					<a href="{{f.instance.get_absolute_url}}">{{f.instance.id}}</a>
