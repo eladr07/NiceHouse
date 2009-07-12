@@ -253,6 +253,7 @@
 			{% endif %}
 			<th>% עמלה <br>סופי</th>
 			<th>שווי עמלה <br>סופי</th>
+			<th>תיקונים</th>
 			<th>הערות</th>
 			{% for s in form.instance.get_sales %}
 			{% if not s.is_cp_ok %}
@@ -296,6 +297,20 @@
 				{% endif %}
 				<td>{{s.c_final|floatformat:3}}</td>
 				<td><b>{{s.c_final_worth|commaise}} ש"ח</b></td>
+				<td>
+					{% if s.salepricemod %}
+						<a href="/salepricemod/{{s.salepricemod.id}}"><img src="/site_media/images/money-48.png" width="20" height="20" /></a>
+					{% endif %}
+					{% if s.salehousemod %}
+						<a href="/salehousemod/{{s.salehousemod.id}}"><img src="/site_media/images/home-48.png" width="20" height="20" /></a>
+					{% endif %}
+					{% if s.salepre %}
+						<a href="/salepre/{{s.salepre.id}}"><img src="/site_media/images/agt_forward-48.png" width="20" height="20" /></a>
+					{% endif %}
+					{% if s.salereject %}
+						<a href="/salereject/{{s.salereject.id}}"><img src="/site_media/images/agt_back-48.png" width="20" height="20" /></a>
+					{% endif %}
+				</td>
 				<td>{{s.remarks}}</td>
 			</tr>
 			{% endfor %}
