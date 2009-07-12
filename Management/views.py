@@ -443,11 +443,11 @@ def demand_zero(request, id):
         d.feed()
     return HttpResponseRedirect('/demands')
 
-def demand_send_mail(demand, mail):
+def demand_send_mail(demand, addr):
     demand.send()
     filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
     write_demand_pdf(demand, filename)
-    mail(mail,
+    mail(addr,
          u'עמלה לפרויקט %s לחודש %s/%s' % (demand.project, demand.month, demand.year),
          '', filename)
 
