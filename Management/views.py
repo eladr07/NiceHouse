@@ -465,18 +465,17 @@ def demands_send(request):
         for d in Demand.objects.filter(year=month.year, month=month.month):
             f = DemandSendForm(request.POST, instance=d, prefix = str(d.id))
             if f.is_valid():
-                if f.cleaned_data['is_finished'] == True:
+                if f.cleaned_data['is_finished']:
                     d.finish()
-                if f.cleaned_data['by_mail'] == True:
-                    return HttpResponse(d.project.name)
+                if f.cleaned_data['by_mail']:
                     demand_send_mail(d, f.cleaned_data['mail'])
-                if f.cleaned_data['by_fax'] == True:
+                if f.cleaned_data['by_fax']:
                     pass
             else:
                 error=True
             forms.append(f)
-            if not error:
-                return HttpResponseRedirect('/demandsold')
+        if not error:
+            return HttpResponseRedirect('/demandsold')
     else:
         month = demand_month()
         form = MonthFilterForm()

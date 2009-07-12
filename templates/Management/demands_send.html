@@ -48,9 +48,6 @@
 			{% endif %}
 		{% endwith %}
 				<td>
-				{% for field in f.hidden_fields %}
-					{{field.name}}
-				{% endfor %}
 					<a href="{{f.instance.get_absolute_url}}">{{f.instance.id}}</a>
 				</td>
 				<td><a href="{{f.instance.project.get_absolute_url}}">{{ f.instance.project }}</a></td>
