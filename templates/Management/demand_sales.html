@@ -30,7 +30,7 @@
 		<th>דחייה</th>
 		{% for s in demand.get_sales.all %}
 			<tr>
-				<td><a target="_parent" href="/s/{{s.id}}"><img src="/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a></td>
+				<td><a target="_parent" href="/sale/{{s.id}}"><img src="/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a></td>
 				<td>{{s.id}}</td>
 				<td>{{s.sale_date|date:"j/m/Y"}}</td>
 				<td>{{s.clients}}</td>
