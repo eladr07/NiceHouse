@@ -1178,6 +1178,7 @@ class Demand(models.Model):
     
     def include_zilber_bonus(self):
         c_zilber = self.project.commissions.c_zilber
+        month = date(self.year, self.month, 1)
         if not c_zilber:
             return False
         qs = c_zilber.third_start
