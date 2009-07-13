@@ -222,9 +222,9 @@ class MonthDemandWriter:
         return flows
     def remarkPara(self):
         s = '<b><u>%s</u></b><br/>' % log2vis(u'הערות לדרישה')
-        remarks = self.demand.remarks.lstrip().rstrip()
-        if remarks != None and len(remarks)>0:
-            s += log2vis(remarks)
+        remarks = self.demand.remarks
+        if remarks != None and len(remarks.lstrip().rstrip())>0:
+            s += log2vis(remarks.lstrip().rstrip())
         else:
             s += log2vis(u'אין')
         return Paragraph(s, ParagraphStyle(name='remarkPara', fontName='David', fontSize=13, 
