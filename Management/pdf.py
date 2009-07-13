@@ -154,7 +154,7 @@ class MonthDemandWriter:
         headers.extend([log2vis(u'שם הרוכשים'),log2vis(u'ודירה\nבניין'),
                         log2vis(u'מכירה\nתאריך'), log2vis(u'חוזה\nמחיר')])
         colWidths.extend([70, None,None,None])
-        if self.demand.project.commissions.c_zilber:
+        if self.demand.project.is_zilber():
             headers.extend([log2vis(u'מזומן\nהנחת'), log2vis(u'מפרט\nהוצאות'),
                             log2vis(u'עו"ד\nשכ"ט'), log2vis(u'לחישוב\nמחיר'),
                             log2vis(u'נוספות\nהוצאות')])

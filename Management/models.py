@@ -157,6 +157,8 @@ class Project(models.Model):
 
     objects = ProjectManager()
     
+    def is_zilber(self):
+        return self.commissions.c_zliber != None
     def demands_unpaid(self):
         return [d for d in self.demands.all() 
                 if d.statuses.count()>0 
@@ -938,14 +940,7 @@ class CZilber(models.Model):
         if base > self.b_sale_rate_max:
             base = self.b_sale_rate_max
         for s in sales:
-            #check if in last month of the third
-            if (start.month + 4) % 12 == month.month - 1: 
-                discount_bonus = 0
-                if Madad.objects.count() > 0 and self.base_madad:
-                    memudad = (Madad.objects.latest().value / self.base_madad * 0.6 + 1) * s.company_price
-                    discount_bonus += (s.price_final - mumdad) * b_discount
-                    d.bonus = discount_bonus
-                    d.bonus_type = u'חסכון בהנחה'
+            s.pb_dsp = self.b_discount
             s.pc_base = base
             s.c_final = base
             s.price_final = s.project_price()
@@ -1457,7 +1452,19 @@ class Sale(models.Model):
         return self.pc_base * self.price_final / 100
     @property
     def pb_dsp_worth(self):
-        return self.pb_dsp * self.price_final / 100
+        if self.demand.project.is_zilber():
+            c_zilber = self.demand.project.commissions.c_zilber
+            if c_zilber.base_madad:
+                current_madad = Madad.objects.filter(date__lte=date(self.demand.year, 
+                                                                    self.demand.month,
+                                                                    1)).latest().value
+                if current_madad < c_zilber.base_madad:
+                    current_madad = c_zilber.base_madad 
+                memudad = (current_madad / self.base_madad * 0.6 + 1) * self.company_price or self.price
+                return (self.price_final - mumdad) * self.pb_dsp
+        else:
+            return self.pb_dsp * self.price_final / 100
+
     @property
     def c_final_worth(self):
         return self.c_final * self.price_final / 100
