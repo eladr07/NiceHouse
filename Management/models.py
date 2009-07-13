@@ -949,7 +949,7 @@ class CZilber(models.Model):
                 if current_madad < self.base_madad:
                     current_madad = self.base_madad 
                 memudad = (current_madad / self.base_madad * 0.6 + 1) * (s.company_price or s.price)
-                s.zdb = (s.price_final - mumdad) * self.b_discount
+                s.zdb = (s.price_final - memudad) * self.b_discount
             s.pc_base = base
             s.c_final = base
             s.price_final = s.project_price()
