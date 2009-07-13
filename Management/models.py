@@ -229,7 +229,8 @@ class ParkingType(models.Model):
     class Meta:
         db_table='ParkingType'
 
-PricelistTypeCompany = 1        
+PricelistTypeCompany = 1 
+PricelistTypeDoh0 = 3        
 class PricelistType(models.Model):
     name = models.CharField(ugettext('name'), max_length=20, unique=True)
     def __unicode__(self):
@@ -902,7 +903,8 @@ class CByPrice(models.Model):
         return amount
     class Meta:
         db_table = 'CByPrice'
-   
+
+ZILBER_CYCLE = 4   
 class CZilber(models.Model):
     base = models.FloatField(ugettext('commission_base'))
     b_discount = models.FloatField(ugettext('b_discount'))
@@ -919,8 +921,8 @@ class CZilber(models.Model):
         d = p.demands.get(year = month.year, month = month.month)
         qs = self.third_start
         while qs < month:
-            t = date(qs.month == 12 and qs.year + 1 or qs.year, 
-                     (qs.month + 4) % 12 or 12, 1)
+            t = date(qs.month > 12-ZILBER_CYCLE and qs.year + 1 or qs.year, 
+                     (qs.month + ZILBER_CYCLE) % 12 or 12, 1)
             if t > month:
                 break
             qs = t
@@ -1174,6 +1176,18 @@ class Demand(models.Model):
 
     objects = DemandManager()
     
+    def include_zilber_bonus(self):
+        c_zilber = self.project.commissions.c_zilber
+        if not c_zilber:
+            return False
+        qs = c_zilber.third_start
+        while qs < date(self.year, self.month, 1):
+            t = date(qs.month > 12-ZILBER_CYCLE and qs.year + 1 or qs.year, 
+                     (qs.month + ZILBER_CYCLE) % 12 or 12, 1)
+            if t > month:
+                break
+            qs = t
+        return qs.month == self.month and qs.year == self.year
     def get_absolute_url(self):
         return '/demands/%s' % self.id
     def get_salaries(self):

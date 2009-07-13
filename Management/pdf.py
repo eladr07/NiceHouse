@@ -138,6 +138,40 @@ class MonthDemandWriter:
         s += log2vis(u'ו. לנוחיותכם, הדרישה מועברת אליכם גם במייל וגם בפקס.')
         return Paragraph(s, ParagraphStyle(name='into', fontName='David', fontSize=14,
                                            alignment=TA_RIGHT, leading=16))
+    def zilberBonusFlows(self):
+        demands = [self.demand]
+        #gathers zilber cycle demands
+        for i in range(1, ZILBER_CYCLE - 1):
+            y,m, p = (self.demand.year, self.demand.month, self.demand.project)
+            month = date(m == 1 and y - 1 or y, (m - 1) or 12, 1)
+            demands.append(Demand.objects.get(project = p, year = month.year, month = month.month))
+        demands.reverse()
+        headers = []
+        for name in [u'מס"ד', u'שם הרוכשים', u'ודירה\nבניין', u'חוזה\nתאריך',
+                     u'חוזה\nמחיר', u'מזומן\nהנחת', u'מפרט\nהוצאות',
+                     u'עו"ד\nשכ"ט', u'נוספות\nהוצאות', u'לחישוב\nמחיר', 
+                     u'0 דו"ח\nמחירון', u'חדש\nמדד', u'60%\nממודד\nמחירון']:
+            headers.append(log2vis(name))
+            
+        headers.reverse()
+        rows = []
+        for d in demands:
+            for s in d.get_sales():
+                row = ['%s-%s' % (self.demand.id, i)]
+                row.append(log2vis(s.clients))
+                headers.extend([log2vis(name),'%s/%s' % (s.house.building.num, s.house.num), s.sale_date.strftime('%d/%m/%y'), commaise(s.price)])
+                lawyer_pay = s.price_include_lawyer and (s.price - s.price_no_lawyer) or s.price * 0.015
+                row.extend([None,None,commaise(lawyer_pay), commaise(s.price_final), commaise(2000)])
+                row.extend(s.price_final, None, None, None)
+                row.reverse()
+                rows.append(row)
+                
+        data = [headers]
+        data.extend(rows)
+        t = Table(data)
+        t.setStyle(saleTableStyle)
+        return [t]
+        
     def saleFlows(self):
         sales = self.demand.get_sales()
         if sales.count() == 0:
@@ -256,7 +290,10 @@ class MonthDemandWriter:
             story.append(PageBreak())
         if self.demand.fixed_pay or self.demand.var_pay or self.demand.bonus:
             story.extend([Spacer(0, 20), self.addsPara()])
-        story.extend([Spacer(0, 20), self.remarkPara()])    
+        story.extend([Spacer(0, 20), self.remarkPara()]) 
+        if self.demand.include_zilber_bonus():
+            story.extend([PageBreak(), Spacer(0,30)])
+            story.extend(self.zilberBonusFlows())   
         doc.build(story, self.addFirst, self.addLater)
         return doc.canv
 
