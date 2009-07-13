@@ -943,8 +943,8 @@ class CZilber(models.Model):
             base = self.b_sale_rate_max
         for s in sales:
             if self.base_madad:
-                current_madad = Madad.objects.filter(date__lte=date(self.demand.year, 
-                                                                    self.demand.month,
+                current_madad = Madad.objects.filter(date__lte=date(s.demand.year, 
+                                                                    s.demand.month,
                                                                     1)).latest().value
                 if current_madad < self.base_madad:
                     current_madad = self.base_madad 
