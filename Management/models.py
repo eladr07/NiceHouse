@@ -1459,7 +1459,7 @@ class Sale(models.Model):
     clients_phone = models.CharField(ugettext('phone'), max_length = 10)
     pc_base = models.FloatField(editable=False, null=True)
     pb_dsp = models.FloatField(editable=False, null=True)
-    zdb = models.FloatField(editable=False, null=True)#zilber discount bonus
+    zdb = models.IntegerField(editable=False, null=True)#zilber discount bonus
     c_final = models.FloatField(editable=False, null=True)
     price_final = models.IntegerField(editable=False, null=True)
     employee_pay = models.DateField(ugettext('employee_paid'), editable=False)
