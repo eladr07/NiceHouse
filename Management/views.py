@@ -498,31 +498,6 @@ def demand_closeall(request):
         if d.statuses.latest().type.id == DemandFeed:
             d.close()
     return HttpResponseRedirect('/demands')
-
-@permission_required('Management.change_demand')
-def demand_sendall(request):
-    if request.method == 'POST':
-        for d in Demand.objects.current():
-            d.send()
-        return HttpResponseRedirect('/reports')
-    else:
-        now = datetime.now()
-        projects = [p for p in Project.objects.all() if p.current_demand() == None]   
-        employees = []
-        for e in Employee.objects.filter(work_end = None):
-            for s in e.sales.all():
-                if s.demand.month.year == now.year and s.demand.month.month == now.month:  
-                    out = True
-            if not out:
-                employees.append(e)
-        if len(employees) == 0 and len(projects) == 0:
-            for d in Demand.objects.current():
-                d.send()
-            return HttpResponseRedirect('/reports')
-        else:
-            return render_to_response('Management/demand_send_confirm.html', 
-                                      { 'projects':projects, 'employees' : employees },
-                                      context_instance=RequestContext(request))
         
 @permission_required('Management.delete_sale')
 def demand_sale_del(request, id):

@@ -52,19 +52,19 @@
 				</td>				
 				<td>
 					{% if s.salepricemod %}
-						<a href="/salepricemod/{{s.salepricemod.id}}"><img src="/site_media/images/money-48.png" width="15" height="15" /></a>
+						<a href="/salepricemod/{{s.salepricemod.id}}" target="_parent"><img src="/site_media/images/money-48.png" width="15" height="15" /></a>
 					{% endif %}
 					{% if s.salehousemod %}
-						<a href="/salehousemod/{{s.salehousemod.id}}"><img src="/site_media/images/home-48.png" width="15" height="15" /></a>
+						<a href="/salehousemod/{{s.salehousemod.id}}" target="_parent"><img src="/site_media/images/home-48.png" width="15" height="15" /></a>
 					{% endif %}
 					{% if s.salepre %}
-						<a href="/salepre/{{s.salepre.id}}"><img src="/site_media/images/agt_forward-48.png" width="15" height="15" /></a>
+						<a href="/salepre/{{s.salepre.id}}" target="_parent"><img src="/site_media/images/agt_forward-48.png" width="15" height="15" /></a>
 					{% endif %}
 					{% if s.salereject %}
-						<a href="/salereject/{{s.salereject.id}}"><img src="/site_media/images/agt_back-48.png" width="15" height="15" /></a>
+						<a href="/salereject/{{s.salereject.id}}" target="_parent"><img src="/site_media/images/agt_back-48.png" width="15" height="15" /></a>
 					{% endif %}
 				</td>
-				<td><a id="reject{{s.id}}" href="/demands/{{s.demand.id}}/s/{{s.id}}/reject"><img src="/site_media/images/agt_back-48.png" width="15" height="15" alt="דחייה" border="0" /></a></td>
+				<td><a id="reject{{s.id}}" href="/demands/{{s.demand.id}}/s/{{s.id}}/reject" target="_parent"><img src="/site_media/images/agt_back-48.png" width="15" height="15" alt="דחייה" border="0" /></a></td>
 			</tr>
 		{% endfor %}
 		<tr>

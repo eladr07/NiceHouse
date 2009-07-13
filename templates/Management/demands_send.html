@@ -25,6 +25,7 @@
 		<th>מס'</th>
 		<th>שם הפרוייקט</th>
 		<th>חודש</th>
+		<th>מס' מכירות</th>
 		<th>סופית?</th>
 		<th>מייל?</th>
 		<th>כתובת מייל</th>
@@ -52,6 +53,7 @@
 				</td>
 				<td><a href="{{f.instance.project.get_absolute_url}}">{{ f.instance.project }}</a></td>
 				<td>{{ f.instance.month }}/{{f.instance.year}}</a></td>
+				<td><a href="/demands/{{d.id}}/sales" class="fancybox">{{ d.get_sales.count|default:"אין מכירות" }}</a></td>
 				<td>{{f.is_finished}}</td>
 				<td>{{f.by_mail}}</td>
 				<td>
