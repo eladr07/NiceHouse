@@ -4,15 +4,10 @@
 {{ block.super }}
 <script>
 	$(document).ready(function() {
-		$("#locateDemandLgnd, #locateHouseLgnd").click(function (event) {
-			$(this).next().toggle();
-		});
-		$("#locateDemandLgnd, #locateHouseLgnd").next().hide();
 		$("a[id*='reject']").click(function(event) {
 			if (!confirm("האם אתה בטוח שברצונך לדחות את הדירה ?"))
 				event.preventDefault();
 		});
-		$(".fancybox").fancybox();
 	});
 </script>
 {% endblock header %}
@@ -64,7 +59,7 @@
 						<a href="/salereject/{{s.salereject.id}}" target="_parent"><img src="/site_media/images/agt_back-48.png" width="15" height="15" /></a>
 					{% endif %}
 				</td>
-				<td><a id="reject{{s.id}}" href="/demands/{{s.demand.id}}/s/{{s.id}}/reject" target="_parent"><img src="/site_media/images/agt_back-48.png" width="15" height="15" alt="דחייה" border="0" /></a></td>
+				<td><a id="reject{{s.id}}" href="a/demands/{{s.demand.id}}/sale/{{s.id}}/reject" target="_parent"><img src="/site_media/images/agt_back-48.png" width="15" height="15" alt="דחייה" border="0" /></a></td>
 			</tr>
 		{% endfor %}
 		<tr>
