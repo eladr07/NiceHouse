@@ -1,5 +1,13 @@
 ﻿{% extends "./base.html" %}
 {% load management_extras %}
+{% block header %}
+{{ block.super }}
+<script>
+	$(document).ready(function() {
+		$(".fancybox").fancybox();
+	});
+</script>
+{% endblock header %}
 {% block content %}
 	<div class="title">
 		<div class="pageTitle">אישור ושליחת דרישות במייל ובפקס לחודש {{month|date:"M Y"}}</div>
