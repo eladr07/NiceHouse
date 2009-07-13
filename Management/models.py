@@ -940,7 +940,14 @@ class CZilber(models.Model):
         if base > self.b_sale_rate_max:
             base = self.b_sale_rate_max
         for s in sales:
-            s.pb_dsp = self.b_discount
+            if self.base_madad:
+                current_madad = Madad.objects.filter(date__lte=date(self.demand.year, 
+                                                                    self.demand.month,
+                                                                    1)).latest().value
+                if current_madad < self.base_madad:
+                    current_madad = self.base_madad 
+                memudad = (current_madad / self.base_madad * 0.6 + 1) * s.company_price or s.price
+                s.zdb = (s.price_final - mumdad) * self.b_discount
             s.pc_base = base
             s.c_final = base
             s.price_final = s.project_price()
@@ -1438,6 +1445,7 @@ class Sale(models.Model):
     clients_phone = models.CharField(ugettext('phone'), max_length = 10)
     pc_base = models.FloatField(editable=False, null=True)
     pb_dsp = models.FloatField(editable=False, null=True)
+    zdb = models.FloatField(editable=False, null=True)#zilber discount bonus
     c_final = models.FloatField(editable=False, null=True)
     price_final = models.IntegerField(editable=False, null=True)
     employee_pay = models.DateField(ugettext('employee_paid'), editable=False)
@@ -1452,19 +1460,7 @@ class Sale(models.Model):
         return self.pc_base * self.price_final / 100
     @property
     def pb_dsp_worth(self):
-        if self.demand.project.is_zilber():
-            c_zilber = self.demand.project.commissions.c_zilber
-            if c_zilber.base_madad:
-                current_madad = Madad.objects.filter(date__lte=date(self.demand.year, 
-                                                                    self.demand.month,
-                                                                    1)).latest().value
-                if current_madad < c_zilber.base_madad:
-                    current_madad = c_zilber.base_madad 
-                memudad = (current_madad / self.base_madad * 0.6 + 1) * self.company_price or self.price
-                return (self.price_final - mumdad) * self.pb_dsp
-        else:
-            return self.pb_dsp * self.price_final / 100
-
+        return self.pb_dsp * self.price_final / 100
     @property
     def c_final_worth(self):
         return self.c_final * self.price_final / 100
