@@ -444,12 +444,12 @@ def demand_zero(request, id):
     return HttpResponseRedirect('/demands')
 
 def demand_send_mail(demand, addr):
-    demand.send()
     filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
     write_demand_pdf(demand, filename)
     mail(addr,
          u'עמלה לפרויקט %s לחודש %s/%s' % (demand.project, demand.month, demand.year),
          '', filename)
+    demand.send()
 
 @permission_required('Management.change_demand')
 def demands_send(request):
