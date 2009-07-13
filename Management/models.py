@@ -158,7 +158,7 @@ class Project(models.Model):
     objects = ProjectManager()
     
     def is_zilber(self):
-        return self.commissions.c_zliber != None
+        return self.commissions.c_zilber != None
     def demands_unpaid(self):
         return [d for d in self.demands.all() 
                 if d.statuses.count()>0 
