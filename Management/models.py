@@ -947,8 +947,9 @@ class CZilber(models.Model):
                                                                     s.demand.month,
                                                                     1)).latest().value
                 if current_madad < self.base_madad:
-                    current_madad = self.base_madad 
-                memudad = (current_madad / self.base_madad * 0.6 + 1) * (s.company_price or s.price)
+                    current_madad = self.base_madad
+                doh0prices = s.house.versions.filter(type__id = PricelistTypeDoh0)
+                memudad = (current_madad / self.base_madad * 0.6 + 1) * (doh0prices.count() > 0 and doh0prices.latest() or s.price)
                 s.zdb = (s.price_final - memudad) * self.b_discount
             s.pc_base = base
             s.c_final = base
@@ -960,8 +961,8 @@ class CZilber(models.Model):
                 continue
             for s in prev_sales[m].all():
                 prev_adds += (base - s.pc_base) * s.price_final / 100
-        d.var_pay = prev_adds
-        d.var_pay_type = u'תוספת בגין %s עד %s' % (start.strftime('%d/%m/%Y'), 
+        d.bonus = prev_adds
+        d.bonus_type = u'תוספת בגין %s עד %s' % (start.strftime('%d/%m/%Y'), 
                                                    date(month.month == 1 and month.year-1 or month.year, 
                                                         month.month == 1 and 12 or month.month, 
                                                         1).strftime('%d/%m/%Y'))

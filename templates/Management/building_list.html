@@ -21,11 +21,6 @@
 			}
 		});
 		
-		$("a[id*='pricelist']").click(function (event) {
-				event.preventDefault();
-				parent.location.replace($(this).attr("href"));
-			});
-		
 		$("#buildingDelete").click(function (event) {
 			event.preventDefault();
 			$.get($(this).attr("href"), function(data){
@@ -84,9 +79,9 @@
 					<td>{{ b.remarks }}</td>
 					<td>
 					{% for t in b.pricelist_types %}
-						<a id="pricelist{{b.id}}type{{t.id}}" href="/buildings/{{b.id}}/pricelist/type{{t.id}}">{{t}}</a><br>
+						<a target="_parent" href="/buildings/{{b.id}}/pricelist/type{{t.id}}">{{t}}</a><br>
 					{% empty %}
-						<a id="pricelist{{b.id}}type{{t.id}}" href="/buildings/{{b.id}}/pricelist/type1">מחירון חברה</a>
+						<a target="_parent" href="/buildings/{{b.id}}/pricelist/type1">מחירון חברה</a>
 					{% endfor %}
 					</td>
 				</tr>
