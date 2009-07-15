@@ -953,7 +953,7 @@ class CZilber(models.Model):
                     s.zdb = 0
                     continue
                 memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * doh0prices.latest().price
-                s.zdb = (s.price_final - memudad) * self.b_discount
+                s.zdb = (s.price - memudad) * self.b_discount
             s.pc_base = base
             s.c_final = base
             s.price_final = s.project_price()
@@ -1166,7 +1166,7 @@ class Demand(models.Model):
     var_pay = models.IntegerField(ugettext('var_pay'), null=True, blank=True)
     var_pay_type = models.CharField(ugettext('var_pay_type'), max_length=50, null=True, blank=True)
     bonus = models.IntegerField(ugettext('bonus'),blank=True, null=True)
-    bonus_type = models.CharField(ugettext('bonus_type'), max_length=20, null=True, blank=True)
+    bonus_type = models.CharField(ugettext('bonus_type'), max_length=50, null=True, blank=True)
     fee = models.IntegerField(ugettext('fee'),blank=True, null=True)
     fee_type = models.CharField(ugettext('fee_type'), max_length=20, null=True, blank=True)
     remarks = models.TextField(ugettext('remarks'), null=True,blank=True)
