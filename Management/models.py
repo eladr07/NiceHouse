@@ -952,7 +952,7 @@ class CZilber(models.Model):
                 if doh0prices.count() == 0:
                     s.zdb = 0
                     continue
-                memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * doh0prices.latest()
+                memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * doh0prices.latest().price
                 s.zdb = (s.price_final - memudad) * self.b_discount
             s.pc_base = base
             s.c_final = base
