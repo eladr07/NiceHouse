@@ -1073,7 +1073,7 @@ def building_addhouse(request, type_id, building_id):
         if form.is_valid():
             form.save()
             if request.POST.has_key('addanother'):
-                return HttpResponseRedirect('../addhouse/type%s' % type_id)
+                return HttpResponseRedirect('type%s' % type_id)
             elif request.POST.has_key('finish'):
                 return HttpResponseRedirect('../pricelist/type%s' % type_id)
     else:
@@ -1091,7 +1091,7 @@ def building_addhouse(request, type_id, building_id):
     return render_to_response('Management/house_edit.html', 
                               {'form' : form, 'type':PricelistType.objects.get(pk = type_id) })
 
-@permission_required('Management.add_house')
+@permission_required('Management.change_house')
 def house_edit(request,id , type_id):
     h = House.objects.get(pk=id)
     b = h.building
