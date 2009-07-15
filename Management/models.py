@@ -230,7 +230,7 @@ class ParkingType(models.Model):
         db_table='ParkingType'
 
 PricelistTypeCompany = 1 
-PricelistTypeDoh0 = 3        
+PricelistTypeDoh0 = 2       
 class PricelistType(models.Model):
     name = models.CharField(ugettext('name'), max_length=20, unique=True)
     def __unicode__(self):
