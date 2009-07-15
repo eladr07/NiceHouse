@@ -86,8 +86,9 @@ class MonthDemandWriter:
         if count <= 40:
             return 3
         return 4
-    def __init__(self, demand):
+    def __init__(self, demand, signup_adds = False):
         self.demand = demand
+        self.signup_adds = signup_adds
     def toPara(self):
         contact = self.demand.project.demand_contact
         s = log2vis(u'בס"ד') + '<br/><br/>'
@@ -171,7 +172,6 @@ class MonthDemandWriter:
         t = Table(data)
         t.setStyle(saleTableStyle)
         return [t]
-        
     def saleFlows(self):
         sales = self.demand.get_sales()
         if sales.count() == 0:
@@ -185,6 +185,9 @@ class MonthDemandWriter:
                 colWidths.append(40)
                 contract_num = True
                 break
+        if self.signup_adds:
+            headers.append(log2vis(u'הרשמה\nתאריך'))
+            colWidths.append(None)
         headers.extend([log2vis(u'שם הרוכשים'),log2vis(u'ודירה\nבניין'),
                         log2vis(u'מכירה\nתאריך'), log2vis(u'חוזה\nמחיר')])
         colWidths.extend([70, None,None,None])
@@ -215,6 +218,8 @@ class MonthDemandWriter:
             row = ['%s-%s' % (self.demand.id, i)]
             if contract_num:
                 row.append(s.contract_num)
+            if self.signup_adds:
+                row.append(s.house.get_signup().date.strftime('%d/%m/%y'))
             row.extend([clientsPara(s.clients), '%s/%s' % (s.house.building.num, s.house.num), s.sale_date.strftime('%d/%m/%y'), commaise(s.price)])
             if zilber:
                 lawyer_pay = s.price_include_lawyer and (s.price - s.price_no_lawyer) or s.price * 0.015
@@ -227,11 +232,13 @@ class MonthDemandWriter:
             row.reverse()#reportlab prints columns ltr
             rows.append(row)
             if i % next_break == 0 or i == sales.count():
-                if i == sales.count():# insert column summaries
+                if i == sales.count():# insert column summaries if last row
+                    row = [log2vis(u'סה"כ')]
                     if contract_num:
-                        row = [None,None,None,log2vis('סה"כ %s' % self.demand.get_sales().count()),None]
-                    else:
-                        row = [None,None,log2vis('סה"כ %s' % self.demand.get_sales().count()),None]
+                        row.append(None)
+                    if self.signup_adds:
+                        row.append(None)
+                    row.extend([None,None,log2vis('%s' % self.demand.get_sales().count()),None])
                     row.append(commaise(self.demand.get_sales_amount()))
                     if zilber:
                         row.extend([None,None,None,None,None])
@@ -271,7 +278,7 @@ class MonthDemandWriter:
             s += log2vis(u'%s - %s ש"ח' % (self.demand.var_pay_type, commaise(self.demand.var_pay))) + '<br/>'
         if self.demand.bonus:
             s += log2vis(u'%s - %s ש"ח' % (self.demand.bonus_type, commaise(self.demand.bonus))) + '<br/>'
-        s += '<b>%s</b>' % log2vis(u'סה"כ : %s ש"ח' % commaise(self.demand.get_total_amount())) 
+        s += '<b>%s</b>' % log2vis(u'סה"כ : %s ש"ח' % commaise(self.demand.get_total_amount()))
         return Paragraph(s, ParagraphStyle(name='addsPara', fontName='David', fontSize=14, 
                                            leading=16, alignment=TA_LEFT))
     def build(self, filename):

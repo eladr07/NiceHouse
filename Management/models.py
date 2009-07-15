@@ -1055,9 +1055,11 @@ class ProjectCommission(models.Model):
         '''
         sales should be a QuerySet. returns sales with commission fields
         '''
+        if sales.count() == 0:
+            return []
+        demand = sales[0].demand
+        month = date(demand.year, demand.month, 1)
         if getattr(self, 'c_zilber') != None:
-            demand = sales[0].demand
-            month = date(demand.year, demand.month, 1)
             getattr(self, 'c_zilber').calc(month)
             return
         dic={}
@@ -1087,6 +1089,23 @@ class ProjectCommission(models.Model):
             s.price_final = s.project_price()
             s.c_final = dic[s]
             s.save()
+        if self.project.id == 5:#Merom Hasharon patch
+            months = {}
+            for s in demand.get_sales():
+                sd = s.house.get_signup().date
+                # do not include sales from demand month.
+                if (month.month, month.year) == (sd.month, sd.year):
+                    continue                
+                if not months.has_key((sd.month, sd.year)):
+                    months[(sd.month, sd.year)] = s.c_final
+                else:
+                    months[(sd.month, sd.year)] += s.c_final
+            demand.bonus = 0
+            s= ''
+            for m in months:
+                s += u'תוספת בגין %s/%s : %s ש"ח. ' % (m.month, m.year, commaise(months[m]))
+                demand.bonus += months[m]
+            demand.bonus_type = s 
         return [s for s in dic]
 
     class Meta:

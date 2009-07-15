@@ -1583,7 +1583,7 @@ def write_demand_pdf(demand, filename):
     p = open(filename,'w+')
     p.flush()
     p.close()
-    MonthDemandWriter(demand).build(filename)    
+    MonthDemandWriter(demand, signup_adds = demand.project.id == 5).build(filename)    
 
 @permission_required('Management.report_project_month')
 def report_project_month(request, project_id, year, month):
