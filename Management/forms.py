@@ -215,6 +215,7 @@ class SignupCancelForm(forms.ModelForm):
 class SaleForm(forms.ModelForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label=ugettext('project'))
     building = forms.ModelChoiceField(queryset = Building.objects.all(), label=ugettext('building'))
+    signup_date = forms.DateField(label=ugettext('signup_date'), required=False)
     def save(self, *args, **kw):
         if not self.instance.id and self.cleaned_data['house'].get_sale() != None:
             raise AttributeError
@@ -227,18 +228,32 @@ class SaleForm(forms.ModelForm):
             price = self.cleaned_data['price']
             self.cleaned_data['discount'] = 100 - (100 / float(max_p) * price)
             self.cleaned_data['contract_num'] = 0
+        #fill Signup automatically. it is temp fix until signup_date field will
+        #be removed.
+        if self.cleaned_data['signup_date'] != None:
+            signup = self.cleaned_data['house'].get_signup() or Signup()
+            signup.date = self.cleaned_data['signup_date']
+            for attr in ['house','clients','clients_phone','sale_date','price',
+                         'price_include_lawyer']:
+                setattr(signup, attr, self.cleaned_data[attr])
+            signup.save()
         return forms.ModelForm.save(self, *args, **kw)
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
         self.fields['remarks'].widget = forms.Textarea({'cols':'20', 'rows':'3'})
         self.fields['clients'].widget = forms.Textarea({'cols':'20', 'rows':'3'})
         self.fields['sale_date'].widget = forms.TextInput({'class':'vDateField'})
+        self.fields['signup_date'].widget = forms.TextInput({'class':'vDateField'})
         if self.instance.id:
             self.fields['project'].initial = self.instance.house.building.project.id
             self.fields['building'].initial = self.instance.house.building.id
             self.fields['house'].initial = self.instance.house.id
             self.fields['building'].queryset = self.instance.house.building.project.buildings.all()
-            self.fields['house'].queryset = self.instance.house.building.houses.all()           
+            self.fields['house'].queryset = self.instance.house.building.houses.all()
+            #fill signup_date field.
+            signup= self.instance.house.get_signup()
+            if signup:
+                self.fields['signup_date'].initial = signup.date
     class Meta:
         model = Sale
         

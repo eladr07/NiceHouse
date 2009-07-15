@@ -1303,11 +1303,11 @@ class Signup(models.Model):
     house = models.ForeignKey('House', related_name = 'signups', verbose_name=ugettext('house'))
     date = models.DateField(ugettext('signup_date'))
     clients = models.TextField(ugettext('clients'))
-    clients_address = models.TextField(ugettext('clients_address'))
+    clients_address = models.TextField(ugettext('clients_address'), null=True)
     clients_phone = models.TextField(ugettext('phone'))
     sale_date = models.DateField(ugettext('predicted_sale_date'))
     price = models.IntegerField(ugettext('signup_price'))
-    include_lawyer = models.BooleanField(ugettext('include_lawyer'), choices = Boolean)
+    price_include_lawyer = models.BooleanField(ugettext('include_lawyer'), choices = Boolean)
     remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
     cancel = models.OneToOneField('SignupCancel', related_name = 'signup', null=True, editable=False)
        
