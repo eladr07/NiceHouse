@@ -279,7 +279,7 @@ class MonthDemandWriter:
         if self.demand.bonus:
             s += log2vis(u'%s - %s ש"ח' % (self.demand.bonus_type, commaise(self.demand.bonus))) + '<br/>'
         s += '<b>%s</b>' % log2vis(u'סה"כ : %s ש"ח' % commaise(self.demand.get_total_amount())) + '<br/>'
-        if signup_adds:
+        if self.signup_adds:
             s+= log2vis(u'כולל תוספות בגין הרשמות :') + '<br/>'
             months = {}
             for s in self.demand.get_sales():
