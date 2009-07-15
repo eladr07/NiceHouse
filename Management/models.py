@@ -951,6 +951,7 @@ class CZilber(models.Model):
                 doh0prices = s.house.versions.filter(type__id = PricelistTypeDoh0)
                 if doh0prices.count() == 0:
                     s.zdb = 0
+                    s.save()
                     continue
                 memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * doh0prices.latest().price
                 s.zdb = (s.price - memudad) * self.b_discount
