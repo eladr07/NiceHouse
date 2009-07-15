@@ -139,6 +139,15 @@
 			<legend>פרטי הרשמה</legend>
 			<table class="formTable">
 				<tr>
+					<th>סטטוס</th>
+					<td>
+						{% if signup.cancel %}
+							<span style="color:#D61616;font-weight:bold;">בוטלה</span>
+						{% else %}
+							<span style="color:#088B0B;font-weight:bold;">פעילה</span>
+						{% endif %}</td>
+				</tr>
+				<tr>
 					<th>שמות הרוכשים</th>
 					<td>{{signup.clients}}</td>
 				</tr>
