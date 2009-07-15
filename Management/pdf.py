@@ -232,7 +232,7 @@ class MonthDemandWriter:
             row.reverse()#reportlab prints columns ltr
             rows.append(row)
             if i % next_break == 0 or i == sales.count():
-                if i == sales.count():# insert column summaries if last row
+                if i == sales.count():# insert column summaries if last w
                     row = [log2vis(u'סה"כ')]
                     if contract_num:
                         row.append(None)
@@ -271,14 +271,28 @@ class MonthDemandWriter:
         return Paragraph(s, ParagraphStyle(name='remarkPara', fontName='David', fontSize=13, 
                                            leading=16, alignment=TA_RIGHT))
     def addsPara(self):
-        s = ''#'<b><u>%s</u></b><br/>' % log2vis(u'תוספות לדרישה')
+        s = ''
         if self.demand.fixed_pay:
             s += log2vis(u'%s - %s ש"ח' % (self.demand.fixed_pay_type, commaise(self.demand.fixed_pay))) + '<br/>'
         if self.demand.var_pay:
             s += log2vis(u'%s - %s ש"ח' % (self.demand.var_pay_type, commaise(self.demand.var_pay))) + '<br/>'
         if self.demand.bonus:
             s += log2vis(u'%s - %s ש"ח' % (self.demand.bonus_type, commaise(self.demand.bonus))) + '<br/>'
-        s += '<b>%s</b>' % log2vis(u'סה"כ : %s ש"ח' % commaise(self.demand.get_total_amount()))
+        s += '<b>%s</b>' % log2vis(u'סה"כ : %s ש"ח' % commaise(self.demand.get_total_amount())) + '<br/>'
+        if signup_adds:
+            s+= log2vis(u'כולל תוספות בגין הרשמות :') + '<br/>'
+            months = {}
+            for s in self.demand.get_sales():
+                sd = s.house.get_signup().date
+                # do not include sales from demand month.
+                if (self.demand.month, self.demand.year) == (sd.month, sd.year):
+                    continue                
+                if not months.has_key((sd.month, sd.year)):
+                    months[(sd.month, sd.year)] = s.c_final
+                else:
+                    months[(sd.month, sd.year)] += s.c_final
+            for m in months:
+                s += log2vis(u'בגין %s/%s : %s ש"ח' % (m.month, m.year, commaise(months[m]))) + '<br/>'
         return Paragraph(s, ParagraphStyle(name='addsPara', fontName='David', fontSize=14, 
                                            leading=16, alignment=TA_LEFT))
     def build(self, filename):
