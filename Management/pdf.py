@@ -238,7 +238,7 @@ class MonthDemandWriter:
                         row.append(None)
                     if self.signup_adds:
                         row.append(None)
-                    row.extend([None,None,log2vis('%s' % self.demand.get_sales().count()),None])
+                    row.extend([None,log2vis('%s' % self.demand.get_sales().count()),None])
                     row.append(commaise(self.demand.get_sales_amount()))
                     if zilber:
                         row.extend([None,None,None,None,None])
