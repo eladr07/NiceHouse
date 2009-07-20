@@ -100,10 +100,11 @@ class EmployeeListWriter:
         frame4 = Frame(50, 20, 500, 70)
         frame4.addFromList([nhAddr()], canv)
     def employeeFlows(self):
-        flows=[Paragraph(log2vis(u'נווה העיר - %s עובדים' % len(self.employees)), styleSubTitle)]
+        flows=[Paragraph(log2vis(u'נווה העיר - %s עובדים' % len(self.employees)), styleSubTitle),
+               Spacer(0,10)]
         headers=[]
-        for header in [u'מס"ד',u'שם פרטי',u'שם משפחה',u'טלפון',u'כתובת',
-                       u'תחילת העסקה',u'סוג העסקה',u'פרוייקטים',u'הערות']:
+        for header in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'כתובת',
+                       u'העסקה\nתחילת',u'העסקה\nסוג',u'פרוייקטים',u'הערות']:
             headers.append(log2vis(header))
         headers.reverse()
         rows=[]
@@ -127,7 +128,8 @@ class EmployeeListWriter:
                 flows.append(t)
                 flows.extend([PageBreak(), Spacer(0,70)])
                 rows = []
-        flows.append(Paragraph(log2vis(u'נייס האוס - %s עובדים' % len(self.nhemployees)), styleSubTitle))
+        flows.extend([Paragraph(log2vis(u'נייס האוס - %s עובדים' % len(self.nhemployees)), styleSubTitle),
+                      Spacer(0,10)])
         for e in self.nhemployees:
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name),
                  log2vis(e.phone), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
@@ -148,7 +150,7 @@ class EmployeeListWriter:
         return flows
     def build(self, filename):
         doc = SimpleDocTemplate(filename)
-        story = [Spacer(0,100)]
+        story = [Spacer(0,40)]
         story.append(titlePara(u'מצבת עובדים'))
         story.append(Spacer(0, 10))
         story.extend(self.employeeFlows())
