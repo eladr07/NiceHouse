@@ -31,6 +31,9 @@
 			if (!confirm("האם אתה בטוח שברצונך לאשר את כל הדרישות?"))
 				event.preventDefault();
 		});
+		$("#monthChange").click(function(event) {
+			location.replace("/demands/" + $("#id_year").val() + "/" + $("#id_month").val())
+		});
 	});
 </script>
 {% endblock header %}
@@ -50,7 +53,7 @@
 				{{ field }}
 			</td>
 			{% endfor %}
-			<td><input type="submit" value="חפש" class="button"/></td>
+			<td><input id="monthChange" type="submit" value="חפש" class="button"/></td>
 		</tr>
 	</table>
 </form>

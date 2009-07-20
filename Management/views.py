@@ -263,18 +263,9 @@ def demand_function(request,id , function):
     return HttpResponse('ok')
 
 @permission_required('Management.list_demand')
-def demand_old_list(request):
-    if request.method=='POST':
-        form = MonthFilterForm(request.POST)
-        if form.is_valid():
-            month = datetime(int(form.cleaned_data['year']), int(form.cleaned_data['month']), 1)
-            ds = Demand.objects.filter(year = month.year, month = month.month)
-    else:
-        form = MonthFilterForm()
-        ds = Demand.objects.current()
-        month = datetime.now()
-        if month.day <= 22:
-            month = datetime(month.year, month.month == 1 and 12 or month.month - 1, month.day)
+def demand_old_list(request, year=demand_month().year, month=demand_month().month):
+    form = MonthFilterForm(initial={'year':year,'month':month})
+    ds = Demand.objects.filter(year = year, month = month)
     total_sales_count,total_sales_amount, total_sales_commission, total_amount = (0,0,0,0)
     for d in ds.all():
         d.calc_sales_commission()
@@ -289,7 +280,7 @@ def demand_old_list(request):
             unhandled_projects.append(p)
         
     return render_to_response('Management/demand_old_list.html', 
-                              { 'demands':ds, 'month':month,'filterForm':form,'total_sales_count':total_sales_count,
+                              { 'demands':ds, 'month':date(year, month, 1),'filterForm':form,'total_sales_count':total_sales_count,
                                 'total_sales_amount':total_sales_amount,'total_sales_commission':total_sales_commission,
                                 'total_amount':total_amount, 'unhandled_projects':unhandled_projects},
                               context_instance=RequestContext(request))
@@ -358,32 +349,22 @@ def demands_all(request):
                               context_instance=RequestContext(request))
 
 @permission_required('Management.add_demand')
-def demand_list(request):
-    if request.method == 'POST':
-        form = MonthFilterForm(request.POST)
-        if form.is_valid():
-            ds = Demand.objects.filter(year = form.cleaned_data['year'], month = form.cleaned_data['month'])
-            month = datetime(int(form.cleaned_data['year']),int(form.cleaned_data['month']),1)
-        else:
-            return HttpResponseRedirect('/demands')
-    else:
-        ds = Demand.objects.current()
-        form = MonthFilterForm()
-        month = demand_month()
- 
+def demand_list(request, year=demand_month().year, month=demand_month().month):
+    ds = Demand.objects.filter(year = year, month = month)
+    form = MonthFilterForm(initial={'year':year,'month':month})
     unhandled_projects = list(Project.objects.active())
     '''loop through all active projects and create demands for them if havent
     alredy created. if project has status other than Feed, it is handled'''        
     for p in Project.objects.active():
         if ds.filter(project = p).count() == 0:
-            demand = Demand(project = p, month = month.month, year = month.year, fixed_pay = p.commissions.add_amount,
+            demand = Demand(project = p, month = month, year = year, fixed_pay = p.commissions.add_amount,
                             fixed_pay_type = p.commissions.add_type)
             demand.save()
         elif ds.get(project=p).statuses.count() > 0 and ds.get(project=p).statuses.latest().type.id != DemandFeed:
             unhandled_projects.remove(p)
     return render_to_response('Management/demand_list.html', 
-                              { 'demands':ds, 'unhandled_projects':unhandled_projects, 'month':month,
-                               'filterForm':form },
+                              { 'demands':ds, 'unhandled_projects':unhandled_projects, 
+                               'month':date(year, month, 1), 'filterForm':form },
                               context_instance=RequestContext(request))
 
 def employee_sales(request, id, year, month):
