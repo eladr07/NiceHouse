@@ -106,8 +106,6 @@ class EmployeeListWriter:
         for header in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'כתובת',
                        u'העסקה\nתחילת',u'העסקה\nסוג',u'פרוייקטים',u'הערות']:
             headers.append(log2vis(header))
-        colWidths=[None,None,None,None,100,None,None,None,None]
-        colWidths.reverse()
         headers.reverse()
         rows=[]
         i=0
@@ -117,7 +115,7 @@ class EmployeeListWriter:
                  log2vis(unicode(e.employment_terms.hire_type))]
             projects=''
             for p in e.projects.all():
-                projects += log2vis(unicode(p)) + '\n'
+                projects += log2vis(p.name) + '\n'
             row.extend([projects, log2vis(e.remarks)])
             row.reverse()
             rows.append(row)
@@ -125,7 +123,7 @@ class EmployeeListWriter:
             if i % 17 == 0 or i == len(self.employees):
                 data = [headers]
                 data.extend(rows)
-                t = Table(data, colWidths)
+                t = Table(data)
                 t.setStyle(saleTableStyle)
                 flows.append(t)
                 if i % 17 == 0:
