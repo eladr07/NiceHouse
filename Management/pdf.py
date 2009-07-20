@@ -130,11 +130,7 @@ class EmployeeListWriter:
         for e in self.nhemployees:
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name),
                  log2vis(e.phone), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
-                 log2vis(unicode(e.employment_terms.hire_type))]
-            projects=''
-            for p in e.projects.all():
-                projects += log2vis(unicode(p)) + '<br/>'
-            row.extend([projects, log2vis(e.remarks)])
+                 log2vis(unicode(e.employment_terms.hire_type)), log2vis(e.remarks)]
             rows.append(row)
             i+=1
             if i % 20 == 0 or i == len(self.employees) + len(self.nhemployees):
