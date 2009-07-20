@@ -113,7 +113,7 @@ class EmployeeListWriter:
                  log2vis(e.phone), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
                  log2vis(unicode(e.employment_terms.hire_type))]
             projects='<br/>'.join(e.projects.all())
-            row.extend(projects, log2vis(e.remarks))
+            row.extend([projects, log2vis(e.remarks)])
             rows.append(row)
             i+=1
             if i % 20 == 0 or i == len(self.employees):
@@ -130,7 +130,7 @@ class EmployeeListWriter:
                  log2vis(e.phone), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
                  log2vis(unicode(e.employment_terms.hire_type))]
             projects='<br/>'.join(e.projects.all())
-            row.extend(projects, log2vis(e.remarks))
+            row.extend([projects, log2vis(e.remarks)])
             rows.append(row)
             i+=1
             if i % 20 == 0 or i == len(self.employees) + len(self.nhemployees):
