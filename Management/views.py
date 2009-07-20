@@ -266,7 +266,7 @@ def demand_function(request,id , function):
 def demands_calc(request, year, month):
     for d in Demand.objects.filter(year = year, month = month):
         d.calc_sales_commission()
-    return HttpResponseRedirect('..')
+    return HttpResponseRedirect('/demandsold/%s/%s' % (year,month))
 
 @permission_required('Management.list_demand')
 def demand_old_list(request, year=demand_month().year, month=demand_month().month):
