@@ -133,10 +133,7 @@ class EmployeeListWriter:
                 t = Table(data)
                 t.setStyle(saleTableStyle)
                 flows.append(t)
-                if i % 17 == 0:
-                    flows.extend([PageBreak(), Spacer(0,70)])
-                else:
-                    flows.append(Spacer(0,10))
+                flows.extend([PageBreak(), Spacer(0,70)])
                 rows = []
         flows.extend([Paragraph(log2vis(u'נייס האוס - %s עובדים' % len(self.nhemployees)), styleSubTitle),
                       Spacer(0,10)])
