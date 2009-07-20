@@ -80,7 +80,7 @@ class EmployeeListWriter:
         self.employees = employees
         self.nhemployees = nhemployees
     def pages_count(self):
-        return (len(self.employees) + len(self.nhemployees)) % 17 + 1
+        return (len(self.employees) + len(self.nhemployees)) % 17 or 1
     def addLater(self, canv, doc):
         self.current_page += 1
         frame1 = Frame(50, 40, 150, 40)
