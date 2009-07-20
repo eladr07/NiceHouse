@@ -111,7 +111,7 @@ class EmployeeListWriter:
         for e in self.employees:
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name),
                  log2vis(e.phone), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
-                 log2vis(e.employment_terms.hire_type)]
+                 log2vis(unicode(e.employment_terms.hire_type))]
             projects='<br/>'.join(e.projects.all())
             row.extend(projects, log2vis(e.remarks))
             rows.append(row)
@@ -128,7 +128,7 @@ class EmployeeListWriter:
         for e in self.nhemployees:
             row=[log2vis(e.id), log2vis(e.first_name), log2vis(e.last_name),
                  log2vis(e.phone), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
-                 log2vis(e.employment_terms.hire_type)]
+                 log2vis(unicode(e.employment_terms.hire_type))]
             projects='<br/>'.join(e.projects.all())
             row.extend(projects, log2vis(e.remarks))
             rows.append(row)
