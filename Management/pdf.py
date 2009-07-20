@@ -103,11 +103,11 @@ class EmployeeListWriter:
         flows=[Paragraph(log2vis(u'נווה העיר - %s עובדים' % len(self.employees)), styleSubTitle),
                Spacer(0,10)]
         headers=[]
-        colWidths=[]
         for header in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'כתובת',
                        u'העסקה\nתחילת',u'העסקה\nסוג',u'פרוייקטים',u'הערות']:
             headers.append(log2vis(header))
-            colWidths.append(None)
+        colWidths=[None,None,None,None,100,None,None,None,None]
+        colWidths.reverse()
         headers.reverse()
         rows=[]
         i=0
@@ -128,16 +128,15 @@ class EmployeeListWriter:
                 t = Table(data, colWidths)
                 t.setStyle(saleTableStyle)
                 flows.append(t)
-                flows.extend([PageBreak(), Spacer(0,70)])
+                if i % 17 == 0:
+                    flows.extend([PageBreak(), Spacer(0,70)])
                 rows = []
         flows.extend([Paragraph(log2vis(u'נייס האוס - %s עובדים' % len(self.nhemployees)), styleSubTitle),
                       Spacer(0,10)])
         headers=[]
-        colWidths=[]
         for header in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'כתובת',
                        u'העסקה\nתחילת',u'העסקה\nסוג',u'הערות']:
             headers.append(log2vis(header))
-            colWidths.append(None)
         headers.reverse()
         for e in self.nhemployees:
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name),
