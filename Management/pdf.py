@@ -76,11 +76,11 @@ def nhAddr():
     return Image(settings.MEDIA_ROOT + 'images/nh_addr.jpg', 300, 50)
 
 class EmployeeListWriter:
-    def pages_count(self):
-        return (len(self.employees) + len(self.nhemployess)) % 20 + 1
     def __init__(self, employees, nhemployees):
         self.employees = employees
-        self.nhemployess = nhemployess
+        self.nhemployees = nhemployees
+    def pages_count(self):
+        return (len(self.employees) + len(self.nhemployees)) % 20 + 1
     def addLater(self, canv, doc):
         self.current_page += 1
         frame1 = Frame(50, 40, 150, 40)
@@ -125,7 +125,7 @@ class EmployeeListWriter:
                 flows.extend([PageBreak(), Spacer(0,70)])
                 rows = []
         flows.append(Paragraph(log2vis(u'נווה העיר'), styleSubTitle))
-        for e in self.nhemployess:
+        for e in self.nhemployees:
             row=[log2vis(e.id), log2vis(e.first_name), log2vis(e.last_name),
                  log2vis(e.phone), log2vis(e.address), log2vis(e.work_start),
                  log2vis(e.employment_terms.hire_type)]
@@ -133,7 +133,7 @@ class EmployeeListWriter:
             row.extend(projects, log2vis(e.remarks))
             rows.append(row)
             i+=1
-            if i % 20 == 0 or i == len(self.employees) + len(self.nhemployess):
+            if i % 20 == 0 or i == len(self.employees) + len(self.nhemployees):
                 data = [headers]
                 data.extend(rows)
                 t = Table(data)
