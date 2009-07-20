@@ -108,7 +108,7 @@ class EmployeeListWriter:
             headers.append(log2vis(header))
         headers.reverse()
         rows=[]
-        i, rank_count, ranks = (0,0,None)
+        i, rank_count, rank = (0,0,None)
         for e in self.employees:
             if rank != e.rank:
                 row = [log2vis(unicode(e.rank)),None,None,None,None]
