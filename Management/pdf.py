@@ -172,7 +172,8 @@ class EmployeeListWriter:
                 t = Table(data)
                 t.setStyle(saleTableStyle)
                 flows.append(t)
-                flows.extend([PageBreak(), Spacer(0,70)])
+                if i < len(self.nhemployees) + nhbranch_count:
+                    flows.extend([PageBreak(), Spacer(0,70)])
                 rows = []        
         return flows
     def build(self, filename):
