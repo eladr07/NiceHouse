@@ -263,12 +263,17 @@ def demand_function(request,id , function):
     return HttpResponse('ok')
 
 @permission_required('Management.list_demand')
+def demands_calc(request, year, month):
+    for d in Demand.objects.filter(year = year, month = month):
+        d.calc_sales_commission()
+    return HttpResponseRedirect('..')
+
+@permission_required('Management.list_demand')
 def demand_old_list(request, year=demand_month().year, month=demand_month().month):
     form = MonthFilterForm(initial={'year':year,'month':month})
     ds = Demand.objects.filter(year = year, month = month)
     total_sales_count,total_sales_amount, total_sales_commission, total_amount = (0,0,0,0)
-    for d in ds.all():
-        d.calc_sales_commission()
+    for d in ds:
         total_sales_count += d.get_sales().count()
         total_sales_amount += d.get_sales_amount()
         total_sales_commission += d.get_sales_commission()
