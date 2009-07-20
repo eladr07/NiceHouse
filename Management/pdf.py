@@ -112,7 +112,7 @@ class EmployeeListWriter:
         rank=None
         for e in self.employees:
             if rank != e.rank:
-                rows.append(log2vis(unicode(e.rank)))
+                rows.append([log2vis(unicode(e.rank))])
                 rank = e.rank
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name),
                  log2vis(e.phone), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
@@ -145,7 +145,7 @@ class EmployeeListWriter:
         nhbranch=None
         for e in self.nhemployees:
             if e.nhbranch != nhbranch:
-                rows.append(log2vis(unicode(e.nhbranch)))
+                rows.append([log2vis(unicode(e.nhbranch))])
                 branch = e.nhbranch
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name),
                  log2vis(e.phone), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
