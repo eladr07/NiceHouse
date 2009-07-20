@@ -100,7 +100,7 @@ class EmployeeListWriter:
         frame4 = Frame(50, 20, 500, 70)
         frame4.addFromList([nhAddr()], canv)
     def employeeFlows(self):
-        flows=[Paragraph(log2vis(u'נווה העיר'), styleSubTitle)]
+        flows=[Paragraph(log2vis(u'נווה העיר - %s עובדים' % len(self.employees)), styleSubTitle)]
         headers=[]
         for header in [u'מס"ד',u'שם פרטי',u'שם משפחה',u'טלפון',u'כתובת',
                        u'תחילת העסקה',u'סוג העסקה',u'פרוייקטים',u'הערות']:
@@ -126,7 +126,7 @@ class EmployeeListWriter:
                 flows.append(t)
                 flows.extend([PageBreak(), Spacer(0,70)])
                 rows = []
-        flows.append(Paragraph(log2vis(u'נייס האוס'), styleSubTitle))
+        flows.append(Paragraph(log2vis(u'נייס האוס - %s עובדים' % len(self.nhemployees)), styleSubTitle))
         for e in self.nhemployees:
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name),
                  log2vis(e.phone), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
