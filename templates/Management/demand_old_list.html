@@ -31,6 +31,7 @@
 			alert("הדרישות נשלחו ליזמים");
 		});
 		$("#monthChange").click(function(event) {
+			event.preventDefault();
 			location.replace("/demands/" + $("#id_year").val() + "/" + $("#id_month").val())
 		});
 	});
@@ -53,7 +54,7 @@
 				{{ field }}
 			</td>
 			{% endfor %}
-			<td><input id="monthChange" type="submit" value="חפש" class="button"/></td>
+			<td><input id="monthChange" value="חפש" class="button"/></td>
 		</tr>
 	</table>
 </form>
