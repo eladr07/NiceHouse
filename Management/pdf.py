@@ -112,7 +112,9 @@ class EmployeeListWriter:
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name),
                  log2vis(e.phone), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
                  log2vis(unicode(e.employment_terms.hire_type))]
-            projects='<br/>'.join(e.projects.all())
+            projects=''
+            for p in e.projects.all():
+                projects += log2vis(unicode(p)) + '<br/>'
             row.extend([projects, log2vis(e.remarks)])
             rows.append(row)
             i+=1
@@ -124,12 +126,14 @@ class EmployeeListWriter:
                 flows.append(t)
                 flows.extend([PageBreak(), Spacer(0,70)])
                 rows = []
-        flows.append(Paragraph(log2vis(u'נווה העיר'), styleSubTitle))
+        flows.append(Paragraph(log2vis(u'נייס האוס'), styleSubTitle))
         for e in self.nhemployees:
             row=[log2vis(e.id), log2vis(e.first_name), log2vis(e.last_name),
                  log2vis(e.phone), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
                  log2vis(unicode(e.employment_terms.hire_type))]
-            projects='<br/>'.join(e.projects.all())
+            projects=''
+            for p in e.projects.all():
+                projects += log2vis(unicode(p)) + '<br/>'
             row.extend([projects, log2vis(e.remarks)])
             rows.append(row)
             i+=1
