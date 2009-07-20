@@ -76,8 +76,10 @@ def nhAddr():
     return Image(settings.MEDIA_ROOT + 'images/nh_addr.jpg', 300, 50)
 
 class EmployeeListWriter:
-    def __init__(self, employess, nhemployees):
-        self.employess = employess
+    def pages_count(self):
+        return (len(self.employees) + len(self.nhemployess)) % 20 + 1
+    def __init__(self, employees, nhemployees):
+        self.employees = employees
         self.nhemployess = nhemployess
     def addLater(self, canv, doc):
         self.current_page += 1
@@ -106,7 +108,7 @@ class EmployeeListWriter:
         headers.reverse()
         rows=[]
         i=0
-        for e in self.employess:
+        for e in self.employees:
             row=[log2vis(e.id), log2vis(e.first_name), log2vis(e.last_name),
                  log2vis(e.phone), log2vis(e.address), log2vis(e.work_start),
                  log2vis(e.employment_terms.hire_type)]
@@ -114,7 +116,7 @@ class EmployeeListWriter:
             row.extend(projects, log2vis(e.remarks))
             rows.append(row)
             i+=1
-            if i % 20 == 0 or i == len(self.employess):
+            if i % 20 == 0 or i == len(self.employees):
                 data = [headers]
                 data.extend(rows)
                 t = Table(data)
@@ -131,7 +133,7 @@ class EmployeeListWriter:
             row.extend(projects, log2vis(e.remarks))
             rows.append(row)
             i+=1
-            if i % 20 == 0 or i == len(self.employess) + len(self.nhemployess):
+            if i % 20 == 0 or i == len(self.employees) + len(self.nhemployess):
                 data = [headers]
                 data.extend(rows)
                 t = Table(data)
