@@ -109,7 +109,11 @@ class EmployeeListWriter:
         headers.reverse()
         rows=[]
         i=0
+        rank=None
         for e in self.employees:
+            if rank != self.employees.rank:
+                rows.append(log2vis(unicode(e.rank)))
+                rank = e.rank
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name),
                  log2vis(e.phone), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
                  log2vis(unicode(e.employment_terms.hire_type))]
@@ -128,6 +132,8 @@ class EmployeeListWriter:
                 flows.append(t)
                 if i % 17 == 0:
                     flows.extend([PageBreak(), Spacer(0,70)])
+                else:
+                    flows.append(Spacer(0,10))
                 rows = []
         flows.extend([Paragraph(log2vis(u'נייס האוס - %s עובדים' % len(self.nhemployees)), styleSubTitle),
                       Spacer(0,10)])
@@ -136,7 +142,11 @@ class EmployeeListWriter:
                        u'העסקה\nתחילת',u'העסקה\nסוג',u'הערות']:
             headers.append(log2vis(header))
         headers.reverse()
+        branch=None
         for e in self.nhemployees:
+            if e.branch != branch:
+                rows.append(log2vis(unicode(e.branch)))
+                branch = e.branch
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name),
                  log2vis(e.phone), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
                  log2vis(unicode(e.employment_terms and 
