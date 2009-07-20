@@ -79,6 +79,7 @@ class EmployeeListWriter:
     def __init__(self, employees, nhemployees):
         self.employees = employees
         self.nhemployees = nhemployees
+    @property
     def pages_count(self):
         return (len(self.employees) + len(self.nhemployees)) % 17 or 1
     def addLater(self, canv, doc):
