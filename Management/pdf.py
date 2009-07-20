@@ -114,8 +114,9 @@ class EmployeeListWriter:
                  log2vis(unicode(e.employment_terms.hire_type))]
             projects=''
             for p in e.projects.all():
-                projects += log2vis(unicode(p)) + '<br/>'
+                projects += log2vis(unicode(p)) + '\n'
             row.extend([projects, log2vis(e.remarks)])
+            row.reverse()
             rows.append(row)
             i+=1
             if i % 20 == 0 or i == len(self.employees):
@@ -133,6 +134,7 @@ class EmployeeListWriter:
                  log2vis(unicode(e.employment_terms and 
                                  e.employment_terms.hire_type or '')), 
                  log2vis(e.remarks)]
+            row.reverse()
             rows.append(row)
             i+=1
             if i % 20 == 0 or i == len(self.employees) + len(self.nhemployees):
