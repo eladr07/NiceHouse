@@ -124,7 +124,7 @@ class EmployeeListWriter:
                 data = [headers]
                 data.extend(rows)
                 t = Table(data)
-                t.setStyle(projectTableStyle)
+                t.setStyle(saleTableStyle)
                 flows.append(t)
                 flows.extend([PageBreak(), Spacer(0,70)])
                 rows = []
@@ -143,7 +143,7 @@ class EmployeeListWriter:
                 data = [headers]
                 data.extend(rows)
                 t = Table(data)
-                t.setStyle(projectTableStyle)
+                t.setStyle(saleTableStyle)
                 flows.append(t)
                 flows.extend([PageBreak(), Spacer(0,70)])
                 rows = []        
