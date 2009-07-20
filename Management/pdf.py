@@ -80,7 +80,7 @@ class EmployeeListWriter:
         self.employees = employees
         self.nhemployees = nhemployees
     def pages_count(self):
-        return (len(self.employees) + len(self.nhemployees)) % 20 + 1
+        return (len(self.employees) + len(self.nhemployees)) % 17 + 1
     def addLater(self, canv, doc):
         self.current_page += 1
         frame1 = Frame(50, 40, 150, 40)
@@ -103,9 +103,11 @@ class EmployeeListWriter:
         flows=[Paragraph(log2vis(u'נווה העיר - %s עובדים' % len(self.employees)), styleSubTitle),
                Spacer(0,10)]
         headers=[]
+        colWidths=[]
         for header in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'כתובת',
                        u'העסקה\nתחילת',u'העסקה\nסוג',u'פרוייקטים',u'הערות']:
             headers.append(log2vis(header))
+            colWidths.append(None)
         headers.reverse()
         rows=[]
         i=0
@@ -120,16 +122,23 @@ class EmployeeListWriter:
             row.reverse()
             rows.append(row)
             i+=1
-            if i % 20 == 0 or i == len(self.employees):
+            if i % 17 == 0 or i == len(self.employees):
                 data = [headers]
                 data.extend(rows)
-                t = Table(data)
+                t = Table(data, colWidths)
                 t.setStyle(saleTableStyle)
                 flows.append(t)
                 flows.extend([PageBreak(), Spacer(0,70)])
                 rows = []
         flows.extend([Paragraph(log2vis(u'נייס האוס - %s עובדים' % len(self.nhemployees)), styleSubTitle),
                       Spacer(0,10)])
+        headers=[]
+        colWidths=[]
+        for header in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'כתובת',
+                       u'העסקה\nתחילת',u'העסקה\nסוג',u'הערות']:
+            headers.append(log2vis(header))
+            colWidths.append(None)
+        headers.reverse()
         for e in self.nhemployees:
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name),
                  log2vis(e.phone), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
@@ -139,7 +148,7 @@ class EmployeeListWriter:
             row.reverse()
             rows.append(row)
             i+=1
-            if i % 20 == 0 or i == len(self.employees) + len(self.nhemployees):
+            if i % 17 == 0 or i == len(self.employees) + len(self.nhemployees):
                 data = [headers]
                 data.extend(rows)
                 t = Table(data)
