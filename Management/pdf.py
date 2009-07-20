@@ -80,7 +80,7 @@ class EmployeeListWriter:
         self.employees = employees
         self.nhemployees = nhemployees
     def pages_count(self):
-        return (len(self.employees) + len(self.nhemployees)) % 17 + 1
+        return (len(self.employees) + len(self.nhemployees)) % 15 + 1
     def addLater(self, canv, doc):
         self.current_page += 1
         frame1 = Frame(50, 40, 150, 40)
@@ -112,7 +112,7 @@ class EmployeeListWriter:
         rank=None
         for e in self.employees:
             if rank != e.rank:
-                row = [None,None,None,None,log2vis(unicode(e.rank))]
+                row = [log2vis(unicode(e.rank)),None,None,None,None]
                 row.reverse()
                 rows.append(row)
                 rank = e.rank
@@ -126,13 +126,13 @@ class EmployeeListWriter:
             row.reverse()
             rows.append(row)
             i+=1
-            if i % 17 == 0 or i == len(self.employees):
+            if i % 15 == 0 or i == len(self.employees):
                 data = [headers]
                 data.extend(rows)
                 t = Table(data)
                 t.setStyle(saleTableStyle)
                 flows.append(t)
-                if i % 17 == 0:
+                if i % 15 == 0:
                     flows.extend([PageBreak(), Spacer(0,70)])
                 else:
                     flows.append(Spacer(0,10))
@@ -147,7 +147,7 @@ class EmployeeListWriter:
         nhbranch=None
         for e in self.nhemployees:
             if e.nhbranch != nhbranch:
-                row = [None,None,None,None,log2vis(unicode(e.nhbranch))]
+                row = [log2vis(unicode(e.nhbranch)), None,None,None,None]
                 row.reverse()
                 rows.append(row)
                 nhbranch = e.nhbranch
