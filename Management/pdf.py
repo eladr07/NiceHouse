@@ -111,7 +111,7 @@ class EmployeeListWriter:
         i=0
         rank=None
         for e in self.employees:
-            if rank != self.employees.rank:
+            if rank != e.rank:
                 rows.append(log2vis(unicode(e.rank)))
                 rank = e.rank
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name),
