@@ -109,7 +109,7 @@ class EmployeeListWriter:
         rows=[]
         i=0
         for e in self.employees:
-            row=[log2vis(e.id), log2vis(e.first_name), log2vis(e.last_name),
+            row=[e.id, log2vis(e.first_name), log2vis(e.last_name),
                  log2vis(e.phone), log2vis(e.address), log2vis(e.work_start),
                  log2vis(e.employment_terms.hire_type)]
             projects='<br/>'.join(e.projects.all())
