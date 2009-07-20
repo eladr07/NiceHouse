@@ -143,6 +143,7 @@ class EmployeeListWriter:
             headers.append(log2vis(header))
         headers.reverse()
         nhbranch=None
+        i=0
         for e in self.nhemployees:
             if e.nhbranch != nhbranch:
                 row = [log2vis(unicode(e.nhbranch)), None,None,None,None]
