@@ -108,14 +108,14 @@ class EmployeeListWriter:
             headers.append(log2vis(header))
         headers.reverse()
         rows=[]
-        i=0
-        rank=None
+        i, rank_count, ranks = (0,0,None)
         for e in self.employees:
             if rank != e.rank:
                 row = [log2vis(unicode(e.rank)),None,None,None,None]
                 row.reverse()
                 rows.append(row)
                 rank = e.rank
+                rank_count+=1
                 i+=1
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name),
                  log2vis(e.phone), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
@@ -127,7 +127,7 @@ class EmployeeListWriter:
             row.reverse()
             rows.append(row)
             i+=1
-            if i % 17 == 0 or i == len(self.employees):
+            if i % 17 == 0 or i == len(self.employees) + rank_count:
                 data = [headers]
                 data.extend(rows)
                 t = Table(data)
@@ -142,14 +142,14 @@ class EmployeeListWriter:
                        u'העסקה\nתחילת',u'העסקה\nסוג',u'הערות']:
             headers.append(log2vis(header))
         headers.reverse()
-        nhbranch=None
-        i=0
+        i, nhbranch_count, nhbranch = (0,0,None)
         for e in self.nhemployees:
             if e.nhbranch != nhbranch:
                 row = [log2vis(unicode(e.nhbranch)), None,None,None,None]
                 row.reverse()
                 rows.append(row)
                 nhbranch = e.nhbranch
+                nhbranch_count+=1
                 i+=1
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name),
                  log2vis(e.phone), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
@@ -159,7 +159,7 @@ class EmployeeListWriter:
             row.reverse()
             rows.append(row)
             i+=1
-            if i % 17 == 0 or i == len(self.employees) + len(self.nhemployees):
+            if i % 17 == 0 or i == len(self.nhemployees) + nhbranch_count:
                 data = [headers]
                 data.extend(rows)
                 t = Table(data)
