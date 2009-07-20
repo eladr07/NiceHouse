@@ -104,7 +104,7 @@ class EmployeeListWriter:
         headers=[]
         for header in [u'מס"ד',u'שם פרטי',u'שם משפחה',u'טלפון',u'כתובת',
                        u'תחילת העסקה',u'סוג העסקה',u'פרוייקטים',u'הערות']:
-            headers.append(log2vis(h))
+            headers.append(log2vis(header))
         headers.reverse()
         rows=[]
         i=0
