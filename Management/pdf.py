@@ -75,6 +75,80 @@ def sigPara():
 def nhAddr():
     return Image(settings.MEDIA_ROOT + 'images/nh_addr.jpg', 300, 50)
 
+class EmployeeListWriter:
+    def __init__(self, employess, nhemployees):
+        self.employess = employess
+        self.nhemployess = nhemployess
+    def addLater(self, canv, doc):
+        self.current_page += 1
+        frame1 = Frame(50, 40, 150, 40)
+        frame1.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
+                            ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
+        frame2 = Frame(0, 680, 650, 150)
+        frame2.addFromList([nhLogo(), datePara()], canv)
+        frame4 = Frame(50, 20, 500, 70)
+        frame4.addFromList([nhAddr()], canv)
+    def addFirst(self, canv, doc):
+        self.current_page = 1
+        frame2 = Frame(0, 680, 650, 150)
+        frame2.addFromList([nhLogo(), datePara()], canv)
+        frame3 = Frame(50, 40, 150, 40)
+        frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
+                            ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
+        frame4 = Frame(50, 20, 500, 70)
+        frame4.addFromList([nhAddr()], canv)
+    def employeeFlows(self):
+        flows=[Paragraph(log2vis(u'נווה העיר'), styleSubTitle)]
+        headers=[]
+        for header in [u'מס"ד',u'שם פרטי',u'שם משפחה',u'טלפון',u'כתובת',
+                       u'תחילת העסקה',u'סוג העסקה',u'פרוייקטים',u'הערות']:
+            headers.append(log2vis(h))
+        headers.reverse()
+        rows=[]
+        i=0
+        for e in self.employess:
+            row=[log2vis(e.id), log2vis(e.first_name), log2vis(e.last_name),
+                 log2vis(e.phone), log2vis(e.address), log2vis(e.work_start),
+                 log2vis(e.employment_terms.hire_type)]
+            projects='<br/>'.join(e.projects.all())
+            row.extend(projects, log2vis(e.remarks))
+            rows.append(row)
+            i+=1
+            if i % 20 == 0 or i == len(self.employess):
+                data = [headers]
+                data.extend(rows)
+                t = Table(data)
+                t.setStyle(projectTableStyle)
+                flows.append(t)
+                flows.extend([PageBreak(), Spacer(0,70)])
+                rows = []
+        flows.append(Paragraph(log2vis(u'נווה העיר'), styleSubTitle))
+        for e in self.nhemployess:
+            row=[log2vis(e.id), log2vis(e.first_name), log2vis(e.last_name),
+                 log2vis(e.phone), log2vis(e.address), log2vis(e.work_start),
+                 log2vis(e.employment_terms.hire_type)]
+            projects='<br/>'.join(e.projects.all())
+            row.extend(projects, log2vis(e.remarks))
+            rows.append(row)
+            i+=1
+            if i % 20 == 0 or i == len(self.employess) + len(self.nhemployess):
+                data = [headers]
+                data.extend(rows)
+                t = Table(data)
+                t.setStyle(projectTableStyle)
+                flows.append(t)
+                flows.extend([PageBreak(), Spacer(0,70)])
+                rows = []        
+        return flows
+    def build(self, filename):
+        doc = SimpleDocTemplate(filename)
+        story = [Spacer(0,100)]
+        story.append(titlePara(u'מצבת עובדים'))
+        story.append(Spacer(0, 10))
+        story.extend(self.employeeFlows())
+        doc.build(story, self.addFirst, self.addLater)
+        return doc.canv
+
 class MonthDemandWriter:
     @property
     def pages_count(self):

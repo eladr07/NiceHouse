@@ -9,7 +9,7 @@ from django.core import serializers
 from django.views.generic.create_update import create_object, update_object
 from django.views.generic.list_detail import object_list 
 from django.contrib.auth.decorators import login_required, permission_required
-from pdf import MonthDemandWriter, MonthProjectsWriter
+from pdf import MonthDemandWriter, MonthProjectsWriter, EmployeeListWriter
 from mail import mail
 
 @login_required
@@ -355,6 +355,21 @@ def demands_all(request):
                                'demandForm':LocateDemandForm(),
                                'error':error },
                               context_instance=RequestContext(request))
+
+def employee_list_pdf(request):
+    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    
+    response = HttpResponse(mimetype='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=' + filename
+    p = open(filename,'w+')
+    p.flush()
+    p.close()
+    EmployeeListWriter(employees = Employee.objects.active(),
+                       nhemployees = NHEmployee.objects.active()).build(filename)
+    p = open(filename,'r')
+    response.write(p.read())
+    p.close()
+    return response
 
 @permission_required('Management.add_demand')
 def demand_list(request, year=demand_month().year, month=demand_month().month):
