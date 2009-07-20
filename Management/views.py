@@ -285,9 +285,12 @@ def demand_old_list(request, year=demand_month().year, month=demand_month().mont
             unhandled_projects.append(p)
         
     return render_to_response('Management/demand_old_list.html', 
-                              { 'demands':ds, 'month':date(year, month, 1),'filterForm':form,'total_sales_count':total_sales_count,
-                                'total_sales_amount':total_sales_amount,'total_sales_commission':total_sales_commission,
-                                'total_amount':total_amount, 'unhandled_projects':unhandled_projects},
+                              { 'demands':ds, 'month':date(int(year), int(month), 1),
+                                'filterForm':form,'total_sales_count':total_sales_count,
+                                'total_sales_amount':total_sales_amount,
+                                'total_sales_commission':total_sales_commission,
+                                'total_amount':total_amount, 
+                                'unhandled_projects':unhandled_projects},
                               context_instance=RequestContext(request))
 
 @permission_required('Management.change_employeesalary')
@@ -369,7 +372,7 @@ def demand_list(request, year=demand_month().year, month=demand_month().month):
             unhandled_projects.remove(p)
     return render_to_response('Management/demand_list.html', 
                               { 'demands':ds, 'unhandled_projects':unhandled_projects, 
-                               'month':date(year, month, 1), 'filterForm':form },
+                               'month':date(int(year), int(month), 1), 'filterForm':form },
                               context_instance=RequestContext(request))
 
 def employee_sales(request, id, year, month):
