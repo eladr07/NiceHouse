@@ -142,11 +142,11 @@ class EmployeeListWriter:
                        u'העסקה\nתחילת',u'העסקה\nסוג',u'הערות']:
             headers.append(log2vis(header))
         headers.reverse()
-        branch=None
+        nhbranch=None
         for e in self.nhemployees:
-            if e.branch != branch:
-                rows.append(log2vis(unicode(e.branch)))
-                branch = e.branch
+            if e.nhbranch != nhbranch:
+                rows.append(log2vis(unicode(e.nhbranch)))
+                branch = e.nhbranch
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name),
                  log2vis(e.phone), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
                  log2vis(unicode(e.employment_terms and 
