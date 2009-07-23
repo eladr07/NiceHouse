@@ -80,23 +80,31 @@
 				</tr>
 				<tr>
 					<th>{{ side1form.name1.label_tag }}</th>
-					<td>{{ side1form.name1 }}</td>
-					<td>{{ side1form.name1.errors|join:" " }}</td>
+					<td>
+						{{ side1form.name1 }}
+						{% if side1form.name1.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.name1.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{ side1form.name2.label_tag }}</th>
-					<td>{{ side1form.name2 }}</td>
-					<td>{{ side1form.name2.errors|join:" " }}</td>
+					<td>
+						{{ side1form.name2 }}
+						{% if side1form.name2.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.name2.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{ side1form.phone1.label_tag }}</th>
-					<td>{{ side1form.phone1 }}</td>
-					<td>{{ side1form.phone1.errors|join:" " }}</td>
+					<td>
+						{{ side1form.phone1 }}
+						{% if side1form.phone1.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.phone1.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{ side1form.phone2.label_tag }}</th>
-					<td>{{ side1form.phone2 }}</td>
-					<td>{{ side1form.phone2.errors|join:" " }}</td>
+					<td>
+						{{ side1form.phone2 }}
+						{% if side1form.phone2.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.phone2.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 			</table>
 			</div>
@@ -108,28 +116,38 @@
 				</tr>		
 				<tr>
 					<th>{{ side1form.signed_commission.label_tag }}</th>
-					<td>{{ side1form.signed_commission }}</td>
-					<td>{{ side1form.signed_commission.errors|join:" " }}</td>
+					<td>
+						{{ side1form.signed_commission }}
+						{% if side1form.signed_commission.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.signed_commission.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{ side1form.actual_commission.label_tag }}</th>
-					<td>{{ side1form.actual_commission }}</td>
-					<td>{{ side1form.actual_commission.errors|join:" " }}</td>
+					<td>
+						{{ side1form.actual_commission }}
+						{% if side1form.actual_commission.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.actual_commission.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{ side1form.voucher_num.label_tag }}</th>
-					<td>{{ side1form.voucher_num }}</td>
-					<td>{{ side1form.voucher_num.errors|join:" " }}</td>
+					<td>
+						{{ side1form.voucher_num }}
+						{% if side1form.voucher_num.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.voucher_num.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{ side1form.voucher_date.label_tag }}</th>
-					<td>{{ side1form.voucher_date }}</td>
-					<td>{{ side1form.voucher_date.errors|join:" " }}</td>
+					<td>
+						{{ side1form.voucher_date }}
+						{% if side1form.voucher_date.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.voucher_date.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{ side1form.temp_receipt_num.label_tag }}</th>
-					<td>{{ side1form.temp_receipt_num }}</td>
-					<td>{{ side1form.temp_receipt_num.errors|join:" " }}</td>
+					<td>
+						{{ side1form.temp_receipt_num }}
+						{% if side1form.temp_receipt_num.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.temp_receipt_num.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 			</table>
 			</div>
@@ -142,8 +160,10 @@
 				{% for field in invoice1Form %}
 				<tr>
 					<th>{{ field.label_tag }}</th>
-					<td>{{ field }}</td>
-					<td>{{ field.errors|join:" " }}</td>
+					<td>
+						{{ field }}
+						{% if field.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{field.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				{% endfor %}
 			</table>
@@ -157,8 +177,10 @@
 				{% for field in payment1Form %}
 				<tr>
 					<th>{{ field.label_tag }}</th>
-					<td>{{ field }}</td>
-					<td>{{ field.errors|join:" " }}</td>
+					<td>
+						{{ field }}
+						{% if field.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{field.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				{% endfor %}
 			</table>
@@ -171,23 +193,31 @@
 				</tr>
 				<tr>
 					<th>{{ side1form.lawyer1.label_tag }}</th>
-					<td>{{ side1form.lawyer1 }}</td>
-					<td>{{ side1form.lawyer1.errors|join:" " }}</td>
+					<td>
+						{{ side1form.lawyer1 }}
+						{% if side1form.lawyer1.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.lawyer1.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{ side1form.lawyer1_pay.label_tag }}</th>
-					<td>{{ side1form.lawyer1_pay }}</td>
-					<td>{{ side1form.lawyer1_pay.errors|join:" " }}</td>
+					<td>
+						{{ side1form.lawyer1_pay }}
+						{% if side1form.lawyer1_pay.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.lawyer1_pay.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{ side1form.lawyer2.label_tag }}</th>
-					<td>{{ side1form.lawyer2 }}</td>
-					<td>{{ side1form.lawyer2.errors|join:" " }}</td>
+					<td>
+						{{ side1form.lawyer2 }}
+						{% if side1form.lawyer2.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.lawyer2.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{ side1form.lawyer2_pay.label_tag }}</th>
-					<td>{{ side1form.lawyer2_pay }}</td>
-					<td>{{ side1form.lawyer2_pay.errors|join:" " }}</td>
+					<td>
+						{{ side1form.lawyer2_pay }}
+						{% if side1form.lawyer2_pay.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.lawyer2_pay.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 			</table>
 			</div>
@@ -199,38 +229,52 @@
 				</tr>
 				<tr>
 					<th>{{ side1form.employee1.label_tag }}</th>
-					<td>{{ side1form.employee1 }}</td>
-					<td>{{ side1form.employee1.errors|join:" " }}</td>
+					<td>
+						{{ side1form.employee1 }}
+						{% if side1form.employee1.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.employee1.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{ side1form.employee1_commission.label_tag }}</th>
-					<td>{{ side1form.employee1_commission }}</td>
-					<td>{{ side1form.employee1_commission.errors|join:" " }}</td>
+					<td>
+						{{ side1form.employee1_commission }}
+						{% if side1form.employee1_commission.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.employee1_commission.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{ side1form.employee2.label_tag }}</th>
-					<td>{{ side1form.employee2 }}</td>
-					<td>{{ side1form.employee2.errors|join:" " }}</td>
+					<td>
+						{{ side1form.employee2 }}
+						{% if side1form.employee2.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.employee2.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{ side1form.employee2_commission.label_tag }}</th>
-					<td>{{ side1form.employee2_commission }}</td>
-					<td>{{ side1form.employee2_commission.errors|join:" " }}</td>
+					<td>
+						{{ side1form.employee2_commission }}
+						{% if side1form.employee2_commission.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.employee2_commission.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{ side1form.director.label_tag }}</th>
-					<td>{{ side1form.director }}</td>
-					<td>{{ side1form.director.errors|join:" " }}</td>
+					<td>
+						{{ side1form.director }}
+						{% if side1form.director.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.director.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{ side1form.director_commission.label_tag }}</th>
-					<td>{{ side1form.director_commission }}</td>
-					<td>{{ side1form.director_commission.errors|join:" " }}</td>
+					<td>
+						{{ side1form.director_commission }}
+						{% if side1form.director_commission.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.director_commission.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{ side1form.remarks.label_tag }}</th>
-					<td>{{ side1form.remarks }}</td>
-					<td>{{ side1form.remarks.errors|join:" " }}</td>
+					<td>
+						{{ side1form.remarks }}
+						{% if side1form.remarks.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.remarks.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 			</table>
 			</div>
