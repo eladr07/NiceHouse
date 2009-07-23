@@ -513,8 +513,10 @@ class NHBranch(models.Model):
     manager = models.ForeignKey('NHEmployee', null=True, blank=True,
                                 related_name='branch_manager',
                                 verbose_name=ugettext('nhbranch_manager'))
+    address = models.CharField(ugettext('address'), max_length=40, null=True, blank=True)
+    phone = models.CharField(ugettext('phone'), max_length=15, null=True, blank=True)
     mail = models.EmailField(ugettext('mail'), null=True, blank=True)
-    phone = models.CharField(ugettext('phone'), max_length=20, null=True, blank=True)
+    fax = models.CharField(ugettext('fax'), max_length=15, null=True, blank=True);
     url = models.URLField(ugettext('url'), null=True, blank=True)
     def __unicode__(self):
         return unicode(self.name)
