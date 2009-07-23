@@ -31,39 +31,39 @@
 				<th>{{ saleForm.hood.label_tag }}</th>
 				<td>
 					{{ saleForm.hood }}
-					{% if saleForm.hood.errors %}<img src="/site_media/images/error-48.png" width="15" height="15"/>{% endif %}
+					{% if saleForm.hood.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{saleForm.hood.errors|join:""}}'/>{% endif %}
 				</td>
 
 				<th>{{ saleForm.type.label_tag }}</th>
 				<td>
 					{{ saleForm.type }}
-					{% if saleForm.type.errors %}<img src="/site_media/images/error-48.png" width="15" height="15"/>{% endif %}
+					{% if saleForm.type.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{saleForm.type.errors|join:""}}'/>{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<th>{{ saleForm.rooms.label_tag }}</th>
 				<td>
 					{{ saleForm.rooms }}
-					{% if saleForm.rooms.errors %}<img src="/site_media/images/error-48.png" width="15" height="15"/>{% endif %}
+					{% if saleForm.rooms.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{saleForm.rooms.errors|join:""}}'/>{% endif %}
 				</td>
 
 				<th>{{ saleForm.floor.label_tag }}</th>
 				<td>
 					{{ saleForm.floor }}
-					{% if saleForm.floor.errors %}<img src="/site_media/images/error-48.png" width="15" height="15"/>{% endif %}
+					{% if saleForm.floor.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{saleForm.floor.errors|join:""}}'/>{% endif %}
 				</td>
 
 				<th>{{ saleForm.price.label_tag }}</th>
 				<td>
 					{{ saleForm.price }}
-					{% if saleForm.price.errors %}<img src="/site_media/images/error-48.png" width="15" height="15"/>{% endif %}
+					{% if saleForm.price.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{saleForm.price.errors|join:""}}'/>{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<th>{{ saleForm.remarks.label_tag }}</th>
 				<td colspan="5">
 					{{ saleForm.remarks }}
-					{% if saleForm.remarks.errors %}<img src="/site_media/images/error-48.png" width="15" height="15"/>{% endif %}
+					{% if saleForm.remarks.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{saleForm.remarks.errors|join:""}}'/>{% endif %}
 				</td>
 			</tr>
 		</table>
@@ -72,6 +72,7 @@
 	<div>
 		<fieldset class="cardFieldset">
 			<legend>בעל הנכס\משכיר</legend>
+			<span>
 			<table cellspacing="2" cellpadding="2" class="formTable">
 				<tr>
 					<td></td>
@@ -98,6 +99,8 @@
 					<td>{{ side1form.phone2.errors|join:" " }}</td>
 				</tr>
 			</table>
+			</span>
+			<span>
 			<table cellspacing="2" cellpadding="2" class="formTable">	
 				<tr>
 					<td></td>
@@ -129,6 +132,8 @@
 					<td>{{ side1form.temp_receipt_num.errors|join:" " }}</td>
 				</tr>
 			</table>
+			</span>
+			<span>
 			<table cellspacing="2" cellpadding="2" class="formTable">	
 				<tr>
 					<td></td>
@@ -142,6 +147,8 @@
 				</tr>
 				{% endfor %}
 			</table>
+			</span>
+			<span>
 			<table cellspacing="2" cellpadding="2" class="formTable">	
 				<tr>
 					<td></td>
@@ -155,6 +162,8 @@
 				</tr>
 				{% endfor %}
 			</table>
+			</span>
+			<span>
 			<table cellspacing="2" cellpadding="2" class="formTable">
 				<tr>
 					<td></td>
@@ -181,6 +190,8 @@
 					<td>{{ side1form.lawyer2_pay.errors|join:" " }}</td>
 				</tr>
 			</table>
+			</span>
+			<span>
 			<table cellspacing="2" cellpadding="2" class="formTable">
 				<tr>
 					<td></td>
@@ -222,6 +233,7 @@
 					<td>{{ side1form.remarks.errors|join:" " }}</td>
 				</tr>
 			</table>
+			</span>
 		</fieldset>
 	</div>
 	<div>
