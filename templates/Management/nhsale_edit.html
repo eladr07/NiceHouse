@@ -2,6 +2,7 @@
 {% block content %}
 	<div class="title">
 		<div class="pageTitle">
+			{{saleForm.instance.nhbranch}} - 
 			{% if form.instance.id %}
 				עדכון מכירה מס' 
 				{{form.instance.id}}
@@ -12,53 +13,61 @@
 	</div>
 	<br>
 	<form method="POST">
-	<table cellspacing="2" cellpadding="2" class="formTable" align="center">
-		<tr>
-			<td>{{ saleForm.id }}</td>
-			<td>{{ side1Form.id }}</td>
-			<td>{{ side2Form.id }}</td>
-		</tr>
-		<tr>
-			<th>{{ saleForm.nhbranch.label_tag }}</th>
-			<td>{{ saleForm.nhbranch }}</td>
-			<td>{{ saleForm.nhbranch.errors|join:" " }}</td>
-		</tr>
-		<tr>
-			<th>{{ saleForm.address.label_tag }}</th>
-			<td>{{ saleForm.address }}</td>
-			<td>{{ saleForm.address.errors|join:" " }}</td>
-		</tr>
-		<tr>
-			<th>{{ saleForm.hood.label_tag }}</th>
-			<td>{{ saleForm.hood }}</td>
-			<td>{{ saleForm.hood.errors|join:" " }}</td>
-		</tr>
-		<tr>
-			<th>{{ saleForm.type.label_tag }}</th>
-			<td>{{ saleForm.type }}</td>
-			<td>{{ saleForm.type.errors|join:" " }}</td>
-		</tr>
-		<tr>
-			<th>{{ saleForm.rooms.label_tag }}</th>
-			<td>{{ saleForm.rooms }}</td>
-			<td>{{ saleForm.rooms.errors|join:" " }}</td>
-		</tr>
-		<tr>
-			<th>{{ saleForm.floor.label_tag }}</th>
-			<td>{{ saleForm.floor }}</td>
-			<td>{{ saleForm.floor.errors|join:" " }}</td>
-		</tr>
-		<tr>
-			<th>{{ saleForm.price.label_tag }}</th>
-			<td>{{ saleForm.price }}</td>
-			<td>{{ saleForm.price.errors|join:" " }}</td>
-		</tr>
-		<tr>
-			<th>{{ saleForm.remarks.label_tag }}</th>
-			<td>{{ saleForm.remarks }}</td>
-			<td>{{ saleForm.remarks.errors|join:" " }}</td>
-		</tr>
-	</table>
+	<fieldset class="cardFieldset">
+		<legend>פרטי הנכס</legend>
+		<table cellspacing="2" cellpadding="2" class="formTable" align="center">
+			<tr>
+				<td>{{ saleForm.id }}</td>
+				<td>{{ side1Form.id }}</td>
+				<td>{{ side2Form.id }}</td>
+			</tr>
+			<tr>
+				<th>{{ saleForm.address.label_tag }}</th>
+				<td>
+					{{ saleForm.address }}
+					{% if saleForm.address.errors %}<img src="/site_media/images/error-48.png" width="15" height="15"/>{% endif %}
+				</td>
+
+				<th>{{ saleForm.hood.label_tag }}</th>
+				<td>
+					{{ saleForm.hood }}
+					{% if saleForm.hood.errors %}<img src="/site_media/images/error-48.png" width="15" height="15"/>{% endif %}
+				</td>
+
+				<th>{{ saleForm.type.label_tag }}</th>
+				<td>
+					{{ saleForm.type }}
+					{% if saleForm.type.errors %}<img src="/site_media/images/error-48.png" width="15" height="15"/>{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<th>{{ saleForm.rooms.label_tag }}</th>
+				<td>
+					{{ saleForm.rooms }}
+					{% if saleForm.rooms.errors %}<img src="/site_media/images/error-48.png" width="15" height="15"/>{% endif %}
+				</td>
+
+				<th>{{ saleForm.floor.label_tag }}</th>
+				<td>
+					{{ saleForm.floor }}
+					{% if saleForm.floor.errors %}<img src="/site_media/images/error-48.png" width="15" height="15"/>{% endif %}
+				</td>
+
+				<th>{{ saleForm.price.label_tag }}</th>
+				<td>
+					{{ saleForm.price }}
+					{% if saleForm.price.errors %}<img src="/site_media/images/error-48.png" width="15" height="15"/>{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<th>{{ saleForm.remarks.label_tag }}</th>
+				<td colspan="5">
+					{{ saleForm.remarks }}
+					{% if saleForm.remarks.errors %}<img src="/site_media/images/error-48.png" width="15" height="15"/>{% endif %}
+				</td>
+			</tr>
+		</table>
+	</fieldset>
 	<div id="rightSide">
 		<table cellspacing="2" cellpadding="2" class="formTable">
 			<tr>
