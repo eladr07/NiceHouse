@@ -25,91 +25,71 @@
 			<tr>
 				<td>{{ form.initiator.label_tag }}</td>
 				<td>
-				{{ form.initiator }}
-				{% for error in form.initiator.errors %}
-					{{ error|escape }}
-				{% endfor %}
+					{{form.initiator}}
+					{% if form.initiator.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.initiator.errors|join:""}}'/>{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<td>{{ form.name.label_tag }}</td>
 				<td>
-				{{ form.name }}
-				{% for error in form.name.errors %}
-					{{ error|escape }}
-				{% endfor %}
+					{{form.name}}
+					{% if form.name.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.name.errors|join:""}}'/>{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<td>{{ form.city.label_tag }}</td>
 				<td>
-				{{ form.city }}
-				{% for error in form.city.errors %}
-					{{ error|escape }}
-				{% endfor %}
+					{{form.city}}
+					{% if form.city.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.city.errors|join:""}}'/>{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<td>{{ form.hood.label_tag }}</td>
 				<td>
-				{{ form.hood }}
-				{% for error in form.hood.errors %}
-					{{ error|escape }}
-				{% endfor %}
+					{{form.hood}}
+					{% if form.hood.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.hood.errors|join:""}}'/>{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<td>{{ form.office_address.label_tag }}</td>
 				<td>
-				{{ form.office_address }}
-				{% for error in form.office_address.errors %}
-					{{ error|escape }}
-				{% endfor %}
+					{{form.office_address}}
+					{% if form.office_address.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.office_address.errors|join:""}}'/>{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<td>{{ form.phone.label_tag }}</td>
 				<td>
-				{{ form.phone }}
-				{% for error in form.phone.errors %}
-					{{ error|escape }}
-				{% endfor %}
+					{{form.phone}}
+					{% if form.phone.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.phone.errors|join:""}}'/>{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<td>{{ form.cell_phone.label_tag }}</td>
 				<td>
-				{{ form.cell_phone }}
-				{% for error in form.cell_phone.errors %}
-					{{ error|escape }}
-				{% endfor %}
+					{{form.cell_phone}}
+					{% if form.cell_phone.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.cell_phone.errors|join:""}}'/>{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<td>{{ form.fax.label_tag }}</td>
 				<td>
-				{{ form.fax }}
-				{% for error in form.fax.errors %}
-					{{ error|escape }}
-				{% endfor %}
+					{{form.fax}}
+					{% if form.fax.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.fax.errors|join:""}}'/>{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<td>{{ form.mail.label_tag }}</td>
 				<td>
-				{{ form.mail }}
-				{% for error in form.mail.errors %}
-					{{ error|escape }}
-				{% endfor %}
+					{{form.mail}}
+					{% if form.mail.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.mail.errors|join:""}}'/>{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<td>{{ form.start_date.label_tag }}</td>
 				<td>
-				{{ form.start_date }}
-				{% for error in form.start_date.errors %}
-					{{ error|escape }}
-				{% endfor %}
+					{{form.start_date}}
+					{% if form.start_date.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.start_date.errors|join:""}}'/>{% endif %}
 				</td>
 			</tr>
 		</table>
@@ -123,8 +103,10 @@
 			{% for field in contactForm %}
 			<tr>
 				<th>{{field.label_tag}}</th>
-				<td>{{field}}</td>
-				<td>{{field.errors|join:" ,"}}</td>
+				<td>
+					{{field}}
+					{% if field.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{field.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			{% endfor %}
 		</table>
