@@ -450,26 +450,31 @@ class EmployeeManager(models.Manager):
     def archive(self):
         return self.exclude(work_end = None)
 
-class Employee(Person):
+class EmployeeBase(Person):
     pid = models.PositiveIntegerField(ugettext('pid'), unique=True)
-    rank = models.ForeignKey('RankType', verbose_name=ugettext('rank'))
     birth_date = models.DateField(ugettext('birth_date'))
     home_phone = models.CharField(ugettext('home phone'), max_length=10)
     mate_phone = models.CharField(ugettext('mate phone'), max_length=10, null=True, blank=True)
     family_state = models.PositiveIntegerField(ugettext('family state'), choices = Family_State_Types)
     child_num = models.PositiveIntegerField(ugettext('child num'), null=True, blank=True)
-    
-    projects = models.ManyToManyField('Project', verbose_name=ugettext('projects'), related_name='employees', 
-                                      null=True, blank=True)
     work_start = models.DateField(ugettext('work start'))
     work_end = models.DateField(ugettext('work end'), null=True, blank=True)
     
-    remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
+    remarks = models.TextField(ugettext('remarks'), null=True, blank=True)    
     reminders = models.ManyToManyField('Reminder', null=True, editable=False)
-    account = models.OneToOneField('Account', related_name='employee',editable=False, null=True, blank=True)
-    employment_terms = models.OneToOneField('EmploymentTerms',editable=False, related_name='employee', null=True, blank=True)
+    account = models.OneToOneField('Account', related_name='%(class)s',editable=False, null=True, blank=True)
+    employment_terms = models.OneToOneField('EmploymentTerms',editable=False, related_name='%(class)s', null=True, blank=True)
     
     objects = EmployeeManager()
+    
+    class Meta:
+        abstract=True
+
+class Employee(EmployeeBase):
+    rank = models.ForeignKey('RankType', verbose_name=ugettext('rank'))
+   
+    projects = models.ManyToManyField('Project', verbose_name=ugettext('projects'), related_name='employees', 
+                                      null=True, blank=True)
     
     def get_open_reminders(self):
         return [r for r in self.reminders.all() if r.statuses.latest().type.id 
@@ -523,25 +528,8 @@ class NHBranch(models.Model):
     class Meta:
         db_table='NHBranch'
     
-class NHEmployee(Person):
-    pid = models.PositiveIntegerField(ugettext('pid'), unique=True)
-    birth_date = models.DateField(ugettext('birth_date'))
-    home_phone = models.CharField(ugettext('home phone'), max_length=10)
-    mate_phone = models.CharField(ugettext('mate phone'), max_length=10, null=True, blank=True)
-    family_state = models.PositiveIntegerField(ugettext('family state'), choices = Family_State_Types)
-    child_num = models.PositiveIntegerField(ugettext('child num'), null=True, blank=True)
-    
+class NHEmployee(EmployeeBase):
     nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'), related_name='nhemployees')
-    
-    work_start = models.DateField(ugettext('work start'))
-    work_end = models.DateField(ugettext('work end'), null=True, blank=True)
-    
-    remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
-    reminders = models.ManyToManyField('Reminder', null=True, editable=False)
-    account = models.OneToOneField('Account', related_name='nhemployee',editable=False, null=True, blank=True)
-    employment_terms = models.OneToOneField('EmploymentTerms',editable=False, related_name='nhemployee', null=True, blank=True)
-    
-    objects = EmployeeManager()
     
     def get_open_reminders(self):
         return [r for r in self.reminders.all() if r.statuses.latest().type.id 
