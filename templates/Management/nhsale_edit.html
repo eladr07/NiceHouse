@@ -25,7 +25,7 @@
 				<th>{{ saleForm.address.label_tag }}</th>
 				<td>
 					{{ saleForm.address }}
-					{% if saleForm.address.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title="{{saleForm.address.errors}}"/>{% endif %}
+					{% if saleForm.address.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{saleForm.address.errors|join:""}}'/>{% endif %}
 				</td>
 
 				<th>{{ saleForm.hood.label_tag }}</th>
