@@ -281,146 +281,215 @@
 		</fieldset>
 	</div>
 	<div>
-		<table cellspacing="2" cellpadding="2" class="formTable">
-			<tr>
-				<td></td>
-				<td><u><b>רוכש\שוכר</b></u></td>
-			</tr>
-			<tr>
-				<th>{{ side2form.name1.label_tag }}</th>
-				<td>{{ side2form.name1 }}</td>
-				<td>{{ side2form.name1.errors|join:" " }}</td>
-			</tr>
-			<tr>
-				<th>{{ side2form.name2.label_tag }}</th>
-				<td>{{ side2form.name2 }}</td>
-				<td>{{ side2form.name2.errors|join:" " }}</td>
-			</tr>
-			<tr>
-				<th>{{ side2form.phone1.label_tag }}</th>
-				<td>{{ side2form.phone1 }}</td>
-				<td>{{ side2form.phone1.errors|join:" " }}</td>
-			</tr>
-			<tr>
-				<th>{{ side2form.phone2.label_tag }}</th>
-				<td>{{ side2form.phone2 }}</td>
-				<td>{{ side2form.phone2.errors|join:" " }}</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td><u><b>נתוני מכירה</b></u></td>
-			</tr>
-			<tr>
-				<th>{{ side2form.signed_commission.label_tag }}</th>
-				<td>{{ side2form.signed_commission }}</td>
-				<td>{{ side2form.signed_commission.errors|join:" " }}</td>
-			</tr>
-			<tr>
-				<th>{{ side2form.actual_commission.label_tag }}</th>
-				<td>{{ side2form.actual_commission }}</td>
-				<td>{{ side2form.actual_commission.errors|join:" " }}</td>
-			</tr>
-			<tr>
-				<th>{{ side2form.voucher_num.label_tag }}</th>
-				<td>{{ side2form.voucher_num }}</td>
-				<td>{{ side2form.voucher_num.errors|join:" " }}</td>
-			</tr>
-			<tr>
-				<th>{{ side2form.voucher_date.label_tag }}</th>
-				<td>{{ side2form.voucher_date }}</td>
-				<td>{{ side2form.voucher_date.errors|join:" " }}</td>
-			</tr>
-			<tr>
-				<th>{{ side2form.temp_receipt_num.label_tag }}</th>
-				<td>{{ side2form.temp_receipt_num }}</td>
-				<td>{{ side2form.temp_receipt_num.errors|join:" " }}</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td><u><b>פרטי חשבונית</b></u></td>
-			</tr>
-			{% for field in invoice2Form %}
-			<tr>
-				<th>{{ field.label_tag }}</th>
-				<td>{{ field }}</td>
-				<td>{{ field.errors|join:" " }}</td>
-			</tr>
-			{% endfor %}
-			<tr>
-				<td></td>
-				<td><u><b>פרטי תשלום</b></u></td>
-			</tr>
-			{% for field in payment2Form %}
-			<tr>
-				<th>{{ field.label_tag }}</th>
-				<td>{{ field }}</td>
-				<td>{{ field.errors|join:" " }}</td>
-			</tr>
-			{% endfor %}
-			<tr>
-				<td></td>
-				<td><u><b>תשלום לעו"ד</b></u></td>
-			</tr>
-			<tr>
-				<th>{{ side2form.lawyer1.label_tag }}</th>
-				<td>{{ side2form.lawyer1 }}</td>
-				<td>{{ side2form.lawyer1.errors|join:" " }}</td>
-			</tr>
-			<tr>
-				<th>{{ side2form.lawyer1_pay.label_tag }}</th>
-				<td>{{ side2form.lawyer1_pay }}</td>
-				<td>{{ side2form.lawyer1_pay.errors|join:" " }}</td>
-			</tr>
-			<tr>
-				<th>{{ side2form.lawyer2.label_tag }}</th>
-				<td>{{ side2form.lawyer2 }}</td>
-				<td>{{ side2form.lawyer2.errors|join:" " }}</td>
-			</tr>
-			<tr>
-				<th>{{ side2form.lawyer2_pay.label_tag }}</th>
-				<td>{{ side2form.lawyer2_pay }}</td>
-				<td>{{ side2form.lawyer2_pay.errors|join:" " }}</td>
-			</tr>
-			<tr>
-				<td></td>
-				<td><u><b>תשלום ליועץ נדל"ן</b></u></td>
-			</tr>
-			<tr>
-				<th>{{ side2form.employee1.label_tag }}</th>
-				<td>{{ side2form.employee1 }}</td>
-				<td>{{ side2form.employee1.errors|join:" " }}</td>
-			</tr>
-			<tr>
-				<th>{{ side2form.employee1_commission.label_tag }}</th>
-				<td>{{ side2form.employee1_commission }}</td>
-				<td>{{ side2form.employee1_commission.errors|join:" " }}</td>
-			</tr>
-			<tr>
-				<th>{{ side2form.employee2.label_tag }}</th>
-				<td>{{ side2form.employee2 }}</td>
-				<td>{{ side2form.employee2.errors|join:" " }}</td>
-			</tr>
-			<tr>
-				<th>{{ side2form.employee2_commission.label_tag }}</th>
-				<td>{{ side2form.employee2_commission }}</td>
-				<td>{{ side2form.employee2_commission.errors|join:" " }}</td>
-			</tr>
-			<tr>
-				<th>{{ side1form.director.label_tag }}</th>
-				<td>{{ side1form.director }}</td>
-				<td>{{ side1form.director.errors|join:" " }}</td>
-			</tr>
-			<tr>
-				<th>{{ side1form.director_commission.label_tag }}</th>
-				<td>{{ side1form.director_commission }}</td>
-				<td>{{ side1form.director_commission.errors|join:" " }}</td>
-			</tr>
-			<tr>
-				<th>{{ side2form.remarks.label_tag }}</th>
-				<td>{{ side2form.remarks }}</td>
-				<td>{{ side2form.remarks.errors|join:" " }}</td>
-			</tr>
-		</table>
+		<fieldset class="cardFieldset">
+			<legend>רוכש\שוכר</legend>
+			<div style="float:right;">
+			<table cellspacing="2" cellpadding="2" class="formTable">
+				<tr>
+					<td></td>
+					<th>פרטים<th>
+				</tr>
+				<tr>
+					<th>{{ side2form.name1.label_tag }}</th>
+					<td>
+						{{ side2form.name1 }}
+						{% if side2form.name1.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.name1.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>{{ side2form.name2.label_tag }}</th>
+					<td>
+						{{ side2form.name2 }}
+						{% if side2form.name2.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.name2.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>{{ side2form.phone1.label_tag }}</th>
+					<td>
+						{{ side2form.phone1 }}
+						{% if side2form.phone1.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.phone1.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>{{ side2form.phone2.label_tag }}</th>
+					<td>
+						{{ side2form.phone2 }}
+						{% if side2form.phone2.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.phone2.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+			</table>
+			</div>
+			<div style="float:right;">
+			<table cellspacing="2" cellpadding="2" class="formTable">	
+				<tr>
+					<td></td>
+					<th>נתוני עמלה<th>
+				</tr>		
+				<tr>
+					<th>{{ side2form.signed_commission.label_tag }}</th>
+					<td>
+						{{ side2form.signed_commission }}
+						{% if side2form.signed_commission.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.signed_commission.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>{{ side2form.actual_commission.label_tag }}</th>
+					<td>
+						{{ side2form.actual_commission }}
+						{% if side2form.actual_commission.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.actual_commission.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>{{ side2form.voucher_num.label_tag }}</th>
+					<td>
+						{{ side2form.voucher_num }}
+						{% if side2form.voucher_num.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.voucher_num.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>{{ side2form.voucher_date.label_tag }}</th>
+					<td>
+						{{ side2form.voucher_date }}
+						{% if side2form.voucher_date.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.voucher_date.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>{{ side2form.temp_receipt_num.label_tag }}</th>
+					<td>
+						{{ side2form.temp_receipt_num }}
+						{% if side2form.temp_receipt_num.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.temp_receipt_num.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+			</table>
+			</div>
+			<div style="float:right;">
+			<table cellspacing="2" cellpadding="2" class="formTable">	
+				<tr>
+					<td></td>
+					<th>פרטי חשבונית</th>
+				</tr>
+				{% for field in invoice1Form %}
+				<tr>
+					<th>{{ field.label_tag }}</th>
+					<td>
+						{{ field }}
+						{% if field.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{field.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				{% endfor %}
+			</table>
+			</div>
+			<div style="float:right;">
+			<table cellspacing="2" cellpadding="2" class="formTable">	
+				<tr>
+					<td></td>
+					<th>פרטי תשלום</th>
+				</tr>
+				{% for field in payment1Form %}
+				<tr>
+					<th>{{ field.label_tag }}</th>
+					<td>
+						{{ field }}
+						{% if field.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{field.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				{% endfor %}
+			</table>
+			</div>
+			<div style="float:right;">
+			<table cellspacing="2" cellpadding="2" class="formTable">
+				<tr>
+					<td></td>
+					<th>עו"ד</th>
+				</tr>
+				<tr>
+					<th>{{ side2form.lawyer1.label_tag }}</th>
+					<td>
+						{{ side2form.lawyer1 }}
+						{% if side2form.lawyer1.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.lawyer1.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>{{ side2form.lawyer1_pay.label_tag }}</th>
+					<td>
+						{{ side2form.lawyer1_pay }}
+						{% if side2form.lawyer1_pay.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.lawyer1_pay.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>{{ side2form.lawyer2.label_tag }}</th>
+					<td>
+						{{ side2form.lawyer2 }}
+						{% if side2form.lawyer2.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.lawyer2.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>{{ side2form.lawyer2_pay.label_tag }}</th>
+					<td>
+						{{ side2form.lawyer2_pay }}
+						{% if side2form.lawyer2_pay.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.lawyer2_pay.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+			</table>
+			</div>
+			<div style="float:right;">
+			<table cellspacing="2" cellpadding="2" class="formTable">
+				<tr>
+					<td></td>
+					<th>יועצי נדל"ן</th>
+				</tr>
+				<tr>
+					<th>{{ side2form.employee1.label_tag }}</th>
+					<td>
+						{{ side2form.employee1 }}
+						{% if side2form.employee1.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.employee1.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>{{ side2form.employee1_commission.label_tag }}</th>
+					<td>
+						{{ side2form.employee1_commission }}
+						{% if side2form.employee1_commission.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.employee1_commission.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>{{ side2form.employee2.label_tag }}</th>
+					<td>
+						{{ side2form.employee2 }}
+						{% if side2form.employee2.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.employee2.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>{{ side2form.employee2_commission.label_tag }}</th>
+					<td>
+						{{ side2form.employee2_commission }}
+						{% if side2form.employee2_commission.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.employee2_commission.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>{{ side2form.director.label_tag }}</th>
+					<td>
+						{{ side2form.director }}
+						{% if side2form.director.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.director.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>{{ side2form.director_commission.label_tag }}</th>
+					<td>
+						{{ side2form.director_commission }}
+						{% if side2form.director_commission.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.director_commission.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>{{ side2form.remarks.label_tag }}</th>
+					<td>
+						{{ side2form.remarks }}
+						{% if side2form.remarks.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.remarks.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+			</table>
+			</div>
+		</fieldset>
 	</div>
 		<input name="addanother" type="submit" value="שמור והמשך בהזנה" class="button" />
 	</form>

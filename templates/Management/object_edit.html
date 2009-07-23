@@ -18,8 +18,10 @@
 			{% for field in form %}
 			<tr>
 				<th>{{field.label_tag}}</th>
-				<td>{{field}}</td>
-				<td>{{field.errors|join:" "}}</td>
+				<td>
+					{{field}}
+					{% if field.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{field.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			{% endfor %}
 			<tr>
