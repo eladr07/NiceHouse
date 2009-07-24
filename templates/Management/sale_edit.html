@@ -136,24 +136,32 @@
 		<table cellspacing="2" cellpadding="2" class="formTable">
 			<tr>
 				<th>{{ form.project.label_tag }}</th>
-				<td>{{ form.project }} <a id="projectCard"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
-				<td>{{ form.project.errors|join:" " }}</td>
+				<td>
+					{{ form.project }}
+					{% if form.project.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.project.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			<tr>
 			<tr>
 				<th>{{ form.building.label_tag }}</th>
-				<td>{{ form.building }} <a id="buildingCard"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
-				<td>{{ form.building.errors|join:" " }}</td>
+				<td>
+					{{ form.building }}
+					{% if form.building.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.building.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<th>{{ form.house.label_tag }}</th>
-				<td>{{ form.house }}</td>
-				<td>{{ form.house.errors|join:" " }}</td>
+				<td>
+					{{ form.house }}
+					{% if form.house.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.house.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<th>{{ form.employee.label_tag }}</th>
-				<td>{{ form.employee }}</td>
-				<td>{{ form.employee.errors|join:" " }}</td>
+				<td>
+					{{ form.employee }}
+					{% if form.employee.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.employee.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<td></td>
@@ -161,38 +169,52 @@
 			</tr>
 			<tr>
 				<th>{{ form.clients.label_tag }}</th>
-				<td>{{ form.clients }}</td>
-				<td>{{ form.clients.errors|join:" " }}</td>
+				<td>
+					{{ form.clients }}
+					{% if form.clients.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.clients.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<th>{{ form.clients_phone.label_tag }}</th>
-				<td>{{ form.clients_phone }}</td>
-				<td>{{ form.clients_phone.errors|join:" " }}</td>
+				<td>
+					{{ form.clients_phone }}
+					{% if form.clients_phone.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.clients_phone.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<th>{{ form.sale_date.label_tag }}</th>
-				<td>{{ form.sale_date }}</td>
-				<td>{{ form.sale_date.errors|join:" " }}</td>
+				<td>
+					{{ form.sale_date }}
+					{% if form.sale_date.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.sale_date.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<th>{{ form.price.label_tag }}</th>
-				<td>{{ form.price }}</td>
-				<td>{{ form.price.errors|join:" " }}</td>
+				<td>
+					{{ form.price }}
+					{% if form.price.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.price.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<th>{{ form.min_price.label_tag }}</th>
-				<td>{{ form.min_price }}</td>
-				<td>{{ form.min_price.errors|join:" " }}</td>
+				<td>
+					{{ form.min_price }}
+					{% if form.min_price.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.min_price.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<th>{{ form.price_include_lawyer.label_tag }}</th>
-				<td>{{ form.price_include_lawyer }}</td>
-				<td>{{ form.price_include_lawyer.errors|join:" " }}</td>
+				<td>
+					{{ form.price_include_lawyer }}
+					{% if form.price_include_lawyer.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.price_include_lawyer.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<th>{{ form.price_no_lawyer.label_tag }}</th>
-				<td>{{ form.price_no_lawyer }}</td>
-				<td>{{ form.price_no_lawyer.errors|join:" " }}</td>
+				<td>
+					{{ form.price_no_lawyer }}
+					{% if form.price_no_lawyer.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.price_no_lawyer.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<td></td>
@@ -200,23 +222,31 @@
 			</tr>
 			<tr>
 				<th>{{ form.contract_num.label_tag }}</th>
-				<td>{{ form.contract_num }}</td>
-				<td>{{ form.contract_num.errors|join:" " }}</td>
+				<td>
+					{{ form.contract_num }}
+					{% if form.contract_num.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.contract_num.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<th>{{ form.include_tax.label_tag }}</th>
-				<td>{{ form.include_tax }}</td>
-				<td>{{ form.include_tax.errors|join:" " }}</td>
+				<td>
+					{{ form.include_tax }}
+					{% if form.include_tax.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.include_tax.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<th>{{ form.discount.label_tag }}</th>
-				<td>{{ form.discount }}</td>
-				<td>{{ form.discount.errors|join:" " }}</td>
+				<td>
+					{{ form.discount }}
+					{% if form.discount.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.discount.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<th>{{ form.allowed_discount.label_tag }}</th>
-				<td>{{ form.allowed_discount }}</td>
-				<td>{{ form.allowed_discount.errors|join:" " }}</td>
+				<td>
+					{{ form.allowed_discount }}
+					{% if form.allowed_discount.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.allowed_discount.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<td></td>
@@ -224,8 +254,10 @@
 			</tr>
 			<tr>
 				<th>{{ form.company_price.label_tag }}</th>
-				<td>{{ form.company_price }}</td>
-				<td>{{ form.company_price.errors|join:" " }}</td>
+				<td>
+					{{ form.company_price }}
+					{% if form.company_price.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.company_price.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<td></td>
@@ -233,8 +265,10 @@
 			</tr>
 			<tr>
 				<th>{{ form.signup_date.label_tag }}</th>
-				<td>{{ form.signup_date }}</td>
-				<td>{{ form.signup_date.errors|join:" " }}</td>
+				<td>
+					{{ form.signup_date }}
+					{% if form.signup_date.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.signup_date.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<td></td>
@@ -242,8 +276,10 @@
 			</tr>
 			<tr>
 				<th>{{ form.remarks.label_tag }}</th>
-				<td>{{ form.remarks }}</td>
-				<td>{{ form.remarks.errors|join:" " }}</td>
+				<td>
+					{{ form.remarks }}
+					{% if form.remarks.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.remarks.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 		</table>
 		<input name="addanother" type="submit" value="שמור והמשך בהזנה" class="button" />

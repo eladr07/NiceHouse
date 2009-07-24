@@ -36,68 +36,94 @@
 			<table class="formTable">
 				<tr>
 					<th>{{form.num.label_tag}}</th>
-					<td>{{form.num}}</td>
-					<td>{{form.num.errors|join:" ,"}}</td>
+					<td>
+						{{form.num}}
+						{% if form.num.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.num.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.type.label_tag}}</th>
-					<td>{{form.type}}</td>
-					<td>{{form.type.errors|join:" ,"}}</td>
+					<td>
+						{{form.type}}
+						{% if form.type.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.type.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.floor.label_tag}}</th>
-					<td>{{form.floor}}</td>
-					<td>{{form.floor.errors|join:" ,"}}</td>
+					<td>
+						{{form.floor}}
+						{% if form.floor.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.floor.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.rooms.label_tag}}</th>
-					<td>{{form.rooms}}</td>
-					<td>{{form.rooms.errors|join:" ,"}}</td>
+					<td>
+						{{form.rooms}}
+						{% if form.rooms.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.rooms.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.net_size.label_tag}}</th>
-					<td>{{form.net_size}}</td>
-					<td>{{form.net_size.errors|join:" ,"}}</td>
+					<td>
+						{{form.net_size}}
+						{% if form.net_size.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.net_size.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.garden_size.label_tag}}</th>
-					<td>{{form.garden_size}}</td>
-					<td>{{form.garden_size.errors|join:" ,"}}</td>
+					<td>
+						{{form.garden_size}}
+						{% if form.garden_size.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.garden_size.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.is_sold.label_tag}}</th>
-					<td>{{form.is_sold}}</td>
-					<td>{{form.is_sold.errors|join:" ,"}}</td>
+					<td>
+						{{form.is_sold}}
+						{% if form.is_sold.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.is_sold.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.parking1.label_tag}}</th>
-					<td>{{form.parking1}}</td>
-					<td>{{form.parking1.errors|join:" ,"}}</td>
+					<td>
+						{{form.parking1}}
+						{% if form.parking1.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.parking1.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.parking2.label_tag}}</th>
-					<td>{{form.parking2}}</td>
-					<td>{{form.parking2.errors|join:" ,"}}</td>
+					<td>
+						{{form.parking2}}
+						{% if form.parking2.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.parking2.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.parking3.label_tag}}</th>
-					<td>{{form.parking3}}</td>
-					<td>{{form.parking3.errors|join:" ,"}}</td>
+					<td>
+						{{form.parking3}}
+						{% if form.parking3.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.parking3.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.storage1.label_tag}}</th>
-					<td>{{form.storage1}}</td>
-					<td>{{form.storage1.errors|join:" ,"}}</td>
+					<td>
+						{{form.storage1}}
+						{% if form.storage1.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.storage1.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.storage2.label_tag}}</th>
-					<td>{{form.storage2}}</td>
-					<td>{{form.storage2.errors|join:" ,"}}</td>
+					<td>
+						{{form.storage2}}
+						{% if form.storage2.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.storage2.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.remarks.label_tag}}</th>
-					<td>{{form.remarks}}</td>
-					<td>{{form.remarks.errors|join:" ,"}}</td>
+					<td>
+						{{form.remarks}}
+						{% if form.remarks.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.remarks.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 			</table>
 		</fieldset>
@@ -106,18 +132,24 @@
 			<table class="formTable">
 				<tr>
 					<th>{{form.bruto_size.label_tag}}</th>
-					<td>{{form.bruto_size}}</td>
-					<td>{{form.bruto_size.errors|join:" ,"}}</td>
+					<td>
+						{{form.bruto_size}}
+						{% if form.bruto_size.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.bruto_size.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.load_precentage.label_tag}}</th>
-					<td>{{form.load_precentage}}</td>
-					<td>{{form.load_precentage.errors|join:" ,"}}</td>
+					<td>
+						{{form.load_precentage}}
+						{% if form.load_precentage.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.load_precentage.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.parking_size.label_tag}}</th>
-					<td>{{form.parking_size}}</td>
-					<td>{{form.parking_size.errors|join:" ,"}}</td>
+					<td>
+						{{form.parking_size}}
+						{% if form.parking_size.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.parking_size.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 			</table>
 		</fieldset>
@@ -128,8 +160,10 @@
 			<table class="formTable">
 				<tr>
 					<th>{{form.price.label_tag}}</th>
-					<td>{{form.price}}</td>
-					<td>{{form.price.errors|join:" ,"}}</td>
+					<td>
+						{{form.price}}
+						{% if form.price.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.price.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 			</table>
 		</fieldset>

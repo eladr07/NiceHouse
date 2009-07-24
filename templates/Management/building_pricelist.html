@@ -181,48 +181,66 @@
 			<table class="formTable" >
 				<tr>
 					<th>{{form.include_tax.label_tag}}</th>
-					<td>{{form.include_tax}}</td>
-					<td>{{form.include_tax.errors|join:" ,"}}</td>
+					<td>
+						{{form.include_tax}}
+						{% if form.include_tax.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.include_tax.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.include_lawyer.label_tag}}</th>
-					<td>{{form.include_lawyer}}</td>
-					<td>{{form.include_lawyer.errors|join:" ,"}}</td>
+					<td>
+						{{form.include_lawyer}}
+						{% if form.include_lawyer.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.include_lawyer.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.include_parking.label_tag}}</th>
-					<td>{{form.include_parking}}</td>
-					<td>{{form.include_parking.errors|join:" ,"}}</td>
+					<td>
+						{{form.include_parking}}
+						{% if form.include_parking.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.include_parking.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.include_storage.label_tag}}</th>
-					<td>{{form.include_storage}}</td>
-					<td>{{form.include_storage.errors|join:" ,"}}</td>
+					<td>
+						{{form.include_storage}}
+						{% if form.include_storage.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.include_storage.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.settle_date.label_tag}}</th>
-					<td>{{form.settle_date}}</td>
-					<td>{{form.settle_date.errors|join:" ,"}}</td>
+					<td>
+						{{form.settle_date}}
+						{% if form.settle_date.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.settle_date.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.allowed_discount.label_tag}}</th>
-					<td>{{form.allowed_discount}}</td>
-					<td>{{form.allowed_discount.errors|join:" ,"}}</td>
+					<td>
+						{{form.allowed_discount}}
+						{% if form.allowed_discount.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.allowed_discount.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.is_permit.label_tag}}</th>
-					<td>{{form.is_permit}}</td>
-					<td>{{form.is_permit.errors|join:" ,"}}</td>
+					<td>
+						{{form.is_permit}}
+						{% if form.is_permit.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.is_permit.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.permit_date.label_tag}}</th>
-					<td>{{form.permit_date}}</td>
-					<td>{{form.permit_date.errors|join:" ,"}}</td>
+					<td>
+						{{form.permit_date}}
+						{% if form.permit_date.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.permit_date.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.remarks.label_tag}}</th>
-					<td>{{form.remarks}}</td>
-					<td>{{form.remarks.errors|join:" ,"}}</td>
+					<td>
+						{{form.remarks}}
+						{% if form.remarks.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.remarks.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 			</table>
 		</fieldset>
@@ -237,18 +255,24 @@
 				</tr>
 				<tr>
 					<th>{{form.lawyer_fee.label_tag}}</th>
-					<td>{{form.lawyer_fee}}</td>
-					<td>{{form.lawyer_fee.errors|join:" ,"}}</td>
+					<td>
+						{{form.lawyer_fee}}
+						{% if form.lawyer_fee.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.lawyer_fee.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.register_expense.label_tag}}</th>
-					<td>{{form.register_expense}}</td>
-					<td>{{form.register_expense.errors|join:" ,"}}</td>
+					<td>
+						{{form.register_expense}}
+						{% if form.register_expense.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.register_expense.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{form.storage_cost.label_tag}}</th>
-					<td>{{form.storage_cost}}</td>
-					<td>{{form.storage_cost.errors|join:" ,"}}</td>
+					<td>
+						{{form.storage_cost}}
+						{% if form.storage_cost.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.storage_cost.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>	
 			</table>
 			<button type="button" class="button" id="show_parking_costs">עלות חנייה נוספת</button><br>

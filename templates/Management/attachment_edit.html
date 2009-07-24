@@ -22,40 +22,54 @@
 		<table class="formTable">
 			<tr>
 				<th>{{form.file.label_tag}}</th>
-				<td>{{form.file}}</td>
-				<td>{{form.file.errors|join:" "}}</td>
+				<td>
+					{{form.file}}
+					{% if form.file.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.file.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<th>{{form.type.label_tag}}</th>
-				<td>{{form.type}}</td>
-				<td>{{form.type.errors|join:" "}}</td>
+				<td>
+					{{form.type}}
+					{% if form.type.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.type.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<th>{{form.sr_name.label_tag}}</th>
-				<td>{{form.sr_name}}</td>
-				<td>{{form.sr_name.errors|join:" "}}</td>
+				<td>
+					{{form.sr_name}}
+					{% if form.sr_name.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.sr_name.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			{% if user.is_staff %}
 			<tr>
 				<th>{{form.is_private.label_tag}}</th>
-				<td>{{form.is_private}}</td>
-				<td>{{form.is_private.errors|join:" "}}</td>
+				<td>
+					{{form.is_private}}
+					{% if form.is_private.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.is_private.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			{% endif %}
 			<tr>
 				<th>{{form.tags.label_tag}}</th>
-				<td>{{form.tags}}</td>
-				<td>{{form.tags.errors|join:" "}}</td>
+				<td>
+					{{form.tags}}
+					{% if form.tags.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.tags.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<th>{{form.tag_new.label_tag}}</th>
-				<td>{{form.tag_new}}</td>
-				<td>{{form.tag_new.errors|join:" "}}</td>
+				<td>
+					{{form.tag_new}}
+					{% if form.tag_new.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.tag_new.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<th>{{form.remarks.label_tag}}</th>
-				<td>{{form.remarks}}</td>
-				<td>{{form.remarks.errors|join:" "}}</td>
+				<td>
+					{{form.remarks}}
+					{% if form.remarks.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.remarks.errors|join:""}}'/>{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<td></td>
