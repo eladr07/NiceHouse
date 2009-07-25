@@ -468,7 +468,7 @@ class EmployeeBase(Person):
     objects = EmployeeManager()
     
     class Meta:
-        abstract=True
+        db_table='EmployeeBase'
 
 class Employee(EmployeeBase):
     rank = models.ForeignKey('RankType', verbose_name=ugettext('rank'))
