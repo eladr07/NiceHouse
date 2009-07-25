@@ -464,9 +464,7 @@ class EmployeeBase(Person):
     reminders = models.ManyToManyField('Reminder', null=True, editable=False)
     account = models.OneToOneField('Account', related_name='%(class)s',editable=False, null=True, blank=True)
     employment_terms = models.OneToOneField('EmploymentTerms',editable=False, related_name='%(class)s', null=True, blank=True)
-    
-    objects = EmployeeManager()
-    
+        
     class Meta:
         db_table='EmployeeBase'
 
@@ -475,6 +473,8 @@ class Employee(EmployeeBase):
    
     projects = models.ManyToManyField('Project', verbose_name=ugettext('projects'), related_name='employees', 
                                       null=True, blank=True)
+    
+    objects = EmployeeManager()
     
     def get_open_reminders(self):
         return [r for r in self.reminders.all() if r.statuses.latest().type.id 
@@ -530,6 +530,8 @@ class NHBranch(models.Model):
     
 class NHEmployee(EmployeeBase):
     nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'), related_name='nhemployees')
+    
+    objects = EmployeeManager()
     
     def get_open_reminders(self):
         return [r for r in self.reminders.all() if r.statuses.latest().type.id 
