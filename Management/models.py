@@ -1347,7 +1347,7 @@ class NHSaleSide(models.Model):
     employee1 = models.ForeignKey('NHEmployee', verbose_name=ugettext('advisor'), related_name='nhsaleside1s')
     employee2 = models.ForeignKey('NHEmployee', verbose_name=ugettext('advisor'), related_name='nhsaleside2s', 
                                 null=True, blank=True)
-    director = models.ForeignKey('NHEmployee', verbose_name=ugettext('director'), related_name='nhsaleside_director', 
+    director = models.ForeignKey('EmployeeBase', verbose_name=ugettext('director'), related_name='nhsaleside_director', 
                                 null=True, blank=True)
     lawyer1 = models.ForeignKey('Lawyer', verbose_name=ugettext('lawyer'), related_name='nhsaleside1s', 
                                 null=True, blank=True)

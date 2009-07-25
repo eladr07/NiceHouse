@@ -758,7 +758,7 @@ msgstr "% עמלה בפועל"
 
 #: .\Management\models.py:1366
 msgid "voucher_num"
-msgstr "מס' שובר"
+msgstr "מס' הזמנת שרותי תיווך"
 
 #: .\Management\models.py:1367
 msgid "voucher_date"
