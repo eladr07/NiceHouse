@@ -11,7 +11,7 @@
 		<th>סוג עמלה</th>
 		<th>שווי עמלה</th>
 		<th>פירוט מכירות</th>
-		{% regroup salary.commission_details by commission as commission_list %}
+		{% regroup salary.commission_details.all by commission as commission_list %}
 		{% for cl in commission_list %}
 		<tr>
 			<th>{{cl.grouper}}</th>
