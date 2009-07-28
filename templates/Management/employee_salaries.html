@@ -127,7 +127,7 @@
 			<td><a class="fancybox" href="/employee/{{s.employee.id}}/sales/{{month.year}}/{{month.month}}">{{ s.sales_count }}</a></td>
 			<td style="color:#08A600;">
 				{{s.base}} + 
-				<a href="{{s.get_absolute_url}}/details">{{s.commissions}}</a>
+				<a href="/employeesalaries/{{s.id}}/details" class="fancybox">{{s.commissions}}</a>
 			</td>
 			<td style="color:#08A600;">{{s.safety_net|default_if_none:""}}</td>
 			<td style="color:#08A600;">{% if s.var_pay %}{{s.var_pay}} ש"ח {% endif %}</td>

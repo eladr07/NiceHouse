@@ -301,7 +301,7 @@ def employee_salary_approve(request, id):
     return HttpResponse('ok')
 
 def employee_salary_details(request, id):
-    return render_to_response('Management/employee_commission_details.html.html', 
+    return render_to_response('Management/employee_commission_details.html', 
                               { 'salary':EmployeeSalary.objects.get(pk=id)},
                               context_instance=RequestContext(request))
 

@@ -699,7 +699,9 @@ class EmployeeSalary(models.Model):
                 for s in sales.all():
                     s.employee_paid = True
                     s.save()
-        self.commissions = amount
+        self.commissions = amount    
+    def get_absolute_url(self):
+        return '/employeesalaries/%s' % self.id
     class Meta:
         db_table='EmployeeSalary'
         unique_together = ('employee','year','month')
