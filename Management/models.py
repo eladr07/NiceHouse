@@ -612,10 +612,16 @@ class LoanPay(models.Model):
 
 class EmployeeSalaryManager(models.Manager):
     def current(self):
-        n = datetime.now()
-        if n.day <= 22:
-            n = datetime(n.year, n.month == 1 and 12 or n.month - 1, n.day)
+        n = demand_month()
         return self.filter(year = n.year, month = n.month)
+
+class SaleCommissionDetail(models.Model):
+    employee_salary = models.ForeignKey('EmployeeSalary')
+    commission = models.CharField(max_length=30)
+    value = models.FloatField()
+    sale = models.ForeignKey('Sale', null=True, related_name='commission_details')
+    class Meta:
+        db_table = 'SaleCommissionDetails'
 
 class EmployeeSalary(models.Model):
     employee = models.ForeignKey('Employee', verbose_name=ugettext('employee'), related_name='salaries')
@@ -633,6 +639,8 @@ class EmployeeSalary(models.Model):
     deduction_type = models.CharField(ugettext('deduction_type'), max_length=20, null=True, blank=True)
     approved = models.BooleanField(ugettext('approved'), editable=False)
     remarks = models.TextField(ugettext('remarks'),null=True, blank=True)
+    
+    details = models.ManyToManyField('SaleCommissionDetails', editable=False, null=True)
     
     objects = EmployeeSalaryManager()
     
@@ -677,6 +685,9 @@ class EmployeeSalary(models.Model):
             return None
         return self.total_amount
     def calculate(self):
+        #clean any sale commission details associated with this salary
+        for scd in SaleCommissionDetail.objects.filter(employee_salary=self):
+            scd.delete()
         amount = 0
         for epc in self.employee.commissions.all():
             total_sales = self.sales
@@ -686,7 +697,7 @@ class EmployeeSalary(models.Model):
                 sales = total_sales[k].filter(house__building__project = epc.project)
                 if sales.count() == 0:
                     continue
-                amount += epc.calc(sales)
+                amount += epc.calc(sales, self)
                 for s in sales.all():
                     s.employee_paid = True
                     s.save()
@@ -704,20 +715,27 @@ class EPCommission(models.Model):
     b_house_type = models.OneToOneField('BHouseType', related_name= 'epcommission', null=True)
     b_discount_save = models.OneToOneField('BDiscountSave', related_name= 'epcommission', null=True)
     b_sale_rate = models.OneToOneField('BSaleRate', related_name= 'epcommission', null=True)
-    def calc(self, sales):
+    def calc(self, sales, salary):
         dic = {}# key: sale value: commission amount for sale
         for c in ['c_var', 'c_by_price', 'b_house_type', 'b_discount_save']:
             if getattr(self,c) == None:
                 continue
             amounts = getattr(self,c).calc(sales)
             for s in amounts:
+                s.commission_details.create(employee_salary = salary,
+                                            value = amounts[s],
+                                            commission = c)
                 dic[s] = dic.has_key(s) and dic[s] + amounts[s] or amounts[s]
         for c in ['c_var_precentage']:
             if getattr(self,c) == None:
                 continue
             precentages = getattr(self,c).calc(sales)
             for s in precentages:
-                dic[s] = dic.has_key(s) and dic[s] + precentages[s] * s.employee_price() / 100 or precentages[s] * s.employee_price() / 100
+                amount = precentages[s] * s.employee_price() / 100
+                s.commission_details.create(employee_salary = salary,
+                                            value = amount,
+                                            commission = c)
+                dic[s] = dic.has_key(s) and dic[s] + amount or amount
         total_amount = 0
         for s in dic:
             total_amount = total_amount + dic[s]
@@ -726,6 +744,9 @@ class EPCommission(models.Model):
                 continue
             amount = getattr(self,c).calc(sales)
             total_amount = total_amount + amount
+            scd = SaleCommissionDetail(employee_salary = salary, value = amount,
+                                 commission = c)
+            scd.save()
         return total_amount
     class Meta:
         db_table = 'EPCommission'
