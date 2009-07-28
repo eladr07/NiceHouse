@@ -621,7 +621,7 @@ class SaleCommissionDetail(models.Model):
     value = models.FloatField()
     sale = models.ForeignKey('Sale', null=True, related_name='commission_details')
     class Meta:
-        db_table = 'SaleCommissionDetails'
+        db_table = 'SaleCommissionDetail'
 
 class EmployeeSalary(models.Model):
     employee = models.ForeignKey('Employee', verbose_name=ugettext('employee'), related_name='salaries')
@@ -720,19 +720,19 @@ class EPCommission(models.Model):
                 continue
             amounts = getattr(self,c).calc(sales)
             for s in amounts:
-                s.commission_details.create(employee_salary = salary,
-                                            value = amounts[s],
-                                            commission = c)
+                if amounts[s] == 0:
+                    continue
+                s.commission_details.create(employee_salary = salary, value = amounts[s], commission = c)
                 dic[s] = dic.has_key(s) and dic[s] + amounts[s] or amounts[s]
         for c in ['c_var_precentage']:
             if getattr(self,c) == None:
                 continue
             precentages = getattr(self,c).calc(sales)
             for s in precentages:
+                if precentages[s] == 0:
+                    continue
                 amount = precentages[s] * s.employee_price() / 100
-                s.commission_details.create(employee_salary = salary,
-                                            value = amount,
-                                            commission = c)
+                s.commission_details.create(employee_salary = salary, value = amount, commission = c)
                 dic[s] = dic.has_key(s) and dic[s] + amount or amount
         total_amount = 0
         for s in dic:
@@ -742,8 +742,7 @@ class EPCommission(models.Model):
                 continue
             amount = getattr(self,c).calc(sales)
             total_amount = total_amount + amount
-            scd = SaleCommissionDetail(employee_salary = salary, value = amount,
-                                 commission = c)
+            scd = SaleCommissionDetail(employee_salary = salary, value = amount, commission = c)
             scd.save()
         return total_amount
     class Meta:
