@@ -19,6 +19,7 @@
 			if (selectedID > 0)
 				$("#loanPay").attr("href", "/employees/" + selectedID + "/loanpay");
 				$("#loanAdd").attr("href", "/employees/" + selectedID + "/addloan");
+				$("#calcSalary").attr("href", "/employeesalaries/" + selectedID + "/calc");
 				$("#approve").attr("href", "/employeesalaries/" + tr.attr("objid") + "/approve");
 				$("#edit").attr("href", tr.attr("objid"));
 			});
@@ -35,6 +36,14 @@
 				if (data == 'ok')
 					alert('השכר אושר !');
 			});
+		});
+		$("#monthChange").click(function(event) {
+			event.preventDefault();
+			location.replace("/employeesalaries/" + $("#id_year").val() + "/" + $("#id_month").val())
+		});
+		$("#calcSalary").click(function(event) {
+			if (!confirm("האם אתה בטוח שברצונך לחשב את העמלות מחדש ?"))
+				event.preventDefault();
 		});
 	});
 </script>
@@ -56,7 +65,7 @@
 				{{ field }}
 			</td>
 			{% endfor %}
-			<td><input type="submit" value="חפש" class="button"/></td>
+			<td><input id="monthChange" type="button" value="חפש" class="button"/></td>
 		</tr>
 	</table>
 </form>
@@ -72,6 +81,10 @@
 <div class="someIcon" style="width:170px;">
 	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
 	<a id="edit" class="fancybox">שינוי מרכיבי שכר - חד פעמי</a>
+</div>
+<div class="someIcon"style="width:130px;">
+	<img src="/site_media/images/advanced-48.png" width="20" height="20"  alt="שליחה" /> 
+	<a id="calcSalary">חישוב עמלות מחדש</a>
 </div>
 <div class="someIcon" style="width:120px;">
 	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 

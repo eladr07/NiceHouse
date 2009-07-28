@@ -270,7 +270,6 @@ def demands_calc(request, year, month):
 
 @permission_required('Management.list_demand')
 def demand_old_list(request, year=demand_month().year, month=demand_month().month):
-    form = MonthFilterForm(initial={'year':year,'month':month})
     ds = Demand.objects.filter(year = year, month = month)
     total_sales_count,total_sales_amount, total_sales_commission, total_amount = (0,0,0,0)
     for d in ds:
@@ -286,7 +285,8 @@ def demand_old_list(request, year=demand_month().year, month=demand_month().mont
         
     return render_to_response('Management/demand_old_list.html', 
                               { 'demands':ds, 'month':date(int(year), int(month), 1),
-                                'filterForm':form,'total_sales_count':total_sales_count,
+                                'filterForm':MonthFilterForm(initial={'year':year,'month':month}),
+                                'total_sales_count':total_sales_count,
                                 'total_sales_amount':total_sales_amount,
                                 'total_sales_commission':total_sales_commission,
                                 'total_amount':total_amount, 
@@ -306,30 +306,18 @@ def employee_salary_details(request, id):
                               context_instance=RequestContext(request))
 
 @permission_required('Management.list_employeesalary')
-def employee_salary_list(request):
-    if request.method=='POST':
-        form = MonthFilterForm(request.POST)
-        if form.is_valid():
-            month = datetime(int(form.cleaned_data['year']), int(form.cleaned_data['month']), 1)
-            for e in Employee.objects.active().filter(work_start__lt = month):
-                try:
-                    es = EmployeeSalary.objects.get(employee=e, year = month.year, month = month.month)
-                except EmployeeSalary.DoesNotExist:
-                    es = EmployeeSalary(employee = e, month = month.month, year = month.year, approved=False)
-                es.base = e.employment_terms and e.employment_terms.salary_base or 0
-                es.calculate()
-                es.save()
-            salaries = EmployeeSalary.objects.filter(year = month.year, month = month.month)
-    else:
-        form = MonthFilterForm()
-        salaries = EmployeeSalary.objects.current()
-        month = datetime.now()
-        if month.day <= 22:
-            month = datetime(month.year, month.month == 1 and 12 or month.month - 1, month.day)
-        
+def employee_salary_list(request, year=demand_month().year, month=demand_month().month):
     return render_to_response('Management/employee_salaries.html', 
-                              { 'salaries':salaries, 'month':month,'filterForm':form},
-                              context_instance=RequestContext(request))
+                              {'salaries':EmployeeSalary.objects.filter(year = year, month = month), 
+                               'month': date(year, month, 1),
+                               'filterForm':MonthFilterForm(initial={'year':year,'month':month})},
+                               context_instance=RequestContext(request))
+
+def employee_salary_calc(request, id):
+    es = EmployeeSalary.objects.get(pk=id)
+    es.calculate()
+    es.save()
+    return HttpResponseRedirect('/employeesalaries/%s/%s' % (es.year, es.month))
 
 @permission_required('Management.list_demand')
 def demands_all(request):
