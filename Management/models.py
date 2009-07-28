@@ -622,6 +622,7 @@ class SaleCommissionDetail(models.Model):
     sale = models.ForeignKey('Sale', null=True, related_name='commission_details')
     class Meta:
         db_table = 'SaleCommissionDetail'
+        ordering=['commission','value']
 
 class EmployeeSalary(models.Model):
     employee = models.ForeignKey('Employee', verbose_name=ugettext('employee'), related_name='salaries')
