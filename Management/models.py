@@ -640,8 +640,6 @@ class EmployeeSalary(models.Model):
     approved = models.BooleanField(ugettext('approved'), editable=False)
     remarks = models.TextField(ugettext('remarks'),null=True, blank=True)
     
-    details = models.ManyToManyField('SaleCommissionDetails', editable=False, null=True)
-    
     objects = EmployeeSalaryManager()
     
     @property
