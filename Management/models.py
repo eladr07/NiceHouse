@@ -616,7 +616,7 @@ class EmployeeSalaryManager(models.Manager):
         return self.filter(year = n.year, month = n.month)
 
 class SaleCommissionDetail(models.Model):
-    employee_salary = models.ForeignKey('EmployeeSalary')
+    employee_salary = models.ForeignKey('EmployeeSalary', related_name='commission_details')
     commission = models.CharField(max_length=30)
     value = models.FloatField()
     sale = models.ForeignKey('Sale', null=True, related_name='commission_details')
