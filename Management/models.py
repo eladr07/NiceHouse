@@ -744,6 +744,8 @@ class EPCommission(models.Model):
             if getattr(self,c) == None:
                 continue
             amount = getattr(self,c).calc(sales)
+            if amount == 0:
+                continue
             total_amount = total_amount + amount
             scd = SaleCommissionDetail(employee_salary = salary, value = amount, commission = c)
             scd.save()
