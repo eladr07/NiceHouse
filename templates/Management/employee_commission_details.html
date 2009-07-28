@@ -13,15 +13,15 @@
 		{% regroup salary.commission_details.all by commission as commission_list %}
 		{% for cl in commission_list %}
 		<tr>
-			<th>{{cl.grouper}}</th>
+			<td>{{cl.grouper}}</td>
 		</tr>
-		{% regroup cl.items by value as value_list %}
+		{% regroup cl.list by value as value_list %}
 		{% for v in value_list %}
 		<tr>
-			<th></th>
-			<td>{{v.grouper}} X {{v.items|length}}</td>
+			<td></td>
+			<td>{{v.grouper}} X {{v.list|length}}</td>
 			<td>
-			{% for scd in v.items %}
+			{% for scd in v.list %}
 				<a href="{{scd.sale.get_absolute_url}}" target="_parent">{{scd.sale.id}}</a> ,
 			{% endfor %}
 			</td>
