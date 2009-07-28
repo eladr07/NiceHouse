@@ -293,6 +293,7 @@ urlpatterns = patterns('',
           'template_name' : 'Management/employee_salary_edit.html',
           'permission':'change_employeesalary',
           'post_save_redirect' : '%(id)s'}),
+    (r'^employeesalaries/(?P<id>\d+)/details$', 'Management.views.employee_salary_details'),
     (r'^employeesalaries/(?P<id>\d+)/approve$', 'Management.views.employee_salary_approve'),
     (r'^employee/(?P<id>\d+)/sales/(?P<year>\d+)/(?P<month>\d+)$', 'Management.views.employee_sales'),
     

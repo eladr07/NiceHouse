@@ -1538,6 +1538,8 @@ class Sale(models.Model):
         return self.contractor_pay.year == self.demand.year and self.contractor_pay.month == self.demand.month 
     def __unicode__(self):
         return u'בניין %s דירה %s ל%s' % (self.house.building.num, self.house.num, self.clients)
+    def get_absolute_url(self):
+        return '/sale/%s' % self.id
     class Meta:
         ordering = ['sale_date']
         db_table = 'Sale'

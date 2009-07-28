@@ -300,6 +300,11 @@ def employee_salary_approve(request, id):
     es.save()
     return HttpResponse('ok')
 
+def employee_salary_details(request, id):
+    return render_to_response('Management/employee_commission_details.html.html', 
+                              { 'salary':EmployeeSalary.objects.get(pk=id)},
+                              context_instance=RequestContext(request))
+
 @permission_required('Management.list_employeesalary')
 def employee_salary_list(request):
     if request.method=='POST':
