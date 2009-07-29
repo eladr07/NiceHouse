@@ -482,7 +482,7 @@ class EmployeeSalariesWriter:
         self.salaries = models.EmployeeSalary.objects.filter(year = year, month= month)
     @property
     def pages_count(self):
-        return 1
+        return salaries.count() / 28 + 1
     def addTemplate(self, canv, doc):
         frame2 = Frame(0, 680, 650, 150)
         frame2.addFromList([nhLogo(), datePara()], canv)
@@ -493,26 +493,35 @@ class EmployeeSalariesWriter:
         frame4.addFromList([nhAddr()], canv)
         self.current_page += 1
     def salariesFlows(self):
+        flows = []
         headers = [log2vis(u'העובד\nשם'), log2vis(u'סטטוס'), log2vis(u'התלוש\nסכום'),
                    log2vis(u'הצק\nסכום'), log2vis(u'לעובד\nהוצאות\nהחזר'), log2vis(u'מנה"ח\nלחישוב\nברוטו'),
                    log2vis(u'לנטו\nמחושב\nברוטו'), log2vis(u'הערות')]
         headers.reverse()
-        rows = []
-        for es in self.salaries.all():
-            row = [log2vis(unicode(es.employee)), 
-                   log2vis(unicode(es.employee.employment_terms.hire_type)), 
-                   commaise(es.total_amount), commaise(es.check_amount),
-                   commaise(es.refund or 0), es.bruto_amount, None, 
-                   log2vis(es.remarks or '')]
-            row.reverse()
-            rows.append(row)
-        data = [headers]
-        data.extend(rows)
         colWidths = [None,None,None,None,None,None,None,None]
         colWidths.reverse()
-        t = Table(data, colWidths)
-        t.setStyle(saleTableStyle)
-        return [t]
+        rows = []
+        i = 0
+        for es in self.salaries.all():
+            row = [log2vis(unicode(es.employee)), 
+                   log2vis(unicode(es.employee.employment_terms.hire_type) + ' - ' +
+                           es.employee.employment_terms.salary_net and u'נטו' or u'ברוטו'), 
+                   commaise(es.total_amount), commaise(es.check_amount),
+                   commaise(es.refund or 0), es.bruto_amount and commaise(es.bruto_amount),
+                   None, log2vis(es.remarks or '')]
+            row.reverse()
+            rows.append(row)
+            i += 1
+            if i == 27:
+                data = [headers]
+                data.extend(rows)
+                t = Table(data, colWidths)
+                t.setStyle(saleTableStyle)
+                flows.extend([t, PageBreak(), Spacer(0, 50)])
+                i = 0
+                rows = []
+
+        return flows
     def build(self, filename):
         self.current_page = 1
         doc = SimpleDocTemplate(filename)
