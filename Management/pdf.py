@@ -514,13 +514,12 @@ class EmployeeSalariesWriter:
             row.reverse()
             rows.append(row)
             i += 1
-            if i == 27:
+            if i % 27 == 0 or i == self.salaries.count():
                 data = [headers]
                 data.extend(rows)
                 t = Table(data, colWidths)
                 t.setStyle(saleTableStyle)
                 flows.extend([t, PageBreak(), Spacer(0, 50)])
-                i = 0
                 rows = []
 
         return flows
