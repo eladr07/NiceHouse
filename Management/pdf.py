@@ -482,7 +482,7 @@ class EmployeeSalariesWriter:
         self.salaries = models.EmployeeSalary.objects.filter(year = year, month= month)
     @property
     def pages_count(self):
-        return salaries.count() / 28 + 1
+        return self.salaries.count() / 28 + 1
     def addTemplate(self, canv, doc):
         frame2 = Frame(0, 680, 650, 150)
         frame2.addFromList([nhLogo(), datePara()], canv)
