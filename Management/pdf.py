@@ -475,3 +475,50 @@ class MonthProjectsWriter:
         story.extend(self.projectsFlows())
         doc.build(story, self.addTemplate, self.addTemplate)
         return doc.canv
+
+class EmployeeSalariesWriter:
+    def __init__(self, year, month):
+        self.year, self.month = (year, month)
+        self.salaries = models.EmployeeSalary.objects.filter(year = year, month= month)
+    @property
+    def pages_count(self):
+        return 1
+    def addTemplate(self, canv, doc):
+        frame2 = Frame(0, 680, 650, 150)
+        frame2.addFromList([nhLogo(), datePara()], canv)
+        frame3 = Frame(50, 20, 150, 40)
+        frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
+                            ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
+        frame4 = Frame(50, 30, 500, 70)
+        frame4.addFromList([nhAddr()], canv)
+        self.current_page += 1
+    def salariesFlows(self):
+        headers = [log2vis(u'העובד\nשם'), log2vis(u'סטטוס'), log2vis(u'התלוש\nסכום'),
+                   log2vis(u'הצק\nסכום'), log2vis(u'לעובד\nהוצאות\nהחזר'), log2vis(u'מנה"ח\nלחישוב\nברוטו'),
+                   log2vis(u'לנטו\nמחושב\nברוטו'), log2vis(u'הערות')]
+        headers.reverse()
+        rows = []
+        for es in self.salaries.all():
+            row = [log2vis(unicode(es.employee)), 
+                   log2vis(unicode(es.employee.employment_terms.hire_type)), 
+                   commaise(es.total_amount), commaise(es.check_amount),
+                   commaise(es.refund), es.bruto_amount, None, log2vis(es.remarks)]
+            row.reverse()
+            rows.append(row)
+        data = [headers]
+        data.extend(rows)
+        colWidths = [None,None,None,None,None,None,None,None]
+        colWidths.reverse()
+        t = Table(data, colWidths)
+        t.setStyle(saleTableStyle)
+        return [t]
+    def build(self, filename):
+        self.current_page = 1
+        doc = SimpleDocTemplate(filename)
+        story = [Spacer(0,50)]
+        title = u'ריכוז שכ"ע לחודש %s\%s' % (self.year, self.month)
+        story.append(titlePara(title))
+        story.append(Spacer(0, 10))
+        story.extend(self.salariesFlows())
+        doc.build(story, self.addTemplate, self.addTemplate)
+        return doc.canv

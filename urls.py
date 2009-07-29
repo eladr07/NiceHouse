@@ -289,6 +289,7 @@ urlpatterns = patterns('',
 
     (r'^employeesalaries/$', 'Management.views.employee_salary_list'),
     (r'^employeesalaries/(?P<year>\d+)/(?P<month>\d+)$', 'Management.views.employee_salary_list'),
+    (r'^employeesalaries/(?P<year>\d+)/(?P<month>\d+)/pdf$', 'Management.views.employee_salary_pdf'),
     (r'^employeesalaries/(?P<object_id>\d+)$', 'Management.views.limited_update_object',
          {'model' : Management.models.EmployeeSalary,
           'template_name' : 'Management/employee_salary_edit.html',

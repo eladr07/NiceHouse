@@ -9,7 +9,7 @@ from django.core import serializers
 from django.views.generic.create_update import create_object, update_object
 from django.views.generic.list_detail import object_list 
 from django.contrib.auth.decorators import login_required, permission_required
-from pdf import MonthDemandWriter, MonthProjectsWriter, EmployeeListWriter
+from pdf import MonthDemandWriter, MonthProjectsWriter, EmployeeListWriter, EmployeeSalariesWriter
 from mail import mail
 
 @login_required
@@ -312,6 +312,20 @@ def employee_salary_list(request, year=demand_month().year, month=demand_month()
                                'month': date(int(year), int(month), 1),
                                'filterForm':MonthFilterForm(initial={'year':year,'month':month})},
                                context_instance=RequestContext(request))
+
+def employee_salary_pdf(request, year, month):
+    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    
+    response = HttpResponse(mimetype='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=' + filename
+    p = open(filename,'w+')
+    p.flush()
+    p.close()
+    EmployeeSalariesWriter(year, month).build(filename)
+    p = open(filename,'r')
+    response.write(p.read())
+    p.close()
+    return response    
 
 def employee_salary_calc(request, id):
     es = EmployeeSalary.objects.get(pk=id)
