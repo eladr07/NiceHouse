@@ -521,7 +521,7 @@ class EmployeeSalariesWriter:
                 t.setStyle(saleTableStyle)
                 flows.append(t)
                 if i < self.salaries.count():
-                    flows.extend([t, PageBreak(), Spacer(0, 50)])
+                    flows.extend([PageBreak(), Spacer(0, 50)])
                 rows = []
 
         return flows
