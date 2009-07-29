@@ -528,7 +528,7 @@ class EmployeeSalariesWriter:
         self.current_page = 1
         doc = SimpleDocTemplate(filename)
         story = [Spacer(0,50)]
-        title = u'ריכוז שכ"ע לחודש %s\%s' % (self.year, self.month)
+        title = u'שכר עבודה למנהלי פרויקטים לחודש %s\%s' % (self.year, self.month)
         story.append(titlePara(title))
         story.append(Spacer(0, 10))
         story.extend(self.salariesFlows())
