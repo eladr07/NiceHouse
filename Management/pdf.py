@@ -502,7 +502,8 @@ class EmployeeSalariesWriter:
             row = [log2vis(unicode(es.employee)), 
                    log2vis(unicode(es.employee.employment_terms.hire_type)), 
                    commaise(es.total_amount), commaise(es.check_amount),
-                   commaise(es.refund or 0), es.bruto_amount, None, log2vis(es.remarks)]
+                   commaise(es.refund or 0), es.bruto_amount, None, 
+                   log2vis(es.remarks or '')]
             row.reverse()
             rows.append(row)
         data = [headers]
