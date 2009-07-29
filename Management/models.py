@@ -676,6 +676,7 @@ class EmployeeSalary(models.Model):
     @property
     def total_amount(self):
         return self.base + self.commissions + (self.var_pay or 0) + (self.safety_net or 0) - (self.deduction or 0)
+    @property
     def check_amount(self):
         return self.total_amount - self.loan_pay
     @property
