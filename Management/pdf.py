@@ -501,7 +501,7 @@ class EmployeeSalariesWriter:
         for es in self.salaries.all():
             row = [log2vis(unicode(es.employee)), 
                    log2vis(unicode(es.employee.employment_terms.hire_type)), 
-                   commaise(es.total_amount), commaise(es.check_amount),
+                   commaise(es.total_amount or 0), commaise(es.check_amount or 0),
                    commaise(es.refund or 0), es.bruto_amount, None, log2vis(es.remarks)]
             row.reverse()
             rows.append(row)
