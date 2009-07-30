@@ -307,6 +307,8 @@ def employee_salary_details(request, id):
 
 @permission_required('Management.list_employeesalary')
 def employee_salary_list(request, year=demand_month().year, month=demand_month().month):
+    for es in EmployeeSalary.objects.filter(year = year, month = month):
+        es.calculate()
     return render_to_response('Management/employee_salaries.html', 
                               {'salaries':EmployeeSalary.objects.filter(year = year, month = month), 
                                'month': date(int(year), int(month), 1),
