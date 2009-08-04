@@ -1344,7 +1344,8 @@ def json_buildings(request, project_id):
 
 @login_required
 def json_employees(request, project_id):
-    data = serializers.serialize('json', Project.objects.get(pk= project_id).employees.all())
+    l = [e.employeebase for e in Project.objects.get(pk=project_id).employees.all()]
+    data = serializers.serialize('json', l)
     return HttpResponse(data)
 
 @login_required
