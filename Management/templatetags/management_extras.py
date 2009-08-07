@@ -6,7 +6,7 @@ register = template.Library()
 def commaise(value):
     try:
         value = int(value)
-    except ValueError:
+    except:
         return value
     if value < 1000:
         return str(value)
