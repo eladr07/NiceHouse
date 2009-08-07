@@ -7,7 +7,7 @@ def commaise(value):
     try:
         value = int(value)
     except ValueError:
-        return None
+        return value
     if value < 1000:
         return str(value)
     else:
