@@ -35,9 +35,9 @@
 			</td>
 			<td>
 				{{sale.price}}<br>
-				{{s.include_tax|yesno:"כולל מע\"מ, לא כולל מע\"מ"}}, 
-				{% ifnotequal s.house.building.project.commissions.include_lawyer None %}
-					{{s.price_include_lawyer|yesno:"כולל עו\"ד, לא כולל עו\"ד"}}
+				{{sale.include_tax|yesno:"כולל מע\"מ, לא כולל מע\"מ"}}, 
+				{% ifnotequal sale.house.building.project.commissions.include_lawyer None %}
+					{{sale.price_include_lawyer|yesno:"כולל עו\"ד, לא כולל עו\"ד"}}
 				{% endifnotequal %}
 			</td>
 		</tr>
