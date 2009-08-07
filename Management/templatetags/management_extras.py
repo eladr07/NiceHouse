@@ -4,7 +4,10 @@ register = template.Library()
 
 @register.filter
 def commaise(value):
-    value = int(value)
+    try:
+        value = int(value)
+    except ValueError:
+        return None
     if value < 1000:
         return str(value)
     else:
