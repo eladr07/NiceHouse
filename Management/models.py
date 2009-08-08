@@ -1498,7 +1498,7 @@ class Sale(models.Model):
         return self.pb_dsp * self.price_final / 100
     @property
     def c_final_worth(self):
-        return self.c_final * self.price_final / 100
+        return (self.c_final or 0) * (self.price_final or 0) / 100
     def project_price(self):
         c = self.house.building.project.commissions
         if c.include_lawyer == None:
