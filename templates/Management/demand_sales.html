@@ -21,6 +21,7 @@
 		<caption>מציג סה"כ {{demand.get_sales.count}} עסקאות</caption>
 		<th></th>
 		<th>מס"ד</th>
+		{% if demand.get_sales.all.0.contract_num %}<th>מס' חוזה ש"ע</th>{% endif %}
 		<th>ת. חוזה</th>
 		<th style="width:150px;">שם הרוכשים</th>
 		<th>מס' בניין</th>
@@ -32,6 +33,7 @@
 			<tr>
 				<td><a target="_parent" href="/sale/{{s.id}}"><img src="/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a></td>
 				<td>{{s.id}}</td>
+				{% if s.contract_num %}<td>{{s.contract_num}}</td>{% endif%}
 				<td>{{s.sale_date|date:"j/m/Y"}}</td>
 				<td>{{s.clients}}</td>
 				{% with s.house.building as b %}
