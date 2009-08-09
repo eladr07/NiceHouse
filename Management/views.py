@@ -451,7 +451,7 @@ def demand_close(request, id):
 def demand_zero(request, id):
     d = Demand.objects.get(pk=id)
     if d.statuses.count() == 0:
-        d.feed()
+        d.close()
     return HttpResponseRedirect('/demands')
 
 def demand_send_mail(demand, addr):
