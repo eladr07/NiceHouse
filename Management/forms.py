@@ -77,7 +77,7 @@ class PricelistForm(forms.ModelForm):
     class Meta:
         model = Pricelist
 
-class PricelistUpdateForm(form.Form):
+class PricelistUpdateForm(forms.Form):
     pricelisttype = forms.ModelChoiceField(queryset = PricelistType.objects.all(), 
                                            required=False, label = ugettext('pricelisttype'))
     all_pricelists = forms.BooleanField(required=False, label=ugettext('all_pricelists'))
