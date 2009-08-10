@@ -727,13 +727,6 @@ def project_add(request):
                               context_instance=RequestContext(request))
     
 @permission_required('Management.change_project')
-def project_end(request, id):
-    project = Project.objects.get(pk= id)
-    project.end()
-    project.save()
-    return HttpResponseRedirect('/projects')
-    
-@permission_required('Management.change_project')
 def project_edit(request, id):
     project = Project.objects.get(pk=id)
     details = project.details or ProjectDetails()
@@ -1127,13 +1120,6 @@ def house_edit(request,id , type_id):
         form.fields[f].queryset = ss
     return render_to_response('Management/house_edit.html', 
                               {'form' : form, 'type':PricelistType.objects.get(pk = type_id) })
-        
-@login_required
-def employee_end(request, id):
-    e = Employee.objects.get(pk= id)
-    e.end()
-    e.save()
-    return HttpResponseRedirect('/employees')
 
 @login_required
 def employee_archive(request):

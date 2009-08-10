@@ -262,6 +262,22 @@ class SaleCommissionForm(forms.ModelForm):
     class Meta:
         model = Sale
         fields = ('c_final',)
+
+class EmployeeEndForm(forms.ModelForm):
+    def __init__(self, *args, **kw):
+        forms.ModelForm.__init__(self,*args,**kw)
+        self.fields['work_end'].widget = forms.TextInput({'class':'vDateField'})
+    class Meta:
+        model = EmployeeBase
+        fields = ('work_end',)
+        
+class ProjectEndForm(forms.ModelForm):
+    def __init__(self, *args, **kw):
+        forms.ModelForm.__init__(self,*args,**kw)
+        self.fields['end_date'].widget = forms.TextInput({'class':'vDateField'})
+    class Meta:
+        model = Project
+        fields = ('end_date',)
         
 class DemandForm(forms.ModelForm):    
     remarks = forms.CharField(widget=forms.Textarea(attrs={'cols':'20', 'rows':'3'}), required = False ,
