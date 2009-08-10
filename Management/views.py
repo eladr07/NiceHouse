@@ -702,12 +702,13 @@ def building_pricelist(request, object_id, type_id):
                     f = h.versions.filter(type=type)
                     if f.count() == 0:
                         continue
-                    current = f.latest()
-                    current.id = 0
+                    price = f.latest().price
+                    new = HouseVersion(house=v, type=type)
                     if amount:
-                        current.price += amount
+                        new.price = price + amount
                     elif precentage:
-                        current.price *= (100 + amount) / 100
+                        new.price = price * (100 + amount) / 100
+                    new.save()
     else:
         form = PricelistForm(instance = b.pricelist)
         formset = InlineFormSet(instance = b.pricelist)
