@@ -3,10 +3,10 @@
 {% block page %}
 <div id="content">
 	<div class="title">
-		<div class="pageTitle">פירוט עמלות לעובד {{salary.employee}} לחודש {{salary.month}}/{{salary.year}}</div>
+		<div class="pageTitle">פירוט שווי צ'ק לעובד {{salary.employee}} לחודש {{salary.month}}/{{salary.year}}</div>
 	</div>
 	<div class="clearBoth"></div>
-	<table id="sales_table" class="formTable" border="1">
+	<table id="sales_table" class="formTable">
 		<tr>
 			<th>בסיס</th>
 			<td>{{salary.base}}</td>
@@ -17,19 +17,19 @@
 		</tr>
 		<tr>
 			<th>תוספת משתנה</th>
-			<td>{{salary.var_pay|default_if_none:""}}</td>
+			<td style="color:#08A600;">{{salary.var_pay|default_if_none:""}}</td>
 		</tr>
 		<tr>
 			<th>רשת בטחון</th>
-			<td>{{salary.safety_net|default_if_none:""}}</td>
+			<td style="color:#08A600;">{{salary.safety_net|default_if_none:""}}</td>
 		</tr>
 		<tr>
 			<th>קיזוז</th>
-			<td>{{salary.deduction|default_if_none:""}}</td>
+			<td style="color:#D50808;">{{salary.deduction|default_if_none:""}}</td>
 		</tr>
 		<tr>
 			<th>הלוואה</th>
-			<td>{{salary.loan_pay}}</td>
+			<td style="color:#D50808;">{{salary.loan_pay}}</td>
 		</tr>
 	</table>
 </div>
