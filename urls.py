@@ -245,6 +245,11 @@ urlpatterns = patterns('',
     
     (r'^sale$', 'Management.views.sale_add'),
     (r'^sale/(?P<id>\d+)$', 'Management.views.sale_edit'),
+    (r'^sale/(?P<object_id>\d+)/commission$', 'Management.views.limited_update_object',
+         {'form_class' : Management.forms.SaleCommissionForm,
+          'template_name' : 'Management/object_edit.html',
+          'permission':'change_sale',
+          'post_save_redirect' : 'commission'}),
     
     (r'^demands/(?P<id>\d+)/zero$', 'Management.views.demand_zero'),
     (r'^demands/(?P<object_id>\d+)$', 'Management.views.limited_update_object',

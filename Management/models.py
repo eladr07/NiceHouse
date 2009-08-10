@@ -1481,7 +1481,7 @@ class Sale(models.Model):
     pc_base = models.FloatField(editable=False, null=True)
     pb_dsp = models.FloatField(editable=False, null=True)
     zdb = models.IntegerField(editable=False, null=True)#zilber discount bonus
-    c_final = models.FloatField(editable=False, null=True)
+    c_final = models.FloatField(ugettext('c_final'), null=True)
     price_final = models.IntegerField(editable=False, null=True)
     employee_pay = models.DateField(ugettext('employee_paid'), editable=False)
     contractor_pay = models.DateField(ugettext('contractor_paid'), editable=False)

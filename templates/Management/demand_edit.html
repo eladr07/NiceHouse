@@ -18,6 +18,7 @@
 			if (selectedID > 0)
 			{//sync links
 				$("#saleEdit").attr("href", "/sale/" + selectedID);
+				$("#saleCommissionEdit").attr("href", "/sale/" + selectedID + "/commission");
 				$("#saleDelete").attr("href", "{{form.instance.id}}/sale/" + selectedID + "/del");
 				$("#saleReject").attr("href", "{{form.instance.id}}/sale/" + selectedID + "/reject");
 			}
@@ -200,10 +201,14 @@
 		<div class="someIcon" style="width:100px;">
 			<img src="/site_media/images/add_48.png" width="20" height="20"  alt="הוספה" /> 
 				<a href="{{form.instance.id}}/sale/add" >הזנת מכירה</a>
-		</div>	
+		</div>
 		<div class="someIcon" style="width:100px;">
 			<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="עריכה" /> 
 			<a id="saleEdit" >עדכון מכירה</a>
+		</div>
+		<div class="someIcon" style="width:120px;">
+			<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="עדכון עמלה" /> 
+			<a id="saleCommissionEdit" >עדכון עמלה ידנית</a>
 		</div>
 		<div class="someIcon" style="width:100px;">
 			<img src="/site_media/images/agt_back-48.png" width="20" height="20" alt="דחייה" border="0" />
