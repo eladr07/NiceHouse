@@ -146,6 +146,7 @@
 		{% if not h.get_signup and not h.get_sale and not h.is_sold %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{h.id}}>
 		{% endif %}
+			<td><input type="checkbox" id="house-{{h.id}}"/></td>
 			<td><a href="../house/{{h.id}}/type{{type.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
 			<td>{{h.num}}</td>
 			<td>{{h.floor}}</td>
@@ -173,6 +174,26 @@
 		</tr>
 		{% endfor %}
 	</table>
+	<fieldset class="cardFieldset">
+		<legend>עדכון מחירון</legend>
+			<form method="POST">
+				<table class="formTable">
+					{% for field in updateForm %}
+					<tr>
+						<th>{{field.label_tag}}</th>
+						<td>
+							{{field}}
+							{% if field.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{field.errors|join:""}}'/>{% endif %}
+						</td>
+					</tr>
+					{% endfor %}
+					<tr>
+						<td></td>
+						<td><input type="submit" value="אישור" class="button"/></td>
+					</tr>					
+				</table>
+			</form>
+	</fieldset>
 </fieldset>
 <form method="POST" class="formTable">
 	<div style="width:27%; float:right;">

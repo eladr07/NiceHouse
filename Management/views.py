@@ -686,6 +686,7 @@ def building_pricelist(request, object_id, type_id):
     if request.method == 'POST':
         form = PricelistForm(request.POST, instance=b.pricelist)
         formset = InlineFormSet(request.POST, instance = b.pricelist)
+        updateForm = PricelistUpdateForm(request.POST, prefix='upd')
         if form.is_valid():
             form.save()
             if formset.is_valid():
@@ -693,6 +694,7 @@ def building_pricelist(request, object_id, type_id):
     else:
         form = PricelistForm(instance = b.pricelist)
         formset = InlineFormSet(instance = b.pricelist)
+        updateForm = PricelistUpdateForm(prefix='upd')
     houses = b.houses.filter(is_deleted=False)
     signup_count = 0
     sale_count = 0
@@ -707,9 +709,11 @@ def building_pricelist(request, object_id, type_id):
             h.price = None
     avaliable_count = houses.count() - signup_count - sale_count
     return render_to_response('Management/building_pricelist.html',
-                              {'form': form, 'formset': formset, 'houses' : houses, 'signup_count':signup_count, 
+                              {'form': form, 'formset': formset, 'updateForm':updateForm, 
+                               'houses' : houses, 'signup_count':signup_count, 
                                'sale_count':sale_count, 'avaliable_count':avaliable_count,
-                               'type':PricelistType.objects.get(pk=type_id), 'types':PricelistType.objects.all()}, 
+                               'type':PricelistType.objects.get(pk=type_id), 
+                               'types':PricelistType.objects.all()}, 
                               context_instance=RequestContext(request))
 
 @permission_required('Management.add_project')

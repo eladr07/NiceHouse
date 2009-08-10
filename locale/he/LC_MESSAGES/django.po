@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-08-10 19:45+0200\n"
+"POT-Creation-Date: 2009-08-10 23:17+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,40 +16,61 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: .\Management\forms.py:99 .\Management\forms.py:100
-#: .\Management\forms.py:101
+#: .\Management\forms.py:82
+msgid "pricelisttype"
+msgstr "סוג מחירון"
+
+#: .\Management\forms.py:83
+msgid "all_pricelists"
+msgstr "כל המחירונים"
+
+#: .\Management\forms.py:84 .\Management\models.py:568
+#: .\Management\models.py:589 .\Management\models.py:608
+#: .\Management\models.py:810 .\Management\models.py:1114
+#: .\Management\models.py:1135 .\Management\models.py:1357
+#: .\Management\models.py:1564
+msgid "amount"
+msgstr "סכום"
+
+#: .\Management\forms.py:85 .\Management\models.py:884
+#: .\Management\models.py:887
+msgid "precentage"
+msgstr "עמלה באחוזים"
+
+#: .\Management\forms.py:106 .\Management\forms.py:107
+#: .\Management\forms.py:108
 msgid "parking"
 msgstr "חנייה"
 
-#: .\Management\forms.py:102 .\Management\forms.py:103
+#: .\Management\forms.py:109 .\Management\forms.py:110
 msgid "storage"
 msgstr "מחסן"
 
-#: .\Management\forms.py:104 .\Management\models.py:335
+#: .\Management\forms.py:111 .\Management\models.py:335
 #: .\Management\models.py:799 .\Management\models.py:1401
 msgid "price"
 msgstr "מחיר"
 
-#: .\Management\forms.py:194 .\Management\forms.py:216
-#: .\Management\forms.py:280 .\Management\forms.py:316
-#: .\Management\forms.py:513 .\Management\forms.py:532
-#: .\Management\forms.py:539 .\Management\models.py:220
+#: .\Management\forms.py:201 .\Management\forms.py:223
+#: .\Management\forms.py:303 .\Management\forms.py:339
+#: .\Management\forms.py:536 .\Management\forms.py:555
+#: .\Management\forms.py:562 .\Management\models.py:220
 #: .\Management\models.py:376 .\Management\models.py:1176
 msgid "project"
 msgstr "פרוייקט"
 
-#: .\Management\forms.py:195 .\Management\forms.py:217
+#: .\Management\forms.py:202 .\Management\forms.py:224
 #: .\Management\models.py:242 .\Management\models.py:255
 #: .\Management\models.py:268
 msgid "building"
 msgstr "בניין"
 
-#: .\Management\forms.py:218 .\Management\models.py:1319
+#: .\Management\forms.py:225 .\Management\models.py:1319
 msgid "signup_date"
 msgstr "ת. הרשמה"
 
-#: .\Management\forms.py:268 .\Management\forms.py:469
-#: .\Management\forms.py:485 .\Management\models.py:46
+#: .\Management\forms.py:291 .\Management\forms.py:492
+#: .\Management\forms.py:508 .\Management\models.py:46
 #: .\Management\models.py:129 .\Management\models.py:246
 #: .\Management\models.py:259 .\Management\models.py:275
 #: .\Management\models.py:370 .\Management\models.py:383
@@ -63,62 +84,62 @@ msgstr "ת. הרשמה"
 msgid "remarks"
 msgstr "הערות"
 
-#: .\Management\forms.py:282 .\Management\forms.py:318
-#: .\Management\forms.py:515 .\Management\forms.py:521
-#: .\Management\forms.py:534 .\Management\models.py:630
+#: .\Management\forms.py:305 .\Management\forms.py:341
+#: .\Management\forms.py:538 .\Management\forms.py:544
+#: .\Management\forms.py:557 .\Management\models.py:630
 #: .\Management\models.py:1178
 msgid "year"
 msgstr "שנה"
 
-#: .\Management\forms.py:283 .\Management\forms.py:319
-#: .\Management\forms.py:516 .\Management\forms.py:522
-#: .\Management\forms.py:535 .\Management\models.py:629
+#: .\Management\forms.py:306 .\Management\forms.py:342
+#: .\Management\forms.py:539 .\Management\forms.py:545
+#: .\Management\forms.py:558 .\Management\models.py:629
 #: .\Management\models.py:1177
 msgid "month"
 msgstr "חודש"
 
-#: .\Management\forms.py:343 .\Management\forms.py:344
-#: .\Management\forms.py:345
+#: .\Management\forms.py:366 .\Management\forms.py:367
+#: .\Management\forms.py:368
 msgid "commission_precent"
 msgstr "% עמלה"
 
-#: .\Management\forms.py:346 .\Management\forms.py:347
+#: .\Management\forms.py:369 .\Management\forms.py:370
 msgid "lawyer_pay"
 msgstr "תשלום לעו\"ד"
 
-#: .\Management\forms.py:424
+#: .\Management\forms.py:447
 msgid "status"
 msgstr "מצב"
 
-#: .\Management\forms.py:448
+#: .\Management\forms.py:471
 msgid "tag_new"
 msgstr "תגית נושא חדשה"
 
-#: .\Management\forms.py:470
+#: .\Management\forms.py:493
 msgid "new_expense_type"
 msgstr "סוג הוצאה חדש"
 
-#: .\Management\forms.py:526 .\Management\models.py:415
+#: .\Management\forms.py:549 .\Management\models.py:415
 msgid "first_name"
 msgstr "שם פרטי"
 
-#: .\Management\forms.py:527 .\Management\models.py:416
+#: .\Management\forms.py:550 .\Management\models.py:416
 msgid "last_name"
 msgstr "שם משפחה"
 
-#: .\Management\forms.py:528 .\Management\models.py:421
+#: .\Management\forms.py:551 .\Management\models.py:421
 msgid "role"
 msgstr "תפקיד"
 
-#: .\Management\forms.py:529 .\Management\models.py:431
+#: .\Management\forms.py:552 .\Management\models.py:431
 msgid "company"
 msgstr "חברה"
 
-#: .\Management\forms.py:541 .\Management\models.py:377
+#: .\Management\forms.py:564 .\Management\models.py:377
 msgid "building_num"
 msgstr "מס' בניין"
 
-#: .\Management\forms.py:543 .\Management\models.py:270
+#: .\Management\forms.py:566 .\Management\models.py:270
 msgid "house_num"
 msgstr "מספר דירה"
 
@@ -497,13 +518,6 @@ msgstr "מנהל סניף"
 msgid "nhbranch"
 msgstr "סניף"
 
-#: .\Management\models.py:568 .\Management\models.py:589
-#: .\Management\models.py:608 .\Management\models.py:810
-#: .\Management\models.py:1114 .\Management\models.py:1135
-#: .\Management\models.py:1357 .\Management\models.py:1564
-msgid "amount"
-msgstr "סכום"
-
 #: .\Management\models.py:569 .\Management\models.py:590
 #: .\Management\models.py:607 .\Management\models.py:1338
 #: .\Management\models.py:1346 .\Management\models.py:1409
@@ -587,10 +601,6 @@ msgstr "רטרואקטיבי מדירה"
 #: .\Management\models.py:883
 msgid "cvf first count"
 msgstr "מס' דירות ראשונות"
-
-#: .\Management\models.py:884 .\Management\models.py:887
-msgid "precentage"
-msgstr "עמלה באחוזים"
 
 #: .\Management\models.py:885
 msgid "cvf step"
