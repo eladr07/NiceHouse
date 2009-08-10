@@ -881,10 +881,10 @@ class CVarPrecentage(models.Model):
 class CVarPrecentageFixed(models.Model):
     is_retro = models.BooleanField(ugettext('retroactive'))
     first_count = models.PositiveSmallIntegerField(ugettext('cvf first count'))
-    first_precentage = models.FloatField(ugettext('precentage'))
+    first_precentage = models.FloatField(ugettext('commission precentage'))
     step = models.FloatField(ugettext('cvf step'))
     last_count = models.PositiveSmallIntegerField(ugettext('cvf last count'), null=True, blank=True)
-    last_precentage = models.FloatField(ugettext('precentage'), null=True, blank=True)
+    last_precentage = models.FloatField(ugettext('commission precentage'), null=True, blank=True)
     def calc(self, sales):
         dic = {}
         if self.is_retro and sales.count() > self.first_count:
