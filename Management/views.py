@@ -1500,6 +1500,9 @@ def sale_edit(request, id):
     sale = Sale.objects.get(pk=id)
     if request.POST:
         form = SaleForm(request.POST, instance = sale)
+        #handles the case when the building changes, and the house is not
+        #in the queryset of the house field
+        form.fields['house'].queryset = House.objects.all()
         if form.is_valid():
             project = form.cleaned_data['project']
             next = None
@@ -1516,9 +1519,6 @@ def sale_edit(request, id):
                     shm = SaleHouseMod(sale = sale, old_house = sale.house, date=date.today())
                     shm.save()
                     next = '/salehousemod/%s' % shm.id
-            #handles the case when the building changes, and the house is not
-            #in the queryset of the house field
-            form.fields['house'].queryset = form.fields['building'].houses()
             form.save()
             sale.demand.calc_sales_commission()
             for employee in project.employees.all():
