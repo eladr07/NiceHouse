@@ -695,7 +695,9 @@ def building_pricelist(request, object_id, type_id):
             amount, precentage = (updateForm.cleaned_data['amount'],
                                   updateForm.cleaned_data['precentage'])
             pricelist_types = updateForm.cleaned_data['all_pricelists'] and Pricelist.objects.all() or updateForm.cleaned_data['pricelisttype']
-            for h in b.houses():
+            houses = [k.replace('house-','') for k in request.POST if k.startswith('house-')]
+            for id in houses:
+                h = House.objects.get(pk=id)
                 for type in pricelist_types:
                     f = h.versions.filter(type=type)
                     if f.count() == 0:
