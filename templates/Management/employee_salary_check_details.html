@@ -9,11 +9,11 @@
 	<table id="sales_table" class="formTable">
 		<tr>
 			<th>בסיס</th>
-			<td>{{salary.base}}</td>
+			<td>{{salary.base|commaise}}</td>
 		</tr>
 		<tr>
 			<th>עמלות</th>
-			<td>{{salary.commissions}}</td>
+			<td>{{salary.commissions|commaise}}</td>
 		</tr>
 		<tr>
 			<th>תוספת משתנה</th>
@@ -30,6 +30,10 @@
 		<tr>
 			<th>הלוואה</th>
 			<td style="color:#D50808;">{{salary.loan_pay}}</td>
+		</tr>
+		<tr>
+			<th>סה"כ</th>
+			<td>{{salary.check_amount|commaise}}</td>
 		</tr>
 	</table>
 </div>
