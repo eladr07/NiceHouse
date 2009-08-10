@@ -148,7 +148,7 @@
 		{% if not h.get_signup and not h.get_sale and not h.is_sold %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{h.id}}>
 		{% endif %}
-			<td><input type="checkbox" id="house-{{h.id}}"/></td>
+			<td><input type="checkbox" name="house-{{h.id}}"/></td>
 			<td><a href="../house/{{h.id}}/type{{type.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
 			<td>{{h.num}}</td>
 			<td>{{h.floor}}</td>
