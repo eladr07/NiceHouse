@@ -306,12 +306,12 @@ def employee_salary_details(request, id):
                               context_instance=RequestContext(request))
 
 def employee_salary_check_details(request, id):
-    return render_to_response('Management/employee_commission_check_details.html', 
+    return render_to_response('Management/employee_salary_check_details.html', 
                               { 'salary':EmployeeSalary.objects.get(pk=id)},
                               context_instance=RequestContext(request))
 
 def employee_salary_total_details(request, id):
-    return render_to_response('Management/employee_commission_total_details.html', 
+    return render_to_response('Management/employee_salary_total_details.html', 
                               { 'salary':EmployeeSalary.objects.get(pk=id)},
                               context_instance=RequestContext(request))
 
