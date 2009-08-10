@@ -145,7 +145,7 @@
 			<td style="color:#08A600;">{{s.safety_net|default_if_none:""}}</td>
 			<td style="color:#08A600;">{% if s.var_pay %}{{s.var_pay}} ש"ח {% endif %}</td>
 			<td style="color:#D50808;">{% if s.deduction %}{{s.deduction}} - {{s.deduction_type}} {% endif %}</td>
-			<td>{{s.total_amount|commaise}}</td>
+			<td><a href="/employeesalaries/{{s.id}}/totaldetails" class="fancybox">{{s.total_amount|commaise}}</a></td>
 			<td>
 				החזר - {{s.loan_pay|commaise}} ש"ח
 				<br>
@@ -157,7 +157,7 @@
 				<a href="{{s.employee.get_absolute_url}}/loans" class="fancybox">כרטיס הלוואות</a><br>
 				{% endif %}
 			</td>
-			<td>{{s.check_amount}}</td>
+			<td><a href="/employeesalaries/{{s.id}}/checkdetails" class="fancybox">{{s.check_amount}}</a></td>
 			<td>{% if s.bruto_amount %}{{s.bruto_amount|commaise}} {% else %}----{% endif %}</td>
 			<td>{% if s.refund %}{{s.refund}} - {{s.refund_type}} {% endif %}</td>
 			<td></td>

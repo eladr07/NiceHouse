@@ -305,6 +305,16 @@ def employee_salary_details(request, id):
                               { 'salary':EmployeeSalary.objects.get(pk=id)},
                               context_instance=RequestContext(request))
 
+def employee_salary_check_details(request, id):
+    return render_to_response('Management/employee_commission_check_details.html', 
+                              { 'salary':EmployeeSalary.objects.get(pk=id)},
+                              context_instance=RequestContext(request))
+
+def employee_salary_total_details(request, id):
+    return render_to_response('Management/employee_commission_total_details.html', 
+                              { 'salary':EmployeeSalary.objects.get(pk=id)},
+                              context_instance=RequestContext(request))
+
 @permission_required('Management.list_employeesalary')
 def employee_salary_list(request, year=demand_month().year, month=demand_month().month):
     return render_to_response('Management/employee_salaries.html', 

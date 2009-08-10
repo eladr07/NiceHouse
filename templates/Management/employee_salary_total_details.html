@@ -1,0 +1,32 @@
+﻿{% extends "./template.html" %}
+{% load management_extras %}
+{% block page %}
+<div id="content">
+	<div class="title">
+		<div class="pageTitle">פירוט עמלות לעובד {{salary.employee}} לחודש {{salary.month}}/{{salary.year}}</div>
+	</div>
+	<div class="clearBoth"></div>
+	<table id="sales_table" class="formTable" border="1">
+		<tr>
+			<th>בסיס</th>
+			<td>{{salary.base}}</td>
+		</tr>
+		<tr>
+			<th>עמלות</th>
+			<td>{{salary.commissions}}</td>
+		</tr>
+		<tr>
+			<th>תוספת משתנה</th>
+			<td>{{salary.var_pay|default_if_none:""}}</td>
+		</tr>
+		<tr>
+			<th>רשת בטחון</th>
+			<td>{{salary.safety_net|default_if_none:""}}</td>
+		</tr>
+		<tr>
+			<th>קיזוז</th>
+			<td>{{salary.deduction|default_if_none:""}}</td>
+		</tr>
+	</table>
+</div>
+{% endblock page %}

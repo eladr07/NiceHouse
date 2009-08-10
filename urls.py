@@ -310,6 +310,8 @@ urlpatterns = patterns('',
           'post_save_redirect' : '%(id)s'}),
     (r'^employeesalaries/(?P<id>\d+)/calc$', 'Management.views.employee_salary_calc'),
     (r'^employeesalaries/(?P<id>\d+)/details$', 'Management.views.employee_salary_details'),
+    (r'^employeesalaries/(?P<id>\d+)/checkdetails$', 'Management.views.employee_salary_check_details'),
+    (r'^employeesalaries/(?P<id>\d+)/totaldetails$', 'Management.views.employee_salary_total_details'),
     (r'^employeesalaries/(?P<id>\d+)/approve$', 'Management.views.employee_salary_approve'),
     (r'^employee/(?P<id>\d+)/sales/(?P<year>\d+)/(?P<month>\d+)$', 'Management.views.employee_sales'),
     
