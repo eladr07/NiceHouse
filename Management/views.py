@@ -696,7 +696,6 @@ def building_pricelist(request, object_id, type_id):
                                   updateForm.cleaned_data['precentage'])
             pricelist_types = updateForm.cleaned_data['all_pricelists'] and Pricelist.objects.all() or updateForm.cleaned_data['pricelisttype']
             houses = [k.replace('house-','') for k in request.POST if k.startswith('house-')]
-            raise ImportError()
             for id in houses:
                 h = House.objects.get(pk=id)
                 for type in pricelist_types:
