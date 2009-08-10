@@ -690,7 +690,22 @@ def building_pricelist(request, object_id, type_id):
         if form.is_valid():
             form.save()
             if formset.is_valid():
-                formset.save()            
+                formset.save()
+        if updateForm.is_valid():
+            amount, precentage = (updateForm.cleaned_data['amount'],
+                                  updateForm.cleaned_data['precentage'])
+            pricelist_types = updateForm.cleaned_data['all_pricelists'] and Pricelist.objects.all() or updateForm.cleaned_data['pricelisttype']
+            for h in b.houses():
+                for type in pricelist_types:
+                    f = h.versions.filter(type=type)
+                    if f.count() == 0:
+                        continue
+                    current = f.latest()
+                    current.id = 0
+                    if amount:
+                        current.price += amount
+                    elif precentage:
+                        current.price *= (100 + amount) / 100
     else:
         form = PricelistForm(instance = b.pricelist)
         formset = InlineFormSet(instance = b.pricelist)

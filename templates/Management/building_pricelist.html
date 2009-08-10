@@ -120,6 +120,7 @@
 	<div class="clearBoth"></div> 
 	<table class="dataTable" border="1" id="houseTable" style="text-align:center;">
 		<th></th>
+		<th></th>
 		<th>מס'</th>
 		<th>קומה</th>
 		<th>סוג הנכס</th>
@@ -178,17 +179,14 @@
 		<legend>עדכון מחירון</legend>
 			<form method="POST">
 				<table class="formTable">
-					{% for field in updateForm %}
 					<tr>
+						{% for field in updateForm %}
 						<th>{{field.label_tag}}</th>
 						<td>
 							{{field}}
 							{% if field.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{field.errors|join:""}}'/>{% endif %}
 						</td>
-					</tr>
-					{% endfor %}
-					<tr>
-						<td></td>
+						{% endfor %}
 						<td><input type="submit" value="אישור" class="button"/></td>
 					</tr>					
 				</table>
