@@ -50,6 +50,7 @@
 	<div class="pageTitle">מחירון לבניין - {{type}}</div>
 {% endif %}
 </div>
+<form method="POST">
 <table class="pageSubTitle" cellspacing="5" align="center" style="text-align:right;cellpadding:5px;" >
 	<tr>
 		<th>יזם</th>
@@ -177,23 +178,20 @@
 	</table>
 	<fieldset class="cardFieldset">
 		<legend>עדכון מחירון</legend>
-			<form method="POST">
-				<table class="formTable">
-					<tr>
-						{% for field in updateForm %}
-						<th>{{field.label_tag}}</th>
-						<td>
-							{{field}}
-							{% if field.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{field.errors|join:""}}'/>{% endif %}
-						</td>
-						{% endfor %}
-						<td><input type="submit" value="אישור" class="button"/></td>
-					</tr>					
-				</table>
-			</form>
+			<table class="formTable">
+				<tr>
+					{% for field in updateForm %}
+					<th>{{field.label_tag}}</th>
+					<td>
+						{{field}}
+						{% if field.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{field.errors|join:""}}'/>{% endif %}
+					</td>
+					{% endfor %}
+					<td><input type="submit" value="אישור" class="button"/></td>
+				</tr>					
+			</table>
 	</fieldset>
 </fieldset>
-<form method="POST" class="formTable">
 	<div style="width:27%; float:right;">
 		<fieldset class="cardFieldset">
 			<legend>הבהרות למחירון</legend>
