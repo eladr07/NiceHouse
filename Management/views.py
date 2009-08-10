@@ -703,7 +703,7 @@ def building_pricelist(request, object_id, type_id):
                     if f.count() == 0:
                         continue
                     price = f.latest().price
-                    new = HouseVersion(house=v, type=type)
+                    new = HouseVersion(house=h, type=type)
                     if amount:
                         new.price = price + amount
                     elif precentage:
