@@ -1614,7 +1614,10 @@ class ChangeLog(models.Model):
         db_table = 'ChangeLog'
         ordering = ['date']
 
-tracked_models = [CZilber,]
+tracked_models = [BDiscountSave, BDiscountSavePrecentage, BHouseType, BSaleRate,
+                  CAmount, CByPrice, CPrecentage, CPriceAmount, CVar,
+                  CVarPrecentage, CVarPrecentageFixed, CZilber, EmploymentTerms,
+                  ProjectCommission]
 
 def track_changes(sender, **kwargs):
     instance = kwargs['instance']
