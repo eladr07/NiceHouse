@@ -3,6 +3,7 @@ from django.utils.translation import ugettext
 from datetime import datetime, date
 from django.contrib.auth.models import User
 from templatetags.management_extras import *
+from django.db.models.signals import pre_save
 
 Salary_Types = (
                 (0, u'ברוטו'),
@@ -1592,3 +1593,36 @@ class ExpenseType(models.Model):
     name = models.CharField(ugettext('expense_type'), max_length=20, unique=True)
     class Meta:
         db_table = 'ExpenseType'
+
+class ChangeLog(models.Model):
+    date = models.DateTimeField(auto_add_now=True)
+    object_type = models.CharField(max_length = 30)
+    object_id = models.IntegerField()
+    attribute = models.CharField(max_length = 30)
+    old_value = models.CharField(max_length = 30)
+    new_value = models.CharField(max_length = 30)
+    text = models.CharField(max_length = 100)
+    class Meta:
+        db_table = 'ChangeLog'
+        ordering = ['date']
+
+tracked_models = [CZilber,]
+
+def track_changes(sender, **kwargs):
+    instance = kwargs['instance']
+    model = instance.__class__
+    if tracked_models.count(model) == 0:
+        return
+    id = instance.id
+    old_obj = model.objects.get(pk=id)
+    for field in model._meta.fields:
+        if getattr(old_obj, field.name) == getattr(instance, field.name):
+            continue
+        cl = ChangeLog(object_type = model.__class__.name,
+                       object_id = id,
+                       attribute = field.name,
+                       old_value = getattr(old_obj, field.name),
+                       new_value = getattr(instance, field.name))
+        cl.save()
+
+pre_save.connect(track_changes)
