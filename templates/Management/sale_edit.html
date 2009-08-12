@@ -260,6 +260,13 @@
 				</td>
 			</tr>
 			<tr>
+				<th>{{ form.include_registration.label_tag }}</th>
+				<td>
+					{{ form.include_registration }}
+					{% if form.include_registration.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.company_price.errors|join:""}}'/>{% endif %}
+				</td>
+			</tr>
+			<tr>
 				<td></td>
 				<td><u><b>נתוני מרום השרון</b></u></td>
 			</tr>
