@@ -54,6 +54,9 @@
 				{% ifequal d.statuses.latest.type.id 3 %}
 					<tr class="row5" objid={{d.id}}>
 				{% endifequal %}
+				{% ifequal d.statuses.latest.type.id 4 %}
+					<tr class="row5" objid={{d.id}}>
+				{% endifequal %}
 			{% endif %}
 		{% endwith %}
 				<td>

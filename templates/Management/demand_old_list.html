@@ -123,6 +123,9 @@
 		{% ifequal d.statuses.latest.type.id 3 %}
 			<tr class="row5" objid={{d.id}}>
 		{% endifequal %}
+		{% ifequal d.statuses.latest.type.id 4 %}
+			<tr class="row5" objid={{d.id}}>
+		{% endifequal %}
 	{% endif %}
 			<td><a href="/demands/{{d.id}}">{{d.id}}</a></td>
 			<td>{{ d.project.initiator }}</td>
