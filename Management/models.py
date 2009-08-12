@@ -1629,7 +1629,7 @@ def track_changes(sender, **kwargs):
         cl = ChangeLog(object_type = model.__name__,
                        object_id = id,
                        attribute = field.name,
-                       verbose_name = fiels.verbose_name,
+                       verbose_name = field.verbose_name,
                        old_value = getattr(old_obj, field.name),
                        new_value = getattr(instance, field.name))
         cl.save()
