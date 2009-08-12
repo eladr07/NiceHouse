@@ -1611,7 +1611,7 @@ tracked_models = [CZilber,]
 def track_changes(sender, **kwargs):
     instance = kwargs['instance']
     model = instance.__class__
-    if tracked_models.count(model) == 0:
+    if not model in tracked_models:
         return
     id = instance.id
     old_obj = model.objects.get(pk=id)
