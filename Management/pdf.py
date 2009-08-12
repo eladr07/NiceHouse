@@ -272,7 +272,8 @@ class MonthDemandWriter:
                 row.append(log2vis(s.clients))
                 headers.extend([log2vis(name),'%s/%s' % (s.house.building.num, s.house.num), s.sale_date.strftime('%d/%m/%y'), commaise(s.price)])
                 lawyer_pay = s.price_include_lawyer and (s.price - s.price_no_lawyer) or s.price * 0.015
-                row.extend([None,None,commaise(lawyer_pay), commaise(s.price_final), commaise(2000)])
+                row.extend([None,None,commaise(lawyer_pay), commaise(s.price_final), 
+                            commaise(s.house.building.project.commissions.registration_amount or 0)])
                 row.extend(s.price_final, None, None, None)
                 row.reverse()
                 rows.append(row)

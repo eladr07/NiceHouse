@@ -638,7 +638,8 @@ class EmployeeSalary(models.Model):
     refund_type = models.CharField(ugettext('refund_type'), max_length=20, null=True, blank=True)
     deduction = models.SmallIntegerField(ugettext('deduction'), null=True, blank=True)
     deduction_type = models.CharField(ugettext('deduction_type'), max_length=20, null=True, blank=True)
-    approved = models.BooleanField(ugettext('approved'), editable=False)
+    approved = models.BooleanField(editable=False)
+    is_sent = models.BooleanField(editable=False)
     remarks = models.TextField(ugettext('remarks'),null=True, blank=True)
     
     objects = EmployeeSalaryManager()
@@ -1056,13 +1057,14 @@ class ProjectCommission(models.Model):
    
     add_amount = models.PositiveIntegerField(ugettext('add_amount'), null=True, blank=True)
     add_type = models.CharField(ugettext('add_type'), max_length = 20, null=True, blank=True)
+    registration_amount = models.PositiveIntegerField(ugettext('registration_amount'), null=True, blank=True)
     include_tax = models.NullBooleanField(ugettext('commission_include_tax'), blank=True)
     include_lawyer = models.NullBooleanField(ugettext('commission_include_lawyer'), blank=True,
-                                         choices = (
-                                                    ('','לא משנה'),
-                                                    (0, 'לא'),
-                                                    (1, 'כן')
-                                                    ))
+                                             choices = (
+                                                        ('','לא משנה'),
+                                                        (0, 'לא'),
+                                                        (1, 'כן')
+                                                        ))
     max = models.FloatField(ugettext('max_commission'), null=True, blank=True)
     agreement = models.FileField(ugettext('agreement'), upload_to='files', null=True, blank=True)
     remarks = models.TextField(ugettext('commission_remarks'), null=True, blank=True)
@@ -1474,6 +1476,12 @@ class Sale(models.Model):
     sale_date = models.DateField(ugettext('sale_date'))
     price = models.IntegerField(ugettext('sale_price'))
     company_price = models.IntegerField(ugettext('company_price'), null=True, blank=True)
+    include_registration = models.NullBooleanField(ugettext('include_registration'), blank=True,
+                                                   choices = (
+                                                              ('','לא משנה'),
+                                                              (0, 'לא'),
+                                                              (1, 'כן')
+                                                              ))
     price_include_lawyer = models.BooleanField(ugettext('price_include_lawyer'), choices = Boolean)
     price_no_lawyer = models.IntegerField(ugettext('sale_price_no_lawyer'))
     clients = models.TextField(ugettext('clients'))
