@@ -1626,7 +1626,7 @@ def track_changes(sender, **kwargs):
     for field in model._meta.fields:
         if getattr(old_obj, field.name) == getattr(instance, field.name):
             continue
-        cl = ChangeLog(object_type = model.__class__.name,
+        cl = ChangeLog(object_type = model.__name__,
                        object_id = id,
                        attribute = field.name,
                        verbose_name = fiels.verbose_name,
