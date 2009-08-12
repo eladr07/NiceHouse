@@ -1594,14 +1594,22 @@ class ExpenseType(models.Model):
     class Meta:
         db_table = 'ExpenseType'
 
+class ChangeLogManager(models.Manager):
+    def object_changelog(obj):
+        return self.filter(object_type = obj.__class__.name,
+                           object_id = obj.id)
+
 class ChangeLog(models.Model):
-    date = models.DateTimeField(auto_add_now=True)
+    date = models.DateTimeField(auto_now_add=True)
     object_type = models.CharField(max_length = 30)
     object_id = models.IntegerField()
     attribute = models.CharField(max_length = 30)
+    verbose_name = models.CharField(max_length = 30)
     old_value = models.CharField(max_length = 30)
     new_value = models.CharField(max_length = 30)
-    text = models.CharField(max_length = 100)
+    
+    objects = ChangeLogManager()
+    
     class Meta:
         db_table = 'ChangeLog'
         ordering = ['date']
@@ -1621,6 +1629,7 @@ def track_changes(sender, **kwargs):
         cl = ChangeLog(object_type = model.__class__.name,
                        object_id = id,
                        attribute = field.name,
+                       verbose_name = fiels.verbose_name,
                        old_value = getattr(old_obj, field.name),
                        new_value = getattr(instance, field.name))
         cl.save()
