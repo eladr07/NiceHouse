@@ -1193,7 +1193,7 @@ def employee_loanpay(request, employee_id):
             form.instance.employee = e
             form.save()
     else:
-        form = LoanPayForm()
+        form = LoanPayForm(initial={'employee':e.id})
     return render_to_response('Management/object_edit.html',
                               {'form' : form}, context_instance=RequestContext(request))
     
@@ -1205,7 +1205,7 @@ def nhemployee_addloan(request, employee_id):
         if form.is_valid():
             form.save() 
     else:
-        form = LoanForm(initial={'nhemployee':employee.id})
+        form = LoanForm(initial={'employee':employee.id})
     
     return render_to_response('Management/object_edit.html',
                               {'form' : form}, context_instance=RequestContext(request))
@@ -1219,7 +1219,7 @@ def nhemployee_loanpay(request, employee_id):
             form.instance.nhemployee = e
             form.save()
     else:
-        form = LoanPayForm()
+        form = LoanPayForm(initial={'employee':e.id})
     return render_to_response('Management/object_edit.html',
                               {'form' : form}, context_instance=RequestContext(request))
 
