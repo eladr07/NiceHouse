@@ -1573,6 +1573,8 @@ def sale_add(request, demand_id=None):
                 next = '/salepre/%s' % sp.id 
             demand.calc_sales_commission()
             for employee in project.employees.all():
+                if not employee.work_end:
+                    continue
                 es = employee.salaries.get_or_create(year = demand.year, month = demand.month)
                 es[0].calculate()
                 es[0].save()
