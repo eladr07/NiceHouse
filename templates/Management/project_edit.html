@@ -185,10 +185,12 @@
 					דירות ראשונות.<br>
 					כל דירה נוספת, תוספת של
 					{{project.commissions.c_var_precentage_fixed.step}}%.<br>
-					{{project.commissions.c_var_precentage_fixed.last_precentage}}%
-					עבור
-					{{project.commissions.c_var_precentage_fixed.last_count}}
-					דירות אחרונות.
+					{% if project.commissions.c_var_precentage_fixed.last_precentage %}
+						{{project.commissions.c_var_precentage_fixed.last_precentage}}%
+						עבור
+						{{project.commissions.c_var_precentage_fixed.last_count}}
+						דירות אחרונות.
+					{% endif %}
 					<a id="edit_cvpf" href="cvpf" class="fancybox"><img src="/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
 					<a href="cvpf/del"><img src="/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
 				</div>
@@ -214,9 +216,9 @@
 			{% endif %}
 			{% if project.commissions.b_discount_save_precentage %}	
 				<div>
-					{{project.commissions.b_discount_save.precentage_bonus}}%
-					עבור כל 1% עד מקס' של
-					{{project.commissions.b_discount_save.max_for_bonus}}%
+					{{project.commissions.b_discount_save_precentage.precentage_bonus}}%
+					עבור כל 1%  חסכון בהנחה עד מקס' של
+					{{project.commissions.b_discount_save_precentage.max_for_bonus}}%
 					<a id="edit_bdsp" href="bdsp" class="fancybox"><img src="/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
 					<a href="bdsp/del"><img src="/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
 				</div>
