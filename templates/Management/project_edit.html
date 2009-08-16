@@ -217,8 +217,11 @@
 			{% if project.commissions.b_discount_save_precentage %}	
 				<div>
 					{{project.commissions.b_discount_save_precentage.precentage_bonus}}%
-					עבור כל 1%  חסכון בהנחה עד מקס' של
-					{{project.commissions.b_discount_save_precentage.max_for_bonus}}%
+					עבור כל 1%  חסכון בהנחה 
+					{% if project.commissions.b_discount_save_precentage.max_for_bonus %}
+						עד מקס' של
+						{{project.commissions.b_discount_save_precentage.max_for_bonus}}%
+					{% endif %}
 					<a id="edit_bdsp" href="bdsp" class="fancybox"><img src="/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
 					<a href="bdsp/del"><img src="/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
 				</div>
