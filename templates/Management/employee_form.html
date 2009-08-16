@@ -93,13 +93,13 @@
 				<legend>עמלות למנהל מכירות בגין פרוייקט {{c.project}}</legend>
 				{% if c.c_var %}
 					<div>
-						<table class="formTable">
+						<table class="formTable" style="text-align:center;">
 							<th>דירה</th>
 							<th>סכום</th>
 							{% for a in c.c_var.amounts.all %}
 								<tr>
 									<td>{{a.index}}</td>
-									<td>{{a.amount}}</td>
+									<td>{{a.amount}} ש"ח</td>
 								</tr>
 							{% endfor %}
 							<tr>
@@ -113,35 +113,83 @@
 				{% endif %}
 				{% if c.c_var_precentage %} 
 					<div>
-						עמלה משתנה (באחוזים)			
+						<table class="formTable" style="text-align:center;">
+							<th>דירה</th>
+							<th>סכום</th>
+							{% for p in c.c_var_precentage.precentages.all %}
+								<tr>
+									<td>{{p.index}}</td>
+									<td>{{p.precentage}} ש"ח</td>
+								</tr>
+							{% endfor %}
+							<tr>
+								<td></td>
+								<td>
+									{% if c.c_var_precentage.is_retro %}
+										רטרואקטיבי מדירה {{c.c_var_precentage.start_retro}}
+									{% else %}
+										לא רטרואקטיבי
+									{% endif %}
+								</td>
+							</tr>
+						</table>			
 						<a id="edit_cvp" href="cvp/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
 						<a href="cvp/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
 					</div>
 				{% endif %}
 				{% if c.c_by_price %}	
 					<div>
-						עמלה לפי מחיר דירה		
+						<table class="formTable" style="text-align:center;">
+							<th>עד מחיר</th>
+							<th>סכום</th>
+							{% for pa in c.c_by_price.price_amounts.all %}
+								<tr>
+									<td>{{pa.price|commaise}} ש"ח</td>
+									<td>{{pa.amount}} ש"ח</td>
+								</tr>
+							{% endfor %}
+						</table>		
 						<a id="edit_cbp" href="cbp/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
 						<a href="cbp/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
 					</div>
 				{% endif %}
 				{% if c.b_sale_rate %}
 					<div>
-						בונוס קצב מכירות			
+						<table class="formTable" style="text-align:center;">
+							<th>מס' דירות</th>
+							<th>סכום</th>
+							{% for b in c.b_sale_rate.bonuses.all %}
+								<tr>
+									<td>{{b.house_count}}</td>
+									<td>{{b.amount}} ש"ח</td>
+								</tr>
+							{% endfor %}
+						</table>			
 						<a id="edit_bsr" href="bsr/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
 						<a href="bsr/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
 					</div>
 				{% endif %}
 				{% if c.b_house_type %}		
 					<div>
-						בונוס סוג דירה	
+						<table class="formTable" style="text-align:center;">
+							<th>סוג דירה</th>
+							<th>סכום</th>
+							{% for b in c.b_house_type.bonuses.all %}
+								<tr>
+									<td>{{b.type}}</td>
+									<td>{{b.amount}} ש"ח</td>
+								</tr>
+							{% endfor %}
+						</table>		
 						<a id="edit_bht" href="bht/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
 						<a href="bht/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
 					</div>
 				{% endif %}
 				{% if c.b_discount_save %}	
 					<div>
-						בונוס חיסכון בהנחה (בשקלים)
+						{{c.b_discount_save.precentage_bonus}}
+						עבור כל 1% עד מקס' של
+						{{c.b_discount_save.max_for_bonus}}%
 						<a id="edit_bds" href="bds/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
 						<a href="bds/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
 					</div>
