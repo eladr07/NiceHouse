@@ -1,5 +1,5 @@
 ﻿{% extends "./base.html" %}
-
+{% load management_extras %}
 {% block header %}
 {{ block.super }}
 <script>
@@ -153,28 +153,70 @@
 			<legend>עמלות</legend>
 			{% if project.commissions.c_var_precentage %}	
 				<div>		
-					עמלה משתנה (באחוזים)
+					<table class="formTable" style="text-align:center;">
+						<th>דירה</th>
+						<th>סכום</th>
+						{% for p in project.commissions.c_var_precentage.precentages.all %}
+							<tr>
+								<td>{{p.index}}</td>
+								<td>{{p.precentage}} ש"ח</td>
+							</tr>
+						{% endfor %}
+						<tr>
+							<td></td>
+							<td>
+								{% if project.commissions.c_var_precentage.is_retro %}
+									רטרואקטיבי מדירה {{c.c_var_precentage.start_retro}}
+								{% else %}
+									לא רטרואקטיבי
+								{% endif %}
+							</td>
+						</tr>
+					</table>
 					<a id="edit_cvp" href="cvp" class="fancybox"><img src="/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
 					<a href="cvp/del"><img src="/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
 				</div>
 			{% endif %}
 			{% if project.commissions.c_var_precentage_fixed %}		
 				<div>
-					עמלה משתנה בקצב קבוע (באחוזים)
+					{{project.commissions.c_var_precentage_fixed.first_precentage}}%
+					עבור
+					{{project.commissions.c_var_precentage_fixed.first_count}}
+					דירות ראשונות.<br>
+					כל דירה נוספת, תוספת של
+					{{project.commissions.c_var_precentage_fixed.step}}%.<br>
+					{{project.commissions.c_var_precentage_fixed.last_precentage}}%
+					עבור
+					{{project.commissions.c_var_precentage_fixed.last_count}}
+					דירות אחרונות.
 					<a id="edit_cvpf" href="cvpf" class="fancybox"><img src="/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
 					<a href="cvpf/del"><img src="/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
 				</div>
 			{% endif %}
 			{% if project.commissions.c_zilber %}		
 				<div>
-					עמלת זילברמינץ
+					עמלת בסיס 
+					{{project.commissions.c_zilber.base}}.<br>
+					בונוס חסכון בהנחה 
+					{{project.commissions.c_zilber.b_discount}}%
+					עבור כל 1% שנחסך.<br>
+					בונוס קצב מכירות 
+					{{project.commissions.c_zilber.b_sale_rate}} 
+					לכל דירה עד מקס' של 
+					{{project.commissions.c_zilber.b_sale_rate_max}}.
+					מדד בסיס 
+					{{project.commissions.c_zilber.base_madad}},
+					בתאריך 
+					{{project.commissions.c_zilber.third_start}}.
 					<a id="edit_cz" href="cz" class="fancybox"><img src="/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
 					<a href="cz/del"><img src="/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
 				</div>
 			{% endif %}
 			{% if project.commissions.b_discount_save_precentage %}	
 				<div>
-					בונוס חיסכון בהנחה (באחוזים)	
+					{{project.commissions.b_discount_save.precentage_bonus}}%
+					עבור כל 1% עד מקס' של
+					{{project.commissions.b_discount_save.max_for_bonus}}%
 					<a id="edit_bdsp" href="bdsp" class="fancybox"><img src="/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
 					<a href="bdsp/del"><img src="/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
 				</div>
