@@ -93,7 +93,20 @@
 				<legend>עמלות למנהל מכירות בגין פרוייקט {{c.project}}</legend>
 				{% if c.c_var %}
 					<div>
-						עמלה משתנה (בשקלים)		
+						<table class="formTable">
+							<th>דירה</th>
+							<th>סכום</th>
+							{% for a in c.c_var.amounts.all %}
+								<tr>
+									<td>{{a.index}}</td>
+									<td>{{a.amount}}</td>
+								</tr>
+							{% endfor %}
+							<tr>
+								<td></td>
+								<td>{{c.c_var.is_retro|yesno:"רטרואקטיבי,לא רטרואקטיבי"}}</td>
+							</tr>
+						</table>
 						<a id="edit_cv" href="cv/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
 						<a href="cv/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
 					</div>

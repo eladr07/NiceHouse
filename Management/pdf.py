@@ -197,6 +197,8 @@ class MonthDemandWriter:
             return 3
         return 4
     def __init__(self, demand, signup_adds = False):
+        if sales.count() == 0:
+            raise AttributeError('demand','has no sales')
         self.demand = demand
         self.signup_adds = signup_adds
     def toPara(self):
@@ -285,8 +287,6 @@ class MonthDemandWriter:
         return [t]
     def saleFlows(self):
         sales = self.demand.get_sales()
-        if sales.count() == 0:
-            raise AttributeError()
         headers = [log2vis(u'מס"ד')]
         colWidths = [35]
         contract_num, discount, final, zilber = (False, False, False, False)
@@ -334,7 +334,11 @@ class MonthDemandWriter:
             row.extend([clientsPara(s.clients), '%s/%s' % (s.house.building.num, s.house.num), s.sale_date.strftime('%d/%m/%y'), commaise(s.price)])
             if zilber:
                 lawyer_pay = s.price_include_lawyer and (s.price - s.price_no_lawyer) or s.price * 0.015
-                row.extend([None,None,commaise(lawyer_pay), commaise(s.price_final), commaise(2000)])
+                row.extend([None,None,commaise(lawyer_pay), commaise(s.price_final)])
+                if s.include_registration == False:
+                    row.append(s.house.building.project.commissions.registration_amount)
+                else:
+                    row.append(None)
             if discount:
                 row.extend([s.discount, s.allowed_discount])
             row.extend([s.pc_base, commaise(s.pc_base_worth)])

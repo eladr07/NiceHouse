@@ -263,10 +263,10 @@ def demand_function(request,id , function):
     return HttpResponse('ok')
 
 @permission_required('Management.list_demand')
-def demands_calc(request, year, month):
-    for d in Demand.objects.filter(year = year, month = month):
-        d.calc_sales_commission()
-    return HttpResponseRedirect('/demandsold/%s/%s' % (year,month))
+def demand_calc(request, id):
+    d = Demand.objects.get(pk=id)
+    d.calc_sales_commission()
+    return HttpResponseRedirect('/demandsold/%s/%s' % (d.year,d.month))
 
 @permission_required('Management.list_demand')
 def demand_old_list(request, year=demand_month().year, month=demand_month().month):
@@ -1622,11 +1622,16 @@ def write_demand_pdf(demand, filename):
 
 @permission_required('Management.report_project_month')
 def report_project_month(request, project_id, year, month):
+    demand = Demand.objects.get(project__id = project_id, year = year, month = month)
+    if demand.get_sales().count() == 0:
+        return render_to_response('Management/error.html', 
+                                  {'error':u'לדרישה שנבחרה אין מכירות'},
+                                  context_instance=RequestContext(request))
     filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
-    demand = Demand.objects.get(project__id = project_id, year = year, month = month)
+    
     write_demand_pdf(demand, filename)
     p = open(filename,'r')
     response.write(p.read())

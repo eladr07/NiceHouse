@@ -18,6 +18,7 @@
 			//sync links
 			if (selectedID > 0)
 				$("#demandEdit").attr("href", "demands/" + selectedID);
+				$("#demandCalc").attr("href", "demands/" + selectedID + "/calc");
 			});
 		$(".fancybox").fancybox();
 		$("#demandSend").click(function(event) {
@@ -72,7 +73,7 @@
 </div>
 <div class="someIcon"style="width:130px;">
 	<img src="/site_media/images/advanced-48.png" width="20" height="20"  alt="שליחה" /> 
-	<a id="demandsCalc" href="/demands/{{month.year}}/{{month.month}}/calc">חישוב עמלות מחדש</a>
+	<a id="demandCalc">חישוב עמלות מחדש</a>
 </div>
 <div class="someIcon" style="width:100px;">
 	<img src="/site_media/images/print-48.png" width="20" height="20"  alt="הדפסה" /> 

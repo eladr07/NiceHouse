@@ -280,7 +280,7 @@ urlpatterns = patterns('',
     
     (r'^demands/$', 'Management.views.demand_list'),
     (r'^demands/(?P<year>\d+)/(?P<month>\d+)$', 'Management.views.demand_list'),
-    (r'^demands/(?P<year>\d+)/(?P<month>\d+)/calc$', 'Management.views.demands_calc'),
+    (r'^demands/(?P<id>\d+)/calc$', 'Management.views.demand_calc'),
     (r'^demandsold$', 'Management.views.demand_old_list'),
     (r'^demandsold/(?P<year>\d+)/(?P<month>\d+)$', 'Management.views.demand_old_list'),
     (r'^demands/closeall$', 'Management.views.demand_closeall'),
