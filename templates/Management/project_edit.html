@@ -196,18 +196,18 @@
 			{% if project.commissions.c_zilber %}		
 				<div>
 					עמלת בסיס 
-					{{project.commissions.c_zilber.base}}.<br>
+					{{project.commissions.c_zilber.base}}%.<br>
 					בונוס חסכון בהנחה 
 					{{project.commissions.c_zilber.b_discount}}%
 					עבור כל 1% שנחסך.<br>
 					בונוס קצב מכירות 
-					{{project.commissions.c_zilber.b_sale_rate}} 
+					{{project.commissions.c_zilber.b_sale_rate}}% 
 					לכל דירה עד מקס' של 
-					{{project.commissions.c_zilber.b_sale_rate_max}}.
+					{{project.commissions.c_zilber.b_sale_rate_max}}%.<br>
 					מדד בסיס 
 					{{project.commissions.c_zilber.base_madad}},
 					בתאריך 
-					{{project.commissions.c_zilber.third_start}}.
+					{{project.commissions.c_zilber.third_start|date:"j/M/Y"}}.
 					<a id="edit_cz" href="cz" class="fancybox"><img src="/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
 					<a href="cz/del"><img src="/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
 				</div>

@@ -17,8 +17,8 @@
 			tr.attr("class","selectedRow");
 			//sync links
 			if (selectedID > 0)
-				$("#demandEdit").attr("href", "demands/" + selectedID);
-				$("#demandCalc").attr("href", "demands/" + selectedID + "/calc");
+				$("#demandEdit").attr("href", "/demands/" + selectedID);
+				$("#demandCalc").attr("href", "/demands/" + selectedID + "/calc");
 			});
 		$(".fancybox").fancybox();
 		$("#demandSend").click(function(event) {
