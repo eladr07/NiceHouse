@@ -613,7 +613,8 @@ class EmployeeSalaryManager(models.Manager):
         return self.filter(year = n.year, month = n.month)
 
 class SaleCommissionDetail(models.Model):
-    employee_salary = models.ForeignKey('EmployeeSalary', related_name='commission_details')
+    employee_salary = models.ForeignKey('EmployeeSalary', related_name='commission_details',
+                                        null=True)
     commission = models.CharField(max_length=30)
     value = models.FloatField()
     sale = models.ForeignKey('Sale', null=True, related_name='commission_details')
@@ -963,13 +964,13 @@ class CZilber(models.Model):
                     current_madad = self.base_madad
                 doh0prices = s.house.versions.filter(type__id = PricelistTypeDoh0)
                 if doh0prices.count() == 0:
-                    s.zdb = 0
-                    s.save()
+                    s.commission_details.create(commission='c_zilber_discount', value=0)
                     continue
                 memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * doh0prices.latest().price
-                s.zdb = (s.price - memudad) * self.b_discount
-            s.pc_base = base
-            s.c_final = base
+                s.commission_details.create(commission='c_zilber_discount', 
+                                            value=(s.price - memudad) * self.b_discount)
+            s.commission_details.create(commission='c_zilber_base', value=base)
+            s.commission_details.create(commission='final', value=base)
             s.price_final = s.project_price()
             s.save()
         prev_adds = 0
@@ -1081,25 +1082,23 @@ class ProjectCommission(models.Model):
                 continue
             precentages = getattr(self,c).calc(sales)
             for s in precentages:
-                dic[s] = dic.has_key(s) and dic[s] + precentages[s] or precentages[s]
-                if c == 'b_discount_save_precentage':
-                    attr = 'pb_dsp'
-                elif c == 'c_var_precentage' or c == 'c_var_precentage_fixed':
-                    attr = 'pc_base'
+                if c in ['c_var_precentage', 'c_var_precentage_fixed']:
                     if self.max and precentages[s] > self.max:
                         precentages[s] = self.max#set base commission to max commission
+                dic[s] = dic.has_key(s) and dic[s] + precentages[s] or precentages[s]
                 if not details.has_key(s):
                     details[s]={}
-                details[s][attr] = precentages[s]
+                details[s][c] = precentages[s]
         if self.max:
             for s in dic:
                 if dic[s] > self.max:
                     dic[s] = self.max
         for s in details:
             for a, v in details[s].items():
+                s.commission_details.create(commission=c, value=v)
                 setattr(s, a, v)#updates commission values to sale instance
+            s.commission_details.create(commission='final', value=dic[s])
             s.price_final = s.project_price()
-            s.c_final = dic[s]
             s.save()
         return dic.keys()
 
@@ -1483,10 +1482,6 @@ class Sale(models.Model):
     price_no_lawyer = models.IntegerField(ugettext('sale_price_no_lawyer'))
     clients = models.TextField(ugettext('clients'))
     clients_phone = models.CharField(ugettext('phone'), max_length = 10)
-    pc_base = models.FloatField(editable=False, null=True)
-    pb_dsp = models.FloatField(editable=False, null=True)
-    zdb = models.IntegerField(editable=False, null=True)#zilber discount bonus
-    c_final = models.FloatField(ugettext('c_final'), null=True)
     price_final = models.IntegerField(editable=False, null=True)
     employee_pay = models.DateField(ugettext('employee_paid'), editable=False)
     contractor_pay = models.DateField(ugettext('contractor_paid'), editable=False)
@@ -1495,6 +1490,33 @@ class Sale(models.Model):
     include_tax = models.BooleanField(ugettext('include_tax'), choices=Boolean, default=1)
     discount = models.FloatField(ugettext('given_discount'), null=True, blank=True)
     allowed_discount = models.FloatField(ugettext('allowed_discount'), null=True, blank=True)
+    @property
+    def project_commission_details(self):
+        return self.commission_details.filter(employee=None)
+    @property
+    def pc_base(self):
+        q2 = self.project_commission_details.filter(commission='c_var_precentage')
+        q3 = self.project_commission_details.filter(commission='c_var_precentage_fixed')
+        q4 = self.project_commission_details.filter(commission='c_zilber_base')
+        if q2.count() == 1:
+            return q2[0].value
+        if q3.count() == 1:
+            return q3[0].value
+        if q4.count() == 1:
+            return q4[0].value
+        return None
+    @property
+    def zdb(self):
+        q = self.project_commission_details.filter(commission='c_zilber_discount')
+        return q.count() == 1 and q[0].value or None
+    @property
+    def pb_dsp(self):
+        q = self.project_commission_details.filter(commission='b_discount_save_precentage')
+        return q.count() == 1 and q[0].value or None
+    @property
+    def c_final(self):
+        q = self.project_commission_details.filter(commission='final')
+        return q.count() == 1 and q[0].value or None
     @property
     def pc_base_worth(self):
         return self.pc_base * self.price_final / 100
@@ -1613,7 +1635,7 @@ class ChangeLog(models.Model):
 tracked_models = [BDiscountSave, BDiscountSavePrecentage, BHouseType, BSaleRate,
                   CAmount, CByPrice, CPrecentage, CPriceAmount, CVar,
                   CVarPrecentage, CVarPrecentageFixed, CZilber, EmploymentTerms,
-                  ProjectCommission]
+                  ProjectCommission, SaleCommissionDetail]
 
 def track_changes(sender, **kwargs):
     instance = kwargs['instance']
