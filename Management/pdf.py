@@ -197,7 +197,7 @@ class MonthDemandWriter:
             return 3
         return 4
     def __init__(self, demand, signup_adds = False):
-        if sales.count() == 0:
+        if demand.sales.count() == 0:
             raise AttributeError('demand','has no sales')
         self.demand = demand
         self.signup_adds = signup_adds
