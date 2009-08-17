@@ -1492,7 +1492,7 @@ class Sale(models.Model):
     allowed_discount = models.FloatField(ugettext('allowed_discount'), null=True, blank=True)
     @property
     def project_commission_details(self):
-        return self.commission_details.filter(employee=None)
+        return self.commission_details.filter(employee_salary=None)
     @property
     def pc_base(self):
         q2 = self.project_commission_details.filter(commission='c_var_precentage')
