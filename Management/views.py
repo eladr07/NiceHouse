@@ -1570,7 +1570,7 @@ def sale_add(request, demand_id=None):
             if demand.statuses.count() == 0:
                 demand.feed()
             if demand.statuses.latest().type.id == DemandSent:
-                y,m = (demand.year, demand,month)
+                y,m = (demand.year, demand.month)
                 sp = SalePre(sale = form.instance, date=date.today(),
                              employee_pay = date(m+1==13 and y+1 or y,m+1==13 and 1 or m, 1))
                 sp.save()

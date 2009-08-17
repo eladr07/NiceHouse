@@ -1512,7 +1512,7 @@ class Sale(models.Model):
             price = self.price_include_lawyer and self.price or self.price * LAWYER_TAX
         elif c.include_lawyer == False:
             price = self.price_no_lawyer
-        TAX = Tax.objects.filter(date__lte=date(self.demand.year, self.demand.month,1)).latest().value / 100 + 1
+        TAX = Tax.objects.filter(date__lte=date(self.contractor_pay.year, self.contractor_pay.month,1)).latest().value / 100 + 1
         if c.include_tax:
             price = self.include_tax and price or price * TAX
         else:
@@ -1524,7 +1524,7 @@ class Sale(models.Model):
             price = self.price_include_lawyer and self.price or self.price * LAWYER_TAX
         else:
             price = self.price_no_lawyer
-        TAX = Tax.objects.filter(date__lte=date(self.demand.year, self.demand.month,1)).latest().value / 100 + 1        
+        TAX = Tax.objects.filter(date__lte=date(self.employee_pay.year, self.employee_pay.month,1)).latest().value / 100 + 1        
         if et.include_tax:
             price = self.include_tax and price or price * TAX
         else:
