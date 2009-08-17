@@ -967,10 +967,15 @@ class CZilber(models.Model):
                     s.commission_details.create(commission='c_zilber_discount', value=0)
                     continue
                 memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * doh0prices.latest().price
-                s.commission_details.create(commission='c_zilber_discount', 
-                                            value=(s.price - memudad) * self.b_discount)
-            s.commission_details.create(commission='c_zilber_base', value=base)
-            s.commission_details.create(commission='final', value=base)
+                scd = s.commission_details.get_or_create(commission='c_zilber_discount')[0]
+                scd.value = (s.price - memudad) * self.b_discount
+                scd.save()
+            scd = s.commission_details.get_or_create(commission='c_zilber_base')[0]
+            scd.value = base
+            scd.save()
+            scd = s.commission_details.get_or_create(commission='final')[0]
+            scd.value = base
+            scd.save()
             s.price_final = s.project_price()
             s.save()
         prev_adds = 0
@@ -1094,10 +1099,13 @@ class ProjectCommission(models.Model):
                 if dic[s] > self.max:
                     dic[s] = self.max
         for s in details:
-            for a, v in details[s].items():
-                s.commission_details.create(commission=c, value=v)
-                setattr(s, a, v)#updates commission values to sale instance
-            s.commission_details.create(commission='final', value=dic[s])
+            for c, v in details[s].items():
+                scd = s.commission_details.get_or_create(employee_salary=None, commission=c)[0]
+                scd.value = v
+                scd.save()
+            scd = s.commission_details.get_or_create(employee_salary=None, commission='final')[0]
+            scd.value = dic[s]
+            scd.save()
             s.price_final = s.project_price()
             s.save()
         return dic.keys()
