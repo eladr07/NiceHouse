@@ -279,7 +279,11 @@ def demand_old_list(request, year=demand_month().year, month=demand_month().mont
         total_amount += d.get_total_amount()
     unhandled_projects = []
     for p in Project.objects.active():
-        d = ds.get(project=p)
+        try:
+            d = ds.get(project=p)
+        except Demand.DoesNotExist:
+            unhandled_projects.append(p)
+            continue
         if d.statuses.count()==0 or d.statuses.latest().type.id != DemandSent:
             unhandled_projects.append(p)
         
