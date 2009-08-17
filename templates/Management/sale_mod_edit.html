@@ -11,6 +11,10 @@
 			<table class="formTable">
 			{% with form.instance.sale as sale %}
 				<tr>
+					<th>חודש דרישה מקורי</th>
+					<td>{{sale.demand.month}}/{{sale.demand.year}}</td>
+				</tr>
+				<tr>
 					<th>שמות הרוכשים</th>
 					<td>{{sale.clients}}</td>
 				</tr>
