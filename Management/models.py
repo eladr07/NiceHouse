@@ -1101,7 +1101,7 @@ class ProjectCommission(models.Model):
             s.price_final = s.project_price()
             s.c_final = dic[s]
             s.save()
-        return [s for s in dic]
+        return dic.keys()
 
     class Meta:
         db_table = 'ProjectCommission'
