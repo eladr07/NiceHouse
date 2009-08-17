@@ -616,7 +616,7 @@ class SaleCommissionDetail(models.Model):
     employee_salary = models.ForeignKey('EmployeeSalary', related_name='commission_details',
                                         null=True)
     commission = models.CharField(max_length=30)
-    value = models.FloatField()
+    value = models.FloatField(null=True)
     sale = models.ForeignKey('Sale', null=True, related_name='commission_details')
     class Meta:
         db_table = 'SaleCommissionDetail'
