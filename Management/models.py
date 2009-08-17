@@ -1635,7 +1635,7 @@ class ChangeLog(models.Model):
 tracked_models = [BDiscountSave, BDiscountSavePrecentage, BHouseType, BSaleRate,
                   CAmount, CByPrice, CPrecentage, CPriceAmount, CVar,
                   CVarPrecentage, CVarPrecentageFixed, CZilber, EmploymentTerms,
-                  ProjectCommission, SaleCommissionDetail]
+                  ProjectCommission]
 
 def track_changes(sender, **kwargs):
     instance = kwargs['instance']
