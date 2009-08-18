@@ -315,6 +315,7 @@ class MonthDemandWriter:
         if self.signup_adds:
             headers.extend([log2vis(u'ששולמה\nעמלה\n%'),log2vis(u'חדשה\nעמלה\n%'),
                             log2vis(u'עמלה\nהפרש\n%'),log2vis(u'עמלה\nהפרש')])
+            colWidths.extend([None,None,None,None])
         else:
             headers.extend([log2vis(u'בסיס\nעמלת\n%'),log2vis(u'בסיס\nעמלת\nשווי')])
         colWidths.extend([None,None])
