@@ -1664,9 +1664,9 @@ tracked_models = [BDiscountSave, BDiscountSavePrecentage, BHouseType, BSaleRate,
 def track_changes(sender, **kwargs):
     instance = kwargs['instance']
     model = instance.__class__
-    if not model in tracked_models:
-        return
     id = instance.id
+    if not model in tracked_models or not id:
+        return
     old_obj = model.objects.get(pk=id)
     for field in model._meta.fields:
         if getattr(old_obj, field.name) == getattr(instance, field.name):
