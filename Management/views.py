@@ -764,7 +764,7 @@ def project_add(request):
 
 @permission_required('Management.change_project')
 def projectcommission_edit(request, project_id):
-    p = Project.objects.get(pk=id)
+    p = Project.objects.get(pk=project_id)
     if request.method == 'POST':
         form = ProjectCommissionForm(request.POST, request.FILES, instance=p.commissions)
         if request.FILES.has_key('agreement'):
