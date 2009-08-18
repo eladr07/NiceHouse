@@ -1079,7 +1079,7 @@ class ProjectCommission(models.Model):
         if self.commission_by_signups and sub == 0:
             calced = []
             for s in sales.all():
-                signup = s.get_signup()
+                signup = s.house.get_signup()
                 m, y = (signup.date.month, signup.date.year)
                 if calced.count((m, y)) > 0:
                     continue
