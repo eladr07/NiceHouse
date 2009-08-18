@@ -762,6 +762,21 @@ def project_add(request):
                               { 'form':form,'ecForm':ecForm, 'contactForm':contactForm },
                               context_instance=RequestContext(request))
 
+@permission_required('Management.change_salecommissiondetail')
+def salecommissiondetail_edit(request, sale_id):
+    sale = Sale.objects.get(pk=sale_id)
+    InlineFormSet = inlineformset_factory(Sale, SaleCommissionDetail, can_delete=False)
+    if request.method == 'POST':
+        formset = InlineFormSet(request.POST, instance=sale)
+        if formset.is_valid():
+            formset.save()
+    else:
+        formset = InlineFormSet(instance=sale)
+        
+    return render_to_response('Management/objectset_edit.html', 
+                              { 'formset':formset },
+                              context_instance=RequestContext(request))
+    
 @permission_required('Management.change_project')
 def projectcommission_edit(request, project_id):
     p = Project.objects.get(pk=project_id)
