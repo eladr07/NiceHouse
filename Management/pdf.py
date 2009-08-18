@@ -473,7 +473,7 @@ class MonthDemandWriter:
             story.extend([PageBreak(), Spacer(0,30)])
             story.extend(self.zilberBonusFlows())
         if self.signup_adds:
-            story.extend([PageBreak(), Spacer(0,30), tableCaption(caption=log2vis(u'להלן תוספות להרשמות מחודשים קודמים')])
+            story.extend([PageBreak(), Spacer(0,30), tableCaption(caption=log2vis(u'להלן תוספות להרשמות מחודשים קודמים'))])
             story.extend(self.signupFlows())
         doc.build(story, self.addFirst, self.addLater)
         return doc.canv
