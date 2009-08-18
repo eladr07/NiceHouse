@@ -353,7 +353,7 @@ class MonthDemandWriter:
                 if self.demand.last_send_date:
                     log = log.filter(date__lte=self.demand.last_send_date)
                 if log.count() == 0:
-                    row.append([None, s.c_final, None, None])
+                    row.extend([None, s.c_final, None, None])
                 else:
                     paid_final_value = float(log.latest().new_value)
                     diff = s.c_final - paid_final_value
