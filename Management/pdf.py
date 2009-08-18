@@ -349,8 +349,9 @@ class MonthDemandWriter:
                 scd_final = s.project_commission_details.filter(commission='final')[0]
                 log = models.ChangeLog.objects.filter(object_type='SaleCommissionDetail',
                                                       object_id=scd_final.id, 
-                                                      attribute='value',
-                                                      date__lte=self.demand.last_send_date)
+                                                      attribute='value')
+                if self.demand.last_send_date:
+                    log = log.filter(date__lte=self.demand.last_send_date)
                 if log.count() == 0:
                     row.append([None, s.c_final, None, None])
                 else:
