@@ -346,7 +346,7 @@ class MonthDemandWriter:
             if discount:
                 row.extend([s.discount, s.allowed_discount])
             if self.signup_adds:
-                scd_final = s.project_commission_details.filter(commissions='final')
+                scd_final = s.project_commission_details.filter(commission='final')
                 log = ChangeLog.objects.filter(object_type='SaleCommissionDetail',
                             object_id=scd_final.id, attribute='value',
                             date__lte=self.demand.last_send_date)
