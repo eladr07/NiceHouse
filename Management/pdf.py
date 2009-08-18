@@ -317,6 +317,7 @@ class MonthDemandWriter:
                     diff = s.c_final - paid_final_value
                     row.extend([paid_final_value, s.c_final, 
                                 diff, commaise(diff * s.price_final / 100)])
+                rows.append(row)
         data = [headers]
         data.extend(rows)
         t = Table(data)
