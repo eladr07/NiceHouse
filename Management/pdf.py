@@ -358,7 +358,7 @@ class MonthDemandWriter:
                     paid_final_value = float(log.latest().new_value)
                     diff = s.c_final - paid_final_value
                     row.append([paid_final_value, s.c_final, 
-                                diff, diff * s.price_final])
+                                diff, diff * s.price_final / 100])
             else:
                 row.extend([s.pc_base, commaise(s.pc_base_worth)])
             if final:
