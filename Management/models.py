@@ -1646,8 +1646,8 @@ class ChangeLog(models.Model):
     object_id = models.IntegerField()
     attribute = models.CharField(max_length = 30)
     verbose_name = models.CharField(max_length = 30)
-    old_value = models.CharField(max_length = 30)
-    new_value = models.CharField(max_length = 30)
+    old_value = models.CharField(max_length = 30, null=True)
+    new_value = models.CharField(max_length = 30, null=True)
     
     objects = ChangeLogManager()
     
