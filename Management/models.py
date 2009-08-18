@@ -1068,13 +1068,24 @@ class ProjectCommission(models.Model):
                                                         (0, 'לא'),
                                                         (1, 'כן')
                                                         ))
+    commission_by_signups = models.BooleanField(ugettext('commission_by_signups'), blank=True)
     max = models.FloatField(ugettext('max_commission'), null=True, blank=True)
     agreement = models.FileField(ugettext('agreement'), upload_to='files', null=True, blank=True)
     remarks = models.TextField(ugettext('commission_remarks'), null=True, blank=True)
-    def calc(self, sales):
+    def calc(self, sales, sub=0):
         '''
-        sales should be a QuerySet. returns sales with commission fields
+        sales should be a QuerySet.
         '''
+        if self.commission_by_signups and sub == 0:
+            calced = []
+            for s in sales.all():
+                signup = s.get_signup()
+                m, y = (signup.date.month, signup.date.year)
+                if calced.count((m, y)) > 0:
+                    continue
+                subSales = sales.filter(house__signups__date__year=y).filter(house__signups__date__month=m)
+                calc(subSales, 1)
+                calced.append((m, y))
         if getattr(self, 'c_zilber') != None:
             demand = sales[0].demand
             month = date(demand.year, demand.month, 1)
@@ -1108,7 +1119,6 @@ class ProjectCommission(models.Model):
             scd.save()
             s.price_final = s.project_price()
             s.save()
-        return dic.keys()
 
     class Meta:
         db_table = 'ProjectCommission'
@@ -1224,9 +1234,11 @@ class Demand(models.Model):
         return s
     @property
     def was_sent(self):
-        if self.statuses.count() == 0:
-            return False
-        return self.statuses.latest().type.id == DemandSent
+        return self.statuses.count() == 0 and self.statuses.latest().type.id == DemandSent
+    @property
+    def last_send_date(self):
+        f = self.statuses.filter(type__id = DemandSent)
+        return f.count() > 0 and f.latest() or None
     @property
     def is_fixed(self):
         return self.sales.exclude(salehousemod=None, salepricemod=None,
@@ -1643,7 +1655,7 @@ class ChangeLog(models.Model):
 tracked_models = [BDiscountSave, BDiscountSavePrecentage, BHouseType, BSaleRate,
                   CAmount, CByPrice, CPrecentage, CPriceAmount, CVar,
                   CVarPrecentage, CVarPrecentageFixed, CZilber, EmploymentTerms,
-                  ProjectCommission]
+                  ProjectCommission, SaleCommissionDetail]
 
 def track_changes(sender, **kwargs):
     instance = kwargs['instance']

@@ -196,11 +196,11 @@ class MonthDemandWriter:
         if count <= 40:
             return 3
         return 4
-    def __init__(self, demand, signup_adds = False):
+    def __init__(self, demand):
         if demand.sales.count() == 0:
             raise AttributeError('demand','has no sales')
         self.demand = demand
-        self.signup_adds = signup_adds
+        self.signup_adds = self.demand.project.commissions.commission_by_signups
     def toPara(self):
         contact = self.demand.project.demand_contact
         s = log2vis(u'בס"ד') + '<br/><br/>'
@@ -312,7 +312,11 @@ class MonthDemandWriter:
             headers.extend([log2vis(u'ניתן\nהנחה\n%'),log2vis(u'מותר\nהנחה\n%')])
             colWidths.extend([None,None])
             discount = True
-        headers.extend([log2vis(u'בסיס\nעמלת\n%'),log2vis(u'בסיס\nעמלת\nשווי')])
+        if self.signup_adds:
+            headers.extend([log2vis(u'ששולמה\nעמלה\n%'),log2vis(u'חדשה\nעמלה\n%'),
+                            log2vis(u'עמלה\nהפרש\n%'),log2vis(u'עמלה\nהפרש')])
+        else:
+            headers.extend([log2vis(u'בסיס\nעמלת\n%'),log2vis(u'בסיס\nעמלת\nשווי')])
         colWidths.extend([None,None])
         if self.demand.project.commissions.b_discount_save_precentage:
             headers.extend([log2vis(u'חסכון\nבונוס\n%'),log2vis(u'חסכון\nבונוס\nשווי'),
@@ -341,7 +345,20 @@ class MonthDemandWriter:
                     row.append(None)
             if discount:
                 row.extend([s.discount, s.allowed_discount])
-            row.extend([s.pc_base, commaise(s.pc_base_worth)])
+            if self.signup_adds:
+                scd_final = s.project_commission_details().filter(commissions='final')
+                log = ChangeLog.objects.filter(object_type='SaleCommissionDetail',
+                            object_id=scd_final.id, attribute='value',
+                            date__lte=self.demand.last_send_date)
+                if log.count() == 0:
+                    row.append([None, s.c_final, None, None])
+                else:
+                    paid_final_value = log.latest().value
+                    diff = s.c_final - paid_final_value
+                    row.append([paid_final_value, s.c_final, 
+                                diff, diff * s.price_final])
+            else:
+                row.extend([s.pc_base, commaise(s.pc_base_worth)])
             if final:
                 row.extend([s.pb_dsp, commaise(s.pb_dsp_worth), s.c_final, commaise(s.c_final_worth)])
             row.reverse()#reportlab prints columns ltr

@@ -18,7 +18,7 @@ urlpatterns = patterns('',
     (r'^$', 'Management.views.index'),
     (r'^locate_house$', 'Management.views.locate_house'),
     # Uncomment the next line to enable the admin:
-    (r'^admin/(.*)', admin.site.root),
+    (r'^admin/', include(admin.site.urls)),
     (r'^accounts/login/$', 'django.contrib.auth.views.login'),
     (r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
     (r'^accounts/password_change/$', 'django.contrib.auth.views.password_change'),
