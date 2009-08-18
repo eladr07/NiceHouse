@@ -1083,7 +1083,10 @@ class ProjectCommission(models.Model):
                 m, y = (signup.date.month, signup.date.year)
                 if calced.count((m, y)) > 0:
                     continue
-                subSales = sales.filter(house__signups__date__year=y).filter(house__signups__date__month=m)
+                subSales = Sale.objects.filter(house__signups__date__year=y
+                                        ).filter(house__signups__date__month=m
+                                        ).filter(house__signups__cancel=None
+                                        ).filter(demand__project__id = s.demand.project.id)
                 self.calc(subSales, 1)
                 calced.append((m, y))
         if getattr(self, 'c_zilber') != None:

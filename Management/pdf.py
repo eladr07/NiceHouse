@@ -259,13 +259,10 @@ class MonthDemandWriter:
             month = date(m == 1 and y - 1 or y, (m - 1) or 12, 1)
             demands.append(Demand.objects.get(project = p, year = month.year, month = month.month))
         demands.reverse()
-        headers = []
-        for name in [u'מס"ד', u'שם הרוכשים', u'ודירה\nבניין', u'חוזה\nתאריך',
-                     u'חוזה\nמחיר', u'מזומן\nהנחת', u'מפרט\nהוצאות',
-                     u'עו"ד\nשכ"ט', u'נוספות\nהוצאות', u'לחישוב\nמחיר', 
-                     u'0 דו"ח\nמחירון', u'חדש\nמדד', u'60%\nממודד\nמחירון']:
-            headers.append(log2vis(name))
-            
+        headers = [log2vis(n) for n in [u'מס"ד', u'שם הרוכשים', u'ודירה\nבניין', u'חוזה\nתאריך',
+                                        u'חוזה\nמחיר', u'מזומן\nהנחת', u'מפרט\nהוצאות',
+                                        u'עו"ד\nשכ"ט', u'נוספות\nהוצאות', u'לחישוב\nמחיר', 
+                                        u'0 דו"ח\nמחירון', u'חדש\nמדד', u'60%\nממודד\nמחירון']]
         headers.reverse()
         rows = []
         for d in demands:
@@ -285,47 +282,81 @@ class MonthDemandWriter:
         t = Table(data)
         t.setStyle(saleTableStyle)
         return [t]
+    def signupFlows(self):
+        headers = [log2vis(n) for n in [u'הרשמה\nחודש', u'שם הרוכשים', u'ודירה\nבניין', 
+                                        u'חוזה\nתאריך',u'חוזה\nמחיר', u'ששולמה\nעמלה', 
+                                        u'חדשה\nעמלה', u'עמלה\nהפרש', u'בש"ח\nהפרש']]
+        headers.reverse()
+        months=[]
+        for s in self.demand.sales.all():
+            signup = s.get_signup()
+            month = (signup.date.month, signup.date.year)
+            if months.count(month) == 0:
+                months.append(month)
+        rows = []
+        for m, y in months:
+            subSales = models.Sale.objects.filter(house__signups__date__year=y
+                        ).filter(house__signups__date__month=m
+                        ).filter(house__signups__cancel=None
+                        ).filter(demand__project__id = s.demand.project.id
+                        ).filter(contractor_pay__year=y, contractor_pay__month=m)
+            for s in subSales.all():
+                row = [s.house.get_signup().date.strftime('%d/%m/%y'),
+                       clientsPara(s.clients), '%s/%s' % (s.house.building.num, s.house.num), 
+                       s.sale_date.strftime('%d/%m/%y'), commaise(s.price)]
+                scd_final = s.project_commission_details.filter(commission='final')[0]
+                log = models.ChangeLog.objects.filter(object_type='SaleCommissionDetail',
+                                                      object_id=scd_final.id, 
+                                                      attribute='value')
+                if self.demand.last_send_date:
+                    log = log.filter(date__lte=self.demand.last_send_date)
+                if log.count() == 0:
+                    row.extend([None, s.c_final, s.c_final, commaise(s.c_final_worth)])
+                else:
+                    paid_final_value = float(log.latest().new_value)
+                    diff = s.c_final - paid_final_value
+                    row.extend([paid_final_value, s.c_final, 
+                                diff, commaise(diff * s.price_final / 100)])
+        data = [headers]
+        data.extend(rows)
+        t = Table(data)
+        t.setStyle(saleTableStyle)
+        return [t]
     def saleFlows(self):
         sales = self.demand.get_sales()
-        headers = [log2vis(u'מס"ד')]
+        names = [u'מס"ד']
         colWidths = [35]
         contract_num, discount, final, zilber = (False, False, False, False)
         for s in sales:
             if s.contract_num:
-                headers.append(log2vis(u"חוזה\nמס'"))
+                names.append(u"חוזה\nמס'")
                 colWidths.append(40)
                 contract_num = True
                 break
         if self.signup_adds:
-            headers.append(log2vis(u'הרשמה\nתאריך'))
+            names.append(u'הרשמה\nתאריך')
             colWidths.append(None)
-        headers.extend([log2vis(u'שם הרוכשים'),log2vis(u'ודירה\nבניין'),
-                        log2vis(u'מכירה\nתאריך'), log2vis(u'חוזה\nמחיר')])
+        names.extend([u'שם הרוכשים',u'ודירה\nבניין',u'מכירה\nתאריך', u'חוזה\nמחיר'])
         colWidths.extend([70, None,None,None])
         if self.demand.project.is_zilber():
-            headers.extend([log2vis(u'מזומן\nהנחת'), log2vis(u'מפרט\nהוצאות'),
-                            log2vis(u'עו"ד\nשכ"ט'), log2vis(u'לחישוב\nמחיר'),
-                            log2vis(u'נוספות\nהוצאות')])
+            names.extend([u'מזומן\nהנחת', u'מפרט\nהוצאות',u'עו"ד\nשכ"ט', 
+                          u'לחישוב\nמחיר',u'נוספות\nהוצאות'])
             colWidths.extend([35,35,None,None,None])
             zilber = True
         if sales.count() > 0 and (sales[0].discount or sales[0].allowed_discount):
-            headers.extend([log2vis(u'ניתן\nהנחה\n%'),log2vis(u'מותר\nהנחה\n%')])
+            names.extend([u'ניתן\nהנחה\n%',u'מותר\nהנחה\n%'])
             colWidths.extend([None,None])
             discount = True
-        if self.signup_adds:
-            headers.extend([log2vis(u'שולמה\nעמלה\n%'),log2vis(u'חדשה\nעמלה\n%'),
-                            log2vis(u'עמלה\nהפרש\n%'),log2vis(u'עמלה\nהפרש')])
-            colWidths.extend([35,35,35,35])
-        else:
-            headers.extend([log2vis(u'בסיס\nעמלת\n%'),log2vis(u'בסיס\nעמלת\nשווי')])
-            colWidths.extend([None,None])
+        names.extend([u'בסיס\nעמלת\n%',u'בסיס\nעמלת\nשווי'])
+        colWidths.extend([None,None])
         if self.demand.project.commissions.b_discount_save_precentage:
-            headers.extend([log2vis(u'חסכון\nבונוס\n%'),log2vis(u'חסכון\nבונוס\nשווי'),
-                            log2vis(u'סופי\nעמלה\n%'),log2vis(u'סופי\nעמלה\nשווי')])
+            names.extend([u'חסכון\nבונוס\n%',u'חסכון\nבונוס\nשווי',
+                            u'סופי\nעמלה\n%',u'סופי\nעמלה\nשווי'])
             colWidths.extend([35,30,None,None])
             final = True
         colWidths.reverse()
-        headers.reverse()#reportlab prints columns ltr
+        names.reverse()
+        headers = [log2vis(name) for name in names]
         i=1
         next_break = 10
         flows = [tableCaption(), Spacer(0,20)]
@@ -346,22 +377,7 @@ class MonthDemandWriter:
                     row.append(None)
             if discount:
                 row.extend([s.discount, s.allowed_discount])
-            if self.signup_adds:
-                scd_final = s.project_commission_details.filter(commission='final')[0]
-                log = models.ChangeLog.objects.filter(object_type='SaleCommissionDetail',
-                                                      object_id=scd_final.id, 
-                                                      attribute='value')
-                if self.demand.last_send_date:
-                    log = log.filter(date__lte=self.demand.last_send_date)
-                if log.count() == 0:
-                    row.extend([None, s.c_final, s.c_final, commaise(s.c_final_worth)])
-                else:
-                    paid_final_value = float(log.latest().new_value)
-                    diff = s.c_final - paid_final_value
-                    row.extend([paid_final_value, s.c_final, 
-                                diff, commaise(diff * s.price_final / 100)])
-            else:
-                row.extend([s.pc_base, commaise(s.pc_base_worth)])
+            row.extend([s.pc_base, commaise(s.pc_base_worth)])
             if final:
                 row.extend([s.pb_dsp, commaise(s.pb_dsp_worth), s.c_final, commaise(s.c_final_worth)])
             row.reverse()#reportlab prints columns ltr
@@ -379,13 +395,10 @@ class MonthDemandWriter:
                         row.extend([None,None,None,None,None])
                     if discount:
                         row.extend([None,None])
-                    if self.signup_adds:
-                        row.extend([None,None,None,None])
+                    if final:
+                        row.extend([None,None,None,None,None,commaise(self.demand.get_sales_commission())])
                     else:
-                        if final:
-                            row.extend([None,None,None,None,None,commaise(self.demand.get_sales_commission())])
-                        else:
-                            row.extend([None,commaise(self.demand.get_sales_commission())])
+                        row.extend([None,commaise(self.demand.get_sales_commission())])
                     row.reverse()
                     rows.append(row)
                 data = [headers]
@@ -452,7 +465,10 @@ class MonthDemandWriter:
         story.extend([Spacer(0, 20), self.remarkPara()]) 
         if self.demand.include_zilber_bonus():
             story.extend([PageBreak(), Spacer(0,30)])
-            story.extend(self.zilberBonusFlows())   
+            story.extend(self.zilberBonusFlows())
+        if self.signup_adds:
+            story.extend([PageBreak(), Spacer(0,30)])
+            story.extend(self.signupFlows())
         doc.build(story, self.addFirst, self.addLater)
         return doc.canv
 
