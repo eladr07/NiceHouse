@@ -289,7 +289,7 @@ class MonthDemandWriter:
         headers.reverse()
         months=[]
         for s in self.demand.sales.all():
-            signup = s.get_signup()
+            signup = s.house.get_signup()
             month = (signup.date.month, signup.date.year)
             if months.count(month) == 0:
                 months.append(month)
