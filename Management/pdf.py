@@ -354,12 +354,12 @@ class MonthDemandWriter:
                 if self.demand.last_send_date:
                     log = log.filter(date__lte=self.demand.last_send_date)
                 if log.count() == 0:
-                    row.extend([None, s.c_final, s.c_final, s.c_final_worth])
+                    row.extend([None, s.c_final, s.c_final, commaise(s.c_final_worth)])
                 else:
                     paid_final_value = float(log.latest().new_value)
                     diff = s.c_final - paid_final_value
                     row.extend([paid_final_value, s.c_final, 
-                                diff, diff * s.price_final / 100])
+                                diff, commaise(diff * s.price_final / 100)])
             else:
                 row.extend([s.pc_base, commaise(s.pc_base_worth)])
             if final:
