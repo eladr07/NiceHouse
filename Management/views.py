@@ -761,6 +761,23 @@ def project_add(request):
     return render_to_response('Management/project_add.html',
                               { 'form':form,'ecForm':ecForm, 'contactForm':contactForm },
                               context_instance=RequestContext(request))
+
+@permission_required('Management.change_project')
+def projectcommission_edit(request, project_id):
+    p = Project.objects.get(pk=id)
+    if request.method == 'POST':
+        form = ProjectCommissionForm(request.POST, request.FILES, instance=p.commissions)
+        if request.FILES.has_key('agreement'):
+            form.instance.agreement = request.FILES['agreement']
+        if form.is_valid():
+            form.save()
+    else:
+        form = ProjectCommissionForm(instance = p.commissions)
+        
+    return render_to_response('Management/object_edit.html', 
+                              { 'form':form },
+                              context_instance=RequestContext(request))  
+    
     
 @permission_required('Management.change_project')
 def project_edit(request, id):
@@ -768,24 +785,18 @@ def project_edit(request, id):
     details = project.details or ProjectDetails()
     if request.method == 'POST':
         form = ProjectForm(request.POST, instance=project)
-        pcForm = ProjectCommissionForm(request.POST, request.FILES, instance=project.commissions, prefix='pc')
-        if request.FILES.has_key('pc-agreement'):
-            pcForm.instance.agreement = request.FILES['pc-agreement']
         detailsForm = ProjectDetailsForm(request.POST, instance=details, prefix='det')
         if form.is_valid():
             form.save()
-        if pcForm.is_valid():
-            pcForm.save()        
         if detailsForm.is_valid():
             project.details = detailsForm.save()
             project.save()
     else:
         form = ProjectForm(instance=project)
         detailsForm = ProjectDetailsForm(instance=details, prefix='det')
-        pcForm = ProjectCommissionForm(instance=project.commissions, prefix='pc')
         
     return render_to_response('Management/project_edit.html', 
-                              { 'form':form, 'pcForm':pcForm, 'detailsForm':detailsForm, 'project':project },
+                              { 'form':form, 'detailsForm':detailsForm, 'project':project },
                               context_instance=RequestContext(request))
   
 @login_required  
