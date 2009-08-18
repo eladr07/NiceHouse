@@ -380,7 +380,7 @@ class MonthDemandWriter:
                     if discount:
                         row.extend([None,None])
                     if self.signup_adds:
-                        row.extend[None,None,None,None]
+                        row.extend([None,None,None,None])
                     else:
                         if final:
                             row.extend([None,None,None,None,None,commaise(self.demand.get_sales_commission())])
