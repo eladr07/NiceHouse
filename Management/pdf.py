@@ -354,7 +354,7 @@ class MonthDemandWriter:
                 if self.demand.last_send_date:
                     log = log.filter(date__lte=self.demand.last_send_date)
                 if log.count() == 0:
-                    row.extend([None, s.c_final, None, None])
+                    row.extend([None, s.c_final, s.c_final, s.c_final_worth])
                 else:
                     paid_final_value = float(log.latest().new_value)
                     diff = s.c_final - paid_final_value
@@ -379,10 +379,13 @@ class MonthDemandWriter:
                         row.extend([None,None,None,None,None])
                     if discount:
                         row.extend([None,None])
-                    if final:
-                        row.extend([None,None,None,None,None,commaise(self.demand.get_sales_commission())])
+                    if self.signup_adds:
+                        row.extend[None,None,None,None]
                     else:
-                        row.extend([None,commaise(self.demand.get_sales_commission())])
+                        if final:
+                            row.extend([None,None,None,None,None,commaise(self.demand.get_sales_commission())])
+                        else:
+                            row.extend([None,commaise(self.demand.get_sales_commission())])
                     row.reverse()
                     rows.append(row)
                 data = [headers]
