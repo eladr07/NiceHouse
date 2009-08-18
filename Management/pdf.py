@@ -288,7 +288,7 @@ class MonthDemandWriter:
     def saleFlows(self):
         sales = self.demand.get_sales()
         headers = [log2vis(u'מס"ד')]
-        colWidths = [35]
+        colWidths = [30]
         contract_num, discount, final, zilber = (False, False, False, False)
         for s in sales:
             if s.contract_num:
@@ -315,7 +315,7 @@ class MonthDemandWriter:
         if self.signup_adds:
             headers.extend([log2vis(u'ששולמה\nעמלה\n%'),log2vis(u'חדשה\nעמלה\n%'),
                             log2vis(u'עמלה\nהפרש\n%'),log2vis(u'עמלה\nהפרש')])
-            colWidths.extend([25,25,25,35])
+            colWidths.extend([35,35,35,35])
         else:
             headers.extend([log2vis(u'בסיס\nעמלת\n%'),log2vis(u'בסיס\nעמלת\nשווי')])
         colWidths.extend([None,None])
