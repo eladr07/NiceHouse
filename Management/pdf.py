@@ -318,7 +318,7 @@ class MonthDemandWriter:
             colWidths.extend([35,35,35,35])
         else:
             headers.extend([log2vis(u'בסיס\nעמלת\n%'),log2vis(u'בסיס\nעמלת\nשווי')])
-        colWidths.extend([None,None])
+            colWidths.extend([None,None])
         if self.demand.project.commissions.b_discount_save_precentage:
             headers.extend([log2vis(u'חסכון\nבונוס\n%'),log2vis(u'חסכון\nבונוס\nשווי'),
                             log2vis(u'סופי\nעמלה\n%'),log2vis(u'סופי\nעמלה\nשווי')])
