@@ -1084,7 +1084,7 @@ class ProjectCommission(models.Model):
                 if calced.count((m, y)) > 0:
                     continue
                 subSales = sales.filter(house__signups__date__year=y).filter(house__signups__date__month=m)
-                calc(subSales, 1)
+                self.calc(subSales, 1)
                 calced.append((m, y))
         if getattr(self, 'c_zilber') != None:
             demand = sales[0].demand
