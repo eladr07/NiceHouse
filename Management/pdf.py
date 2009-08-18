@@ -355,7 +355,7 @@ class MonthDemandWriter:
                 if log.count() == 0:
                     row.append([None, s.c_final, None, None])
                 else:
-                    paid_final_value = log.latest().new_value
+                    paid_final_value = float(log.latest().new_value)
                     diff = s.c_final - paid_final_value
                     row.append([paid_final_value, s.c_final, 
                                 diff, diff * s.price_final])
