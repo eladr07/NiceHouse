@@ -291,6 +291,8 @@ class MonthDemandWriter:
         for s in self.demand.sales.all():
             signup = s.house.get_signup()
             month = (signup.date.month, signup.date.year)
+            if month[0] == s.contractor_pay.month and month[1] == s.contractor_pay.year:
+                continue
             if months.count(month) == 0:
                 months.append(month)
         rows = []
@@ -317,6 +319,7 @@ class MonthDemandWriter:
                     diff = s.c_final - paid_final_value
                     row.extend([paid_final_value, s.c_final, 
                                 diff, commaise(diff * s.price_final / 100)])
+                row.reverse()
                 rows.append(row)
         data = [headers]
         data.extend(rows)
