@@ -189,8 +189,6 @@ class MonthDemandWriter:
     @property
     def pages_count(self):
         count = self.demand.get_sales().count()
-        if self.signup_adds:
-            count += 1
         if count <= 9:
             return 1
         if count <= 25:
@@ -473,7 +471,9 @@ class MonthDemandWriter:
             story.extend([PageBreak(), Spacer(0,30)])
             story.extend(self.zilberBonusFlows())
         if self.signup_adds:
-            story.extend([PageBreak(), Spacer(0,30), tableCaption(caption=log2vis(u'להלן תוספות להרשמות מחודשים קודמים'))])
+            story.extend([PageBreak(), Spacer(0,30), 
+                          tableCaption(caption=log2vis(u'להלן תוספות להרשמות מחודשים קודמים')),
+                          Spacer(0,30)])
             story.extend(self.signupFlows())
         doc.build(story, self.addFirst, self.addLater)
         return doc.canv
