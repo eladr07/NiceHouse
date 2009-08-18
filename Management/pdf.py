@@ -61,8 +61,8 @@ def datePara():
     '''
     s = log2vis(u'תאריך : %s' % date.today().strftime('%d/%m/%Y'))
     return Paragraph('%s' % s, styleDate)
-def tableCaption():
-    return Paragraph(u'<u>%s</u>' % log2vis(u'ולהלן פירוט העסקאות'), 
+def tableCaption(caption=log2vis(u'ולהלן פירוט העסקאות')):
+    return Paragraph(u'<u>%s</u>' % caption, 
                      ParagraphStyle(name='tableCaption', fontName='David-Bold', fontSize=15,
                                     alignment=TA_CENTER))
 def nhLogo():
@@ -189,6 +189,8 @@ class MonthDemandWriter:
     @property
     def pages_count(self):
         count = self.demand.get_sales().count()
+        if self.signup_adds:
+            count += 1
         if count <= 9:
             return 1
         if count <= 25:
@@ -471,7 +473,7 @@ class MonthDemandWriter:
             story.extend([PageBreak(), Spacer(0,30)])
             story.extend(self.zilberBonusFlows())
         if self.signup_adds:
-            story.extend([PageBreak(), Spacer(0,30)])
+            story.extend([PageBreak(), Spacer(0,30), tableCaption(caption=log2vis(u'להלן תוספות להרשמות מחודשים קודמים')])
             story.extend(self.signupFlows())
         doc.build(story, self.addFirst, self.addLater)
         return doc.canv
