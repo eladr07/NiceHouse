@@ -263,12 +263,10 @@ class SaleForm(forms.ModelForm):
                 self.fields['signup_date'].initial = signup.date
     class Meta:
         model = Sale
-        exclude = ('c_final',)
 
 class SaleCommissionForm(forms.ModelForm):
     class Meta:
         model = Sale
-        fields = ('c_final',)
 
 class EmployeeEndForm(forms.ModelForm):
     def __init__(self, *args, **kw):
