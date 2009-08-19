@@ -1089,6 +1089,28 @@ class ProjectCommission(models.Model):
                                         ).filter(demand__project__id = s.demand.project.id)
                 self.calc(subSales, 1)
                 calced.append((m, y))
+            bonus = 0
+            if s.sales.count() > 0:
+                for s in sales.all():
+                    demand = s.actual_demand
+                    break
+                for s in Sale.objects.exclude(house__signups__date__year=demand.year
+                                ).exclude(house__signups__date__month=demand.month
+                                ).filter(house__signups__cancel=None
+                                ).filter(demand__project__id = s.demand.project.id):
+                    finish_date = s.actual_demand.finish_date
+                    if finish_date:
+                        scd_final = s.project_commission_details.filter(commission='final')[0]
+                        log = ChangeLog.objects.filter(object_type='SaleCommissionDetail',
+                                                       object_id=scd_final.id, 
+                                                       attribute='value',
+                                                       date__lte=self.demand.finish_date)
+                    if log.count() > 0:
+                        paid_final_value = float(log.latest().new_value)
+                        bonus += s.c_final - paid_final_value
+                demand.bonus = bonus
+                demand.bonus_type = u'הפרשים על חודשים קודמים'
+                demand.save()
         if getattr(self, 'c_zilber') != None:
             demand = sales[0].demand
             month = date(demand.year, demand.month, 1)
@@ -1513,6 +1535,11 @@ class Sale(models.Model):
     include_tax = models.BooleanField(ugettext('include_tax'), choices=Boolean, default=1)
     discount = models.FloatField(ugettext('given_discount'), null=True, blank=True)
     allowed_discount = models.FloatField(ugettext('allowed_discount'), null=True, blank=True)
+    @property
+    def actual_demand(self):
+        return Demand.objects.get(month=self.contractor_pay.month,
+                                  year=self.contractor_pay.year,
+                                  project=self.demand.project)
     @property
     def project_commission_details(self):
         return self.commission_details.filter(employee_salary=None)
