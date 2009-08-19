@@ -1098,10 +1098,10 @@ class ProjectCommission(models.Model):
                     break
                 for s in Sale.objects.exclude(house__signups__date__year=demand.year
                                 ).exclude(house__signups__date__month=demand.month
-                                ).filter(contractor_pay__year=demand.year
-                                ).filter(contractor_pay__month=demand.month
+                                ).exclude(contractor_pay__year=demand.year
+                                ).exclude(contractor_pay__month=demand.month
                                 ).filter(house__signups__cancel=None
-                                ).filter(demand__project__id = s.demand.project.id):
+                                ).filter(demand__project__id = demand.project.id):
                     finish_date = s.actual_demand.finish_date
                     if not finish_date:
                         continue
