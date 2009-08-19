@@ -1112,6 +1112,7 @@ class ProjectCommission(models.Model):
                                                    attribute='value',
                                                    date__lt=finish_date)
                     if log.count() > 0:
+                        raise AttributeError()
                         paid_final_value = float(log.latest().new_value)
                         bonus += s.c_final - paid_final_value
                 calced.append((m, y))
