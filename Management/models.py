@@ -1093,13 +1093,13 @@ class ProjectCommission(models.Model):
                 for s in sales.all():
                     demand = s.actual_demand
                     break
-                for s in Sale.objects.exclude(house__signups__date__year=demand.year
+                for s in Sale.objects.filter(house__signups__cancel=None
+                                ).filter(demand__project__id = demand.project.id
+                                ).exclude(house__signups__date__year=demand.year
                                 ).exclude(house__signups__date__month=demand.month
                                 ).exclude(contractor_pay__year=demand.year
                                 ).exclude(contractor_pay__month=demand.month
-                                ).filter(house__signups__cancel=None
-                                ).filter(demand__project__id = demand.project.id):
-                    raise AttributeError()
+                                ):
                     if not s.actual_demand.finish_date:
                         continue
                     finish_date = s.actual_demand.finish_date
