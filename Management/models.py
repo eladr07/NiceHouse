@@ -1096,6 +1096,8 @@ class ProjectCommission(models.Model):
                     break
                 for s in Sale.objects.exclude(house__signups__date__year=demand.year
                                 ).exclude(house__signups__date__month=demand.month
+                                ).filter(contractor_pay__year=demand.year
+                                ).filter(contractor_pay__month=demand.month
                                 ).filter(house__signups__cancel=None
                                 ).filter(demand__project__id = s.demand.project.id):
                     finish_date = s.actual_demand.finish_date
@@ -1112,6 +1114,7 @@ class ProjectCommission(models.Model):
                 demand.bonus = bonus
                 demand.bonus_type = u'הפרשים על חודשים קודמים'
                 demand.save()
+                return
         if getattr(self, 'c_zilber') != None:
             demand = sales[0].demand
             month = date(demand.year, demand.month, 1)
