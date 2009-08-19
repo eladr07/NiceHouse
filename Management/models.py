@@ -1077,10 +1077,8 @@ class ProjectCommission(models.Model):
             calced = []
             bonus = 0
             for s in sales.all():
-                demand = s.actual_demand
-                break
-            for s in sales.all():
                 signup = s.house.get_signup()
+                demand = s.actual_demand
                 if not signup: 
                     continue
                 m, y = (signup.date.month, signup.date.year)
@@ -1103,19 +1101,15 @@ class ProjectCommission(models.Model):
                     q = Demand.objects.filter(month=signup.date.month,
                                               year = signup.date.year,
                                               project=s.demand.project)
-                    if q.count() == 0:
-                        continue
-                    finish_date = q[0].finish_date
-                    if not finish_date:
-                        continue
+                    if q.count() == 0: continue
+                    if not q[0].finish_date: continue
                     q = s.project_commission_details.filter(commission='final')
-                    if q.count()==0:
-                        continue
+                    if q.count()==0: continue
                     scd_final = q[0]
                     log = ChangeLog.objects.filter(object_type='SaleCommissionDetail',
                                                    object_id=scd_final.id, 
                                                    attribute='value',
-                                                   date__lte=finish_date)
+                                                   date__lte=q[0].finish_date)
                     if log.count() > 0:
                         paid_final_value = float(log.latest().new_value)
                         bonus += s.c_final - paid_final_value

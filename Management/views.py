@@ -1,4 +1,5 @@
 ﻿import settings
+import time
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.forms.models import inlineformset_factory, modelformset_factory
@@ -25,6 +26,7 @@ def index(request):
         d = Demand.objects.get(project__id=5, year=2009, month=m)
         d.calc_sales_commission()
         d.finish()
+        time.sleep(1)
     return render_to_response('Management/index.html',
                               {'locateHouseForm':LocateHouseForm(),
                                'nhbranches':NHBranch.objects.all()},
