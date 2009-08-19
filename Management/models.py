@@ -1094,11 +1094,11 @@ class ProjectCommission(models.Model):
                 self.calc(subSales, 1)
                 for s in subSales:
                     signup = s.house.get_signup()
-                    if not Demand.objects.get(month=signup.date.month,
-                                              year = signup.date.year,
-                                              project=s.demand.project):
+                    finish_date = Demand.objects.get(month=signup.date.month,
+                                                     year = signup.date.year,
+                                                     project=s.demand.project).finish_date
+                    if not .finish_date:
                         continue
-                    finish_date = s.actual_demand.finish_date
                     scd_final = s.project_commission_details.filter(commission='final')[0]
                     log = ChangeLog.objects.filter(object_type='SaleCommissionDetail',
                                                    object_id=scd_final.id, 
