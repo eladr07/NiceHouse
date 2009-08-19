@@ -1098,8 +1098,8 @@ class ProjectCommission(models.Model):
                                         ).exclude(contractor_pay__gte = date(demand.year, demand.month ,1))
                 for s in subSales:
                     signup = s.house.get_signup()
-                    q = Demand.objects.filter(month=signup.date.month,
-                                              year = signup.date.year,
+                    q = Demand.objects.filter(month=s.contractor_pay.month,
+                                              year = s.contractor_pay.year,
                                               project=s.demand.project)
                     if q.count() == 0: continue
                     if not q[0].finish_date: continue
