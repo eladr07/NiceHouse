@@ -1100,6 +1100,7 @@ class ProjectCommission(models.Model):
                                                    object_id=scd_final.id, 
                                                    attribute='value',
                                                    date__lte=finish_date)
+                    raise AttributeError()
                     if log.count() > 0:
                         paid_final_value = float(log.latest().new_value)
                         bonus += s.c_final - paid_final_value
