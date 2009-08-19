@@ -1098,6 +1098,7 @@ class ProjectCommission(models.Model):
                                         ).filter(demand__project__id = s.demand.project.id
                                         ).exclude(contractor_pay__gte = date(y, m ,1))
                 for s in subSales:
+                    raise AttributeError()
                     signup = s.house.get_signup()
                     q = Demand.objects.filter(month=signup.date.month,
                                               year = signup.date.year,
