@@ -1080,6 +1080,8 @@ class ProjectCommission(models.Model):
             calced = []
             for s in sales.all():
                 signup = s.house.get_signup()
+                if not signup: 
+                    continue
                 m, y = (signup.date.month, signup.date.year)
                 if calced.count((m, y)) > 0:
                     continue
