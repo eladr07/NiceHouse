@@ -1103,13 +1103,14 @@ class ProjectCommission(models.Model):
                                               project=s.demand.project)
                     if q.count() == 0: continue
                     if not q[0].finish_date: continue
+                    finish_date = q[0].finish_date
                     q = s.project_commission_details.filter(commission='final')
                     if q.count()==0: continue
                     scd_final = q[0]
                     log = ChangeLog.objects.filter(object_type='SaleCommissionDetail',
                                                    object_id=scd_final.id, 
                                                    attribute='value',
-                                                   date__lte=q[0].finish_date)
+                                                   date__lte=finish_date)
                     if log.count() > 0:
                         paid_final_value = float(log.latest().new_value)
                         bonus += s.c_final - paid_final_value
