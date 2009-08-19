@@ -1099,9 +1099,9 @@ class ProjectCommission(models.Model):
                                 ).exclude(contractor_pay__month=demand.month
                                 ).filter(house__signups__cancel=None
                                 ).filter(demand__project__id = demand.project.id):
+                    raise AttributeError()
                     if not s.actual_demand.finish_date:
                         continue
-                    raise AttributeError()
                     finish_date = s.actual_demand.finish_date
                     scd_final = s.project_commission_details.filter(commission='final')[0]
                     log = ChangeLog.objects.filter(object_type='SaleCommissionDetail',
@@ -1266,7 +1266,7 @@ class Demand(models.Model):
     @property
     def finish_date(self):
         f = self.statuses.filter(type__id = DemandFinished)
-        return f.count() > 0 and f.latest() or None
+        return f.count() > 0 and f.latest().date or None
     @property
     def is_fixed(self):
         return self.sales.exclude(salehousemod=None, salepricemod=None,
