@@ -1097,7 +1097,7 @@ class ProjectCommission(models.Model):
                     finish_date = Demand.objects.get(month=signup.date.month,
                                                      year = signup.date.year,
                                                      project=s.demand.project).finish_date
-                    if not .finish_date:
+                    if not finish_date:
                         continue
                     scd_final = s.project_commission_details.filter(commission='final')[0]
                     log = ChangeLog.objects.filter(object_type='SaleCommissionDetail',
