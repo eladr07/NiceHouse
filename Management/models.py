@@ -1090,7 +1090,7 @@ class ProjectCommission(models.Model):
                 self.calc(subSales, 1)
                 calced.append((m, y))
             bonus = 0
-            if s.sales.count() > 0:
+            if sales.count() > 0:
                 for s in sales.all():
                     demand = s.actual_demand
                     break
