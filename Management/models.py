@@ -1091,9 +1091,6 @@ class ProjectCommission(models.Model):
                                         ).filter(house__signups__cancel=None
                                         ).filter(demand__project__id = s.demand.project.id
                                         ).exclude(contractor_pay__gte = date(m==12 and y+1 or y, m==12 and 1 or m+1,1))
-                c = subSales.count()
-                if m == 6 :
-                    raise AttributeError()
                 self.calc(subSales, 1)
                 for s in subSales:
                     signup = s.house.get_signup()
