@@ -25,8 +25,8 @@ def index(request):
     for m in range(1,8):
         d = Demand.objects.get(project__id=5, year=2009, month=m)
         d.calc_sales_commission()
-        d.finish()
         time.sleep(1)
+        d.finish()
     return render_to_response('Management/index.html',
                               {'locateHouseForm':LocateHouseForm(),
                                'nhbranches':NHBranch.objects.all()},
