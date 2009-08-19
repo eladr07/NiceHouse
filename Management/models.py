@@ -1075,6 +1075,10 @@ class ProjectCommission(models.Model):
     def calc(self, sales, sub=0):
         if self.commission_by_signups and sub == 0:
             calced = []
+            bonus = 0
+            for s in sales.all():
+                demand = s.actual_demand
+                break
             for s in sales.all():
                 signup = s.house.get_signup()
                 if not signup: 
@@ -1087,19 +1091,7 @@ class ProjectCommission(models.Model):
                                         ).filter(house__signups__cancel=None
                                         ).filter(demand__project__id = s.demand.project.id)
                 self.calc(subSales, 1)
-                calced.append((m, y))
-            bonus = 0
-            if sales.count() > 0:
-                for s in sales.all():
-                    demand = s.actual_demand
-                    break
-                for s in Sale.objects.filter(house__signups__cancel=None
-                                ).filter(demand__project__id = demand.project.id
-                                ).exclude(house__signups__date__year=demand.year
-                                ).exclude(house__signups__date__month=demand.month
-                                ).exclude(contractor_pay__year=demand.year
-                                ).exclude(contractor_pay__month=demand.month
-                                ):
+                for s in subSales:
                     if not s.actual_demand.finish_date:
                         continue
                     finish_date = s.actual_demand.finish_date
@@ -1111,10 +1103,11 @@ class ProjectCommission(models.Model):
                     if log.count() > 0:
                         paid_final_value = float(log.latest().new_value)
                         bonus += s.c_final - paid_final_value
-                demand.bonus = bonus
-                demand.bonus_type = u'הפרשים על חודשים קודמים'
-                demand.save()
-                return
+            calced.append((m, y))
+            demand.bonus = bonus
+            demand.bonus_type = u'הפרשים על חודשים קודמים'
+            demand.save()
+            return
         if getattr(self, 'c_zilber') != None:
             demand = sales[0].demand
             month = date(demand.year, demand.month, 1)
