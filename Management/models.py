@@ -1073,9 +1073,6 @@ class ProjectCommission(models.Model):
     agreement = models.FileField(ugettext('agreement'), upload_to='files', null=True, blank=True)
     remarks = models.TextField(ugettext('commission_remarks'), null=True, blank=True)
     def calc(self, sales, sub=0):
-        '''
-        sales should be a QuerySet.
-        '''
         if self.commission_by_signups and sub == 0:
             calced = []
             for s in sales.all():
@@ -1102,9 +1099,9 @@ class ProjectCommission(models.Model):
                                 ).exclude(contractor_pay__month=demand.month
                                 ).filter(house__signups__cancel=None
                                 ).filter(demand__project__id = demand.project.id):
-                    finish_date = s.actual_demand.finish_date
-                    if not finish_date:
+                    if not s.actual_demand.is_finished:
                         continue
+                    finish_date = s.actual_demand.finish_date
                     scd_final = s.project_commission_details.filter(commission='final')[0]
                     log = ChangeLog.objects.filter(object_type='SaleCommissionDetail',
                                                    object_id=scd_final.id, 
@@ -1129,9 +1126,8 @@ class ProjectCommission(models.Model):
                 continue
             precentages = getattr(self,c).calc(sales)
             for s in precentages:
-                if c in ['c_var_precentage', 'c_var_precentage_fixed']:
-                    if self.max and precentages[s] > self.max:
-                        precentages[s] = self.max#set base commission to max commission
+                if c in ['c_var_precentage', 'c_var_precentage_fixed'] and self.max and precentages[s] > self.max:
+                    precentages[s] = self.max#set base commission to max commission
                 dic[s] = dic.has_key(s) and dic[s] + precentages[s] or precentages[s]
                 if not details.has_key(s):
                     details[s]={}
