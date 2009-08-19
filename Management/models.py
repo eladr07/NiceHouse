@@ -1092,11 +1092,11 @@ class ProjectCommission(models.Model):
                                         ).filter(demand__project__id = s.demand.project.id
                                         ).exclude(contractor_pay__gte = date(m==12 and y+1 or y, m==12 and 1 or m+1,1))
                 self.calc(subSales, 1)
-                subSales = Sale.objects.filter(house__signups__date__lt = date(y,m,1)
+                subSales = Sale.objects.filter(house__signups__date__year=y
+                                        ).filter(house__signups__date__month=m
                                         ).filter(house__signups__cancel=None
                                         ).filter(demand__project__id = s.demand.project.id
-                                        ).exclude(contractor_pay__gte = date(m==12 and y+1 or y, m==12 and 1 or m+1,1))
-
+                                        ).exclude(contractor_pay__gte = date(y, m ,1))
                 for s in subSales:
                     signup = s.house.get_signup()
                     q = Demand.objects.filter(month=signup.date.month,
