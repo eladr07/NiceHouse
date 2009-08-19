@@ -1104,7 +1104,10 @@ class ProjectCommission(models.Model):
                                                      project=s.demand.project).finish_date
                     if not finish_date:
                         continue
-                    scd_final = s.project_commission_details.filter(commission='final')[0]
+                    q = s.project_commission_details.filter(commission='final')
+                    if q.count()==0:
+                        continue
+                    scd_final = q[0]
                     log = ChangeLog.objects.filter(object_type='SaleCommissionDetail',
                                                    object_id=scd_final.id, 
                                                    attribute='value',
