@@ -1088,9 +1088,10 @@ class ProjectCommission(models.Model):
                     continue
                 subSales = Sale.objects.filter(house__signups__date__year=y
                                         ).filter(house__signups__date__month=m
-                                        ).filter(contractor_pay__lte=signup.date
                                         ).filter(house__signups__cancel=None
-                                        ).filter(demand__project__id = s.demand.project.id)
+                                        ).filter(demand__project__id = s.demand.project.id
+                                        ).exclude(contractor_pay__month__gt = m
+                                        ).filter(contractor_pay__year__gt = y)
                 self.calc(subSales, 1)
                 for s in subSales:
                     signup = s.house.get_signup()
