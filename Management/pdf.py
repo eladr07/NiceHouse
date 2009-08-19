@@ -310,8 +310,8 @@ class MonthDemandWriter:
                 log = models.ChangeLog.objects.filter(object_type='SaleCommissionDetail',
                                                       object_id=scd_final.id, 
                                                       attribute='value')
-                if self.demand.last_send_date:
-                    log = log.filter(date__lte=self.demand.last_send_date)
+                if self.demand.finish_date:
+                    log = log.filter(date__lte=self.demand.finish_date)
                 if log.count() == 0:
                     row.extend([None, s.c_final, s.c_final, commaise(s.c_final_worth)])
                 else:

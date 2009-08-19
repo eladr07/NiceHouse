@@ -1239,8 +1239,8 @@ class Demand(models.Model):
     def was_sent(self):
         return self.statuses.count() == 0 and self.statuses.latest().type.id == DemandSent
     @property
-    def last_send_date(self):
-        f = self.statuses.filter(type__id = DemandSent)
+    def finish_date(self):
+        f = self.statuses.filter(type__id = DemandFinished)
         return f.count() > 0 and f.latest() or None
     @property
     def is_fixed(self):
@@ -1664,7 +1664,7 @@ tracked_models = [BDiscountSave, BDiscountSavePrecentage, BHouseType, BSaleRate,
 def track_changes(sender, **kwargs):
     instance = kwargs['instance']
     model = instance.__class__
-    id = instance.id
+    id = getattr(instance, 'id', None)
     if not model in tracked_models or not id:
         return
     old_obj = model.objects.get(pk=id)
