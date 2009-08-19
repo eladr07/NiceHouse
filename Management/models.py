@@ -1099,12 +1099,13 @@ class ProjectCommission(models.Model):
                                 ).filter(house__signups__cancel=None
                                 ).filter(demand__project__id = s.demand.project.id):
                     finish_date = s.actual_demand.finish_date
-                    if finish_date:
-                        scd_final = s.project_commission_details.filter(commission='final')[0]
-                        log = ChangeLog.objects.filter(object_type='SaleCommissionDetail',
-                                                       object_id=scd_final.id, 
-                                                       attribute='value',
-                                                       date__lte=self.demand.finish_date)
+                    if not finish_date:
+                        continue
+                    scd_final = s.project_commission_details.filter(commission='final')[0]
+                    log = ChangeLog.objects.filter(object_type='SaleCommissionDetail',
+                                                   object_id=scd_final.id, 
+                                                   attribute='value',
+                                                   date__lte=self.demand.finish_date)
                     if log.count() > 0:
                         paid_final_value = float(log.latest().new_value)
                         bonus += s.c_final - paid_final_value
