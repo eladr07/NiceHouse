@@ -1110,6 +1110,7 @@ class ProjectCommission(models.Model):
                                                    object_id=scd_final.id, 
                                                    attribute='value')
                     c = log.count()
+                    dates = [l.date for l in log]
                     if s.actual_demand.month == 6 and signup.date.month == 6:
                         raise AttributeError()
                     if log.count() > 0:
