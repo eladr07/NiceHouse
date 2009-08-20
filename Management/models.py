@@ -1113,7 +1113,7 @@ class ProjectCommission(models.Model):
                                                    attribute='value',
                                                    date__lt=finish_date)
                     c = log.count()
-                    if s.actual_demand.month == 7 and signup.month == 6:
+                    if s.actual_demand.month == 6 and signup.month == 6:
                         raise AttributeError()
                     if log.count() > 0:
                         paid_final_value = float(log.latest().new_value)
