@@ -1073,10 +1073,12 @@ class ProjectCommission(models.Model):
     agreement = models.FileField(ugettext('agreement'), upload_to='files', null=True, blank=True)
     remarks = models.TextField(ugettext('commission_remarks'), null=True, blank=True)
     def calc(self, sales, sub=0):
+        if sales.count() == 0: return
+        demand = sales[0].actual_demand
         if self.commission_by_signups and sub == 0:
             calced = []
             for s in sales.all():
-                signup , demand =  (s.house.get_signup(), s.actual_demand)
+                signup = s.house.get_signup()
                 if not signup: continue
                 m, y = (signup.date.month, signup.date.year)
                 if calced.count((m, y)) > 0: continue
@@ -1088,7 +1090,8 @@ class ProjectCommission(models.Model):
                                         ).exclude(contractor_pay__gte = date(demand.month==12 and demand.year+1 or demand.year, 
                                                                              demand.month==12 and 1 or demand.month+1,1))
                 self.calc(subSales, 1)
-                #get sales from last months, affected by this month's calculation.
+                #get sales from last months, affected by this month's calculation,
+                #excluding sales from current demand
                 subSales = Sale.objects.filter(house__signups__date__year=y
                                         ).filter(house__signups__date__month=m
                                         ).filter(house__signups__cancel=None
@@ -1117,7 +1120,6 @@ class ProjectCommission(models.Model):
                 calced.append((m, y))
             return
         if getattr(self, 'c_zilber') != None:
-            demand = sales[0].demand
             month = date(demand.year, demand.month, 1)
             getattr(self, 'c_zilber').calc(month)
             return
