@@ -434,20 +434,6 @@ class MonthDemandWriter:
         if self.demand.bonus:
             s += log2vis(u'%s - %s ש"ח' % (self.demand.bonus_type, commaise(self.demand.bonus))) + '<br/>'
         s += '<b>%s</b>' % log2vis(u'סה"כ : %s ש"ח' % commaise(self.demand.get_total_amount())) + '<br/>'
-        if self.signup_adds:
-            s+= log2vis(u'כולל תוספות בגין הרשמות :') + '<br/>'
-            months = {}
-            for s in self.demand.get_sales():
-                sd = s.house.get_signup().date
-                # do not include sales from demand month.
-                if (self.demand.month, self.demand.year) == (sd.month, sd.year):
-                    continue                
-                if not months.has_key((sd.month, sd.year)):
-                    months[(sd.month, sd.year)] = s.c_final
-                else:
-                    months[(sd.month, sd.year)] += s.c_final
-            for m in months:
-                s += log2vis(u'בגין %s/%s : %s ש"ח' % (m.month, m.year, commaise(months[m]))) + '<br/>'
         return Paragraph(s, ParagraphStyle(name='addsPara', fontName='David', fontSize=14, 
                                            leading=16, alignment=TA_LEFT))
     def build(self, filename):
