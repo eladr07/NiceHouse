@@ -283,7 +283,7 @@ class MonthDemandWriter:
         t.setStyle(saleTableStyle)
         return [t]
     def signupFlows(self):
-        headers = [log2vis(n) for n in [u'הרשמה\nחודש', u'שם הרוכשים', u'ודירה\nבניין', 
+        headers = [log2vis(n) for n in [u'הרשמה\nתאריך',u'הרשמה\nחודש', u'הרוכשים\nשם', u'ודירה\nבניין', 
                                         u'חוזה\nתאריך',u'חוזה\nמחיר', u'ששולמה\nעמלה', 
                                         u'חדשה\nעמלה', u'עמלה\nהפרש', u'בש"ח\nהפרש']]
         headers.reverse()
@@ -303,16 +303,15 @@ class MonthDemandWriter:
                         ).exclude(contractor_pay__gte = date(self.demand.year,
                                                              self.demand.month, 1))
             for s in subSales.all():
-                row = [s.house.get_signup().date.strftime('%d/%m/%y'),
+                singup = s.house.get_signup() 
+                row = [singup.date.strftime('%d/%m/%y'), singup.date.strftime('%m/%y'), 
                        clientsPara(s.clients), '%s/%s' % (s.house.building.num, s.house.num), 
                        s.sale_date.strftime('%d/%m/%y'), commaise(s.price)]
                 scd_final = s.project_commission_details.filter(commission='final')[0]
                 log = models.ChangeLog.objects.filter(object_type='SaleCommissionDetail',
                                                       object_id=scd_final.id, 
-                                                      attribute='value')
-                finish_date = s.actual_demand.finish_date
-                if finish_date:
-                    log = log.filter(date__lt=finish_date)
+                                                      attribute='value',
+                                                      date__lt=finish_date)
                 if log.count() == 0:
                     row.extend([None, s.c_final, s.c_final, commaise(s.c_final_worth)])
                 else:
@@ -326,7 +325,17 @@ class MonthDemandWriter:
         data.extend(rows)
         t = Table(data)
         t.setStyle(saleTableStyle)
-        return [t]
+        signup_counts = {}
+        for s in self.demand.sales.all():
+            signup = s.get_signup()
+            month = (signup.date.month, signup.date.year)
+            if not signup_counts.has_key(month):
+                signup_counts[month] = 0
+            signup_counts[month] += 1 
+        return [tableCaption(), 
+                Paragraph(', '.join('%s הרשמות מ - %s/%s' % (count, month[0], month[1]) for month, count in signup_counts.items()), 
+                          ParagraphStyle('signup_months', fontName='David', fontSize=10, alignment=TA_CENTER)), 
+                t]
     def saleFlows(self):
         sales = self.demand.get_sales()
         names = [u'מס"ד']
