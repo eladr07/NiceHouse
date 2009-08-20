@@ -291,10 +291,9 @@ class MonthDemandWriter:
         for s in self.demand.sales.all():
             signup = s.house.get_signup()
             month = (signup.date.month, signup.date.year)
-            if month[0] == s.contractor_pay.month and month[1] == s.contractor_pay.year:
+            if month[0] == s.contractor_pay.month and month[1] == s.contractor_pay.year or months.count(month) > 0:
                 continue
-            if months.count(month) == 0:
-                months.append(month)
+            months.append(month)
         rows = []
         for m, y in months:
             subSales = models.Sale.objects.filter(house__signups__date__year=y
@@ -310,8 +309,9 @@ class MonthDemandWriter:
                 log = models.ChangeLog.objects.filter(object_type='SaleCommissionDetail',
                                                       object_id=scd_final.id, 
                                                       attribute='value')
-                if self.demand.finish_date:
-                    log = log.filter(date__lte=self.demand.finish_date)
+                finish_date = self.actual_demand.finish_date
+                if finish_date:
+                    log = log.filter(date__lt=finish_date)
                 if log.count() == 0:
                     row.extend([None, s.c_final, s.c_final, commaise(s.c_final_worth)])
                 else:
