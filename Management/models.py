@@ -1108,7 +1108,8 @@ class ProjectCommission(models.Model):
                     if q.count()==0: continue
                     log = ChangeLog.objects.filter(object_type='SaleCommissionDetail',
                                                    object_id=q[0].id, 
-                                                   attribute='value')
+                                                   attribute='value',
+                                                   date__lt=finish_date)
                     if log.count() > 0:
                         paid_final_value = float(log.latest().new_value)
                         bonus += s.c_final - paid_final_value
