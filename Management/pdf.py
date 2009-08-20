@@ -297,7 +297,6 @@ class MonthDemandWriter:
                         ).filter(demand__project__id = self.demand.project.id
                         ).exclude(contractor_pay__gte = date(self.demand.year,
                                                              self.demand.month, 1))
-            self.additional_sales += subSales.count()
             for s in subSales.all():
                 singup = s.house.get_signup() 
                 row = [singup.date.strftime('%d/%m/%y'), singup.date.strftime('%m/%y'), 
@@ -311,6 +310,7 @@ class MonthDemandWriter:
                 if log.count() == 0:
                     row.extend([None, s.c_final, s.c_final, commaise(s.c_final_worth)])
                 else:
+                    self.additional_sales += 1
                     paid_final_value = float(log.latest().new_value)
                     diff = s.c_final - paid_final_value
                     row.extend([paid_final_value, s.c_final, 
@@ -330,7 +330,7 @@ class MonthDemandWriter:
         s = log2vis(u'סה"כ הרשמות לחישוב עמלה') + '<br/>'
         s += log2vis(u', '.join(u'%s הרשמות מ - %s/%s' % (count, month[0], month[1]) 
                                 for month, count in self.demand.get_signup_months().items()) +
-                     u' + %s הרשמות מחודשים קודמים' % self.additional_sales)
+                     u' + %s הרשמות ששולמו ועמלתם השתנתה' % self.additional_sales)
         return Paragraph(s, ParagraphStyle('signup_months', fontName='David', fontSize=10, alignment=TA_CENTER))
     def saleFlows(self):
         sales = self.demand.get_sales()
