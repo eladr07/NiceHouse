@@ -1084,6 +1084,7 @@ class ProjectCommission(models.Model):
                 m, y = (signup.date.month, signup.date.year)
                 if calced.count((m, y)) > 0:
                     continue
+                #get sales that were signed up for specific month, not including future sales.
                 subSales = Sale.objects.filter(house__signups__date__year=y
                                         ).filter(house__signups__date__month=m
                                         ).filter(house__signups__cancel=None
@@ -1091,6 +1092,7 @@ class ProjectCommission(models.Model):
                                         ).exclude(contractor_pay__gte = date(demand.month==12 and demand.year+1 or demand.year, 
                                                                              demand.month==12 and 1 or demand.month+1,1))
                 self.calc(subSales, 1)
+                #get sales from last months, affected by this month's calculation.
                 subSales = Sale.objects.filter(house__signups__date__year=y
                                         ).filter(house__signups__date__month=m
                                         ).filter(house__signups__cancel=None
@@ -1098,12 +1100,8 @@ class ProjectCommission(models.Model):
                                         ).exclude(contractor_pay__gte = date(demand.year, demand.month ,1))
                 for s in subSales:
                     signup = s.house.get_signup()
-                    q = Demand.objects.filter(month=s.contractor_pay.month,
-                                              year = s.contractor_pay.year,
-                                              project=s.demand.project)
-                    if q.count() == 0: continue
-                    if not q[0].finish_date: continue
-                    finish_date = q[0].finish_date
+                    if not s.actual_demand.finish_date: continue
+                    finish_date = s.actual_demand.finish_date
                     q = s.project_commission_details.filter(commission='final')
                     if q.count()==0: continue
                     scd_final = q[0]
