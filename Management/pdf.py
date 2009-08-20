@@ -287,13 +287,7 @@ class MonthDemandWriter:
                                         u'חוזה\nתאריך',u'חוזה\nמחיר', u'ששולמה\nעמלה', 
                                         u'חדשה\nעמלה', u'עמלה\nהפרש', u'בש"ח\nהפרש']]
         headers.reverse()
-        months=[]
-        for s in self.demand.sales.all():
-            signup = s.house.get_signup()
-            month = (signup.date.month, signup.date.year)
-            if month[0] == s.contractor_pay.month and month[1] == s.contractor_pay.year or months.count(month) > 0:
-                continue
-            months.append(month)
+        months=self.demand.get_signup_months().keys()
         rows = []
         for m, y in months:
             subSales = models.Sale.objects.filter(house__signups__date__year=y
@@ -325,17 +319,11 @@ class MonthDemandWriter:
         data.extend(rows)
         t = Table(data)
         t.setStyle(saleTableStyle)
-        signup_counts = {}
-        for s in self.demand.sales.all():
-            signup = s.house.get_signup()
-            month = (signup.date.month, signup.date.year)
-            if not signup_counts.has_key(month):
-                signup_counts[month] = 0
-            signup_counts[month] += 1 
-        return [tableCaption(), 
-                Paragraph(', '.join('%s הרשמות מ - %s/%s' % (count, month[0], month[1]) for month, count in signup_counts.items()), 
-                          ParagraphStyle('signup_months', fontName='David', fontSize=10, alignment=TA_CENTER)), 
-                t]
+        return [tableCaption(caption=log2vis(u'להלן תוספות להרשמות מחודשים קודמים')),
+                Spacer(0,30), t]
+    def signup_counts_para(self):
+        return Paragraph(', '.join('%s הרשמות מ - %s/%s' % (count, month[0], month[1]) for month, count in self.demand.get_signup_months.items()), 
+                         ParagraphStyle('signup_months', fontName='David', fontSize=10, alignment=TA_CENTER)), 
     def saleFlows(self):
         sales = self.demand.get_sales()
         names = [u'מס"ד']
@@ -466,9 +454,7 @@ class MonthDemandWriter:
             story.extend([PageBreak(), Spacer(0,30)])
             story.extend(self.zilberBonusFlows())
         if self.signup_adds:
-            story.extend([Spacer(0,30), 
-                          tableCaption(caption=log2vis(u'להלן תוספות להרשמות מחודשים קודמים')),
-                          Spacer(0,30)])
+            story.extend([Spacer(0,30), self.signup_counts_para()])
             story.extend(self.signupFlows())
         story.extend([Spacer(0, 20), self.remarkPara()]) 
         doc.build(story, self.addFirst, self.addLater)

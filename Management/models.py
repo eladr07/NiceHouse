@@ -1247,6 +1247,14 @@ class Demand(models.Model):
 
     objects = DemandManager()
     
+    def get_signup_months(self):
+        months = {}
+        for s in self.get_sales():
+            signup = s.house.get_signup()
+            if not months.has_key((signup.date.month, signup.date.year)):
+                months[(signup.date.month, signup.date.year)] = 0
+            months[(signup.date.month, signup.date.year)] += 1
+        return months
     def include_zilber_bonus(self):
         c_zilber = self.project.commissions.c_zilber
         month = date(self.year, self.month, 1)
