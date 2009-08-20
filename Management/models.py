@@ -1078,6 +1078,7 @@ class ProjectCommission(models.Model):
         demand.bonus, demand.bonus_type = (0,None)
         if self.commission_by_signups and sub == 0:
             calced = []
+            bonus = 0
             for s in sales.all():
                 signup = s.house.get_signup()
                 if not signup: continue
@@ -1115,10 +1116,11 @@ class ProjectCommission(models.Model):
                     if log.count() > 0:
                         paid_final_value = float(log.latest().new_value)
                         diff = (s.c_final - paid_final_value) * s.price_final / 100
-                        if diff > 0:
-                            demand.bonus += int(diff)
-                            demand.bonus_type = u'הפרשים על חודשים קודמים'
-                            demand.save()
+                        bonus += int(diff)
+                if bonus > 0:
+                    demand.bonus = bonus
+                    demand.bonus_type = u'הפרשים על חודשים קודמים'
+                    demand.save()
                 calced.append((m, y))
             return
         if getattr(self, 'c_zilber') != None:
