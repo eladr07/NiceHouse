@@ -1101,8 +1101,8 @@ class ProjectCommission(models.Model):
                 for s in subSales:
                     signup = s.house.get_signup()
                     if not signup: continue
-                    finish_date = Demand.objects.get(month=signup.month,
-                                                     year=signup.year,
+                    finish_date = Demand.objects.get(month=signup.date.month,
+                                                     year=signup.date.year,
                                                      project=s.demand.project)
                     if not finish_date: continue
                     q = s.project_commission_details.filter(commission='final')
