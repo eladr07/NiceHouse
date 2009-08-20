@@ -1101,13 +1101,7 @@ class ProjectCommission(models.Model):
                 for s in subSales:
                     signup = s.house.get_signup()
                     if not signup: continue
-                    try:
-                        finish_date = Demand.objects.get(month=signup.date.month,
-                                                         year=signup.date.year,
-                                                         project=s.demand.project
-                                                         ).finish_date
-                    except Demand.DoesNotExist:
-                        continue
+                    finish_date = s.actual_demand.finish_date
                     if not finish_date: continue
                     q = s.project_commission_details.filter(commission='final')
                     if q.count()==0: continue
@@ -1117,7 +1111,7 @@ class ProjectCommission(models.Model):
                                                    attribute='value',
                                                    date__lt=finish_date)
                     c = log.count()
-                    if s.actual_demand.month == 6 and signup.month == 6:
+                    if s.actual_demand.month == 6 and signup.date.month == 6:
                         raise AttributeError()
                     if log.count() > 0:
                         paid_final_value = float(log.latest().new_value)
