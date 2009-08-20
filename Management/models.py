@@ -1108,8 +1108,7 @@ class ProjectCommission(models.Model):
                     scd_final = q[0]
                     log = ChangeLog.objects.filter(object_type='SaleCommissionDetail',
                                                    object_id=scd_final.id, 
-                                                   attribute='value',
-                                                   date__lt=finish_date)
+                                                   attribute='value')
                     c = log.count()
                     if s.actual_demand.month == 6 and signup.date.month == 6:
                         raise AttributeError()
