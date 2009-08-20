@@ -201,6 +201,7 @@ class MonthDemandWriter:
             raise AttributeError('demand','has no sales')
         self.demand = demand
         self.signup_adds = self.demand.project.commissions.commission_by_signups
+        self.additional_sales = 0
     def toPara(self):
         contact = self.demand.project.demand_contact
         s = log2vis(u'בס"ד') + '<br/><br/>'
@@ -296,6 +297,7 @@ class MonthDemandWriter:
                         ).filter(demand__project__id = self.demand.project.id
                         ).exclude(contractor_pay__gte = date(self.demand.year,
                                                              self.demand.month, 1))
+            self.additional_sales = subSales.count()
             for s in subSales.all():
                 singup = s.house.get_signup() 
                 row = [singup.date.strftime('%d/%m/%y'), singup.date.strftime('%m/%y'), 
@@ -322,7 +324,9 @@ class MonthDemandWriter:
         return [tableCaption(caption=log2vis(u'להלן תוספות להרשמות מחודשים קודמים')),
                 Spacer(0,30), t]
     def signup_counts_para(self):
-        s = u', '.join(u'%s הרשמות מ - %s/%s' % (count, month[0], month[1]) for month, count in self.demand.get_signup_months().items())
+        s = log2vis(u'סהכ הרשמות לחישוב עמלה') + '<br/>'
+        s += u', '.join(log2vis(u'%s הרשמות מ - %s/%s') % (count, month[0], month[1]) for month, count in self.demand.get_signup_months().items())
+        s += '+ %s הרשמות מחודשים קודמים' % self.additional_sales
         return Paragraph(log2vis(s), ParagraphStyle('signup_months', fontName='David', fontSize=10, alignment=TA_CENTER))
     def saleFlows(self):
         sales = self.demand.get_sales()
@@ -456,7 +460,7 @@ class MonthDemandWriter:
             story.extend([PageBreak(), Spacer(0,30)])
             story.extend(self.zilberBonusFlows())
         if self.signup_adds:
-            story.append(Spacer(0,30))
+            story.extend([PageBreak(), Spacer(0,30), titlePara(log2vis(u'נספח א'))])
             story.extend(self.signupFlows())
         story.extend([Spacer(0, 20), self.remarkPara()]) 
         doc.build(story, self.addFirst, self.addLater)
