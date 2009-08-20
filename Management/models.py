@@ -1572,19 +1572,19 @@ class Sale(models.Model):
             return q3[0].value
         if q4.count() == 1:
             return q4[0].value
-        return None
+        return 0
     @property
     def zdb(self):
         q = self.project_commission_details.filter(commission='c_zilber_discount')
-        return q.count() == 1 and q[0].value or None
+        return q.count() == 1 and q[0].value or 0
     @property
     def pb_dsp(self):
         q = self.project_commission_details.filter(commission='b_discount_save_precentage')
-        return q.count() == 1 and q[0].value or None
+        return q.count() == 1 and q[0].value or 0
     @property
     def c_final(self):
         q = self.project_commission_details.filter(commission='final')
-        return q.count() == 1 and q[0].value or None
+        return q.count() == 1 and q[0].value or 0
     @property
     def pc_base_worth(self):
         return self.pc_base * self.price_final / 100
