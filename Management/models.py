@@ -1115,6 +1115,8 @@ class ProjectCommission(models.Model):
                         diff = (s.c_final - paid_final_value) * s.price_final / 100
                         bonus += int(diff)
                 calced.append((m, y))
+                if bonus>0:
+                    raise AttributeError()
                 demand.bonus = bonus
                 demand.bonus_type = u'הפרשים על חודשים קודמים'
                 demand.save()
