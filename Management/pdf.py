@@ -361,7 +361,7 @@ class MonthDemandWriter:
         headers = [log2vis(name) for name in names]
         i=1
         next_break = 10
-        flows = [tableCaption(), Spacer(0,20)]
+        flows = [tableCaption(), self.signup_adds and self.signup_counts_para(), Spacer(0,20)]
         rows = []
         for s in sales:
             row = ['%s-%s' % (self.demand.id, i)]
@@ -454,7 +454,7 @@ class MonthDemandWriter:
             story.extend([PageBreak(), Spacer(0,30)])
             story.extend(self.zilberBonusFlows())
         if self.signup_adds:
-            story.extend([Spacer(0,30), self.signup_counts_para()])
+            story.append(Spacer(0,30))
             story.extend(self.signupFlows())
         story.extend([Spacer(0, 20), self.remarkPara()]) 
         doc.build(story, self.addFirst, self.addLater)
