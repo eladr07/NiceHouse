@@ -327,7 +327,7 @@ class MonthDemandWriter:
         t.setStyle(saleTableStyle)
         signup_counts = {}
         for s in self.demand.sales.all():
-            signup = s.get_signup()
+            signup = s.house.get_signup()
             month = (signup.date.month, signup.date.year)
             if not signup_counts.has_key(month):
                 signup_counts[month] = 0
