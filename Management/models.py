@@ -1201,7 +1201,7 @@ class DemandStatusType(models.Model):
 
 class DemandStatus(models.Model):
     demand = models.ForeignKey('Demand', related_name='statuses')
-    date = models.DateTimeField(default=datetime.now())
+    date = models.DateTimeField(auto_now_add=True)
     type = models.ForeignKey('DemandStatusType')
     def __unicode__(self):
         return u'%s - %s' % (self.type, self.date.strftime('%d/%m/%Y %H:%M'))
