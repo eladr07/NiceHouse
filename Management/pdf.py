@@ -297,7 +297,7 @@ class MonthDemandWriter:
                         ).filter(demand__project__id = self.demand.project.id
                         ).exclude(contractor_pay__gte = date(self.demand.year,
                                                              self.demand.month, 1))
-            self.additional_sales = subSales.count()
+            self.additional_sales += subSales.count()
             for s in subSales.all():
                 singup = s.house.get_signup() 
                 row = [singup.date.strftime('%d/%m/%y'), singup.date.strftime('%m/%y'), 
@@ -327,11 +327,11 @@ class MonthDemandWriter:
         return [tableCaption(caption=log2vis(u'להלן תוספות להרשמות מחודשים קודמים')),
                 Spacer(0,30), t]
     def signup_counts_para(self):
-        s = log2vis(u'סהכ הרשמות לחישוב עמלה') + '<br/>'
+        s = log2vis(u'סה"כ הרשמות לחישוב עמלה') + '<br/>'
         s += u', '.join(log2vis(u'%s הרשמות מ - %s/%s' % (count, month[0], month[1])) 
                         for month, count in self.demand.get_signup_months().items())
-        s += u'+ %s הרשמות מחודשים קודמים' % self.additional_sales
-        return Paragraph(log2vis(s), ParagraphStyle('signup_months', fontName='David', fontSize=10, alignment=TA_CENTER))
+        s += log2vis(u'+ %s הרשמות מחודשים קודמים' % self.additional_sales)
+        return Paragraph(s, ParagraphStyle('signup_months', fontName='David', fontSize=10, alignment=TA_CENTER))
     def saleFlows(self):
         sales = self.demand.get_sales()
         names = [u'מס"ד']
@@ -463,10 +463,10 @@ class MonthDemandWriter:
         if self.demand.include_zilber_bonus():
             story.extend([PageBreak(), Spacer(0,30)])
             story.extend(self.zilberBonusFlows())
-        if self.signup_adds:
-            story.extend([PageBreak(), Spacer(0,30), titlePara(log2vis(u'נספח א'))])
-            story.extend(self.signupFlows())
         story.extend([Spacer(0, 20), self.remarkPara()]) 
+        if self.signup_adds:
+            story.extend([PageBreak(), Spacer(0,30), titlePara(u'נספח א')])
+            story.extend(self.signupFlows())
         doc.build(story, self.addFirst, self.addLater)
         return doc.canv
 
