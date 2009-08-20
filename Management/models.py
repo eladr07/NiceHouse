@@ -1106,7 +1106,7 @@ class ProjectCommission(models.Model):
                                                          year=signup.date.year,
                                                          project=s.demand.project
                                                          ).finish_date
-                    except Demand.DoestNotExist:
+                    except Demand.DoesNotExist:
                         continue
                     if not finish_date: continue
                     q = s.project_commission_details.filter(commission='final')
