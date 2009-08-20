@@ -1117,6 +1117,7 @@ class ProjectCommission(models.Model):
                         if diff > 0:
                             demand.bonus += int(diff)
                             demand.bonus_type = u'הפרשים על חודשים קודמים'
+                            demand.save()
                 calced.append((m, y))
             return
         if getattr(self, 'c_zilber') != None:
