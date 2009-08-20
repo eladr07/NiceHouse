@@ -1112,10 +1112,8 @@ class ProjectCommission(models.Model):
                                                    date__lt=finish_date)
                     if log.count() > 0:
                         paid_final_value = float(log.latest().new_value)
-                        if s.c_final > paid_final_value:
-                            dad=(s.c_final - paid_final_value) * s.price_final
-                            raise AttributeError()
-                        bonus += (s.c_final - paid_final_value) * s.price_final
+                        diff = (s.c_final - paid_final_value) * s.price_final / 100
+                        bonus += int(diff)
                 calced.append((m, y))
             demand.bonus = bonus
             demand.bonus_type = u'הפרשים על חודשים קודמים'
