@@ -1117,11 +1117,11 @@ class ProjectCommission(models.Model):
                         paid_final_value = float(log.latest().new_value)
                         diff = (s.c_final - paid_final_value) * s.price_final / 100
                         bonus += int(diff)
-                if bonus > 0:
-                    demand.bonus = bonus
-                    demand.bonus_type = u'הפרשים על חודשים קודמים'
-                    demand.save()
                 calced.append((m, y))
+            if bonus > 0:
+                demand.bonus = bonus
+                demand.bonus_type = u'הפרשים על חודשים קודמים'
+                demand.save()
             return
         if getattr(self, 'c_zilber') != None:
             month = date(demand.year, demand.month, 1)

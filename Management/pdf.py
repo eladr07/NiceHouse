@@ -300,7 +300,8 @@ class MonthDemandWriter:
                         ).filter(house__signups__date__month=m
                         ).filter(house__signups__cancel=None
                         ).filter(demand__project__id = s.demand.project.id
-                        ).filter(contractor_pay__year=y, contractor_pay__month=m)
+                        ).exclude(contractor_pay__gte = date(self.demand.year,
+                                                             self.demand.month, 1))
             for s in subSales.all():
                 row = [s.house.get_signup().date.strftime('%d/%m/%y'),
                        clientsPara(s.clients), '%s/%s' % (s.house.building.num, s.house.num), 
