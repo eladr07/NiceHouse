@@ -224,13 +224,19 @@ class SaleForm(forms.ModelForm):
     building = forms.ModelChoiceField(queryset = Building.objects.all(), label=ugettext('building'))
     signup_date = forms.DateField(label=ugettext('signup_date'), required=False)
     def save(self, *args, **kw):
-        if not self.instance.id and self.cleaned_data['house'].get_sale() != None:
-            raise AttributeError
-        allowed_discount = self.cleaned_data['allowed_discount']
+        house, discount, allowed_discount = (self.cleaned_data['house'],
+                                             self.cleaned_data['discount'],
+                                             self.cleaned_data['allowed_discount'])
+        if self.instance.id:
+            if house.get_sale() != self.instance:
+                raise ValidationError()
+        else:
+            if house.get_sale() != None:
+                raise ValidationError
         '''checks if entered a allowed discount but not discount -> will fill
         discount automatically'''
-        if allowed_discount and not self.cleaned_data['discount']:
-            max_p = self.cleaned_data['house'].versions.filter(type__id = PricelistTypeCompany).latest().price
+        if allowed_discount and not discount:
+            max_p = house.versions.filter(type__id = PricelistTypeCompany).latest().price
             min_p = max_p * (1 - allowed_discount/100)
             price = self.cleaned_data['price']
             self.cleaned_data['discount'] = 100 - (100 / float(max_p) * price)
@@ -238,7 +244,7 @@ class SaleForm(forms.ModelForm):
         #fill Signup automatically. it is temp fix until signup_date field will
         #be removed.
         if self.cleaned_data['signup_date'] != None:
-            signup = self.cleaned_data['house'].get_signup() or Signup()
+            signup = house.get_signup() or Signup()
             signup.date = self.cleaned_data['signup_date']
             for attr in ['house','clients','clients_phone','sale_date','price',
                          'price_include_lawyer']:
@@ -261,10 +267,6 @@ class SaleForm(forms.ModelForm):
             signup= self.instance.house.get_signup()
             if signup:
                 self.fields['signup_date'].initial = signup.date
-    class Meta:
-        model = Sale
-
-class SaleCommissionForm(forms.ModelForm):
     class Meta:
         model = Sale
 
@@ -456,14 +458,6 @@ class ReminderForm(forms.ModelForm):
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        
-class LinkForm(forms.ModelForm):
-    class Meta:
-        model = Link
-
-class CarForm(forms.ModelForm):
-    class Meta:
-        model = Car
 
 class AttachmentForm(forms.ModelForm):
     tag_new = forms.CharField(max_length=20, required=False, label=ugettext('tag_new'))
