@@ -328,9 +328,9 @@ class MonthDemandWriter:
                 Spacer(0,30), t]
     def signup_counts_para(self):
         s = log2vis(u'סה"כ הרשמות לחישוב עמלה') + '<br/>'
-        s += u', '.join(log2vis(u'%s הרשמות מ - %s/%s' % (count, month[0], month[1])) 
-                        for month, count in self.demand.get_signup_months().items())
-        s += log2vis(u'+ %s הרשמות מחודשים קודמים' % self.additional_sales)
+        s += log2vis(u', '.join(u'%s הרשמות מ - %s/%s' % (count, month[0], month[1]) 
+                                for month, count in self.demand.get_signup_months().items()) +
+                     u' + %s הרשמות מחודשים קודמים' % self.additional_sales)
         return Paragraph(s, ParagraphStyle('signup_months', fontName='David', fontSize=10, alignment=TA_CENTER))
     def saleFlows(self):
         sales = self.demand.get_sales()
