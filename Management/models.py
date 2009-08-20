@@ -1075,7 +1075,7 @@ class ProjectCommission(models.Model):
     def calc(self, sales, sub=0):
         if sales.count() == 0: return
         demand = sales[0].actual_demand
-        demand.bonus = 0
+        demand.bonus, demand.bonus_type = (0,None)
         if self.commission_by_signups and sub == 0:
             calced = []
             for s in sales.all():
@@ -1119,6 +1119,7 @@ class ProjectCommission(models.Model):
                             demand.bonus += int(diff)
                             demand.bonus_type = u'הפרשים על חודשים קודמים'
                             demand.save()
+                            raise AttributeError()
                 calced.append((m, y))
             return
         if getattr(self, 'c_zilber') != None:
