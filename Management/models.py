@@ -1110,11 +1110,11 @@ class ProjectCommission(models.Model):
                                                    object_id=q[0].id, 
                                                    attribute='value',
                                                    date__lt=finish_date)
-                    dates =[(l.date, l.new_value, s.c_final) for l in log]
-                    if s.actual_demand.month == 6 and signup.date.month == 6:
-                        raise AttributeError
                     if log.count() > 0:
                         paid_final_value = float(log.latest().new_value)
+                        if s.c_final > paid_final_value:
+                            dad=(s.c_final - paid_final_value) * s.price_final
+                            raise AttributeError()
                         bonus += (s.c_final - paid_final_value) * s.price_final
                 calced.append((m, y))
             demand.bonus = bonus
