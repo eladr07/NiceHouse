@@ -201,7 +201,6 @@ class MonthDemandWriter:
             raise AttributeError('demand','has no sales')
         self.demand = demand
         self.signup_adds = self.demand.project.commissions.commission_by_signups
-        self.additional_sales = 0
     def toPara(self):
         contact = self.demand.project.demand_contact
         s = log2vis(u'בס"ד') + '<br/><br/>'
@@ -310,7 +309,6 @@ class MonthDemandWriter:
                 if log.count() == 0:
                     row.extend([None, s.c_final, s.c_final, commaise(s.c_final_worth)])
                 else:
-                    self.additional_sales += 1
                     paid_final_value = float(log.latest().new_value)
                     diff = s.c_final - paid_final_value
                     row.extend([paid_final_value, s.c_final, 
@@ -329,8 +327,7 @@ class MonthDemandWriter:
     def signup_counts_para(self):
         s = log2vis(u'סה"כ הרשמות לחישוב עמלה') + '<br/>'
         s += log2vis(u', '.join(u'%s הרשמות מ - %s/%s' % (count, month[0], month[1]) 
-                                for month, count in self.demand.get_signup_months().items()) +
-                     u' + %s הרשמות ששולמו ועמלתם השתנתה' % self.additional_sales)
+                                for month, count in self.demand.get_signup_months().items()))
         return Paragraph(s, ParagraphStyle('signup_months', fontName='David', fontSize=10, alignment=TA_CENTER))
     def saleFlows(self):
         sales = self.demand.get_sales()
