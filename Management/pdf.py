@@ -322,8 +322,8 @@ class MonthDemandWriter:
         return [tableCaption(caption=log2vis(u'להלן תוספות להרשמות מחודשים קודמים')),
                 Spacer(0,30), t]
     def signup_counts_para(self):
-        return Paragraph(', '.join('%s הרשמות מ - %s/%s' % (count, month[0], month[1]) for month, count in self.demand.get_signup_months().items()), 
-                         ParagraphStyle('signup_months', fontName='David', fontSize=10, alignment=TA_CENTER)), 
+        s = unicode(', '.join('%s הרשמות מ - %s/%s' % (count, month[0], month[1]) for month, count in self.demand.get_signup_months().items()))
+        return Paragraph(log2vis(s), ParagraphStyle('signup_months', fontName='David', fontSize=10, alignment=TA_CENTER))
     def saleFlows(self):
         sales = self.demand.get_sales()
         names = [u'מס"ד']
