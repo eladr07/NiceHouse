@@ -1113,14 +1113,11 @@ class ProjectCommission(models.Model):
                     if log.count() > 0:
                         paid_final_value = float(log.latest().new_value)
                         diff = (s.c_final - paid_final_value) * s.price_final / 100
-                        diff = int(diff)
-                        if diff >0:
-                            raise AttributeError()
                         bonus += int(diff)
                 calced.append((m, y))
-            demand.bonus = bonus
-            demand.bonus_type = u'הפרשים על חודשים קודמים'
-            demand.save()
+                demand.bonus = bonus
+                demand.bonus_type = u'הפרשים על חודשים קודמים'
+                demand.save()
             return
         if getattr(self, 'c_zilber') != None:
             demand = sales[0].demand
