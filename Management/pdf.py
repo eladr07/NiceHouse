@@ -309,7 +309,7 @@ class MonthDemandWriter:
                 log = models.ChangeLog.objects.filter(object_type='SaleCommissionDetail',
                                                       object_id=scd_final.id, 
                                                       attribute='value')
-                finish_date = self.actual_demand.finish_date
+                finish_date = s.actual_demand.finish_date
                 if finish_date:
                     log = log.filter(date__lt=finish_date)
                 if log.count() == 0:
@@ -452,7 +452,6 @@ class MonthDemandWriter:
             story.append(PageBreak())
         if self.demand.fixed_pay or self.demand.var_pay or self.demand.bonus:
             story.extend([Spacer(0, 20), self.addsPara()])
-        story.extend([Spacer(0, 20), self.remarkPara()]) 
         if self.demand.include_zilber_bonus():
             story.extend([PageBreak(), Spacer(0,30)])
             story.extend(self.zilberBonusFlows())
@@ -461,6 +460,7 @@ class MonthDemandWriter:
                           tableCaption(caption=log2vis(u'להלן תוספות להרשמות מחודשים קודמים')),
                           Spacer(0,30)])
             story.extend(self.signupFlows())
+        story.extend([Spacer(0, 20), self.remarkPara()]) 
         doc.build(story, self.addFirst, self.addLater)
         return doc.canv
 
