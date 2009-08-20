@@ -1113,6 +1113,9 @@ class ProjectCommission(models.Model):
                     if log.count() > 0:
                         paid_final_value = float(log.latest().new_value)
                         diff = (s.c_final - paid_final_value) * s.price_final / 100
+                        diff = int(diff)
+                        if diff >0:
+                            raise AttributeError()
                         bonus += int(diff)
                 calced.append((m, y))
             demand.bonus = bonus
