@@ -326,8 +326,6 @@ class MonthDemandWriter:
         return Paragraph(log2vis(s), ParagraphStyle('signup_months', fontName='David', fontSize=10, alignment=TA_CENTER))
     def saleFlows(self):
         sales = self.demand.get_sales()
-        if self.signup_adds:
-            sales.order_by('signups__date')
         names = [u'מס"ד']
         colWidths = [35]
         contract_num, discount, final, zilber = (False, False, False, False)
