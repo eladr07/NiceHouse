@@ -327,7 +327,7 @@ class MonthDemandWriter:
     def saleFlows(self):
         sales = self.demand.get_sales()
         if self.signup_adds:
-            sales.order_by(signups__date)
+            sales.order_by('signups__date')
         names = [u'מס"ד']
         colWidths = [35]
         contract_num, discount, final, zilber = (False, False, False, False)
