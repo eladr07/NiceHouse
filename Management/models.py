@@ -1075,6 +1075,7 @@ class ProjectCommission(models.Model):
     def calc(self, sales, sub=0):
         if sales.count() == 0: return
         demand = sales[0].actual_demand
+        demand.bonus = 0
         if self.commission_by_signups and sub == 0:
             calced = []
             for s in sales.all():
