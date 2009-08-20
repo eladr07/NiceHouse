@@ -1079,11 +1079,9 @@ class ProjectCommission(models.Model):
             for s in sales.all():
                 signup = s.house.get_signup()
                 demand = s.actual_demand
-                if not signup: 
-                    continue
+                if not signup: continue
                 m, y = (signup.date.month, signup.date.year)
-                if calced.count((m, y)) > 0:
-                    continue
+                if calced.count((m, y)) > 0: continue
                 #get sales that were signed up for specific month, not including future sales.
                 subSales = Sale.objects.filter(house__signups__date__year=y
                                         ).filter(house__signups__date__month=m
@@ -1101,18 +1099,16 @@ class ProjectCommission(models.Model):
                 for s in subSales:
                     signup = s.house.get_signup()
                     if not signup: continue
-                    finish_date = s.actual_demand.finish_date
+                    #get the finish date when the demand for the month the signup 
+                    #were made we use it to find out what was the commission at
+                    #that time
+                    finish_date = s.actual_demand.finish_date 
                     if not finish_date: continue
                     q = s.project_commission_details.filter(commission='final')
                     if q.count()==0: continue
-                    scd_final = q[0]
                     log = ChangeLog.objects.filter(object_type='SaleCommissionDetail',
-                                                   object_id=scd_final.id, 
+                                                   object_id=q[0].id, 
                                                    attribute='value')
-                    c = log.count()
-                    dates = [l.date for l in log]
-                    if s.actual_demand.month == 6 and signup.date.month == 6:
-                        raise AttributeError()
                     if log.count() > 0:
                         paid_final_value = float(log.latest().new_value)
                         bonus += s.c_final - paid_final_value
