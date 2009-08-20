@@ -1122,7 +1122,6 @@ class ProjectCommission(models.Model):
                 demand.bonus = bonus
                 demand.bonus_type = u'הפרשים על חודשים קודמים'
                 demand.save()
-                raise AttributeError()
             return
         if getattr(self, 'c_zilber') != None:
             month = date(demand.year, demand.month, 1)
