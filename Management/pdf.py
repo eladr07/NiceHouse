@@ -361,8 +361,7 @@ class MonthDemandWriter:
         headers = [log2vis(name) for name in names]
         i=1
         next_break = 10
-        flows = [tableCaption(), Spacer(0,10),
-                 self.signup_adds and self.signup_counts_para(), Spacer(0,10)]
+        flows = [tableCaption(), Spacer(0,10), Spacer(0,10)]
         rows = []
         for s in sales:
             row = ['%s-%s' % (self.demand.id, i)]
