@@ -317,6 +317,9 @@ class MonthDemandWriter:
                                 diff, commaise(diff * s.price_final / 100)])
                 row.reverse()
                 rows.append(row)
+        sum_row = [None,None,None,None,None,None,None,None,None,commaise(self.demand.bonus)]
+        sum_row.reverse()
+        rows.append(sum_row)
         data = [headers]
         data.extend(rows)
         t = Table(data)
