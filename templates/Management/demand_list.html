@@ -84,6 +84,7 @@
 			<td><input id="monthChange" type="button" value="חפש" class="button"/></td>
 		</tr>
 	</table>
+</form>
 	</table>
 		<table id="filter" class="dataTable" style="width: 60%;">
 		<tr class="row1">
@@ -102,7 +103,6 @@
 			<td><button id="filterClearBtn" class="button">הצג הכל</button></td>
 		</tr>
 	</table>
-</form>
 <div class="someIcon" style="width:90px;">
 	<img src="/site_media/images/add_48.png" width="20" height="20"  alt="חדש" /> 
 	<a id="saleAdd">הזנת מכירות</a>
@@ -193,11 +193,11 @@
 			</td>
 			<td>{{ d.statuses.latest.type }}</td>
 		</tr>
+	{% endfor %}
 		<tr>
 			<td colspan="4"></td>
 			<td>{{sales_count}} מכירות</td>
 			<td>{{sales_amount|commaise}} ש"ח</td>
 		</tr>
-	{% endfor %}
 </table>
 {% endblock content %}
