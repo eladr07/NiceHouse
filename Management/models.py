@@ -1078,15 +1078,8 @@ class ProjectCommission(models.Model):
         demand = sales[0].actual_demand
         if self.commission_by_signups and sub == 0:
             demand.bonus, demand.bonus_type = (0,None)
-            months = []
             bonus = 0
-            for s in sales.all():
-                signup = s.house.get_signup()
-                if not signup: continue
-                m, y = (signup.date.month, signup.date.year)
-                if months.count((m, y)) > 0: continue
-                months.append((m,y))
-            for m, y in months:
+            for (m, y) in demand.get_signup_months():
                 #get sales that were signed up for specific month, not including future sales.
                 subSales = Sale.objects.filter(house__signups__date__year=y
                                         ).filter(house__signups__date__month=m
