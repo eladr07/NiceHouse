@@ -54,17 +54,23 @@
 	<div class="title">
 		<div class="pageTitle">מצבת פרוייקטים</div>
 	</div>
-	<div id="filter" style="width:70%;">
-		<fieldset class="cardFieldset">
-			<legend>חיפוש</legend>
-			חיפוש לפי : 
-			<select id="filterSelect" style="width:100px;"></select>
-			ערך : 
-			<input id="filterText" type="text"/>
-			<button id="filterBtn" class="button">חפש</button>
-			<button id="filterClearBtn" class="button">הצג הכל</button>
-		</fieldset>
-	</div>
+	<table id="filter" class="dataTable" style="width: 60%;">
+		<tr class="row1">
+			<td colspan="4" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש</td>
+		</tr>
+		<tr class="row2">
+			<td>
+				חיפוש לפי : 
+				<select id="filterSelect" style="width:100px;"></select>
+			</td>
+			<td>
+				ערך : 
+				<input id="filterText" type="text"/>
+			</td>
+			<td><button id="filterBtn" class="button">חפש</button></td>
+			<td><button id="filterClearBtn" class="button">הצג הכל</button></td>
+		</tr>
+	</table>
 	<div class="someIcon" style="width:140px;">
 		<img src="/site_media/images/add_48.png" width="20" height="20"  alt="חדש" /> 
 		<a href="add">הוספת פרוייקט חדש</a>

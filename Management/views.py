@@ -422,9 +422,14 @@ def demand_list(request, year=demand_month().year, month=demand_month().month):
             demand.save()
         elif ds.get(project=p).statuses.count() > 0 and ds.get(project=p).statuses.latest().type.id != DemandFeed:
             unhandled_projects.remove(p)
+    sales_count, sales_amount = (0,0)
+    for d in ds:
+        sales_count += d.get_sales().count()
+        sales_amount += d.get_sales_amount()
     return render_to_response('Management/demand_list.html', 
                               { 'demands':ds, 'unhandled_projects':unhandled_projects, 
-                               'month':date(int(year), int(month), 1), 'filterForm':form },
+                               'month':date(int(year), int(month), 1), 'filterForm':form,
+                               'sales_count':sales_count ,'sales_amount':sales_amount },
                               context_instance=RequestContext(request))
 
 def employee_sales(request, id, year, month):
