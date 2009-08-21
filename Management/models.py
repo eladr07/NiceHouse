@@ -858,16 +858,12 @@ class CVarPrecentage(models.Model):
             c = self.get_precentage(sales.count()).precentage
             for s in sales.all():
                 dic[s] = c
-                if s.id == 290:
-                    raise AttributeError()
         else:
             i=0
             for s in sales.all():
                 i += 1
                 c = self.get_precentage(i).precentage
                 dic[s] = c
-                if s.id == 290:
-                    raise AttributeError()
         return dic            
     def get_precentage(self, index):
         precentage = self.precentages.filter(index = index)
@@ -1096,6 +1092,9 @@ class ProjectCommission(models.Model):
                                         ).filter(demand__project__id = s.demand.project.id
                                         ).exclude(contractor_pay__gte = date(demand.month==12 and demand.year+1 or demand.year, 
                                                                              demand.month==12 and 1 or demand.month+1,1))
+                for s2 in subSales():
+                    if s2.id == 290:
+                        raise AttributeError()
                 self.calc(subSales, 1)
                 #get sales from last months, affected by this month's calculation,
                 #excluding sales from current demand
