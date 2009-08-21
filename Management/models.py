@@ -1092,7 +1092,7 @@ class ProjectCommission(models.Model):
                                         ).filter(demand__project__id = s.demand.project.id
                                         ).exclude(contractor_pay__gte = date(demand.month==12 and demand.year+1 or demand.year, 
                                                                              demand.month==12 and 1 or demand.month+1,1))
-                for s2 in subSales():
+                for s2 in subSales.all():
                     if s2.id == 290:
                         raise AttributeError()
                 self.calc(subSales, 1)
