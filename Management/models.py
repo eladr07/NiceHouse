@@ -1078,13 +1078,15 @@ class ProjectCommission(models.Model):
         demand = sales[0].actual_demand
         if self.commission_by_signups and sub == 0:
             demand.bonus, demand.bonus_type = (0,None)
-            calced = []
+            months = []
             bonus = 0
             for s in sales.all():
                 signup = s.house.get_signup()
                 if not signup: continue
                 m, y = (signup.date.month, signup.date.year)
-                if calced.count((m, y)) > 0: continue
+                if months.count((m, y)) > 0: continue
+                months.append((m,y))
+            for m, y in months:
                 #get sales that were signed up for specific month, not including future sales.
                 subSales = Sale.objects.filter(house__signups__date__year=y
                                         ).filter(house__signups__date__month=m
@@ -1121,7 +1123,6 @@ class ProjectCommission(models.Model):
                         paid_final_value = float(log.latest().new_value)
                         diff = (s.c_final - paid_final_value) * s.price_final / 100
                         bonus += int(diff)
-                calced.append((m, y))
             if bonus > 0:
                 demand.bonus = bonus
                 demand.bonus_type = u'הפרשים על חודשים קודמים'
