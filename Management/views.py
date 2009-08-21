@@ -425,7 +425,7 @@ def demand_list(request, year=demand_month().year, month=demand_month().month):
     sales_count, sales_amount = (0,0)
     for d in ds:
         sales_count += d.get_sales().count()
-        sales_amount += d.get_sales_amount()
+        sales_amount += d.get_final_sales_amount()
     return render_to_response('Management/demand_list.html', 
                               { 'demands':ds, 'unhandled_projects':unhandled_projects, 
                                'month':date(int(year), int(month), 1), 'filterForm':form,

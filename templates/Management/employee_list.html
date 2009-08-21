@@ -6,7 +6,7 @@
 	var prev_class;
 	var filterIndex;
 	$(document).ready(function() {
-		$("tr").click(function() { 
+		$("#employee_table tr").click(function() { 
 			var tr = $(this);
 			if (selectedID > 0)
 				$("tr[objid='"+selectedID+"']").attr("class", prev_class);
