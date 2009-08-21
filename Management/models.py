@@ -858,11 +858,16 @@ class CVarPrecentage(models.Model):
             c = self.get_precentage(sales.count()).precentage
             for s in sales.all():
                 dic[s] = c
+                if s.id == 290:
+                    raise AttributeError()
         else:
             i=0
             for s in sales.all():
                 i += 1
-                dic[s] = self.get_precentage(i).precentage
+                c = self.get_precentage(i).precentage
+                dic[s] = c
+                if s.id == 290:
+                    raise AttributeError()
         return dic            
     def get_precentage(self, index):
         precentage = self.precentages.filter(index = index)
