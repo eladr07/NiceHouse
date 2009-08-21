@@ -73,22 +73,25 @@
 	<div class="pageTitle">ריכוז דרישות לתשלום לחודש {{month|date:"M Y"}}</div>
 </div>
 <div class="clearBoth"></div>
-<form method="POST">
-	<table class="dataTable" style="width: 30%;">
-		<tr class="row1">
-			<td colspan="3" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש דרישה</td>
-		</tr>
-		<tr class="row2">
-			{% for field in filterForm %}
-			<td>
-				{{ field.label_tag }} : 
-				{{ field }}
-			</td>
-			{% endfor %}
-			<td><input id="monthChange" type="button" value="חפש" class="button"/></td>
-		</tr>
-	</table>
-</form>
+<div style="float:right;">
+	<form method="POST">
+		<table class="dataTable" style="width: 30%;">
+			<tr class="row1">
+				<td colspan="3" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש דרישה</td>
+			</tr>
+			<tr class="row2">
+				{% for field in filterForm %}
+				<td>
+					{{ field.label_tag }} : 
+					{{ field }}
+				</td>
+				{% endfor %}
+				<td><input id="monthChange" type="button" value="חפש" class="button"/></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div style="float:left;">
 	<table id="filter" class="dataTable" style="width: 60%;">
 		<tr class="row1">
 			<td colspan="4" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש</td>
@@ -106,6 +109,7 @@
 			<td><button id="filterClearBtn" class="button">הצג הכל</button></td>
 		</tr>
 	</table>
+</div>
 <div class="someIcon" style="width:100px;">
 	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
 	<a id="demandEdit">שינוי דרישה</a>
