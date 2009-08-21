@@ -283,7 +283,7 @@ class MonthDemandWriter:
         t.setStyle(saleTableStyle)
         return [t]
     def signupFlows(self):
-        headers = [log2vis(n) for n in [u'הרשמה\nתאריך',u'הרשמה\nחודש', u'הרוכשים\nשם', u'ודירה\nבניין', 
+        headers = [log2vis(n) for n in [u'הרשמה\nתאריך',u'דרישה\nחודש', u'הרוכשים\nשם', u'ודירה\nבניין', 
                                         u'חוזה\nתאריך',u'חוזה\nמחיר', u'ששולמה\nעמלה', 
                                         u'חדשה\nעמלה', u'עמלה\nהפרש', u'בש"ח\nהפרש']]
         headers.reverse()
@@ -298,7 +298,7 @@ class MonthDemandWriter:
                                                              self.demand.month, 1))
             for s in subSales.all():
                 singup = s.house.get_signup() 
-                row = [singup.date.strftime('%d/%m/%y'), singup.date.strftime('%m/%y'), 
+                row = [singup.date.strftime('%d/%m/%y'), s.contractor_pay.strftime('%m/%y'), 
                        clientsPara(s.clients), '%s/%s' % (s.house.building.num, s.house.num), 
                        s.sale_date.strftime('%d/%m/%y'), commaise(s.price)]
                 scd_final = s.project_commission_details.filter(commission='final')[0]
