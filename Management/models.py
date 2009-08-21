@@ -1081,24 +1081,24 @@ class ProjectCommission(models.Model):
             bonus = 0
             for (m, y) in demand.get_signup_months():
                 #get sales that were signed up for specific month, not including future sales.
-                subSales = Sale.objects.filter(house__signups__date__year=y
+                subSales1 = Sale.objects.filter(house__signups__date__year=y
                                         ).filter(house__signups__date__month=m
                                         ).filter(house__signups__cancel=None
                                         ).filter(demand__project__id = demand.project.id
                                         ).exclude(contractor_pay__gte = date(demand.month==12 and demand.year+1 or demand.year, 
                                                                              demand.month==12 and 1 or demand.month+1,1))
                 if m == 3 and demand.month==5:
-                    cnt = subSales.count()
+                    cnt = subSales1.count()
                     raise AttributeError
-                self.calc(subSales, 1)
+                self.calc(subSales1, 1)
                 #get sales from last months, affected by this month's calculation,
                 #excluding sales from current demand
-                subSales = Sale.objects.filter(house__signups__date__year=y
+                subSales2 = Sale.objects.filter(house__signups__date__year=y
                                         ).filter(house__signups__date__month=m
                                         ).filter(house__signups__cancel=None
                                         ).filter(demand__project__id = demand.project.id
                                         ).exclude(contractor_pay__gte = date(demand.year, demand.month ,1))
-                for s in subSales:
+                for s in subSales2:
                     signup = s.house.get_signup()
                     if not signup: continue
                     #get the finish date when the demand for the month the signup 
