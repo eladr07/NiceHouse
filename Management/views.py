@@ -15,13 +15,16 @@ from mail import mail
 
 @login_required
 def index(request):
-    '''
+    
     for m in range(1,8):
         d = Demand.objects.get(project__id=5, year=2009, month=m)
         for s in d.statuses.all():
             s.delete()
         for s in d.get_sales():
             for scd in s.project_commission_details:
+                for cl in ChangeLog.objects.filter(object_type='SaleCommissionDetail',
+                                                   object_id=scd.id):
+                    cl.delete()
                 scd.delete()
     for m in range(1,8):
         d = Demand.objects.get(project__id=5, year=2009, month=m)
@@ -29,7 +32,7 @@ def index(request):
         d = Demand.objects.get(project__id=5, year=2009, month=m)
         time.sleep(1)
         d.finish()
-    '''
+    
     return render_to_response('Management/index.html',
                               {'locateHouseForm':LocateHouseForm(),
                                'nhbranches':NHBranch.objects.all()},
