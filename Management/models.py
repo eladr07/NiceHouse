@@ -1089,12 +1089,9 @@ class ProjectCommission(models.Model):
                 subSales = Sale.objects.filter(house__signups__date__year=y
                                         ).filter(house__signups__date__month=m
                                         ).filter(house__signups__cancel=None
-                                        ).filter(demand__project__id = s.demand.project.id
+                                        ).filter(demand__project__id = demand.project.id
                                         ).exclude(contractor_pay__gte = date(demand.month==12 and demand.year+1 or demand.year, 
                                                                              demand.month==12 and 1 or demand.month+1,1))
-                for s2 in subSales.all():
-                    if s2.id == 290:
-                        raise AttributeError()
                 self.calc(subSales, 1)
                 #get sales from last months, affected by this month's calculation,
                 #excluding sales from current demand
