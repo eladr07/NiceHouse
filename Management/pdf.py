@@ -371,6 +371,7 @@ class MonthDemandWriter:
             flows.extend([self.signup_counts_para(), Spacer(0,10)])
         rows = []
         for s in sales:
+            s.restore = True
             row = ['%s-%s' % (self.demand.id, i)]
             if contract_num:
                 row.append(s.contract_num)
