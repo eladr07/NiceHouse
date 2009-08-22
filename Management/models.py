@@ -1557,46 +1557,20 @@ class Sale(models.Model):
             q = self.project_commission_details.filter(commission=c)
             if q.count() == 0:
                 continue
-            demand_finish_date = self.actual_demand.finish_date
-            if demand_finish_date:
-                old_obj = restore_object(q[0], demand_finish_date)
-                return old_obj.value
-            else:
-                return q[0].value
+            return q[0].value
         return 0
     @property
     def zdb(self):
         q = self.project_commission_details.filter(commission='c_zilber_discount')
-        if q.count() == 0:
-            return 0
-        demand_finish_date = self.actual_demand.finish_date
-        if demand_finish_date:
-            old_obj = restore_object(q[0], demand_finish_date)
-            return old_obj.value
-        else:
-            return q[0].value
+        return q.count() == 1 and q[0].value or 0
     @property
     def pb_dsp(self):
         q = self.project_commission_details.filter(commission='b_discount_save_precentage')
-        if q.count() == 0:
-            return 0
-        demand_finish_date = self.actual_demand.finish_date
-        if demand_finish_date:
-            old_obj = restore_object(q[0], demand_finish_date)
-            return old_obj.value
-        else:
-            return q[0].value
+        return q.count() == 1 and q[0].value or 0
     @property
     def c_final(self):
         q = self.project_commission_details.filter(commission='final')
-        if q.count() == 0:
-            return 0
-        demand_finish_date = self.actual_demand.finish_date
-        if demand_finish_date:
-            old_obj = restore_object(q[0], demand_finish_date)
-            return old_obj.value
-        else:
-            return q[0].value
+        return q.count() == 1 and q[0].value or 0
     @property
     def pc_base_worth(self):
         return self.pc_base * self.price_final / 100
