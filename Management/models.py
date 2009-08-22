@@ -1552,25 +1552,32 @@ class Sale(models.Model):
     def project_commission_details(self):
         return self.commission_details.filter(employee_salary=None)
     @property
-    def pc_base(self):
+    def pc_base(self, restore=False):
         for c in ['c_var_precentage', 'c_var_precentage_fixed', 'c_zilber_base']:
             q = self.project_commission_details.filter(commission=c)
             if q.count() == 0:
                 continue
-            return q[0].value
+        finish_date = self.actual_demand.finish_date
+        return restore and finish_date and restore_object(q[0], finish_date).value or q[0].value
         return 0
     @property
-    def zdb(self):
+    def zdb(self, restore=False):
         q = self.project_commission_details.filter(commission='c_zilber_discount')
-        return q.count() == 1 and q[0].value or 0
+        if q.count() == 0: return 0
+        finish_date = self.actual_demand.finish_date
+        return restore and finish_date and restore_object(q[0], finish_date).value or q[0].value
     @property
-    def pb_dsp(self):
+    def pb_dsp(self, restore=False):
         q = self.project_commission_details.filter(commission='b_discount_save_precentage')
-        return q.count() == 1 and q[0].value or 0
+        if q.count() == 0: return 0
+        finish_date = self.actual_demand.finish_date
+        return restore and finish_date and restore_object(q[0], finish_date).value or q[0].value
     @property
-    def c_final(self):
+    def c_final(self, restore=False):
         q = self.project_commission_details.filter(commission='final')
-        return q.count() == 1 and q[0].value or 0
+        if q.count() == 0: return 0
+        finish_date = self.actual_demand.finish_date
+        return restore and finish_date and restore_object(q[0], finish_date).value or q[0].value
     @property
     def pc_base_worth(self):
         return self.pc_base * self.price_final / 100
@@ -1700,7 +1707,16 @@ def restore_object(instance, date):
     for l in ChangeLog.objects.filter(object_type = model.__name__,
                                       object_id = id,
                                       date__gte = date):
-        setattr(instance, l.attribute, l.old_value)
+        try:
+            if isinstance(getattr(instance, l.attribute), float):
+                val = float(l.old_value)
+            elif isinstance(getattr(instance, l.attribute), int):
+                val = int(l.old_value)
+            else:
+                val = l.attribute
+            setattr(instance, l.attribute, val)
+        except:
+            pass
     return instance
 
 def track_changes(sender, **kwargs):
