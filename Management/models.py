@@ -1115,7 +1115,7 @@ class ProjectCommission(models.Model):
                         bonus += int(diff)
             if bonus > 0:
                 demand.bonus = bonus
-                demand.bonus_type = u'הפרשים על חודשים קודמים'
+                demand.bonus_type = u'הפרשי עמלה (ניספח א)'
                 demand.save()
             return
         if getattr(self, 'c_zilber') != None:
@@ -1553,28 +1553,50 @@ class Sale(models.Model):
         return self.commission_details.filter(employee_salary=None)
     @property
     def pc_base(self):
-        q2 = self.project_commission_details.filter(commission='c_var_precentage')
-        q3 = self.project_commission_details.filter(commission='c_var_precentage_fixed')
-        q4 = self.project_commission_details.filter(commission='c_zilber_base')
-        if q2.count() == 1:
-            return q2[0].value
-        if q3.count() == 1:
-            return q3[0].value
-        if q4.count() == 1:
-            return q4[0].value
+        for c in ['c_var_precentage', 'c_var_precentage_fixed', 'c_zilber_base']:
+            q = self.project_commission_details.filter(commission=c)
+            if q.count() == 0:
+                continue
+            demand_finish_date = self.actual_demand.finish_date
+            if demand_finish_date:
+                old_obj = restore_object(q[0], demand_finish_date)
+                return old_obj.value
+            else:
+                return q[0].value
         return 0
     @property
     def zdb(self):
         q = self.project_commission_details.filter(commission='c_zilber_discount')
-        return q.count() == 1 and q[0].value or 0
+        if q.count() == 0:
+            return 0
+        demand_finish_date = self.actual_demand.finish_date
+        if demand_finish_date:
+            old_obj = restore_object(q[0], demand_finish_date)
+            return old_obj.value
+        else:
+            return q[0].value
     @property
     def pb_dsp(self):
         q = self.project_commission_details.filter(commission='b_discount_save_precentage')
-        return q.count() == 1 and q[0].value or 0
+        if q.count() == 0:
+            return 0
+        demand_finish_date = self.actual_demand.finish_date
+        if demand_finish_date:
+            old_obj = restore_object(q[0], demand_finish_date)
+            return old_obj.value
+        else:
+            return q[0].value
     @property
     def c_final(self):
         q = self.project_commission_details.filter(commission='final')
-        return q.count() == 1 and q[0].value or 0
+        if q.count() == 0:
+            return 0
+        demand_finish_date = self.actual_demand.finish_date
+        if demand_finish_date:
+            old_obj = restore_object(q[0], demand_finish_date)
+            return old_obj.value
+        else:
+            return q[0].value
     @property
     def pc_base_worth(self):
         return self.pc_base * self.price_final / 100
@@ -1695,6 +1717,17 @@ tracked_models = [BDiscountSave, BDiscountSavePrecentage, BHouseType, BSaleRate,
                   CAmount, CByPrice, CPrecentage, CPriceAmount, CVar,
                   CVarPrecentage, CVarPrecentageFixed, CZilber, EmploymentTerms,
                   ProjectCommission, SaleCommissionDetail]
+
+def restore_object(instance, date):
+    model = instance.__class__
+    id = getattr(instance, 'id', None)
+    if not model in tracked_models or not id:
+        raise TypeError()
+    for l in ChangeLog.objects.filter(object_type = model.__name__,
+                                      object_id = id,
+                                      date__gte = date):
+        setattr(instance, l.attribute, l.old_value)
+    return instance
 
 def track_changes(sender, **kwargs):
     instance = kwargs['instance']
