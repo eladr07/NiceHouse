@@ -1560,8 +1560,8 @@ class Sale(models.Model):
             q = self.project_commission_details.filter(commission=c)
             if q.count() == 0:
                 continue
-        finish_date = self.actual_demand.finish_date
-        return self.restore and finish_date and restore_object(q[0], finish_date).value or q[0].value
+            finish_date = self.actual_demand.finish_date
+            return self.restore and finish_date and restore_object(q[0], finish_date).value or q[0].value
         return 0
     @property
     def zdb(self):
