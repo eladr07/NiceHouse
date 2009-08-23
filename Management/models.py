@@ -1243,13 +1243,12 @@ class Demand(models.Model):
         '''
         dic = {}
         for m,y in self.get_signup_months():
-            dic[(m,y)] = models.Sale.objects.filter(house__signups__date__year=y,
-                                                    house__signups__date__month=m,
-                                                    house__signups__cancel=None,
-                                                    demand__project__id = self.project.id,
-                                                    salecancel=None
-                        ).exclude(contractor_pay__gte = date(self.year,
-                                                             self.month, 1))
+            dic[(m,y)] = Sale.objects.filter(house__signups__date__year=y,
+                                             house__signups__date__month=m,
+                                             house__signups__cancel=None,
+                                             demand__project__id = self.project.id,
+                                             salecancel=None
+                        ).exclude(contractor_pay__gte = date(self.year,self.month, 1))
         return dic
     def get_signup_months(self):
         months = {}
