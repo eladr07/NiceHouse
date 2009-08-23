@@ -320,24 +320,23 @@ class MonthDemandWriter:
                 Spacer(0,30), t]
     def signup_counts_para(self):
         s = log2vis(u'סה"כ הרשמות מצטבר לחישוב עמלה') + '<br/>'
-        s += log2vis(u', '.join(u'%s הרשמות מ - %s/%s' % (count, month[0], month[1]) 
+        s += log2vis(u', '.join(u'%s מ - %s/%s' % (count, month[0], month[1]) 
                                 for month, count in self.demand.get_signup_months().items())) + '<br/>'
         count = 0
         for subSales in self.demand.get_affected_sales().values():
             count += subSales.count()
-        s += log2vis(u' + %s הרשמות מחודשים קודמים' % count)
+        s += log2vis(u' + %s מחודשים קודמים' % count)
         return Paragraph(s, ParagraphStyle('signup_months', fontName='David', fontSize=10, alignment=TA_CENTER))
     def saleFlows(self):
         sales = self.demand.get_sales()
         names = [u'מס"ד']
         colWidths = [35]
         contract_num, discount, final, zilber = (False, False, False, False)
-        for s in sales:
-            if s.contract_num:
-                names.append(u"חוזה\nמס'")
-                colWidths.append(40)
-                contract_num = True
-                break
+        if sales[0].contract_num:
+            names.append(u"חוזה\nמס'")
+            colWidths.append(40)
+            contract_num = True
+            break
         if self.signup_adds:
             names.append(u'הרשמה\nתאריך')
             colWidths.append(None)
