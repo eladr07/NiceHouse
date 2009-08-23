@@ -321,7 +321,7 @@ class MonthDemandWriter:
     def signup_counts_para(self):
         s = log2vis(u'סה"כ הרשמות מצטבר לחישוב עמלה') + '<br/>'
         s += log2vis(u', '.join(u'%s הרשמות מ - %s/%s' % (count, month[0], month[1]) 
-                                for month, count in self.demand.get_signup_months().items()))
+                                for month, count in self.demand.get_signup_months().items())) + '<br/>'
         count = 0
         for subSales in self.demand.get_affected_sales().values():
             count += subSales.count()
