@@ -336,7 +336,6 @@ class MonthDemandWriter:
             names.append(u"חוזה\nמס'")
             colWidths.append(40)
             contract_num = True
-            break
         if self.signup_adds:
             names.append(u'הרשמה\nתאריך')
             colWidths.append(None)
