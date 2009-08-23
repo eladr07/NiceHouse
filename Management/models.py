@@ -1088,31 +1088,25 @@ class ProjectCommission(models.Model):
                                         ).exclude(contractor_pay__gte = date(demand.month==12 and demand.year+1 or demand.year, 
                                                                              demand.month==12 and 1 or demand.month+1,1))
                 self.calc(subSales, 1)
-                #get sales from last months, affected by this month's calculation,
-                #excluding sales from current demand
-                subSales = Sale.objects.filter(house__signups__date__year=y,
-                                               house__signups__date__month=m,
-                                               house__signups__cancel=None,
-                                               house__building__project = demand.project
-                                        ).exclude(contractor_pay__gte = date(demand.year, demand.month ,1))
-                for s in subSales:
-                    signup = s.house.get_signup()
-                    if not signup: continue
-                    #get the finish date when the demand for the month the signup 
-                    #were made we use it to find out what was the commission at
-                    #that time
-                    finish_date = s.actual_demand.finish_date 
-                    if not finish_date: continue
-                    q = s.project_commission_details.filter(commission='final')
-                    if q.count()==0: continue
-                    log = ChangeLog.objects.filter(object_type='SaleCommissionDetail',
-                                                   object_id=q[0].id, 
-                                                   attribute='value',
-                                                   date__lt=finish_date)
-                    if log.count() > 0:
-                        paid_final_value = float(log.latest().new_value)
-                        diff = (s.c_final - paid_final_value) * s.price_final / 100
-                        bonus += int(diff)
+                for subSales in demand.get_affected_sales().values():
+                    for s in subSales:
+                        signup = s.house.get_signup()
+                        if not signup: continue
+                        #get the finish date when the demand for the month the signup 
+                        #were made we use it to find out what was the commission at
+                        #that time
+                        finish_date = s.actual_demand.finish_date 
+                        if not finish_date: continue
+                        q = s.project_commission_details.filter(commission='final')
+                        if q.count()==0: continue
+                        log = ChangeLog.objects.filter(object_type='SaleCommissionDetail',
+                                                       object_id=q[0].id, 
+                                                       attribute='value',
+                                                       date__lt=finish_date)
+                        if log.count() > 0:
+                            paid_final_value = float(log.latest().new_value)
+                            diff = (s.c_final - paid_final_value) * s.price_final / 100
+                            bonus += int(diff)
             if bonus > 0:
                 demand.bonus = bonus
                 demand.bonus_type = u'הפרשי עמלה (ניספח א)'
@@ -1242,6 +1236,21 @@ class Demand(models.Model):
 
     objects = DemandManager()
     
+    def get_affected_sales(self):
+        '''
+        get sales from last months, affected by this month's calculation,
+        excluding sales from current demand
+        '''
+        dic = {}
+        for m,y in self.get_signup_months():
+            dic[(m,y)] = models.Sale.objects.filter(house__signups__date__year=y,
+                                                    house__signups__date__month=m,
+                                                    house__signups__cancel=None,
+                                                    demand__project__id = self.project.id,
+                                                    salecancel=None
+                        ).exclude(contractor_pay__gte = date(self.year,
+                                                             self.month, 1))
+        return dic
     def get_signup_months(self):
         months = {}
         for s in self.get_sales():

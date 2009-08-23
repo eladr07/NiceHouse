@@ -287,15 +287,8 @@ class MonthDemandWriter:
                                         u'חוזה\nתאריך',u'חוזה\nמחיר', u'ששולמה\nעמלה', 
                                         u'חדשה\nעמלה', u'עמלה\nהפרש', u'בש"ח\nהפרש']]
         headers.reverse()
-        months=self.demand.get_signup_months().keys()
         rows = []
-        for m, y in months:
-            subSales = models.Sale.objects.filter(house__signups__date__year=y
-                        ).filter(house__signups__date__month=m
-                        ).filter(house__signups__cancel=None
-                        ).filter(demand__project__id = self.demand.project.id
-                        ).exclude(contractor_pay__gte = date(self.demand.year,
-                                                             self.demand.month, 1))
+        for subSales in self.demand.get_affected_sales().values():
             for s in subSales.all():
                 singup = s.house.get_signup() 
                 row = [singup.date.strftime('%d/%m/%y'), s.contractor_pay.strftime('%m/%y'), 
@@ -325,9 +318,13 @@ class MonthDemandWriter:
         return [tableCaption(caption=log2vis(u'להלן תוספות להרשמות מחודשים קודמים')),
                 Spacer(0,30), t]
     def signup_counts_para(self):
-        s = log2vis(u'סה"כ הרשמות לחישוב עמלה') + '<br/>'
+        s = log2vis(u'סה"כ הרשמות מצטבר לחישוב עמלה') + '<br/>'
         s += log2vis(u', '.join(u'%s הרשמות מ - %s/%s' % (count, month[0], month[1]) 
                                 for month, count in self.demand.get_signup_months().items()))
+        count = 0
+        for subSales in self.demand.get_affected_sales().values():
+            count += subSales.count()
+        s += log2vis(u' + %s הרשמות מחודשים קודמים' % count)
         return Paragraph(s, ParagraphStyle('signup_months', fontName='David', fontSize=10, alignment=TA_CENTER))
     def saleFlows(self):
         sales = self.demand.get_sales()
