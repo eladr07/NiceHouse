@@ -188,14 +188,15 @@ class EmployeeListWriter:
 class MonthDemandWriter:
     @property
     def pages_count(self):
+        base = self.signup_adds and 1 or 0
         count = self.demand.get_sales().count()
         if count <= 9:
-            return 1
+            return base + 1
         if count <= 25:
-            return 2
+            return base + 2
         if count <= 40:
-            return 3
-        return 4
+            return base + 3
+        return base + 4
     def __init__(self, demand):
         if demand.sales.count() == 0:
             raise AttributeError('demand','has no sales')
