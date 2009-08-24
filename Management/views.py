@@ -565,8 +565,9 @@ def demand_sale_reject(request, id):
     sale = Sale.objects.get(pk=id)
     if sale.demand.statuses.latest().type.id == DemandSent:
         y,m = (sale.demand.year, sale.demand.month)
-        sr = sale.salereject or SaleReject(sale = sale, date = date.today(), to_month=date(m+1==13 and y+1 or y, m+1==13 and 1 or m+1,1),
-                        employee_pay = date(y,m,1))
+        sr = sale.salereject or SaleReject(sale = sale, employee_pay = date(y,m,1))
+        sr.date = date.today()
+        sr.to_month = date(m+1==13 and y+1 or y, m+1==13 and 1 or m+1,1)
         sr.save()
         return HttpResponseRedirect('/salereject/%s' % sr.id)
 
