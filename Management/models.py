@@ -616,7 +616,7 @@ class NHEmployeeSalary(models.Model):
                 self.commissions += pay.amount
     class Meta:
         db_table='NHEmployeeSalary'
-        unique_together = ('employee','year','month')
+        unique_together = ('nhemployee','year','month')
         
 class AdvancePayment(models.Model):
     employee = models.ForeignKey('Employee', related_name = 'advance_payments', verbose_name=ugettext('employee'))
