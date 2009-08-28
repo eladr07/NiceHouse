@@ -1557,7 +1557,7 @@ class NHSale(models.Model):
     floor = models.PositiveSmallIntegerField(ugettext('floor'))
     type = models.ForeignKey('HouseType', verbose_name = ugettext('house_type'))
     
-    sale_date = models.DateField(ugetetxt('sale_date'))
+    sale_date = models.DateField(ugettext('sale_date'))
     price = models.FloatField(ugettext('price'))
     remarks = models.TextField(ugettext('remarks'))
         
