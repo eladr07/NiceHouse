@@ -658,6 +658,7 @@ def project_archive(request):
                               context_instance=RequestContext(request))
 
 def nhsale_add(request, branch_id):
+    PaymentFormset = modelformset_factory(Payment, PaymentForm, extra=5)
     if request.method=='POST':
         saleForm = NHSaleForm(request.POST, prefix='sale')
         saleForm.fields['nhbranch'].initial = branch_id
@@ -697,15 +698,15 @@ def nhsale_add(request, branch_id):
         side1form = NHSaleSideForm(prefix='side1')
         side2form = NHSaleSideForm(prefix='side2')
         invoice1Form = InvoiceForm(prefix='invoice1')
-        payment1Form = PaymentForm(prefix='payment1')
+        payment1Forms = PaymentFormset(prefix='payments1')
         invoice2Form = InvoiceForm(prefix='invoice2')
-        payment2Form = PaymentForm(prefix='payment2')
+        payment2Forms = PaymentFormset(prefix='payments2')
         
     return render_to_response('Management/nhsale_edit.html',
                               {'saleForm':saleForm, 'side1form':side1form,
                                'side2form':side2form, 'invoice1Form':invoice1Form,
-                               'payment1Form':payment1Form, 'invoice2Form':invoice2Form, 
-                               'payment2Form':payment2Form}, 
+                               'payment1Forms':payment1Forms, 'invoice2Form':invoice2Form, 
+                               'payment2Forms':payment2Forms}, 
                               context_instance=RequestContext(request))
 
 @permission_required('Management.change_pricelist')

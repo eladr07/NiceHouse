@@ -563,6 +563,60 @@ class NHEmployee(EmployeeBase):
     class Meta:
         db_table = 'NHEmployee'
         ordering = ['nhbranch','-work_start']
+
+class NHEmployeeSalary(models.Model):
+    nhemployee = models.ForeignKey('NHEmployee', verbose_name=ugettext('nhemployee'), related_name='salaries')
+    month = models.PositiveSmallIntegerField(ugettext('month'), editable=False, choices=((i,i) for i in range(1,13)))
+    year = models.PositiveSmallIntegerField(ugettext('year'), editable=False, choices=((i,i) for i in range(datetime.now().year - 10,
+                                                                                             datetime.now().year + 10)))
+    base = models.IntegerField(ugettext('salary_base'))
+    commissions = models.IntegerField(ugettext('commissions'), editable=False)
+    safety_net = models.PositiveSmallIntegerField(ugettext('safety_net'), null=True, blank=True)
+    var_pay = models.SmallIntegerField(ugettext('var_pay'), null=True, blank=True)
+    var_pay_type = models.CharField(ugettext('var_pay_type'), max_length=20, null=True, blank=True)
+    refund = models.SmallIntegerField(ugettext('refund'), null=True, blank=True)
+    refund_type = models.CharField(ugettext('refund_type'), max_length=20, null=True, blank=True)
+    deduction = models.SmallIntegerField(ugettext('deduction'), null=True, blank=True)
+    deduction_type = models.CharField(ugettext('deduction_type'), max_length=20, null=True, blank=True)
+    approved = models.BooleanField(editable=False)
+    is_sent = models.BooleanField(editable=False)
+    remarks = models.TextField(ugettext('remarks'),null=True, blank=True)
+    @property
+    def nhsalesides(self):
+        salesides = []
+        nhmonths = NHMonth.objects.filter(year=self.year, month=self.month)
+        for nhmonth in nhmonths:
+            for nhsale in nhmonth.nhsales.all():
+                for nhsaleside in nhsale.nhsaleside_set.all():
+                     if nhsaleside.is_employee_related(self.nhemployee):
+                         salesides.append(nhsaleside)
+        return salesides
+    @property
+    def loan_pay(self):
+        amount = 0
+        for lp in self.nhemployee.loan_pays.filter(date__year = self.year, date__month = self.month):
+            amount += lp.amount
+        return amount
+    @property
+    def total_amount(self):
+        return self.base + self.commissions + (self.var_pay or 0) + (self.safety_net or 0) - (self.deduction or 0)
+    @property
+    def check_amount(self):
+        return self.total_amount - self.loan_pay
+    @property
+    def bruto_amount(self):
+        if not self.nhemployee.employment_terms or self.nhemployee.employment_terms.salary_net:
+            return None
+        return self.total_amount
+    def calculate(self):
+        self.commissions = 0
+        for nhsaleside in self.nhsalesides:
+            for pay in nhsaleside.nhpays.filter(date__year = self.year,
+                                                date__month = self.month):
+                self.commissions += pay.amount
+    class Meta:
+        db_table='NHEmployeeSalary'
+        unique_together = ('employee','year','month')
         
 class AdvancePayment(models.Model):
     employee = models.ForeignKey('Employee', related_name = 'advance_payments', verbose_name=ugettext('employee'))
@@ -1410,9 +1464,12 @@ class Madad(models.Model):
         ordering = ['-date']
 
 class NHPay(models.Model):
-    nhsale = models.ForeignKey('NHSale', editable=False, related_name='pays')
-    employee = models.ForeignKey('NHEmployee', editable=False, related_name='nhpays', null=True)
-    lawyer = models.ForeignKey('Lawyer', editable=False, related_name='nhpays', null=True)
+    nhsaleside = models.ForeignKey('NHSaleSide', editable=False, related_name='pays')
+    employee = models.ForeignKey('NHEmployee', editable=False, related_name='nhpays', 
+                                 null=True)
+    lawyer = models.ForeignKey('Lawyer', editable=False, related_name='nhpays', 
+                               null=True)
+    pay_date = models.DateField(auto_now_add=True)
     amount = models.FloatField(ugettext('amount'))
     class Meta:
         db_table='NHPay'
@@ -1422,15 +1479,21 @@ class Lawyer(Person):
         db_table='Lawyer'
 
 class NHSaleSide(models.Model):
+    nhsale = models.ForeignKey('NHSale')
     name1 = models.CharField(ugettext('name'), max_length=20, null=True, blank=True)
     name2 = models.CharField(ugettext('name'), max_length=20, null=True, blank=True)
     phone1 = models.CharField(ugettext('phone'), max_length=20, null=True, blank=True)
     phone2 = models.CharField(ugettext('phone'), max_length=20, null=True, blank=True)
     employee1 = models.ForeignKey('NHEmployee', verbose_name=ugettext('advisor'), related_name='nhsaleside1s')
+    employee1_commission = models.FloatField(ugettext('commission_precent'))
     employee2 = models.ForeignKey('NHEmployee', verbose_name=ugettext('advisor'), related_name='nhsaleside2s', 
                                 null=True, blank=True)
+    employee2_commission = models.FloatField(ugettext('commission_precent'), 
+                                            null=True, blank=True)
     director = models.ForeignKey('EmployeeBase', verbose_name=ugettext('director'), related_name='nhsaleside_director', 
-                                null=True, blank=True)
+                                null=True, blank=True)    
+    director_commission = models.FloatField(label=ugettext('commission_precent'), 
+                                            null=True, blank=True)
     lawyer1 = models.ForeignKey('Lawyer', verbose_name=ugettext('lawyer'), related_name='nhsaleside1s', 
                                 null=True, blank=True)
     lawyer2 = models.ForeignKey('Lawyer', verbose_name=ugettext('lawyer'), related_name='nhsaleside2s', 
@@ -1443,13 +1506,50 @@ class NHSaleSide(models.Model):
     invoices = models.ManyToManyField('Invoice', null=True, editable=False)
     payments = models.ManyToManyField('Payment', null=True, editable=False)
     remarks = models.TextField(ugettext('remarks'))
+    @property
+    def income(self):
+        return self.nhsale.price * self.actual_commission / 100
+    @property
+    def net_income(self):
+        net = self.income
+        for nhp in lawyer1.nhpays.all(nhsale=self.nhsale):
+             net -= nhp.amount
+        for nhp in lawyer2.nhpays.all(nhsale=self.nhsale):
+             net -= nhp.amount
+        return net
+    def is_employee_related(self, employee):
+        return self.employee1 == employee or self.employee2 == employee or self.director == employee
+    def save(self,*args, **kw):
+        models.Model.save(self, *args, **kw)
+        e1, ec1, e2, ec2, d, dc, nhsale = (self.employee1, self.employee1_commission,
+                                           self.employee2, self.employee2_commission,
+                                           self.director, self.director_commission,
+                                           self.nhsale)
+        if e1 and ec1:
+            nhp = e1.nhpays.get_or_create(nhsale = nhsale)[0]
+            nhp.amount = nhsale.price * ec1 / 100
+            nhp.save()
+        if e2 and ec2:
+            nhp = e2.nhpays.get_or_create(nhsale = nhsale)[0]
+            nhp.amount = nhsale.price * ec2 / 100
+            nhp.save()
+        if d and dc:
+            nhp = d.nhpays.get_or_create(nhsale = nhsale)[0]
+            nhp.amount = nhsale.price * ec2 / 100
+            nhp.save()
     class Meta:
         db_table = 'NHSaleSide'
 
-class NHSale(models.Model):
+class NHMonth(models.Model):
     nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'))
-    side1 = models.ForeignKey('NHSaleSide', related_name='nhsaleside1s')
-    side2 = models.ForeignKey('NHSaleSide', related_name='nhsaleside2s')
+    year = models.PositiveSmallIntegerField(ugettext('year'))
+    month = models.PositiveSmallIntegerField(ugettext('month'))
+    class Meta:
+        db_table = 'NHMonth'
+
+class NHSale(models.Model):
+    nhmonth = models.ForeignKey('NHMonth', editable=False, related_name='nhsales')
+    nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'))
     
     address = models.CharField(ugettext('address'), max_length=50)
     hood = models.CharField(ugettext('hood'), max_length=50)
@@ -1457,6 +1557,7 @@ class NHSale(models.Model):
     floor = models.PositiveSmallIntegerField(ugettext('floor'))
     type = models.ForeignKey('HouseType', verbose_name = ugettext('house_type'))
     
+    sale_date = models.DateField(ugetetxt('sale_date'))
     price = models.FloatField(ugettext('price'))
     remarks = models.TextField(ugettext('remarks'))
         

@@ -330,7 +330,7 @@ class InvoiceForm(forms.ModelForm):
 class PaymentForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
-        self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
+        self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'1'})
         self.fields['payment_date'].widget.attrs = {'class':'vDateField'}
     class Meta:
         model = Payment
@@ -359,42 +359,23 @@ class NHSaleForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self, *args, **kw)
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
+        self.fields['sale_date'].widget.attrs = {'class':'vDateField'}
     class Meta:
         model = NHSale
 
 class NHSaleSideForm(forms.ModelForm):
-    employee1_commission = forms.FloatField(label=ugettext('commission_precent'))
-    employee2_commission = forms.FloatField(label=ugettext('commission_precent'), required=False)
-    director_commission = forms.FloatField(label=ugettext('commission_precent'), required=False)
     lawyer1_pay = forms.FloatField(label=ugettext('lawyer_pay'))
     lawyer2_pay = forms.FloatField(label=ugettext('lawyer_pay'), required=False)
     def save(self, *args, **kw):
-        e1, e2, d = (self.cleaned_data['employee1'], self.cleaned_data['employee2'],
-                     self.cleaned_data['director'])
-        ec1, ec2, dc = (self.cleaned_data['employee1_commission'], self.cleaned_data['employee2_commission'],
-                        self.cleaned_data['director_commission'])
+        forms.ModelForm.save(self, *args,**kw)
         l1, l2 = (self.cleaned_data['lawyer1'], self.cleaned_data['lawyer2'])
         lp1, lp2 = (self.cleaned_data['lawyer1_pay'], self.cleaned_data['lawyer2_pay'])
-        side = forms.ModelForm.save(self, *args,**kw)
-        nhsale = side.nhsale
-        if e1 and ec1:
-            nhp = e1.nhpays.get_or_create(nhsale = nhsale)[0]
-            nhp.amount = nhsale.price * ec1 / 100
-            nhp.save()
-        if e2 and ec2:
-            nhp = e2.nhpays.get_or_create(nhsale = nhsale)[0]
-            nhp.amount = nhsale.price * ec2 / 100
-            nhp.save()
-        if d and dc:
-            nhp = d.nhpays.get_or_create(nhsale = nhsale)[0]
-            nhp.amount = nhsale.price * ec2 / 100
-            nhp.save()
         if l1 and lp1:
-            nhp = l1.nhpays.get_or_create(nhsale = nhsale)[0]
+            nhp = l1.nhpays.get_or_create(nhsaleside = self.instance)[0]
             nhp.amount = lp1
             nhp.save()
         if l2 and lp2:
-            nhp = l2.nhpays.get_or_create(nhsale = nhsale)[0]
+            nhp = l2.nhpays.get_or_create(nhsaleside = self.instance)[0]
             nhp.amount = lp2
             nhp.save()
     def __init__(self, *args, **kw):
@@ -403,12 +384,6 @@ class NHSaleSideForm(forms.ModelForm):
         self.fields['voucher_date'].widget.attrs = {'class':'vDateField'}
         if self.instance.id:
             nhsale = self.instance.nhsale
-            if self.instance.employee1:
-                pays = self.employee1.pays.filter(nhsale=nhsale)
-                self.fields['employee1_commission'].initial = pays[0] / nhsale.price * 100
-            if self.instance.employee2:
-                pays = self.employee2.pays.filter(nhsale=nhsale)
-                self.fields['employee2_commission'].initial = pays[0] / nhsale.price * 100
             if self.instance.lawyer1:
                 pays = self.lawyer1.pays.filter(nhsale=nhsale)
                 self.fields['lawyer1_pay'].initial = pays[0]

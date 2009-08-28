@@ -1,4 +1,37 @@
 ﻿{% extends "./base.html" %}
+{% block header %}
+{{block.super}}
+<script>
+	$(document).ready(function() {	
+		$("#payments1 tr").each(function(index, element) {
+			if (index > 1)
+				$(element).hide();
+		});
+		$("#payments2 tr").each(function(index, element) {
+			if (index > 1)
+				$(element).hide();
+		});
+		$("#payment1count").change(function() {
+			var payments1count = $(this).val();
+			$("#payments1 tr").each(function(index, element) {
+				if (index > payments1count)
+					$(element).hide();
+				else
+					$(element).show();
+			});
+		});
+		$("#payment2count").change(function() {
+			var payments2count = $(this).val();
+			$("#payments2 tr").each(function(index, element) {
+				if (index > payments2count)
+					$(element).hide();
+				else
+					$(element).show();
+			});
+		});
+	});
+</script>
+{% endblock header %}
 {% block content %}
 	<div class="title">
 		<div class="pageTitle">
@@ -27,13 +60,11 @@
 					{{ saleForm.address }}
 					{% if saleForm.address.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{saleForm.address.errors|join:""}}'/>{% endif %}
 				</td>
-
 				<th>{{ saleForm.hood.label_tag }}</th>
 				<td>
 					{{ saleForm.hood }}
 					{% if saleForm.hood.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{saleForm.hood.errors|join:""}}'/>{% endif %}
 				</td>
-
 				<th>{{ saleForm.type.label_tag }}</th>
 				<td>
 					{{ saleForm.type }}
@@ -46,13 +77,16 @@
 					{{ saleForm.rooms }}
 					{% if saleForm.rooms.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{saleForm.rooms.errors|join:""}}'/>{% endif %}
 				</td>
-
 				<th>{{ saleForm.floor.label_tag }}</th>
 				<td>
 					{{ saleForm.floor }}
 					{% if saleForm.floor.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{saleForm.floor.errors|join:""}}'/>{% endif %}
 				</td>
-
+				<th>{{ saleForm.sale_date.label_tag }}</th>
+				<td>
+					{{ saleForm.sale_date }}
+					{% if saleForm.sale_date.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{saleForm.sale_date.errors|join:""}}'/>{% endif %}
+				</td>
 				<th>{{ saleForm.price.label_tag }}</th>
 				<td>
 					{{ saleForm.price }}
@@ -169,23 +203,6 @@
 			</table>
 			</div>
 			<div style="float:right;">
-			<table cellspacing="2" cellpadding="2" class="formTable">	
-				<tr>
-					<td></td>
-					<th>פרטי תשלום</th>
-				</tr>
-				{% for field in payment1Form %}
-				<tr>
-					<th>{{ field.label_tag }}</th>
-					<td>
-						{{ field }}
-						{% if field.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{field.errors|join:""}}'/>{% endif %}
-					</td>
-				</tr>
-				{% endfor %}
-			</table>
-			</div>
-			<div style="float:right;">
 			<table cellspacing="2" cellpadding="2" class="formTable">
 				<tr>
 					<td></td>
@@ -233,29 +250,11 @@
 						{{ side1form.employee1 }}
 						{% if side1form.employee1.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.employee1.errors|join:""}}'/>{% endif %}
 					</td>
-				</tr>
-				<tr>
-					<th>{{ side1form.employee1_commission.label_tag }}</th>
-					<td>
-						{{ side1form.employee1_commission }}
-						{% if side1form.employee1_commission.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.employee1_commission.errors|join:""}}'/>{% endif %}
-					</td>
-				</tr>
-				<tr>
 					<th>{{ side1form.employee2.label_tag }}</th>
 					<td>
 						{{ side1form.employee2 }}
 						{% if side1form.employee2.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.employee2.errors|join:""}}'/>{% endif %}
 					</td>
-				</tr>
-				<tr>
-					<th>{{ side1form.employee2_commission.label_tag }}</th>
-					<td>
-						{{ side1form.employee2_commission }}
-						{% if side1form.employee2_commission.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.employee2_commission.errors|join:""}}'/>{% endif %}
-					</td>
-				</tr>
-				<tr>
 					<th>{{ side1form.director.label_tag }}</th>
 					<td>
 						{{ side1form.director }}
@@ -263,6 +262,16 @@
 					</td>
 				</tr>
 				<tr>
+					<th>{{ side1form.employee1_commission.label_tag }}</th>
+					<td>
+						{{ side1form.employee1_commission }}
+						{% if side1form.employee1_commission.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.employee1_commission.errors|join:""}}'/>{% endif %}
+					</td>
+					<th>{{ side1form.employee2_commission.label_tag }}</th>
+					<td>
+						{{ side1form.employee2_commission }}
+						{% if side1form.employee2_commission.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.employee2_commission.errors|join:""}}'/>{% endif %}
+					</td>
 					<th>{{ side1form.director_commission.label_tag }}</th>
 					<td>
 						{{ side1form.director_commission }}
@@ -277,6 +286,33 @@
 					</td>
 				</tr>
 			</table>
+			</div>
+			<div class="clearBoth"></div>
+			<div style="float:right;">
+				מס' תשלומים 
+				<select id="payment1count">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+				</select>
+				{{payment1Forms.management_form}}
+				<table id="payments1" style="float:right;" cellspacing="2" cellpadding="2" class="formTable">
+				{% for field in payment1Forms.forms.0 %}
+					<th>{% if not field.is_hidden %}{{ field.label_tag }}{% endif %}</th>
+				{% endfor %}
+				{% for payment1Form in payment1Forms.forms %}
+					<tr>
+						{% for field in payment1Form %}
+							<td>
+								{{ field }}
+								{% if field.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{field.errors|join:""}}'/>{% endif %}
+							</td>
+						{% endfor %}
+					</tr>
+				{% endfor %}
+				</table>
 			</div>
 		</fieldset>
 	</div>
@@ -380,23 +416,6 @@
 			</table>
 			</div>
 			<div style="float:right;">
-			<table cellspacing="2" cellpadding="2" class="formTable">	
-				<tr>
-					<td></td>
-					<th>פרטי תשלום</th>
-				</tr>
-				{% for field in payment1Form %}
-				<tr>
-					<th>{{ field.label_tag }}</th>
-					<td>
-						{{ field }}
-						{% if field.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{field.errors|join:""}}'/>{% endif %}
-					</td>
-				</tr>
-				{% endfor %}
-			</table>
-			</div>
-			<div style="float:right;">
 			<table cellspacing="2" cellpadding="2" class="formTable">
 				<tr>
 					<td></td>
@@ -432,6 +451,7 @@
 				</tr>
 			</table>
 			</div>
+			<div class="clearBoth"></div>
 			<div style="float:right;">
 			<table cellspacing="2" cellpadding="2" class="formTable">
 				<tr>
@@ -444,29 +464,11 @@
 						{{ side2form.employee1 }}
 						{% if side2form.employee1.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.employee1.errors|join:""}}'/>{% endif %}
 					</td>
-				</tr>
-				<tr>
-					<th>{{ side2form.employee1_commission.label_tag }}</th>
-					<td>
-						{{ side2form.employee1_commission }}
-						{% if side2form.employee1_commission.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.employee1_commission.errors|join:""}}'/>{% endif %}
-					</td>
-				</tr>
-				<tr>
 					<th>{{ side2form.employee2.label_tag }}</th>
 					<td>
 						{{ side2form.employee2 }}
 						{% if side2form.employee2.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.employee2.errors|join:""}}'/>{% endif %}
 					</td>
-				</tr>
-				<tr>
-					<th>{{ side2form.employee2_commission.label_tag }}</th>
-					<td>
-						{{ side2form.employee2_commission }}
-						{% if side2form.employee2_commission.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.employee2_commission.errors|join:""}}'/>{% endif %}
-					</td>
-				</tr>
-				<tr>
 					<th>{{ side2form.director.label_tag }}</th>
 					<td>
 						{{ side2form.director }}
@@ -474,6 +476,16 @@
 					</td>
 				</tr>
 				<tr>
+					<th>{{ side2form.employee1_commission.label_tag }}</th>
+					<td>
+						{{ side2form.employee1_commission }}
+						{% if side2form.employee1_commission.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.employee1_commission.errors|join:""}}'/>{% endif %}
+					</td>
+					<th>{{ side2form.employee2_commission.label_tag }}</th>
+					<td>
+						{{ side2form.employee2_commission }}
+						{% if side2form.employee2_commission.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.employee2_commission.errors|join:""}}'/>{% endif %}
+					</td>
 					<th>{{ side2form.director_commission.label_tag }}</th>
 					<td>
 						{{ side2form.director_commission }}
@@ -488,6 +500,33 @@
 					</td>
 				</tr>
 			</table>
+			</div>
+			<div class="clearBoth"></div>
+			<div style="float:right;">
+				מס' תשלומים 
+				<select id="payment2count">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+				</select>
+				{{payment2Forms.management_form}}
+				<table id="payments2" style="float:right;" cellspacing="2" cellpadding="2" class="formTable">
+				{% for field in payment2Forms.forms.0 %}
+					<th>{% if not field.is_hidden %}{{ field.label_tag }}{% endif %}</th>
+				{% endfor %}
+				{% for payment2Form in payment2Forms.forms %}
+					<tr>
+						{% for field in payment2Form %}
+							<td>
+								{{ field }}
+								{% if field.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{field.errors|join:""}}'/>{% endif %}
+							</td>
+						{% endfor %}
+					</tr>
+				{% endfor %}
+				</table>
 			</div>
 		</fieldset>
 	</div>
