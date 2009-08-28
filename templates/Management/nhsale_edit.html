@@ -70,13 +70,13 @@
 					{{ saleForm.type }}
 					{% if saleForm.type.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{saleForm.type.errors|join:""}}'/>{% endif %}
 				</td>
-			</tr>
-			<tr>
 				<th>{{ saleForm.rooms.label_tag }}</th>
 				<td>
 					{{ saleForm.rooms }}
 					{% if saleForm.rooms.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{saleForm.rooms.errors|join:""}}'/>{% endif %}
 				</td>
+			</tr>
+			<tr>
 				<th>{{ saleForm.floor.label_tag }}</th>
 				<td>
 					{{ saleForm.floor }}
@@ -92,8 +92,6 @@
 					{{ saleForm.price }}
 					{% if saleForm.price.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{saleForm.price.errors|join:""}}'/>{% endif %}
 				</td>
-			</tr>
-			<tr>
 				<th>{{ saleForm.remarks.label_tag }}</th>
 				<td colspan="5">
 					{{ saleForm.remarks }}
