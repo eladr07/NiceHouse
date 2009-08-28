@@ -1492,7 +1492,7 @@ class NHSaleSide(models.Model):
                                             null=True, blank=True)
     director = models.ForeignKey('EmployeeBase', verbose_name=ugettext('director'), related_name='nhsaleside_director', 
                                 null=True, blank=True)    
-    director_commission = models.FloatField(label=ugettext('commission_precent'), 
+    director_commission = models.FloatField(ugettext('commission_precent'), 
                                             null=True, blank=True)
     lawyer1 = models.ForeignKey('Lawyer', verbose_name=ugettext('lawyer'), related_name='nhsaleside1s', 
                                 null=True, blank=True)
