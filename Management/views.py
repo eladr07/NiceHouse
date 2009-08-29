@@ -668,6 +668,11 @@ def nhsale_add(request, branch_id):
     PaymentFormset = modelformset_factory(Payment, PaymentForm, extra=5)
     if request.method=='POST':
         saleForm = NHSaleForm(request.POST, prefix='sale')
+        monthForm = NHMonthForm(request.POST, prefix='month')
+        q = NHMonth.objects.filter(nhbranch = monthForm.cleaned_data['nhbranch'],
+                                   year = monthForm.cleaned_data['year'],
+                                   month = monthForm.cleaned_data['month'])
+        saleForm.instance.nhmonth = q.count() == 1 and q[0] or monthForm.save()
         saleForm.fields['nhbranch'].initial = branch_id
         side1form = NHSaleSideForm(request.POST, prefix='side1')
         side2form = NHSaleSideForm(request.POST, prefix='side2')
@@ -701,6 +706,7 @@ def nhsale_add(request, branch_id):
                     return HttpResponseRedirect('add')
     else:
         saleForm = NHSaleForm(prefix='sale')
+        monthForm = NHMonthForm(prefix='month')
         saleForm.fields['nhbranch'].initial = branch_id
         side1form = NHSaleSideForm(prefix='side1')
         side2form = NHSaleSideForm(prefix='side2')
@@ -710,10 +716,10 @@ def nhsale_add(request, branch_id):
         payment2Forms = PaymentFormset(prefix='payments2')
         
     return render_to_response('Management/nhsale_edit.html',
-                              {'saleForm':saleForm, 'side1form':side1form,
-                               'side2form':side2form, 'invoice1Form':invoice1Form,
-                               'payment1Forms':payment1Forms, 'invoice2Form':invoice2Form, 
-                               'payment2Forms':payment2Forms}, 
+                              {'monthForm':monthForm, 'saleForm':saleForm, 
+                               'side1form':side1form, 'side2form':side2form, 
+                               'invoice1Form':invoice1Form, 'payment1Forms':payment1Forms, 
+                               'invoice2Form':invoice2Form, 'payment2Forms':payment2Forms}, 
                               context_instance=RequestContext(request))
 
 @permission_required('Management.change_pricelist')

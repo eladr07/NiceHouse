@@ -475,6 +475,10 @@ class EmployeeCheckForm(forms.ModelForm):
                               label=ugettext('remarks'))
     class Meta:
         model = EmployeeCheck
+
+class NHMonthForm(forms.ModelForm):
+    class Meta:
+        model = NHMonth
         
 class EmploymentTermsForm(forms.ModelForm):
     class Meta:
