@@ -1,0 +1,54 @@
+﻿{% extends "./base.html" %}
+{% load management_extras %}
+{% block header %}
+{{ block.super }}
+<script>
+	$(document).ready(function() {
+		$("#monthChange").click(function(event) {
+			event.preventDefault();
+			location.replace("/nhbranch/{{nhmonth.branch.id}}/sales/" + $("#id_year").val() + "/" + $("#id_month").val())
+		});		
+	});
+</script>
+{% endblock header %}
+{% block content %}
+<div class="title">
+	<div class="pageTitle">ריכוז עסקאות {{nhmonth.branch}} לחודש {{nhmonth.month}}/{{nhmonth.year}}</div>
+</div>
+<div class="clearBoth"></div>
+<div style="float:right;width:30%;">
+	<form method="POST">
+		<table class="dataTable">
+			<tr class="row1">
+				<td colspan="3" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש דרישה</td>
+			</tr>
+			<tr class="row2">
+				{% for field in filterForm %}
+				<td>
+					{{ field.label_tag }} : 
+					{{ field }}
+				</td>
+				{% endfor %}
+				<td><input id="monthChange" type="button" value="חפש" class="button"/></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div class="clearBoth"></div>
+<div class="someIcon" style="width:90px;">
+	<img src="/site_media/images/add_48.png" width="20" height="20"  alt="חדש" /> 
+	<a id="saleAdd">הזנת עסקאות</a>
+</div>
+<div class="clearBoth"></div>	
+<table id="salesTable" class="dataTable" style="text-align:center;" border="1">
+<caption>מציג סה"כ {{nhmonth.nhsales.count}} עסקאות</caption>
+	<tr>
+		<th>מס'</th>
+	</tr>
+    {% for s in nhmonth.nhsales.all %}
+		<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}}>
+			<td>{{s.id}}</td>
+		</tr>
+	{% endfor %}
+</table>
+{% endblock content %}

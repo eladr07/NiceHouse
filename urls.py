@@ -250,6 +250,8 @@ urlpatterns = patterns('',
           'template_name' : 'Management/nhbranch_edit.html',
           'permission':'change_nhbranch',
           'post_save_redirect' : '%(id)s'}),
+    (r'^nhbranch/(?P<branch_id>\d+)/sales$', 'Management.views.nhmonth_sales'),
+    (r'^nhbranch/(?P<branch_id>\d+)/sales/(?P<year>\d+)/(?P<month>\d+)$', 'Management.views.nhmonth_sales'),
     
     (r'^projects/(?P<project_id>\d+)/signups/$', 'Management.views.signup_list'),
     (r'^projects/(?P<project_id>\d+)/signups/add$', 'Management.views.signup_edit'),

@@ -411,6 +411,13 @@ def employee_list_pdf(request):
     p.close()
     return response
 
+def nhmonth_sales(request, branch_id, year=datetime.now().year, month=datetime.now().month):
+    nhm = NHMonth.objects.get(branch__id = branch_id, year=year, month=month)
+    form = MonthFilterForm(initial={'year':year,'month':month})
+    return render_to_response('Management/nhmonth_sales.html', 
+                              { 'nhmonth':nhm, 'filterForm':form },
+                              context_instance=RequestContext(request))
+
 @permission_required('Management.add_demand')
 def demand_list(request, year=demand_month().year, month=demand_month().month):
     ds = Demand.objects.filter(year = year, month = month)
