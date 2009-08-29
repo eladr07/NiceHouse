@@ -46,7 +46,25 @@
 	<br>
 	<form method="POST">
 	<div style="width:70%; margin:auto;">
-	{{monthForm.as_p}}
+	<table class="formTable">
+		<tr>
+			<th>{{ monthForm.nhbranch.label_tag }}</th>
+			<td>
+				{{ monthForm.nhbranch }}
+				{% if monthForm.nhbranch.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{monthForm.nhbranch.errors|join:""}}'/>{% endif %}
+			</td>
+			<th>{{ monthForm.year.label_tag }}</th>
+			<td>
+				{{ monthForm.year }}
+				{% if monthForm.year.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{monthForm.year.errors|join:""}}'/>{% endif %}
+			</td>
+			<th>{{ monthForm.month.label_tag }}</th>
+			<td>
+				{{ monthForm.month }}
+				{% if monthForm.month.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{monthForm.month.errors|join:""}}'/>{% endif %}
+			</td>
+		</tr>
+	</table>
 	<fieldset class="cardFieldset">
 		<legend>פרטי הנכס</legend>
 		<table cellspacing="2" cellpadding="2" class="formTable" align="center">
