@@ -6,14 +6,14 @@
 	$(document).ready(function() {
 		$("#monthChange").click(function(event) {
 			event.preventDefault();
-			location.replace("/nhbranch/{{nhmonth.branch.id}}/sales/" + $("#id_year").val() + "/" + $("#id_month").val())
+			location.replace("/nhbranch/{{nhmonth.nhbranch.id}}/sales/" + $("#id_year").val() + "/" + $("#id_month").val())
 		});		
 	});
 </script>
 {% endblock header %}
 {% block content %}
 <div class="title">
-	<div class="pageTitle">ריכוז עסקאות {{nhmonth.branch}} לחודש {{nhmonth.month}}/{{nhmonth.year}}</div>
+	<div class="pageTitle">ריכוז עסקאות {{nhmonth.nhbranch}} לחודש {{nhmonth.month}}/{{nhmonth.year}}</div>
 </div>
 <div class="clearBoth"></div>
 <div style="float:right;width:30%;">
