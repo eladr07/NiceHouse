@@ -1549,7 +1549,6 @@ class NHMonth(models.Model):
 
 class NHSale(models.Model):
     nhmonth = models.ForeignKey('NHMonth', editable=False, related_name='nhsales')
-    nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'))
     
     address = models.CharField(ugettext('address'), max_length=50)
     hood = models.CharField(ugettext('hood'), max_length=50)

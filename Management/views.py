@@ -669,11 +669,11 @@ def nhsale_add(request, branch_id):
     if request.method=='POST':
         saleForm = NHSaleForm(request.POST, prefix='sale')
         monthForm = NHMonthForm(request.POST, prefix='month')
-        q = NHMonth.objects.filter(nhbranch = monthForm.cleaned_data['nhbranch'],
-                                   year = monthForm.cleaned_data['year'],
-                                   month = monthForm.cleaned_data['month'])
-        saleForm.instance.nhmonth = q.count() == 1 and q[0] or monthForm.save()
-        saleForm.fields['nhbranch'].initial = branch_id
+        if monthForm.is_valid():
+            q = NHMonth.objects.filter(nhbranch = monthForm.cleaned_data['nhbranch'],
+                                       year = monthForm.cleaned_data['year'],
+                                       month = monthForm.cleaned_data['month'])
+            saleForm.instance.nhmonth = q.count() == 1 and q[0] or monthForm.save()
         side1form = NHSaleSideForm(request.POST, prefix='side1')
         side2form = NHSaleSideForm(request.POST, prefix='side2')
         invoice1Form = InvoiceForm(request.POST, prefix='invoice1')
@@ -707,7 +707,7 @@ def nhsale_add(request, branch_id):
     else:
         saleForm = NHSaleForm(prefix='sale')
         monthForm = NHMonthForm(prefix='month')
-        saleForm.fields['nhbranch'].initial = branch_id
+        monthForm.fields['nhbranch'].initial = branch_id
         side1form = NHSaleSideForm(prefix='side1')
         side2form = NHSaleSideForm(prefix='side2')
         invoice1Form = InvoiceForm(prefix='invoice1')
