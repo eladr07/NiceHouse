@@ -75,19 +75,19 @@
 			</tr>
 			<tr>
 				<th>שם</th>
-				<td>{{nhs.nhsaleside_set.0.name1}}</td>
+				<td>{{nhs.nhsaleside_set.all.0.name1}}</td>
 			</tr>
 			<tr>
 				<th>שם</th>
-				<td>{{nhs.nhsaleside_set.0.name2}}</td>
+				<td>{{nhs.nhsaleside_set.all.0.name2}}</td>
 			</tr>
 			<tr>
 				<th>טלפון</th>
-				<td>{{nhs.nhsaleside_set.0.phone1}}</td>
+				<td>{{nhs.nhsaleside_set.all.0.phone1}}</td>
 			</tr>
 			<tr>
 				<th>טלפון</th>
-				<td>{{nhs.nhsaleside_set.0.phone2}}</td>
+				<td>{{nhs.nhsaleside_set.all.0.phone2}}</td>
 			</tr>			
 			<tr>
 				<td></td>
@@ -95,23 +95,23 @@
 			</tr>
 			<tr>
 				<th>% עמלה חתום</th>
-				<td>{{nhs.nhsaleside_set.0.signed_commission}}</td>
+				<td>{{nhs.nhsaleside_set.all.0.signed_commission}}</td>
 			</tr>
 			<tr>
 				<th>% עמלה בפועל</th>
-				<td>{{nhs.nhsaleside_set.0.actual_commission}}</td>
+				<td>{{nhs.nhsaleside_set.all.0.actual_commission}}</td>
 			</tr>
 			<tr>
 				<th>מס' הזמנת שרותי תיווך</th>
-				<td>{{nhs.nhsaleside_set.0.voucher_num}}</td>
+				<td>{{nhs.nhsaleside_set.all.0.voucher_num}}</td>
 			</tr>
 			<tr>
 				<th>ת. הוצאת הזמנה</th>
-				<td>{{nhs.nhsaleside_set.0.voucher_date}}</td>
+				<td>{{nhs.nhsaleside_set.all.0.voucher_date}}</td>
 			</tr>
 			<tr>
 				<th>מס' קבלה זמנית</th>
-				<td>{{nhs.nhsaleside_set.0.temp_receipt_num}}</td>
+				<td>{{nhs.nhsaleside_set.all.0.temp_receipt_num}}</td>
 			</tr>
 			<tr>
 				<td></td>
@@ -124,27 +124,27 @@
 			<tr>
 				<th>עובד 1</th>
 				<td>
-					{{nhs.nhsaleside_set.0.employee1}} - 
-					{{nhs.nhsaleside_set.0.employee1_commission}}%
+					{{nhs.nhsaleside_set.all.0.employee1}} - 
+					{{nhs.nhsaleside_set.all.0.employee1_commission}}%
 				</td>
 			</tr>
 			<tr>
 				<th>עובד 2</th>
 				<td>
-					{{nhs.nhsaleside_set.0.employee2}} - 
-					{{nhs.nhsaleside_set.0.employee2_commission}}%
+					{{nhs.nhsaleside_set.all.0.employee2}} - 
+					{{nhs.nhsaleside_set.all.0.employee2_commission}}%
 				</td>
 			</tr>
 			<tr>
 				<th>גורם מפנה</th>
 				<td>
-					{{nhs.nhsaleside_set.0.director}} - 
-					{{nhs.nhsaleside_set.0.director_commission}}%
+					{{nhs.nhsaleside_set.all.0.director}} - 
+					{{nhs.nhsaleside_set.all.0.director_commission}}%
 				</td>
 			</tr>
 			<tr>
 				<th>הערות</th>
-				<td>{{nhs.nhsaleside_set.0.remarks}}</td>
+				<td>{{nhs.nhsaleside_set.all.0.remarks}}</td>
 			</tr>
 			<tr>
 				<td></td>
@@ -152,16 +152,16 @@
 			</tr>
 			<tr>
 				<td></td>
-				<td><a href="/invoices/{{nhs.nhsaleside_set.0.invoices.0}}" class="fancybox">עדכן פרטי חשבונית</a></td>
+				<td><a href="/invoices/{{nhs.nhsaleside_set.all.0.invoices.0}}" class="fancybox">עדכן פרטי חשבונית</a></td>
 			</tr>
 			<tr>
 				<th>
-					{{nhs.nhsaleside_set.0.payments.count}} 
+					{{nhs.nhsaleside_set.all.0.payments.count}} 
 					תשלומים
 				</th>
 				<td></td>
 			</tr>
-			{% for p in nhs.nhsaleside_set.0.payments %}
+			{% for p in nhs.nhsaleside_set.all.0.payments %}
 				<tr>
 					<td>
 						{{p.payment_type}} 
@@ -184,19 +184,19 @@
 			</tr>
 			<tr>
 				<th>שם</th>
-				<td>{{nhs.nhsaleside_set.1.name1}}</td>
+				<td>{{nhs.nhsaleside_set.all.1.name1}}</td>
 			</tr>
 			<tr>
 				<th>שם</th>
-				<td>{{nhs.nhsaleside_set.1.name2}}</td>
+				<td>{{nhs.nhsaleside_set.all.1.name2}}</td>
 			</tr>
 			<tr>
 				<th>טלפון</th>
-				<td>{{nhs.nhsaleside_set.1.phone1}}</td>
+				<td>{{nhs.nhsaleside_set.all.1.phone1}}</td>
 			</tr>
 			<tr>
 				<th>טלפון</th>
-				<td>{{nhs.nhsaleside_set.1.phone2}}</td>
+				<td>{{nhs.nhsaleside_set.all.1.phone2}}</td>
 			</tr>			
 			<tr>
 				<td></td>
@@ -204,23 +204,23 @@
 			</tr>
 			<tr>
 				<th>% עמלה חתום</th>
-				<td>{{nhs.nhsaleside_set.1.signed_commission}}</td>
+				<td>{{nhs.nhsaleside_set.all.1.signed_commission}}</td>
 			</tr>
 			<tr>
 				<th>% עמלה בפועל</th>
-				<td>{{nhs.nhsaleside_set.1.actual_commission}}</td>
+				<td>{{nhs.nhsaleside_set.all.1.actual_commission}}</td>
 			</tr>
 			<tr>
 				<th>מס' הזמנת שרותי תיווך</th>
-				<td>{{nhs.nhsaleside_set.1.voucher_num}}</td>
+				<td>{{nhs.nhsaleside_set.all.1.voucher_num}}</td>
 			</tr>
 			<tr>
 				<th>ת. הוצאת הזמנה</th>
-				<td>{{nhs.nhsaleside_set.1.voucher_date}}</td>
+				<td>{{nhs.nhsaleside_set.all.1.voucher_date}}</td>
 			</tr>
 			<tr>
 				<th>מס' קבלה זמנית</th>
-				<td>{{nhs.nhsaleside_set.1.temp_receipt_num}}</td>
+				<td>{{nhs.nhsaleside_set.all.1.temp_receipt_num}}</td>
 			</tr>
 			<tr>
 				<td></td>
@@ -233,27 +233,27 @@
 			<tr>
 				<th>עובד 1</th>
 				<td>
-					{{nhs.nhsaleside_set.1.employee1}} - 
-					{{nhs.nhsaleside_set.1.employee1_commission}}%
+					{{nhs.nhsaleside_set.all.1.employee1}} - 
+					{{nhs.nhsaleside_set.all.1.employee1_commission}}%
 				</td>
 			</tr>
 			<tr>
 				<th>עובד 2</th>
 				<td>
-					{{nhs.nhsaleside_set.1.employee2}} - 
-					{{nhs.nhsaleside_set.1.employee2_commission}}%
+					{{nhs.nhsaleside_set.all.1.employee2}} - 
+					{{nhs.nhsaleside_set.all.1.employee2_commission}}%
 				</td>
 			</tr>
 			<tr>
 				<th>גורם מפנה</th>
 				<td>
-					{{nhs.nhsaleside_set.1.director}} - 
-					{{nhs.nhsaleside_set.1.director_commission}}%
+					{{nhs.nhsaleside_set.all.1.director}} - 
+					{{nhs.nhsaleside_set.all.1.director_commission}}%
 				</td>
 			</tr>
 			<tr>
 				<th>הערות</th>
-				<td>{{nhs.nhsaleside_set.1.remarks}}</td>
+				<td>{{nhs.nhsaleside_set.all.1.remarks}}</td>
 			</tr>
 			<tr>
 				<td></td>
@@ -261,16 +261,16 @@
 			</tr>
 			<tr>
 				<td></td>
-				<td><a href="/invoices/{{nhs.nhsaleside_set.1.invoices.0}}" class="fancybox">עדכן פרטי חשבונית</a></td>
+				<td><a href="/invoices/{{nhs.nhsaleside_set.all.1.invoices.0}}" class="fancybox">עדכן פרטי חשבונית</a></td>
 			</tr>
 			<tr>
 				<th>
-					{{nhs.nhsaleside_set.1.payments.count}} 
+					{{nhs.nhsaleside_set.all.1.payments.count}} 
 					תשלומים
 				</th>
 				<td></td>
 			</tr>
-			{% for p in nhs.nhsaleside_set.1.payments %}
+			{% for p in nhs.nhsaleside_set.all.1.payments %}
 				<tr>
 					<td>
 						{{p.payment_type}} 
