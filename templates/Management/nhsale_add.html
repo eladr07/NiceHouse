@@ -132,6 +132,13 @@
 					<th>פרטים<th>
 				</tr>
 				<tr>
+					<th>{{ side1form.sale_type.label_tag }}</th>
+					<td>
+						{{ side1form.sale_type }}
+						{% if side1form.sale_type.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.sale_type.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				<tr>
 					<th>{{ side1form.name1.label_tag }}</th>
 					<td>
 						{{ side1form.name1 }}
@@ -157,6 +164,13 @@
 					<td>
 						{{ side1form.phone2 }}
 						{% if side1form.phone2.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.phone2.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>{{ side1form.address.label_tag }}</th>
+					<td>
+						{{ side1form.address }}
+						{% if side1form.address.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.address.errors|join:""}}'/>{% endif %}
 					</td>
 				</tr>
 			</table>
@@ -346,6 +360,13 @@
 					<th>פרטים<th>
 				</tr>
 				<tr>
+					<th>{{ side2form.sale_type.label_tag }}</th>
+					<td>
+						{{ side2form.sale_type }}
+						{% if side2form.sale_type.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.sale_type.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				<tr>
 					<th>{{ side2form.name1.label_tag }}</th>
 					<td>
 						{{ side2form.name1 }}
@@ -371,6 +392,13 @@
 					<td>
 						{{ side2form.phone2 }}
 						{% if side2form.phone2.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.phone2.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>{{ side2form.address.label_tag }}</th>
+					<td>
+						{{ side2form.address }}
+						{% if side2form.address.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.address.errors|join:""}}'/>{% endif %}
 					</td>
 				</tr>
 			</table>
