@@ -10,6 +10,7 @@
 	<table id="attachmentTable" class="dataTable" border="1">
 		<tr>
 			<th></th>
+			<th>PDF</th>
 			<th>חודש</th>
 			<th>חוזים</th>
 			<th>סכום חוזים</th>
@@ -19,7 +20,12 @@
 		</tr>
 		{% for d in demands %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{a.id}}>
-				<td><a target="_parent" href="/demands/{{d.id}}"><img src="/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a></td>
+				<td><a target="_blank" href="/demands/{{d.id}}"><img src="/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a></td>
+				<td>
+					<a href="/reports/project_month/{{d.project.id}}/{{d.year}}/{{d.month}}">
+					<img src="/site_media/images/mail_new-48.png" width="15" height="15"/>
+					</a>
+				</td>
 				<td>{{ d.month }}/{{ d.year }}</td>
 				<td><a href="/demands/{{d.id}}/sales">{{d.get_sales.count}}</a></td>
 				<td>{{ d.get_sales_amount|commaise }} ש"ח</td>
