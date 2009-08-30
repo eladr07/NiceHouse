@@ -449,7 +449,7 @@ urlpatterns = patterns('',
          {'form_class' : Management.forms.NHSaleForm,
           'template_name' : 'Management/object_edit.html',
           'permission':'change_nhsalesale',          
-          'post_save_redirect' : '../%(id)s'}
+          'post_save_redirect' : '../%(id)s'}),
     
     (r'^xml/buildings/(?P<project_id>\d+)$', 'Management.views.json_buildings'),
     (r'^xml/employees/(?P<project_id>\d+)$', 'Management.views.json_employees'),
