@@ -1480,9 +1480,9 @@ class Lawyer(Person):
 
 class NHSaleSide(models.Model):
     nhsale = models.ForeignKey('NHSale')
-    name1 = models.CharField(ugettext('name'), max_length=20, null=True, blank=True)
+    name1 = models.CharField(ugettext('name'), max_length=20)
     name2 = models.CharField(ugettext('name'), max_length=20, null=True, blank=True)
-    phone1 = models.CharField(ugettext('phone'), max_length=20, null=True, blank=True)
+    phone1 = models.CharField(ugettext('phone'), max_length=20)
     phone2 = models.CharField(ugettext('phone'), max_length=20, null=True, blank=True)
     employee1 = models.ForeignKey('NHEmployee', verbose_name=ugettext('advisor'), related_name='nhsaleside1s')
     employee1_commission = models.FloatField(ugettext('commission_precent'))
