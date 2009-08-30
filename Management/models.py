@@ -1512,9 +1512,9 @@ class NHSaleSide(models.Model):
     @property
     def net_income(self):
         net = self.income
-        for nhp in lawyer1.nhpays.all(nhsale=self.nhsale):
+        for nhp in lawyer1.nhpays.all(nhsaleside = self):
              net -= nhp.amount
-        for nhp in lawyer2.nhpays.all(nhsale=self.nhsale):
+        for nhp in lawyer2.nhpays.all(nhsaleside = self):
              net -= nhp.amount
         return net
     def is_employee_related(self, employee):
@@ -1526,15 +1526,15 @@ class NHSaleSide(models.Model):
                                            self.director, self.director_commission,
                                            self.nhsale)
         if e1 and ec1:
-            nhp = e1.nhpays.get_or_create(nhsale = nhsale)[0]
+            nhp = e1.nhpays.get_or_create(nhsaleside = self)[0]
             nhp.amount = nhsale.price * ec1 / 100
             nhp.save()
         if e2 and ec2:
-            nhp = e2.nhpays.get_or_create(nhsale = nhsale)[0]
+            nhp = e2.nhpays.get_or_create(nhsaleside = self)[0]
             nhp.amount = nhsale.price * ec2 / 100
             nhp.save()
         if d and dc:
-            nhp = d.nhpays.get_or_create(nhsale = nhsale)[0]
+            nhp = d.nhpays.get_or_create(nhsaleside = self)[0]
             nhp.amount = nhsale.price * ec2 / 100
             nhp.save()
     class Meta:
