@@ -68,26 +68,27 @@
 	<div style="float: right; width:33%; margin-left: 10px;">
 	<fieldset class="cardFieldset">
 		<legend>צד א'</legend>
-		<table cellspacing="2" cellpadding="2" class="formTable" >			
+		<table cellspacing="2" cellpadding="2" class="formTable" >
+		{% with nhs.nhsaleside_set.all.0 as side 1 %}
 			<tr>
 				<td></td>
 				<td><u><b>נתוני רוכשים</b></u></td>
 			</tr>
 			<tr>
 				<th>שם</th>
-				<td>{{nhs.nhsaleside_set.all.0.name1}}</td>
+				<td>{{side1.name1}}</td>
 			</tr>
 			<tr>
 				<th>שם</th>
-				<td>{{nhs.nhsaleside_set.all.0.name2}}</td>
+				<td>{{side1.name2}}</td>
 			</tr>
 			<tr>
 				<th>טלפון</th>
-				<td>{{nhs.nhsaleside_set.all.0.phone1}}</td>
+				<td>{{side1.phone1}}</td>
 			</tr>
 			<tr>
 				<th>טלפון</th>
-				<td>{{nhs.nhsaleside_set.all.0.phone2}}</td>
+				<td>{{side1.phone2}}</td>
 			</tr>			
 			<tr>
 				<td></td>
@@ -95,23 +96,23 @@
 			</tr>
 			<tr>
 				<th>% עמלה חתום</th>
-				<td>{{nhs.nhsaleside_set.all.0.signed_commission}}</td>
+				<td>{{side1.signed_commission}}</td>
 			</tr>
 			<tr>
 				<th>% עמלה בפועל</th>
-				<td>{{nhs.nhsaleside_set.all.0.actual_commission}}</td>
+				<td>{{side1.actual_commission}}</td>
 			</tr>
 			<tr>
 				<th>מס' הזמנת שרותי תיווך</th>
-				<td>{{nhs.nhsaleside_set.all.0.voucher_num}}</td>
+				<td>{{side1.voucher_num}}</td>
 			</tr>
 			<tr>
 				<th>ת. הוצאת הזמנה</th>
-				<td>{{nhs.nhsaleside_set.all.0.voucher_date}}</td>
+				<td>{{side1.voucher_date}}</td>
 			</tr>
 			<tr>
 				<th>מס' קבלה זמנית</th>
-				<td>{{nhs.nhsaleside_set.all.0.temp_receipt_num}}</td>
+				<td>{{side1.temp_receipt_num}}</td>
 			</tr>
 			<tr>
 				<td></td>
@@ -124,27 +125,31 @@
 			<tr>
 				<th>עובד 1</th>
 				<td>
-					{{nhs.nhsaleside_set.all.0.employee1}} - 
-					{{nhs.nhsaleside_set.all.0.employee1_commission}}%
+					{{side1.employee1}} - 
+					{{side1.employee1_commission}}%
 				</td>
 			</tr>
 			<tr>
 				<th>עובד 2</th>
 				<td>
-					{{nhs.nhsaleside_set.all.0.employee2}} - 
-					{{nhs.nhsaleside_set.all.0.employee2_commission}}%
+					{% if side1.employee2 %}
+						{{side1.employee2}} - 
+						{{side1.employee2_commission}}%
+					{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<th>גורם מפנה</th>
 				<td>
-					{{nhs.nhsaleside_set.all.0.director}} - 
-					{{nhs.nhsaleside_set.all.0.director_commission}}%
+					{% if side1.director %}
+						{{side1.director}} - 
+						{{side1.director_commission}}%
+					{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<th>הערות</th>
-				<td>{{nhs.nhsaleside_set.all.0.remarks}}</td>
+				<td>{{side1.remarks}}</td>
 			</tr>
 			<tr>
 				<td></td>
@@ -152,16 +157,16 @@
 			</tr>
 			<tr>
 				<td></td>
-				<td><a href="/invoices/{{nhs.nhsaleside_set.all.0.invoices.0}}" class="fancybox">עדכן פרטי חשבונית</a></td>
+				<td><a href="/invoices/{{side1.invoices.all.0}}" class="fancybox">עדכן פרטי חשבונית</a></td>
 			</tr>
 			<tr>
 				<th>
-					{{nhs.nhsaleside_set.all.0.payments.count}} 
+					{{side1.payments.count}} 
 					תשלומים
 				</th>
 				<td></td>
 			</tr>
-			{% for p in nhs.nhsaleside_set.all.0.payments.all %}
+			{% for p in side1.payments.all %}
 				<tr>
 					<td>
 						{{p.payment_type}} 
@@ -171,32 +176,34 @@
 					<td><a href="/payments/{{p.id}}" class="fancybox">עדכן</a></td>
 				</tr>
 			{% endfor %}
+		{% endwith %}
 		</table>
 	</fieldset>
 	</div>
-	<div style="float: right">	
+	<div style="float: right; width:33%; margin-left: 10px;">	
 	<fieldset class="cardFieldset">
 		<legend>צד ב'</legend>
-		<table cellspacing="2" cellpadding="2" class="formTable" >			
+		<table cellspacing="2" cellpadding="2" class="formTable" >		
+		{% with nhs.nhsaleside_set.all.0 as side 1 %}	
 			<tr>
 				<td></td>
 				<td><u><b>נתוני רוכשים</b></u></td>
 			</tr>
 			<tr>
 				<th>שם</th>
-				<td>{{nhs.nhsaleside_set.all.1.name1}}</td>
+				<td>{{side2.name1}}</td>
 			</tr>
 			<tr>
 				<th>שם</th>
-				<td>{{nhs.nhsaleside_set.all.1.name2}}</td>
+				<td>{{side2.name2}}</td>
 			</tr>
 			<tr>
 				<th>טלפון</th>
-				<td>{{nhs.nhsaleside_set.all.1.phone1}}</td>
+				<td>{{side2.phone1}}</td>
 			</tr>
 			<tr>
 				<th>טלפון</th>
-				<td>{{nhs.nhsaleside_set.all.1.phone2}}</td>
+				<td>{{side2.phone2}}</td>
 			</tr>			
 			<tr>
 				<td></td>
@@ -204,23 +211,23 @@
 			</tr>
 			<tr>
 				<th>% עמלה חתום</th>
-				<td>{{nhs.nhsaleside_set.all.1.signed_commission}}</td>
+				<td>{{side2.signed_commission}}</td>
 			</tr>
 			<tr>
 				<th>% עמלה בפועל</th>
-				<td>{{nhs.nhsaleside_set.all.1.actual_commission}}</td>
+				<td>{{side2.actual_commission}}</td>
 			</tr>
 			<tr>
 				<th>מס' הזמנת שרותי תיווך</th>
-				<td>{{nhs.nhsaleside_set.all.1.voucher_num}}</td>
+				<td>{{side2.voucher_num}}</td>
 			</tr>
 			<tr>
 				<th>ת. הוצאת הזמנה</th>
-				<td>{{nhs.nhsaleside_set.all.1.voucher_date}}</td>
+				<td>{{side2.voucher_date}}</td>
 			</tr>
 			<tr>
 				<th>מס' קבלה זמנית</th>
-				<td>{{nhs.nhsaleside_set.all.1.temp_receipt_num}}</td>
+				<td>{{side2.temp_receipt_num}}</td>
 			</tr>
 			<tr>
 				<td></td>
@@ -233,27 +240,31 @@
 			<tr>
 				<th>עובד 1</th>
 				<td>
-					{{nhs.nhsaleside_set.all.1.employee1}} - 
-					{{nhs.nhsaleside_set.all.1.employee1_commission}}%
+					{{side2.employee1}} - 
+					{{side2.employee1_commission}}%
 				</td>
 			</tr>
 			<tr>
 				<th>עובד 2</th>
 				<td>
-					{{nhs.nhsaleside_set.all.1.employee2}} - 
-					{{nhs.nhsaleside_set.all.1.employee2_commission}}%
+					{% if side2.employee2 %}
+						{{side2.employee2}} - 
+						{{side2.employee2_commission}}%
+					{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<th>גורם מפנה</th>
 				<td>
-					{{nhs.nhsaleside_set.all.1.director}} - 
-					{{nhs.nhsaleside_set.all.1.director_commission}}%
+					{% if side2.director %}
+						{{side2.director}} - 
+						{{side2.director_commission}}%
+					{% endif %}
 				</td>
 			</tr>
 			<tr>
 				<th>הערות</th>
-				<td>{{nhs.nhsaleside_set.all.1.remarks}}</td>
+				<td>{{side2.remarks}}</td>
 			</tr>
 			<tr>
 				<td></td>
@@ -261,16 +272,16 @@
 			</tr>
 			<tr>
 				<td></td>
-				<td><a href="/invoices/{{nhs.nhsaleside_set.all.1.invoices.0}}" class="fancybox">עדכן פרטי חשבונית</a></td>
+				<td><a href="/invoices/{{side2.invoices.all.0}}" class="fancybox">עדכן פרטי חשבונית</a></td>
 			</tr>
 			<tr>
 				<th>
-					{{nhs.nhsaleside_set.all.1.payments.count}} 
+					{{side2.payments.count}} 
 					תשלומים
 				</th>
 				<td></td>
 			</tr>
-			{% for p in nhs.nhsaleside_set.all.1.payments.all %}
+			{% for p in side2.payments.all %}
 				<tr>
 					<td>
 						{{p.payment_type}} 
@@ -280,6 +291,7 @@
 					<td><a href="/payments/{{p.id}}" class="fancybox">עדכן</a></td>
 				</tr>
 			{% endfor %}
+		{% endwith %}
 		</table>
 	</fieldset>
 	</div>
