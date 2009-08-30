@@ -37,17 +37,55 @@
 <div class="clearBoth"></div>
 <div class="someIcon" style="width:90px;">
 	<img src="/site_media/images/add_48.png" width="20" height="20"  alt="חדש" /> 
-	<a id="saleAdd">הזנת עסקאות</a>
+	<a href="/nhbranch/{{nhmonth.nhbranch.id}}/nhsale/add">הזנת עסקאות</a>
 </div>
 <div class="clearBoth"></div>	
 <table id="salesTable" class="dataTable" style="text-align:center;" border="1">
 <caption>מציג סה"כ {{nhmonth.nhsales.count}} עסקאות</caption>
 	<tr>
 		<th>מס'</th>
+		<th>ת. עסקה</th>
+		<th>שמות הלקוחות</th>
+		<th>סוג פעולה</th>
+		<th>סה"כ עמלה</th>
+		<th>תשלום לעו"ד</th>
+		<th>עמלה נטו</th>
+		<th>% מהכנסה חודשי</th>
+		<th>מס' קבלה זמנית</th>
+		<th>מס' חשבונית</th>
+		<th>סוכנים</th>
 	</tr>
     {% for s in nhmonth.nhsales.all %}
 		<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}}>
 			<td><a href="/nhsale/{{s.id}}">{{s.id}}</a></td>
+			<td>{{s.sale_date|date:"j/m/y"}}</td>
+			{% for ss in s.nhsaleside_set.all %}
+				{% if not forloop.first %}
+					<tr>
+						<td></td>
+						<td></td>
+				{% endif %}
+				<td>{{ss.name1}} {{ss.name2|default_if_none:""}}</td>
+				<td>{{ss.sale_type}}</td>
+				<td>{{ss.income|commaise}}</td>
+				<td>{{ss.lawyers_pay|commaise}}</td>
+				<td>{{ss.net_income|commaise}}</td>
+				<td></td>
+				<td>{{ss.temp_receipt_num}}</td>
+				<td>{{ss.invoices.all.0.num}}</td>
+				<td>
+					{{ss.employee1}} - {{ss.employee1_commission}}%
+					{% if ss.employee2 %}
+						{{ss.employee2}} - {{ss.employee2_commission}}%
+					{% endif %}
+					{% if ss.director %}
+						{{ss.director}} - {{ss.director_commission}}%
+					{% endif %}
+				</td>				
+				{% if forloop.first %}
+					</tr>
+				{% endif %}
+			{% endfor %}
 		</tr>
 	{% endfor %}
 </table>

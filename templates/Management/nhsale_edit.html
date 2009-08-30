@@ -67,9 +67,13 @@
 	</div>
 	<div style="float: right; width:33%; margin-left: 10px;">
 	<fieldset class="cardFieldset">
-		<legend>צד א'</legend>
+		<legend>רוכשים</legend>
 		<table cellspacing="2" cellpadding="2" class="formTable" >
 		{% with nhs.nhsaleside_set.all.0 as side1 %}
+			<tr>
+				<td>סוג פעולה</td>
+				<td>{{side1.sale_type}}</td>
+			</tr>
 			<tr>
 				<td></td>
 				<td><u><b>נתוני רוכשים</b></u></td>
@@ -89,7 +93,11 @@
 			<tr>
 				<th>טלפון</th>
 				<td>{{side1.phone2}}</td>
-			</tr>			
+			</tr>
+			<tr>
+				<th>כתובת</th>
+				<td>{{side1.address}}</td>
+			</tr>
 			<tr>
 				<td></td>
 				<td><u><b>נתוני חוזה</b></u></td>
@@ -182,9 +190,13 @@
 	</div>
 	<div style="float: right; width:33%; margin-left: 10px;">	
 	<fieldset class="cardFieldset">
-		<legend>צד ב'</legend>
-		<table cellspacing="2" cellpadding="2" class="formTable" >		
-		{% with nhs.nhsaleside_set.all.1 as side2 %}	
+		<legend>רוכשים</legend>
+		<table cellspacing="2" cellpadding="2" class="formTable" >
+		{% with nhs.nhsaleside_set.all.1 as side2 %}
+			<tr>
+				<td>סוג פעולה</td>
+				<td>{{side2.sale_type}}</td>
+			</tr>
 			<tr>
 				<td></td>
 				<td><u><b>נתוני רוכשים</b></u></td>
@@ -204,7 +216,11 @@
 			<tr>
 				<th>טלפון</th>
 				<td>{{side2.phone2}}</td>
-			</tr>			
+			</tr>
+			<tr>
+				<th>כתובת</th>
+				<td>{{side2.address}}</td>
+			</tr>
 			<tr>
 				<td></td>
 				<td><u><b>נתוני חוזה</b></u></td>

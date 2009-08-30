@@ -1478,12 +1478,22 @@ class Lawyer(Person):
     class Meta:
         db_table='Lawyer'
 
+SaleTypeRent, SaleTypeHire = (1,2)
+class SaleType(models.Model):
+    name = models.CharField(max_length=20, unique=True)
+    def __unicode(self):
+        return unicode(self.name)
+    class Meta:
+        db_table='SaleType'
+
 class NHSaleSide(models.Model):
     nhsale = models.ForeignKey('NHSale', editable=False)
+    sale_type = models.ForeignKey('SaleType', verbose_name=ugettext('action_type'))
     name1 = models.CharField(ugettext('name'), max_length=20)
     name2 = models.CharField(ugettext('name'), max_length=20, null=True, blank=True)
     phone1 = models.CharField(ugettext('phone'), max_length=20)
     phone2 = models.CharField(ugettext('phone'), max_length=20, null=True, blank=True)
+    address = models.CharField(ugettext('address'), max_length=40)
     employee1 = models.ForeignKey('NHEmployee', verbose_name=ugettext('advisor'), related_name='nhsaleside1s')
     employee1_commission = models.FloatField(ugettext('commission_precent'))
     employee2 = models.ForeignKey('NHEmployee', verbose_name=ugettext('advisor'), related_name='nhsaleside2s', 
@@ -1510,13 +1520,16 @@ class NHSaleSide(models.Model):
     def income(self):
         return self.nhsale.price * self.actual_commission / 100
     @property
-    def net_income(self):
-        net = self.income
+    def lawyers_pay(self):
+        amount = 0
         for nhp in lawyer1.nhpays.all(nhsaleside = self):
-             net -= nhp.amount
+            amount += nhp.amount
         for nhp in lawyer2.nhpays.all(nhsaleside = self):
-             net -= nhp.amount
-        return net
+            amount += nhp.amount
+        return amount             
+    @property
+    def net_income(self):
+        return self.income - self.lawyers_pay
     def is_employee_related(self, employee):
         return self.employee1 == employee or self.employee2 == employee or self.director == employee
     def save(self,*args, **kw):
