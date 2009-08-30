@@ -695,7 +695,7 @@ def nhsale_add(request, branch_id):
             else:
                 error = payment1Forms.has_changed()
             if invoice2Form.is_valid():
-                side1.invoices.add(invoice2Form.save())
+                side2.invoices.add(invoice2Form.save())
             else:
                 error = invoice2Form.has_changed()
             if payment2Forms.is_valid():
