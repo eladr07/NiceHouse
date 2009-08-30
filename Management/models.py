@@ -1478,7 +1478,7 @@ class Lawyer(Person):
     class Meta:
         db_table='Lawyer'
 
-SaleTypeRent, SaleTypeHire = (1,2)
+SaleTypeSell, SaleTypeRent = (1,2)
 class SaleType(models.Model):
     name = models.CharField(max_length=20, unique=True)
     def __unicode(self):
@@ -1522,9 +1522,9 @@ class NHSaleSide(models.Model):
     @property
     def lawyers_pay(self):
         amount = 0
-        for nhp in lawyer1.nhpays.all(nhsaleside = self):
+        for nhp in self.lawyer1.nhpays.all(nhsaleside = self):
             amount += nhp.amount
-        for nhp in lawyer2.nhpays.all(nhsaleside = self):
+        for nhp in self.lawyer2.nhpays.all(nhsaleside = self):
             amount += nhp.amount
         return amount             
     @property
