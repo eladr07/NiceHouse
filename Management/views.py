@@ -710,8 +710,8 @@ def nhsale_add(request, branch_id):
         saleForm = NHSaleForm(prefix='sale')
         monthForm = NHMonthForm(prefix='month')
         monthForm.fields['nhbranch'].initial = branch_id
-        side1form = NHSaleSideForm(prefix='side1')
-        side2form = NHSaleSideForm(prefix='side2')
+        side1Form = NHSaleSideForm(prefix='side1')
+        side2Form = NHSaleSideForm(prefix='side2')
         invoice1Form = InvoiceForm(prefix='invoice1')
         payment1Forms = PaymentFormset(prefix='payments1')
         invoice2Form = InvoiceForm(prefix='invoice2')
@@ -719,7 +719,7 @@ def nhsale_add(request, branch_id):
         
     return render_to_response('Management/nhsale_edit.html',
                               {'monthForm':monthForm, 'saleForm':saleForm, 
-                               'side1form':side1form, 'side2form':side2form, 
+                               'side1form':side1Form, 'side2form':side2Form, 
                                'invoice1Form':invoice1Form, 'payment1Forms':payment1Forms, 
                                'invoice2Form':invoice2Form, 'payment2Forms':payment2Forms}, 
                               context_instance=RequestContext(request))
