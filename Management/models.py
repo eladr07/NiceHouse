@@ -1542,8 +1542,9 @@ class NHSaleSide(models.Model):
 
 class NHMonth(models.Model):
     nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'))
-    year = models.PositiveSmallIntegerField(ugettext('year'))
-    month = models.PositiveSmallIntegerField(ugettext('month'))
+    month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
+    year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
+                                                                                             datetime.now().year + 10)))
     class Meta:
         db_table = 'NHMonth'
 
