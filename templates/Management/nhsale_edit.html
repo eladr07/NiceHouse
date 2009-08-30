@@ -161,7 +161,7 @@
 				</th>
 				<td></td>
 			</tr>
-			{% for p in nhs.nhsaleside_set.all.0.payments %}
+			{% for p in nhs.nhsaleside_set.all.0.payments.all %}
 				<tr>
 					<td>
 						{{p.payment_type}} 
@@ -270,7 +270,7 @@
 				</th>
 				<td></td>
 			</tr>
-			{% for p in nhs.nhsaleside_set.all.1.payments %}
+			{% for p in nhs.nhsaleside_set.all.1.payments.all %}
 				<tr>
 					<td>
 						{{p.payment_type}} 
