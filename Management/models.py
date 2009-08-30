@@ -1481,7 +1481,7 @@ class Lawyer(Person):
 SaleTypeSell, SaleTypeRent = (1,2)
 class SaleType(models.Model):
     name = models.CharField(max_length=20, unique=True)
-    def __unicode(self):
+    def __unicode__(self):
         return unicode(self.name)
     class Meta:
         db_table='SaleType'
