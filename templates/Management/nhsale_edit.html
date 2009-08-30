@@ -67,6 +67,7 @@
 	</table>
 	<fieldset class="cardFieldset">
 		<legend>פרטי הנכס</legend>
+		{{saleForm.errors}}
 		<table cellspacing="2" cellpadding="2" class="formTable" align="center">
 			<tr>
 				<td>{{ saleForm.id }}</td>
@@ -123,6 +124,7 @@
 	<div>
 		<fieldset class="cardFieldset">
 			<legend>בעל הנכס\משכיר</legend>
+			{{side1form.errors}}
 			<div style="float:right;">
 			<table cellspacing="2" cellpadding="2" class="formTable">
 				<tr>
@@ -336,6 +338,7 @@
 	<div>
 		<fieldset class="cardFieldset">
 			<legend>רוכש\שוכר</legend>
+			{{side2form.errors}}
 			<div style="float:right;">
 			<table cellspacing="2" cellpadding="2" class="formTable">
 				<tr>
