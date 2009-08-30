@@ -1479,7 +1479,7 @@ class Lawyer(Person):
         db_table='Lawyer'
 
 class NHSaleSide(models.Model):
-    nhsale = models.ForeignKey('NHSale')
+    nhsale = models.ForeignKey('NHSale', editable=False)
     name1 = models.CharField(ugettext('name'), max_length=20)
     name2 = models.CharField(ugettext('name'), max_length=20, null=True, blank=True)
     phone1 = models.CharField(ugettext('phone'), max_length=20)
