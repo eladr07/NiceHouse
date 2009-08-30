@@ -47,7 +47,7 @@ class Attachment(models.Model):
     remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
     
     project = models.ForeignKey('Project', related_name='attachments', editable=False, null=True)
-    employee = models.ForeignKey('Employee', related_name='attachments', editable=False, null=True)
+    employee = models.ForeignKey('EmployeeBase', related_name='attachments', editable=False, null=True)
     car = models.ForeignKey('Car', related_name='attachments', editable=False, null=True)
     
     class Meta:
