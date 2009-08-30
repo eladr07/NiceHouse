@@ -1,0 +1,287 @@
+﻿{% extends "./base.html" %}
+{% load management_extras %}
+{% block header %}
+{{ block.super }}
+<script>
+	$(document).ready(function() {		
+		$("input[type!='submit']").attr("class", "inputText");
+		$(".fancybox").fancybox();
+		$(".bigfancybox").fancybox({'frameWidth':800});
+	});
+</script>
+{% endblock header %}
+{% block content %}
+	<div class="title">
+		<div class="pageTitle">פרטי עסקת נייס האוס מס' {{object.id}}</div>
+	</div>
+	<div style="float: right; width: 27%; margin-left: 10px;">
+		<fieldset class="cardFieldset">
+			<legend>פרטים כלליים</legend>
+			<table cellspacing="2" cellpadding="2" class="formTable">
+				<tr>
+					<th>סניף</th>
+					<td>{{nhs.nhmonth.nhbranch}}</td>
+				</tr>
+				<tr>
+					<th>חודש</th>
+					<td>{{nhs.nhmonth.month}}/{{nhs.nhmonth.year}}</td>
+				</tr>
+				<tr>
+					<th>כתובת</th>
+					<td>{{nhs.address}}</td>
+				</tr>
+				<tr>
+					<th>שכונה</th>
+					<td>{{nhs.hood}}</td>
+				</tr>
+				<tr>
+					<th>מס' חדרים</th>
+					<td>{{nhs.rooms}}</td>
+				</tr>
+				<tr>
+					<th>קומה</th>
+					<td>{{nhs.floor}}</td>
+				</tr>
+				<tr>
+					<th>סוג דירה</th>
+					<td>{{nhs.type}}</td>
+				</tr>
+				<tr>
+					<th>ת. מכירה</th>
+					<td>{{nhs.sale_date}}</td>
+				</tr>
+				<tr>
+					<th>מחיר</th>
+					<td>{{nhs.price}}</td>
+				</tr>
+				<tr>
+					<th>הערות</th>
+					<td>{{nhs.remarks}}</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><a href="editsale" class="fancybox">עדכן</a></td>
+				</tr>
+			</table>
+		</fieldset><br>
+	</div>
+	<div style="float: right; width:33%; margin-left: 10px;">
+	<fieldset class="cardFieldset">
+		<legend>צד א'</legend>
+		<table cellspacing="2" cellpadding="2" class="formTable" >			
+			<tr>
+				<td></td>
+				<td><u><b>נתוני רוכשים</b></u></td>
+			</tr>
+			<tr>
+				<th>שם</th>
+				<td>{{nhs.nhsaleside_set.0.name1}}</td>
+			</tr>
+			<tr>
+				<th>שם</th>
+				<td>{{nhs.nhsaleside_set.0.name2}}</td>
+			</tr>
+			<tr>
+				<th>טלפון</th>
+				<td>{{nhs.nhsaleside_set.0.phone1}}</td>
+			</tr>
+			<tr>
+				<th>טלפון</th>
+				<td>{{nhs.nhsaleside_set.0.phone2}}</td>
+			</tr>			
+			<tr>
+				<td></td>
+				<td><u><b>נתוני חוזה</b></u></td>
+			</tr>
+			<tr>
+				<th>% עמלה חתום</th>
+				<td>{{nhs.nhsaleside_set.0.signed_commission}}</td>
+			</tr>
+			<tr>
+				<th>% עמלה בפועל</th>
+				<td>{{nhs.nhsaleside_set.0.actual_commission}}</td>
+			</tr>
+			<tr>
+				<th>מס' הזמנת שרותי תיווך</th>
+				<td>{{nhs.nhsaleside_set.0.voucher_num}}</td>
+			</tr>
+			<tr>
+				<th>ת. הוצאת הזמנה</th>
+				<td>{{nhs.nhsaleside_set.0.voucher_date}}</td>
+			</tr>
+			<tr>
+				<th>מס' קבלה זמנית</th>
+				<td>{{nhs.nhsaleside_set.0.temp_receipt_num}}</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><u><b>נתוני עמלה עו"ד</b></u></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><u><b>נתוני עמלה לעובדים</b></u></td>
+			</tr>
+			<tr>
+				<th>עובד 1</th>
+				<td>
+					{{nhs.nhsaleside_set.0.employee1}} - 
+					{{nhs.nhsaleside_set.0.employee1_commission}}%
+				</td>
+			</tr>
+			<tr>
+				<th>עובד 2</th>
+				<td>
+					{{nhs.nhsaleside_set.0.employee2}} - 
+					{{nhs.nhsaleside_set.0.employee2_commission}}%
+				</td>
+			</tr>
+			<tr>
+				<th>גורם מפנה</th>
+				<td>
+					{{nhs.nhsaleside_set.0.director}} - 
+					{{nhs.nhsaleside_set.0.director_commission}}%
+				</td>
+			</tr>
+			<tr>
+				<th>הערות</th>
+				<td>{{nhs.nhsaleside_set.0.remarks}}</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><a href="editsaleside0" class="fancybox">עדכן</a></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><a href="/invoices/{{nhs.nhsaleside_set.0.invoices.0}}" class="fancybox">עדכן פרטי חשבונית</a></td>
+			</tr>
+			<tr>
+				<th>
+					{{nhs.nhsaleside_set.0.payments.count}} 
+					תשלומים
+				</th>
+				<td></td>
+			</tr>
+			{% for p in nhs.nhsaleside_set.0.payments %}
+				<tr>
+					<td>
+						{{p.payment_type}} 
+						על סך של 
+						{{p.amount}}
+					</td>
+					<td><a href="/payments/{{p.id}}" class="fancybox">עדכן</a></td>
+				</tr>
+			{% endfor %}
+		</table>
+	</fieldset>
+	</div>
+	<div style="float: right">	
+	<fieldset class="cardFieldset">
+		<legend>צד ב'</legend>
+		<table cellspacing="2" cellpadding="2" class="formTable" >			
+			<tr>
+				<td></td>
+				<td><u><b>נתוני רוכשים</b></u></td>
+			</tr>
+			<tr>
+				<th>שם</th>
+				<td>{{nhs.nhsaleside_set.1.name1}}</td>
+			</tr>
+			<tr>
+				<th>שם</th>
+				<td>{{nhs.nhsaleside_set.1.name2}}</td>
+			</tr>
+			<tr>
+				<th>טלפון</th>
+				<td>{{nhs.nhsaleside_set.1.phone1}}</td>
+			</tr>
+			<tr>
+				<th>טלפון</th>
+				<td>{{nhs.nhsaleside_set.1.phone2}}</td>
+			</tr>			
+			<tr>
+				<td></td>
+				<td><u><b>נתוני חוזה</b></u></td>
+			</tr>
+			<tr>
+				<th>% עמלה חתום</th>
+				<td>{{nhs.nhsaleside_set.1.signed_commission}}</td>
+			</tr>
+			<tr>
+				<th>% עמלה בפועל</th>
+				<td>{{nhs.nhsaleside_set.1.actual_commission}}</td>
+			</tr>
+			<tr>
+				<th>מס' הזמנת שרותי תיווך</th>
+				<td>{{nhs.nhsaleside_set.1.voucher_num}}</td>
+			</tr>
+			<tr>
+				<th>ת. הוצאת הזמנה</th>
+				<td>{{nhs.nhsaleside_set.1.voucher_date}}</td>
+			</tr>
+			<tr>
+				<th>מס' קבלה זמנית</th>
+				<td>{{nhs.nhsaleside_set.1.temp_receipt_num}}</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><u><b>נתוני עמלה עו"ד</b></u></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><u><b>נתוני עמלה לעובדים</b></u></td>
+			</tr>
+			<tr>
+				<th>עובד 1</th>
+				<td>
+					{{nhs.nhsaleside_set.1.employee1}} - 
+					{{nhs.nhsaleside_set.1.employee1_commission}}%
+				</td>
+			</tr>
+			<tr>
+				<th>עובד 2</th>
+				<td>
+					{{nhs.nhsaleside_set.1.employee2}} - 
+					{{nhs.nhsaleside_set.1.employee2_commission}}%
+				</td>
+			</tr>
+			<tr>
+				<th>גורם מפנה</th>
+				<td>
+					{{nhs.nhsaleside_set.1.director}} - 
+					{{nhs.nhsaleside_set.1.director_commission}}%
+				</td>
+			</tr>
+			<tr>
+				<th>הערות</th>
+				<td>{{nhs.nhsaleside_set.1.remarks}}</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><a href="editsaleside1" class="fancybox">עדכן</a></td>
+			</tr>
+			<tr>
+				<td></td>
+				<td><a href="/invoices/{{nhs.nhsaleside_set.1.invoices.0}}" class="fancybox">עדכן פרטי חשבונית</a></td>
+			</tr>
+			<tr>
+				<th>
+					{{nhs.nhsaleside_set.1.payments.count}} 
+					תשלומים
+				</th>
+				<td></td>
+			</tr>
+			{% for p in nhs.nhsaleside_set.1.payments %}
+				<tr>
+					<td>
+						{{p.payment_type}} 
+						על סך של 
+						{{p.amount}}
+					</td>
+					<td><a href="/payments/{{p.id}}" class="fancybox">עדכן</a></td>
+				</tr>
+			{% endfor %}
+		</table>
+	</fieldset>
+	</div>
+	<div class="clearBoth"> </div>
+{% endblock content %}

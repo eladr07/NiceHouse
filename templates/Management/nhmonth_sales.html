@@ -47,7 +47,7 @@
 	</tr>
     {% for s in nhmonth.nhsales.all %}
 		<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}}>
-			<td>{{s.id}}</td>
+			<td><a href="/nhsale/{{s.id}}">{{s.id}}</a></td>
 		</tr>
 	{% endfor %}
 </table>

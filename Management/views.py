@@ -664,6 +664,14 @@ def project_archive(request):
                               {'projects': projects}, 
                               context_instance=RequestContext(request))
 
+@permission_required('Management.change_nhsale')
+def nhsale_edit(request, object_id):
+    nhs = NHSale.objects.get(pk=object_id)
+    return render_to_response('Management/nhsale_edit.html',
+                              {'nhs': nhs}, 
+                              context_instance=RequestContext(request))
+
+@permission_required('Management.add_nhsale')
 def nhsale_add(request, branch_id):
     PaymentFormset = modelformset_factory(Payment, PaymentForm, extra=5)
     if request.method=='POST':
@@ -717,7 +725,7 @@ def nhsale_add(request, branch_id):
         invoice2Form = InvoiceForm(prefix='invoice2')
         payment2Forms = PaymentFormset(prefix='payments2')
         
-    return render_to_response('Management/nhsale_edit.html',
+    return render_to_response('Management/nhsale_add.html',
                               {'monthForm':monthForm, 'saleForm':saleForm, 
                                'side1form':side1Form, 'side2form':side2Form, 
                                'invoice1Form':invoice1Form, 'payment1Forms':payment1Forms, 
