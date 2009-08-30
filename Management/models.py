@@ -1465,7 +1465,7 @@ class Madad(models.Model):
 
 class NHPay(models.Model):
     nhsaleside = models.ForeignKey('NHSaleSide', editable=False, related_name='pays')
-    employee = models.ForeignKey('Employee', editable=False, related_name='nhpays', 
+    employee = models.ForeignKey('EmployeeBase', editable=False, related_name='nhpays', 
                                  null=True)
     lawyer = models.ForeignKey('Lawyer', editable=False, related_name='nhpays', 
                                null=True)
