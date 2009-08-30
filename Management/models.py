@@ -1505,7 +1505,7 @@ class NHSaleSide(models.Model):
     temp_receipt_num = models.IntegerField(ugettext('temp_receipt_num'))
     invoices = models.ManyToManyField('Invoice', null=True, editable=False)
     payments = models.ManyToManyField('Payment', null=True, editable=False)
-    remarks = models.TextField(ugettext('remarks'))
+    remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
     @property
     def income(self):
         return self.nhsale.price * self.actual_commission / 100
@@ -1559,7 +1559,7 @@ class NHSale(models.Model):
     
     sale_date = models.DateField(ugettext('sale_date'))
     price = models.FloatField(ugettext('price'))
-    remarks = models.TextField(ugettext('remarks'))
+    remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
         
     class Meta:
         db_table='NHSale'

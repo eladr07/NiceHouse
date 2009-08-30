@@ -674,8 +674,8 @@ def nhsale_add(request, branch_id):
                                        year = monthForm.cleaned_data['year'],
                                        month = monthForm.cleaned_data['month'])
             saleForm.instance.nhmonth = q.count() == 1 and q[0] or monthForm.save()
-        side1form = NHSaleSideForm(request.POST, prefix='side1')
-        side2form = NHSaleSideForm(request.POST, prefix='side2')
+        side1Form = NHSaleSideForm(request.POST, prefix='side1')
+        side2Form = NHSaleSideForm(request.POST, prefix='side2')
         invoice1Form = InvoiceForm(request.POST, prefix='invoice1')
         payment1Forms = PaymentFormset(request.POST, prefix='payments1')
         invoice2Form = InvoiceForm(request.POST, prefix='invoice2')
