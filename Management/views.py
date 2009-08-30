@@ -680,32 +680,33 @@ def nhsale_add(request, branch_id):
         payment1Forms = PaymentFormset(request.POST, prefix='payments1')
         invoice2Form = InvoiceForm(request.POST, prefix='invoice2')
         payment2Forms = PaymentFormset(request.POST, prefix='payments2')
-        if saleForm.is_valid() and side1Form.is_valid() and side2Form.is_valid():
+        if saleForm.is_valid():
             nhsale = saleForm.save()
-            side1Form.instance.nhsale = side2Form.instance.nhsale = nhsale
-            side1, side2 = (side1Form.save(), side2Form.save())
-            error = False
-            if invoice1Form.is_valid():
-                side1.invoices.add(invoice1Form.save())
-            else:
-                error = invoice1Form.has_changed()
-            if payment1Forms.is_valid():
-                for p in payment1Forms.save():
-                    side1.payments.add(p)
-            else:
-                error = payment1Forms.has_changed()
-            if invoice2Form.is_valid():
-                side1.invoices.add(invoice2Form.save())
-            else:
-                error = invoice2Form.has_changed()
-            if payment2Forms.is_valid():
-                for p in payment2Forms.save():
-                    side2.payments.add(p)
-            else:
-                error = payment2Forms.has_changed()
-            if not error:
-                if request.POST.has_key('addanother'):
-                    return HttpResponseRedirect('add')
+            if side1Form.is_valid() and side2Form.is_valid():
+                side1Form.instance.nhsale = side2Form.instance.nhsale = nhsale
+                side1, side2 = (side1Form.save(), side2Form.save())
+                error = False
+                if invoice1Form.is_valid():
+                    side1.invoices.add(invoice1Form.save())
+                else:
+                    error = invoice1Form.has_changed()
+                if payment1Forms.is_valid():
+                    for p in payment1Forms.save():
+                        side1.payments.add(p)
+                else:
+                    error = payment1Forms.has_changed()
+                if invoice2Form.is_valid():
+                    side1.invoices.add(invoice2Form.save())
+                else:
+                    error = invoice2Form.has_changed()
+                if payment2Forms.is_valid():
+                    for p in payment2Forms.save():
+                        side2.payments.add(p)
+                else:
+                    error = payment2Forms.has_changed()
+                if not error:
+                    if request.POST.has_key('addanother'):
+                        return HttpResponseRedirect('add')
     else:
         saleForm = NHSaleForm(prefix='sale')
         monthForm = NHMonthForm(prefix='month')
