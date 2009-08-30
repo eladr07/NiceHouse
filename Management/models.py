@@ -1465,7 +1465,7 @@ class Madad(models.Model):
 
 class NHPay(models.Model):
     nhsaleside = models.ForeignKey('NHSaleSide', editable=False, related_name='pays')
-    employee = models.ForeignKey('NHEmployee', editable=False, related_name='nhpays', 
+    employee = models.ForeignKey('Employee', editable=False, related_name='nhpays', 
                                  null=True)
     lawyer = models.ForeignKey('Lawyer', editable=False, related_name='nhpays', 
                                null=True)
@@ -1526,16 +1526,19 @@ class NHSaleSide(models.Model):
                                            self.director, self.director_commission,
                                            self.nhsale)
         if e1 and ec1:
-            nhp = e1.nhpays.get_or_create(nhsaleside = self)[0]
+            q = e1.nhpays.filter(nhsaleside = self)
+            nhp = q.count() == 1 and q[0] or NHPay(employee=e1, nhsaleside = self)
             nhp.amount = nhsale.price * ec1 / 100
             nhp.save()
         if e2 and ec2:
-            nhp = e2.nhpays.get_or_create(nhsaleside = self)[0]
+            q = e2.nhpays.filter(nhsaleside = self)
+            nhp = q.count() == 1 and q[0] or NHPay(employee=e2, nhsaleside = self)
             nhp.amount = nhsale.price * ec2 / 100
             nhp.save()
         if d and dc:
-            nhp = d.nhpays.get_or_create(nhsaleside = self)[0]
-            nhp.amount = nhsale.price * ec2 / 100
+            q = d.nhpays.filter(nhsaleside = self)
+            nhp = q.count() == 1 and q[0] or NHPay(employee=d, nhsaleside = self)
+            nhp.amount = nhsale.price * dc / 100
             nhp.save()
     class Meta:
         db_table = 'NHSaleSide'
