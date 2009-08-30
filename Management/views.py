@@ -677,9 +677,9 @@ def nhsale_add(request, branch_id):
         side1form = NHSaleSideForm(request.POST, prefix='side1')
         side2form = NHSaleSideForm(request.POST, prefix='side2')
         invoice1Form = InvoiceForm(request.POST, prefix='invoice1')
-        payment1Forms = PaymentForm(request.POST, prefix='payment1')
+        payment1Forms = PaymentFormset(request.POST, prefix='payment1')
         invoice2Form = InvoiceForm(request.POST, prefix='invoice2')
-        payment2Forms = PaymentForm(request.POST, prefix='payment2')
+        payment2Forms = PaymentFormset(request.POST, prefix='payment2')
         if saleForm.is_valid() and side1Form.is_valid() and side2Form.is_valid():
             nhsale = saleForm.save()
             side1Form.instance.nhsale = side2Form.instance.nhsale = nhsale
