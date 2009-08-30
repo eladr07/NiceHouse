@@ -1,7 +1,6 @@
 ﻿import django.forms as forms
 import sys
 from django.utils.translation import ugettext
-from django.forms.formsets import formset_factory
 from models import *
 from datetime import datetime
 
@@ -364,7 +363,7 @@ class NHSaleForm(forms.ModelForm):
         model = NHSale
 
 class NHSaleSideForm(forms.ModelForm):
-    lawyer1_pay = forms.FloatField(label=ugettext('lawyer_pay'))
+    lawyer1_pay = forms.FloatField(label=ugettext('lawyer_pay'), required=False)
     lawyer2_pay = forms.FloatField(label=ugettext('lawyer_pay'), required=False)
     def save(self, *args, **kw):
         forms.ModelForm.save(self, *args,**kw)
