@@ -481,10 +481,11 @@ class EmployeeCheckForm(forms.ModelForm):
 class NHMonthForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self, *args, **kw)
-        if self.instance.id:
+        q = NHMonth.objects.filter(is_closed=False)
+        if self.instance.id or q.count() == 0:
             return
-        self.fields['year'].initial = NHMonth.objects.filter(is_closed=False)[0].year
-        self.fields['month'].initial = NHMonth.objects.filter(is_closed=False)[0].month
+        self.fields['year'].initial = q[0].year
+        self.fields['month'].initial = q[0].month
     class Meta:
         model = NHMonth
         
