@@ -19,10 +19,6 @@
 <div class="title">
 	<div class="pageTitle">ריכוז עסקאות {{nhmonth.nhbranch}} לחודש {{nhmonth.month}}/{{nhmonth.year}}</div>
 </div>
-<div class="someIcon" style="width:100px">
-	<img src="/site_media/images/Archive-48.png" width="20" height="20"  alt="מחיקה" /> 
-	<a id="monthClose" href="/nhmonth/{{nhm.id}}/close">סגור חודש</a>
-</div>
 <div class="clearBoth"></div>
 <div style="float:right;width:30%;">
 	<form method="POST">
@@ -46,6 +42,10 @@
 <div class="someIcon" style="width:100px;">
 	<img src="/site_media/images/add_48.png" width="20" height="20"  alt="חדש" /> 
 	<a href="/nhbranch/{{nhmonth.nhbranch.id}}/nhsale/add">הזנת עסקאות</a>
+</div>
+<div class="someIcon" style="width:100px">
+	<img src="/site_media/images/Archive-48.png" width="20" height="20"  alt="מחיקה" /> 
+	<a id="monthClose" href="/nhmonth/{{nhmonth.id}}/close">סגור חודש</a>
 </div>
 <div class="clearBoth"></div>	
 <table id="salesTable" class="dataTable" style="text-align:center;" border="1">
