@@ -581,11 +581,11 @@ def demand_sale_reject(request, id):
 @permission_required('Management.add_invoice')
 def invoice_add(request, initial=None):
     if request.method == 'POST':
-        form = InvoiceForm(request.POST)
+        form = DemandInvoiceForm(request.POST)
         if form.is_valid():
             form.save()
             if request.POST.has_key('addanother'):
-                form = InvoiceForm(initial=initial)
+                form = DemandInvoiceForm(initial=initial)
     else:
         form = DemandInvoiceForm(initial=initial)
     return render_to_response('Management/invoice_edit.html', {'form':form}, context_instance=RequestContext(request))
@@ -610,15 +610,16 @@ def invoice_del(request, id):
 @permission_required('Management.add_payment')
 def payment_add(request, initial=None):
     if request.method == 'POST':
-        form = PaymentForm(request.POST)
+        form = DemandPaymentForm(request.POST)
         if form.is_valid():
             form.save()
             if request.POST.has_key('addanother'):
                 form = DemandPaymentForm(initial=initial)
     else:
-        form = PaymentForm(initial=initial)
+        form = DemandPaymentForm(initial=initial)
     return render_to_response('Management/payment_edit.html', 
                               { 'form':form }, context_instance=RequestContext(request))
+    
 def payment_details(request, project, year, month):
     try:
         d = Demand.objects.get(project = project, year = year, month = month)
@@ -626,6 +627,7 @@ def payment_details(request, project, year, month):
                                   { 'demand':d}, context_instance=RequestContext(request))
     except Demand.DoesNotExist:
         return HttpResponse('')
+    
 def invoice_details(request, project, year, month):
     try:
         d = Demand.objects.get(project = project, year = year, month = month)
@@ -633,6 +635,7 @@ def invoice_details(request, project, year, month):
                                   { 'demand':d}, context_instance=RequestContext(request))
     except Demand.DoesNotExist:
         return HttpResponse('')
+    
 @permission_required('Management.add_payment')
 def demand_payment_add(request, id):
     demand = Demand.objects.get(pk=id)
@@ -642,13 +645,32 @@ def demand_payment_add(request, id):
 def project_payment_add(request, id):    
     demand = Demand.objects.get(pk=id)
     return payment_add(request, {'project':id})
+
+@permission_required('Management.add_payment')
+def nhsale_payment_add(request, object_id):
+    nhs = NHSaleSide.objects.get(pk=object_id)
+    if request.method == 'POST':
+        form = PaymentForm(request.POST)
+        if form.is_valid():
+            p = form.save()
+            nhs.payments.add(p)
+            if request.POST.has_key('addanother'):
+                form = PaymentForm()
+    else:
+        form = PaymentForm()
+    return render_to_response('Management/payment_edit.html', 
+                              { 'form':form }, context_instance=RequestContext(request))
+
  
 @permission_required('Management.delete_payment')
 def payment_del(request, id):
     p = Payment.objects.get(pk=id)
-    demand_id = i.demands.all()[0].id
+    if i.demands.count() == 1:
+        next = '/demands/%s' % i.demands.all()[0].id
+    elif i.nhsaleside_set.count() == 1:
+        next = '/nhsale/%s' % i.nhsaleside_set.all()[0].nhsale.id
     p.delete()
-    return HttpResponseRedirect('/demands/%s' % demand_id)
+    return HttpResponseRedirect(next)
 
 @login_required
 def project_list(request):    

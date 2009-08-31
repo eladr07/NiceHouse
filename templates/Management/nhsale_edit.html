@@ -189,9 +189,13 @@
 						על סך של 
 						{{p.amount}}
 					</td>
-					<td><a href="/payments/{{p.id}}" class="fancybox">עדכן</a></td>
+					<td><a href="/payments/{{p.id}}" class="fancybox">עדכן תשלום</a></td>
 				</tr>
 			{% endfor %}
+			<tr>
+				<td></td>
+				<td><a href="/nhsaleside/{{side1.id}}/payment/add" class="fancybox">הוסף תשלום</a></td>
+			</tr>
 		{% endwith %}
 		</table>
 	</fieldset>
@@ -320,9 +324,13 @@
 						על סך של 
 						{{p.amount}}
 					</td>
-					<td><a href="/payments/{{p.id}}" class="fancybox">עדכן</a></td>
+					<td><a href="/payments/{{p.id}}" class="fancybox">עדכן תשלום</a></td>
 				</tr>
 			{% endfor %}
+			<tr>
+				<td></td>
+				<td><a href="/nhsaleside/{{side1.id}}/payment/add" class="fancybox">הוסף תשלום</a></td>
+			</tr>
 		{% endwith %}
 		</table>
 	</fieldset>
