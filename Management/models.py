@@ -1520,6 +1520,8 @@ class NHSaleSide(models.Model):
         self.employee1_pay = None
         self.employee2_pay = None
         self.director_pay = None
+        if not self.id:
+            return
         for attr in ['employee1', 'employee2', 'director']:
             e = getattr(self, attr)
             ec = getattr(self, attr + '_commission')
