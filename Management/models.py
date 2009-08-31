@@ -1576,12 +1576,10 @@ class NHSaleSide(models.Model):
 class NHMonth(models.Model):
     nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'))
     month = models.PositiveSmallIntegerField(ugettext('month'), 
-                                             choices=((i,i) for i in range(1,13)),
-                                             default=NHMonth.objects.filter(is_closed=False)[0].month)
+                                             choices=((i,i) for i in range(1,13)))
     year = models.PositiveSmallIntegerField(ugettext('year'), 
                                             choices=((i,i) for i in range(datetime.now().year - 10,
-                                                                          datetime.now().year + 10)),
-                                            default=NHMonth.objects.filter(is_closed=False)[0].year)
+                                                                          datetime.now().year + 10)))
     is_closed = models.BooleanField(editable=False, default=False)
     class Meta:
         db_table = 'NHMonth'

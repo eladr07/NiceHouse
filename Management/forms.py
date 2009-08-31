@@ -479,6 +479,12 @@ class EmployeeCheckForm(forms.ModelForm):
         model = EmployeeCheck
 
 class NHMonthForm(forms.ModelForm):
+    def __init__(self, *args, **kw):
+        forms.ModelForm.__init__(self, *args, **kw)
+        if self.instance.id:
+            return
+        self.fields['year'].initial = NHMonth.objects.filter(is_closed=False)[0].year
+        self.fields['month'].initial = NHMonth.objects.filter(is_closed=False)[0].month
     class Meta:
         model = NHMonth
         
