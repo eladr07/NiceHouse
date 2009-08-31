@@ -1515,6 +1515,19 @@ class NHSaleSide(models.Model):
     invoices = models.ManyToManyField('Invoice', null=True, editable=False)
     payments = models.ManyToManyField('Payment', null=True, editable=False)
     remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
+    def __init__(self, *args, **kw):
+        models.Model.__init__(self, *args, **kw)
+        self.employee1_pay = None
+        self.employee2_pay = None
+        self.director_pay = None
+        for attr in ['employee1', 'employee2', 'director']:
+            e = getattr(self, attr)
+            ec = getattr(self, attr + '_commission')
+            if e and ec:
+                q = e.nhpays.filter(nhsaleside = self)
+                if q.count() != 1:
+                    continue
+                setattr(self, attr + '_pay', q[0].amount)
     @property
     def income(self):
         return self.nhsale.price * self.actual_commission / 100
@@ -1540,17 +1553,17 @@ class NHSaleSide(models.Model):
         if e1 and ec1:
             q = e1.nhpays.filter(nhsaleside = self)
             nhp = q.count() == 1 and q[0] or NHPay(employee=e1, nhsaleside = self)
-            nhp.amount = nhsale.price * ec1 / 100
+            nhp.amount = nhsale.net_income * ec1 / 100
             nhp.save()
         if e2 and ec2:
             q = e2.nhpays.filter(nhsaleside = self)
             nhp = q.count() == 1 and q[0] or NHPay(employee=e2, nhsaleside = self)
-            nhp.amount = nhsale.price * ec2 / 100
+            nhp.amount = nhsale.net_income * ec2 / 100
             nhp.save()
         if d and dc:
             q = d.nhpays.filter(nhsaleside = self)
             nhp = q.count() == 1 and q[0] or NHPay(employee=d, nhsaleside = self)
-            nhp.amount = nhsale.price * dc / 100
+            nhp.amount = nhsale.net_income * dc / 100
             nhp.save()
     class Meta:
         db_table = 'NHSaleSide'

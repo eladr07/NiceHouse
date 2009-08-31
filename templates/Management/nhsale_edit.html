@@ -142,7 +142,8 @@
 				<th>עובד 1</th>
 				<td>
 					{{side1.employee1}} - 
-					{{side1.employee1_commission}}%
+					{{side1.employee1_commission}}% - 
+					{{side1.employee1_pay|commaise}} ש"ח
 				</td>
 			</tr>
 			<tr>
@@ -150,7 +151,8 @@
 				<td>
 					{% if side1.employee2 %}
 						{{side1.employee2}} - 
-						{{side1.employee2_commission}}%
+						{{side1.employee2_commission}}% - 
+						{{side1.employee2_pay|commaise}} ש"ח
 					{% endif %}
 				</td>
 			</tr>
@@ -159,7 +161,8 @@
 				<td>
 					{% if side1.director %}
 						{{side1.director}} - 
-						{{side1.director_commission}}%
+						{{side1.director_commission}}% - 
+						{{side1.director_pay|commaise}} ש"ח
 					{% endif %}
 				</td>
 			</tr>
@@ -277,7 +280,8 @@
 				<th>עובד 1</th>
 				<td>
 					{{side2.employee1}} - 
-					{{side2.employee1_commission}}%
+					{{side2.employee1_commission}}% - 
+					{{side2.employee1_pay|commaise}} ש"ח
 				</td>
 			</tr>
 			<tr>
@@ -285,7 +289,8 @@
 				<td>
 					{% if side2.employee2 %}
 						{{side2.employee2}} - 
-						{{side2.employee2_commission}}%
+						{{side2.employee2_commission}}% - 
+						{{side2.employee2_pay|commaise}} ש"ח
 					{% endif %}
 				</td>
 			</tr>
@@ -294,7 +299,8 @@
 				<td>
 					{% if side2.director %}
 						{{side2.director}} - 
-						{{side2.director_commission}}%
+						{{side2.director_commission}}% - 
+						{{side2.director_pay|commaise}} ש"ח
 					{% endif %}
 				</td>
 			</tr>

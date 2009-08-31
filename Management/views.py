@@ -736,6 +736,8 @@ def nhsale_add(request, branch_id):
             if not error:
                 if request.POST.has_key('addanother'):
                     return HttpResponseRedirect('add')
+                elif request.POST.has_key('tomonth'):
+                    return HttpResponseRedirect('/nhbranch/%s/sales' % nhsale.nhbranch.id)
     else:
         saleForm = NHSaleForm(prefix='sale')
         monthForm = NHMonthForm(prefix='month')
