@@ -1557,26 +1557,35 @@ class NHSaleSide(models.Model):
             nhp = q.count() == 1 and q[0] or NHPay(employee=e1, nhsaleside = self)
             nhp.amount = nhsale.net_income * ec1 / 100
             nhp.save()
+            self.employee1_pay = nhp.amount
         if e2 and ec2:
             q = e2.nhpays.filter(nhsaleside = self)
             nhp = q.count() == 1 and q[0] or NHPay(employee=e2, nhsaleside = self)
             nhp.amount = nhsale.net_income * ec2 / 100
             nhp.save()
+            self.employee2_pay = nhp.amount
         if d and dc:
             q = d.nhpays.filter(nhsaleside = self)
             nhp = q.count() == 1 and q[0] or NHPay(employee=d, nhsaleside = self)
             nhp.amount = nhsale.net_income * dc / 100
             nhp.save()
+            self.director_pay = nhp.amount
     class Meta:
         db_table = 'NHSaleSide'
 
 class NHMonth(models.Model):
     nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'))
-    month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
-    year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
-                                                                                             datetime.now().year + 10)))
+    month = models.PositiveSmallIntegerField(ugettext('month'), 
+                                             choices=((i,i) for i in range(1,13)),
+                                             default=NHMonth.objects.filter(is_closed=False)[0].month)
+    year = models.PositiveSmallIntegerField(ugettext('year'), 
+                                            choices=((i,i) for i in range(datetime.now().year - 10,
+                                                                          datetime.now().year + 10)),
+                                            default=NHMonth.objects.filter(is_closed=False)[0].year)
+    is_closed = models.BooleanField(editable=False, default=False)
     class Meta:
         db_table = 'NHMonth'
+        ordering = ['-year', '-month']
 
 class NHSale(models.Model):
     nhmonth = models.ForeignKey('NHMonth', editable=False, related_name='nhsales')
