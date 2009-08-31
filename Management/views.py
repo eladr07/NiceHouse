@@ -418,6 +418,16 @@ def nhmonth_sales(request, nhbranch_id, year=datetime.now().year, month=datetime
                               { 'nhmonth':nhm, 'filterForm':form },
                               context_instance=RequestContext(request))
 
+@permission_required('Management.change_nhmonth')
+def nhmonth_close(request, id):
+    nhm = NHMonth.objects.get(pk=id)
+    nhm.close()
+    nhm.save()
+    form = MonthFilterForm(initial={'year':nhm.year,'month':nhm.month})
+    return render_to_response('Management/nhmonth_sales.html', 
+                              { 'nhmonth':nhm, 'filterForm':form },
+                              context_instance=RequestContext(request))
+
 @permission_required('Management.add_demand')
 def demand_list(request, year=demand_month().year, month=demand_month().month):
     ds = Demand.objects.filter(year = year, month = month)

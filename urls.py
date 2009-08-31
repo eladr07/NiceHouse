@@ -252,6 +252,7 @@ urlpatterns = patterns('',
           'post_save_redirect' : '%(id)s'}),
     (r'^nhbranch/(?P<nhbranch_id>\d+)/sales$', 'Management.views.nhmonth_sales'),
     (r'^nhbranch/(?P<nhbranch_id>\d+)/sales/(?P<year>\d+)/(?P<month>\d+)$', 'Management.views.nhmonth_sales'),
+    (r'^nhmonth/(?P<id>\d+)/close$', 'Management.views.nhmonth_close'),
     
     (r'^projects/(?P<project_id>\d+)/signups/$', 'Management.views.signup_list'),
     (r'^projects/(?P<project_id>\d+)/signups/add$', 'Management.views.signup_edit'),
