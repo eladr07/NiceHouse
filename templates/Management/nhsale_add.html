@@ -62,8 +62,8 @@ $(document).ready(function() {
 			var c = $(this).val();
 			if (c <=0)
 				return;
-			$("#id_side1-" + fields[i] + "_pay").text(p * ac2 / 100 * c / 100);
-			$("#id_side2-" + fields[i] + "_pay").text(p * ac1 / 100 * c / 100);
+			$("#id_side1-" + fields[i] + "_pay").text(p * ac2 / 100 * parseInt(c) / 100);
+			$("#id_side2-" + fields[i] + "_pay").text(p * ac1 / 100 * parseInt(c) / 100);
 		}
 	});
 });
