@@ -54,7 +54,7 @@ $(document).ready(function() {
 		alert(priceInput.val());
 		alert(actualCommission1.val());
 		alert(actualCommission2.val());
-		alert("#id_side1-" + fields[i] + "_pay");
+		alert("#id_side1-" + fields[0] + "_pay");
 		for (var i = 0; i < fields.length; i++)
 		{
 			$("#id_side1-" + fields[i] + "_pay").text(int(priceInput.val()) * int(actualCommission1.val())/100 * int($(this).val())/100);
