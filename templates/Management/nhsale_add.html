@@ -2,6 +2,10 @@
 {% block header %}
 {{block.super}}
 <script>
+var p = 0;
+var ac1 = 0;
+var ac2 = 0;
+
 $(document).ready(function() {	
 	$("#payments1 tr").each(function(index, element) {
 		if (index > 1)
@@ -53,19 +57,23 @@ $(document).ready(function() {
 	priceInput.change(function () {
 		for (var i = 0; i < fields.length; i++)
 		{
-			var ac1 = int(actualCommission1.val());
-			var ac2 = int(actualCommission2.val());
-			var p = int(priceInput.val());
-			var c = int($(this).val());
-			if (p <= 0 || c <=0)
+			updateValues();
+			var c = $(this).val();
+			if (c <=0)
 				return;
-			if (ac1>0)
-				$("#id_side1-" + fields[i] + "_pay").text(p * ac2 / 100 * c / 100);
-			if (ac2>0)
-				$("#id_side2-" + fields[i] + "_pay").text(p * ac1 / 100 * c / 100);
+			$("#id_side1-" + fields[i] + "_pay").text(p * ac2 / 100 * c / 100);
+			$("#id_side2-" + fields[i] + "_pay").text(p * ac1 / 100 * c / 100);
 		}
 	});
 });
+function updateValues() {
+	if (priceInput.val())
+		p = int(priceInput.val());
+	if (actualCommission1.val())
+		ac1 = int(actualCommission1.val());
+	if (actualCommission2.val())
+		ac2 = int(actualCommission2.val());
+}
 </script>
 {% endblock header %}
 {% block content %}
