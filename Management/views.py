@@ -417,7 +417,7 @@ def nhmonth_sales(request, nhbranch_id, year=None, month=None):
         nhm = q.count() > 0 and q[0] or NHMonth(nhbranch=NHBranch.objects.get(pk=nhbranch_id),
                                                 year = year, month = month)
     else:
-        nhm = NHMonth.filter(nhbranch = NHBranch.objects.get(pk=nhbranch_id))[0]
+        nhm = NHMonth.objects.filter(nhbranch = NHBranch.objects.get(pk=nhbranch_id))[0]
     form = MonthFilterForm(initial={'year':year,'month':month})
     return render_to_response('Management/nhmonth_sales.html', 
                               { 'nhmonth':nhm, 'filterForm':form },

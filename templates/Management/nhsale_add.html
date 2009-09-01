@@ -121,12 +121,9 @@ function updateValues() {
 	</table>
 	<fieldset class="cardFieldset">
 		<legend>פרטי הנכס</legend>
-		{{saleForm.errors}}
 		<table cellspacing="2" cellpadding="2" class="formTable" align="center">
 			<tr>
 				<td>{{ saleForm.id }}</td>
-				<td>{{ side1Form.id }}</td>
-				<td>{{ side2Form.id }}</td>
 			</tr>
 			<tr>
 				<th>{{ saleForm.address.label_tag }}</th>
@@ -178,12 +175,14 @@ function updateValues() {
 	<div>
 		<fieldset class="cardFieldset">
 			<legend>בעל הנכס\משכיר</legend>
-			{{side1form.errors}}
 			<div style="float:right;">
 			<table cellspacing="2" cellpadding="2" class="formTable">
 				<tr>
 					<td></td>
 					<th>פרטים<th>
+				</tr>
+				<tr>
+					<td>{{ side1form.id }}</td>
 				</tr>
 				<tr>
 					<th>{{ side1form.sale_type.label_tag }}</th>
@@ -414,12 +413,14 @@ function updateValues() {
 	<div>
 		<fieldset class="cardFieldset">
 			<legend>רוכש\שוכר</legend>
-			{{side2form.errors}}
 			<div style="float:right;">
 			<table cellspacing="2" cellpadding="2" class="formTable">
 				<tr>
 					<td></td>
 					<th>פרטים<th>
+				</tr>
+				<tr>
+					<td>{{ side2form.id }}</td>
 				</tr>
 				<tr>
 					<th>{{ side2form.sale_type.label_tag }}</th>
