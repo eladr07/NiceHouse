@@ -412,7 +412,10 @@ def employee_list_pdf(request):
     return response
 
 def nhmonth_sales(request, nhbranch_id, year=datetime.now().year, month=datetime.now().month):
-    nhm = NHMonth.objects.get(nhbranch__id = nhbranch_id, year=year, month=month)
+    try:
+        nhm = NHMonth.objects.get(nhbranch__id = nhbranch_id, year=year, month=month)
+    except NHMonth.DoesNotExist:
+        nhm = None
     form = MonthFilterForm(initial={'year':year,'month':month})
     return render_to_response('Management/nhmonth_sales.html', 
                               { 'nhmonth':nhm, 'filterForm':form },
