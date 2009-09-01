@@ -61,7 +61,7 @@
 		<th>% מהכנסה חודשי</th>
 		<th>מס' קבלה זמנית</th>
 		<th>מס' חשבונית</th>
-		{% for nhe in nhmonth.nhbranch.nhemployee.all %}
+		{% for nhe in nhmonth.nhbranch.nhemployees.all %}
 		<th>{{nhe}}</th>
 		{% endfor %}
 	</tr>
@@ -83,7 +83,7 @@
 				<td></td>
 				<td>{{ss.temp_receipt_num}}</td>
 				<td>{{ss.invoices.all.0.num}}</td>
-				{% for nhe in nhmonth.nhbranch.nhemployee.all %}
+				{% for nhe in nhmonth.nhbranch.nhemployees.all %}
 				<td>
 					{% ifequal nhe ss.employee1 %}
 						{{ss.employee1}} - {{ss.employee1_commission}}%
