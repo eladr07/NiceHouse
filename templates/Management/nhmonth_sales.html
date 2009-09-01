@@ -86,13 +86,13 @@
 				{% for nhe in nhmonth.nhbranch.nhemployees.all %}
 				<td>
 					{% ifequal nhe ss.employee1 %}
-						{{ss.employee1}} - {{ss.employee1_commission}}%
+						{{ss.employee1_pay}} - {{ss.employee1_commission}}%
 					{% endifequal %}
 					{% ifequal nhe ss.employee2 %}
-						{{ss.employee1}} - {{ss.employee2_commission}}%
+						{{ss.employee2_pay}} - {{ss.employee2_commission}}%
 					{% endifequal %}
 					{% ifequal nhe ss.director %}
-						{{ss.director}} - {{ss.director_commission}}%
+						{{ss.director_pay}} - {{ss.director_commission}}%
 					{% endifequal %}
 				</td>
 				{% endfor %}
