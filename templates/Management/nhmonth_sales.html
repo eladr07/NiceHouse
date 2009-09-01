@@ -85,13 +85,13 @@
 				<td>{{ss.invoices.all.0.num}}</td>
 				{% for nhe in nhmonth.nhbranch.nhemployees.all %}
 				<td>
-					{% ifequal nhe.id ss.employee1.id %}
+					{% ifequal nhe ss.employee1 %}
 						{{ss.employee1}} - {{ss.employee1_commission}}%
 					{% endifequal %}
-					{% ifequal nhe.id ss.employee2.id %}
+					{% ifequal nhe ss.employee2 %}
 						{{ss.employee1}} - {{ss.employee2_commission}}%
 					{% endifequal %}
-					{% ifequal nhe.id ss.director.id %}
+					{% ifequal nhe ss.director %}
 						{{ss.director}} - {{ss.director_commission}}%
 					{% endifequal %}
 				</td>

@@ -1548,26 +1548,25 @@ class NHSaleSide(models.Model):
         return self.employee1 == employee or self.employee2 == employee or self.director == employee
     def save(self,*args, **kw):
         models.Model.save(self, *args, **kw)
-        e1, ec1, e2, ec2, d, dc, nhsale = (self.employee1, self.employee1_commission,
-                                           self.employee2, self.employee2_commission,
-                                           self.director, self.director_commission,
-                                           self.nhsale)
+        e1, ec1, e2, ec2, d, dc = (self.employee1, self.employee1_commission,
+                                   self.employee2, self.employee2_commission,
+                                   self.director, self.director_commission)
         if e1 and ec1:
             q = e1.nhpays.filter(nhsaleside = self)
             nhp = q.count() == 1 and q[0] or NHPay(employee=e1, nhsaleside = self)
-            nhp.amount = nhsale.net_income * ec1 / 100
+            nhp.amount = self.net_income * ec1 / 100
             nhp.save()
             self.employee1_pay = nhp.amount
         if e2 and ec2:
             q = e2.nhpays.filter(nhsaleside = self)
             nhp = q.count() == 1 and q[0] or NHPay(employee=e2, nhsaleside = self)
-            nhp.amount = nhsale.net_income * ec2 / 100
+            nhp.amount = self.net_income * ec2 / 100
             nhp.save()
             self.employee2_pay = nhp.amount
         if d and dc:
             q = d.nhpays.filter(nhsaleside = self)
             nhp = q.count() == 1 and q[0] or NHPay(employee=d, nhsaleside = self)
-            nhp.amount = nhsale.net_income * dc / 100
+            nhp.amount = self.net_income * dc / 100
             nhp.save()
             self.director_pay = nhp.amount
     class Meta:
