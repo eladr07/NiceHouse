@@ -38,17 +38,26 @@ $(document).ready(function() {
 	priceInput = $("#id_sale-price");
 	actualCommission1 = $("#id_side1-actual_commission");
 	actualCommission2 = $("#id_side2-actual_commission");
-	for (var i = 0; i < fields.length; i++)
-	{
-		$("#id_side1-" + fields[i] + "_commission").change(function () {
-			$("#id_side1-" + fields[i] + "_pay").text(p * ac1/ 100 * parseInt($("#id_side1-" + fields[i] + "_commission").val())/100);
-		});
-		$("#id_side2-" + fields[i] + "_commission").change(function () {
-			$("#id_side2-" + fields[i] + "_pay").text(p * ac2/ 100 * parseInt($("#id_side1-" + fields[i] + "_commission").val())/100);
-		});
-	}
+
+	$("#id_side1-employee1_commission").change(function () {
+		$("#id_side1-employee1_pay").text(p * ac1/ 100 * parseInt($(this).val())/100);
+	});
+	$("#id_side2-employee1_commission").change(function () {
+		$("#id_side2-employee1_pay").text(p * ac2/ 100 * parseInt($(this).val())/100);
+	});
+	$("#id_side1-employee2_commission").change(function () {
+		$("#id_side1-employee2_pay").text(p * ac1/ 100 * parseInt($(this).val())/100);
+	});
+	$("#id_side2-employee2_commission").change(function () {
+		$("#id_side2-employee2_pay").text(p * ac2/ 100 * parseInt($(this).val())/100);
+	});
+	$("#id_side1-director_commission").change(function () {
+		$("#id_side1-director_pay").text(p * ac1/ 100 * parseInt($(this).val())/100);
+	});
+	$("#id_side2-director_commission").change(function () {
+		$("#id_side2-director_pay").text(p * ac2/ 100 * parseInt($(this).val())/100);
+	});
 	actualCommission1.change(function () {
-		alert($("#id_side1-" + fields[0] + "_commission").val());
 		updateValues();
 		for (var i = 0; i < fields.length; i++)
 			$("#id_side1-" + fields[i] + "_pay").text(p * ac1/ 100 * parseInt($("#id_side1-" + fields[i] + "_commission").val())/100);
@@ -62,8 +71,8 @@ $(document).ready(function() {
 		updateValues();
 		for (var i = 0; i < fields.length; i++)
 		{
-			$("#id_side1-" + fields[i] + "_pay").text(p * ac2 / 100 * parseInt($("#id_side1-" + fields[i] + "_commission").val()) / 100);
-			$("#id_side2-" + fields[i] + "_pay").text(p * ac1 / 100 * parseInt($("#id_side2-" + fields[i] + "_commission").val()) / 100);
+			$("#id_side1-" + fields[i] + "_pay").text(p * ac1 / 100 * parseInt($("#id_side1-" + fields[i] + "_commission").val()) / 100);
+			$("#id_side2-" + fields[i] + "_pay").text(p * ac2 / 100 * parseInt($("#id_side2-" + fields[i] + "_commission").val()) / 100);
 		}
 	});
 });
