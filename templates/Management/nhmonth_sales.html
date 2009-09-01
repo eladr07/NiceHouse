@@ -61,7 +61,9 @@
 		<th>% מהכנסה חודשי</th>
 		<th>מס' קבלה זמנית</th>
 		<th>מס' חשבונית</th>
-		<th>סוכנים</th>
+		{% for nhe in nhmonth.nhbranch.nhemployee.all %}
+		<th>{{nhe}}</th>
+		{% endfor %}
 	</tr>
     {% for s in nhmonth.nhsales.all %}
 		<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}}>
@@ -69,7 +71,7 @@
 			<td>{{s.sale_date|date:"j/m/y"}}</td>
 			{% for ss in s.nhsaleside_set.all %}
 				{% if not forloop.first %}
-					<tr>
+					<tr class="{% cycle 'row2' 'row1' %}">
 						<td></td>
 						<td></td>
 				{% endif %}
@@ -81,15 +83,20 @@
 				<td></td>
 				<td>{{ss.temp_receipt_num}}</td>
 				<td>{{ss.invoices.all.0.num}}</td>
+				{% for nhe in nhmonth.nhbranch.nhemployee.all %}
 				<td>
-					{{ss.employee1}} - {{ss.employee1_commission}}%
-					{% if ss.employee2 %}
-						{{ss.employee2}} - {{ss.employee2_commission}}%
-					{% endif %}
-					{% if ss.director %}
+					{% ifequal nhe ss.employee1 %}
+						{{ss.employee1}} - {{ss.employee1_commission}}%
+					{% endifequal %}
+					{% ifequal nhe ss.employee2 %}
+						{{ss.employee1}} - {{ss.employee2_commission}}%
+					{% endifequal %}
+					{% ifequal nhe ss.director %}
 						{{ss.director}} - {{ss.director_commission}}%
-					{% endif %}
-				</td>				
+					{% endifequal %}
+				</td>
+				{% endfor %}
+				<td>		
 				{% if forloop.first %}
 					</tr>
 				{% endif %}
