@@ -415,7 +415,9 @@ def nhmonth_sales(request, nhbranch_id, year=datetime.now().year, month=datetime
     try:
         nhm = NHMonth.objects.get(nhbranch__id = nhbranch_id, year=year, month=month)
     except NHMonth.DoesNotExist:
-        nhm = None
+        nhm = NHMonth(nhbranch = NHBranch.objects.get(pk=nhbranch_id),
+                      year = year, month = month)
+        nhm.save()
     form = MonthFilterForm(initial={'year':year,'month':month})
     return render_to_response('Management/nhmonth_sales.html', 
                               { 'nhmonth':nhm, 'filterForm':form },
