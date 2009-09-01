@@ -48,7 +48,7 @@ $(document).ready(function() {
 		});
 	}
 	actualCommission1.change(function () {
-		alert($("#id_side1-" + fields[i] + "_commission").val());
+		alert($("#id_side1-" + fields[0] + "_commission").val());
 		updateValues();
 		for (var i = 0; i < fields.length; i++)
 			$("#id_side1-" + fields[i] + "_pay").text(p * ac1/ 100 * parseInt($("#id_side1-" + fields[i] + "_commission").val())/100);
