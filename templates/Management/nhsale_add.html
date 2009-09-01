@@ -5,6 +5,8 @@
 var p = 0;
 var ac1 = 0;
 var ac2 = 0;
+var fields = new Array("employee1", "employee2", "director");
+var priceInput, actualCommission1, actualCommission2;
 
 $(document).ready(function() {	
 	$("#payments1 tr").each(function(index, element) {
@@ -33,10 +35,9 @@ $(document).ready(function() {
 				$(element).show();
 		});
 	});
-	var priceInput = $("#id_sale-price");
-	var actualCommission1 = $("#id_side1-actual_commission");
-	var actualCommission2 = $("#id_side2-actual_commission");
-	var fields = new Array("employee1", "employee2", "director");
+	priceInput = $("#id_sale-price");
+	actualCommission1 = $("#id_side1-actual_commission");
+	actualCommission2 = $("#id_side2-actual_commission");
 	for (var i = 0; i < fields.length; i++)
 	{
 		$("#id_side1-" + fields[i] + "_commission").change(function () {
