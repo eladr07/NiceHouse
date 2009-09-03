@@ -1367,7 +1367,7 @@ class Demand(models.Model):
     def get_final_sales_amount(self):
         amount = 0
         for s in self.get_sales():
-            amount = amount + s.price_final or 0 
+            amount = amount + (s.price_final or 0) 
         return amount
     def calc_sales_commission(self):
         if self.get_sales().count() == 0:
