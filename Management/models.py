@@ -681,8 +681,8 @@ class EmployeeSalary(models.Model):
     month = models.PositiveSmallIntegerField(ugettext('month'), editable=False, choices=((i,i) for i in range(1,13)))
     year = models.PositiveSmallIntegerField(ugettext('year'), editable=False, choices=((i,i) for i in range(datetime.now().year - 10,
                                                                                              datetime.now().year + 10)))
-    base = models.IntegerField(ugettext('salary_base'))
-    commissions = models.IntegerField(ugettext('commissions'), editable=False)
+    base = models.IntegerField(ugettext('salary_base'), null=True)
+    commissions = models.IntegerField(ugettext('commissions'), editable=False, null=True)
     safety_net = models.PositiveSmallIntegerField(ugettext('safety_net'), null=True, blank=True)
     var_pay = models.SmallIntegerField(ugettext('var_pay'), null=True, blank=True)
     var_pay_type = models.CharField(ugettext('var_pay_type'), max_length=20, null=True, blank=True)
