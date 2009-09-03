@@ -255,7 +255,7 @@ class MonthDemandWriter:
     def zilberBonusFlows(self):
         demands = [self.demand]
         #gathers zilber cycle demands
-        for i in range(1, ZILBER_CYCLE - 1):
+        for i in range(1, models.ZILBER_CYCLE - 1):
             y,m, p = (self.demand.year, self.demand.month, self.demand.project)
             month = date(m == 1 and y - 1 or y, (m - 1) or 12, 1)
             demands.append(Demand.objects.get(project = p, year = month.year, month = month.month))
