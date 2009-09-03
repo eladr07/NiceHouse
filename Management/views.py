@@ -414,10 +414,10 @@ def employee_list_pdf(request):
 def nhmonth_sales(request, nhbranch_id, year=None, month=None):
     if year and month:
         q = NHMonth.objects.filter(nhbranch__id = nhbranch_id, year=year, month=month)
-        nhm = q.count() > 0 and q[0] or NHMonth(nhbranch=NHBranch.objects.get(pk=nhbranch_id),
-                                                year = year, month = month)
     else:
-        nhm = NHMonth.objects.filter(nhbranch = NHBranch.objects.get(pk=nhbranch_id))[0]
+        q = NHMonth.objects.filter(nhbranch__id = nhbranch_id)
+    nhb = NHBranch.objects.get(pk=nhbranch_id)
+    nhm = q.count() > 0 and q[0] or NHMonth(nhbranch = nhb, year = year, month = month)
     form = MonthFilterForm(initial={'year':nhm.year,'month':nhm.month})
     return render_to_response('Management/nhmonth_sales.html', 
                               { 'nhmonth':nhm, 'filterForm':form },
