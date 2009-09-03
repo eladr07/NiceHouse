@@ -227,7 +227,8 @@ class SaleForm(forms.ModelForm):
                                              self.cleaned_data['discount'],
                                              self.cleaned_data['allowed_discount'])
         if self.instance.id:
-            if house.get_sale() != self.instance:
+            s = house.get_sale()
+            if s != None and s != self.instance:
                 raise ValidationError()
         else:
             if house.get_sale() != None:
