@@ -517,13 +517,15 @@ class Employee(EmployeeBase):
 class NHSaleFilter(models.Model):
     His, NotHis, All = 1,2,3
     name = models.CharField(max_length = 20, unique=True)
+    def __unicode__(self):
+        return unicode(self.name)
     class Meta:
         db_table = 'NHSaleFilter'
 
 class NHCBase(models.Model):
     min = models.PositiveIntegerField(ugettext('min_commission'), default=0)
     precentage = models.FloatField(ugettext('precentage'))
-    filter = models.ForeignKey('NHSaleFilter')
+    filter = models.ForeignKey('NHSaleFilter', verbose_name=ugettext('filter'))
     def calc(self, nhmonth):
         amount = 0
         if self.filter.id == NHSaleFilter.His or self.filter.id == NHSaleFilter.All:
@@ -542,7 +544,7 @@ class NHCBase(models.Model):
         db_table = 'NHCBase'
 
 class NHCBranchIncome(models.Model):
-    filter = models.ForeignKey('NHSaleFilter')
+    filter = models.ForeignKey('NHSaleFilter', verbose_name=ugettext('filter'))
     if_income = models.IntegerField(ugettext('if_branch_income'))
     then_precentage = models.FloatField(ugettext('then_precentage'))
     else_amount = models.IntegerField(ugettext('else_amount'))
