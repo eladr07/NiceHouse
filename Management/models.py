@@ -521,7 +521,6 @@ class NHSaleFilter(models.Model):
         db_table = 'NHSaleFilter'
 
 class NHCBase(models.Model):
-    nhemployee = models.OneToOneField('NHEmployee', null=True, editable=False)
     min = models.PositiveIntegerField(ugettext('min_commission'), default=0)
     precentage = models.FloatField(ugettext('precentage'))
     filter = models.ForeignKey('NHSaleFilter')
@@ -543,7 +542,6 @@ class NHCBase(models.Model):
         db_table = 'NHCBase'
 
 class NHCBranchIncome(models.Model):
-    nhemployee = models.OneToOneField('NHEmployee', null=True, editable=False)
     filter = models.ForeignKey('NHSaleFilter')
     if_income = models.IntegerField(ugettext('if_branch_income'))
     then_precentage = models.FloatField(ugettext('then_precentage'))
@@ -582,7 +580,8 @@ class NHBranch(models.Model):
     
 class NHEmployee(EmployeeBase):
     nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'), related_name='nhemployees')
-    
+    nhcbase = models.OneToOneField('NHCBase', editable=False, null=True)
+    nhcbranchincome = models.OneToOneField('NHCBranchIncome', editable=False, null=True)
     objects = EmployeeManager()
     
     def get_open_reminders(self):

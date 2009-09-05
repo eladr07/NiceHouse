@@ -1364,13 +1364,14 @@ def employee_loanpay(request, employee_id):
 @permission_required('Management.change_nhcbase')
 def nhemployee_nhcb(request, employee_id):
     employee = NHEmployee.objects.get(pk = employee_id)
-    nhcb = NHCBase.objects.get(nhemployee = employee) or NHCBase(nhemployee = employee)
+    nhcb = employee.nhcbase or NHCBase()
     if request.method=='POST':
-        form = NHCBaseForm(request.POST)
+        form = NHCBaseForm(request.POST, instance = nhcb)
         if form.is_valid():
-            form.save() 
+            employee.nhcbase = form.save()
+            employee.save() 
     else:
-        form = NHCBaseForm()
+        form = NHCBaseForm(instance = nhcb)
     
     return render_to_response('Management/object_edit.html',
                               {'form' : form}, context_instance=RequestContext(request))
@@ -1378,13 +1379,14 @@ def nhemployee_nhcb(request, employee_id):
 @permission_required('Management.change_nhcbranchincome')
 def nhemployee_nhcbi(request, employee_id):
     employee = NHEmployee.objects.get(pk = employee_id)
-    nhcb = NHCBranchIncome.objects.get(nhemployee = employee) or NHCBranchIncome(nhemployee = employee)
+    nhcb = employee.nhcbranchincome or NHCBranchIncome()
     if request.method=='POST':
-        form = NHCBranchIncomeForm(request.POST)
+        form = NHCBranchIncomeForm(request.POST, instance = nhcb)
         if form.is_valid():
-            form.save() 
+            employee.nhcbranchincome = form.save() 
+            employee.save()
     else:
-        form = NHCBranchIncomeForm()
+        form = NHCBranchIncomeForm(instance = nhcb)
     
     return render_to_response('Management/object_edit.html',
                               {'form' : form}, context_instance=RequestContext(request))
