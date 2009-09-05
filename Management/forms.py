@@ -108,7 +108,7 @@ class HouseForm(forms.ModelForm):
     storage1 = forms.ModelChoiceField(queryset=Storage.objects.all(), required=False, label = ugettext('storage') + ' 1')
     storage2 = forms.ModelChoiceField(queryset=Storage.objects.all(), required=False, label = ugettext('storage') + ' 2')
     price = forms.IntegerField(label=ugettext('price'), required=False)
-    def save(self, *args, **kw):
+    def save(self, price_type_id, *args, **kw):
         h = forms.ModelForm.save(self, *args, **kw)
         for f in ['parking1','parking2','parking3']:
             if self.cleaned_data[f]:
@@ -117,7 +117,7 @@ class HouseForm(forms.ModelForm):
             if self.cleaned_data[f]:
                 h.storages.add(self.cleaned_data[f])
         if self.cleaned_data['price']:
-            self.instance.versions.add(HouseVersion(house=h, type=PricelistType.objects.get(pk=self.price_type_id),
+            self.instance.versions.add(HouseVersion(house=h, type=PricelistType.objects.get(pk=price_type_id),
                                                     price = self.cleaned_data['price']))
         return h
     def __init__(self, price_type_id, *args, **kw):
@@ -132,7 +132,6 @@ class HouseForm(forms.ModelForm):
         for s in self.instance.storages.all():
             self.initial['storage%s' % i] = s.id
             i=i+1
-        self.price_type_id = price_type_id
         vs = self.instance.versions.filter(type__id = price_type_id)
         if vs.count() > 0:
             self.initial['price'] = vs.latest().price

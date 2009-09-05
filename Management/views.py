@@ -1258,7 +1258,7 @@ def building_addhouse(request, type_id, building_id):
         form = HouseForm(type_id, data = request.POST)
         form.instance.building = b
         if form.is_valid():
-            form.save()
+            form.save(type_id)
             if request.POST.has_key('addanother'):
                 return HttpResponseRedirect('type%s' % type_id)
             elif request.POST.has_key('finish'):
@@ -1285,7 +1285,7 @@ def house_edit(request,id , type_id):
     if request.method == 'POST':
         form = HouseForm(type_id, data = request.POST, instance = h)
         if form.is_valid():
-            form.save()
+            form.save(type_id)
             if request.POST.has_key('addanother'):
                 return HttpResponseRedirect('../../addhouse/type%s' % type_id)
             elif request.POST.has_key('finish'):
