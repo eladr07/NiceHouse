@@ -49,8 +49,8 @@
 						{{s.price_include_lawyer|yesno:"כולל עו\"ד, לא כולל עו\"ד"}}
 					{% endifnotequal %}
 				</td>
-				{% if s.discount %}<td>{{s.discount}}%</td>
-				{% if s.allowed_discount %}<td>{{s.allowed_discount}}%</td>
+				{% if s.discount %}<td>{{s.discount}}%</td>{% endif %}
+				{% if s.allowed_discount %}<td>{{s.allowed_discount}}%</td>{% endif %}
 				<td>
 					{% if s.salepricemod %}
 						<a href="/salepricemod/{{s.salepricemod.id}}" target="_parent"><img src="/site_media/images/money-48.png" width="15" height="15" /></a>
