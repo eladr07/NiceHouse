@@ -16,7 +16,7 @@ from mail import mail
 @login_required
 def index(request):
     for e in Employee.objects.active():
-        es = EmployeeSalary.objects.get_or_create(employee = e, month=9, year = 2009)[0]
+        es = EmployeeSalary.objects.get_or_create(employee = e, month=8, year = 2009)[0]
         es.calculate()
         es.save()
     return render_to_response('Management/index.html',
