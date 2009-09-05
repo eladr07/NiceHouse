@@ -15,9 +15,6 @@ from mail import mail
 
 @login_required
 def index(request):
-    for d in Demand.objects.all():
-        d.sale_count = d.get_sales().count()
-        d.save()
     return render_to_response('Management/index.html',
                               {'locateHouseForm':LocateHouseForm(),
                                'nhbranches':NHBranch.objects.all()},
