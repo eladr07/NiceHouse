@@ -793,7 +793,7 @@ class EmployeeSalary(models.Model):
         #clean any sale commission details associated with this salary
         for scd in SaleCommissionDetail.objects.filter(employee_salary=self):
             scd.delete()
-        amount = 0
+        self.commissions, self.base = 0, self.employee.employment_terms.salary_base
         for epc in self.employee.commissions.all():
             total_sales = self.sales
             for k in total_sales:
@@ -802,11 +802,10 @@ class EmployeeSalary(models.Model):
                 sales = total_sales[k].filter(house__building__project = epc.project)
                 if sales.count() == 0:
                     continue
-                amount += epc.calc(sales, self)
+                self.commissions += epc.calc(sales, self)
                 for s in sales.all():
                     s.employee_paid = True
-                    s.save()
-        self.commissions = amount    
+                    s.save() 
     def get_absolute_url(self):
         return '/employeesalaries/%s' % self.id
     class Meta:
