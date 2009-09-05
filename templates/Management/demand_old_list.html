@@ -21,6 +21,7 @@
 				$("#demandCalc").attr("href", "/demands/" + selectedID + "/calc");
 			});
 		$(".fancybox").fancybox();
+		$(".bigfancybox").fancybox({'frameWidth':800});	
 		$("#demandSend").click(function(event) {
 			event.preventDefault();
 			$("#demandTable input[type='checkbox'][checked]").each(function () {
@@ -149,6 +150,7 @@
 		<th>יזם</th>
 		<th>שם פרוייקט</th>
 		<th>מס' מכירות</th>
+		<th>מס' מכירות צפוי</th>
 		<th>סה"כ מכירות כולל מע"מ</th>
 		<th>עמלה מחושב בגין שיווק</th>
 		<th>תוספת קבועה</th>
@@ -185,7 +187,8 @@
 			</td>
 			<td>{{ d.project.initiator }}</td>
 			<td><a href="/projects/{{d.project.id}}">{{ d.project.name }}</a></td>
-			<td><a href="/demands/{{d.id}}/sales" class="fancybox">{{ d.get_sales.count|default:"אין מכירות" }}</a></td>
+			<td><a href="/demands/{{d.id}}/sales" class="bigfancybox">{{ d.get_sales.count|default:"אין מכירות" }}</a></td>
+			<td>{{d.sale_count}}</td>
 			<td>{% if d.get_sales_amount %} {{ d.get_sales_amount|commaise }} ש"ח {% else %}----{% endif %}</td>
 			<td>{% if d.get_sales_commission %} {{ d.get_sales_commission|commaise }} ש"ח {% else %}----{% endif %}</td>
 			<td style="color:#08A600;">{% if d.fixed_pay %} {{ d.fixed_pay }} ש"ח {% endif %}</td>

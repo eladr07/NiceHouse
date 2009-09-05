@@ -27,6 +27,8 @@
 		<th>מס' בניין</th>
 		<th>מס' דירה</th>
 		<th>מחיר חוזה</th>
+		{% if demand.get_sales.all.0.discount %}<th>% הנחה ניתן</th>{% endif %}
+		{% if demand.get_sales.all.0.allowed_discount %}<th>% הנחה מותר</th>{% endif %}
 		<th>תיקונים</th>
 		<th>דחייה</th>
 		{% for s in demand.get_sales.all %}
@@ -46,7 +48,9 @@
 					{% ifnotequal s.house.building.project.commissions.include_lawyer None %}
 						{{s.price_include_lawyer|yesno:"כולל עו\"ד, לא כולל עו\"ד"}}
 					{% endifnotequal %}
-				</td>				
+				</td>
+				{% if s.discount %}<td>{{s.discount}}%</td>
+				{% if s.allowed_discount %}<td>{{s.allowed_discount}}%</td>
 				<td>
 					{% if s.salepricemod %}
 						<a href="/salepricemod/{{s.salepricemod.id}}" target="_parent"><img src="/site_media/images/money-48.png" width="15" height="15" /></a>

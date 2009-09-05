@@ -1323,6 +1323,7 @@ class Demand(models.Model):
     month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
     year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
                                                                                              datetime.now().year + 10)))
+    sale_count = models.PositiveSmallIntegerField(ugettext('sale_count'), default=0)
     fixed_pay = models.IntegerField(ugettext('fixed_pay'),blank=True, null=True)
     fixed_pay_type = models.CharField(ugettext('fixed_pay_type'), max_length=20, null=True, blank=True)
     var_pay = models.IntegerField(ugettext('var_pay'), null=True, blank=True)
