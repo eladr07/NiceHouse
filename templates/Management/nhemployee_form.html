@@ -131,10 +131,6 @@
 				<a href="nhcb/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
 			</div>
 			{% endif %}
-			{% if not form.instance.nhcbase %}
-				עמלה בסיסית
-				<a href="nhcb" class="fancybox"><img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" /></a> 
-			{% endif %}
 			{% if form.instance.nhcbranchincome %}
 			<div>
 				אם ההכנסות מהמכירות 
@@ -149,9 +145,17 @@
 				<a href="nhcbi/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
 			</div>
 			{% endif %}
+			{% if not form.instance.nhcbase %}
+			<div>
+				עמלה בסיסית
+				<a href="nhcb" class="fancybox"><img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" /></a> 
+			</div>
+			{% endif %}
 			{% if not form.instance.nhcbranchincome %}
+			<div>
 				עמלה למכירות סניף
 				<a href="nhcbi" class="fancybox"><img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" /></a> 
+			</div>
 			{% endif %}
 		</fieldset>
 		<fieldset class="cardFieldset">
