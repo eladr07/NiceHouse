@@ -1364,7 +1364,7 @@ def employee_loanpay(request, employee_id):
 @permission_required('Management.change_nhcbase')
 def nhemployee_nhcb(request, employee_id):
     employee = NHEmployee.objects.get(pk = employee_id)
-    nhcb = employee.nhcbase or NHCBase(nhemployee = employee)
+    nhcb = NHCBase.get(nhemployee = employee) or NHCBase(nhemployee = employee)
     if request.method=='POST':
         form = NHCBaseForm(request.POST)
         if form.is_valid():
@@ -1378,7 +1378,7 @@ def nhemployee_nhcb(request, employee_id):
 @permission_required('Management.change_nhcbranchincome')
 def nhemployee_nhcbi(request, employee_id):
     employee = NHEmployee.objects.get(pk = employee_id)
-    nhcb = employee.nhcbranchincome or NHCBranchIncome(nhemployee = employee)
+    nhcb = NHCBranchIncome.get(nhemployee = employee) or NHCBranchIncome(nhemployee = employee)
     if request.method=='POST':
         form = NHCBranchIncomeForm(request.POST)
         if form.is_valid():
