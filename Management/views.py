@@ -324,7 +324,7 @@ def employee_salary_total_details(request, model, id):
 def employee_salary_list(request, year = date.today().year, month = date.today().month):
     for e in Employee.objects.active():
         es, new = EmployeeSalary.objects.get_or_create(employee = e, month = month, year = year)
-        if new:
+        if new or not es.commissions: 
             es.calculate()
             es.save()
     return render_to_response('Management/employee_salaries.html', 
