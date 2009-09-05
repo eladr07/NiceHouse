@@ -187,7 +187,15 @@ class CVarPrecentageFixedForm(forms.ModelForm):
 class CZilberForm(forms.ModelForm):
     class Meta:
         model = CZilber
+
+class NHCBaseForm(forms.ModelForm):
+    class Meta:
+        model = NHCBase
         
+class NHCBranchIncomeForm(forms.ModelForm):
+    class Meta:
+        model = NHCBranchIncome
+
 class CByPriceForm(forms.ModelForm):
     def save(self, *args, **kw):
         if self.instance.price == 0:
@@ -508,6 +516,16 @@ class EmployeeSalaryRefundForm(forms.ModelForm):
     class Meta:
         model = EmployeeSalary
         fields= ('employee', 'refund','refund_type')
+
+class NHEmployeeSalaryRemarksForm(forms.ModelForm):
+    class Meta:
+        model = NHEmployeeSalary
+        fields= ('nhemployee', 'remarks')
+
+class NHEmployeeSalaryRefundForm(forms.ModelForm):
+    class Meta:
+        model = NHEmployeeSalary
+        fields= ('nhemployee', 'refund','refund_type')
 
 class TaskFilterForm(forms.Form):
     status = forms.ChoiceField(initial = 'undone', choices = [('done', 'בוצעו'), ('undone','לא בוצעו'), ('all','הכל')])

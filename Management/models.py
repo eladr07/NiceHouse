@@ -514,6 +514,57 @@ class Employee(EmployeeBase):
         db_table = 'Employee'
         ordering = ['rank','-work_start']
 
+class NHSaleFilter(models.Model):
+    His, NotHis, All = 1,2,3
+    name = models.CharField(max_length = 20, unique=True)
+    class Meta:
+        db_table = 'NHSaleFilter'
+
+class NHCBase(models.Model):
+    nhemployee = models.OneToOneField('NHEmployee', null=True, editable=False)
+    min = models.PositiveIntegerField(ugettext('min_commission'), default=0)
+    precentage = models.FloatField(ugettext('precentage'))
+    filter = models.ForeignKey('NHSaleFilter')
+    def calc(self, nhmonth):
+        amount = 0
+        if self.filter.id == NHSaleFilter.His or self.filter.id == NHSaleFilter.All:
+            for nhss in NHSaleSide.objects.filter(employee1=self.nhemployee):
+                amount += nhss.net_income * self.precentage / 100
+            for nhss in NHSaleSide.objects.filter(employee2=self.nhemployee):
+                amount += nhss.net_income * self.precentage / 100
+        if self.filter.id == NHSaleFilter.NotHis or self.filter.id == NHSaleFilter.All:
+            for nhe in nhmonth.nhbranch.nhemployees.all():
+                for nhss in NHSaleSide.objects.filter(employee1=nhe):
+                    amount += nhss.net_income * self.precentage / 100
+                for nhss in NHSaleSide.objects.filter(employee2=nhe):
+                    amount += nhss.net_income * self.precentage / 100
+        return max(amount, self.min)
+    class Meta:
+        db_table = 'NHCBase'
+
+class NHCBranchIncome(models.Model):
+    nhemployee = models.OneToOneField('NHEmployee', null=True, editable=False)
+    filter = models.ForeignKey('NHSaleFilter')
+    if_income = models.IntegerField(ugettext('if_branch_income'))
+    then_precentage = models.FloatField(ugettext('then_precentage'))
+    else_amount = models.IntegerField(ugettext('else_amount'))
+    def calc(self, nhmonth):
+        amount = 0
+        if self.filter.id == NHSaleFilter.His or self.filter.id == NHSaleFilter.All:
+            for nhss in NHSaleSide.objects.filter(employee1=self.nhemployee):
+                amount += nhss.net_income
+            for nhss in NHSaleSide.objects.filter(employee2=self.nhemployee):
+                amount += nhss.net_income
+        if self.filter.id == NHSaleFilter.NotHis or self.filter.id == NHSaleFilter.All:
+            for nhe in nhmonth.nhbranch.nhemployees.all():
+                for nhss in NHSaleSide.objects.filter(employee1=nhe):
+                    amount += nhss.net_income
+                for nhss in NHSaleSide.objects.filter(employee2=nhe):
+                    amount += nhss.net_income
+        return amount > self.if_income and amount * self.then_precentage / 100 or self.else_amount
+    class Meta:
+        db_table = 'NHCBranchIncome'
+
 class NHBranch(models.Model):
     name = models.CharField(ugettext('name'), max_length=30, unique=True)
     manager = models.ForeignKey('NHEmployee', null=True, blank=True,
@@ -569,8 +620,8 @@ class NHEmployeeSalary(models.Model):
     month = models.PositiveSmallIntegerField(ugettext('month'), editable=False, choices=((i,i) for i in range(1,13)))
     year = models.PositiveSmallIntegerField(ugettext('year'), editable=False, choices=((i,i) for i in range(datetime.now().year - 10,
                                                                                              datetime.now().year + 10)))
-    base = models.IntegerField(ugettext('salary_base'))
-    commissions = models.IntegerField(ugettext('commissions'), editable=False)
+    base = models.IntegerField(ugettext('salary_base'), null=True)
+    commissions = models.IntegerField(ugettext('commissions'), editable=False, null=True)
     safety_net = models.PositiveSmallIntegerField(ugettext('safety_net'), null=True, blank=True)
     var_pay = models.SmallIntegerField(ugettext('var_pay'), null=True, blank=True)
     var_pay_type = models.CharField(ugettext('var_pay_type'), max_length=20, null=True, blank=True)
@@ -581,16 +632,6 @@ class NHEmployeeSalary(models.Model):
     approved = models.BooleanField(editable=False)
     is_sent = models.BooleanField(editable=False)
     remarks = models.TextField(ugettext('remarks'),null=True, blank=True)
-    @property
-    def nhsalesides(self):
-        salesides = []
-        nhmonths = NHMonth.objects.filter(year=self.year, month=self.month)
-        for nhmonth in nhmonths:
-            for nhsale in nhmonth.nhsales.all():
-                for nhsaleside in nhsale.nhsaleside_set.all():
-                     if nhsaleside.is_employee_related(self.nhemployee):
-                         salesides.append(nhsaleside)
-        return salesides
     @property
     def loan_pay(self):
         amount = 0
@@ -609,11 +650,21 @@ class NHEmployeeSalary(models.Model):
             return None
         return self.total_amount
     def calculate(self):
-        self.commissions = 0
-        for nhsaleside in self.nhsalesides:
-            for pay in nhsaleside.nhpays.filter(date__year = self.year,
-                                                date__month = self.month):
-                self.commissions += pay.amount
+        self.commissions, self.base = 0, 0
+        for pay in NHPay.objects.filter(date__year = self.year, date__month = self.month, employee = self.nhemployee):
+            self.base += pay.amount
+        if self.nhemployee.nhbrnach:
+            nhm = NHMonth.objects.get(nhbrnach = self.nhemployee.nhbrnach, year = self.year, month = self.month)
+            self.__calc__(nhm)
+        elif self.nhemployee.branch_manager.count() > 0:
+            for nhbranch in self.nhemployee.branch_manager.all():
+                nhm = NHMonth.objects.get(nhbrnach = nhbranch, year = self.year, month = self.month)
+                self.__calc__(nhm)
+    def __calc__(self, nhmonth):
+        if self.nhemployee.nhcbase:
+            self.commissions += self.nhemployee.nhcbase.calc(nhm)
+        if self.nhemployee.nhcbranchincome:
+            self.commissions += self.nhemployee.nhcbase.calc(nhm)
     class Meta:
         db_table='NHEmployeeSalary'
         unique_together = ('nhemployee','year','month')

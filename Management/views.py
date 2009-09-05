@@ -317,31 +317,39 @@ def demand_old_list(request, year=demand_month().year, month=demand_month().mont
                               context_instance=RequestContext(request))
 
 @permission_required('Management.change_employeesalary')
-def employee_salary_approve(request, id):
-    es = EmployeeSalary.objects.get(pk=id)
+def employee_salary_approve(request, model, id):
+    es = model.objects.get(pk=id)
     es.approved = True
     es.save()
     return HttpResponse('ok')
 
-def employee_salary_details(request, id):
+def employee_salary_details(request, model, id):
     return render_to_response('Management/employee_commission_details.html', 
-                              { 'salary':EmployeeSalary.objects.get(pk=id)},
+                              { 'salary':model.objects.get(pk=id)},
                               context_instance=RequestContext(request))
 
-def employee_salary_check_details(request, id):
+def employee_salary_check_details(request, model, id):
     return render_to_response('Management/employee_salary_check_details.html', 
-                              { 'salary':EmployeeSalary.objects.get(pk=id)},
+                              { 'salary':model.objects.get(pk=id)},
                               context_instance=RequestContext(request))
 
-def employee_salary_total_details(request, id):
+def employee_salary_total_details(request, model, id):
     return render_to_response('Management/employee_salary_total_details.html', 
-                              { 'salary':EmployeeSalary.objects.get(pk=id)},
+                              { 'salary':model.objects.get(pk=id)},
                               context_instance=RequestContext(request))
 
 @permission_required('Management.list_employeesalary')
-def employee_salary_list(request, year=demand_month().year, month=demand_month().month):
-    return render_to_response('Management/employee_salaries.html', 
+def employee_salary_list(request, year = date.today().year, month = date.today().month):
+    return render_to_response('Management/nhemployee_salaries.html', 
                               {'salaries':EmployeeSalary.objects.filter(year = year, month = month), 
+                               'month': date(int(year), int(month), 1),
+                               'filterForm':MonthFilterForm(initial={'year':year,'month':month})},
+                               context_instance=RequestContext(request))
+
+@permission_required('Management.list_nhemployeesalary')
+def nhemployee_salary_list(request, year=demand_month().year, month=demand_month().month):
+    return render_to_response('Management/employee_salaries.html', 
+                              {'salaries':NHEmployeeSalary.objects.filter(year = year, month = month), 
                                'month': date(int(year), int(month), 1),
                                'filterForm':MonthFilterForm(initial={'year':year,'month':month})},
                                context_instance=RequestContext(request))
@@ -360,8 +368,8 @@ def employee_salary_pdf(request, year, month):
     p.close()
     return response    
 
-def employee_salary_calc(request, id):
-    es = EmployeeSalary.objects.get(pk=id)
+def employee_salary_calc(request, model, id):
+    es = model.objects.get(pk=id)
     es.calculate()
     es.save()
     return HttpResponseRedirect('/employeesalaries/%s/%s' % (es.year, es.month))
@@ -417,7 +425,7 @@ def nhmonth_sales(request, nhbranch_id, year=None, month=None):
     else:
         q = NHMonth.objects.filter(nhbranch__id = nhbranch_id)
     nhb = NHBranch.objects.get(pk=nhbranch_id)
-    nhm = q.count() > 0 and q[0] or NHMonth(nhbranch = nhb, year = date.today().year, month = date.today().month)
+    nhm = q.count() > 0 and q[0] or NHMonth(nhbranch = nhb, year = year or date.today().year, month = month or date.today().month)
     form = MonthFilterForm(initial={'year':nhm.year,'month':nhm.month})
     return render_to_response('Management/nhmonth_sales.html', 
                               { 'nhmonth':nhm, 'filterForm':form },
@@ -492,6 +500,44 @@ def employee_remarks(request, year, month):
         form = EmployeeSalaryRemarksForm()
 
     return render_to_response('Management/employee_salary_edit.html', 
+                              { 'form':form, 'month':month, 'year':year },
+                              context_instance=RequestContext(request))
+
+def nhemployee_sales(request, id, year, month):
+    es = NHEmployeeSalary.objects.get(nhemployee__id = id, year = year, month = month)
+    return render_to_response('Management/employee_sales.html', 
+                              { 'es':es },
+                              context_instance=RequestContext(request))
+    
+@permission_required('Management.add_nhemployeesalary')
+def nhemployee_refund(request, year, month):
+    if request.method == 'POST':
+        form = NHEmployeeSalaryRefundForm(request.POST)
+        if form.is_valid():
+            form.instance = NHEmployeeSalary.objects.get_or_create(nhemployee = form.cleaned_data['nhemployee'], 
+                                                                   year = year, 
+                                                                   month = month)[0]
+            form.save()
+    else:
+        form = NHEmployeeSalaryRefundForm()
+
+    return render_to_response('Management/nhemployee_salary_edit.html', 
+                              { 'form':form, 'month':month, 'year':year },
+                              context_instance=RequestContext(request))
+
+@permission_required('Management.add_nhemployeesalary')
+def nhemployee_remarks(request, year, month):
+    if request.method == 'POST':
+        form = EmployeeSalaryRemarksForm(request.POST)
+        if form.is_valid():            
+            form.instance = NHEmployeeSalary.objects.get_or_create(nhemployee = form.cleaned_data['nhemployee'], 
+                                                                   year = year, 
+                                                                   month = month)[0]
+            form.save()
+    else:
+        form = NHEmployeeSalaryRemarksForm()
+
+    return render_to_response('Management/nhemployee_salary_edit.html', 
                               { 'form':form, 'month':month, 'year':year },
                               context_instance=RequestContext(request))
         
@@ -1315,6 +1361,44 @@ def employee_loanpay(request, employee_id):
     return render_to_response('Management/object_edit.html',
                               {'form' : form}, context_instance=RequestContext(request))
     
+@permission_required('Management.change_nhcbase')
+def nhemployee_nhcb(request, employee_id):
+    employee = NHEmployee.objects.get(pk = employee_id)
+    nhcb = employee.nhcbase or NHCBase(nhemployee = employee)
+    if request.method=='POST':
+        form = NHCBaseForm(request.POST)
+        if form.is_valid():
+            form.save() 
+    else:
+        form = NHCBaseForm()
+    
+    return render_to_response('Management/object_edit.html',
+                              {'form' : form}, context_instance=RequestContext(request))
+    
+@permission_required('Management.change_nhcbranchincome')
+def nhemployee_nhcbi(request, employee_id):
+    employee = NHEmployee.objects.get(pk = employee_id)
+    nhcb = employee.nhcbranchincome or NHCBranchIncome(nhemployee = employee)
+    if request.method=='POST':
+        form = NHCBranchIncomeForm(request.POST)
+        if form.is_valid():
+            form.save() 
+    else:
+        form = NHCBranchIncomeForm()
+    
+    return render_to_response('Management/object_edit.html',
+                              {'form' : form}, context_instance=RequestContext(request))
+
+def nhemployee_commission_del(request, employee_id, attr):
+    employee = NHEmployee.objects.get(pk = employee_id)
+    obj = getattr(employee, attr)
+    #unlink commission from employee
+    setattr(c, attr, None)
+    c.save()
+    #delete commission
+    obj.delete()
+    return HttpResponseRedirect('/nhemployees/%s' % employee.id)
+
 @permission_required('Management.add_loan')
 def nhemployee_addloan(request, employee_id):
     employee = NHEmployee.objects.get(pk = employee_id)
