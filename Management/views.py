@@ -322,7 +322,7 @@ def employee_salary_total_details(request, model, id):
 
 @permission_required('Management.list_employeesalary')
 def employee_salary_list(request, year = date.today().year, month = date.today().month):
-    return render_to_response('Management/nhemployee_salaries.html', 
+    return render_to_response('Management/employee_salaries.html', 
                               {'salaries':EmployeeSalary.objects.filter(year = year, month = month), 
                                'month': date(int(year), int(month), 1),
                                'filterForm':MonthFilterForm(initial={'year':year,'month':month})},
@@ -330,7 +330,7 @@ def employee_salary_list(request, year = date.today().year, month = date.today()
 
 @permission_required('Management.list_nhemployeesalary')
 def nhemployee_salary_list(request, year=demand_month().year, month=demand_month().month):
-    return render_to_response('Management/employee_salaries.html', 
+    return render_to_response('Management/nhemployee_salaries.html', 
                               {'salaries':NHEmployeeSalary.objects.filter(year = year, month = month), 
                                'month': date(int(year), int(month), 1),
                                'filterForm':MonthFilterForm(initial={'year':year,'month':month})},
