@@ -40,49 +40,49 @@ $(document).ready(function() {
 	actualCommission2 = $("#id_side2-actual_commission");
 
 	$("#id_side1-employee1_commission").change(function () {
-		$("#id_side1-employee1_pay").attr("value", p * ac1/ 100 * parseInt($(this).val())/100);
+		$("#id_side1-employee1_pay").attr("value", p * ac1/ 100 * parseFloat($(this).val())/100);
 	});
 	$("#id_side2-employee1_commission").change(function () {
-		$("#id_side2-employee1_pay").attr("value", p * ac2/ 100 * parseInt($(this).val())/100);
+		$("#id_side2-employee1_pay").attr("value", p * ac2/ 100 * parseFloat($(this).val())/100);
 	});
 	$("#id_side1-employee2_commission").change(function () {
-		$("#id_side1-employee2_pay").attr("value", p * ac1/ 100 * parseInt($(this).val())/100);
+		$("#id_side1-employee2_pay").attr("value", p * ac1/ 100 * parseFloat($(this).val())/100);
 	});
 	$("#id_side2-employee2_commission").change(function () {
-		$("#id_side2-employee2_pay").attr("value", p * ac2/ 100 * parseInt($(this).val())/100);
+		$("#id_side2-employee2_pay").attr("value", p * ac2/ 100 * parseFloat($(this).val())/100);
 	});
 	$("#id_side1-director_commission").change(function () {
-		$("#id_side1-director_pay").attr("value", p * ac1/ 100 * parseInt($(this).val())/100);
+		$("#id_side1-director_pay").attr("value", p * ac1/ 100 * parseFloat($(this).val())/100);
 	});
 	$("#id_side2-director_commission").change(function () {
-		$("#id_side2-director_pay").attr("value", p * ac2/ 100 * parseInt($(this).val())/100);
+		$("#id_side2-director_pay").attr("value", p * ac2/ 100 * parseFloat($(this).val())/100);
 	});
 	actualCommission1.change(function () {
 		updateValues();
 		for (var i = 0; i < fields.length; i++)
-			$("#id_side1-" + fields[i] + "_pay").attr("value", p * ac1/ 100 * parseInt($("#id_side1-" + fields[i] + "_commission").val())/100);
+			$("#id_side1-" + fields[i] + "_pay").attr("value", p * ac1/ 100 * parseFloat($("#id_side1-" + fields[i] + "_commission").val())/100);
 	});
 	actualCommission2.change(function () {
 		updateValues();
 		for (var i = 0; i < fields.length; i++)
-			$("#id_side2-" + fields[i] + "_pay").attr("value", p * ac2 / 100 * parseInt($("#id_side1-" + fields[i] + "_commission").val())/100);
+			$("#id_side2-" + fields[i] + "_pay").attr("value", p * ac2 / 100 * parseFloat($("#id_side1-" + fields[i] + "_commission").val())/100);
 	});
 	priceInput.change(function () {
 		updateValues();
 		for (var i = 0; i < fields.length; i++)
 		{
-			$("#id_side1-" + fields[i] + "_pay").attr("value", p * ac1 / 100 * parseInt($("#id_side1-" + fields[i] + "_commission").val()) / 100);
-			$("#id_side2-" + fields[i] + "_pay").attr("value", p * ac2 / 100 * parseInt($("#id_side2-" + fields[i] + "_commission").val()) / 100);
+			$("#id_side1-" + fields[i] + "_pay").attr("value", p * ac1 / 100 * parseFloat($("#id_side1-" + fields[i] + "_commission").val()) / 100);
+			$("#id_side2-" + fields[i] + "_pay").attr("value", p * ac2 / 100 * parseFloat($("#id_side2-" + fields[i] + "_commission").val()) / 100);
 		}
 	});
 });
 function updateValues() {
 	if (priceInput.val())
-		p = parseInt(priceInput.val());
+		p = parseFloat(priceInput.val());
 	if (actualCommission1.val())
-		ac1 = parseInt(actualCommission1.val());
+		ac1 = parseFloat(actualCommission1.val());
 	if (actualCommission2.val())
-		ac2 = parseInt(actualCommission2.val());
+		ac2 = parseFloat(actualCommission2.val());
 }
 </script>
 {% endblock header %}

@@ -1567,21 +1567,16 @@ class NHSaleSide(models.Model):
     invoices = models.ManyToManyField('Invoice', null=True, editable=False)
     payments = models.ManyToManyField('Payment', null=True, editable=False)
     remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
-    def __init__(self, *args, **kw):
-        models.Model.__init__(self, *args, **kw)
-        self.employee1_pay = None
-        self.employee2_pay = None
-        self.director_pay = None
-        if not self.id:
-            return
-        for attr in ['employee1', 'employee2', 'director']:
-            e = getattr(self, attr)
-            ec = getattr(self, attr + '_commission')
-            if e and ec:
-                q = e.nhpays.filter(nhsaleside = self)
-                if q.count() != 1:
-                    continue
-                setattr(self, attr + '_pay', q[0].amount)
+
+    @property
+    def employee1_pay(self):
+        return self.net_income * self.employee1_commission / 100
+    @property
+    def employee2_pay(self):
+        return self.net_income * self.employee2_commission / 100
+    @property
+    def director_pay(self):
+        return self.net_income * self.director_commission / 100
     @property
     def income(self):
         return self.nhsale.price * self.actual_commission / 100
