@@ -338,7 +338,9 @@ class PaymentForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'1'})
-        self.fields['payment_date'].widget.attrs = {'class':'vDateField'}
+        self.fields['payment_date'].widget.attrs = {'class':'vDateField', 'size':10}
+        for field in ['num','support_num','bank','branch_num','amount']:
+            self.fields[field].widget.attrs = {'size':10}
     class Meta:
         model = Payment
 
