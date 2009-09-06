@@ -8,15 +8,15 @@
 	</caption>
 	<th>פרטים</th>
 	<th>מס"ד</th>
-	{% if demand.get_sales.all.0.contract_num %}<th>מס' חוזה ש"ע</th>{% endif %}
+	{% if sales.0.contract_num %}<th>מס' חוזה ש"ע</th>{% endif %}
 	<th>ת. חוזה</th>
 	<th style="width:150px;">שם הרוכשים</th>
 	<th>מס' בניין</th>
 	<th>מס' דירה</th>
 	<th>סוכן מכירות</th>
 	<th>מחיר חוזה</th>
-	{% if demand.get_sales.all.0.discount %}<th>% הנחה ניתן</th>{% endif %}
-	{% if demand.get_sales.all.0.allowed_discount %}<th>% הנחה מותר</th>{% endif %}
+	{% if sales.0.discount %}<th>% הנחה ניתן</th>{% endif %}
+	{% if sales.0.allowed_discount %}<th>% הנחה מותר</th>{% endif %}
 	{% for s in sales %}
 		<tr>
 			<td><a href="/sale/{{s.id}}">פרטים</a></td>
