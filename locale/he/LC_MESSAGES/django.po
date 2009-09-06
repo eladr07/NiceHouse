@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-07 00:47+0200\n"
+"POT-Creation-Date: 2009-09-07 00:49+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -78,9 +78,9 @@ msgstr "ת. הרשמה"
 #: .\Management\models.py:712 .\Management\models.py:747
 #: .\Management\models.py:1260 .\Management\models.py:1283
 #: .\Management\models.py:1336 .\Management\models.py:1493
-#: .\Management\models.py:1570 .\Management\models.py:1571
-#: .\Management\models.py:1651 .\Management\models.py:1659
-#: .\Management\models.py:1742 .\Management\models.py:1855
+#: .\Management\models.py:1571 .\Management\models.py:1651
+#: .\Management\models.py:1659 .\Management\models.py:1742
+#: .\Management\models.py:1855
 msgid "remarks"
 msgstr "הערות"
 
@@ -827,6 +827,10 @@ msgstr "ת. הוצאת הזמנה"
 #: .\Management\models.py:1569
 msgid "temp_receipt_num"
 msgstr "מס' קבלה זמנית"
+
+#: .\Management\models.py:1570
+msgid "employee_remarks"
+msgstr "הערות עובדים"
 
 #: .\Management\models.py:1649 .\Management\models.py:1726
 msgid "sale_date"

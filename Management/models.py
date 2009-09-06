@@ -1567,7 +1567,7 @@ class NHSaleSide(models.Model):
     voucher_num = models.IntegerField(ugettext('voucher_num'))
     voucher_date = models.DateField(ugettext('voucher_date'))
     temp_receipt_num = models.IntegerField(ugettext('temp_receipt_num'))
-    employee_remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
+    employee_remarks = models.TextField(ugettext('employee_remarks'), null=True, blank=True)
     remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
     invoices = models.ManyToManyField('Invoice', null=True, editable=False)
     payments = models.ManyToManyField('Payment', null=True, editable=False)
