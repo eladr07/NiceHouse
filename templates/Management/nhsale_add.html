@@ -519,6 +519,13 @@ function updateValues() {
 						{% if side2form.temp_receipt_num.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.temp_receipt_num.errors|join:""}}'/>{% endif %}
 					</td>
 				</tr>
+				<tr>
+					<th>{{ side2form.employee_remarks.label_tag }}</th>
+					<td>
+						{{ side2form.employee_remarks }}
+						{% if side2form.employee_remarks.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.employee_remarks.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
 			</table>
 			</div>
 			<div style="float:right;">
@@ -596,6 +603,11 @@ function updateValues() {
 					<td>
 						{{ side2form.director }}
 						{% if side2form.director.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.director.errors|join:""}}'/>{% endif %}
+					</td>
+					<th>{{ side2form.signing_advisor.label_tag }}</th>
+					<td>
+						{{ side2form.signing_advisor }}
+						{% if side2form.signing_advisor.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.signing_advisor.errors|join:""}}'/>{% endif %}
 					</td>
 				</tr>
 				<tr>
