@@ -1274,13 +1274,15 @@ class PaymentType(models.Model):
 class Payment(models.Model):
     num = models.IntegerField(ugettext('check_num'), unique=True, null=True, blank=True)
     support_num = models.IntegerField(ugettext('support_num'), null=True, blank=True)
+    bank = models.CharField(ugettext('bank'), max_length=40)
+    branch_num = models.PositiveSmallIntegerField(ugettext('branch_num'))
     payment_type = models.ForeignKey('PaymentType', verbose_name=ugettext('payment_type'))
     payment_date = models.DateField(ugettext('payment_date'))
     creation_date = models.DateField(auto_now_add = True)
     amount = models.IntegerField(ugettext('amount'))
     remarks = models.TextField(ugettext('remarks'), null=True,blank=True)
     def __unicode__(self):
-        return u'חשבונית על סך %s ש"ח' % commaise(self.amount)
+        return u'תשלום על סך %s ש"ח' % commaise(self.amount)
     class Meta:
         db_table = 'Payment'
         get_latest_by = 'creation_date'
@@ -1555,6 +1557,7 @@ class NHSaleSide(models.Model):
                                 null=True, blank=True)    
     director_commission = models.FloatField(ugettext('commission_precent'), 
                                             null=True, blank=True)
+    signing_advisor = models.ForeignKey('NHEmployee', verbose_name=ugettext('signing_advisor'), related_name='nhsaleside_signer')
     lawyer1 = models.ForeignKey('Lawyer', verbose_name=ugettext('lawyer'), related_name='nhsaleside1s', 
                                 null=True, blank=True)
     lawyer2 = models.ForeignKey('Lawyer', verbose_name=ugettext('lawyer'), related_name='nhsaleside2s', 
@@ -1564,9 +1567,10 @@ class NHSaleSide(models.Model):
     voucher_num = models.IntegerField(ugettext('voucher_num'))
     voucher_date = models.DateField(ugettext('voucher_date'))
     temp_receipt_num = models.IntegerField(ugettext('temp_receipt_num'))
+    employee_remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
+    remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
     invoices = models.ManyToManyField('Invoice', null=True, editable=False)
     payments = models.ManyToManyField('Payment', null=True, editable=False)
-    remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
 
     @property
     def employee1_pay(self):

@@ -131,6 +131,10 @@
 				<td>{{side.temp_receipt_num}}</td>
 			</tr>
 			<tr>
+				<th>הערות עובדים</th>
+				<td>{{side.employee_remarks}}</td>
+			</tr>
+			<tr>
 				<td></td>
 				<td><u><b>נתוני עמלה עו"ד</b></u></td>
 			</tr>
@@ -167,6 +171,14 @@
 				</td>
 			</tr>
 			<tr>
+				<th>יועץ מחתים</th>
+				<td>
+					{% if side.signing_advisor %}
+						{{side.signing_advisor}}
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
 				<th>הערות</th>
 				<td>{{side.remarks}}</td>
 			</tr>
@@ -187,11 +199,7 @@
 			</tr>
 			{% for p in side.payments.all %}
 				<tr>
-					<td>
-						{{p.payment_type}} 
-						על סך של 
-						{{p.amount}}
-					</td>
+					<td>{{p}}</td>
 					<td><a href="/payments/{{p.id}}" class="fancybox">עדכן תשלום</a></td>
 				</tr>
 			{% endfor %}

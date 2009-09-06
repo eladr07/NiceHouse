@@ -375,8 +375,8 @@ class NHSaleSideForm(forms.ModelForm):
     lawyer2_pay = forms.FloatField(label=ugettext('lawyer_pay'), required=False)
     def save(self, *args, **kw):
         nhs = forms.ModelForm.save(self, *args,**kw)
-        l1, l2 = (self.cleaned_data['lawyer1'], self.cleaned_data['lawyer2'])
-        lp1, lp2 = (self.cleaned_data['lawyer1_pay'], self.cleaned_data['lawyer2_pay'])
+        l1, l2 = self.cleaned_data['lawyer1'], self.cleaned_data['lawyer2']
+        lp1, lp2 = self.cleaned_data['lawyer1_pay'], self.cleaned_data['lawyer2_pay']
         if l1 and lp1:
             q = e2.nhpays.filter(nhsaleside = self)
             nhp = q.count() == 1 and q[0] or NHPay(laywer=l1, nhsaleside = nhs)
@@ -391,6 +391,7 @@ class NHSaleSideForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self, *args, **kw)
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
+        self.fields['employee_remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
         self.fields['voucher_date'].widget.attrs = {'class':'vDateField'}
         if self.instance.id:
             nhsale = self.instance.nhsale
