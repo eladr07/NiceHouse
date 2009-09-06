@@ -655,7 +655,7 @@ function updateValues() {
 					<option value="5">5</option>
 				</select>
 				{{payment2Forms.management_form}}
-				<table id="payments2" style="float:right;" cellspacing="2" cellpadding="2" class="formTable">
+				<table id="payments2" style="float:right; width:95%" cellspacing="2" cellpadding="2" class="formTable">
 				{% for field in payment2Forms.forms.0 %}
 					<th>{% if not field.is_hidden %}{{ field.label_tag }}{% endif %}</th>
 				{% endfor %}
