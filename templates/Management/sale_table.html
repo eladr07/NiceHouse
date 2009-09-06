@@ -8,38 +8,44 @@
 	</caption>
 	<th>פרטים</th>
 	<th>מס"ד</th>
+	{% if demand.get_sales.all.0.contract_num %}<th>מס' חוזה ש"ע</th>{% endif %}
 	<th>ת. חוזה</th>
 	<th style="width:150px;">שם הרוכשים</th>
 	<th>מס' בניין</th>
 	<th>מס' דירה</th>
 	<th>סוכן מכירות</th>
 	<th>מחיר חוזה</th>
-	{% for sale in sales %}
+	{% if demand.get_sales.all.0.discount %}<th>% הנחה ניתן</th>{% endif %}
+	{% if demand.get_sales.all.0.allowed_discount %}<th>% הנחה מותר</th>{% endif %}
+	{% for s in sales %}
 		<tr>
-			<td><a href="/sale/{{sale.id}}">פרטים</a></td>
-			<td>{{sale.id}}</td>
-			<td>{{sale.sale_date|date:"j/m"}}</td>
-			<td>{{sale.clients}}</td>
-			{% with sale.house.building as b %}
-			<td><a href="/buildings/{{b.id}}/pricelist/type1">{{sale.house.building.num}}</a></td>
-			<td><a href="/buildings/{{b.id}}/house/{{sale.house.id}}/type1">{{sale.house.num}}</a></td>
+			<td><a href="/sale/{{s.id}}">פרטים</a></td>
+			<td>{{s.id}}</td>
+			{% if s.contract_num %}<td>{{s.contract_num}}</td>{% endif%}
+			<td>{{s.sale_date|date:"j/m"}}</td>
+			<td>{{s.clients}}</td>
+			{% with s.house.building as b %}
+			<td><a href="/buildings/{{b.id}}/pricelist/type1">{{s.house.building.num}}</a></td>
+			<td><a href="/buildings/{{b.id}}/house/{{s.house.id}}/type1">{{s.house.num}}</a></td>
 			{% endwith %}
 			<td>
-				{% if sale.employee %}
-					<a href="/employees/{{sale.employee.id}}">{{sale.employee}}</a>
+				{% if s.employee %}
+					<a href="/employees/{{s.employee.id}}">{{s.employee}}</a>
 				{% else %}
-					{% for e in sale.house.building.project.employees.all %}
+					{% for e in s.house.building.project.employees.all %}
 						<a href="/employees/{{e.id}}">{{e}}</a><br>
 					{% endfor %}
 				{% endif %}
 			</td>
 			<td>
-				{{sale.price}}<br>
-				{{sale.include_tax|yesno:"כולל מע\"מ, לא כולל מע\"מ"}}, 
-				{% ifnotequal sale.house.building.project.commissions.include_lawyer None %}
-					{{sale.price_include_lawyer|yesno:"כולל עו\"ד, לא כולל עו\"ד"}}
+				{{s.price}}<br>
+				{{s.include_tax|yesno:"כולל מע\"מ, לא כולל מע\"מ"}}, 
+				{% ifnotequal s.house.building.project.commissions.include_lawyer None %}
+					{{s.price_include_lawyer|yesno:"כולל עו\"ד, לא כולל עו\"ד"}}
 				{% endifnotequal %}
 			</td>
+			{% if s.discount %}<td>{{s.discount}}%</td>{% endif %}
+			{% if s.allowed_discount %}<td>{{s.allowed_discount}}%</td>{% endif %}
 		</tr>
 	{% endfor %}
 </table>

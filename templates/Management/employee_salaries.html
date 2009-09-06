@@ -128,7 +128,11 @@
 	{% for rank in rank_list %}
 		<tr style="text-align:center; color:#4669D6; font-size:14px"><td colspan="15"><b>{{rank.grouper|default:"-- לא הוגדר דרג --"}}</b></td></tr>
 		{% for s in rank.list %}
-    	<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.employee.id}}>
+		{% if s.is_approved %}
+			<tr class="{% cycle 'row1' 'row2' %}" style="color:#00A347;" objid={{s.id}} employeeid={{s.employee.id}}>
+		{% else %}
+			<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.employee.id}}>
+		{% endif %}
 			<td><a href="/employees/{{s.employee.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
 			<td>{{ s.employee }}</td>
 			<td>
