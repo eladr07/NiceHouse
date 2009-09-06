@@ -413,9 +413,13 @@ def nhmonth_sales(request, nhbranch_id, year=None, month=None):
         q = NHMonth.objects.filter(nhbranch__id = nhbranch_id)
     nhb = NHBranch.objects.get(pk=nhbranch_id)
     nhm = q.count() > 0 and q[0] or NHMonth(nhbranch = nhb, year = year or date.today().year, month = month or date.today().month)
+    total_net_income = 0
+    for sale in nhm.nhsales.all():
+        for saleside in sale.nhsaleside_set.all():
+            total_net_income += saleside.net_income
     form = MonthFilterForm(initial={'year':nhm.year,'month':nhm.month})
     return render_to_response('Management/nhmonth_sales.html', 
-                              { 'nhmonth':nhm, 'filterForm':form },
+                              { 'nhmonth':nhm, 'filterForm':form, 'total_net_income':total_net_income },
                               context_instance=RequestContext(request))
 
 @permission_required('Management.change_nhmonth')

@@ -71,7 +71,7 @@
 			<td>{{s.sale_date|date:"j/m/y"}}</td>
 			{% for ss in s.nhsaleside_set.all %}
 				{% if not forloop.first %}
-					<tr class="{% cycle 'row2' 'row1' %}">
+					<tr class="{% cycle 'row1' 'row2' %}">
 						<td></td>
 						<td></td>
 				{% endif %}
@@ -102,5 +102,9 @@
 			{% endfor %}
 		</tr>
 	{% endfor %}
+	<tr>
+		<td colspan="6">סה"כ הכנסות</td>
+		<td>{{total_net_income}}</td>
+	</tr>
 </table>
 {% endblock content %}
