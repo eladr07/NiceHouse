@@ -129,7 +129,7 @@
 		<tr style="text-align:center; color:#4669D6; font-size:14px"><td colspan="15"><b>{{rank.grouper|default:"-- לא הוגדר דרג --"}}</b></td></tr>
 		{% for s in rank.list %}
 		{% if s.approved %}
-			<tr class="row3" objid={{s.id}} employeeid={{s.employee.id}}>
+			<tr class="row5" objid={{s.id}} employeeid={{s.employee.id}}>
 		{% else %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.employee.id}}>
 		{% endif %}
