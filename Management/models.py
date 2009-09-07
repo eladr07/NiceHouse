@@ -1583,7 +1583,7 @@ class NHSaleSide(models.Model):
         return self.net_income * self.director_commission / 100
     @property
     def income(self):
-        return self.nhsale.price * self.actual_commission / 100
+        return self.nhsale.price * self.actual_commission / 100 * self.nhsale.nhmonth.tax() / 100
     @property
     def lawyers_pay(self):
         amount = 0
@@ -1607,21 +1607,18 @@ class NHSaleSide(models.Model):
         if e1 and ec1:
             q = e1.nhpays.filter(nhsaleside = self)
             nhp = q.count() == 1 and q[0] or NHPay(employee=e1, nhsaleside = self)
-            nhp.amount = self.net_income * ec1 / 100
+            nhp.amount = self.employee1_pay
             nhp.save()
-            self.employee1_pay = nhp.amount
         if e2 and ec2:
             q = e2.nhpays.filter(nhsaleside = self)
             nhp = q.count() == 1 and q[0] or NHPay(employee=e2, nhsaleside = self)
-            nhp.amount = self.net_income * ec2 / 100
+            nhp.amount = self.employee2_pay
             nhp.save()
-            self.employee2_pay = nhp.amount
         if d and dc:
             q = d.nhpays.filter(nhsaleside = self)
             nhp = q.count() == 1 and q[0] or NHPay(employee=d, nhsaleside = self)
-            nhp.amount = self.net_income * dc / 100
+            nhp.amount = self.director_pay
             nhp.save()
-            self.director_pay = nhp.amount
     class Meta:
         db_table = 'NHSaleSide'
 
@@ -1633,6 +1630,8 @@ class NHMonth(models.Model):
                                             choices=((i,i) for i in range(datetime.now().year - 10,
                                                                           datetime.now().year + 10)))
     is_closed = models.BooleanField(editable=False, default=False)
+    def tax(self):
+        return Tax.objects.filter(date__lte = date(self.year, self.month, 1)).latest().value
     class Meta:
         db_table = 'NHMonth'
         ordering = ['-year', '-month']
