@@ -668,9 +668,9 @@ class NHEmployeeSalary(models.Model):
                 self.__calc__(nhm)
     def __calc__(self, nhmonth):
         if self.nhemployee.nhcbase:
-            self.commissions += self.nhemployee.nhcbase.calc(nhm)
+            self.commissions += self.nhemployee.nhcbase.calc(nhmonth)
         if self.nhemployee.nhcbranchincome:
-            self.commissions += self.nhemployee.nhcbase.calc(nhm)
+            self.commissions += self.nhemployee.nhcbase.calc(nhmonth)
     class Meta:
         db_table='NHEmployeeSalary'
         unique_together = ('nhemployee','year','month')
