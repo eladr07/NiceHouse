@@ -656,7 +656,8 @@ class NHEmployeeSalary(models.Model):
         return self.total_amount
     def calculate(self):
         self.commissions, self.base = 0, 0
-        for pay in NHPay.objects.filter(date__year = self.year, date__month = self.month, employee = self.nhemployee):
+        for pay in NHPay.objects.filter(pay_date__year = self.year, pay_date__month = self.month, 
+                                        employee = self.nhemployee):
             self.base += pay.amount
         if self.nhemployee.nhbrnach:
             nhm = NHMonth.objects.get(nhbrnach = self.nhemployee.nhbrnach, year = self.year, month = self.month)
