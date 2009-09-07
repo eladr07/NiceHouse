@@ -1632,6 +1632,10 @@ class NHMonth(models.Model):
     is_closed = models.BooleanField(editable=False, default=False)
     def tax(self):
         return Tax.objects.filter(date__lte = date(self.year, self.month, 1)).latest().value
+    @property
+    def prefix(self):
+        return self.name.replace(u'נייס האוס ') \
+               [0]
     class Meta:
         db_table = 'NHMonth'
         ordering = ['-year', '-month']

@@ -51,7 +51,7 @@
 <table id="salesTable" class="dataTable" style="text-align:center;" border="1">
 <caption>מציג סה"כ {{nhmonth.nhsales.count}} עסקאות</caption>
 	<tr>
-		<th>מס'</th>
+		<th></th>
 		<th>ת. עסקה</th>
 		<th>שמות הלקוחות</th>
 		<th>סוג פעולה</th>
@@ -67,7 +67,7 @@
 	</tr>
     {% for s in nhmonth.nhsales.all %}
 		<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}}>
-			<td><a href="/nhsale/{{s.id}}">{{s.id}}</a></td>
+			<td><a href="/nhsale/{{s.id}}">{{s.nhmonth.prefix}}-{{s.id}}</a></td>
 			<td>{{s.sale_date|date:"j/m/y"}}</td>
 			{% for ss in s.nhsaleside_set.all %}
 				{% if not forloop.first %}
