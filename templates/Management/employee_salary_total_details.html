@@ -15,6 +15,12 @@
 			<th>עמלות</th>
 			<td>{{salary.commissions|commaise}}</td>
 		</tr>
+		{% if salary.admin_commission %}
+		<tr>
+			<th>עמלת ניהול</th>
+			<td>{{salary.admin_commission|commaise}}</td>
+		</tr>
+		{% endif %}
 		<tr>
 			<th>תוספת משתנה</th>
 			<td style="color:#08A600;">{{salary.var_pay|default_if_none:""}}</td>
