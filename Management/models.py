@@ -575,6 +575,10 @@ class NHBranch(models.Model):
     mail = models.EmailField(ugettext('mail'), null=True, blank=True)
     fax = models.CharField(ugettext('fax'), max_length=15, null=True, blank=True);
     url = models.URLField(ugettext('url'), null=True, blank=True)
+    @property
+    def prefix(self):
+        return self.name.replace(u'נייס האוס ','') \
+               [0]
     def __unicode__(self):
         return unicode(self.name)
     class Meta:
@@ -1632,10 +1636,6 @@ class NHMonth(models.Model):
     is_closed = models.BooleanField(editable=False, default=False)
     def tax(self):
         return Tax.objects.filter(date__lte = date(self.year, self.month, 1)).latest().value
-    @property
-    def prefix(self):
-        return self.name.replace(u'נייס האוס ','') \
-               [0]
     class Meta:
         db_table = 'NHMonth'
         ordering = ['-year', '-month']

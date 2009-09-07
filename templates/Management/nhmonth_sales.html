@@ -67,7 +67,7 @@
 	</tr>
     {% for s in nhmonth.nhsales.all %}
 		<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}}>
-			<td><a href="/nhsale/{{s.id}}">{{s.nhmonth.prefix}}-{{s.id}}</a></td>
+			<td><a href="/nhsale/{{s.id}}">{{s.nhmonth.nhbranch.prefix}}-{{s.id}}</a></td>
 			<td>{{s.sale_date|date:"j/m/y"}}</td>
 			{% for ss in s.nhsaleside_set.all %}
 				{% if not forloop.first %}
