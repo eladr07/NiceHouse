@@ -88,7 +88,7 @@
 				<td></td>
 				<td>{{ss.temp_receipt_num}}</td>
 				<td>{{ss.invoices.all.0.num}}</td>
-				{% for nhe in nhmonth.nhbranch.nhemployees.all %}
+				{% for nhe in employees %}
 				<td>
 					{% ifequal nhe ss.employee1 %}
 						{{ss.employee1_pay|commaise}} ש"ח<br>{{ss.employee1_commission}}%
@@ -114,8 +114,8 @@
 		<td colspan="6">סה"כ הכנסות</td>
 		<td>{{total_net_income|commaise}} ש"ח</td>
 		<td colspan="5"></td>
-		{% for t in total_employee_pay %}
-			<td>{{t|commaise}} ש"ח</td>
+		{% for e in employees %}
+			<td>{{e.total_for_month|commaise}} ש"ח</td>
 		{% endfor %}
 		<td></td>
 	</tr>
