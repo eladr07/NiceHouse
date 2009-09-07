@@ -419,12 +419,21 @@ def nhmonth_sales(request, nhbranch_id, year=None, month=None):
     nhb = NHBranch.objects.get(pk=nhbranch_id)
     nhm = q.count() > 0 and q[0] or NHMonth(nhbranch = nhb, year = year or date.today().year, month = month or date.today().month)
     total_net_income = 0
+    total_employee_pay = {}
+    for e in nhb.nhemployees.all():
+        total_employee_pay[e] = 0
     for sale in nhm.nhsales.all():
         for saleside in sale.nhsaleside_set.all():
             total_net_income += saleside.net_income
+            #collect employee totals
+            for attr in ['employee1', 'employee2', 'director']:
+                e = getattr(saleside, attr)
+                if e != None: 
+                    total_employee_pay[e] += getattr(saleside, attr + '_pay')
     form = MonthFilterForm(initial={'year':nhm.year,'month':nhm.month})
     return render_to_response('Management/nhmonth_sales.html', 
-                              { 'nhmonth':nhm, 'filterForm':form, 'total_net_income':total_net_income },
+                              { 'nhmonth':nhm, 'filterForm':form, 'total_net_income':total_net_income,
+                               'total_employee_pay':total_employee_pay.values() },
                               context_instance=RequestContext(request))
 
 @permission_required('Management.change_nhmonth')
@@ -501,7 +510,7 @@ def employee_remarks(request, year, month):
 
 def nhemployee_sales(request, id, year, month):
     es = NHEmployeeSalary.objects.get(nhemployee__id = id, year = year, month = month)
-    return render_to_response('Management/employee_sales.html', 
+    return render_to_response('Management/nhemployee_sales.html', 
                               { 'es':es },
                               context_instance=RequestContext(request))
     
