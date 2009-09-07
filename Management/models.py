@@ -660,7 +660,11 @@ class NHEmployeeSalary(models.Model):
                                         employee = self.nhemployee):
             self.base += pay.amount
         if self.nhemployee.nhbranch:
-            nhm = NHMonth.objects.get(nhbranch = self.nhemployee.nhbranch, year = self.year, month = self.month)
+            try:
+                nhm = NHMonth.objects.get(nhbranch = self.nhemployee.nhbranch, year = self.year,
+                                          month = self.month)
+            except NHMonth.DoesNotExist:
+                return
             self.__calc__(nhm)
         elif self.nhemployee.branch_manager.count() > 0:
             for nhbranch in self.nhemployee.branch_manager.all():
