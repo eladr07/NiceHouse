@@ -1583,7 +1583,7 @@ class NHSaleSide(models.Model):
         return self.net_income * self.director_commission / 100
     @property
     def income(self):
-        return self.nhsale.price * self.actual_commission / 100 * self.nhsale.nhmonth.tax() / 100
+        return self.nhsale.price * self.actual_commission / 100 * (1 + self.nhsale.nhmonth.tax() / 100)
     @property
     def lawyers_pay(self):
         amount = 0
