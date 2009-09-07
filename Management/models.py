@@ -339,8 +339,8 @@ class HouseVersion(models.Model):
         ordering = ['-date']
         db_table = 'HouseVersion'
 
-RankRegionalSaleManager = 8
 class RankType(models.Model):
+    RegionalSaleManager = 8
     name = models.CharField(ugettext('rank'), max_length=20, unique=True)
     def __unicode__(self):
         return unicode(self.name)
@@ -627,6 +627,7 @@ class NHEmployeeSalary(models.Model):
                                                                                              datetime.now().year + 10)))
     base = models.IntegerField(ugettext('salary_base'), null=True)
     commissions = models.IntegerField(ugettext('commissions'), editable=False, null=True)
+    admin_commission = models.IntegerField(editable=False, null=True)
     safety_net = models.PositiveSmallIntegerField(ugettext('safety_net'), null=True, blank=True)
     var_pay = models.SmallIntegerField(ugettext('var_pay'), null=True, blank=True)
     var_pay_type = models.CharField(ugettext('var_pay_type'), max_length=20, null=True, blank=True)
@@ -655,10 +656,10 @@ class NHEmployeeSalary(models.Model):
             return None
         return self.total_amount
     def calculate(self):
-        self.commissions, self.base = 0, 0
+        self.admin_commission, self.commissions, self.base = 0, 0, 0
         for pay in NHPay.objects.filter(pay_date__year = self.year, pay_date__month = self.month, 
                                         employee = self.nhemployee):
-            self.base += pay.amount
+            self.commissions += pay.amount
         if self.nhemployee.nhbranch:
             try:
                 nhm = NHMonth.objects.get(nhbranch = self.nhemployee.nhbranch, year = self.year,
@@ -672,9 +673,9 @@ class NHEmployeeSalary(models.Model):
                 self.__calc__(nhm)
     def __calc__(self, nhmonth):
         if self.nhemployee.nhcbase:
-            self.commissions += self.nhemployee.nhcbase.calc(nhmonth)
+            self.admin_commission += self.nhemployee.nhcbase.calc(nhmonth)
         if self.nhemployee.nhcbranchincome:
-            self.commissions += self.nhemployee.nhcbase.calc(nhmonth)
+            self.admin_commission += self.nhemployee.nhcbase.calc(nhmonth)
     class Meta:
         db_table='NHEmployeeSalary'
         unique_together = ('nhemployee','year','month')
@@ -760,7 +761,7 @@ class EmployeeSalary(models.Model):
     @property
     def sales(self):
         sales = {}
-        if self.employee.rank.id != RankRegionalSaleManager:
+        if self.employee.rank.id != RankType.RegionalSaleManager:
             sales['direct'] = self.employee.sales.filter(employee_pay__year = self.year, employee_pay__month = self.month)
             for p in self.employee.projects.all():
                 all = Sale.objects.filter(house__building__project = p,
@@ -1606,6 +1607,12 @@ class NHSaleSide(models.Model):
     @property
     def net_income(self):
         return self.income - self.lawyers_pay
+    @property
+    def all_employee_commission_precentage(self):
+        return (self.employee1_commission or 0) + (self.employee2_commission or 0) + (self.director_commission or 0)
+    @property
+    def all_employee_commission(self):
+        return self.net_income * self.all_employee_commission_precentage / 100
     def is_employee_related(self, employee):
         return self.employee1 == employee or self.employee2 == employee or self.director == employee
     def save(self,*args, **kw):

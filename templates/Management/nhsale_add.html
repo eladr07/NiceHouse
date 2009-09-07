@@ -61,11 +61,13 @@ $(document).ready(function() {
 		updateValues();
 		for (var i = 0; i < fields.length; i++)
 			$("#id_side1-" + fields[i] + "_pay").attr("value", p * ac1/ 100 * parseFloat($("#id_side1-" + fields[i] + "_commission").val())/100);
+		$("#side1-commission").attr("value", p*ac1/100);
 	});
 	actualCommission2.change(function () {
 		updateValues();
 		for (var i = 0; i < fields.length; i++)
 			$("#id_side2-" + fields[i] + "_pay").attr("value", p * ac2 / 100 * parseFloat($("#id_side1-" + fields[i] + "_commission").val())/100);
+		$("#side2-commission").attr("value", p*ac2/100);
 	});
 	priceInput.change(function () {
 		updateValues();
@@ -74,6 +76,8 @@ $(document).ready(function() {
 			$("#id_side1-" + fields[i] + "_pay").attr("value", p * ac1 / 100 * parseFloat($("#id_side1-" + fields[i] + "_commission").val()) / 100);
 			$("#id_side2-" + fields[i] + "_pay").attr("value", p * ac2 / 100 * parseFloat($("#id_side2-" + fields[i] + "_commission").val()) / 100);
 		}
+		$("#side1-commission").attr("value", p*ac1/100);
+		$("#side2-commission").attr("value", p*ac2/100);
 	});
 });
 function updateValues() {
@@ -247,6 +251,10 @@ function updateValues() {
 						{{ side1form.actual_commission }}
 						{% if side1form.actual_commission.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.actual_commission.errors|join:""}}'/>{% endif %}
 					</td>
+				</tr>
+				<tr>
+					<th>עמלה בש"ח</th>
+					<td><input id="side1-commission" type="text" readonly="readonly"/></td>
 				</tr>
 				<tr>
 					<th>{{ side1form.voucher_num.label_tag }}</th>
@@ -497,6 +505,10 @@ function updateValues() {
 						{{ side2form.actual_commission }}
 						{% if side2form.actual_commission.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side2form.actual_commission.errors|join:""}}'/>{% endif %}
 					</td>
+				</tr>
+				<tr>
+					<th>עמלה בש"ח</th>
+					<td><input id="side2-commission" type="text" readonly="readonly"/></td>
 				</tr>
 				<tr>
 					<th>{{ side2form.voucher_num.label_tag }}</th>

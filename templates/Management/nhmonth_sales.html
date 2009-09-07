@@ -66,6 +66,7 @@
 		{% for nhe in nhmonth.nhbranch.nhemployees.all %}
 		<th>{{nhe}}</th>
 		{% endfor %}
+		<th>סיכום</th>
 	</tr>
     {% for s in nhmonth.nhsales.all %}
 		<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}}>
@@ -90,23 +91,26 @@
 				{% for nhe in nhmonth.nhbranch.nhemployees.all %}
 				<td>
 					{% ifequal nhe ss.employee1 %}
-						{{ss.employee1_pay}} - {{ss.employee1_commission}}%
+						{{ss.employee1_pay|commaise}} ש"ח<br>{{ss.employee1_commission}}%
 					{% endifequal %}
 					{% ifequal nhe ss.employee2 %}
-						{{ss.employee2_pay}} - {{ss.employee2_commission}}%
+						{{ss.employee2_pay|commaise}} ש"ח<br>{{ss.employee2_commission}}%
 					{% endifequal %}
 					{% ifequal nhe ss.director %}
-						{{ss.director_pay}} - {{ss.director_commission}}%
+						{{ss.director_pay|commaise}} ש"ח<br>{{ss.director_commission}}%
 					{% endifequal %}
 				</td>
 				{% endfor %}
+				<td>
+					{{ss.all_employee_commission|commaise}} ש"ח - ({{ss.all_employee_commission_precentage}}%)
+				</td>
 				{% if forloop.first %}
 					</tr>
 				{% endif %}
 			{% endfor %}
 		</tr>
 	{% endfor %}
-	<tr>
+	<tr class="row3">
 		<td colspan="6">סה"כ הכנסות</td>
 		<td>{{total_net_income|commaise}} ש"ח</td>
 	</tr>
