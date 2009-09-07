@@ -188,7 +188,13 @@
 			</tr>
 			<tr>
 				<td></td>
-				<td><a href='/invoices/{{side.invoices.all.0.id|default_if_none:"add"}}' class="fancybox">עדכן פרטי חשבונית</a></td>
+				<td>
+				{% if side.invoices.count %}
+					<a href="/invoices/{{side.invoices.all.0.id}}" class="fancybox">עדכן פרטי חשבונית</a>
+				{% else %}
+					<a href="invoice/add" class="fancybox">חשבונית חדשה</a>
+				{% endif %}
+				</td>
 			</tr>
 			<tr>
 				<th>
