@@ -429,7 +429,7 @@ def nhmonth_sales(request, nhbranch_id, year=None, month=None):
             for attr in ['employee1', 'employee2', 'director']:
                 e = getattr(saleside, attr)
                 if e != None: 
-                    employees[employees.index(e)] += getattr(saleside, attr + '_pay')
+                    employees[employees.index(e)].total_for_month += getattr(saleside, attr + '_pay')
     form = MonthFilterForm(initial={'year':nhm.year,'month':nhm.month})
     return render_to_response('Management/nhmonth_sales.html', 
                               { 'nhmonth':nhm, 'filterForm':form, 'total_net_income':total_net_income,
