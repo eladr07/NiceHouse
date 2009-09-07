@@ -192,7 +192,7 @@
 				{% if side.invoices.count %}
 					<a href="/invoices/{{side.invoices.all.0.id}}" class="fancybox">עדכן פרטי חשבונית</a>
 				{% else %}
-					<a href="invoice/add" class="fancybox">חשבונית חדשה</a>
+					<a href="/nhsaleside/{{side.id}}/invoice/add" class="fancybox">חשבונית חדשה</a>
 				{% endif %}
 				</td>
 			</tr>
