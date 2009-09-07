@@ -659,8 +659,8 @@ class NHEmployeeSalary(models.Model):
         for pay in NHPay.objects.filter(pay_date__year = self.year, pay_date__month = self.month, 
                                         employee = self.nhemployee):
             self.base += pay.amount
-        if self.nhemployee.nhbrnach:
-            nhm = NHMonth.objects.get(nhbrnach = self.nhemployee.nhbrnach, year = self.year, month = self.month)
+        if self.nhemployee.nhbranch:
+            nhm = NHMonth.objects.get(nhbranch = self.nhemployee.nhbranch, year = self.year, month = self.month)
             self.__calc__(nhm)
         elif self.nhemployee.branch_manager.count() > 0:
             for nhbranch in self.nhemployee.branch_manager.all():
