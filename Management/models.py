@@ -657,8 +657,7 @@ class NHEmployeeSalary(models.Model):
         return self.total_amount
     def calculate(self):
         self.admin_commission, self.commissions, self.base = 0, 0, 0
-        for pay in NHPay.objects.filter(pay_date__year = self.year, pay_date__month = self.month, 
-                                        employee = self.nhemployee):
+        for pay in NHPay.objects.filter(year = self.year, month = self.month, employee = self.nhemployee):
             self.commissions += pay.amount
         if self.nhemployee.nhbranch:
             try:
@@ -1533,7 +1532,8 @@ class NHPay(models.Model):
                                  null=True)
     lawyer = models.ForeignKey('Lawyer', editable=False, related_name='nhpays', 
                                null=True)
-    pay_date = models.DateField(auto_now_add=True)
+    year = models.PositiveSmallIntegerField()
+    month = models.PositiveSmallIntegerField()
     amount = models.FloatField(ugettext('amount'))
     class Meta:
         db_table='NHPay'
@@ -1620,19 +1620,20 @@ class NHSaleSide(models.Model):
         e1, ec1, e2, ec2, d, dc = (self.employee1, self.employee1_commission,
                                    self.employee2, self.employee2_commission,
                                    self.director, self.director_commission)
+        y, m = self.nhsale.nhmonth.year,self.nhsale.nhmonth.month 
         if e1 and ec1:
             q = e1.nhpays.filter(nhsaleside = self)
-            nhp = q.count() == 1 and q[0] or NHPay(employee=e1, nhsaleside = self)
+            nhp = q.count() == 1 and q[0] or NHPay(employee=e1, nhsaleside = self, year = y, month = m)
             nhp.amount = self.employee1_pay
             nhp.save()
         if e2 and ec2:
             q = e2.nhpays.filter(nhsaleside = self)
-            nhp = q.count() == 1 and q[0] or NHPay(employee=e2, nhsaleside = self)
+            nhp = q.count() == 1 and q[0] or NHPay(employee=e2, nhsaleside = self, year = y, month = m)
             nhp.amount = self.employee2_pay
             nhp.save()
         if d and dc:
             q = d.nhpays.filter(nhsaleside = self)
-            nhp = q.count() == 1 and q[0] or NHPay(employee=d, nhsaleside = self)
+            nhp = q.count() == 1 and q[0] or NHPay(employee=d, nhsaleside = self, year = y, month = m)
             nhp.amount = self.director_pay
             nhp.save()
     class Meta:

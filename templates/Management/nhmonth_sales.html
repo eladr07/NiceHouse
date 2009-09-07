@@ -102,7 +102,7 @@
 				</td>
 				{% endfor %}
 				<td>
-					{{ss.all_employee_commission|commaise}} ש"ח - ({{ss.all_employee_commission_precentage}}%)
+					{{ss.all_employee_commission|commaise}} ש"ח<br>{{ss.all_employee_commission_precentage}}%
 				</td>
 				{% if forloop.first %}
 					</tr>
@@ -113,6 +113,7 @@
 	<tr class="row3">
 		<td colspan="6">סה"כ הכנסות</td>
 		<td>{{total_net_income|commaise}} ש"ח</td>
+		<td colspan="10"></td>
 	</tr>
 </table>
 {% endblock content %}
