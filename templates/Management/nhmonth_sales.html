@@ -115,8 +115,9 @@
 		<td>{{total_net_income|commaise}} ש"ח</td>
 		<td colspan="5"></td>
 		{% for t in total_employee_pay %}
-		<td>{{t|commaise}} ש"ח</td>
-		<td></td>
+			<td>{{t|commaise}} ש"ח</td>
+			<td></td>
+		{% endfor %}
 	</tr>
 </table>
 {% endblock content %}
