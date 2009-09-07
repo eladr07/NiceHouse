@@ -123,7 +123,7 @@
 		<th>הערות</th>
 		<th>מאושר ?</th>
 	</tr>
-	{% regroup salaries by nhemployee.branch as branch_list %}
+	{% regroup salaries by nhemployee.nhbranch as branch_list %}
 	{% for branch in branch_list %}
 		<tr style="text-align:center; color:#4669D6; font-size:14px"><td colspan="15"><b>{{branch.grouper}}</b></td></tr>
 		{% for s in rankbranch.list %}
