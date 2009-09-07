@@ -1634,7 +1634,7 @@ class NHMonth(models.Model):
         return Tax.objects.filter(date__lte = date(self.year, self.month, 1)).latest().value
     @property
     def prefix(self):
-        return self.name.replace(u'נייס האוס ') \
+        return self.name.replace(u'נייס האוס ','') \
                [0]
     class Meta:
         db_table = 'NHMonth'
