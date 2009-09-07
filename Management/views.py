@@ -699,7 +699,7 @@ def project_payment_add(request, id):
     return payment_add(request, {'project':id})
 
 @permission_required('Management.add_payment')
-def nhsale_payment_add(request, object_id):
+def nhsaleside_payment_add(request, object_id):
     nhs = NHSaleSide.objects.get(pk=object_id)
     if request.method == 'POST':
         form = PaymentForm(request.POST)
@@ -711,6 +711,19 @@ def nhsale_payment_add(request, object_id):
     else:
         form = PaymentForm()
     return render_to_response('Management/payment_edit.html', 
+                              { 'form':form }, context_instance=RequestContext(request))
+    
+@permission_required('Management.invoice')
+def nhsaleside_invoice_add(request, object_id):
+    nhs = NHSaleSide.objects.get(pk=object_id)
+    if request.method == 'POST':
+        form = InvoiceForm(request.POST)
+        if form.is_valid():
+            i = form.save()
+            nhs.invoices.add(i)
+    else:
+        form = InvoiceForm()
+    return render_to_response('Management/invoice_edit.html', 
                               { 'form':form }, context_instance=RequestContext(request))
 
  
