@@ -418,13 +418,14 @@ def nhmonth_sales(request, nhbranch_id, year=None, month=None):
         q = NHMonth.objects.filter(nhbranch__id = nhbranch_id)
     nhb = NHBranch.objects.get(pk=nhbranch_id)
     nhm = q.count() > 0 and q[0] or NHMonth(nhbranch = nhb, year = year or date.today().year, month = month or date.today().month)
-    total_net_income = 0
+    total_net_income, multi_total = 0, 0
     employees = list(nhb.nhemployees.all())
     for e in employees:
         e.total_for_month = 0
     for sale in nhm.nhsales.all():
         for saleside in sale.nhsaleside_set.all():
             total_net_income += saleside.net_income
+            multi_total += saleside.all_employee_commission
             #collect employee totals
             for attr in ['employee1', 'employee2', 'director']:
                 e = getattr(saleside, attr)
@@ -433,7 +434,7 @@ def nhmonth_sales(request, nhbranch_id, year=None, month=None):
     form = MonthFilterForm(initial={'year':nhm.year,'month':nhm.month})
     return render_to_response('Management/nhmonth_sales.html', 
                               { 'nhmonth':nhm, 'filterForm':form, 'total_net_income':total_net_income,
-                               'employees':employees },
+                               'employees':employees, 'multi_total':multi_total },
                               context_instance=RequestContext(request))
 
 @permission_required('Management.change_nhmonth')

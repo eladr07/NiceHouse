@@ -117,7 +117,7 @@
 		{% for e in employees %}
 			<td>{{e.total_for_month|commaise}} ש"ח</td>
 		{% endfor %}
-		<td></td>
+		<td>{{multi_total|commaise}} ש"ח</td>
 	</tr>
 </table>
 {% endblock content %}
