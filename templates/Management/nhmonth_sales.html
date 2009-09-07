@@ -55,12 +55,14 @@
 		<th>ת. עסקה</th>
 		<th>שמות הלקוחות</th>
 		<th>סוג פעולה</th>
-		<th>סה"כ עמלה</th>
-		<th>תשלום לעו"ד</th>
+		<th>% עמלה<br>חתום</th>
+		<th>% עמלה<br>בפועל</th>
+		<th>סה"כ<br>עמלה</th>
+		<th>תשלום<br>לעו"ד</th>
 		<th>עמלה נטו</th>
-		<th>% מהכנסה חודשי</th>
-		<th>מס' קבלה זמנית</th>
-		<th>מס' חשבונית</th>
+		<th>% מהכנסה<br>חודשי</th>
+		<th>מס' קבלה<br>זמנית</th>
+		<th>מס'<br>חשבונית</th>
 		{% for nhe in nhmonth.nhbranch.nhemployees.all %}
 		<th>{{nhe}}</th>
 		{% endfor %}
@@ -77,6 +79,8 @@
 				{% endif %}
 				<td>{{ss.name1}} {{ss.name2|default_if_none:""}}</td>
 				<td>{{ss.sale_type}}</td>
+				<td>{{ss.signed_commission}}%</td>
+				<td>{{ss.actual_commission}}%</td>
 				<td>{{ss.income|commaise}}</td>
 				<td>{{ss.lawyers_pay|commaise}}</td>
 				<td>{{ss.net_income|commaise}}</td>

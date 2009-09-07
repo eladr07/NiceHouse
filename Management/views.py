@@ -335,6 +335,11 @@ def employee_salary_list(request, year = date.today().year, month = date.today()
 
 @permission_required('Management.list_nhemployeesalary')
 def nhemployee_salary_list(request, year=demand_month().year, month=demand_month().month):
+    for e in NHEmployee.objects.active():
+        es, new = NHEmployeeSalary.objects.get_or_create(nhemployee = e, month = month, year = year)
+        if new or not es.commissions or not es.base: 
+            es.calculate()
+            es.save()
     return render_to_response('Management/nhemployee_salaries.html', 
                               {'salaries':NHEmployeeSalary.objects.filter(year = year, month = month), 
                                'month': date(int(year), int(month), 1),
