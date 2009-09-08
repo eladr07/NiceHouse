@@ -1001,11 +1001,21 @@ class CVarPrecentageFixed(models.Model):
     last_count = models.PositiveSmallIntegerField(ugettext('cvf last count'), null=True, blank=True)
     last_precentage = models.FloatField(ugettext('commission precentage'), null=True, blank=True)
     def calc(self, sales):
+        if sales.count() == 0:
+            return {}
+        houses_remaning = sales.count()
+        for h in sales.all()[0].house.building.project.houses():
+            if h.get_sale() == None and not h.is_sold:
+                houses_remaning += 1
         dic = {}
         if self.is_retro and sales.count() > self.first_count:
             precentage = self.first_precentage + self.step * (sales.count() - self.first_count)
             for s in sales.all():
-                dic[s] = precentage
+                if self.last_count and houses_remaning <= self.last_count:
+                    dic[s] = self.last_precentage
+                else:
+                    dic[s] = precentage
+                houses_remaning -= 1
         else:
             for s in sales.all()[:self.first_count]:
                 dic[s] = self.first_precentage
@@ -1013,7 +1023,11 @@ class CVarPrecentageFixed(models.Model):
                 return dic
             i = self.first_count + 1
             for s in sales.all()[self.first_count+1:]:
-                dic[s] = self.first_precentage + self.step * (i - self.first_count)
+                if self.last_count and houses_remaning <= self.last_count:
+                    dic[s] = self.last_precentage
+                else:
+                    dic[s] = self.first_precentage + self.step * (i - self.first_count)
+                houses_remaning -= 1
                 i += 1
         return dic
     class Meta:
