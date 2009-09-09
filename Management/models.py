@@ -528,7 +528,7 @@ class NHCBase(models.Model):
     filter = models.ForeignKey('NHSaleFilter', verbose_name=ugettext('filter'))
     def calc(self, nhmonth):
         amount = 0
-        es = NHEmployeeSalary.objects.get(nhemployee=self.employee, year= nhmonth.year,
+        es = NHEmployeeSalary.objects.get(nhemployee=self.nhemployee, year= nhmonth.year,
                                           month = nhmonth.month)
         scds = []
         if self.filter.id == NHSaleFilter.His or self.filter.id == NHSaleFilter.All:
@@ -571,7 +571,7 @@ class NHCBranchIncome(models.Model):
     else_amount = models.IntegerField(ugettext('else_amount'))
     def calc(self, nhmonth):
         amount = 0
-        es = NHEmployeeSalary.objects.get(nhemployee=self.employee, year= nhmonth.year,
+        es = NHEmployeeSalary.objects.get(nhemployee=self.nhemployee, year= nhmonth.year,
                                           month = nhmonth.month)
         scds = []
         if self.filter.id == NHSaleFilter.His or self.filter.id == NHSaleFilter.All:
