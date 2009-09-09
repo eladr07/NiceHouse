@@ -10,11 +10,11 @@
 		<th>סוג עמלה</th>
 		<th>שווי עמלה</th>
 		<th>מכירה</th>
-		{% for scd in salary.nhsalecommissiondetail_set.all %}
+		{% for scd in details %}
 		<tr>
 			<td>{{scd.commission}}</td>
 			<td>{{scd.amount}}</td>
-			<td>{{scd.nhsaleside.id}}</td>
+			<td><a href="{{scd.nhsaleside.nhsale.get_absolute_url}}" target="_blank">{{scd.nhsaleside.nhsale.verbose_id}}</a></td>
 		</tr>
 		{% endfor %}
 	</table>

@@ -689,6 +689,10 @@ class NHEmployeeSalary(models.Model):
     approved = models.BooleanField(editable=False)
     is_sent = models.BooleanField(editable=False)
     remarks = models.TextField(ugettext('remarks'),null=True, blank=True)
+    def base_commission_details(self):
+        return self.nhsalecommissiondetail_set.filter(commission='base')
+    def admin_commission_details(self):
+        return self.nhsalecommissiondetail_set.exclude(commission='base')
     @property
     def loan_pay(self):
         amount = 0
@@ -1737,7 +1741,8 @@ class NHSale(models.Model):
     sale_date = models.DateField(ugettext('sale_date'))
     price = models.FloatField(ugettext('price'))
     remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
-        
+    def verbose_id(self):
+        return self.nhmonth.nhbranch.prefix + '-' + self.id
     def get_absolute_url(self):
         return '/nhsale/%s' % self.id
     class Meta:

@@ -310,9 +310,14 @@ def employee_salary_details(request, id):
                               { 'salary':EmployeeSalary.objects.get(pk=id)},
                               context_instance=RequestContext(request))
     
-def nhemployee_salary_details(request, id):
+def nhemployee_salary_details(request, id, type):
+    salary = NHEmployeeSalary.objects.get(pk=id)
+    if type == 'base':
+        details = salary.base_commission_details()
+    elif type == 'admin':
+         details = salary.admin_commission_details()
     return render_to_response('Management/nhemployee_commission_details.html', 
-                              { 'salary':NHEmployeeSalary.objects.get(pk=id)},
+                              { 'salary':salary, 'details':details},
                               context_instance=RequestContext(request))
 
 def employee_salary_check_details(request, model, id):

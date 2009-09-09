@@ -137,7 +137,11 @@
 				{{s.base}} + 
 				<a href="/nhemployeesalaries/{{s.id}}/details" class="fancybox">{{s.commissions}}</a>
 			</td>
-			<td style="color:#08A600;">{% if s.admin_commission %}{{s.admin_commission}}{% endif %}</td>
+			<td style="color:#08A600;">
+				{% if s.admin_commission %}
+				<a href="/nhemployeesalaries/{{s.id}}/admindetails" class="fancybox">{{s.admin_commission}}</a>
+				{% endif %}
+			</td>
 			<td style="color:#08A600;">{{s.safety_net|default_if_none:""}}</td>
 			<td style="color:#08A600;">{% if s.var_pay %}{{s.var_pay}} ש"ח {% endif %}</td>
 			<td style="color:#D50808;">{% if s.deduction %}{{s.deduction}} - {{s.deduction_type}} {% endif %}</td>
