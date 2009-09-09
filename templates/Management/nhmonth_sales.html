@@ -111,7 +111,9 @@
 		</tr>
 	{% endfor %}
 	<tr class="row3">
-		<td colspan="6">סה"כ הכנסות</td>
+		<td colspan="3"></td>
+		<td>{{signed_avg|floatformat:-2}}</td>
+		<td>{{actual_avg|floatformat:-2}}</td>
 		<td>{{total_net_income|commaise}} ש"ח</td>
 		<td colspan="5"></td>
 		{% for e in employees %}
