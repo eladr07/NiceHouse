@@ -719,13 +719,13 @@ class NHEmployeeSalary(models.Model):
         self.admin_commission, self.commissions, self.base = 0, 0, 0
         for nhss in NHSaleSide.objects.filter(employee1=self.nhemployee):
             self.commissions += nhss.employee1_pay
-            NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=pay.nhsaleside,
+            NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss,
                                                   commission='base', amount = nhss.employee1_pay,
                                                   precentage = nhss.employee1_commission,
                                                   income = nhss.net_income)
         for nhss in NHSaleSide.objects.filter(employee2=self.nhemployee):
             self.commissions += nhss.employee2_pay
-            NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=pay.nhsaleside,
+            NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss,
                                                   commission='base', amount = nhss.employee2_pay,
                                                   precentage = nhss.employee2_commission,
                                                   income = nhss.net_income)
