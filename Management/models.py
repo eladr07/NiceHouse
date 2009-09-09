@@ -1742,7 +1742,7 @@ class NHSale(models.Model):
     price = models.FloatField(ugettext('price'))
     remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
     def verbose_id(self):
-        return self.nhmonth.nhbranch.prefix + '-' + self.id
+        return self.nhmonth.nhbranch.prefix + '-' + str(self.id)
     def get_absolute_url(self):
         return '/nhsale/%s' % self.id
     class Meta:
