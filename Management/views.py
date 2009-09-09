@@ -310,7 +310,7 @@ def employee_salary_details(request, id):
                               { 'salary':EmployeeSalary.objects.get(pk=id)},
                               context_instance=RequestContext(request))
     
-def nhemployee_salary_details(request, id, type):
+def nhemployee_salary_details(request, id):
     salary = NHEmployeeSalary.objects.get(pk=id)
     details = salary.nhsalecommissiondetail_set.all()
     return render_to_response('Management/nhemployee_commission_details.html', 

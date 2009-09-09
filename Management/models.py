@@ -671,8 +671,8 @@ class NHSaleCommissionDetail(models.Model):
     nhemployeesalary = models.ForeignKey('NHEmployeeSalary')
     nhsaleside = models.ForeignKey('NHSaleSide', null=True)
     commission = models.CharField(max_length=30)
-    income = models.IntegerField()
-    precentage = models.FloatField()
+    income = models.IntegerField(null=True)
+    precentage = models.FloatField(null=True)
     amount = models.IntegerField()
     class Meta:
         db_table = 'NHSaleCommissionDetail'
