@@ -534,12 +534,10 @@ class NHCBase(models.Model):
             for nhss in NHSaleSide.objects.filter(employee2=self.nhemployee):
                 amount += nhss.net_income * self.precentage / 100
         if self.filter.id == NHSaleFilter.NotHis or self.filter.id == NHSaleFilter.All:
-            for nhe in nhmonth.nhbranch.nhemployees.all():
-                if nhe == self.nhemployee:
-                    continue
-                for nhss in NHSaleSide.objects.filter(employee1=nhe):
+            for nhe in nhmonth.nhbranch.nhemployees.exclude(id = self.nhemployee.id):
+                for nhss in NHSaleSide.objects.filter(employee1=nhe).exclude(employee2=self.nhemployee):
                     amount += nhss.net_income * self.precentage / 100
-                for nhss in NHSaleSide.objects.filter(employee2=nhe):
+                for nhss in NHSaleSide.objects.filter(employee2=nhe).exclude(employee1=self.nhemployee):
                     amount += nhss.net_income * self.precentage / 100
         return max(amount, self.min)
     class Meta:
@@ -558,12 +556,10 @@ class NHCBranchIncome(models.Model):
             for nhss in NHSaleSide.objects.filter(employee2=self.nhemployee):
                 amount += nhss.net_income
         if self.filter.id == NHSaleFilter.NotHis or self.filter.id == NHSaleFilter.All:
-            for nhe in nhmonth.nhbranch.nhemployees.all():
-                if nhe == self.nhemployee:
-                    continue
-                for nhss in NHSaleSide.objects.filter(employee1=nhe):
+            for nhe in nhmonth.nhbranch.nhemployees.exclude(id = self.nhemployee.id):
+                for nhss in NHSaleSide.objects.filter(employee1=nhe).exclude(employee2=self.nhemployee):
                     amount += nhss.net_income
-                for nhss in NHSaleSide.objects.filter(employee2=nhe):
+                for nhss in NHSaleSide.objects.filter(employee2=nhe).exclude(employee1=self.nhemployee):
                     amount += nhss.net_income
         return amount > self.if_income and amount * self.then_precentage / 100 or self.else_amount
     class Meta:
