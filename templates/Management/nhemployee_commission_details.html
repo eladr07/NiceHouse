@@ -20,7 +20,7 @@
 				{% ifequal scd.commission "nhcbranchincome_min" %}מינימום{% endifequal %}
 			</td>
 			<td>
-				{{scd.amount|commaise}} - 
+				{{scd.amount|commaise}} = 
 				{% ifequal scd.nhsaleside.employee1 scd.nhemployeesalary.nhemployee %}
 					{{scd.nhsaleside.employee1_commission}}% 
 				{% endifequal %}
