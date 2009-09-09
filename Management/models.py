@@ -559,7 +559,7 @@ class NHCBase(models.Model):
                 scd.save()
             return amount
         else:
-            NHSaleCommissionDetail.create(nhemployeesalary=es,commission='nhcbase_min', amount=self.min)
+            NHSaleCommissionDetail.objects.create(nhemployeesalary=es,commission='nhcbase_min', amount=self.min)
             return self.min
     class Meta:
         db_table = 'NHCBase'
