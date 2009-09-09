@@ -23,10 +23,10 @@
 				{{scd.amount}} - 
 				{% ifequal scd.nhsaleside.employee1 scd.nhemployeesalary.nhemployee %}
 					{{scd.nhsaleside.employee1_commission}}% * {{scd.nhsaleside.employee1_pay}}
-				{% endif %}
+				{% endifequal %}
 				{% ifequal scd.nhsaleside.employee2 scd.nhemployeesalary.nhemployee %}
 					{{scd.nhsaleside.employee2_commission}}% * {{scd.nhsaleside.employee2_pay}}
-				{% endif %}
+				{% endifequal %}
 			</td>
 			<td><a href="{{scd.nhsaleside.nhsale.get_absolute_url}}" target="_blank">{{scd.nhsaleside.nhsale.verbose_id}}</a></td>
 		</tr>
