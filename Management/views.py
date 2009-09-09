@@ -305,9 +305,14 @@ def employee_salary_approve(request, model, id):
     es.save()
     return HttpResponse('ok')
 
-def employee_salary_details(request, model, id):
+def employee_salary_details(request, id):
     return render_to_response('Management/employee_commission_details.html', 
-                              { 'salary':model.objects.get(pk=id)},
+                              { 'salary':EmployeeSalary.objects.get(pk=id)},
+                              context_instance=RequestContext(request))
+    
+def nhemployee_salary_details(request, id):
+    return render_to_response('Management/nhemployee_commission_details.html', 
+                              { 'salary':NHEmployeeSalary.objects.get(pk=id)},
                               context_instance=RequestContext(request))
 
 def employee_salary_check_details(request, model, id):

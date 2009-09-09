@@ -1,0 +1,21 @@
+﻿{% extends "./template.html" %}
+{% load management_extras %}
+{% block page %}
+<div id="content">
+	<div class="title">
+		<div class="pageTitle">פירוט עמלות לעובד {{salary.nhemployee}} לחודש {{salary.month}}/{{salary.year}}</div>
+	</div>
+	<div class="clearBoth"></div>
+	<table id="sales_table" class="dataTable" border="1">
+		<th>סוג עמלה</th>
+		<th>שווי עמלה</th>
+		<th>מכירה</th>
+		{% for scd in salary.nhsalecommissiondetail_set.all %}
+		<tr>
+			<td>{{scd.commission}}</td>
+			<td>{{scd.amount}}</td>
+			<td>{{scd.nhsaleside.id}}</td>
+		</tr>
+	</table>
+</div>
+{% endblock page %}

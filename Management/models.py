@@ -528,18 +528,39 @@ class NHCBase(models.Model):
     filter = models.ForeignKey('NHSaleFilter', verbose_name=ugettext('filter'))
     def calc(self, nhmonth):
         amount = 0
+        es = NHEmployeeSalary.objects.get(nhemployee=self.employee, year= nhmonth.year,
+                                          month = nhmonth.month)
+        scds = []
         if self.filter.id == NHSaleFilter.His or self.filter.id == NHSaleFilter.All:
             for nhss in NHSaleSide.objects.filter(employee1=self.nhemployee):
-                amount += nhss.net_income * self.precentage / 100
+                x = nhss.net_income * self.precentage / 100
+                amount += x
+                scds.append(NHSaleCommissionDetail(nhemployeesalary=es, commission='nhcbase',amount=x,
+                                                   nhsaleside=nhss))
             for nhss in NHSaleSide.objects.filter(employee2=self.nhemployee):
-                amount += nhss.net_income * self.precentage / 100
+                x = nhss.net_income * self.precentage / 100
+                amount += x
+                scds.append(NHSaleCommissionDetail(nhemployeesalary=es, commission='nhcbase',amount=x,
+                                                   nhsaleside=nhss))
         if self.filter.id == NHSaleFilter.NotHis or self.filter.id == NHSaleFilter.All:
             for nhe in nhmonth.nhbranch.nhemployees.exclude(id = self.nhemployee.id):
                 for nhss in NHSaleSide.objects.filter(employee1=nhe).exclude(employee2=self.nhemployee):
-                    amount += nhss.net_income * self.precentage / 100
+                    x = nhss.net_income * self.precentage / 100
+                    amount += x
+                    scds.append(NHSaleCommissionDetail(nhemployeesalary=es, commission='nhcbase',amount=x,
+                                                       nhsaleside=nhss))
                 for nhss in NHSaleSide.objects.filter(employee2=nhe).exclude(employee1=self.nhemployee):
-                    amount += nhss.net_income * self.precentage / 100
-        return max(amount, self.min)
+                    x = nhss.net_income * self.precentage / 100
+                    amount += x 
+                    scds.append(NHSaleCommissionDetail(nhemployeesalary=es, commission='nhcbase',amount=x,
+                                                       nhsaleside=nhss))
+        if amount >= self.min:
+            for scd in scds:
+                scd.save()
+            return amount
+        else:
+            NHSaleCommissionDetail.create(nhemployeesalary=es,commission='nhcbase_min', amount=self.min)
+            return self.min
     class Meta:
         db_table = 'NHCBase'
 
@@ -550,18 +571,40 @@ class NHCBranchIncome(models.Model):
     else_amount = models.IntegerField(ugettext('else_amount'))
     def calc(self, nhmonth):
         amount = 0
+        es = NHEmployeeSalary.objects.get(nhemployee=self.employee, year= nhmonth.year,
+                                          month = nhmonth.month)
+        scds = []
         if self.filter.id == NHSaleFilter.His or self.filter.id == NHSaleFilter.All:
             for nhss in NHSaleSide.objects.filter(employee1=self.nhemployee):
                 amount += nhss.net_income
+                scds.append(NHSaleCommissionDetail(nhemployeesalary=es,nhsaleside=nhss,
+                                                   commission='nhcbranchincome',
+                                                   amount=nhss.net_income * self.then_precentage/100))
             for nhss in NHSaleSide.objects.filter(employee2=self.nhemployee):
                 amount += nhss.net_income
+                scds.append(NHSaleCommissionDetail(nhemployeesalary=es,nhsaleside=nhss,
+                                                   commission='nhcbranchincome',
+                                                   amount=nhss.net_income * self.then_precentage/100))
         if self.filter.id == NHSaleFilter.NotHis or self.filter.id == NHSaleFilter.All:
             for nhe in nhmonth.nhbranch.nhemployees.exclude(id = self.nhemployee.id):
                 for nhss in NHSaleSide.objects.filter(employee1=nhe).exclude(employee2=self.nhemployee):
                     amount += nhss.net_income
+                    scds.append(NHSaleCommissionDetail(nhemployeesalary=es,nhsaleside=nhss,
+                                                       commission='nhcbranchincome',
+                                                       amount=nhss.net_income * self.then_precentage/100))
                 for nhss in NHSaleSide.objects.filter(employee2=nhe).exclude(employee1=self.nhemployee):
                     amount += nhss.net_income
-        return amount > self.if_income and amount * self.then_precentage / 100 or self.else_amount
+                    scds.append(NHSaleCommissionDetail(nhemployeesalary=es,nhsaleside=nhss,
+                                                       commission='nhcbranchincome',
+                                                       amount=nhss.net_income * self.then_precentage/100))
+        if amount > self.if_income:
+            for scd in scds:
+                scd.save()
+            return self.then_precentage * amount / 100
+        else:
+            NHSaleCommissionDetail.objects.create(nhemployeesalary=es, commission='nhcbranchincome_min',
+                                                  amount=self.else_amount)
+            return self.else_amount
     class Meta:
         db_table = 'NHCBranchIncome'
 
@@ -620,6 +663,14 @@ class NHEmployee(EmployeeBase):
         db_table = 'NHEmployee'
         ordering = ['nhbranch','-work_start']
 
+class NHSaleCommissionDetail(models.Model):
+    nhemployeesalary = models.ForeignKey('NHEmployeeSalary')
+    nhsaleside = models.ForeignKey('NHSaleSide', null=True)
+    commission = models.CharField(max_length=30)
+    amount = models.IntegerField()
+    class Meta:
+        db_table = 'NHSaleCommissionDetail'
+
 class NHEmployeeSalary(models.Model):
     nhemployee = models.ForeignKey('NHEmployee', verbose_name=ugettext('nhemployee'), related_name='salaries')
     month = models.PositiveSmallIntegerField(ugettext('month'), editable=False, choices=((i,i) for i in range(1,13)))
@@ -657,9 +708,13 @@ class NHEmployeeSalary(models.Model):
             return None
         return self.total_amount
     def calculate(self):
+        for scd in NHSaleCommissionDetail.objects.filter(nhemployeesalary = self):
+            scd.delete()
         self.admin_commission, self.commissions, self.base = 0, 0, 0
         for pay in NHPay.objects.filter(year = self.year, month = self.month, employee = self.nhemployee):
             self.commissions += pay.amount
+            NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=pay.nhsaleside,
+                                                  commission='base', amount = pay.amount)
         if self.nhemployee.nhbranch:
             try:
                 nhm = NHMonth.objects.get(nhbranch = self.nhemployee.nhbranch, year = self.year,
@@ -1683,6 +1738,8 @@ class NHSale(models.Model):
     price = models.FloatField(ugettext('price'))
     remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
         
+    def get_absolute_url(self):
+        return '/nhsale/%s' % self.id
     class Meta:
         db_table='NHSale'
 
