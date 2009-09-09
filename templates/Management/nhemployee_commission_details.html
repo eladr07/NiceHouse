@@ -13,11 +13,11 @@
 		{% for scd in details %}
 		<tr>
 			<td>
-				{% ifequal scd.commission base %}בסיס{% endifequal %}
-				{% ifequal scd.commission nhcbase %}ניהול בסיס{% endifequal %}
-				{% ifequal scd.commission nhcbase_min %}מינימום{% endifequal %}
-				{% ifequal scd.commission nhcbranchincome %}ניהול סניף{% endifequal %}
-				{% ifequal scd.commission nhcbranchincome_min %}מינימום{% endifequal %}
+				{% ifequal scd.commission "base" %}בסיס{% endifequal %}
+				{% ifequal scd.commission "nhcbase" %}ניהול בסיס{% endifequal %}
+				{% ifequal scd.commission "nhcbase_min" %}מינימום{% endifequal %}
+				{% ifequal scd.commission "nhcbranchincome" %}ניהול סניף{% endifequal %}
+				{% ifequal scd.commission "nhcbranchincome_min" %}מינימום{% endifequal %}
 			</td>
 			<td>{{scd.amount}}</td>
 			<td><a href="{{scd.nhsaleside.nhsale.get_absolute_url}}" target="_blank">{{scd.nhsaleside.nhsale.verbose_id}}</a></td>
