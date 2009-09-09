@@ -535,6 +535,8 @@ class NHCBase(models.Model):
                 amount += nhss.net_income * self.precentage / 100
         if self.filter.id == NHSaleFilter.NotHis or self.filter.id == NHSaleFilter.All:
             for nhe in nhmonth.nhbranch.nhemployees.all():
+                if nhe == self.employee:
+                    continue
                 for nhss in NHSaleSide.objects.filter(employee1=nhe):
                     amount += nhss.net_income * self.precentage / 100
                 for nhss in NHSaleSide.objects.filter(employee2=nhe):
@@ -557,6 +559,8 @@ class NHCBranchIncome(models.Model):
                 amount += nhss.net_income
         if self.filter.id == NHSaleFilter.NotHis or self.filter.id == NHSaleFilter.All:
             for nhe in nhmonth.nhbranch.nhemployees.all():
+                if nhe == self.employee:
+                    continue
                 for nhss in NHSaleSide.objects.filter(employee1=nhe):
                     amount += nhss.net_income
                 for nhss in NHSaleSide.objects.filter(employee2=nhe):

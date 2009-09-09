@@ -129,7 +129,7 @@
 		<tr style="text-align:center; color:#4669D6; font-size:14px"><td colspan="16"><b>{{branch.grouper}}</b></td></tr>
 		{% for s in branch.list %}
     	<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.nhemployee.id}}>
-			<td><a href="/employees/{{s.nhemployee.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
+			<td><a href="/nhemployees/{{s.nhemployee.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
 			<td>{{ s.nhemployee }}</td>
 			<td>{{s.nhemployee.employment_terms.hire_type}}</td>
 			<td><a class="fancybox" href="/nhemployee/{{s.nhemployee.id}}/sales/{{month.year}}/{{month.month}}">{{ s.sales_count }}</a></td>
