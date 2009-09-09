@@ -135,11 +135,11 @@
 			<td><a class="fancybox" href="/nhemployee/{{s.nhemployee.id}}/sales/{{month.year}}/{{month.month}}">{{ s.sales_count }}</a></td>
 			<td style="color:#08A600;">
 				{{s.base}} + 
-				<a href="/nhemployeesalaries/{{s.id}}/details" class="fancybox">{{s.commissions}}</a>
+				<a href="/nhemployeesalaries/{{s.id}}/details" class="fancybox">{{s.commissions|commaise}}</a>
 			</td>
 			<td style="color:#08A600;">
 				{% if s.admin_commission %}
-				<a href="/nhemployeesalaries/{{s.id}}/detailsadmin" class="fancybox">{{s.admin_commission}}</a>
+				<a href="/nhemployeesalaries/{{s.id}}/detailsadmin" class="fancybox">{{s.admin_commission|commaise}}</a>
 				{% endif %}
 			</td>
 			<td style="color:#08A600;">{{s.safety_net|default_if_none:""}}</td>
@@ -157,7 +157,7 @@
 				<a href="{{s.nhemployee.get_absolute_url}}/loans" class="fancybox">כרטיס הלוואות</a><br>
 				{% endif %}
 			</td>
-			<td><a href="/nhemployeesalaries/{{s.id}}/checkdetails" class="fancybox">{{s.check_amount}}</a></td>
+			<td><a href="/nhemployeesalaries/{{s.id}}/checkdetails" class="fancybox">{{s.check_amount|commaise}}</a></td>
 			<td>{% if s.bruto_amount %}{{s.bruto_amount|commaise}} {% else %}----{% endif %}</td>
 			<td>{% if s.refund %}{{s.refund}} - {{s.refund_type}} {% endif %}</td>
 			<td></td>
