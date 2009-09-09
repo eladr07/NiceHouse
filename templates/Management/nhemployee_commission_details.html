@@ -21,13 +21,8 @@
 			</td>
 			<td>
 				{{scd.amount|commaise}} = 
-				{% ifequal scd.nhsaleside.employee1 scd.nhemployeesalary.nhemployee %}
-					{{scd.nhsaleside.employee1_commission}}% 
-				{% endifequal %}
-				{% ifequal scd.nhsaleside.employee2 scd.nhemployeesalary.nhemployee %}
-					{{scd.nhsaleside.employee2_commission}}% 
-				{% endifequal %}
-				 * {{scd.nhsaleside.net_income|commaise}}
+				{{scd.precentage}}% 
+				 * {{scd.income|commaise}}
 			</td>
 			<td><a href="{{scd.nhsaleside.nhsale.get_absolute_url}}" target="_blank">{{scd.nhsaleside.nhsale.verbose_id}}</a></td>
 		</tr>
