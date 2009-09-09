@@ -58,10 +58,10 @@ $(document).ready(function() {
 		$("#id_side2-director_pay").attr("value", p * ac2/ 100 * parseFloat($(this).val())/100);
 	});
 	$("#id_side1-income").change(function() {
-		actualCommission1.attr("value", parseInt($(this).val() / p * 100));
+		actualCommission1.attr("value", parseInt($(this).val()) / p * 100);
 	});
 	$("#id_side2-income").change(function() {
-		actualCommission2.attr("value", parseInt($(this).val() / p * 100));
+		actualCommission2.attr("value", parseInt($(this).val()) / p * 100);
 	});
 	actualCommission1.change(function () {
 		updateValues();

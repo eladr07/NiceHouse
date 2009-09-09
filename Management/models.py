@@ -1588,8 +1588,8 @@ class NHSaleSide(models.Model):
     lawyer2 = models.ForeignKey('Lawyer', verbose_name=ugettext('lawyer'), related_name='nhsaleside2s', 
                                 null=True, blank=True)
     signed_commission = models.FloatField(ugettext('signed_commission'))
-    actual_commission = models.FloatField(ugettext('actual_commission'), blank=True)
-    income = models.IntegerField(ugettext('income'), blank=True)
+    actual_commission = models.FloatField(ugettext('actual_commission'))
+    income = models.IntegerField(ugettext('return_worth'))
     voucher_num = models.IntegerField(ugettext('voucher_num'))
     voucher_date = models.DateField(ugettext('voucher_date'))
     temp_receipt_num = models.IntegerField(ugettext('temp_receipt_num'))
@@ -1629,10 +1629,6 @@ class NHSaleSide(models.Model):
     def is_employee_related(self, employee):
         return self.employee1 == employee or self.employee2 == employee or self.director == employee
     def save(self,*args, **kw):
-        if not self.income and self.actual_commission:
-            self.income = self.nhsale.price * self.actual_commission / 100
-        elif self.income and not self.actual_commission:
-            self.actual_commission = self.income / self.nhsale.price * 100
         models.Model.save(self, *args, **kw)
         e1, ec1, e2, ec2, d, dc = (self.employee1, self.employee1_commission,
                                    self.employee2, self.employee2_commission,
