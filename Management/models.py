@@ -533,24 +533,24 @@ class NHCBase(models.Model):
         scds = []
         if self.filter.id == NHSaleFilter.His or self.filter.id == NHSaleFilter.All:
             for nhss in NHSaleSide.objects.filter(employee1=self.nhemployee):
-                x = nhss.net_income * self.precentage / 100
+                x = nhss.employee1_pay * 2.5 * self.precentage / 100
                 amount += x
                 scds.append(NHSaleCommissionDetail(nhemployeesalary=es, commission='nhcbase',amount=x,
                                                    nhsaleside=nhss))
             for nhss in NHSaleSide.objects.filter(employee2=self.nhemployee):
-                x = nhss.net_income * self.precentage / 100
+                x = nhss.employee2_pay * 2.5 * self.precentage / 100
                 amount += x
                 scds.append(NHSaleCommissionDetail(nhemployeesalary=es, commission='nhcbase',amount=x,
                                                    nhsaleside=nhss))
         if self.filter.id == NHSaleFilter.NotHis or self.filter.id == NHSaleFilter.All:
             for nhe in nhmonth.nhbranch.nhemployees.exclude(id = self.nhemployee.id):
                 for nhss in NHSaleSide.objects.filter(employee1=nhe).exclude(employee2=self.nhemployee):
-                    x = nhss.net_income * self.precentage / 100
+                    x = nhss.employee1_pay * 2.5 * self.precentage / 100
                     amount += x
                     scds.append(NHSaleCommissionDetail(nhemployeesalary=es, commission='nhcbase',amount=x,
                                                        nhsaleside=nhss))
                 for nhss in NHSaleSide.objects.filter(employee2=nhe).exclude(employee1=self.nhemployee):
-                    x = nhss.net_income * self.precentage / 100
+                    x = nhss.employee2_pay * 2.5 * self.precentage / 100
                     amount += x 
                     scds.append(NHSaleCommissionDetail(nhemployeesalary=es, commission='nhcbase',amount=x,
                                                        nhsaleside=nhss))
@@ -576,24 +576,24 @@ class NHCBranchIncome(models.Model):
         scds = []
         if self.filter.id == NHSaleFilter.His or self.filter.id == NHSaleFilter.All:
             for nhss in NHSaleSide.objects.filter(employee1=self.nhemployee):
-                amount += nhss.net_income
+                amount += nhss.employee1_pay
                 scds.append(NHSaleCommissionDetail(nhemployeesalary=es,nhsaleside=nhss,
                                                    commission='nhcbranchincome',
                                                    amount=nhss.net_income * self.then_precentage/100))
             for nhss in NHSaleSide.objects.filter(employee2=self.nhemployee):
-                amount += nhss.net_income
+                amount += nhss.employee2_pay
                 scds.append(NHSaleCommissionDetail(nhemployeesalary=es,nhsaleside=nhss,
                                                    commission='nhcbranchincome',
                                                    amount=nhss.net_income * self.then_precentage/100))
         if self.filter.id == NHSaleFilter.NotHis or self.filter.id == NHSaleFilter.All:
             for nhe in nhmonth.nhbranch.nhemployees.exclude(id = self.nhemployee.id):
                 for nhss in NHSaleSide.objects.filter(employee1=nhe).exclude(employee2=self.nhemployee):
-                    amount += nhss.net_income
+                    amount += nhss.employee1_pay
                     scds.append(NHSaleCommissionDetail(nhemployeesalary=es,nhsaleside=nhss,
                                                        commission='nhcbranchincome',
                                                        amount=nhss.net_income * self.then_precentage/100))
                 for nhss in NHSaleSide.objects.filter(employee2=nhe).exclude(employee1=self.nhemployee):
-                    amount += nhss.net_income
+                    amount += nhss.employee2_pay
                     scds.append(NHSaleCommissionDetail(nhemployeesalary=es,nhsaleside=nhss,
                                                        commission='nhcbranchincome',
                                                        amount=nhss.net_income * self.then_precentage/100))
