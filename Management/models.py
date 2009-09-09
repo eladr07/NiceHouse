@@ -629,8 +629,8 @@ class NHBranch(models.Model):
     
 class NHEmployee(EmployeeBase):
     nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'), related_name='nhemployees')
-    nhcbase = models.OneToOneField('NHCBase', editable=False, null=True, related_name='employee')
-    nhcbranchincome = models.OneToOneField('NHCBranchIncome', editable=False, null=True, related_name='employee')
+    nhcbase = models.OneToOneField('NHCBase', editable=False, null=True, related_name='nhemployee')
+    nhcbranchincome = models.OneToOneField('NHCBranchIncome', editable=False, null=True, related_name='nhemployee')
     objects = EmployeeManager()
     
     def get_open_reminders(self):
