@@ -1588,8 +1588,8 @@ class NHSaleSide(models.Model):
     lawyer2 = models.ForeignKey('Lawyer', verbose_name=ugettext('lawyer'), related_name='nhsaleside2s', 
                                 null=True, blank=True)
     signed_commission = models.FloatField(ugettext('signed_commission'))
-    actual_commission = models.FloatField(ugettext('actual_commission'))
-    income = models.IntegerField(ugettext('return_worth'))
+    actual_commission = models.FloatField(ugettext('actual_commission'), blank=True)
+    income = models.IntegerField(ugettext('return_worth'), blank=True)
     voucher_num = models.IntegerField(ugettext('voucher_num'))
     voucher_date = models.DateField(ugettext('voucher_date'))
     temp_receipt_num = models.IntegerField(ugettext('temp_receipt_num'))
