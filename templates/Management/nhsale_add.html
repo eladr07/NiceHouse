@@ -59,9 +59,16 @@ $(document).ready(function() {
 	});
 	$("#id_side1-income").change(function() {
 		actualCommission1.attr("value", parseInt($(this).val()) / p * 100);
+		updateValues();
+		for (var i = 0; i < fields.length; i++)
+			$("#id_side1-" + fields[i] + "_pay").attr("value", p * ac1/ 100 * parseFloat($("#id_side1-" + fields[i] + "_commission").val())/100);
 	});
 	$("#id_side2-income").change(function() {
 		actualCommission2.attr("value", parseInt($(this).val()) / p * 100);
+		updateValues();
+		for (var i = 0; i < fields.length; i++)
+			$("#id_side2-" + fields[i] + "_pay").attr("value", p * ac2 / 100 * parseFloat($("#id_side1-" + fields[i] + "_commission").val())/100);
+
 	});
 	actualCommission1.change(function () {
 		updateValues();
