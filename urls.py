@@ -342,7 +342,7 @@ urlpatterns = patterns('',
     (r'^nhemployeesalaries/(?P<id>\d+)/calc$', 'Management.views.employee_salary_calc',
      {'model':NHEmployeeSalary}),
     (r'^nhemployeesalaries/(?P<id>\d+)/details$', 'Management.views.nhemployee_salary_details',
-     {'type':'base'}
+     {'type':'base'}),
     (r'^nhemployeesalaries/(?P<id>\d+)/detailsadmin$', 'Management.views.nhemployee_salary_details',
      {'type':'admin'}),
     (r'^nhemployeesalaries/(?P<id>\d+)/checkdetails$', 'Management.views.employee_salary_check_details',
