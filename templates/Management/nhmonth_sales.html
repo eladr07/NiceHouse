@@ -80,8 +80,8 @@
 				{% endif %}
 				<td>{{ss.name1}} {{ss.name2|default_if_none:""}}</td>
 				<td>{{ss.sale_type}}</td>
-				<td>{{ss.signed_commission}}%</td>
-				<td>{{ss.actual_commission}}%</td>
+				<td>{{ss.signed_commission|floatformat:-2}}%</td>
+				<td>{{ss.actual_commission|floatformat:-2}}%</td>
 				<td>{{ss.income|commaise}}</td>
 				<td>{{ss.lawyers_pay|commaise}}</td>
 				<td>{{ss.net_income|commaise}}</td>

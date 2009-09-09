@@ -57,17 +57,23 @@ $(document).ready(function() {
 	$("#id_side2-director_commission").change(function () {
 		$("#id_side2-director_pay").attr("value", p * ac2/ 100 * parseFloat($(this).val())/100);
 	});
+	$("#id_side1-income").change(function() {
+		actualCommission1.attr("value", parseInt($(this).val() / p * 100));
+	});
+	$("#id_side2-income").change(function() {
+		actualCommission2.attr("value", parseInt($(this).val() / p * 100));
+	});
 	actualCommission1.change(function () {
 		updateValues();
 		for (var i = 0; i < fields.length; i++)
 			$("#id_side1-" + fields[i] + "_pay").attr("value", p * ac1/ 100 * parseFloat($("#id_side1-" + fields[i] + "_commission").val())/100);
-		$("#side1-commission").attr("value", p*ac1/100);
+		$("#id_side1-income").attr("value", p*ac1/100);
 	});
 	actualCommission2.change(function () {
 		updateValues();
 		for (var i = 0; i < fields.length; i++)
 			$("#id_side2-" + fields[i] + "_pay").attr("value", p * ac2 / 100 * parseFloat($("#id_side1-" + fields[i] + "_commission").val())/100);
-		$("#side2-commission").attr("value", p*ac2/100);
+		$("#id_side2-income").attr("value", p*ac2/100);
 	});
 	priceInput.change(function () {
 		updateValues();
@@ -76,8 +82,8 @@ $(document).ready(function() {
 			$("#id_side1-" + fields[i] + "_pay").attr("value", p * ac1 / 100 * parseFloat($("#id_side1-" + fields[i] + "_commission").val()) / 100);
 			$("#id_side2-" + fields[i] + "_pay").attr("value", p * ac2 / 100 * parseFloat($("#id_side2-" + fields[i] + "_commission").val()) / 100);
 		}
-		$("#side1-commission").attr("value", p*ac1/100);
-		$("#side2-commission").attr("value", p*ac2/100);
+		$("#id_side1-income").attr("value", p*ac1/100);
+		$("#id_side2-income").attr("value", p*ac2/100);
 	});
 });
 function updateValues() {
@@ -253,8 +259,11 @@ function updateValues() {
 					</td>
 				</tr>
 				<tr>
-					<th>עמלה בש"ח</th>
-					<td><input id="side1-commission" type="text" readonly="readonly"/></td>
+					<th>{{ side1form.income.label_tag }}</th>
+					<td>
+						{{ side1form.income }}
+						{% if side1form.income.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.income.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{ side1form.voucher_num.label_tag }}</th>
@@ -507,8 +516,11 @@ function updateValues() {
 					</td>
 				</tr>
 				<tr>
-					<th>עמלה בש"ח</th>
-					<td><input id="side2-commission" type="text" readonly="readonly"/></td>
+					<th>{{ side2form.income.label_tag }}</th>
+					<td>
+						{{ side2form.income }}
+						{% if side2form.income.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.side2form.errors|join:""}}'/>{% endif %}
+					</td>
 				</tr>
 				<tr>
 					<th>{{ side2form.voucher_num.label_tag }}</th>
@@ -684,7 +696,7 @@ function updateValues() {
 				</table>
 			</div>
 		</fieldset>
-	<div style="text-align:center;">
+	<div style="text-align:center; color:#9F0000;">
 		<b>יש לדאוג שהשקים יהיו לפקודת "נווה העיר 2007 בע"מ"</b>
 	</div>
 	</div>
