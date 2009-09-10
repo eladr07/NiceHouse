@@ -298,6 +298,9 @@ def demand_old_list(request, year=demand_month().year, month=demand_month().mont
                                 'unhandled_projects':unhandled_projects},
                               context_instance=RequestContext(request))
 
+def nhemployee_salary_pdf(request, year, month):
+    return HttpRespone('ERROR')
+
 @permission_required('Management.change_employeesalary')
 def employee_salary_approve(request, model, id):
     es = model.objects.get(pk=id)
