@@ -346,7 +346,7 @@ urlpatterns = patterns('',
      {'model':NHEmployeeSalary}),
     (r'^nhemployeesalaries/(?P<id>\d+)/totaldetails$', 'Management.views.employee_salary_total_details',
      {'model':NHEmployeeSalary}),
-    (r'^nhemployeesalaries/(?P<id>\d+)/approve$', 'Management.views.nhemployee_salary_approve',
+    (r'^nhemployeesalaries/(?P<id>\d+)/approve$', 'Management.views.employee_salary_approve',
      {'model':NHEmployeeSalary}),
     (r'^nhemployee/(?P<id>\d+)/sales/(?P<year>\d+)/(?P<month>\d+)$', 'Management.views.nhemployee_sales'),
     
