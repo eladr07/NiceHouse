@@ -742,7 +742,7 @@ def nhsaleside_payment_add(request, object_id):
     return render_to_response('Management/payment_edit.html', 
                               { 'form':form }, context_instance=RequestContext(request))
     
-@permission_required('Management.invoice')
+@permission_required('Management.add_invoice')
 def nhsaleside_invoice_add(request, object_id):
     nhs = NHSaleSide.objects.get(pk=object_id)
     if request.method == 'POST':
