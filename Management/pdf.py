@@ -516,7 +516,7 @@ class MonthProjectsWriter:
 class EmployeeSalariesWriter:
     def __init__(self, year, month):
         self.year, self.month = (year, month)
-        self.salaries = models.EmployeeSalary.objects.filter(year = year, month= month, is_approved=True)
+        self.salaries = models.EmployeeSalary.objects.filter(year = year, month= month, approved=True)
     @property
     def pages_count(self):
         return self.salaries.count() / 28 + 1
