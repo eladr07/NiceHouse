@@ -1170,8 +1170,8 @@ class CZilber(models.Model):
                 scd.value = (s.price - memudad) * self.b_discount
                 scd.save()
         if d.include_zilber_bonus():
-            demand, bonus = d.get_previous_demand(), 0
-            while demand != None and demand.zilber_cycle_index() > 1:
+            demand, bonus = d, 0
+            while demand != None and demand.zilber_cycle_index() >= 1:
                 for s in demand.get_sales():
                     bonus += s.zdb
                 demand = demand.get_previous_demand()
