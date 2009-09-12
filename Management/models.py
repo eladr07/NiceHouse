@@ -1127,8 +1127,7 @@ class CZilber(models.Model):
         '''
         month is datetime
         '''
-        p = self.projectcommission.project
-        d = p.demands.get(year = month.year, month = month.month)
+        d = Demand.objects.get(project = self.projectcommission.project, year = month.year, month = month.month)
         d.bonus, d.bonus_type, d.var_pay, d.var_pay_type = 0, None, 0, None
         demand = d
         raise AttributeError()
