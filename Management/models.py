@@ -4,6 +4,7 @@ from datetime import datetime, date
 from django.contrib.auth.models import User
 from templatetags.management_extras import *
 from django.db.models.signals import pre_save
+from decimal import InvalidOperation
 
 Salary_Types = (
                 (0, u'ברוטו'),
@@ -1421,6 +1422,8 @@ class Demand(models.Model):
     
     def zilber_cycle_index(self):
         start = self.project.commissions.c_zilber.third_start
+        if (start.year == self.year and start.month > self.month) or self.year < start.year:
+            return 0
         i = 0
         while start.year != self.year or start.month != self.month:
             start = date(start.month == 12 and start.year + 1 or start.year,
