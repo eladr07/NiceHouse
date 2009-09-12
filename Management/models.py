@@ -1163,10 +1163,7 @@ class CZilber(models.Model):
                 s.restore = True
                 prev_adds += (base - s.pc_base) * s.price_final / 100
         d.var_pay = prev_adds
-        d.var_pay_type = u'תוספת בגין %s עד %s' % (start.strftime('%d/%m/%Y'), 
-                                                   date(month.month == 1 and month.year-1 or month.year, 
-                                                        month.month == 1 and 12 or month.month, 
-                                                        1).strftime('%d/%m/%Y'))
+        d.var_pay_type = u'הפרשי קצב מכירות'
         if d.include_zilber_bonus():
             demand, bonus = d, 0
             while demand.zilber_cycle_index() >= 0:
