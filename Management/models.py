@@ -1465,7 +1465,7 @@ class Demand(models.Model):
             months[(signup.date.month, signup.date.year)] += 1
         return months
     def include_zilber_bonus(self):
-        return self.zilber_cycle_index() == ZILBER_CYCLE
+        return self.zilber_cycle_index() == 0
     def get_absolute_url(self):
         return '/demands/%s' % self.id
     def get_salaries(self):
