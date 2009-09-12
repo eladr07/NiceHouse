@@ -796,11 +796,6 @@ class LoanPay(models.Model):
     class Meta:
         db_table = 'LoanPay'
 
-class EmployeeSalaryManager(models.Manager):
-    def current(self):
-        n = demand_month()
-        return self.filter(year = n.year, month = n.month)
-
 class SaleCommissionDetail(models.Model):
     employee_salary = models.ForeignKey('EmployeeSalary', related_name='commission_details',
                                         null=True)
@@ -828,9 +823,7 @@ class EmployeeSalary(models.Model):
     approved = models.BooleanField(editable=False)
     is_sent = models.BooleanField(editable=False)
     remarks = models.TextField(ugettext('remarks'),null=True, blank=True)
-    
-    objects = EmployeeSalaryManager()
-    
+        
     @property
     def sales(self):
         sales = {}
