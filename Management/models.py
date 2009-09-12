@@ -1130,11 +1130,12 @@ class CZilber(models.Model):
         p = self.projectcommission.project
         d = p.demands.get(year = month.year, month = month.month)
         d.bonus, d.bonus_type, d.var_pay, d.var_pay_type = 0, None, 0, None
-        demand = p.demands.get(year = month.year, month = month.month)
+        demand = d
         sales = []
         while demand != None and demand.zilber_cycle_index() > 0:
             sales.extend(demand.get_sales())
             demand = demand.get_previous_demand()
+        raise AttributeError()
         base = self.base + self.b_sale_rate * (len(sales) - 1)
         if base > self.b_sale_rate_max:
             base = self.b_sale_rate_max
