@@ -315,7 +315,7 @@ class MonthDemandWriter:
             row = [log2vis('%s/%s' % (demand.month, demand.year))]
             for s in demand.get_sales():
                 houses += log2vis('%s/%s %s\n' % (s.house.building.num, s.house.num, 0))
-                new_commission = scd.c_final
+                new_commission = s.c_final
                 s.restore = True
                 orig_commission = s.c_final
                 total_sales_amount += s.price_final
