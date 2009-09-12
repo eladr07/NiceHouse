@@ -1452,6 +1452,8 @@ class Demand(models.Model):
         months = {}
         for s in self.get_sales():
             signup = s.house.get_signup()
+            if not signup:
+                continue
             if not months.has_key((signup.date.month, signup.date.year)):
                 months[(signup.date.month, signup.date.year)] = 0
             months[(signup.date.month, signup.date.year)] += 1

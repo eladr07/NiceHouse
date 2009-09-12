@@ -321,7 +321,7 @@ class MonthDemandWriter:
                     data.extend(rows)
                     t = Table(data)
                     t.setStyle(saleTableStyle)
-                    flows.append(t)
+                    flows.extend([t, PageBreak(), Spacer(0,70)])
                     rows = []
         sum_row = [None,None,None,None,None,None,None,None,None,commaise(self.demand.bonus)]
         sum_row.reverse()
