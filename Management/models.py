@@ -1165,8 +1165,8 @@ class CZilber(models.Model):
         d.var_pay = prev_adds
         d.var_pay_type = u'הפרשי קצב מכירות'
         if d.include_zilber_bonus():
-            demand, bonus = d, 0
-            while demand.zilber_cycle_index() >= 0:
+            demand, bonus = d.get_previous_demand(), 0
+            while demand != None and demand.zilber_cycle_index() > 0:
                 for s in demand.get_sales():
                     bonus += s.zdb
                 demand = d.get_previous_demand()
