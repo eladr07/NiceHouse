@@ -267,7 +267,7 @@ class MonthDemandWriter:
         i = 0
         demand = self.demand
         while demand != None:
-            for s in d.get_sales():
+            for s in demand.get_sales():
                 i += 1
                 row = ['%s-%s' % (s.actual_demand.id, i), log2vis(s.clients),'%s/%s' % (s.house.building.num, s.house.num), 
                        s.sale_date.strftime('%d/%m/%y'), commaise(s.price)]
