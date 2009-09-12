@@ -1448,7 +1448,7 @@ class Demand(models.Model):
             start = date(start.month == 12 and start.year + 1 or start.year,
                          start.month == 12 and 1 or start.month + 1, 1)
             i += 1
-        return i % ZILBER_CYCLE
+        return (i % ZILBER_CYCLE) + 1
     def get_previous_demand(self):
         try:
             return Demand.objects.get(project = self.project,
