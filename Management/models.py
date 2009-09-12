@@ -1859,7 +1859,7 @@ class Sale(models.Model):
     include_tax = models.BooleanField(ugettext('include_tax'), choices=Boolean, default=1)
     discount = models.FloatField(ugettext('given_discount'), null=True, blank=True)
     allowed_discount = models.FloatField(ugettext('allowed_discount'), null=True, blank=True)
-    def get_maded(self):
+    def get_madad(self):
         return Madad.objects.filter(date__lte=date(s.actual_demand.year, s.actual_demand.month, 15)
                                     ).latest().value
     @property
