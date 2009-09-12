@@ -1130,7 +1130,8 @@ class CZilber(models.Model):
         p = self.projectcommission.project
         d = p.demands.get(year = month.year, month = month.month)
         d.bonus, d.bonus_type, d.var_pay, d.var_pay_type = 0, None, 0, None
-        demand = p.demands.get(year = month.year, month = month.month)
+        demand = d
+        raise AttributeError()
         sales = []
         i=0
         while demand != None and demand.zilber_cycle_index() > 0:
