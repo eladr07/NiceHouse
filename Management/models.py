@@ -1860,7 +1860,7 @@ class Sale(models.Model):
     discount = models.FloatField(ugettext('given_discount'), null=True, blank=True)
     allowed_discount = models.FloatField(ugettext('allowed_discount'), null=True, blank=True)
     def get_madad(self):
-        return Madad.objects.filter(date__lte=date(s.actual_demand.year, s.actual_demand.month, 15)
+        return Madad.objects.filter(date__lte=date(self.actual_demand.year, self.actual_demand.month, 15)
                                     ).latest().value
     @property
     def actual_demand(self):
