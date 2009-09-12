@@ -260,7 +260,7 @@ class MonthDemandWriter:
                  Spacer(0,30)]
         demands = []
         demand = self.demand
-        while demand.zilber_cycle_index() >= 0:
+        while demand.zilber_cycle_index() > 0:
             demand.append(demand)
             demand = demand.get_previous_demand()
             if demand == None:
@@ -307,7 +307,7 @@ class MonthDemandWriter:
         headers.reverse()
         rows = []
         demand = self.demand
-        while demand.zilber_cycle_index() >= 0:
+        while demand.zilber_cycle_index() > 0:
             demand = demand.get_previous_demand()
             if demand == None:
                 break

@@ -27,6 +27,7 @@ def index(request):
             for ds in d.statuses.all():
                 ds.delete()
             d.calc_sales_commission()
+            d.finish()
 
     return render_to_response('Management/index.html',
                               {'locateHouseForm':LocateHouseForm(),
