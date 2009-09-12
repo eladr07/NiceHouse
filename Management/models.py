@@ -1132,7 +1132,7 @@ class CZilber(models.Model):
         d.bonus, d.bonus_type, d.var_pay, d.var_pay_type = 0, None, 0, None
         demand = d
         sales = list(d.get_sales().all())
-        while demand != None and demand.zilber_cycle_index() > 0:
+        while demand != None and demand.zilber_cycle_index() > 1:
             demand = demand.get_previous_demand()
             sales.extend(demand.get_sales())
         base = self.base + self.b_sale_rate * (len(sales) - 1)
@@ -1171,7 +1171,7 @@ class CZilber(models.Model):
                 scd.save()
         if d.include_zilber_bonus():
             demand, bonus = d.get_previous_demand(), 0
-            while demand != None and demand.zilber_cycle_index() > 0:
+            while demand != None and demand.zilber_cycle_index() > 1:
                 for s in demand.get_sales():
                     bonus += s.zdb
                 demand = demand.get_previous_demand()
@@ -1431,7 +1431,7 @@ class Demand(models.Model):
         start = self.project.commissions.c_zilber.third_start
         if (start.year == self.year and start.month > self.month) or self.year < start.year:
             return -1
-        i = 0
+        i = 1
         while start.year != self.year or start.month != self.month:
             start = date(start.month == 12 and start.year + 1 or start.year,
                          start.month == 12 and 1 or start.month + 1, 1)

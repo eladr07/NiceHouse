@@ -285,7 +285,7 @@ class MonthDemandWriter:
                     t.setStyle(saleTableStyle)
                     flows.extend([t, PageBreak(), Spacer(0,70)])
                     rows = []
-            if demand.zilber_cycle_index() == 0:
+            if demand.zilber_cycle_index() == 1:
                 break
             demand = demand.get_previous_demand()
         data = [headers]
@@ -305,7 +305,7 @@ class MonthDemandWriter:
         rows = []
         demand = self.demand
         last_demand_sent = self.demand.get_previous_demand()
-        while demand != None and demand.zilber_cycle_index() > 0:
+        while demand != None and demand.zilber_cycle_index() > 1:
             demand = demand.get_previous_demand()
             total_sales_amount, diff_amount, new_commission, orig_commission, houses = 0, 0, 0, 0, ''
             row = [log2vis('%s/%s' % (demand.month, demand.year))]
