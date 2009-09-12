@@ -22,8 +22,10 @@ def index(request):
                 continue
             d = q[0]
             for s in d.get_sales():
-                for scd in s.commission_details:
+                for scd in s.commission_details.all():
                     scd.delete()
+            for ds in d.statuses.all():
+                ds.delete()
             d.calc_sales_commission()
 
     return render_to_response('Management/index.html',
