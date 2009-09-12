@@ -258,12 +258,6 @@ class MonthDemandWriter:
     def zilberBonusFlows(self):  
         flows = [tableCaption(caption=log2vis(u'נספח ב - דו"ח חסכון בהנחה')),
                  Spacer(0,30)]
-        demands = [self.demand]
-        demand = self.demand.get_previous_demand()
-        while demand != None and demand.zilber_cycle_index() > 0:
-            demands.append(demand)
-            demand = demand.get_previous_demand()
-
         headers = [log2vis(n) for n in [u'מס"ד', u'שם הרוכשים', u'ודירה\nבניין', u'חוזה\nתאריך',
                                         u'חוזה\nמחיר', u'0 דו"ח\nמחירון', u'חדש\nמדד', 
                                         u'60%\nממודד\nמחירון', u'מחיר\nהפרש', u'בהנחה\nחסכון\nשווי',
@@ -271,7 +265,8 @@ class MonthDemandWriter:
         headers.reverse()
         rows = []
         i = 0
-        for d in demands:
+        demand = self.demand
+        while demand != None:
             for s in d.get_sales():
                 i += 1
                 row = ['%s-%s' % (s.actual_demand.id, i), log2vis(s.clients),'%s/%s' % (s.house.building.num, s.house.num), 
@@ -290,6 +285,9 @@ class MonthDemandWriter:
                     t.setStyle(saleTableStyle)
                     flows.extend([t, PageBreak(), Spacer(0,70)])
                     rows = []
+            if demand.zilber_cycle_index() == 0:
+                break
+            demand = demand.get_previous_demand()
         data = [headers]
         data.extend(rows)
         t = Table(data)

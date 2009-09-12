@@ -15,6 +15,7 @@ from mail import mail
 
 @login_required
 def index(request):
+    '''
     for p_id in [10,21]:
         for m in range(1,9):
             q = Demand.objects.filter(project__id = p_id, year = 2009, month=m)
@@ -29,7 +30,7 @@ def index(request):
             d.calc_sales_commission()
             d.finish()
             time.sleep(1)
-
+    '''
     return render_to_response('Management/index.html',
                               {'locateHouseForm':LocateHouseForm(),
                                'nhbranches':NHBranch.objects.all()},
