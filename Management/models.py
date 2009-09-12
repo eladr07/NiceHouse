@@ -1131,7 +1131,7 @@ class CZilber(models.Model):
         d = Demand.objects.get(project = self.projectcommission.project, year = month.year, month = month.month)
         d.bonus, d.bonus_type, d.var_pay, d.var_pay_type = 0, None, 0, None
         demand = d
-        sales = d.get_sales().all()
+        sales = list(d.get_sales().all())
         while demand != None and demand.zilber_cycle_index() > 0:
             demand = demand.get_previous_demand()
             sales.extend(demand.get_sales())
