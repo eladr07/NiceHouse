@@ -255,37 +255,82 @@ class MonthDemandWriter:
         s += log2vis(u'ו. לנוחיותכם, הדרישה מועברת אליכם גם במייל וגם בפקס.')
         return Paragraph(s, ParagraphStyle(name='into', fontName='David', fontSize=14,
                                            alignment=TA_RIGHT, leading=16))
-    def zilberBonusFlows(self):
-        demands = [self.demand]
-        #gathers zilber cycle demands
-        for i in range(1, models.ZILBER_CYCLE - 1):
-            y,m, p = (self.demand.year, self.demand.month, self.demand.project)
-            month = date(m == 1 and y - 1 or y, (m - 1) or 12, 1)
-            demands.append(Demand.objects.get(project = p, year = month.year, month = month.month))
-        demands.reverse()
+    def zilberBonusFlows(self):  
+        flows = [tableCaption(caption=log2vis(u'נספח ב - דו"ח חסכון בהנחה')),
+                 Spacer(0,30)]
+        demands = []
+        demand = self.demand
+        while demand.zilber_cycle_index() >= 0:
+            demand.append(demand)
+            demand = demand.get_previous_demand()
+            if demand == None:
+                break
         headers = [log2vis(n) for n in [u'מס"ד', u'שם הרוכשים', u'ודירה\nבניין', u'חוזה\nתאריך',
-                                        u'חוזה\nמחיר', u'מזומן\nהנחת', u'מפרט\nהוצאות',
-                                        u'עו"ד\nשכ"ט', u'נוספות\nהוצאות', u'לחישוב\nמחיר', 
-                                        u'0 דו"ח\nמחירון', u'חדש\nמדד', u'60%\nממודד\nמחירון']]
+                                        u'חוזה\nמחיר', u'0 דו"ח\nמחירון', u'חדש\nמדד', 
+                                        u'60%\nממודד\nמחירון', u'מחיר\nהפרש', u'בהנחה\nחסכון\nשווי',
+                                        u'הערות']]
         headers.reverse()
         rows = []
+        i = 0
         for d in demands:
             for s in d.get_sales():
-                row = ['%s-%s' % (self.demand.id, i)]
-                row.append(log2vis(s.clients))
-                headers.extend([log2vis(name),'%s/%s' % (s.house.building.num, s.house.num), s.sale_date.strftime('%d/%m/%y'), commaise(s.price)])
-                lawyer_pay = s.price_include_lawyer and (s.price - s.price_no_lawyer) or s.price * 0.015
-                row.extend([None,None,commaise(lawyer_pay), commaise(s.price_final), 
-                            commaise(s.house.building.project.commissions.registration_amount or 0)])
-                row.extend(s.price_final, None, None, None)
-                row.reverse()
+                i += 1
+                row = ['%s-%s' % (s.actual_demand.id, i), log2vis(s.clients),'%s/%s' % (s.house.building.num, s.house.num), 
+                       s.sale_date.strftime('%d/%m/%y'), commaise(s.price)]
+                doh0prices = s.house.versions.filter(type__id = models.PricelistTypeDoh0)
+                if doh0prices.count() > 0:
+                    doh0price = doh0prices.latest().price
+                    memudad = (((d.get_madad() / d.project.commissions.c_zilber.base_madad) - 1) * 0.6 + 1) * doh0price
+                    row.extend()
+                    row.reverse()
                 rows.append(row)
-                
+                if i % 17 == 0:
+                    data = [headers]
+                    data.extend(rows)
+                    t = Table(data)
+                    t.setStyle(saleTableStyle)
+                    flows.extend([t, PageBreak(), Spacer(0,70)])
+                    rows = []
         data = [headers]
         data.extend(rows)
         t = Table(data)
         t.setStyle(saleTableStyle)
-        return [t]
+        flows.append(t)
+        return flows
+    
+    def zilberAddsFlows(self):        
+        flows = [tableCaption(caption=log2vis(u'נספח א - הפרשי קצב מכירות לדרישה')),
+                 Spacer(0,30)]
+        headers = [log2vis(n) for n in [u'דרישה\nחודש', u'בדרישה\nדירות', u'כולל מע"מ\nסה"כ מכירות', 
+                                        u'בדרישה\nעמלה',u'חדשה\nעמלה', u'הפרש\nאחוז', 
+                                        u'בש"ח\nהפרש']]
+        headers.reverse()
+        rows = []
+        demand = self.demand
+        while demand.zilber_cycle_index() >= 0:
+            demand = demand.get_previous_demand()
+            if demand == None:
+                break
+            total_sales_amount, diff_amount, houses = 0, 0, ''
+            row = [log2vis('%s/%s' % (demand.month, demand.year))]
+            for s in demand.get_sales():
+                houses += log2vis('%s/%s %s\n' % (s.house.building.num, s.house.num, 0))
+                new_commission = scd.c_final
+                s.restore = True
+                orig_commission = scd.c_final
+                total_sales_amount += s.price_final
+                diff_amount += s.price_final * (new_commission - orig_commission) / 100
+            row.extend([houses, total_sales_amount, orig_commission, new_commission,
+                        new_commission - orig_commission, diff_amount])
+            row.reverse()
+            rows.append(row)
+        data = [headers]
+        data.extend(rows)
+        t = Table(data)
+        t.setStyle(saleTableStyle)
+        flows.append(t)
+        return flows
+                        
     def signupFlows(self):
         flows = [tableCaption(caption=log2vis(u'להלן תוספות להרשמות מחודשים קודמים')),
                  Spacer(0,30)]

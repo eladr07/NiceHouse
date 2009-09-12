@@ -1130,6 +1130,7 @@ class CZilber(models.Model):
         prev_sales = {}
         p = self.projectcommission.project
         d = p.demands.get(year = month.year, month = month.month)
+        d.bonus, d.bonus_type, d.var_pay, d.var_pay_type = 0, None, 0, None
         qs = self.third_start
         while qs < month:
             t = date(qs.month > 12-ZILBER_CYCLE and qs.year + 1 or qs.year, 
@@ -1154,13 +1155,9 @@ class CZilber(models.Model):
             base = self.b_sale_rate_max
         for s in sales:
             if self.base_madad:
-                current_madad = Madad.objects.filter(date__lte=date(s.demand.year, s.demand.month, 15)
-                                                     ).latest().value
-                if current_madad < self.base_madad:
-                    current_madad = self.base_madad
+                current_madad = s.get_madad() < self.base_madad and self.base_madad or s.get_madad()
                 doh0prices = s.house.versions.filter(type__id = PricelistTypeDoh0)
                 if doh0prices.count() == 0:
-                    s.commission_details.create(commission='c_zilber_discount', value=0)
                     continue
                 memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * doh0prices.latest().price
                 scd = s.commission_details.get_or_create(commission='c_zilber_discount')[0]
@@ -1179,12 +1176,22 @@ class CZilber(models.Model):
             if not prev_sales[m]:
                 continue
             for s in prev_sales[m].all():
+                s.restore = True
                 prev_adds += (base - s.pc_base) * s.price_final / 100
-        d.bonus = prev_adds
-        d.bonus_type = u'תוספת בגין %s עד %s' % (start.strftime('%d/%m/%Y'), 
+        d.var_pay = prev_adds
+        d.var_pay_type = u'תוספת בגין %s עד %s' % (start.strftime('%d/%m/%Y'), 
                                                    date(month.month == 1 and month.year-1 or month.year, 
                                                         month.month == 1 and 12 or month.month, 
                                                         1).strftime('%d/%m/%Y'))
+        if d.include_zilber_bonus():
+            demand, bonus = d, 0
+            while demand.zilber_cycle_index() >= 0:
+                for s in demand.get_sales():
+                    bonus += s.zdb
+                demand = d.get_previous_demand()
+            d.bonus = bonus
+            d.bonus_type = u'בונוס חסכון בהנחה'
+            
         d.save()
     class Meta:
         db_table = 'CZilber'
@@ -1434,6 +1441,21 @@ class Demand(models.Model):
 
     objects = DemandManager()
     
+    def zilber_cycle_index(self):
+        start = self.project.c_zilber.third_start
+        i = 0
+        while start.year != self.year and start.month != self.month:
+            start = date(start.month == 12 and start.year + 1 or start.year,
+                         start.month == 12 and 1 or start.month + 1, 1)
+            i += 1
+        return i % ZILBER_CYCLE
+    def get_previous_demand(self):
+        try:
+            return Demand.objects.get(project = self.project,
+                                      year = self.month == 1 and self.year - 1 or self.year,
+                                      month = self.month == 1 and 12 or self.month - 1)
+        except Demand.DoesNotExist:
+            return None
     def get_affected_sales(self):
         '''
         get sales from last months, affected by this month's calculation,
@@ -1459,18 +1481,7 @@ class Demand(models.Model):
             months[(signup.date.month, signup.date.year)] += 1
         return months
     def include_zilber_bonus(self):
-        c_zilber = self.project.commissions.c_zilber
-        month = date(self.year, self.month, 1)
-        if not c_zilber:
-            return False
-        qs = c_zilber.third_start
-        while qs < date(self.year, self.month, 1):
-            t = date(qs.month > 12-ZILBER_CYCLE and qs.year + 1 or qs.year, 
-                     (qs.month + ZILBER_CYCLE) % 12 or 12, 1)
-            if t > month:
-                break
-            qs = t
-        return qs.month == self.month and qs.year == self.year
+        return self.zilber_cycle_index() == ZILBER_CYCLE
     def get_absolute_url(self):
         return '/demands/%s' % self.id
     def get_salaries(self):
@@ -1848,10 +1859,12 @@ class Sale(models.Model):
     include_tax = models.BooleanField(ugettext('include_tax'), choices=Boolean, default=1)
     discount = models.FloatField(ugettext('given_discount'), null=True, blank=True)
     allowed_discount = models.FloatField(ugettext('allowed_discount'), null=True, blank=True)
+    def get_maded(self):
+        return Madad.objects.filter(date__lte=date(s.actual_demand.year, s.actual_demand.month, 15)
+                                    ).latest().value
     @property
     def actual_demand(self):
-        return Demand.objects.get(month=self.contractor_pay.month,
-                                  year=self.contractor_pay.year,
+        return Demand.objects.get(month=self.contractor_pay.month, year=self.contractor_pay.year,
                                   project=self.demand.project)
     @property
     def project_commission_details(self):
