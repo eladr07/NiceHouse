@@ -1141,9 +1141,10 @@ class CZilber(models.Model):
         prev_adds = 0
         for s in sales:                
             q = s.project_commission_details.filter(commission='final')
-            if q.count() > 0:
+            last_demand_finish_date = d.get_previous_demand().finish_date
+            if q.count() > 0 and last_demand_finish_date:
                 log = ChangeLog.objects.filter(object_type='SaleCommissionDetail', object_id=q[0].id, 
-                                                  attribute='value', date__lte=d.finish_date)
+                                                  attribute='value', date__lte=last_demand_finish_date)
                 pc_base = log.count() > 0 and float(log.latest().new_value) or q[0].value
             else:
                 pc_base = s.pc_base
