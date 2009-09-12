@@ -192,7 +192,7 @@ class MonthDemandWriter:
         affected_sales_count = 0
         for subSales in self.demand.get_affected_sales().values():
             affected_sales_count += subSales.count()
-        base = self.signup_adds and (affected_sales_count + 16)/16 or 0
+        base = self.signup_adds and (affected_sales_count + 17)/17 or 0
         if count <= 9:
             return base + 1
         if count <= 25:
@@ -316,7 +316,7 @@ class MonthDemandWriter:
                                 diff, commaise(diff * s.price_final / 100)])
                 row.reverse()
                 rows.append(row)
-                if i % 18 == 0:
+                if i % 17 == 0:
                     data = [headers]
                     data.extend(rows)
                     t = Table(data)
