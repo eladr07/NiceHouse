@@ -1444,7 +1444,7 @@ class Demand(models.Model):
     def zilber_cycle_index(self):
         start = self.project.commissions.c_zilber.third_start
         i = 0
-        while start.year != self.year and start.month != self.month:
+        while start.year != self.year or start.month != self.month:
             start = date(start.month == 12 and start.year + 1 or start.year,
                          start.month == 12 and 1 or start.month + 1, 1)
             i += 1
