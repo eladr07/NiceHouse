@@ -27,6 +27,7 @@ def index(request):
             for ds in d.statuses.all():
                 ds.delete()
             d.calc_sales_commission()
+            time.sleep(1)
             d.finish()
             time.sleep(1)
 
