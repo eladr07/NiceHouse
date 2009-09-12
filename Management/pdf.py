@@ -514,6 +514,9 @@ class MonthDemandWriter:
             story.append(PageBreak())
         if self.demand.fixed_pay or self.demand.var_pay or self.demand.bonus:
             story.extend([Spacer(0, 20), self.addsPara()])
+        if self.demand.project.is_zilber():
+            story.extend([PageBreak(), Spacer(0,30)])
+            story.extend(self.zilberAddsFlows())
         if self.demand.include_zilber_bonus():
             story.extend([PageBreak(), Spacer(0,30)])
             story.extend(self.zilberBonusFlows())
