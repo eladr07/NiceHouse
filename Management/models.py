@@ -1164,11 +1164,10 @@ class CZilber(models.Model):
         d.var_pay_type = u'הפרשי קצב מכירות'
         if d.include_zilber_bonus():
             demand, bonus = d.get_previous_demand(), 0
-            raise AttributeError()
             while demand != None and demand.zilber_cycle_index() > 0:
                 for s in demand.get_sales():
                     bonus += s.zdb
-                demand = d.get_previous_demand()
+                demand = demand.get_previous_demand()
             d.bonus = bonus
             d.bonus_type = u'בונוס חסכון בהנחה'
             
