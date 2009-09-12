@@ -1140,7 +1140,6 @@ class CZilber(models.Model):
             base = self.b_sale_rate_max
         prev_adds = 0
         for s in sales:
-            s.restore = True
             prev_adds += (base - s.pc_base) * s.price_final / 100
         d.var_pay = prev_adds
         d.var_pay_type = u'הפרשי קצב מכירות'
