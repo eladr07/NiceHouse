@@ -1127,7 +1127,6 @@ class CZilber(models.Model):
         '''
         month is datetime
         '''
-        prev_sales = {}
         p = self.projectcommission.project
         d = p.demands.get(year = month.year, month = month.month)
         d.bonus, d.bonus_type, d.var_pay, d.var_pay_type = 0, None, 0, None
@@ -1158,10 +1157,9 @@ class CZilber(models.Model):
                 scd.value = (s.price - memudad) * self.b_discount
                 scd.save()
         prev_adds = 0
-        for sales in prev_sales:
-            for s in sales.all():
-                s.restore = True
-                prev_adds += (base - s.pc_base) * s.price_final / 100
+        for s in sales:
+            s.restore = True
+            prev_adds += (base - s.pc_base) * s.price_final / 100
         d.var_pay = prev_adds
         d.var_pay_type = u'הפרשי קצב מכירות'
         if d.include_zilber_bonus():
