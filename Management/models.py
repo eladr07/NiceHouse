@@ -1129,6 +1129,7 @@ class CZilber(models.Model):
         '''
         p = self.projectcommission.project
         d = p.demands.get(year = month.year, month = month.month)
+        d = Demand.objects.get(project = p, year = month.year, month = month.month)
         d.bonus, d.bonus_type, d.var_pay, d.var_pay_type = 0, None, 0, None
         demand = d
         sales = []
