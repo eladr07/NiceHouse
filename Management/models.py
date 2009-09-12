@@ -1892,6 +1892,7 @@ class Sale(models.Model):
         return self.restore and finish_date and restore_object(q[0], finish_date).value or q[0].value
     @property
     def c_final(self):
+        if self.restore: raise AttributeError()
         q = self.project_commission_details.filter(commission='final')
         if q.count() == 0: return 0
         finish_date = self.actual_demand.finish_date
