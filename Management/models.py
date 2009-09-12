@@ -1131,29 +1131,23 @@ class CZilber(models.Model):
         p = self.projectcommission.project
         d = p.demands.get(year = month.year, month = month.month)
         d.bonus, d.bonus_type, d.var_pay, d.var_pay_type = 0, None, 0, None
-        qs = self.third_start
-        while qs < month:
-            t = date(qs.month > 12-ZILBER_CYCLE and qs.year + 1 or qs.year, 
-                     (qs.month + ZILBER_CYCLE) % 12 or 12, 1)
-            if t > month:
-                break
-            qs = t
-        start = qs#the start of the current third.
-        #gather all sales from start of third
-        while qs < month:
-            prev_sales[qs] = p.sales(qs.year, qs.month)
-            qs = date(qs.month == 12 and qs.year + 1 or qs.year, 
-                      (qs.month + 1) % 12 or 12, 1)
-        sales = p.sales(month.year, month.month)
-        #calculate comulative sale count for third
-        third_sale_count = sales.count()
-        for m in prev_sales:
-            third_sale_count += prev_sales[m] and prev_sales[m].count() or 0
-        #each sale (over the first) applies sale rate bonus
-        base = self.base + self.b_sale_rate * (third_sale_count - 1)
+        demand = d
+        sales = []
+        while demand != None and demand.zilber_cycle_index() > 0:
+            sales.extend(demand.get_sales())
+            demand = demand.get_previous_demand()
+        base = self.base + self.b_sale_rate * (len(sales) - 1)
         if base > self.b_sale_rate_max:
             base = self.b_sale_rate_max
         for s in sales:
+            scd = s.commission_details.get_or_create(commission='c_zilber_base')[0]
+            scd.value = base
+            scd.save()
+            scd = s.commission_details.get_or_create(commission='final')[0]
+            scd.value = base
+            scd.save()
+            s.price_final = s.project_price()
+            s.save()
             if self.base_madad:
                 current_madad = s.get_madad() < self.base_madad and self.base_madad or s.get_madad()
                 doh0prices = s.house.versions.filter(type__id = PricelistTypeDoh0)
@@ -1163,19 +1157,9 @@ class CZilber(models.Model):
                 scd = s.commission_details.get_or_create(commission='c_zilber_discount')[0]
                 scd.value = (s.price - memudad) * self.b_discount
                 scd.save()
-            scd = s.commission_details.get_or_create(commission='c_zilber_base')[0]
-            scd.value = base
-            scd.save()
-            scd = s.commission_details.get_or_create(commission='final')[0]
-            scd.value = base
-            scd.save()
-            s.price_final = s.project_price()
-            s.save()
         prev_adds = 0
-        for m in prev_sales:
-            if not prev_sales[m]:
-                continue
-            for s in prev_sales[m].all():
+        for sales in prev_sales:
+            for s in sales.all():
                 s.restore = True
                 prev_adds += (base - s.pc_base) * s.price_final / 100
         d.var_pay = prev_adds
