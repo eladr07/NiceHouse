@@ -1130,7 +1130,6 @@ class CZilber(models.Model):
         d = Demand.objects.get(project = self.projectcommission.project, year = month.year, month = month.month)
         d.bonus, d.bonus_type, d.var_pay, d.var_pay_type = 0, None, 0, None
         demand = d
-        raise AttributeError()
         sales = []
         i=0
         while demand != None and demand.zilber_cycle_index() > 0:
@@ -1549,7 +1548,7 @@ class Demand(models.Model):
         self.is_finished = True
         self.save()
     def __unicode__(self):
-        return u'דרישה לתשלום לפרוייקט %s בגיו חודש %s' % (self.project, '%s-%s' % (self.month, self.month))
+        return u'דרישה לתשלום לפרוייקט %s בגיו חודש %s' % (self.project, '%s-%s' % (self.month, self.year))
     class Meta:
         db_table='Demand'
         ordering = ['project']
