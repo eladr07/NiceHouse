@@ -258,9 +258,9 @@ class MonthDemandWriter:
     def zilberBonusFlows(self):  
         flows = [tableCaption(caption=log2vis(u'נספח ב - דו"ח חסכון בהנחה')),
                  Spacer(0,30)]
-        demands = []
-        demand = self.demand
-        while demand.zilber_cycle_index() > 1:
+        demands = [self.demand]
+        demand = self.demand.get_previous_demand()
+        while demand.zilber_cycle_index() > 0:
             demand.append(demand)
             demand = demand.get_previous_demand()
             if demand == None:
@@ -306,8 +306,8 @@ class MonthDemandWriter:
                                         u'בש"ח\nהפרש']]
         headers.reverse()
         rows = []
-        demand = self.demand
-        while demand.zilber_cycle_index() > 1:
+        demand = self.demand.get_previous_demand()
+        while demand.zilber_cycle_index() > 0:
             demand = demand.get_previous_demand()
             if demand == None:
                 break
