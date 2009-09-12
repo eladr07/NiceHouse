@@ -266,6 +266,8 @@ class MonthDemandWriter:
         rows = []
         i = 0
         demand = self.demand
+        base_madad = demand.project.commissions.c_zilber.base_madad
+        current_madad = demand.get_madad() < base_madad and base_madad or demand.get_madad()
         while demand != None:
             for s in demand.get_sales():
                 i += 1
@@ -274,7 +276,7 @@ class MonthDemandWriter:
                 doh0prices = s.house.versions.filter(type__id = models.PricelistTypeDoh0)
                 if doh0prices.count() > 0:
                     doh0price = doh0prices.latest().price
-                    memudad = (((d.get_madad() / d.project.commissions.c_zilber.base_madad) - 1) * 0.6 + 1) * doh0price
+                    memudad = (((current_madad / base_madad) - 1) * 0.6 + 1) * doh0price
                     row.extend()
                     row.reverse()
                 rows.append(row)

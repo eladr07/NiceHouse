@@ -1161,7 +1161,7 @@ class CZilber(models.Model):
             s.price_final = s.project_price()
             s.save()
             if self.base_madad:
-                current_madad = s.get_madad() < self.base_madad and self.base_madad or s.get_madad()
+                current_madad = d.get_madad() < self.base_madad and self.base_madad or d.get_madad()
                 doh0prices = s.house.versions.filter(type__id = PricelistTypeDoh0)
                 if doh0prices.count() == 0:
                     continue
@@ -1427,6 +1427,8 @@ class Demand(models.Model):
 
     objects = DemandManager()
     
+    def get_madad(self):
+        return Madad.objects.filter(date__lte=date(self.year, self.month, 15)).latest().value
     def zilber_cycle_index(self):
         start = self.project.commissions.c_zilber.third_start
         if (start.year == self.year and start.month > self.month) or self.year < start.year:
@@ -1847,9 +1849,6 @@ class Sale(models.Model):
     include_tax = models.BooleanField(ugettext('include_tax'), choices=Boolean, default=1)
     discount = models.FloatField(ugettext('given_discount'), null=True, blank=True)
     allowed_discount = models.FloatField(ugettext('allowed_discount'), null=True, blank=True)
-    def get_madad(self):
-        return Madad.objects.filter(date__lte=date(self.actual_demand.year, self.actual_demand.month, 15)
-                                    ).latest().value
     @property
     def actual_demand(self):
         return Demand.objects.get(month=self.contractor_pay.month, year=self.contractor_pay.year,
