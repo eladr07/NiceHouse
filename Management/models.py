@@ -1139,8 +1139,14 @@ class CZilber(models.Model):
         if base > self.b_sale_rate_max:
             base = self.b_sale_rate_max
         prev_adds = 0
-        for s in sales:
-            prev_adds += (base - s.pc_base) * s.price_final / 100
+        for s in sales:                
+            scd_final = s.project_commission_details.filter(commission='final')[0]
+            log = models.ChangeLog.objects.filter(object_type='SaleCommissionDetail',
+                                                  object_id=scd_final.id, 
+                                                  attribute='value',
+                                                  date__lte=d.finish_date)
+            pc_base = log.count() > 0 and float(log.latest().new_value) or scd_final.value
+            prev_adds += (base - pc_base) * s.price_final / 100
         d.var_pay = prev_adds
         d.var_pay_type = u'הפרשי קצב מכירות'
         for s in sales:

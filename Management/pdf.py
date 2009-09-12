@@ -318,7 +318,7 @@ class MonthDemandWriter:
                 log = models.ChangeLog.objects.filter(object_type='SaleCommissionDetail',
                                                       object_id=scd_final.id, 
                                                       attribute='value',
-                                                      date__gt=last_demand_sent.finish_date)
+                                                      date__lte=last_demand_sent.finish_date)
                 orig_commission = log.count() > 0 and float(log.latest().new_value) or new_commission
                 total_sales_amount += s.price_final
                 diff_amount += s.price_final * (new_commission - orig_commission) / 100
