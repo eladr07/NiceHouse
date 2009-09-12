@@ -188,8 +188,11 @@ class EmployeeListWriter:
 class MonthDemandWriter:
     @property
     def pages_count(self):
-        base = self.signup_adds and 1 or 0
         count = self.demand.get_sales().count()
+        affected_sales_count = 0
+        for subSales in self.demand.get_affected_sales().values():
+            affected_sales_count += subSales.count()
+        base = self.signup_adds and (affected_sales_count + 16)/16 or 0
         if count <= 9:
             return base + 1
         if count <= 25:
@@ -284,13 +287,17 @@ class MonthDemandWriter:
         t.setStyle(saleTableStyle)
         return [t]
     def signupFlows(self):
+        flows = [tableCaption(caption=log2vis(u'להלן תוספות להרשמות מחודשים קודמים')),
+                 Spacer(0,30)]
         headers = [log2vis(n) for n in [u'הרשמה\nתאריך',u'דרישה\nחודש', u'הרוכשים\nשם', u'ודירה\nבניין', 
                                         u'חוזה\nתאריך',u'חוזה\nמחיר', u'ששולמה\nעמלה', 
                                         u'חדשה\nעמלה', u'עמלה\nהפרש', u'בש"ח\nהפרש']]
         headers.reverse()
         rows = []
+        i = 0
         for subSales in self.demand.get_affected_sales().values():
             for s in subSales.all():
+                i += 1
                 singup = s.house.get_signup() 
                 row = [singup.date.strftime('%d/%m/%y'), s.contractor_pay.strftime('%m/%y'), 
                        clientsPara(s.clients), '%s/%s' % (s.house.building.num, s.house.num), 
@@ -309,15 +316,22 @@ class MonthDemandWriter:
                                 diff, commaise(diff * s.price_final / 100)])
                 row.reverse()
                 rows.append(row)
+                if i % 16 == 0:
+                    data = [headers]
+                    data.extend(rows)
+                    t = Table(data)
+                    t.setStyle(saleTableStyle)
+                    flows.append(t)
+                    rows = []
         sum_row = [None,None,None,None,None,None,None,None,None,commaise(self.demand.bonus)]
         sum_row.reverse()
-        rows.append(sum_row)
+        rows.append(sum_row)      
         data = [headers]
         data.extend(rows)
         t = Table(data)
         t.setStyle(saleTableStyle)
-        return [tableCaption(caption=log2vis(u'להלן תוספות להרשמות מחודשים קודמים')),
-                Spacer(0,30), t]
+        flows.append(t)
+        return flows
     def signup_counts_para(self):
         s = log2vis(u'סה"כ הרשמות מצטבר לחישוב עמלה') + '<br/>'
         s += log2vis(u', '.join(u'%s מ - %s/%s' % (count, month[0], month[1]) 
