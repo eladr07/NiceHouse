@@ -308,7 +308,7 @@ class MonthDemandWriter:
         demand = self.demand
         while demand != None and demand.zilber_cycle_index() > 0:
             demand = demand.get_previous_demand()
-            total_sales_amount, diff_amount, houses = 0, 0, ''
+            total_sales_amount, diff_amount, new_commission, orig_commission, houses = 0, 0, 0, 0, ''
             row = [log2vis('%s/%s' % (demand.month, demand.year))]
             for s in demand.get_sales():
                 houses += log2vis('%s/%s %s\n' % (s.house.building.num, s.house.num, 0))
@@ -317,8 +317,8 @@ class MonthDemandWriter:
                 orig_commission = s.c_final
                 total_sales_amount += s.price_final
                 diff_amount += s.price_final * (new_commission - orig_commission) / 100
-            row.extend([houses, total_sales_amount, orig_commission, new_commission,
-                        new_commission - orig_commission, diff_amount])
+            row.extend([houses, commaise(total_sales_amount), orig_commission, new_commission,
+                        new_commission - orig_commission, commaise(diff_amount)])
             row.reverse()
             rows.append(row)
         data = [headers]
