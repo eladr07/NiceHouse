@@ -1138,6 +1138,12 @@ class CZilber(models.Model):
         base = self.base + self.b_sale_rate * (len(sales) - 1)
         if base > self.b_sale_rate_max:
             base = self.b_sale_rate_max
+        prev_adds = 0
+        for s in sales:
+            s.restore = True
+            prev_adds += (base - s.pc_base) * s.price_final / 100
+        d.var_pay = prev_adds
+        d.var_pay_type = u'הפרשי קצב מכירות'
         for s in sales:
             scd = s.commission_details.get_or_create(commission='c_zilber_base')[0]
             scd.value = base
@@ -1156,12 +1162,6 @@ class CZilber(models.Model):
                 scd = s.commission_details.get_or_create(commission='c_zilber_discount')[0]
                 scd.value = (s.price - memudad) * self.b_discount
                 scd.save()
-        prev_adds = 0
-        for s in sales:
-            s.restore = True
-            prev_adds += (base - s.pc_base) * s.price_final / 100
-        d.var_pay = prev_adds
-        d.var_pay_type = u'הפרשי קצב מכירות'
         if d.include_zilber_bonus():
             demand, bonus = d.get_previous_demand(), 0
             while demand != None and demand.zilber_cycle_index() > 0:

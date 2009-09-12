@@ -319,7 +319,7 @@ class MonthDemandWriter:
                                                       object_id=scd_final.id, 
                                                       attribute='value',
                                                       date__lt=last_demand_sent.finish_date)
-                orig_commission = log.count() > 0 and log.latest().new_value or new_commission
+                orig_commission = log.count() > 0 and float(log.latest().new_value) or new_commission
                 total_sales_amount += s.price_final
                 diff_amount += s.price_final * (new_commission - orig_commission) / 100
             row.extend([houses, commaise(total_sales_amount), orig_commission, new_commission,
