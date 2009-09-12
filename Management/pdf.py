@@ -260,11 +260,10 @@ class MonthDemandWriter:
                  Spacer(0,30)]
         demands = [self.demand]
         demand = self.demand.get_previous_demand()
-        while demand.zilber_cycle_index() > 0:
-            demand.append(demand)
+        while demand != None and demand.zilber_cycle_index() > 0:
+            demands.append(demand)
             demand = demand.get_previous_demand()
-            if demand == None:
-                break
+
         headers = [log2vis(n) for n in [u'מס"ד', u'שם הרוכשים', u'ודירה\nבניין', u'חוזה\nתאריך',
                                         u'חוזה\nמחיר', u'0 דו"ח\nמחירון', u'חדש\nמדד', 
                                         u'60%\nממודד\nמחירון', u'מחיר\nהפרש', u'בהנחה\nחסכון\nשווי',
@@ -307,10 +306,7 @@ class MonthDemandWriter:
         headers.reverse()
         rows = []
         demand = self.demand.get_previous_demand()
-        while demand.zilber_cycle_index() > 0:
-            demand = demand.get_previous_demand()
-            if demand == None:
-                break
+        while demand != None and demand.zilber_cycle_index() > 0:
             total_sales_amount, diff_amount, houses = 0, 0, ''
             row = [log2vis('%s/%s' % (demand.month, demand.year))]
             for s in demand.get_sales():
@@ -324,6 +320,7 @@ class MonthDemandWriter:
                         new_commission - orig_commission, diff_amount])
             row.reverse()
             rows.append(row)
+            demand = demand.get_previous_demand()
         data = [headers]
         data.extend(rows)
         t = Table(data)
