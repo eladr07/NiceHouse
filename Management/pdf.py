@@ -317,7 +317,7 @@ class MonthDemandWriter:
                 houses += log2vis('%s/%s %s\n' % (s.house.building.num, s.house.num, 0))
                 new_commission = scd.c_final
                 s.restore = True
-                orig_commission = scd.c_final
+                orig_commission = s.c_final
                 total_sales_amount += s.price_final
                 diff_amount += s.price_final * (new_commission - orig_commission) / 100
             row.extend([houses, total_sales_amount, orig_commission, new_commission,
