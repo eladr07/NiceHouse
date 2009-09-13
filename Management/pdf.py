@@ -307,7 +307,7 @@ class MonthDemandWriter:
         rows = []
         demand = self.demand
         last_demand_sent = self.demand.get_previous_demand()
-        while demand != None and demand.zilber_cycle_index() > 1:
+        while demand != None and demand.zilber_cycle_index() != 1:
             demand = demand.get_previous_demand()
             total_sales_amount, diff_amount, new_commission, orig_commission, houses = 0, 0, 0, 0, ''
             row = [log2vis('%s/%s' % (demand.month, demand.year))]
