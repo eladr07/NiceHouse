@@ -682,6 +682,23 @@ class NHSaleCommissionDetail(models.Model):
     class Meta:
         db_table = 'NHSaleCommissionDetail'
 
+class NHEmployeeSalaryStatusType(models.Model):
+    Approved, SentBookkeeping, SentChecks = 1, 2, 3
+    name = models.CharField(max_length=20)
+    def __unicode__(self):
+        return unicode(self.name)
+    class Meta:
+        db_table='NHEmployeeSalaryStatusType'
+        
+class NHEmployeeSalaryStatus(models.Model):
+    nhemployeesalary = models.ForeignKey('NHEmployeeSalary', related_name='statuses')
+    type = models.ForeignKey('NHEmployeeSalaryStatusType')
+    date = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        db_table='NHEmployeeSalaryStatus'
+        ordering = ['date']
+        get_latest_by = 'date'
+
 class NHEmployeeSalary(models.Model):
     nhemployee = models.ForeignKey('NHEmployee', verbose_name=ugettext('nhemployee'), related_name='salaries')
     month = models.PositiveSmallIntegerField(ugettext('month'), editable=False, choices=((i,i) for i in range(1,13)))
@@ -697,9 +714,13 @@ class NHEmployeeSalary(models.Model):
     refund_type = models.CharField(ugettext('refund_type'), max_length=20, null=True, blank=True)
     deduction = models.SmallIntegerField(ugettext('deduction'), null=True, blank=True)
     deduction_type = models.CharField(ugettext('deduction_type'), max_length=20, null=True, blank=True)
-    approved = models.BooleanField(editable=False)
-    is_sent = models.BooleanField(editable=False)
     remarks = models.TextField(ugettext('remarks'),null=True, blank=True)
+    def approve(self):
+        return self.statuses.create(type__id = NHEmployeeSalaryStatusType.Approved)
+    def send_to_checks(self):
+        return self.statuses.create(type__id = NHEmployeeSalaryStatusType.SentChecks)
+    def send_to_bookkeeping(self):
+        return self.statuses.create(type__id = NHEmployeeSalaryStatusType.SentBookkeeping)
     @property
     def loan_pay(self):
         amount = 0
@@ -824,7 +845,9 @@ class EmployeeSalary(models.Model):
     approved = models.BooleanField(editable=False)
     is_sent = models.BooleanField(editable=False)
     remarks = models.TextField(ugettext('remarks'),null=True, blank=True)
-        
+    
+    def approve(self):
+        self.approved = True
     @property
     def sales(self):
         sales = {}
@@ -2002,7 +2025,7 @@ class ChangeLog(models.Model):
 tracked_models = [BDiscountSave, BDiscountSavePrecentage, BHouseType, BSaleRate,
                   CAmount, CByPrice, CPrecentage, CPriceAmount, CVar,
                   CVarPrecentage, CVarPrecentageFixed, CZilber, EmploymentTerms,
-                  ProjectCommission, SaleCommissionDetail]
+                  ProjectCommission, SaleCommissionDetail, EmployeeSalary, NHEmployeeSalary]
 
 def restore_object(instance, date):
     model = instance.__class__

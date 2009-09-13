@@ -10,7 +10,7 @@ from django.core import serializers
 from django.views.generic.create_update import create_object, update_object
 from django.views.generic.list_detail import object_list 
 from django.contrib.auth.decorators import login_required, permission_required
-from pdf import MonthDemandWriter, MonthProjectsWriter, EmployeeListWriter, EmployeeSalariesWriter
+from pdf import MonthDemandWriter, MonthProjectsWriter, EmployeeListWriter, EmployeeSalariesWriter, NHEmployeeSalariesWriter
 from mail import mail
 
 @login_required
@@ -313,13 +313,24 @@ def demand_old_list(request, year=demand_month().year, month=demand_month().mont
                                 'unhandled_projects':unhandled_projects},
                               context_instance=RequestContext(request))
 
-def nhemployee_salary_pdf(request, year, month):
-    return HttpRespone('ERROR')
+def nhemployee_salary_pdf(request, nhbranch_id, year, month):
+    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    
+    response = HttpResponse(mimetype='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=' + filename
+    p = open(filename,'w+')
+    p.flush()
+    p.close()
+    NHEmployeeSalariesWriter(NHMonth.objects.get(nhbranch__id = nhbranch_id, year = year, month=month)).build(filename)
+    p = open(filename,'r')
+    response.write(p.read())
+    p.close()
+    return response 
 
 @permission_required('Management.change_employeesalary')
 def employee_salary_approve(request, model, id):
     es = model.objects.get(pk=id)
-    es.approved = True
+    es.approve()
     es.save()
     return HttpResponse('ok')
 

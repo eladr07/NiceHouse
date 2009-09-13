@@ -606,9 +606,7 @@ class EmployeeSalariesWriter:
         for es in self.salaries.all():
             terms = es.employee.employment_terms
             row = [log2vis(unicode(es.employee)), 
-                   log2vis(u'%s - %s' % 
-                           (terms.hire_type.name,
-                            terms.salary_net and u'נטו' or u'ברוטו')), 
+                   log2vis(u'%s - %s' % (terms.hire_type.name, terms.salary_net and u'נטו' or u'ברוטו')), 
                    commaise(es.total_amount), commaise(es.check_amount),
                    commaise(es.refund or 0), es.bruto_amount and commaise(es.bruto_amount),
                    None, log2vis(es.remarks or '')]
@@ -631,6 +629,64 @@ class EmployeeSalariesWriter:
         doc = SimpleDocTemplate(filename)
         story = [Spacer(0,50)]
         title = u'שכר עבודה למנהלי פרויקטים לחודש %s\%s' % (self.year, self.month)
+        story.append(titlePara(title))
+        story.append(Spacer(0, 10))
+        story.extend(self.salariesFlows())
+        doc.build(story, self.addTemplate, self.addTemplate)
+        return doc.canv
+
+class NHEmployeeSalariesWriter:
+    def __init__(self, nhmonth):
+        self.year, self.month, self.nhbranch = (nhmonth.year, nhmonth.month, nhmonth.nhbranch)
+        self.salaries = models.NHEmployeeSalary.objects.filter(year = year, month = month, nhemployee__nhbranch = nhmonth.nhbranch)
+    @property
+    def pages_count(self):
+        return self.salaries.count() / 28 + 1
+    def addTemplate(self, canv, doc):
+        frame2 = Frame(0, 680, 650, 150)
+        frame2.addFromList([nhLogo(), datePara()], canv)
+        frame3 = Frame(50, 20, 150, 40)
+        frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
+                            ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
+        frame4 = Frame(50, 30, 500, 70)
+        frame4.addFromList([nhAddr()], canv)
+        self.current_page += 1
+    def salariesFlows(self):
+        flows = []
+        headers = [log2vis(u'העובד\nשם'), log2vis(u'סטטוס'), log2vis(u'התלוש\nסכום'),
+                   log2vis(u'הצק\nסכום'), log2vis(u'לעובד\nהוצאות\nהחזר'), log2vis(u'מנה"ח\nלחישוב\nברוטו'),
+                   log2vis(u'לנטו\nמחושב\nברוטו'), log2vis(u'הערות')]
+        headers.reverse()
+        colWidths = [None,None,None,None,None,None,None,None]
+        colWidths.reverse()
+        rows = []
+        i = 0
+        for es in self.salaries.all():
+            terms = es.employee.employment_terms
+            row = [log2vis(unicode(es.employee)), 
+                   log2vis(u'%s - %s' % (terms.hire_type.name, terms.salary_net and u'נטו' or u'ברוטו')), 
+                   commaise(es.total_amount), commaise(es.check_amount),
+                   commaise(es.refund or 0), es.bruto_amount and commaise(es.bruto_amount),
+                   None, log2vis(es.remarks or '')]
+            row.reverse()
+            rows.append(row)
+            i += 1
+            if i % 27 == 0 or i == self.salaries.count():
+                data = [headers]
+                data.extend(rows)
+                t = Table(data, colWidths)
+                t.setStyle(saleTableStyle)
+                flows.append(t)
+                if i < self.salaries.count():
+                    flows.extend([PageBreak(), Spacer(0, 50)])
+                rows = []
+
+        return flows
+    def build(self, filename):
+        self.current_page = 1
+        doc = SimpleDocTemplate(filename)
+        story = [Spacer(0,50)]
+        title = u'שכר עבודה לסניף %s לחודש %s\%s' % (self.nhbrnach, self.year, self.month)
         story.append(titlePara(title))
         story.append(Spacer(0, 10))
         story.extend(self.salariesFlows())

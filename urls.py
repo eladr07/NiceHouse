@@ -333,7 +333,7 @@ urlpatterns = patterns('',
     
     (r'^nhemployeesalaries/$', 'Management.views.nhemployee_salary_list'),
     (r'^nhemployeesalaries/(?P<year>\d+)/(?P<month>\d+)$', 'Management.views.nhemployee_salary_list'),
-    (r'^nhemployeesalaries/(?P<year>\d+)/(?P<month>\d+)/pdf$', 'Management.views.nhemployee_salary_pdf'),
+    (r'^nhemployeesalaries/(?P<nhbranch_id>\d+)/(?P<year>\d+)/(?P<month>\d+)/pdf$', 'Management.views.nhemployee_salary_pdf'),
     (r'^nhemployeesalaries/(?P<object_id>\d+)$', 'Management.views.limited_update_object',
          {'model' : Management.models.NHEmployeeSalary,
           'template_name' : 'Management/nhemployee_salary_edit.html',
