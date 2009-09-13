@@ -15,7 +15,7 @@ from mail import mail
 
 @login_required
 def index(request):
-    '''
+    
     for p_id in [10,21]:
         for m in range(1,9):
             q = Demand.objects.filter(project__id = p_id, year = 2009, month=m)
@@ -29,7 +29,7 @@ def index(request):
                 ds.delete()
             d.calc_sales_commission()
             d.finish()
-    '''
+    
     return render_to_response('Management/index.html',
                               {'locateHouseForm':LocateHouseForm(),
                                'nhbranches':NHBranch.objects.all()},
@@ -508,7 +508,7 @@ def nhmonth_sales(request, nhbranch_id, year=None, month=None):
     return render_to_response('Management/nhmonth_sales.html', 
                               { 'nhmonth':nhm, 'filterForm':form, 'total_net_income':total_net_income,
                                'employees':employees, 'multi_total':multi_total,
-                               'signed_avg':signed_avg/count,'actual_avg':actual_avg/count },
+                               'signed_avg':count > 0 and signed_avg/count or 0,'actual_avg':count>0 and actual_avg/count or 0 },
                               context_instance=RequestContext(request))
 
 @permission_required('Management.change_nhmonth')
