@@ -1162,7 +1162,7 @@ class CZilber(models.Model):
             last_demand_finish_date = d.get_previous_demand().finish_date
             if q.count() > 0 and last_demand_finish_date:
                 log = ChangeLog.objects.filter(object_type='SaleCommissionDetail', object_id=q[0].id, 
-                                               attribute='value', date__lte=last_demand_finish_date)
+                                               attribute='value', date__lt=last_demand_finish_date)
                 pc_base = log.count() > 0 and float(log.latest().new_value) or q[0].value
             else:
                 pc_base = s.pc_base
@@ -1185,7 +1185,7 @@ class CZilber(models.Model):
                     continue
                 memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * doh0prices.latest().price
                 scd = s.commission_details.get_or_create(commission='c_zilber_discount')[0]
-                scd.value = s.price < memudad and 0 or (s.price - memudad) * self.b_discount / 100
+                scd.value = s.price > memudad and (s.price - memudad) * self.b_discount / 100 or 0
                 scd.save()
         if d.include_zilber_bonus():
             demand, bonus = d, 0
