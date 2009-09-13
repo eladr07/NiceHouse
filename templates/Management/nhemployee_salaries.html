@@ -103,7 +103,7 @@
 {% for branch in branch_list %}
 	<div class="someIcon" style="width:100px;">
 		<img src="/site_media/images/print-48.png" width="20" height="20"  alt="שינוי" /> 
-		<a href="/nhemployeesalaries/{{branch.id}}/{{month.year}}/{{month.month}}/pdf" >גרסת הדפסה</a>
+		<a href="/nhemployeesalaries/{{branch.grouper.id}}/{{month.year}}/{{month.month}}/pdf" >גרסת הדפסה</a>
 	</div>
 	<div class="clearBoth"></div>
 	<table id="salaryTable" class="dataTable" border="1">
