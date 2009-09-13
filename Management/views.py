@@ -29,7 +29,7 @@ def index(request):
                 ds.delete()
             d.calc_sales_commission()
             d.finish()
-    
+            time.sleep(1)
     return render_to_response('Management/index.html',
                               {'locateHouseForm':LocateHouseForm(),
                                'nhbranches':NHBranch.objects.all()},
