@@ -317,8 +317,6 @@ def nhemployee_salary_send(request, nhbranch_id, year, month):
     nhm = NHMonth.objects.get(nhbranch__id = nhbranch_id, year = year, month = month)
     filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
     
-    response = HttpResponse(mimetype='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=' + filename
     p = open(filename,'w+')
     p.flush()
     p.close()
@@ -331,8 +329,6 @@ def nhemployee_salary_send(request, nhbranch_id, year, month):
 
     filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
     
-    response = HttpResponse(mimetype='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=' + filename
     p = open(filename,'w+')
     p.flush()
     p.close()
