@@ -30,6 +30,7 @@ def index(request):
             d.calc_sales_commission()
             d = Demand.objects.get(project__id = p_id, year = 2009, month=m)
             d.finish()
+            time.sleep(1)
     return render_to_response('Management/index.html',
                               {'locateHouseForm':LocateHouseForm(),
                                'nhbranches':NHBranch.objects.all()},
