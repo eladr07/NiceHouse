@@ -638,7 +638,8 @@ class EmployeeSalariesWriter:
 class NHEmployeeSalariesWriter:
     def __init__(self, nhmonth):
         self.year, self.month, self.nhbranch = (nhmonth.year, nhmonth.month, nhmonth.nhbranch)
-        self.salaries = models.NHEmployeeSalary.objects.filter(year = year, month = month, nhemployee__nhbranch = nhmonth.nhbranch)
+        self.salaries = models.NHEmployeeSalary.objects.filter(year = self.year, month = self.month, 
+                                                               nhemployee__nhbranch = self.nhbranch)
     @property
     def pages_count(self):
         return self.salaries.count() / 28 + 1
