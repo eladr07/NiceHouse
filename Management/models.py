@@ -1150,7 +1150,7 @@ class CZilber(models.Model):
         d.bonus, d.bonus_type, d.var_pay, d.var_pay_type = 0, None, 0, None
         demand = d
         sales = list(d.get_sales().all())
-        while demand != None and demand.zilber_cycle_index() > 1:
+        while demand != None and demand.zilber_cycle_index() != 1:
             demand = demand.get_previous_demand()
             sales.extend(demand.get_sales())
         base = self.base + self.b_sale_rate * (len(sales) - 1)
@@ -1185,11 +1185,11 @@ class CZilber(models.Model):
                     continue
                 memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * doh0prices.latest().price
                 scd = s.commission_details.get_or_create(commission='c_zilber_discount')[0]
-                scd.value = (s.price - memudad) * self.b_discount
+                scd.value = (s.price - memudad) * self.b_discount / 100
                 scd.save()
         if d.include_zilber_bonus():
             demand, bonus = d, 0
-            while demand != None and demand.zilber_cycle_index() >= 1:
+            while demand != None and demand.zilber_cycle_index() != 1:
                 for s in demand.get_sales():
                     bonus += s.zdb
                 demand = demand.get_previous_demand()
