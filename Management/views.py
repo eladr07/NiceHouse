@@ -322,8 +322,8 @@ def nhemployee_salary_send(request, nhbranch_id, year, month):
     p = open(filename,'w+')
     p.flush()
     p.close()
-    NHEmployeeSalariesWriter(NHMonth.objects.get(nhbranch__id = int(nhbranch_id), year = int(year), month=int(month),
-                                                 bookkeeping=True)).build(filename)
+    NHEmployeeSalariesWriter(NHMonth.objects.get(nhbranch__id = int(nhbranch_id), year = int(year), month=int(month)),
+                                                 bookkeeping=True).build(filename)
     p = open(filename,'r')
     p.close()
 
@@ -336,8 +336,8 @@ def nhemployee_salary_send(request, nhbranch_id, year, month):
     p = open(filename,'w+')
     p.flush()
     p.close()
-    NHEmployeeSalariesWriter(NHMonth.objects.get(nhbranch__id = int(nhbranch_id), year = int(year), month=int(month),
-                                                 bookkeeping=False)).build(filename)
+    NHEmployeeSalariesWriter(NHMonth.objects.get(nhbranch__id = int(nhbranch_id), year = int(year), month=int(month)),
+                                                 bookkeeping=False).build(filename)
     p = open(filename,'r')
     p.close()
 
