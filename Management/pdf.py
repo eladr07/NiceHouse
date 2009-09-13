@@ -519,9 +519,9 @@ class MonthDemandWriter:
         if self.demand.project.is_zilber():
             story.extend([PageBreak(), Spacer(0,30)])
             story.extend(self.zilberAddsFlows())
-        if self.demand.include_zilber_bonus():
-            story.extend([PageBreak(), Spacer(0,30)])
-            story.extend(self.zilberBonusFlows())
+            if self.demand.include_zilber_bonus():
+                story.extend([PageBreak(), Spacer(0,30)])
+                story.extend(self.zilberBonusFlows())
         story.extend([Spacer(0, 20), self.remarkPara()]) 
         if self.signup_adds:
             story.extend([PageBreak(), Spacer(0,30), titlePara(u'נספח א')])
