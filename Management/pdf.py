@@ -300,7 +300,7 @@ class MonthDemandWriter:
     def zilberAddsFlows(self):        
         flows = [tableCaption(caption=log2vis(u'נספח א - הפרשי קצב מכירות לדרישה')),
                  Spacer(0,30)]
-        headers = [log2vis(n) for n in [u'דרישה\nחודש', u'שם הרוכשים', u'ודירה\nבניין',u'מכירה\nתאריך', u'חוזה\nמחיר'
+        headers = [log2vis(n) for n in [u'דרישה\nחודש', u'שם הרוכשים', u'ודירה\nבניין',u'מכירה\nתאריך', u'חוזה\nמחיר',
                                         u'בדרישה\nעמלה',u'חדשה\nעמלה', u'הפרש\nאחוז', u'בש"ח\nהפרש']]
         
         headers.reverse()
@@ -311,7 +311,6 @@ class MonthDemandWriter:
         while demand != None and demand.zilber_cycle_index() != 1:
             demand = demand.get_previous_demand()
             for s in demand.get_sales():
-                i += 1
                 row = [log2vis('%s/%s' % (demand.month, demand.year)), clientsPara(s.clients), 
                                '%s/%s' % (s.house.building.num, s.house.num), s.sale_date.strftime('%d/%m/%y'), 
                                commaise(s.price)]
@@ -322,6 +321,9 @@ class MonthDemandWriter:
                                                       attribute='value',
                                                       date__lte=last_demand_sent.finish_date)
                 orig_commission = log.count() > 0 and float(log.latest().new_value) or new_commission
+                if orig_commission == new_commission:
+                    continue
+                i += 1
                 diff_amount = s.price_final * (new_commission - orig_commission) / 100
                 row.extend([orig_commission, new_commission, new_commission - orig_commission, commaise(diff_amount)])
                 row.reverse()
