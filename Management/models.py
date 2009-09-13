@@ -682,51 +682,9 @@ class NHSaleCommissionDetail(models.Model):
     class Meta:
         db_table = 'NHSaleCommissionDetail'
 
-class NHEmployeeSalaryStatusType(models.Model):
-    Approved, SentBookkeeping, SentChecks = 1, 2, 3
-    name = models.CharField(max_length=20)
-    def __unicode__(self):
-        return unicode(self.name)
-    class Meta:
-        db_table='NHEmployeeSalaryStatusType'
-        
-class NHEmployeeSalaryStatus(models.Model):
-    nhemployeesalary = models.ForeignKey('NHEmployeeSalary', related_name='statuses')
-    type = models.ForeignKey('NHEmployeeSalaryStatusType')
-    date = models.DateTimeField(auto_now_add=True)
-    class Meta:
-        db_table='NHEmployeeSalaryStatus'
-        ordering = ['date']
-        get_latest_by = 'date'
 
-class NHEmployeeSalary(models.Model):
-    nhemployee = models.ForeignKey('NHEmployee', verbose_name=ugettext('nhemployee'), related_name='salaries')
-    month = models.PositiveSmallIntegerField(ugettext('month'), editable=False, choices=((i,i) for i in range(1,13)))
-    year = models.PositiveSmallIntegerField(ugettext('year'), editable=False, choices=((i,i) for i in range(datetime.now().year - 10,
-                                                                                             datetime.now().year + 10)))
-    base = models.IntegerField(ugettext('salary_base'), null=True)
-    commissions = models.IntegerField(ugettext('commissions'), editable=False, null=True)
+class NHEmployeeSalary(EmployeeSalaryBase):
     admin_commission = models.IntegerField(editable=False, null=True)
-    safety_net = models.PositiveSmallIntegerField(ugettext('safety_net'), null=True, blank=True)
-    var_pay = models.SmallIntegerField(ugettext('var_pay'), null=True, blank=True)
-    var_pay_type = models.CharField(ugettext('var_pay_type'), max_length=20, null=True, blank=True)
-    refund = models.SmallIntegerField(ugettext('refund'), null=True, blank=True)
-    refund_type = models.CharField(ugettext('refund_type'), max_length=20, null=True, blank=True)
-    deduction = models.SmallIntegerField(ugettext('deduction'), null=True, blank=True)
-    deduction_type = models.CharField(ugettext('deduction_type'), max_length=20, null=True, blank=True)
-    remarks = models.TextField(ugettext('remarks'),null=True, blank=True)
-    def approve(self):
-        return self.statuses.create(type__id = NHEmployeeSalaryStatusType.Approved)
-    def send_to_checks(self):
-        return self.statuses.create(type__id = NHEmployeeSalaryStatusType.SentChecks)
-    def send_to_bookkeeping(self):
-        return self.statuses.create(type__id = NHEmployeeSalaryStatusType.SentBookkeeping)
-    @property
-    def loan_pay(self):
-        amount = 0
-        for lp in self.nhemployee.loan_pays.filter(date__year = self.year, date__month = self.month):
-            amount += lp.amount
-        return amount
     @property
     def total_amount(self):
         return self.base + self.commissions + self.admin_commission + (self.var_pay or 0) + \
@@ -773,7 +731,6 @@ class NHEmployeeSalary(models.Model):
             self.admin_commission += self.nhemployee.nhcbranchincome.calc(nhmonth)
     class Meta:
         db_table='NHEmployeeSalary'
-        unique_together = ('nhemployee','year','month')
         
 class AdvancePayment(models.Model):
     employee = models.ForeignKey('Employee', related_name = 'advance_payments', verbose_name=ugettext('employee'))
@@ -828,8 +785,27 @@ class SaleCommissionDetail(models.Model):
         db_table = 'SaleCommissionDetail'
         ordering=['commission','value']
 
-class EmployeeSalary(models.Model):
-    employee = models.ForeignKey('Employee', verbose_name=ugettext('employee'), related_name='salaries')
+class EmployeeSalaryBaseStatusType(models.Model):
+    Approved, SentBookkeeping, SentChecks = 1, 2, 3
+    name = models.CharField(max_length=20)
+    def __unicode__(self):
+        return unicode(self.name)
+    class Meta:
+        db_table='EmployeeSalaryBaseStatusType'
+        
+class EmployeeSalaryBaseStatus(models.Model):
+    employeesalarybase = models.ForeignKey('EmployeeSalaryBase', related_name='statuses')
+    type = models.ForeignKey('NHEmployeeSalaryStatusType')
+    date = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        db_table='EmployeeSalaryBaseStatus'
+        ordering = ['date']
+        get_latest_by = 'date'
+        
+class EmployeeSalaryBase(models.Model):
+    employee = models.ForeignKey('Employee', verbose_name=ugettext('employee'), related_name='salaries', null=True, blank=True)
+    nhemployee = models.ForeignKey('NHEmployee', verbose_name=ugettext('nhemployee'), related_name='salaries', null=True, blank=True)
+    
     month = models.PositiveSmallIntegerField(ugettext('month'), editable=False, choices=((i,i) for i in range(1,13)))
     year = models.PositiveSmallIntegerField(ugettext('year'), editable=False, choices=((i,i) for i in range(datetime.now().year - 10,
                                                                                              datetime.now().year + 10)))
@@ -842,12 +818,27 @@ class EmployeeSalary(models.Model):
     refund_type = models.CharField(ugettext('refund_type'), max_length=20, null=True, blank=True)
     deduction = models.SmallIntegerField(ugettext('deduction'), null=True, blank=True)
     deduction_type = models.CharField(ugettext('deduction_type'), max_length=20, null=True, blank=True)
-    approved = models.BooleanField(editable=False)
-    is_sent = models.BooleanField(editable=False)
     remarks = models.TextField(ugettext('remarks'),null=True, blank=True)
     
     def approve(self):
-        self.approved = True
+        return self.statuses.create(type__id = NHEmployeeSalaryStatusType.Approved)
+    def send_to_checks(self):
+        return self.statuses.create(type__id = NHEmployeeSalaryStatusType.SentChecks)
+    def send_to_bookkeeping(self):
+        return self.statuses.create(type__id = NHEmployeeSalaryStatusType.SentBookkeeping)
+    @property
+    def loan_pay(self):
+        amount = 0
+        for lp in self.get_employee().loan_pays.filter(date__year = self.year, date__month = self.month):
+            amount += lp.amount
+        return amount
+    def get_employee(self):
+        return self.employee or self.nhemployee
+    class Meta:
+        db_table = 'EmployeeSalaryBase'
+        unique_together = ('employee', 'nhemployee','year','month')
+
+class EmployeeSalary(EmployeeSalaryBase):
     @property
     def sales(self):
         sales = {}
@@ -872,12 +863,6 @@ class EmployeeSalary(models.Model):
             if v:
                 i+=v.count()
         return i
-    @property
-    def loan_pay(self):
-        amount = 0
-        for lp in self.employee.loan_pays.filter(date__year = self.year, date__month = self.month):
-            amount += lp.amount
-        return amount
     @property
     def total_amount(self):
         return self.base + self.commissions + (self.var_pay or 0) + (self.safety_net or 0) - (self.deduction or 0)
@@ -909,8 +894,7 @@ class EmployeeSalary(models.Model):
     def get_absolute_url(self):
         return '/employeesalaries/%s' % self.id
     class Meta:
-        db_table='EmployeeSalary'
-        unique_together = ('employee','year','month')
+        proxy = True
     
 class EPCommission(models.Model):
     employee = models.ForeignKey('Employee', related_name='commissions')
