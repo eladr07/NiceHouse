@@ -1156,19 +1156,6 @@ class CZilber(models.Model):
         base = self.base + self.b_sale_rate * (len(sales) - 1)
         if base > self.b_sale_rate_max:
             base = self.b_sale_rate_max
-        prev_adds = 0
-        for s in sales:                
-            q = s.project_commission_details.filter(commission='final')
-            last_demand_finish_date = d.get_previous_demand().finish_date
-            if q.count() > 0 and last_demand_finish_date:
-                log = ChangeLog.objects.filter(object_type='SaleCommissionDetail', object_id=q[0].id, 
-                                               attribute='value', date__lte=last_demand_finish_date)
-                pc_base = log.count() > 0 and float(log.latest().new_value) or q[0].value
-            else:
-                pc_base = s.pc_base
-            prev_adds += (base - pc_base) * s.project_price() / 100
-        d.var_pay = prev_adds
-        d.var_pay_type = u'הפרשי קצב מכירות'
         for s in sales:
             scd = s.commission_details.get_or_create(commission='c_zilber_base')[0]
             scd.value = base
@@ -1187,6 +1174,19 @@ class CZilber(models.Model):
                 scd = s.commission_details.get_or_create(commission='c_zilber_discount')[0]
                 scd.value = s.price > memudad and (s.price - memudad) * self.b_discount / 100 or 0
                 scd.save()
+        prev_adds = 0
+        for s in sales:
+            q = s.project_commission_details.filter(commission='final')
+            last_demand_finish_date = d.get_previous_demand().finish_date
+            if q.count() > 0 and last_demand_finish_date:
+                log = ChangeLog.objects.filter(object_type='SaleCommissionDetail', object_id=q[0].id, 
+                                               attribute='value', date__lte=last_demand_finish_date)
+                pc_base = log.count() > 0 and float(log.latest().new_value) or q[0].value
+            else:
+                pc_base = s.pc_base
+            prev_adds += (base - pc_base) * s.project_price() / 100
+        d.var_pay = prev_adds
+        d.var_pay_type = u'הפרשי קצב מכירות'
         if d.include_zilber_bonus():
             demand, bonus = d, 0
             while demand != None:
