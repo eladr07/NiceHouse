@@ -28,6 +28,7 @@ def index(request):
             for ds in d.statuses.all():
                 ds.delete()
             d.calc_sales_commission()
+            d = Demand.objects.get(project__id = p_id, year = 2009, month=m)
             d.finish()
     return render_to_response('Management/index.html',
                               {'locateHouseForm':LocateHouseForm(),

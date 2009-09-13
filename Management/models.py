@@ -1148,7 +1148,6 @@ class CZilber(models.Model):
         '''
         d = Demand.objects.get(project = self.projectcommission.project, year = month.year, month = month.month)
         d.bonus, d.bonus_type, d.var_pay, d.var_pay_type = 0, None, 0, None
-        d.save()
         demand = d
         sales = list(d.get_sales().all())
         while demand != None and demand.zilber_cycle_index() != 1:
@@ -1196,7 +1195,7 @@ class CZilber(models.Model):
                 if demand.zilber_cycle_index() == 1:
                     break
                 demand = demand.get_previous_demand()
-            d.bonus = int(bonus)
+            d.bonus = bonus
             d.bonus_type = u'בונוס חסכון בהנחה'
         d.save()
     class Meta:
