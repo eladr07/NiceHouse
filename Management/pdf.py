@@ -663,8 +663,8 @@ class NHEmployeeSalariesWriter:
         rows = []
         i = 0
         for es in self.salaries.all():
-            terms = es.employee.employment_terms
-            row = [log2vis(unicode(es.employee)), 
+            terms = es.nhemployee.employment_terms
+            row = [log2vis(unicode(es.nhemployee)), 
                    log2vis(u'%s - %s' % (terms.hire_type.name, terms.salary_net and u'נטו' or u'ברוטו')), 
                    commaise(es.total_amount), commaise(es.check_amount),
                    commaise(es.refund or 0), es.bruto_amount and commaise(es.bruto_amount),
