@@ -1752,6 +1752,8 @@ class NHMonth(models.Model):
                                             choices=((i,i) for i in range(datetime.now().year - 10,
                                                                           datetime.now().year + 10)))
     is_closed = models.BooleanField(editable=False, default=False)
+    def close(self):
+        self.is_closed = True
     def tax(self):
         return Tax.objects.filter(date__lte = date(self.year, self.month, 1)).latest().value
     class Meta:
