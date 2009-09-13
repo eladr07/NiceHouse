@@ -1185,7 +1185,10 @@ class CZilber(models.Model):
                     continue
                 memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * doh0prices.latest().price
                 scd = s.commission_details.get_or_create(commission='c_zilber_discount')[0]
-                scd.value = (s.price - memudad) * self.b_discount / 100
+                if s.price < memudad:
+                    scd.value = 0
+                else:
+                    scd.value = (s.price - memudad) * self.b_discount / 100
                 scd.save()
         if d.include_zilber_bonus():
             demand, bonus = d, 0
