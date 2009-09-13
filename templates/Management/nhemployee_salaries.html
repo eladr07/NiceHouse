@@ -135,7 +135,7 @@
 		{% else %}
 		<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.nhemployee.id}}>
 		{% endif %}
-			<td><a href="/nhemployees/{{s.nhemployee.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
+			<td><a href="/nhemployees/{{s.nhemployee.id}}" target="_blank"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
 			<td>{{ s.nhemployee }}</td>
 			<td>{{s.nhemployee.employment_terms.hire_type}}</td>
 			<td><a class="fancybox" href="/nhemployee/{{s.nhemployee.id}}/sales/{{month.year}}/{{month.month}}">{{ s.sales_count }}</a></td>

@@ -655,7 +655,7 @@ class NHEmployeeSalariesWriter:
         self.current_page += 1
     def salariesFlows(self):
         flows = []
-        headers = [log2vis(n) for n in [u'העובד\nשם', u'סטטוס', u'הצק\nסכום']]
+        headers = [log2vis(n) for n in [u'מס"ד', u'העובד\nשם', u'סטטוס', u'הצק\nסכום']]
         if self.bookkeeping:
             headers.extend([log2vis(n) for n in [u'התלוש\nסכום', u'לעובד\nהוצאות\nהחזר', u'מנה"ח\nלחישוב\nברוטו', 
                                                  u'לנטו\nמחושב\nברוטו', u'הערות']])
@@ -666,7 +666,7 @@ class NHEmployeeSalariesWriter:
         i = 0
         for es in self.salaries.all():
             terms = es.nhemployee.employment_terms
-            row = [log2vis(unicode(es.nhemployee)), 
+            row = [i+1, log2vis(unicode(es.nhemployee)), 
                    log2vis(u'%s - %s' % (terms.hire_type.name, terms.salary_net and u'נטו' or u'ברוטו')), 
                    commaise(es.check_amount)]
             if self.bookkeeping:

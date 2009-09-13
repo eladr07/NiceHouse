@@ -60,7 +60,7 @@
 				{% endifequal %}
 			{% endif %}
 		{% endwith %}
-				<td>
+				<td>		{{f.errors}}
 					<a href="{{f.instance.get_absolute_url}}">{{f.instance.id}}</a>
 				</td>
 				<td>
