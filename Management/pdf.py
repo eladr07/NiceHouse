@@ -322,7 +322,6 @@ class MonthDemandWriter:
                                                       attribute='value',
                                                       date__lte=last_demand_sent.finish_date)
                 orig_commission = log.count() > 0 and float(log.latest().new_value) or new_commission
-                total_sales_amount += s.price_final
                 diff_amount = s.price_final * (new_commission - orig_commission) / 100
                 row.extend([orig_commission, new_commission, new_commission - orig_commission, commaise(diff_amount)])
                 row.reverse()
