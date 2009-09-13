@@ -94,16 +94,16 @@
 	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
 	<a id="approve" >תיק עובד</a>
 </div>
-<div class="someIcon" style="width:100px;">
-	<img src="/site_media/images/print-48.png" width="20" height="20"  alt="שינוי" /> 
-	<a id="approve" >שלח להנה"ח</a>
-</div>
 <div class="clearBoth"></div>
 {% regroup salaries by nhemployee.nhbranch as branch_list %}
 {% for branch in branch_list %}
 	<div class="someIcon" style="width:100px;">
 		<img src="/site_media/images/print-48.png" width="20" height="20"  alt="שינוי" /> 
 		<a href="/nhemployeesalaries/{{branch.grouper.id}}/{{month.year}}/{{month.month}}/pdf" >גרסת הדפסה</a>
+	</div>
+	<div class="someIcon" style="width:100px;">
+		<img src="/site_media/images/print-48.png" width="20" height="20"  alt="שינוי" /> 
+		<a href="/nhemployeesalaries/{{branch.grouper.id}}/{{month.year}}/{{month.month}}/send">שלח להנה"ח</a>
 	</div>
 	<div class="clearBoth"></div>
 	<table id="salaryTable" class="dataTable" border="1">

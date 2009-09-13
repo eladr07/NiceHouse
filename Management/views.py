@@ -313,6 +313,41 @@ def demand_old_list(request, year=demand_month().year, month=demand_month().mont
                                 'unhandled_projects':unhandled_projects},
                               context_instance=RequestContext(request))
 
+def nhemployee_salary_send(request, nhbranch_id, year, month):
+    nhm = NHMonth.objects.get(nhbranch__id = nhbranch_id, year = year, month = month)
+    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    
+    response = HttpResponse(mimetype='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=' + filename
+    p = open(filename,'w+')
+    p.flush()
+    p.close()
+    NHEmployeeSalariesWriter(NHMonth.objects.get(nhbranch__id = int(nhbranch_id), year = int(year), month=int(month),
+                                                 bookkeeping=True)).build(filename)
+    p = open(filename,'r')
+    p.close()
+
+    mail('adush07@gmail.com', u'שכר עובדים %s לחודש %s/%s' % (nhm.nhbranch, nhm.month, nhm.year), '', filename)
+
+    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    
+    response = HttpResponse(mimetype='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=' + filename
+    p = open(filename,'w+')
+    p.flush()
+    p.close()
+    NHEmployeeSalariesWriter(NHMonth.objects.get(nhbranch__id = int(nhbranch_id), year = int(year), month=int(month),
+                                                 bookkeeping=False)).build(filename)
+    p = open(filename,'r')
+    p.close()
+
+    mail('adush07@gmail.com', u'שכר עובדים %s לחודש %s/%s' % (nhm.nhbranch, nhm.month, nhm.year), '', filename)
+    
+    for nhes in NHEmployeeSalary.objects.get(nhemployee__nhbranch__id = nhbranch_id, year=year, month=month):
+        if nhes.approved_date != None:
+            nhes.send_to_bookkeeping()
+            nhes.send_to_checks()
+    
 def nhemployee_salary_pdf(request, nhbranch_id, year, month):
     filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
     
@@ -321,7 +356,8 @@ def nhemployee_salary_pdf(request, nhbranch_id, year, month):
     p = open(filename,'w+')
     p.flush()
     p.close()
-    NHEmployeeSalariesWriter(NHMonth.objects.get(nhbranch__id = int(nhbranch_id), year = int(year), month=int(month))).build(filename)
+    NHEmployeeSalariesWriter(NHMonth.objects.get(nhbranch__id = int(nhbranch_id), year = int(year), month=int(month),
+                                                 bookkeeping=True)).build(filename)
     p = open(filename,'r')
     response.write(p.read())
     p.close()

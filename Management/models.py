@@ -776,12 +776,15 @@ class EmployeeSalaryBase(models.Model):
         return self.statuses.create(type__id = NHEmployeeSalaryStatusType.SentChecks)
     def send_to_bookkeeping(self):
         return self.statuses.create(type__id = NHEmployeeSalaryStatusType.SentBookkeeping)
+    @property
     def approved_date(self):
         q = self.statuses.filter(type__id = EmployeeSalaryBaseStatusType.Approved)
         return q.count() > 0 and q.latest().date or None
+    @property
     def sent_to_bookkeeping_date(self):
         q = self.statuses.filter(type__id = EmployeeSalaryBaseStatusType.SentBookkeeping)
         return q.count() > 0 and q.latest().date or None
+    @property
     def sent_to_checks_date(self):
         q = self.statuses.filter(type__id = EmployeeSalaryBaseStatusType.SentChecks)
         return q.count() > 0 and q.latest().date or None

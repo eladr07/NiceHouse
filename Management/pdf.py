@@ -636,7 +636,8 @@ class EmployeeSalariesWriter:
         return doc.canv
 
 class NHEmployeeSalariesWriter:
-    def __init__(self, nhmonth):
+    def __init__(self, nhmonth, bookkeeping):
+        self.bookkeeping = bookkeeping
         self.year, self.month, self.nhbranch = (nhmonth.year, nhmonth.month, nhmonth.nhbranch)
         self.salaries = models.NHEmployeeSalary.objects.filter(year = self.year, month = self.month, 
                                                                nhemployee__nhbranch = self.nhbranch)
@@ -654,9 +655,10 @@ class NHEmployeeSalariesWriter:
         self.current_page += 1
     def salariesFlows(self):
         flows = []
-        headers = [log2vis(u'העובד\nשם'), log2vis(u'סטטוס'), log2vis(u'התלוש\nסכום'),
-                   log2vis(u'הצק\nסכום'), log2vis(u'לעובד\nהוצאות\nהחזר'), log2vis(u'מנה"ח\nלחישוב\nברוטו'),
-                   log2vis(u'לנטו\nמחושב\nברוטו'), log2vis(u'הערות')]
+        headers = [log2vis(n) for n in [u'העובד\nשם', u'סטטוס', u'הצק\nסכום']]
+        if self.bookkeeping:
+            headers.extend([log2vis(n) for n in [u'התלוש\nסכום', u'לעובד\nהוצאות\nהחזר', u'מנה"ח\nלחישוב\nברוטו', 
+                                                 u'לנטו\nמחושב\nברוטו', u'הערות']])
         headers.reverse()
         colWidths = [None,None,None,None,None,None,None,None]
         colWidths.reverse()
@@ -666,9 +668,10 @@ class NHEmployeeSalariesWriter:
             terms = es.nhemployee.employment_terms
             row = [log2vis(unicode(es.nhemployee)), 
                    log2vis(u'%s - %s' % (terms.hire_type.name, terms.salary_net and u'נטו' or u'ברוטו')), 
-                   commaise(es.total_amount), commaise(es.check_amount),
-                   commaise(es.refund or 0), es.bruto_amount and commaise(es.bruto_amount),
-                   None, log2vis(es.remarks or '')]
+                   commaise(es.check_amount)]
+            if self.bookkeeping:
+                row.extend([commaise(es.total_amount), commaise(es.refund or 0), es.bruto_amount and commaise(es.bruto_amount),
+                            None, log2vis(es.remarks or '')])
             row.reverse()
             rows.append(row)
             i += 1
