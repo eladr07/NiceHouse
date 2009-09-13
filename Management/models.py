@@ -1166,7 +1166,7 @@ class CZilber(models.Model):
                 pc_base = log.count() > 0 and float(log.latest().new_value) or q[0].value
             else:
                 pc_base = s.pc_base
-            prev_adds += (base - pc_base) * s.price_final / 100
+            prev_adds += (base - pc_base) * s.project_price() / 100
         d.var_pay = prev_adds
         d.var_pay_type = u'הפרשי קצב מכירות'
         for s in sales:
