@@ -1193,10 +1193,9 @@ class CZilber(models.Model):
                 for s in demand.get_sales():
                     bonus += s.zdb
                 demand = demand.get_previous_demand()
-            raise AttributeError()
-            d.bonus = bonus
+            d.bonus = int(bonus)
             d.bonus_type = u'בונוס חסכון בהנחה'
-            
+           
         d.save()
     class Meta:
         db_table = 'CZilber'
