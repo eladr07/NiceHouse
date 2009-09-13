@@ -300,19 +300,21 @@ class MonthDemandWriter:
     def zilberAddsFlows(self):        
         flows = [tableCaption(caption=log2vis(u'נספח א - הפרשי קצב מכירות לדרישה')),
                  Spacer(0,30)]
-        headers = [log2vis(n) for n in [u'דרישה\nחודש', u'בדרישה\nדירות', u'כולל מע"מ\nסה"כ מכירות', 
-                                        u'בדרישה\nעמלה',u'חדשה\nעמלה', u'הפרש\nאחוז', 
-                                        u'בש"ח\nהפרש']]
+        headers = [log2vis(n) for n in [u'דרישה\nחודש', u'שם הרוכשים', u'ודירה\nבניין',u'מכירה\nתאריך', u'חוזה\nמחיר'
+                                        u'בדרישה\nעמלה',u'חדשה\nעמלה', u'הפרש\nאחוז', u'בש"ח\nהפרש']]
+        
         headers.reverse()
         rows = []
         demand = self.demand
         last_demand_sent = self.demand.get_previous_demand()
+        i = 1
         while demand != None and demand.zilber_cycle_index() != 1:
             demand = demand.get_previous_demand()
-            total_sales_amount, diff_amount, new_commission, orig_commission, houses = 0, 0, 0, 0, ''
-            row = [log2vis('%s/%s' % (demand.month, demand.year))]
             for s in demand.get_sales():
-                houses += log2vis('%s/%s %s\n' % (s.house.building.num, s.house.num, 0))
+                i += 1
+                row = [log2vis('%s/%s' % (demand.month, demand.year)), clientsPara(s.clients), 
+                               '%s/%s' % (s.house.building.num, s.house.num), s.sale_date.strftime('%d/%m/%y'), 
+                               commaise(s.price)]
                 new_commission = s.c_final
                 scd_final = s.project_commission_details.filter(commission='final')[0]
                 log = models.ChangeLog.objects.filter(object_type='SaleCommissionDetail',
@@ -321,11 +323,17 @@ class MonthDemandWriter:
                                                       date__lte=last_demand_sent.finish_date)
                 orig_commission = log.count() > 0 and float(log.latest().new_value) or new_commission
                 total_sales_amount += s.price_final
-                diff_amount += s.price_final * (new_commission - orig_commission) / 100
-            row.extend([houses, commaise(total_sales_amount), orig_commission, new_commission,
-                        new_commission - orig_commission, commaise(diff_amount)])
-            row.reverse()
-            rows.append(row)
+                diff_amount = s.price_final * (new_commission - orig_commission) / 100
+                row.extend([orig_commission, new_commission, new_commission - orig_commission, commaise(diff_amount)])
+                row.reverse()
+                rows.append(row)
+                if i % 17 == 0:
+                    data = [headers]
+                    data.extend(rows)
+                    t = Table(data)
+                    t.setStyle(saleTableStyle)
+                    flows.extend([t, PageBreak(), Spacer(0,70)])
+                    rows = []
         data = [headers]
         data.extend(rows)
         t = Table(data)
@@ -341,7 +349,7 @@ class MonthDemandWriter:
                                         u'חדשה\nעמלה', u'עמלה\nהפרש', u'בש"ח\nהפרש']]
         headers.reverse()
         rows = []
-        i = 0
+        i = 1
         for subSales in self.demand.get_affected_sales().values():
             for s in subSales.all():
                 i += 1
@@ -655,10 +663,12 @@ class NHEmployeeSalariesWriter:
         self.current_page += 1
     def salariesFlows(self):
         flows = []
-        headers = [log2vis(n) for n in [u'מס"ד', u'העובד\nשם', u'סטטוס', u'הצק\nסכום']]
+        headers = [log2vis(n) for n in [u'מס"ד', u'העובד\nשם', u'סטטוס']]
         if self.bookkeeping:
-            headers.extend([log2vis(n) for n in [u'התלוש\nסכום', u'לעובד\nהוצאות\nהחזר', u'מנה"ח\nלחישוב\nברוטו', 
-                                                 u'לנטו\nמחושב\nברוטו', u'הערות']])
+            headers.extend([log2vis(n) for n in [u'התלוש\nסכום', u'הלוואה\nהחזר']])
+        headers.append(log2vis(u'הצק\nסכום'))
+        if self.bookkeeping:
+            headers.extend([log2vis(n) for n in [u'לעובד\nהוצאות\nהחזר',u'מנה"ח\nלחישוב\nברוטו',u'לנטו\nמחושב\nברוטו',u'הערות']])
         headers.reverse()
         colWidths = [None,None,None,None,None,None,None,None]
         colWidths.reverse()
@@ -666,12 +676,12 @@ class NHEmployeeSalariesWriter:
         i = 0
         for es in self.salaries.all():
             terms = es.nhemployee.employment_terms
-            row = [i+1, log2vis(unicode(es.nhemployee)), 
-                   log2vis(u'%s - %s' % (terms.hire_type.name, terms.salary_net and u'נטו' or u'ברוטו')), 
-                   commaise(es.check_amount)]
+            row = [i+1, log2vis(unicode(es.nhemployee)), log2vis(u'%s - %s' % (terms.hire_type.name, terms.salary_net and u'נטו' or u'ברוטו'))]
             if self.bookkeeping:
-                row.extend([commaise(es.total_amount), commaise(es.refund or 0), es.bruto_amount and commaise(es.bruto_amount),
-                            None, log2vis(es.remarks or '')])
+                row.extend([commaise(es.total_amount), commaise(es.loan_pay)])
+            row.append(commaise(es.check_amount))
+            if self.bookkeeping:
+                row.extend([commaise(es.refund or 0), es.bruto_amount and commaise(es.bruto_amount), None, log2vis(es.remarks or '')])
             row.reverse()
             rows.append(row)
             i += 1
