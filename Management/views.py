@@ -342,11 +342,13 @@ def nhemployee_salary_send(request, nhbranch_id, year, month):
     p.close()
 
     mail('adush07@gmail.com', u'שכר עובדים %s לחודש %s/%s' % (nhm.nhbranch, nhm.month, nhm.year), '', filename)
-    
-    for nhes in NHEmployeeSalary.objects.get(nhemployee__nhbranch__id = nhbranch_id, year=year, month=month):
+    '''
+    for nhes in NHEmployeeSalary.objects.filter(nhemployee__nhbranch__id = nhbranch_id, year=year, month=month):
         if nhes.approved_date != None:
             nhes.send_to_bookkeeping()
             nhes.send_to_checks()
+    '''
+    return HttpResponseRedirect('/nhemployeesalaries/%s/%s' % (year,month))
     
 def nhemployee_salary_pdf(request, nhbranch_id, year, month):
     filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
