@@ -425,7 +425,7 @@ class DemandSendForm(forms.ModelForm):
     fax = forms.CharField(max_length=20, required=False)
     class Meta:
         model = Demand
-        exclude = ('project','year','month')
+        exclude = ('project','year','month','sale_count')
         
 class LoanPayForm(forms.ModelForm):
     class Meta:
