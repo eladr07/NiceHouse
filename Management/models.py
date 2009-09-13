@@ -681,56 +681,6 @@ class NHSaleCommissionDetail(models.Model):
     amount = models.IntegerField()
     class Meta:
         db_table = 'NHSaleCommissionDetail'
-
-
-class NHEmployeeSalary(EmployeeSalaryBase):
-    admin_commission = models.IntegerField(editable=False, null=True)
-    @property
-    def total_amount(self):
-        return self.base + self.commissions + self.admin_commission + (self.var_pay or 0) + \
-               (self.safety_net or 0) - (self.deduction or 0)
-    @property
-    def check_amount(self):
-        return self.total_amount - self.loan_pay
-    @property
-    def bruto_amount(self):
-        if not self.nhemployee.employment_terms or self.nhemployee.employment_terms.salary_net:
-            return None
-        return self.total_amount
-    def calculate(self):
-        for scd in NHSaleCommissionDetail.objects.filter(nhemployeesalary = self):
-            scd.delete()
-        self.admin_commission, self.commissions, self.base = 0, 0, 0
-        for nhss in NHSaleSide.objects.filter(employee1=self.nhemployee):
-            self.commissions += nhss.employee1_pay
-            NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss,
-                                                  commission='base', amount = nhss.employee1_pay,
-                                                  precentage = nhss.employee1_commission,
-                                                  income = nhss.net_income)
-        for nhss in NHSaleSide.objects.filter(employee2=self.nhemployee):
-            self.commissions += nhss.employee2_pay
-            NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss,
-                                                  commission='base', amount = nhss.employee2_pay,
-                                                  precentage = nhss.employee2_commission,
-                                                  income = nhss.net_income)
-        if self.nhemployee.nhbranch:
-            try:
-                nhm = NHMonth.objects.get(nhbranch = self.nhemployee.nhbranch, year = self.year,
-                                          month = self.month)
-            except NHMonth.DoesNotExist:
-                return
-            self.__calc__(nhm)
-        elif self.nhemployee.branch_manager.count() > 0:
-            for nhbranch in self.nhemployee.branch_manager.all():
-                nhm = NHMonth.objects.get(nhbrnach = nhbranch, year = self.year, month = self.month)
-                self.__calc__(nhm)
-    def __calc__(self, nhmonth):
-        if self.nhemployee.nhcbase:
-            self.admin_commission += self.nhemployee.nhcbase.calc(nhmonth)
-        if self.nhemployee.nhcbranchincome:
-            self.admin_commission += self.nhemployee.nhcbranchincome.calc(nhmonth)
-    class Meta:
-        db_table='NHEmployeeSalary'
         
 class AdvancePayment(models.Model):
     employee = models.ForeignKey('Employee', related_name = 'advance_payments', verbose_name=ugettext('employee'))
@@ -838,6 +788,55 @@ class EmployeeSalaryBase(models.Model):
         db_table = 'EmployeeSalaryBase'
         unique_together = ('employee', 'nhemployee','year','month')
 
+class NHEmployeeSalary(EmployeeSalaryBase):
+    admin_commission = models.IntegerField(editable=False, null=True)
+    @property
+    def total_amount(self):
+        return self.base + self.commissions + self.admin_commission + (self.var_pay or 0) + \
+               (self.safety_net or 0) - (self.deduction or 0)
+    @property
+    def check_amount(self):
+        return self.total_amount - self.loan_pay
+    @property
+    def bruto_amount(self):
+        if not self.nhemployee.employment_terms or self.nhemployee.employment_terms.salary_net:
+            return None
+        return self.total_amount
+    def calculate(self):
+        for scd in NHSaleCommissionDetail.objects.filter(nhemployeesalary = self):
+            scd.delete()
+        self.admin_commission, self.commissions, self.base = 0, 0, 0
+        for nhss in NHSaleSide.objects.filter(employee1=self.nhemployee):
+            self.commissions += nhss.employee1_pay
+            NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss,
+                                                  commission='base', amount = nhss.employee1_pay,
+                                                  precentage = nhss.employee1_commission,
+                                                  income = nhss.net_income)
+        for nhss in NHSaleSide.objects.filter(employee2=self.nhemployee):
+            self.commissions += nhss.employee2_pay
+            NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss,
+                                                  commission='base', amount = nhss.employee2_pay,
+                                                  precentage = nhss.employee2_commission,
+                                                  income = nhss.net_income)
+        if self.nhemployee.nhbranch:
+            try:
+                nhm = NHMonth.objects.get(nhbranch = self.nhemployee.nhbranch, year = self.year,
+                                          month = self.month)
+            except NHMonth.DoesNotExist:
+                return
+            self.__calc__(nhm)
+        elif self.nhemployee.branch_manager.count() > 0:
+            for nhbranch in self.nhemployee.branch_manager.all():
+                nhm = NHMonth.objects.get(nhbrnach = nhbranch, year = self.year, month = self.month)
+                self.__calc__(nhm)
+    def __calc__(self, nhmonth):
+        if self.nhemployee.nhcbase:
+            self.admin_commission += self.nhemployee.nhcbase.calc(nhmonth)
+        if self.nhemployee.nhcbranchincome:
+            self.admin_commission += self.nhemployee.nhcbranchincome.calc(nhmonth)
+    class Meta:
+        db_table='NHEmployeeSalary'
+        
 class EmployeeSalary(EmployeeSalaryBase):
     @property
     def sales(self):
