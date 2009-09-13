@@ -277,7 +277,7 @@ class MonthDemandWriter:
                 if doh0prices.count() > 0:
                     doh0price = doh0prices.latest().price
                     memudad = (((current_madad / base_madad) - 1) * 0.6 + 1) * doh0price
-                    row.extend([commaise(doh0price), current_madad, commaise(memudad), commaise(s.price_final-memudad), s.zdb, None])
+                    row.extend([commaise(doh0price), current_madad, commaise(memudad), commaise(s.price-memudad), s.zdb, None])
                     row.reverse()
                 rows.append(row)
                 if i % 17 == 0:
