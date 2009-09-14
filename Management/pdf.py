@@ -295,7 +295,8 @@ class MonthDemandWriter:
             if demand.zilber_cycle_index() == 1:
                 break
             demand = demand.get_previous_demand()
-        sum_row = [None, None, None, None, commaise(total_prices), None, None, None, None, commaise(total_adds), None]
+        sum_row = [None, None, None, None, Paragraph(commaise(total_prices)), None, None, None, None, 
+                   Paragraph(commaise(total_adds)), None]
         sum_row.reverse()
         rows.append(sum_row)
         data = [headers]
@@ -394,7 +395,7 @@ class MonthDemandWriter:
                     t.setStyle(saleTableStyle)
                     flows.extend([t, PageBreak(), Spacer(0,70)])
                     rows = []
-        sum_row = [None,None,None,None,None,None,None,None,None,commaise(self.demand.bonus)]
+        sum_row = [None,None,None,None,None,None,None,None,None,Paragraph(commaise(self.demand.bonus), styleSumRow)]
         sum_row.reverse()
         rows.append(sum_row)      
         data = [headers]
@@ -475,22 +476,22 @@ class MonthDemandWriter:
             row.reverse()#reportlab prints columns ltr
             rows.append(row)
             if i % next_break == 0 or i == sales.count():
-                if i == sales.count():# insert column summaries if last w
+                if i == sales.count():# insert column summaries if last row
                     row = [log2vis(u'סה"כ')]
                     if contract_num:
                         row.append(None)
                     if self.signup_adds:
                         row.append(None)
-                    row.extend([None,log2vis('%s' % self.demand.get_sales().count()),None])
-                    row.append(commaise(self.demand.get_sales_amount()))
+                    row.extend([None,Paragraph(log2vis('%s' % self.demand.get_sales().count()), styleSumRow),None])
+                    row.append(Paragraph(commaise(self.demand.get_sales_amount()), styleSumRow))
                     if zilber:
                         row.extend([None,None,None,None,None])
                     if discount:
                         row.extend([None,None])
                     if final:
-                        row.extend([None,None,None,None,None,commaise(self.demand.get_sales_commission())])
+                        row.extend([None,None,None,None,None,Paragraph(commaise(self.demand.get_sales_commission()))])
                     else:
-                        row.extend([None,commaise(self.demand.get_sales_commission())])
+                        row.extend([None,Paragraph(commaise(self.demand.get_sales_commission()))])
                     row.reverse()
                     rows.append(row)
                 data = [headers]
