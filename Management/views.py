@@ -364,8 +364,8 @@ def nhemployee_salary_pdf(request, nhbranch_id, year, month):
     return response 
 
 @permission_required('Management.change_employeesalary')
-def employee_salary_approve(request, model, id):
-    es = model.objects.get(pk=id)
+def employee_salary_approve(request, id):
+    es = EmployeeSalaryBase.objects.get(pk=id)
     es.approve()
     es.save()
     return HttpResponse('ok')

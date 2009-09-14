@@ -35,6 +35,8 @@
 			$.get($(this).attr("href"), function (data) {
 				if (data == 'ok')
 					alert('השכר אושר !');
+				else
+					alert(data);
 			});
 		});
 		$("#monthChange").click(function(event) {
