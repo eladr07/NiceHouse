@@ -295,8 +295,8 @@ class MonthDemandWriter:
             if demand.zilber_cycle_index() == 1:
                 break
             demand = demand.get_previous_demand()
-        sum_row = [None, None, None, None, Paragraph(commaise(total_prices)), None, None, None, None, 
-                   Paragraph(commaise(total_adds)), None]
+        sum_row = [None, None, None, None, Paragraph(commaise(total_prices), styleSumRow), None, None, None, None, 
+                   Paragraph(commaise(total_adds), styleSumRow), None]
         sum_row.reverse()
         rows.append(sum_row)
         data = [headers]
@@ -489,9 +489,9 @@ class MonthDemandWriter:
                     if discount:
                         row.extend([None,None])
                     if final:
-                        row.extend([None,None,None,None,None,Paragraph(commaise(self.demand.get_sales_commission()))])
+                        row.extend([None,None,None,None,None,Paragraph(commaise(self.demand.get_sales_commission()), styleSumRow)])
                     else:
-                        row.extend([None,Paragraph(commaise(self.demand.get_sales_commission()))])
+                        row.extend([None,Paragraph(commaise(self.demand.get_sales_commission()), styleSumRow)])
                     row.reverse()
                     rows.append(row)
                 data = [headers]
