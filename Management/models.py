@@ -771,11 +771,11 @@ class EmployeeSalaryBase(models.Model):
     remarks = models.TextField(ugettext('remarks'),null=True, blank=True)
     
     def approve(self):
-        return self.statuses.create(type = EmployeeSalaryBaseStatusType.objects.get(pk = EmployeeSalaryBaseStatusType.Approved))
+        self.statuses.create(type = EmployeeSalaryBaseStatusType.objects.get(pk = EmployeeSalaryBaseStatusType.Approved)).save()
     def send_to_checks(self):
-        return self.statuses.create(type = EmployeeSalaryBaseStatusType.objects.get(pk = EmployeeSalaryBaseStatusType.SentChecks))
+        self.statuses.create(type = EmployeeSalaryBaseStatusType.objects.get(pk = EmployeeSalaryBaseStatusType.SentChecks)).save()
     def send_to_bookkeeping(self):
-        return self.statuses.create(type = EmployeeSalaryBaseStatusType.objects.get(pk = EmployeeSalaryBaseStatusType.SentBookkeeping))
+        self.statuses.create(type = EmployeeSalaryBaseStatusType.objects.get(pk = EmployeeSalaryBaseStatusType.SentBookkeeping)).save()
     @property
     def approved_date(self):
         q = self.statuses.filter(type__id = EmployeeSalaryBaseStatusType.Approved)
