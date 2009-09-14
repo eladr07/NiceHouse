@@ -745,7 +745,7 @@ class EmployeeSalaryBaseStatusType(models.Model):
         
 class EmployeeSalaryBaseStatus(models.Model):
     employeesalarybase = models.ForeignKey('EmployeeSalaryBase', related_name='statuses')
-    type = models.ForeignKey('NHEmployeeSalaryStatusType')
+    type = models.ForeignKey('EmployeeSalaryBaseStatusType')
     date = models.DateTimeField(auto_now_add=True)
     class Meta:
         db_table='EmployeeSalaryBaseStatus'
