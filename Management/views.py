@@ -17,7 +17,7 @@ from mail import mail
 def index(request):
     
     for p_id in [21]:
-        for m in range(6,9):
+        for m in range(5,9):
             q = Demand.objects.filter(project__id = p_id, year = 2009, month=m)
             if q.count() == 0:
                 continue
