@@ -1186,7 +1186,7 @@ class CZilber(models.Model):
                 pc_base = s.pc_base
             prev_adds += (base - pc_base) * s.project_price() / 100
         d.var_pay = prev_adds
-        d.var_pay_type = u'הפרשי קצב מכירות'
+        d.var_pay_type = u'הפרשי קצב מכירות (נספח א)'
         if d.include_zilber_bonus():
             demand, bonus = d, 0
             while demand != None:
@@ -1196,7 +1196,7 @@ class CZilber(models.Model):
                     break
                 demand = demand.get_previous_demand()
             d.bonus = bonus
-            d.bonus_type = u'בונוס חסכון בהנחה'
+            d.bonus_type = u'בונוס חסכון בהנחה (נספח ב)'
         d.save()
     class Meta:
         db_table = 'CZilber'

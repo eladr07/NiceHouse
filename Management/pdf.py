@@ -256,7 +256,8 @@ class MonthDemandWriter:
         return Paragraph(s, ParagraphStyle(name='into', fontName='David', fontSize=14,
                                            alignment=TA_RIGHT, leading=16))
     def zilberBonusFlows(self):  
-        flows = [tableCaption(caption=log2vis(u'נספח ב - דו"ח חסכון בהנחה')),
+        flows = [tableCaption(caption=log2vis(u'נספח ב - דו"ח חסכון בהנחה')), Spacer(0,20),
+                 tableCaption(caption=log2vis(u'מדד בסיס - %s' % self.demand.project.commissions.c_zilber.base_madad)),
                  Spacer(0,30)]
         headers = [log2vis(n) for n in [u'מס"ד', u'שם הרוכשים', u'ודירה\nבניין', u'חוזה\nתאריך',
                                         u'חוזה\nמחיר', u'0 דו"ח\nמחירון', u'חדש\nמדד', 
@@ -264,7 +265,8 @@ class MonthDemandWriter:
                                         u'הערות']]
         headers.reverse()
         rows = []
-        i = 0
+        i = 1
+        total_prices, total_adds = 0, 0
         demand = self.demand
         base_madad = demand.project.commissions.c_zilber.base_madad
         current_madad = demand.get_madad() < base_madad and base_madad or demand.get_madad()
@@ -280,6 +282,8 @@ class MonthDemandWriter:
                     row.extend([commaise(doh0price), current_madad, commaise(memudad), commaise(s.price-memudad), s.zdb, None])
                     row.reverse()
                 rows.append(row)
+                total_prices += s.price
+                total_adds += s.zdb
                 if i % 17 == 0:
                     data = [headers]
                     data.extend(rows)
@@ -290,6 +294,9 @@ class MonthDemandWriter:
             if demand.zilber_cycle_index() == 1:
                 break
             demand = demand.get_previous_demand()
+        sum_row = [None, None, None, None, commaise(total_prices), None, None, None, None, commaise(total_adds), None]
+        sum_row.reverse()
+        rows.append(sum_row)
         data = [headers]
         data.extend(rows)
         t = Table(data)
@@ -308,6 +315,7 @@ class MonthDemandWriter:
         demand = self.demand
         last_demand_sent = self.demand.get_previous_demand()
         i = 1
+        total_prices, total_adds = 0, 0
         while demand != None and demand.zilber_cycle_index() != 1:
             demand = demand.get_previous_demand()
             for s in demand.get_sales():
@@ -328,6 +336,8 @@ class MonthDemandWriter:
                 row.extend([orig_commission, new_commission, new_commission - orig_commission, commaise(diff_amount)])
                 row.reverse()
                 rows.append(row)
+                total_prices += s.price
+                total_adds += diff_amount
                 if i % 17 == 0:
                     data = [headers]
                     data.extend(rows)
@@ -335,6 +345,9 @@ class MonthDemandWriter:
                     t.setStyle(saleTableStyle)
                     flows.extend([t, PageBreak(), Spacer(0,70)])
                     rows = []
+        sum_row = [None, None, None, None,'<b>' + commaise(total_prices) + '<b/>', None, None, None, commaise(total_adds)]
+        sum_row.reverse()
+        rows.append(sum_row)
         data = [headers]
         data.extend(rows)
         t = Table(data)
@@ -416,7 +429,7 @@ class MonthDemandWriter:
                           u'לחישוב\nמחיר',u'נוספות\nהוצאות'])
             colWidths.extend([35,35,None,None,None])
             zilber = True
-	if not self.demand.project.id == 5:
+	    if not self.demand.project.id == 5:
 	        if sales[0].discount or sales[0].allowed_discount:
 	            names.extend([u'ניתן\nהנחה\n%',u'מותר\nהנחה\n%'])
 	            colWidths.extend([None,None])
