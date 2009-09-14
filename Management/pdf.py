@@ -345,7 +345,7 @@ class MonthDemandWriter:
                     t.setStyle(saleTableStyle)
                     flows.extend([t, PageBreak(), Spacer(0,70)])
                     rows = []
-        sum_row = [None, None, None, None,'<b>' + commaise(total_prices) + '<b/>', None, None, None, commaise(total_adds)]
+        sum_row = [None, None, None, None,'<b>' + commaise(total_prices) + '</b>', None, None, None, commaise(total_adds)]
         sum_row.reverse()
         rows.append(sum_row)
         data = [headers]
