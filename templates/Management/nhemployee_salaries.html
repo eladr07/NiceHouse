@@ -29,14 +29,12 @@
 				alert("לא נבחר עובד");
 		});
 		$("#approve").click(function (event) {
-			event.preventDefault();
+//			event.preventDefault();
 			if (!$(this).attr("href"))
 				alert("לא נבחר עובד");
-			$.get($(this).attr("href"), function (data) {
-				if (data == 'ok')
-					alert('השכר אושר !');
-				else
-					alert(data);
+//			$.get($(this).attr("href"), function (data) {
+//				if (data == 'ok')
+//					alert('השכר אושר !');
 			});
 		});
 		$("#monthChange").click(function(event) {
