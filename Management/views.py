@@ -367,7 +367,6 @@ def nhemployee_salary_pdf(request, nhbranch_id, year, month):
 def employee_salary_approve(request, id):
     es = EmployeeSalaryBase.objects.get(pk=id)
     es.approve()
-    es.save()
     return HttpResponse('ok')
 
 def employee_salary_details(request, id):
