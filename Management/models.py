@@ -1457,12 +1457,19 @@ class Demand(models.Model):
             start = date(start.month == 12 and start.year + 1 or start.year,
                          start.month == 12 and 1 or start.month + 1, 1)
             i += 1
-        return i % ZILBER_CYCLE
+        return (i % ZILBER_CYCLE) or ZILBER_CYCLE
     def get_previous_demand(self):
         try:
             return Demand.objects.get(project = self.project,
                                       year = self.month == 1 and self.year - 1 or self.year,
                                       month = self.month == 1 and 12 or self.month - 1)
+        except Demand.DoesNotExist:
+            return None
+    def get_next_demand(self):
+        try:
+            return Demand.objects.get(project = self.project,
+                                      year = self.month == 12 and self.year + 1 or self.year,
+                                      month = self.month == 12 and 1 or self.month + 1)
         except Demand.DoesNotExist:
             return None
     def get_affected_sales(self):
@@ -1490,7 +1497,7 @@ class Demand(models.Model):
             months[(signup.date.month, signup.date.year)] += 1
         return months
     def include_zilber_bonus(self):
-        return self.zilber_cycle_index() == 0
+        return self.zilber_cycle_index() == ZILBER_CYCLE
     def get_absolute_url(self):
         return '/demands/%s' % self.id
     def get_salaries(self):
