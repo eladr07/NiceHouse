@@ -41,8 +41,8 @@
 	<div class="title">
 		<div class="pageTitle">
 			{% if form.instance.get_previous_demand %}
-			<a href="/demands/{{form.instance.get_previous_demand.id}}">
-				<img src="/site_media/images/1rightarrow-48.png" width="48" height="48" border="0" alt="דרישה קודמת" />
+			<a href="/demands/{{form.instance.get_previous_demand.id}}" style="text-decoration:none;">
+				<img src="/site_media/images/1rightarrow-48.png" width="36" height="36" border="0" alt="דרישה קודמת" />
 			</a>
 			{% endif %}
 			ריכוז מכירות {{form.instance.month}}/{{form.instance.year}}
@@ -51,8 +51,8 @@
 			מצב - 
 			{{form.instance.statuses.latest.type}}
 			{% if form.instance.get_next_demand %}
-			<a href="/demands/{{form.instance.get_next_demand.id}}">
-				<img src="/site_media/images/1leftarrow-48.png" width="48" height="48" border="0" alt="דרישה הבאה" />
+			<a href="/demands/{{form.instance.get_next_demand.id}}" style="text-decoration:none;">
+				<img src="/site_media/images/1leftarrow-48.png" width="36" height="36" border="0" alt="דרישה הבאה" />
 			</a>
 			{% endif %}
 		</div>
