@@ -1946,7 +1946,7 @@ def report_projects_month(request, year, month):
     p.flush()
     p.close()
     demands = Demand.objects.filter(year = year, month=month).all()
-    MultipleDemandWriter(demands, u'ריכוז דרישות לפרוייקטים לחודש %s\%s' % (self.year, self.month),
+    MultipleDemandWriter(demands, u'ריכוז דרישות לפרוייקטים לחודש %s\%s' % (year, month),
                          show_month=False, show_project=True).build(filename)
     p = open(filename,'r')
     response.write(p.read())
