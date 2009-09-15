@@ -42,19 +42,20 @@
 		<div class="pageTitle">
 			{% if form.instance.get_previous_demand %}
 			<a href="/demands/{{form.instance.get_previous_demand.id}}" style="text-decoration:none;">
-				<img src="/site_media/images/1rightarrow-48.png" width="36" height="36" border="0" alt="דרישה קודמת" />
+				<img src="/site_media/images/1rightarrow-48.png" width="24" height="24" border="0" alt="דרישה קודמת" />
 			</a>
 			{% endif %}
 			ריכוז מכירות {{form.instance.month}}/{{form.instance.year}}
 			לפרוייקט
-			{{form.instance.project}}<br>
-			מצב - 
-			{{form.instance.statuses.latest.type}}
+			{{form.instance.project}}
 			{% if form.instance.get_next_demand %}
 			<a href="/demands/{{form.instance.get_next_demand.id}}" style="text-decoration:none;">
-				<img src="/site_media/images/1leftarrow-48.png" width="36" height="36" border="0" alt="דרישה הבאה" />
+				<img src="/site_media/images/1leftarrow-48.png" width="24" height="24" border="0" alt="דרישה הבאה" />
 			</a>
 			{% endif %}
+			<br>
+			מצב - 
+			{{form.instance.statuses.latest.type}}
 		</div>
 	</div>
 	<div class="clearBoth"></div>
