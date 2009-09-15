@@ -172,6 +172,7 @@
 			<b>{{i.amount}} ש"ח</b>  				
 			<a id="edit_invoice" href="/invoices/{{i.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
 			<a href="/invoices/{{i.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+			<br>
 		{% endfor %}
 		<br><a class="fancybox" href="{{form.instance.id}}/invoice/add">חשבונית חדשה</a><br>
 	</fieldset>
@@ -185,6 +186,7 @@
 			<b>{{p.amount}} ש"ח</b>  				
 			<a id="edit_invoice" href="/payments/{{p.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
 			<a href="/payments/{{p.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+			<br>
 		{% endfor %}
 		<br><a class="fancybox" href="{{form.instance.id}}/payment/add">הוסף תשלום</a><br>
 	</fieldset>
