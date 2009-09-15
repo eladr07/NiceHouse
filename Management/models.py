@@ -6,6 +6,10 @@ from templatetags.management_extras import *
 from django.db.models.signals import pre_save
 from decimal import InvalidOperation
 
+class Callable:
+    def __init__(self, anycallable):
+        self.__call__ = anycallable
+
 Salary_Types = (
                 (0, u'ברוטו'),
                 (1, u'נטו')
@@ -1446,6 +1450,7 @@ class Demand(models.Model):
         if now.day <= 22:
             now = datetime(now.year, now.month == 1 and 12 or now.month - 1, now.day)
         return now
+    current_month = Callable(current_month)
     def get_madad(self):
         return Madad.objects.filter(date__lte=date(self.year, self.month, 15)).latest().value
     def zilber_cycle_index(self):
