@@ -1962,7 +1962,7 @@ def report_project_season(request, project_id=None, from_year=Demand.current_mon
     while current <= end:
         q = Demand.objects.filter(project__id = project_id, year = current.year, month = current.month)
         if q.count() > 0:
-            demands.append(q[0])
+            ds.append(q[0])
         current = date(current.month == 12 and current.year + 1 or current.year,
                        current.month == 12 and 1 or current.month + 1, 1)
     
@@ -1991,7 +1991,7 @@ def demand_season_list(request, project_id=None, from_year=Demand.current_month(
         while current <= end:
             q = Demand.objects.filter(project__id = project_id, year = current.year, month = current.month)
             if q.count() > 0:
-                demands.append(q[0])
+                ds.append(q[0])
             current = date(current.month == 12 and current.year + 1 or current.year,
                            current.month == 12 and 1 or current.month + 1, 1)
         for d in ds:
