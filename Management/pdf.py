@@ -581,7 +581,7 @@ class MultipleDemandWriter:
         headers, colWidths = [], []
         if self.show_project:
             headers.extend([log2vis(n) for n in [u'שם היזם', u'שם הפרוייקט']])
-            colWidths.extend(90,140)
+            colWidths.extend([90,140])
         if self.show_month:
             headers.append(log2vis(u'חודש'))
             colWidths.append(None)
