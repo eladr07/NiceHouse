@@ -22,8 +22,8 @@ styleN = ParagraphStyle('normal', fontName='David',fontSize=16, leading=15, alig
 styleDate = ParagraphStyle('date', fontName='David',fontSize=14, leading=15)
 styleSumRow = ParagraphStyle('sumRow', fontName='David-Bold',fontSize=11, leading=15)
 styleSubj = ParagraphStyle('subject', fontName='David',fontSize=16, leading=15, alignment=TA_CENTER)
-styleSubTitle = ParagraphStyle('subtitle', fontName='David-Bold', fontSize=15, alignment=TA_CENTER)
-styleSubTitleBold = ParagraphStyle('subtitle', fontName='David', fontSize=15, alignment=TA_CENTER)
+styleSubTitleBold = ParagraphStyle('subtitle', fontName='David-Bold', fontSize=15, alignment=TA_CENTER)
+styleSubTitle = ParagraphStyle('subtitle', fontName='David', fontSize=15, alignment=TA_CENTER)
 saleTableStyle = TableStyle(
                             [('FONTNAME', (0,0), (-1,0), 'David-Bold'),
                              ('FONTNAME', (0,1), (-1,-1), 'David'),
@@ -538,9 +538,9 @@ class MonthDemandWriter:
         subTitle = '<u>%s</u>' % log2vis(u"דרישה מס' %s" % self.demand.id)
         story.append(Paragraph(subTitle, styleSubTitleBold))
         if self.demand.project.is_zilber():
-            story.extend([Spacer(0,20), Paragraph(log2vis(u'דרישה %s מתוך %s' % (self.demand.zilber_cycle_index(), models.ZILBER_CYCLE)), 
+            story.extend([Spacer(0,15), Paragraph(log2vis(u'דרישה %s מתוך %s' % (self.demand.zilber_cycle_index(), models.ZILBER_CYCLE)), 
                                                   styleSubTitle)])
-        story.extend([Spacer(0,20), self.introPara(), Spacer(0,20)])
+        story.extend([Spacer(0,15), self.introPara(), Spacer(0,20)])
         story.extend(self.saleFlows())
         if self.demand.get_sales().count() == 10:
             story.append(PageBreak())
