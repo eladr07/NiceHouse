@@ -1408,15 +1408,10 @@ class DemandStatus(models.Model):
         db_table = 'DemandStatus'
         get_latest_by = 'date'
 
-def demand_month():
-    now = datetime.now()
-    if now.day <= 22:
-        now = datetime(now.year, now.month == 1 and 12 or now.month - 1, now.day)
-    return now
       
 class DemandManager(models.Manager):
     def current(self):
-        now = demand_month()
+        now = Demand.current_month()
         return self.filter(year = now.year, month = now.month)
 
 DemandNoInvoice, DemandNoPayment, DemandPaidPlus, DemandPaidMinus, DemandPaid = range(1, 6)
@@ -1446,6 +1441,11 @@ class Demand(models.Model):
 
     objects = DemandManager()
     
+    def current_month():
+        now = datetime.now()
+        if now.day <= 22:
+            now = datetime(now.year, now.month == 1 and 12 or now.month - 1, now.day)
+        return now
     def get_madad(self):
         return Madad.objects.filter(date__lte=date(self.year, self.month, 15)).latest().value
     def zilber_cycle_index(self):

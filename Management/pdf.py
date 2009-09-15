@@ -559,9 +559,12 @@ class MonthDemandWriter:
         doc.build(story, self.addFirst, self.addLater)
         return doc.canv
 
-class MonthProjectsWriter:
-    def __init__(self, year, month):
-        self.year, self.month = (year, month)
+class MultipleDemandWriter:
+    def __init__(self, demands, title, show_project, show_month):
+        self.demands = demands
+        self.title = title
+        self.show_month = show_month
+        self.show_project = show_project
     @property
     def pages_count(self):
         return 1
@@ -575,24 +578,32 @@ class MonthProjectsWriter:
         frame4.addFromList([nhAddr()], canv)
         self.current_page += 1
     def projectsFlows(self):
-        headers = [log2vis(u'שם היזם'), log2vis(u'שם הפרוייקט'), log2vis(u'סה"כ מכירות'),
-                   log2vis(u'סה"כ עמלה'), log2vis(u'מס ח-ן'), log2vis(u'סך ח-ן'),
-                   log2vis(u'מס צק'), log2vis(u'סך צק')]
+        headers, colWidths = [], []
+        if self.show_project:
+            headers.extend([log2vis(n) for n in [u'שם היזם', u'שם הפרוייקט']])
+            colWidths.extend(90,140)
+        if self.show_month:
+            headers.append(log2vis(u'חודש'))
+            colWidths.append(None)
+        headers.extend(log2vis(n) for n in[u'סה"כ מכירות', u'סה"כ עמלה', u'מס ח-ן', u'סך ח-ן', u'מס צק', u'סך צק'])
         headers.reverse()
+        colWidths.extned([None,None,None,None,None,None])
+        colWidths.reverse()
         rows = []
         rowHeights = [28]
-        for d in models.Demand.objects.filter(year = self.year, month= self.month):
-            project_name = d.project.name.count(d.project.city) > 0 and log2vis(d.project.name) or log2vis(u'%s %s' % (d.project.name, d.project.city))
-            row = [log2vis(d.project.initiator), project_name, 
-                   commaise(d.get_sales_amount()), commaise(d.get_total_amount()),
-                   None,None,None,None]
+        for d in self.demands:
+            row = []
+            if self.show_project:
+                project_name = d.project.name.count(d.project.city) > 0 and log2vis(d.project.name) or log2vis(u'%s %s' % (d.project.name, d.project.city))
+                row.extend([log2vis(d.project.initiator), project_name])
+            if self.show_month:
+                row.append('%s/%s' % (d.month, d.year))
+            row.extend([commaise(d.get_sales_amount()), commaise(d.get_total_amount()), None, None, None, None]) 
             row.reverse()
             rows.append(row)
             rowHeights.append(28)
         data = [headers]
         data.extend(rows)
-        colWidths = [90,140,None,None,None,None,None,None]
-        colWidths.reverse()
         t = Table(data, colWidths, rowHeights)
         t.setStyle(projectTableStyle)
         return [t]
@@ -600,8 +611,7 @@ class MonthProjectsWriter:
         self.current_page = 1
         doc = SimpleDocTemplate(filename)
         story = [Spacer(0,50)]
-        title = u'ריכוז דרישות לפרוייקטים לחודש %s\%s' % (self.year, self.month)
-        story.append(titlePara(title))
+        story.append(titlePara(self.title))
         story.append(Spacer(0, 10))
         story.extend(self.projectsFlows())
         doc.build(story, self.addTemplate, self.addTemplate)

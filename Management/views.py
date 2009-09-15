@@ -10,7 +10,7 @@ from django.core import serializers
 from django.views.generic.create_update import create_object, update_object
 from django.views.generic.list_detail import object_list 
 from django.contrib.auth.decorators import login_required, permission_required
-from pdf import MonthDemandWriter, MonthProjectsWriter, EmployeeListWriter, EmployeeSalariesWriter, NHEmployeeSalariesWriter
+from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, NHEmployeeSalariesWriter
 from mail import mail
 
 @login_required
@@ -287,7 +287,7 @@ def demand_calc(request, id):
     return HttpResponseRedirect('/demandsold/%s/%s' % (d.year,d.month))
 
 @permission_required('Management.list_demand')
-def demand_old_list(request, year=demand_month().year, month=demand_month().month):
+def demand_old_list(request, year=Demand.current_month().year, month=Demand.current_month().month):
     ds = Demand.objects.filter(year = year, month = month)
     total_sales_count,total_sales_amount, total_sales_commission, total_amount = (0,0,0,0)
     for d in ds:
@@ -306,7 +306,7 @@ def demand_old_list(request, year=demand_month().year, month=demand_month().mont
             unhandled_projects.append(p)
         
     return render_to_response('Management/demand_old_list.html', 
-                              { 'demands':ds, 'month':date(int(year), int(month), 1),
+                              { 'demands':ds.all(), 'month':date(int(year), int(month), 1),
                                 'filterForm':MonthFilterForm(initial={'year':year,'month':month}),
                                 'total_sales_count':total_sales_count,
                                 'total_sales_amount':total_sales_amount,
@@ -405,7 +405,7 @@ def employee_salary_list(request, year = date.today().year, month = date.today()
                                context_instance=RequestContext(request))
 
 @permission_required('Management.list_nhemployeesalary')
-def nhemployee_salary_list(request, year=demand_month().year, month=demand_month().month):
+def nhemployee_salary_list(request, year=Demand.current_month().year, month=Demand.current_month().month):
     for e in NHEmployee.objects.active():
         es, new = NHEmployeeSalary.objects.get_or_create(nhemployee = e, month = month, year = year)
         if new or not es.commissions or not es.base or not es.admin_commission: 
@@ -523,7 +523,7 @@ def nhmonth_close(request, id):
                               context_instance=RequestContext(request))
 
 @permission_required('Management.add_demand')
-def demand_list(request, year=demand_month().year, month=demand_month().month):
+def demand_list(request, year=Demand.current_month().year, month=Demand.current_month().month):
     ds = Demand.objects.filter(year = year, month = month)
     form = MonthFilterForm(initial={'year':year,'month':month})
     unhandled_projects = list(Project.objects.active())
@@ -659,7 +659,7 @@ def demands_send(request):
             month = datetime(int(form.cleaned_data['year']),int(form.cleaned_data['month']),1)
             error = True
         else:
-            month = demand_month()
+            month = Demand.current_month()
             error = False
         for d in Demand.objects.filter(year=month.year, month=month.month):
             f = DemandSendForm(request.POST, instance=d, prefix = str(d.id))
@@ -1945,24 +1945,67 @@ def report_projects_month(request, year, month):
     p = open(filename,'w+')
     p.flush()
     p.close()
-    MonthProjectsWriter(year, month).build(filename)
+    demands = Demand.objects.filter(year = year, month=month).all()
+    MultipleDemandWriter(demands, u'ריכוז דרישות לפרוייקטים לחודש %s\%s' % (self.year, self.month),
+                         show_month=False, show_project=True).build(filename)
     p = open(filename,'r')
     response.write(p.read())
     p.close()
     return response
 
 @login_required
-def report_project_time(request):
-    if request.method=='POST':
-        form = DemandReportForm(request.POST)
-        if form.is_valid():
-            project = form.cleaned_data['project']
-            salaries = ProjectSalary.objects.filter(project=project, month__year = datetime.now().year).all()
-            salesTotal, amountTotal = (0,0)
-            for s in salaries:
-                salesTotal = salesTotal + s.sales_total
-                amountTotal = amountTotal + s.amount_total
-            return render_to_response('Management/report_project_year.html', 
-                                      {'project':project, 'salaries':salaries, 'salesTotal':salesTotal, 'amountTotal':amountTotal},
-                                      context_instance=RequestContext(request))
-    return HttpResponseRedirect('/reports')
+def report_project_season(request, project_id=None, from_year=demand_month().year, from_month=demand_month().month, 
+                          to_year=demand_month().year, to_month=Demand.current_month().month):
+    ds = []
+    current = date(from_year, from_month, 1)
+    end = date(to_year, to_month, 1)
+    while current <= end:
+        q = Demand.objects.filter(project__id = project_id, year = current.year, month = current.month)
+        if q.count() > 0:
+            demands.append(q[0])
+        current = date(current.month == 12 and current.year + 1 or current.year,
+                       current.month == 12 and 1 or current.month + 1, 1)
+    
+    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    
+    response = HttpResponse(mimetype='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=' + filename
+    p = open(filename,'w+')
+    p.flush()
+    p.close()
+    MultipleDemandWriter(ds, u'ריכוז דרישות תקופתי לפרוייקט %s' % Project.objects.get(pk=project_id),
+                         show_month=True, show_project=False).build(filename)
+    p = open(filename,'r')
+    response.write(p.read())
+    p.close()
+    return response
+
+def demand_season_list(request, project_id=None, from_year=demand_month().year, from_month=demand_month().month, 
+                          to_year=demand_month().year, to_month=Demand.current_month().month):
+    form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
+    ds = []
+    total_sales_count,total_sales_amount, total_sales_commission, total_amount = (0,0,0,0)
+    if project_id:
+        current = date(from_year, from_month, 1)
+        end = date(to_year, to_month, 1)
+        while current <= end:
+            q = Demand.objects.filter(project__id = project_id, year = current.year, month = current.month)
+            if q.count() > 0:
+                demands.append(q[0])
+            current = date(current.month == 12 and current.year + 1 or current.year,
+                           current.month == 12 and 1 or current.month + 1, 1)
+        for d in ds:
+            total_sales_count += d.get_sales().count()
+            total_sales_amount += d.get_sales_amount()
+            total_sales_commission += d.get_sales_commission()
+            total_amount += d.get_total_amount()
+        
+    return render_to_response('Management/demand_season_list.html', 
+                              { 'demands':ds, 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
+                                'project':project_id and Project.objects.get(pk=project_id), 'filterForm':form,
+                                'total_sales_count':total_sales_count,
+                                'total_sales_amount':total_sales_amount,
+                                'total_sales_commission':total_sales_commission,
+                                'total_amount':total_amount},
+                              context_instance=RequestContext(request))
+        

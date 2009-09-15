@@ -34,7 +34,8 @@
 		});
 		$("#monthChange").click(function(event) {
 			event.preventDefault();
-			location.replace("/demandsold/" + $("#id_year").val() + "/" + $("#id_month").val());
+			location.replace("/demandseason/" + $("#id_project").val() + "/" + $("#id_from_year").val() + "/" + $("#id_from_month").val()
+							 + "/" + $("#id_to_year").val() + "/" + $("#id_to_month").val());
 		});
 		$("#demandCalc").click(function(event) {
 			if (!confirm("האם אתה בטוח שברצונך לחשב את העמלות מחדש ?"))
@@ -71,14 +72,14 @@
 {% endblock header %}
 {% block content %}
 <div class="title">
-	<div class="pageTitle">ריכוז דרישות לתשלום לחודש {{month|date:"M Y"}}</div>
+	<div class="pageTitle">ריכוז דרישה לפי תקופה</div>
 </div>
 <div class="clearBoth"></div>
 <div style="float:right;width:30%;">
 	<form method="POST">
 		<table class="dataTable">
 			<tr class="row1">
-				<td colspan="3" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש דרישה</td>
+				<td colspan="3" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש תקופה</td>
 			</tr>
 			<tr class="row2">
 				{% for field in filterForm %}
@@ -130,25 +131,16 @@
 </div>
 <div class="someIcon" style="width:100px;">
 	<img src="/site_media/images/print-48.png" width="20" height="20"  alt="הדפסה" /> 
-	<a href="/reports/projects_month/{{month.year}}/{{month.month}}">גרסה להדפסה</a>
+	<a href="/reports/project_season/{{project.id}}/{{start.year}}/{{start.month}}/{{end.year}}/{{end.month}}">גרסה להדפסה</a>
 </div>
 <div class="clearBoth"></div>
-<p>
-לתשומת לבך, ל-
-<u>{{unhandled_projects|length}}</u>
-פרוייקטים לא הוצאה דרישה בגין חודש זה : 
-{% for p in unhandled_projects %}
-{{p}} ,
-{% endfor %}
-</p>
 <br>
 <table id="demandTable" class="dataTable" border="1">
-<caption>מציג סה"כ {{demands|length}} דרישות לתשלום</caption>
+<caption>מציג סה"כ {{demands|length}} דרישות לתשלום לפרוייקט {{project}}</caption>
 	<tr>
 		<th>מס'</th>
 		<th>PDF</th>
-		<th>יזם</th>
-		<th>שם פרוייקט</th>
+		<th>חודש</th>
 		<th>מס' מכירות</th>
 		<th>מס' מכירות צפוי</th>
 		<th>סה"כ מכירות כולל מע"מ</th>
@@ -185,8 +177,7 @@
 				<img src="/site_media/images/mail_new-48.png" width="15" height="15"/>
 				</a>
 			</td>
-			<td>{{ d.project.initiator }}</td>
-			<td><a href="/projects/{{d.project.id}}">{{ d.project.name }}</a></td>
+			<td>{{ d.month }}/{{d.year}}</td>
 			<td><a href="/demands/{{d.id}}/sales" class="bigfancybox">{{ d.get_sales.count|default:"אין מכירות" }}</a></td>
 			<td>{{d.sale_count}}</td>
 			<td>{% if d.get_sales_amount %} {{ d.get_sales_amount|commaise }} ש"ח {% else %}----{% endif %}</td>
