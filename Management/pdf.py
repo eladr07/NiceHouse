@@ -432,7 +432,7 @@ class MonthDemandWriter:
         if self.demand.project.is_zilber():
             names.extend([u'מזומן\nהנחת', u'מפרט\nהוצאות',u'עו"ד\nשכ"ט', 
                           u'לחישוב\nמחיר',u'נוספות\nהוצאות'])
-            colWidths.extend([35,35,None,None,None])
+            colWidths.extend([35,35,None,None,35])
             zilber = True
 	    if not self.demand.project.id == 5:
 	        if sales[0].discount or sales[0].allowed_discount:
