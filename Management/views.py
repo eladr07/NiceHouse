@@ -1957,8 +1957,8 @@ def report_projects_month(request, year, month):
 def report_project_season(request, project_id=None, from_year=Demand.current_month().year, from_month=Demand.current_month().month, 
                           to_year=Demand.current_month().year, to_month=Demand.current_month().month):
     ds = []
-    current = date(from_year, from_month, 1)
-    end = date(to_year, to_month, 1)
+    current = date(int(from_year), int(from_month), 1)
+    end = date(int(to_year), int(to_month), 1)
     while current <= end:
         q = Demand.objects.filter(project__id = project_id, year = current.year, month = current.month)
         if q.count() > 0:
@@ -1986,8 +1986,8 @@ def demand_season_list(request, project_id=None, from_year=Demand.current_month(
     ds = []
     total_sales_count,total_sales_amount, total_sales_commission, total_amount = (0,0,0,0)
     if project_id:
-        current = date(from_year, from_month, 1)
-        end = date(to_year, to_month, 1)
+        current = date(int(from_year), int(from_month), 1)
+        end = date(int(to_year), int(to_month), 1)
         while current <= end:
             q = Demand.objects.filter(project__id = project_id, year = current.year, month = current.month)
             if q.count() > 0:
@@ -2001,7 +2001,7 @@ def demand_season_list(request, project_id=None, from_year=Demand.current_month(
             total_amount += d.get_total_amount()
         
     return render_to_response('Management/demand_season_list.html', 
-                              { 'demands':ds, 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
+                              { 'demands':ds, 'start':date(int(from_year), int(from_month), 1), 'end':date(int(to_year), int(to_month), 1),
                                 'project':project_id and Project.objects.get(pk=project_id), 'filterForm':form,
                                 'total_sales_count':total_sales_count,
                                 'total_sales_amount':total_sales_amount,
