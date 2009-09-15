@@ -535,12 +535,12 @@ class MonthDemandWriter:
                                                           self.demand.year)
         story.append(titlePara(title))
         story.append(Spacer(0, 10))
-        subTitle = '<u>%s</u>' % log2vis(u"דרישה מס' %s" % self.demand.id)
-        story.append(Paragraph(subTitle, styleSubTitleBold))
+        subTitle = u"דרישה מס' %s" % self.demand.id
         if self.demand.project.is_zilber():
-            story.extend([Spacer(0,15), Paragraph(log2vis(u'דרישה %s מתוך %s' % (self.demand.zilber_cycle_index(), models.ZILBER_CYCLE)), 
-                                                  styleSubTitle)])
-        story.extend([Spacer(0,15), self.introPara(), Spacer(0,20)])
+            subTitle += u' )%s מתוך %s(' % (self.demand.zilber_cycle_index(), models.ZILBER_CYCLE)
+
+        story.append(Paragraph('<u>%s</u>' % log2vis(subTitle), styleSubTitleBold))
+        story.extend([Spacer(0,20), self.introPara(), Spacer(0,20)])
         story.extend(self.saleFlows())
         if self.demand.get_sales().count() == 10:
             story.append(PageBreak())
