@@ -643,7 +643,7 @@ def demand_zero(request, id):
 
 def demand_send_mail(demand, addr):
     filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
-    write_demand_pdf(demand, filename)
+    write_demand_pdf(demand, filename, to_mail=True)
     mail(addr,
          u'עמלה לפרויקט %s לחודש %s/%s' % (demand.project, demand.month, demand.year),
          '', filename)
@@ -1912,11 +1912,11 @@ def project_demands(request, project_id, func, template_name):
                                {'demands':demands(), 'project':p},
                                context_instance=RequestContext(request))
 
-def write_demand_pdf(demand, filename):
+def write_demand_pdf(demand, filename, to_mail=False):
     p = open(filename,'w+')
     p.flush()
     p.close()
-    MonthDemandWriter(demand).build(filename)    
+    MonthDemandWriter(demand, to_mail).build(filename)    
 
 @permission_required('Management.report_project_month')
 def report_project_month(request, project_id, year, month):

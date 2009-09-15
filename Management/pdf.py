@@ -23,6 +23,7 @@ styleDate = ParagraphStyle('date', fontName='David',fontSize=14, leading=15)
 styleSumRow = ParagraphStyle('sumRow', fontName='David-Bold',fontSize=11, leading=15)
 styleSubj = ParagraphStyle('subject', fontName='David',fontSize=16, leading=15, alignment=TA_CENTER)
 styleSubTitle = ParagraphStyle('subtitle', fontName='David-Bold', fontSize=15, alignment=TA_CENTER)
+styleSubTitleBold = ParagraphStyle('subtitle', fontName='David', fontSize=15, alignment=TA_CENTER)
 saleTableStyle = TableStyle(
                             [('FONTNAME', (0,0), (-1,0), 'David-Bold'),
                              ('FONTNAME', (0,1), (-1,-1), 'David'),
@@ -108,7 +109,7 @@ class EmployeeListWriter:
         frame4 = Frame(50, 20, 500, 70)
         frame4.addFromList([nhAddr()], canv)
     def employeeFlows(self):
-        flows=[Paragraph(log2vis(u'נווה העיר - %s עובדים' % len(self.employees)), styleSubTitle),
+        flows=[Paragraph(log2vis(u'נווה העיר - %s עובדים' % len(self.employees)), styleSubTitleBold),
                Spacer(0,10)]
         headers=[]
         for header in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'כתובת',
@@ -143,7 +144,7 @@ class EmployeeListWriter:
                 flows.append(t)
                 flows.extend([PageBreak(), Spacer(0,70)])
                 rows = []
-        flows.extend([Paragraph(log2vis(u'נייס האוס - %s עובדים' % len(self.nhemployees)), styleSubTitle),
+        flows.extend([Paragraph(log2vis(u'נייס האוס - %s עובדים' % len(self.nhemployees)), styleSubTitleBold),
                       Spacer(0,10)])
         headers=[]
         for header in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'כתובת',
@@ -201,11 +202,12 @@ class MonthDemandWriter:
         if count <= 40:
             return base + 3
         return base + 4
-    def __init__(self, demand):
+    def __init__(self, demand, to_mail=False):
         if demand.sales.count() == 0:
             raise AttributeError('demand','has no sales')
         self.demand = demand
         self.signup_adds = self.demand.project.commissions.commission_by_signups
+        self.to_mail = to_mail
     def toPara(self):
         contact = self.demand.project.demand_contact
         s = log2vis(u'בס"ד') + '<br/><br/>'
@@ -534,7 +536,10 @@ class MonthDemandWriter:
         story.append(titlePara(title))
         story.append(Spacer(0, 10))
         subTitle = '<u>%s</u>' % log2vis(u"דרישה מס' %s" % self.demand.id)
-        story.append(Paragraph(subTitle, styleSubTitle))
+        story.append(Paragraph(subTitle, styleSubTitleBold))
+        if self.demand.project.is_zilber():
+            story.extend([Spacer(0,20), Paragraph(log2vis(u'דרישה %s מתוך %s' % (self.demand.zilber_cycle_index(), models.ZILBER_CYCLE)), 
+                                                  styleSubTitle)])
         story.extend([Spacer(0,20), self.introPara(), Spacer(0,20)])
         story.extend(self.saleFlows())
         if self.demand.get_sales().count() == 10:
@@ -544,7 +549,7 @@ class MonthDemandWriter:
         if self.demand.project.is_zilber():
             story.extend([PageBreak(), Spacer(0,30)])
             story.extend(self.zilberAddsFlows())
-            if self.demand.include_zilber_bonus():
+            if self.demand.include_zilber_bonus() or not self.to_mail:
                 story.extend([PageBreak(), Spacer(0,30)])
                 story.extend(self.zilberBonusFlows())
         story.extend([Spacer(0, 20), self.remarkPara()]) 
