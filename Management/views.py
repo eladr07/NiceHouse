@@ -676,7 +676,7 @@ def demands_send(request):
         if not error:
             return HttpResponseRedirect('/demandsold')
     else:
-        month = demand_month()
+        month = Demand.current_month()
         form = MonthFilterForm()
         for d in Demand.objects.filter(year=month.year, month=month.month):
             if d.project.demand_contact:
@@ -1954,8 +1954,8 @@ def report_projects_month(request, year, month):
     return response
 
 @login_required
-def report_project_season(request, project_id=None, from_year=demand_month().year, from_month=demand_month().month, 
-                          to_year=demand_month().year, to_month=Demand.current_month().month):
+def report_project_season(request, project_id=None, from_year=Demand.current_month().year, from_month=Demand.current_month().month, 
+                          to_year=Demand.current_month().year, to_month=Demand.current_month().month):
     ds = []
     current = date(from_year, from_month, 1)
     end = date(to_year, to_month, 1)
@@ -1980,8 +1980,8 @@ def report_project_season(request, project_id=None, from_year=demand_month().yea
     p.close()
     return response
 
-def demand_season_list(request, project_id=None, from_year=demand_month().year, from_month=demand_month().month, 
-                          to_year=demand_month().year, to_month=Demand.current_month().month):
+def demand_season_list(request, project_id=None, from_year=Demand.current_month().year, from_month=Demand.current_month().month, 
+                          to_year=Demand.current_month().year, to_month=Demand.current_month().month):
     form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
     ds = []
     total_sales_count,total_sales_amount, total_sales_commission, total_amount = (0,0,0,0)
