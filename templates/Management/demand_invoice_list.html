@@ -44,21 +44,21 @@
 		<a id="invoiceDelete">מחיקה</a>
 	</div>
 	<div class="clearBoth"> </div>
-	<a href="?page={{ invoices.previous_page_number }}" style="text-decoration:none;">
-		<img src="/site_media/images/1rightarrow-48.png" width="24" height="24" border="0" />
-	</a>
-	<a href="?page={{ invoices.next_page_number }}" style="text-decoration:none;">
-		<img src="/site_media/images/1leftarrow-48.png" width="24" height="24" border="0" />
-	</a>
 	<br /> 		
 	<table class="dataTable" border="1">
 		<caption>
+	<a href="?page={{ invoices.previous_page_number }}" style="text-decoration:none;">
+		<img src="/site_media/images/1rightarrow-48.png" width="24" height="24" border="0" />
+	</a>
 		מציג
 		{{invoices.start_index}} - {{invoices.end_index}}, 
 		עמוד
 		{{invoices.number}}
 		מתוך
 		{{invoices.paginator.num_pages}}
+	<a href="?page={{ invoices.next_page_number }}" style="text-decoration:none;">
+		<img src="/site_media/images/1leftarrow-48.png" width="24" height="24" border="0" />
+	</a>
 		</caption>
 		<th>שם היזם</th>
 		<th>פרויקט</th>
@@ -70,10 +70,10 @@
 		<th>הערות</th>
 		{% for i in invoices.object_list %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{loan.id}}>
-				<td>{{ i.demands.0.project.initiator }}</td>
-				<td><a href="{{i.demands.0.project.get_absolute_url}}">{{ i.demands.0.project }}</td>
-				<td>{{ i.demands.0.month }}</td>
-				<td>{{ i.demands.0.year }}</td>
+				<td>{{ i.demands.all.0.project.initiator }}</td>
+				<td><a href="{{i.demands.0.project.get_absolute_url}}">{{ i.demands.all.0.project }}</td>
+				<td>{{ i.demands.all.0.month }}</td>
+				<td>{{ i.demands.all.0.year }}</td>
 				<td>{{ i.num }}</td>
 				<td>{{ i.date|date:"j/m/y" }}</td>
 				<td>{{ i.amount }}</td>
