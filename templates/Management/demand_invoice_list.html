@@ -60,6 +60,7 @@
 		<img src="/site_media/images/1leftarrow-48.png" width="24" height="24" border="0" />
 	</a>
 		</caption>
+		<th></th>
 		<th>שם היזם</th>
 		<th>פרויקט</th>
 		<th>חודש</th>
@@ -70,6 +71,7 @@
 		<th>הערות</th>
 		{% for i in invoices.object_list %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{loan.id}}>
+				<td><a href="{{i.demands.all.0.get_absolute_url}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
 				<td>{{ i.demands.all.0.project.initiator }}</td>
 				<td><a href="{{i.demands.0.project.get_absolute_url}}">{{ i.demands.all.0.project }}</td>
 				<td>{{ i.demands.all.0.month }}</td>
