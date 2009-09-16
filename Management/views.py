@@ -10,6 +10,7 @@ from django.core import serializers
 from django.views.generic.create_update import create_object, update_object
 from django.views.generic.list_detail import object_list 
 from django.contrib.auth.decorators import login_required, permission_required
+from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, NHEmployeeSalariesWriter
 from mail import mail
 
@@ -737,6 +738,22 @@ def invoice_add(request, initial=None):
 def demand_invoice_add(request, id):
     demand = Demand.objects.get(pk=id)
     return invoice_add(request, {'project':demand.project.id, 'month':demand.month, 'year':demand.year})
+
+@permission_required('Management.change_invoice')
+def demand_invoice_list(request):
+    paginator = Paginator(Invoice.objects.all(), 25) 
+
+    try:
+        page = int(request.GET.get('page', '1'))
+    except ValueError:
+        page = 1
+
+    try:
+        invoices = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        invoices = paginator.page(paginator.num_pages)
+
+    return render_to_response('demand_invoice_list.html', {'invoices': invoices})    
    
 @permission_required('Management.add_invoice')
 def project_invoice_add(request, id):
