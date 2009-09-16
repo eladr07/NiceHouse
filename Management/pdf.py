@@ -620,7 +620,7 @@ class MultipleDemandWriter:
 class EmployeeSalariesWriter:
     def __init__(self, year, month):
         self.year, self.month = (year, month)
-        self.salaries = [es for es in models.EmployeeSalary.objects.filter(year = year, month= month)
+        self.salaries = [es for es in models.EmployeeSalary.objects.filter(year = year, month= month, nhemployee=None)
                          if es.approved_date]
     @property
     def pages_count(self):
