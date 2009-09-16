@@ -47,18 +47,22 @@
 	<br /> 		
 	<table class="dataTable" border="1">
 		<caption>
-	<a href="?page={{ invoices.previous_page_number }}" style="text-decoration:none;">
-		<img src="/site_media/images/1rightarrow-48.png" width="24" height="24" border="0" />
-	</a>
+		{% if invoices.has_previous %}
+		<a href="?page={{ invoices.previous_page_number }}" style="text-decoration:none;">
+			<img src="/site_media/images/1rightarrow-48.png" width="20" height="20" border="0" />
+		</a>
+		{% endif %}
 		מציג
 		{{invoices.start_index}} - {{invoices.end_index}}, 
 		עמוד
 		{{invoices.number}}
 		מתוך
 		{{invoices.paginator.num_pages}}
-	<a href="?page={{ invoices.next_page_number }}" style="text-decoration:none;">
-		<img src="/site_media/images/1leftarrow-48.png" width="24" height="24" border="0" />
-	</a>
+		{% if invoices.has_next %}
+		<a href="?page={{ invoices.next_page_number }}" style="text-decoration:none;">
+			<img src="/site_media/images/1leftarrow-48.png" width="20" height="20" border="0" />
+		</a>
+		{% endif %}
 		</caption>
 		<th></th>
 		<th>שם היזם</th>
