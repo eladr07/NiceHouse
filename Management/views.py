@@ -3,6 +3,7 @@ import time
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.forms.models import inlineformset_factory, modelformset_factory
+from django.db.models import Avg, Max, Min, Count
 from django.template import RequestContext
 from datetime import datetime, date
 from forms import *
