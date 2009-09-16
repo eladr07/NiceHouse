@@ -47,11 +47,19 @@
 	<a href="?page={{ invoices.previous_page_number }}" style="text-decoration:none;">
 		<img src="/site_media/images/1rightarrow-48.png" width="24" height="24" border="0" />
 	</a>
-	<a href="?page={{ contacts.next_page_number }}" style="text-decoration:none;">
+	<a href="?page={{ invoices.next_page_number }}" style="text-decoration:none;">
 		<img src="/site_media/images/1leftarrow-48.png" width="24" height="24" border="0" />
 	</a>
 	<br /> 		
 	<table class="dataTable" border="1">
+		<caption>
+		מציג
+		{{invoices.start_index}} - {{invoices.end_index}}, 
+		עמוד
+		{{invoices.number}}
+		מתוך
+		{{invoices.paginator.num_pages}}
+		</caption>
 		<th>שם היזם</th>
 		<th>פרויקט</th>
 		<th>חודש</th>
@@ -60,7 +68,7 @@
 		<th>ת. חשבונית</th>
 		<th>סכום</th>
 		<th>הערות</th>
-		{% for i in invoices %}
+		{% for i in invoices.object_list %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{loan.id}}>
 				<td>{{ i.demands.0.project.initiator }}</td>
 				<td><a href="{{i.demands.0.project.get_absolute_url}}">{{ i.demands.0.project }}</td>
