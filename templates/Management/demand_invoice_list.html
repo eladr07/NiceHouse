@@ -18,8 +18,8 @@
 			//sync links
 			if (selectedID > 0)
 			{
-				$("#loanEdit").attr("href", "/loans/" + selectedID);
-				$("#loanDelete").attr("href", "/loans/" + selectedID + "/del");
+				$("#objEdit").attr("href", "/invoices/" + selectedID);
+				$("#objDelete").attr("href", "/invoices/" + selectedID + "/del");
 			}
 		});
 		//add fancybox
@@ -37,29 +37,29 @@
 	</div>
 	<div class="someIcon">
 		<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
-		<a id="invoiceEdit" class="fancybox" >שינוי</a>
+		<a id="objEdit" class="fancybox" >שינוי</a>
 	</div>
 	<div class="someIcon">
 		<img src="/site_media/images/delete_48.png" width="20" height="20"  alt="מחיקה" /> 
-		<a id="invoiceDelete">מחיקה</a>
+		<a id="objDelete">מחיקה</a>
 	</div>
 	<div class="clearBoth"> </div>
 	<br /> 		
 	<table class="dataTable" border="1">
 		<caption>
-		{% if invoices.has_previous %}
-		<a href="?page={{ invoices.previous_page_number }}" style="text-decoration:none;">
+		{% if page.has_previous %}
+		<a href="?page={{ page.previous_page_number }}" style="text-decoration:none;">
 			<img src="/site_media/images/1rightarrow-48.png" width="20" height="20" border="0" />
 		</a>
 		{% endif %}
 		מציג
-		{{invoices.start_index}} - {{invoices.end_index}}, 
+		{{page.start_index}} - {{page.end_index}}, 
 		עמוד
-		{{invoices.number}}
+		{{page.number}}
 		מתוך
-		{{invoices.paginator.num_pages}}
-		{% if invoices.has_next %}
-		<a href="?page={{ invoices.next_page_number }}" style="text-decoration:none;">
+		{{page.paginator.num_pages}}
+		{% if page.has_next %}
+		<a href="?page={{ page.next_page_number }}" style="text-decoration:none;">
 			<img src="/site_media/images/1leftarrow-48.png" width="20" height="20" border="0" />
 		</a>
 		{% endif %}
@@ -73,7 +73,7 @@
 		<th>ת. חשבונית</th>
 		<th>סכום</th>
 		<th>הערות</th>
-		{% for i in invoices.object_list %}
+		{% for i in page.object_list %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{loan.id}}>
 				<td><a href="{{i.demands.all.0.get_absolute_url}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
 				<td>{{ i.demands.all.0.project.initiator }}</td>

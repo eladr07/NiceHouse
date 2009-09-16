@@ -18,8 +18,8 @@
 			//sync links
 			if (selectedID > 0)
 			{
-				$("#loanEdit").attr("href", "/loans/" + selectedID);
-				$("#loanDelete").attr("href", "/loans/" + selectedID + "/del");
+				$("#objEdit").attr("href", "/payments/" + selectedID);
+				$("#objDelete").attr("href", "/payments/" + selectedID + "/del");
 			}
 		});
 		//add fancybox
@@ -29,38 +29,66 @@
 {% endblock header %}
 {% block content %}
 	<div class="title">
-		<div class="pageTitle">ריכוז הלוואות לעובדים</div>
+		<div class="pageTitle">ריכוז תשלומים לדרישה</div>
 	</div>
 	<div class="someIcon">
 		<img src="/site_media/images/add_48.png" width="20" height="20"  alt="חדש" /> 
-		<a href="/loans/add" class="fancybox" >חדש</a>
+		<a href="/payments/add" class="fancybox" >חדש</a>
 	</div>
 	<div class="someIcon">
 		<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
-		<a id="loanEdit" class="fancybox" >שינוי</a>
+		<a id="objEdit" class="fancybox" >שינוי</a>
 	</div>
 	<div class="someIcon">
 		<img src="/site_media/images/delete_48.png" width="20" height="20"  alt="מחיקה" /> 
-		<a id="loanDelete">מחיקה</a>
+		<a id="objDelete">מחיקה</a>
 	</div>
 	<div class="clearBoth"> </div>
 	<br /> 		
 	<table class="dataTable" border="1">
-		<th>שם העובד</th>
-		<th>תאריך ההלוואה</th>
-		<th>סכום ההלוואה</th>
-		<th>מס' תשלומים</th>
-		<th>יתרה לתשלום</th>
-		{% for loan in object_list %}
-		{% if loan.employee.loan_left %}
-			<tr class="{% cycle 'row1' 'row2' %}" objid={{loan.id}}>
-				<td><a href="/employees/{{ loan.employee.id }}">{{ loan.employee }}</td>
-				<td>{{ loan.date }}</td>
-				<td>{{ loan.amount|commaise }} ש"ח</td>
-				<td>{{ loan.pay_num }}</td>
-				<td>{{ loan.employee.loan_left|commaise }} ש"ח</td>
-			</tr>
+		<caption>
+		{% if page.has_previous %}
+		<a href="?page={{ page.previous_page_number }}" style="text-decoration:none;">
+			<img src="/site_media/images/1rightarrow-48.png" width="20" height="20" border="0" />
+		</a>
 		{% endif %}
+		מציג
+		{{page.start_index}} - {{page.end_index}}, 
+		עמוד
+		{{page.number}}
+		מתוך
+		{{page.paginator.num_pages}}
+		{% if page.has_next %}
+		<a href="?page={{ page.next_page_number }}" style="text-decoration:none;">
+			<img src="/site_media/images/1leftarrow-48.png" width="20" height="20" border="0" />
+		</a>
+		{% endif %}
+		</caption>
+		<th></th>
+		<th>שם היזם</th>
+		<th>פרויקט</th>
+		<th>חודש</th>
+		<th>שנה</th>
+		<th>מס' צ'ק</th>
+		<th>מס' אסמכתא</th>
+		<th>סוג תשלום</th>
+		<th>ת. תשלום</th>
+		<th>סכום</th>
+		<th>הערות</th>
+		{% for i in page.object_list %}
+			<tr class="{% cycle 'row1' 'row2' %}" objid={{loan.id}}>
+				<td><a href="{{i.demands.all.0.get_absolute_url}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
+				<td>{{ i.demands.all.0.project.initiator }}</td>
+				<td><a href="{{i.demands.0.project.get_absolute_url}}">{{ i.demands.all.0.project }}</td>
+				<td>{{ i.demands.all.0.month }}</td>
+				<td>{{ i.demands.all.0.year }}</td>
+				<td>{{ i.num }}</td>
+				<td>{{ i.support_num }}</td>
+				<td>{{ i.payment_type }}</td>
+				<td>{{ i.payment_date|date:"j/m/y" }}</td>
+				<td>{{ i.amount }}</td>
+				<td>{{ i.remarks }}</td>
+			</tr>
 		{% endfor %}
 	</table>
 {% endblock content %}

@@ -742,7 +742,7 @@ def demand_invoice_add(request, id):
 
 @permission_required('Management.change_invoice')
 def demand_invoice_list(request):
-    q = Invoice.objects.annotate(Count('demands'))#.filter(demands__count=1)
+    q = Invoice.objects.annotate(Count('demands'))
     paginator = Paginator([i for i in q if i.demands__count > 0], 25) 
 
     try:
@@ -755,7 +755,25 @@ def demand_invoice_list(request):
     except (EmptyPage, InvalidPage):
         invoices = paginator.page(paginator.num_pages)
 
-    return render_to_response('Management/demand_invoice_list.html', {'invoices': invoices})    
+    return render_to_response('Management/demand_invoice_list.html', {'page': invoices})    
+ 
+ 
+@permission_required('Management.change_payment')
+def demand_payment_list(request):
+    q = Payment.objects.annotate(Count('demands'))
+    paginator = Paginator([i for i in q if i.demands__count > 0], 25) 
+
+    try:
+        page = int(request.GET.get('page', '1'))
+    except ValueError:
+        page = 1
+
+    try:
+        payments = paginator.page(page)
+    except (EmptyPage, InvalidPage):
+        payments = paginator.page(paginator.num_pages)
+
+    return render_to_response('Management/demand_invoice_list.html', {'page': payments})    
    
 @permission_required('Management.add_invoice')
 def project_invoice_add(request, id):

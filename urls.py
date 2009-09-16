@@ -312,6 +312,7 @@ urlpatterns = patterns('',
           'post_save_redirect' : 'remarks'}),
           
     (r'^demandinvoices/$', 'Management.views.demand_invoice_list'),
+    (r'^demandpayments/$', 'Management.views.demand_payment_list'),
 
     (r'^employeesalaries/$', 'Management.views.employee_salary_list'),
     (r'^employeesalaries/(?P<year>\d+)/(?P<month>\d+)$', 'Management.views.employee_salary_list'),
