@@ -742,7 +742,7 @@ def demand_invoice_add(request, id):
 
 @permission_required('Management.change_invoice')
 def demand_invoice_list(request):
-    q = Invoice.objects.annotate(Count('demands'))
+    q = Invoice.objects.reverse().annotate(Count('demands'))
     paginator = Paginator([i for i in q if i.demands__count > 0], 25) 
 
     try:
@@ -760,7 +760,7 @@ def demand_invoice_list(request):
  
 @permission_required('Management.change_payment')
 def demand_payment_list(request):
-    q = Payment.objects.annotate(Count('demands'))
+    q = Payment.objects.reverse().annotate(Count('demands'))
     paginator = Paginator([i for i in q if i.demands__count > 0], 25) 
 
     try:

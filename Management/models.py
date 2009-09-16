@@ -1369,6 +1369,7 @@ class Invoice(models.Model):
     class Meta:
         db_table = 'Invoice'
         get_latest_by = 'creation_date'
+        ordering = ['creation_date']
 
 class PaymentType(models.Model):
     name = models.CharField(max_length=20)
@@ -1392,6 +1393,7 @@ class Payment(models.Model):
     class Meta:
         db_table = 'Payment'
         get_latest_by = 'creation_date'
+        ordering = ['creation_date']
 
 DemandFeed, DemandClosed, DemandSent, DemandFinished = range(1,5)
 
