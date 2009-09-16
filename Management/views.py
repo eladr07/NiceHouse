@@ -753,7 +753,7 @@ def demand_invoice_list(request):
     except (EmptyPage, InvalidPage):
         invoices = paginator.page(paginator.num_pages)
 
-    return render_to_response('demand_invoice_list.html', {'invoices': invoices})    
+    return render_to_response('Management/demand_invoice_list.html', {'invoices': invoices})    
    
 @permission_required('Management.add_invoice')
 def project_invoice_add(request, id):
