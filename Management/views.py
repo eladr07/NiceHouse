@@ -742,8 +742,8 @@ def demand_invoice_add(request, id):
 
 @permission_required('Management.change_invoice')
 def demand_invoice_list(request):
-    Invoice.objects.annotate(demands_count=Count('demands'))
-    paginator = Paginator(Invoice.objects.filter(demands_count=1), 25) 
+    q = Invoice.objects.annotate(Count('demands')).filter(demands__count=1)
+    paginator = Paginator(q, 25) 
 
     try:
         page = int(request.GET.get('page', '1'))
