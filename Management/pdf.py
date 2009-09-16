@@ -621,7 +621,7 @@ class EmployeeSalariesWriter:
     def __init__(self, year, month):
         self.year, self.month = (year, month)
         self.salaries = [es for es in models.EmployeeSalary.objects.filter(year = year, month= month)
-                         if es.date_approved]
+                         if es.approved_date]
     @property
     def pages_count(self):
         return len(self.salaries) / 28 + 1
