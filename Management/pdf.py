@@ -620,10 +620,11 @@ class MultipleDemandWriter:
 class EmployeeSalariesWriter:
     def __init__(self, year, month):
         self.year, self.month = (year, month)
-        self.salaries = models.EmployeeSalary.objects.filter(year = year, month= month, approved=True)
+        self.salaries = [es for es in models.EmployeeSalary.objects.filter(year = year, month= month)
+                         if es.date_approved]
     @property
     def pages_count(self):
-        return self.salaries.count() / 28 + 1
+        return len(self.salaries) / 28 + 1
     def addTemplate(self, canv, doc):
         frame2 = Frame(0, 680, 650, 150)
         frame2.addFromList([nhLogo(), datePara()], canv)
@@ -643,7 +644,7 @@ class EmployeeSalariesWriter:
         colWidths.reverse()
         rows = []
         i = 0
-        for es in self.salaries.all():
+        for es in self.salaries:
             terms = es.employee.employment_terms
             row = [log2vis(unicode(es.employee)), 
                    log2vis(u'%s - %s' % (terms.hire_type.name, terms.salary_net and u'נטו' or u'ברוטו')), 
@@ -653,13 +654,13 @@ class EmployeeSalariesWriter:
             row.reverse()
             rows.append(row)
             i += 1
-            if i % 27 == 0 or i == self.salaries.count():
+            if i % 27 == 0 or i == len(self.salaries):
                 data = [headers]
                 data.extend(rows)
                 t = Table(data, colWidths)
                 t.setStyle(saleTableStyle)
                 flows.append(t)
-                if i < self.salaries.count():
+                if i < len(self.salaries):
                     flows.extend([PageBreak(), Spacer(0, 50)])
                 rows = []
 
@@ -679,11 +680,12 @@ class NHEmployeeSalariesWriter:
     def __init__(self, nhmonth, bookkeeping):
         self.bookkeeping = bookkeeping
         self.year, self.month, self.nhbranch = (nhmonth.year, nhmonth.month, nhmonth.nhbranch)
-        self.salaries = models.NHEmployeeSalary.objects.filter(year = self.year, month = self.month, 
-                                                               nhemployee__nhbranch = self.nhbranch)
+        self.salaries = [nhes for nhes in models.NHEmployeeSalary.objects.filter(year = self.year, month = self.month, 
+                                                                                 nhemployee__nhbranch = self.nhbranch)
+                                                                                 if nhes.approved_date]
     @property
     def pages_count(self):
-        return self.salaries.count() / 28 + 1
+        return len(self.salaries) / 28 + 1
     def addTemplate(self, canv, doc):
         frame2 = Frame(0, 680, 650, 150)
         frame2.addFromList([nhLogo(), datePara()], canv)
@@ -706,7 +708,7 @@ class NHEmployeeSalariesWriter:
         colWidths.reverse()
         rows = []
         i = 0
-        for es in self.salaries.all():
+        for es in self.salaries:
             terms = es.nhemployee.employment_terms
             row = [i+1, log2vis(unicode(es.nhemployee)), log2vis(u'%s - %s' % (terms.hire_type.name, terms.salary_net and u'נטו' or u'ברוטו'))]
             if self.bookkeeping:
@@ -717,13 +719,13 @@ class NHEmployeeSalariesWriter:
             row.reverse()
             rows.append(row)
             i += 1
-            if i % 27 == 0 or i == self.salaries.count():
+            if i % 27 == 0 or i == len(self.salaries):
                 data = [headers]
                 data.extend(rows)
                 t = Table(data, colWidths)
                 t.setStyle(saleTableStyle)
                 flows.append(t)
-                if i < self.salaries.count():
+                if i < len(self.salaries):
                     flows.extend([PageBreak(), Spacer(0, 50)])
                 rows = []
 
