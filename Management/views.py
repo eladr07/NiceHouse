@@ -1040,7 +1040,6 @@ def building_pricelist_pdf(request, object_id, type_id):
     p = open(filename,'w+')
     p.flush()
     p.close()
-    demands = Demand.objects.filter(year = year, month=month).all()
     PricelistWriter(houses, u'מחירון לפרוייקט %s' % unicode(b.project),
                     'בניין %s - מחירון %s' % (b.num, unicode(pricelist_type))).build(filename)
     p = open(filename,'r')
