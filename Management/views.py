@@ -1041,7 +1041,7 @@ def building_pricelist_pdf(request, object_id, type_id):
     p.flush()
     p.close()
     PricelistWriter(houses, u'מחירון לפרוייקט %s' % unicode(b.project),
-                    u'בניין %s - מחירון %s' % (b.num, unicode(pricelist_type))).build(filename)
+                    u'בניין %s - %s' % (b.num, unicode(pricelist_type))).build(filename)
     p = open(filename,'r')
     response.write(p.read())
     p.close()
