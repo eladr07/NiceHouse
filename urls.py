@@ -431,7 +431,7 @@ urlpatterns = patterns('',
     (r'^reports/project_month/(?P<project_id>\d+)/(?P<year>\d+)/(?P<month>\d+)$', 'Management.views.report_project_month'),
     (r'^reports/projects_month/(?P<year>\d+)/(?P<month>\d+)$', 'Management.views.report_projects_month'),
     (r'^reports/project_season/(?P<project_id>\d+)/(?P<from_year>\d+)/(?P<from_month>\d+)/(?P<to_year>\d+)/(?P<to_month>\d+)$', 'Management.views.report_project_season'),
-    (r'^reports/employeesalary_season/(?P<employee_id>\d*)/(?P<from_year>\d+)/(?P<from_month>\d+)/(?P<to_year>\d+)/(?P<to_month>\d+)$', 'Management.views.report_project_season'),
+    (r'^reports/employeesalary_season/(?P<employee_id>\d+)/(?P<from_year>\d+)/(?P<from_month>\d+)/(?P<to_year>\d+)/(?P<to_month>\d+)$', 'Management.views.report_project_season'),
     
     (r'^madad/$', 'Management.views.madad_list'),
     (r'^madad/add$', 'Management.views.limited_create_object',
