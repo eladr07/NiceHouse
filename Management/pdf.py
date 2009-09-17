@@ -618,10 +618,8 @@ class MultipleDemandWriter:
         return doc.canv
 
 class EmployeeSalariesWriter:
-    def __init__(self, year, month):
-        self.year, self.month = (year, month)
-        self.salaries = [es for es in models.EmployeeSalary.objects.filter(year = year, month= month, nhemployee=None)
-                         if es.approved_date]
+    def __init__(self, salaries, title, show_employee, show_month):
+        self.salaries, self.title, self.show_employee, self.show_month = salaries, title, show_employee, show_month
     @property
     def pages_count(self):
         return len(self.salaries) / 28 + 1
@@ -636,9 +634,13 @@ class EmployeeSalariesWriter:
         self.current_page += 1
     def salariesFlows(self):
         flows = []
-        headers = [log2vis(u'העובד\nשם'), log2vis(u'סטטוס'), log2vis(u'התלוש\nסכום'),
-                   log2vis(u'הצק\nסכום'), log2vis(u'לעובד\nהוצאות\nהחזר'), log2vis(u'מנה"ח\nלחישוב\nברוטו'),
-                   log2vis(u'לנטו\nמחושב\nברוטו'), log2vis(u'הערות')]
+        headers = []
+        if self.show_employee:
+            headers.append(log2vis(u'העובד\nשם'))
+        if self.show_month:
+            headers.append(log2vis(u'חודש'))
+        headers.extend([log2vis(n) for n in [u'סטטוס', u'התלוש\nסכום', u'הצק\nסכום', u'לעובד\nהוצאות\nהחזר', 
+                                        u'מנה"ח\nלחישוב\nברוטו', u'לנטו\nמחושב\nברוטו', u'הערות']])
         headers.reverse()
         colWidths = [None,None,None,None,None,None,None,None]
         colWidths.reverse()
@@ -646,11 +648,16 @@ class EmployeeSalariesWriter:
         i = 0
         for es in self.salaries:
             terms = es.employee.employment_terms
-            row = [log2vis(unicode(es.employee)), 
-                   log2vis(u'%s - %s' % (terms.hire_type.name, terms.salary_net and u'נטו' or u'ברוטו')), 
-                   commaise(es.total_amount), commaise(es.check_amount),
-                   commaise(es.refund or 0), es.bruto_amount and commaise(es.bruto_amount),
-                   None, log2vis(es.remarks or '')]
+            row = []
+            if self.show_employee:
+                row.append(log2vis(unicode(es.employee)))
+            if self.show_month:
+                headers.append('%s/%s' % (es.month, es.year))
+            row.extend([log2vis(unicode(es.employee)), 
+                        log2vis(u'%s - %s' % (terms.hire_type.name, terms.salary_net and u'נטו' or u'ברוטו')), 
+                        commaise(es.total_amount), commaise(es.check_amount),
+                        commaise(es.refund or 0), es.bruto_amount and commaise(es.bruto_amount),
+                        None, log2vis(es.remarks or '')])
             row.reverse()
             rows.append(row)
             i += 1
@@ -669,8 +676,7 @@ class EmployeeSalariesWriter:
         self.current_page = 1
         doc = SimpleDocTemplate(filename)
         story = [Spacer(0,50)]
-        title = u'שכר עבודה למנהלי פרויקטים לחודש %s\%s' % (self.year, self.month)
-        story.append(titlePara(title))
+        story.append(titlePara(self.title))
         story.append(Spacer(0, 10))
         story.extend(self.salariesFlows())
         doc.build(story, self.addTemplate, self.addTemplate)

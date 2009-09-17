@@ -427,7 +427,9 @@ def employee_salary_pdf(request, year, month):
     p = open(filename,'w+')
     p.flush()
     p.close()
-    EmployeeSalariesWriter(year, month).build(filename)
+    EmployeeSalariesWriter([es for es in models.EmployeeSalary.objects.filter(year = year, month= month, nhemployee=None)
+                            if es.approved_date], u'שכר עבודה למנהלי פרויקטים לחודש %s\%s' % (self.year, self.month),
+                            show_month=False, show_employee=True).build(filename)
     p = open(filename,'r')
     response.write(p.read())
     p.close()
@@ -2034,6 +2036,33 @@ def report_project_season(request, project_id=None, from_year=Demand.current_mon
     p.close()
     return response
 
+@login_required
+def report_employeesalary_season(request, employee_id=None, from_year=Demand.current_month().year, from_month=Demand.current_month().month, 
+                          to_year=Demand.current_month().year, to_month=Demand.current_month().month):
+    salaries = []
+    current = date(int(from_year), int(from_month), 1)
+    end = date(int(to_year), int(to_month), 1)
+    while current <= end:
+        q = EmployeeSalary.objects.filter(employee__id = employee_id, year = current.year, month = current.month)
+        if q.count() > 0:
+            salaries.append(q[0])
+        current = date(current.month == 12 and current.year + 1 or current.year,
+                       current.month == 12 and 1 or current.month + 1, 1)
+    
+    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    
+    response = HttpResponse(mimetype='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=' + filename
+    p = open(filename,'w+')
+    p.flush()
+    p.close()
+    EmployeeSalariesWriter(salaries, u'ריכוז שכר תקופתי לעובד %s' % Employee.objects.get(pk=employee_id),
+                           show_month=True, show_employee=False).build(filename)
+    p = open(filename,'r')
+    response.write(p.read())
+    p.close()
+    return response
+
 def demand_season_list(request, project_id=None, from_year=Demand.current_month().year, from_month=Demand.current_month().month, 
                           to_year=Demand.current_month().year, to_month=Demand.current_month().month):
     form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
@@ -2061,5 +2090,24 @@ def demand_season_list(request, project_id=None, from_year=Demand.current_month(
                                 'total_sales_amount':total_sales_amount,
                                 'total_sales_commission':total_sales_commission,
                                 'total_amount':total_amount},
+                              context_instance=RequestContext(request))
+
+def employeesalary_season_list(request, employee_id=None, from_year=Demand.current_month().year, from_month=Demand.current_month().month, 
+                               to_year=Demand.current_month().year, to_month=Demand.current_month().month):
+    form = EmployeeSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
+    salaries = []
+    if employee_id:
+        current = date(int(from_year), int(from_month), 1)
+        end = date(int(to_year), int(to_month), 1)
+        while current <= end:
+            q = EmployeeSalary.objects.filter(employee__id = employee_id, year = current.year, month = current.month)
+            if q.count() > 0:
+                salaries.append(q[0])
+            current = date(current.month == 12 and current.year + 1 or current.year,
+                           current.month == 12 and 1 or current.month + 1, 1)
+        
+    return render_to_response('Management/employeesalary_season_list.html', 
+                              { 'salaries':salaries, 'start':date(int(from_year), int(from_month), 1), 'end':date(int(to_year), int(to_month), 1),
+                                'project':project_id and Project.objects.get(pk=project_id), 'filterForm':form},
                               context_instance=RequestContext(request))
         

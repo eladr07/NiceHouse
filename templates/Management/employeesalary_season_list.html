@@ -39,7 +39,8 @@
 		});
 		$("#monthChange").click(function(event) {
 			event.preventDefault();
-			location.replace("/employeesalaries/" + $("#id_year").val() + "/" + $("#id_month").val())
+			location.replace("/employeesalaryseason/" + $("#id_employee").val() + "/" + $("#id_from_year").val() + "/" + $("#id_from_month").val()
+							 + "/" + $("#id_to_year").val() + "/" + $("#id_to_month").val());
 		});
 		$("#calcSalary").click(function(event) {
 			if (!confirm("האם אתה בטוח שברצונך לחשב את העמלות מחדש ?"))
@@ -50,7 +51,7 @@
 {% endblock header %}
 {% block content %}
 <div class="title">
-	<div class="pageTitle">ריכוז שכר עובדים לחודש {{month|date:"M Y"}}</div>
+	<div class="pageTitle">ריכוז שכ"ע לפי תקופה</div>
 </div>
 <div class="clearBoth"></div>
 <form method="POST">
@@ -100,14 +101,16 @@
 </div>
 <div class="someIcon" style="width:100px;">
 	<img src="/site_media/images/print-48.png" width="20" height="20"  alt="שינוי" /> 
-	<a href="/employeesalaries/{{month.year}}/{{month.month}}/pdf" >גרסת הדפסה</a>
+	<a href="/reports/employeesalary_season/{{project.id}}/{{start.year}}/{{start.month}}/{{end.year}}/{{end.month}}" >גרסת הדפסה</a>
 </div>
 <div class="clearBoth"></div>
+<br>
 <table id="salaryTable" class="dataTable" border="1">
-<caption>מציג סה"כ {{salaries.count}} עובדים</caption>
+<caption>מציג סה"כ {{salaries|length}} משכורות</caption>
 	<tr>
 		<th></th>
 		<th>שם העובד</th>
+		<th>חודש</th>
 		<th>פרוייקט</th>
 		<th>סוג העסקה</th>
 		<th>מס' עסקאות</th>
@@ -137,6 +140,7 @@
 		{% endif %}
 			<td><a href="/employees/{{s.employee.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
 			<td>{{ s.employee }}</td>
+			<td>{{ s.month }}/{{ s.year }}</td>
 			<td>
 				{% for p in s.employee.projects.all %}
 				<a href="/projects/{{p.id}}" target="_blank">{{p}}</a><br>
