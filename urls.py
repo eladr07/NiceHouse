@@ -314,6 +314,7 @@ urlpatterns = patterns('',
     (r'^demandinvoices/$', 'Management.views.demand_invoice_list'),
     (r'^demandinvoices/(?P<project_id>\d*)/(?P<from_year>\d+)/(?P<from_month>\d+)/(?P<to_year>\d+)/(?P<to_month>\d+)$', 'Management.views.demand_invoice_list'),
     (r'^demandpayments/$', 'Management.views.demand_payment_list'),
+    (r'^demandpayments/(?P<project_id>\d*)/(?P<from_year>\d+)/(?P<from_month>\d+)/(?P<to_year>\d+)/(?P<to_month>\d+)$', 'Management.views.demand_payment_list'),
 
     (r'^employeesalaries/$', 'Management.views.employee_salary_list'),
     (r'^employeesalaries/(?P<year>\d+)/(?P<month>\d+)$', 'Management.views.employee_salary_list'),
