@@ -747,8 +747,8 @@ def demand_invoice_list(request, project_id=None, from_year=Demand.current_month
         q = Invoice.objects.filter(demands__project__id = project_id).reverse()
     else:
         q = Invoice.objects.reverse()
-    q = q.filter(date__gte=date(from_year, from_month, 1),
-                 date__lt=date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
+    q = q.filter(date__gte=date(int(from_year), int(from_month), 1),
+                 date__lt=date(int(to_month) == 12 and int(to_year) + 1 or int(to_year), int(to_month) == 12 and 1 or int(to_month) + 1, 1)
                  ).annotate(Count('demands'))
     form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
     paginator = Paginator([i for i in q if i.demands__count > 0], 25) 
