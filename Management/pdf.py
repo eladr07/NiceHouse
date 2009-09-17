@@ -709,7 +709,7 @@ class PricelistWriter:
             parkings = '<br/>'.join([log2vis(unicode(p)) for p in h.parkings.all()])
             storages = '<br/>'.join([log2vis(unicode(s)) for s in h.storages.all()])
             row = [h.num, h.floor,  log2vis(unicode(h.type)), h.rooms, h.net_size, h.garden_size, h.price and commaise(h.price) or '-',
-                   parkings, storages, log2vis(h.remarks)]
+                   parkings, storages, log2vis(h.remarks[:15] + len(h.remarks)>15 and ' ...' or '')]
             row.reverse()
             rows.append(row)
             i += 1
