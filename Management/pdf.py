@@ -686,7 +686,7 @@ class PricelistWriter:
         self.houses, self.title, self.subtitle = houses, title, subtitle
     @property
     def pages_count(self):
-        return len(self.salaries) / 28 + 1
+        return len(self.houses) / 28 + 1
     def addTemplate(self, canv, doc):
         frame2 = Frame(0, 680, 650, 150)
         frame2.addFromList([nhLogo(), datePara()], canv)
@@ -713,13 +713,13 @@ class PricelistWriter:
             row.reverse()
             rows.append(row)
             i += 1
-            if i % 27 == 0 or i == len(self.salaries):
+            if i % 27 == 0 or i == len(self.houses):
                 data = [headers]
                 data.extend(rows)
                 t = Table(data, colWidths)
                 t.setStyle(saleTableStyle)
                 flows.append(t)
-                if i < len(self.salaries):
+                if i < len(self.houses):
                     flows.extend([PageBreak(), Spacer(0, 50)])
                 rows = []
 
