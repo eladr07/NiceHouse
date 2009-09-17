@@ -12,7 +12,7 @@ from django.views.generic.create_update import create_object, update_object
 from django.views.generic.list_detail import object_list 
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
-from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, NHEmployeeSalariesWriter
+from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, NHEmployeeSalariesWriter, PricelistWriter
 from mail import mail
 
 @login_required
@@ -1021,6 +1021,33 @@ def building_pricelist(request, object_id, type_id):
                                'type':PricelistType.objects.get(pk=type_id), 
                                'types':PricelistType.objects.all()}, 
                               context_instance=RequestContext(request))
+
+@permission_required('Management.change_pricelist')
+def building_pricelist_pdf(request, object_id, type_id):
+    b = Building.objects.get(pk = object_id)
+    pricelist_type = PricelistType.objects.get(pk = type_id)
+    houses = b.houses.filter(is_deleted=False)
+    for h in houses:
+        try:
+            h.price = h.versions.filter(type__id = type_id).latest().price
+        except HouseVersion.DoesNotExist:
+            h.price = None
+    
+    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    
+    response = HttpResponse(mimetype='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=' + filename
+    p = open(filename,'w+')
+    p.flush()
+    p.close()
+    demands = Demand.objects.filter(year = year, month=month).all()
+    PricelistWriter(houses, u'מחירון לפרוייקט %s' % unicode(b.project),
+                    'בניין %s - מחירון %s' % (b.num, unicode(pricelist_type))).build(filename)
+    p = open(filename,'r')
+    response.write(p.read())
+    p.close()
+    return response
+
 
 @permission_required('Management.add_project')
 def project_add(request):
@@ -2056,7 +2083,7 @@ def report_employeesalary_season(request, employee_id=None, from_year=Demand.cur
     p = open(filename,'w+')
     p.flush()
     p.close()
-    EmployeeSalariesWriter(salaries, u'ריכוז שכר תקופתי לעובד %s' % Employee.objects.get(pk=employee_id),
+    EmployeeSalariesWriter(salaries, u'ריכוז שכר תקופתי לעובד - %s' % Employee.objects.get(pk=employee_id),
                            show_month=True, show_employee=False).build(filename)
     p = open(filename,'r')
     response.write(p.read())

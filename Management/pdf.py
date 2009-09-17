@@ -681,6 +681,60 @@ class EmployeeSalariesWriter:
         doc.build(story, self.addTemplate, self.addTemplate)
         return doc.canv
 
+class PricelistWriter:
+    def __init__(self, houses, title, subtitle):
+        self.houses, self.title, self.subtitle = houses, title, subtitle
+    @property
+    def pages_count(self):
+        return len(self.salaries) / 28 + 1
+    def addTemplate(self, canv, doc):
+        frame2 = Frame(0, 680, 650, 150)
+        frame2.addFromList([nhLogo(), datePara()], canv)
+        frame3 = Frame(50, 20, 150, 40)
+        frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
+                            ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
+        frame4 = Frame(50, 30, 500, 70)
+        frame4.addFromList([nhAddr()], canv)
+        self.current_page += 1
+    def housesFlows(self):
+        flows = []
+        headers = [log2vis(n) for n in [u'מס', u'קומה', u'סוג דירה', u'מס חדרים', u'שטח נטו', u'שטח גינה', u'מחיר',
+                                        u'חניה', u'מחסן', u'הערות']]
+        headers.reverse()
+        colWidths = [None,None,None,None,None,None,None,None,None,None]
+        colWidths.reverse()
+        rows = []
+        i = 0
+        for h in self.houses:
+            parkings = '<br/>'.join([log2vis(unicode(p)) for p in h.parkings.all()])
+            storages = '<br/>'.join([log2vis(unicode(s)) for s in h.storages.all()])
+            row = [h.num, h.floor, unicode(h.type), h.rooms, h.net_size, h.garden_size, h.price and commaise(h.price) or '-',
+                   parkings, storages, h.remarks]
+            row.reverse()
+            rows.append(row)
+            i += 1
+            if i % 27 == 0 or i == len(self.salaries):
+                data = [headers]
+                data.extend(rows)
+                t = Table(data, colWidths)
+                t.setStyle(saleTableStyle)
+                flows.append(t)
+                if i < len(self.salaries):
+                    flows.extend([PageBreak(), Spacer(0, 50)])
+                rows = []
+
+        return flows
+    def build(self, filename):
+        self.current_page = 1
+        doc = SimpleDocTemplate(filename)
+        story = [Spacer(0,50)]
+        story.append(titlePara(self.title))
+        story.append(Paragraph(self.subtitle, styleSubTitle))
+        story.append(Spacer(0, 10))
+        story.extend(self.housesFlows())
+        doc.build(story, self.addTemplate, self.addTemplate)
+        return doc.canv
+
 class NHEmployeeSalariesWriter:
     def __init__(self, nhmonth, bookkeeping):
         self.bookkeeping = bookkeeping
