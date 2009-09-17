@@ -774,7 +774,7 @@ def demand_payment_list(request, project_id=None, from_year=Demand.current_month
     else:
         q = Payment.objects.reverse()
     q = q.filter(payment_date__gte=date(int(from_year), int(from_month), 1),
-                 payment_date__gte__lt=date(int(to_month) == 12 and int(to_year) + 1 or int(to_year), int(to_month) == 12 and 1 or int(to_month) + 1, 1)
+                 payment_date__lt=date(int(to_month) == 12 and int(to_year) + 1 or int(to_year), int(to_month) == 12 and 1 or int(to_month) + 1, 1)
                  ).annotate(Count('demands'))
     form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
 
