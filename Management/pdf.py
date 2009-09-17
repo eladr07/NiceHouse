@@ -708,8 +708,8 @@ class PricelistWriter:
         for h in self.houses:
             parkings = '<br/>'.join([log2vis(unicode(p)) for p in h.parkings.all()])
             storages = '<br/>'.join([log2vis(unicode(s)) for s in h.storages.all()])
-            row = [h.num, h.floor, unicode(h.type), h.rooms, h.net_size, h.garden_size, h.price and commaise(h.price) or '-',
-                   parkings, storages, h.remarks]
+            row = [h.num, h.floor,  log2vis(unicode(h.type)), h.rooms, h.net_size, h.garden_size, h.price and commaise(h.price) or '-',
+                   parkings, storages, log2vis(h.remarks)]
             row.reverse()
             rows.append(row)
             i += 1
@@ -729,7 +729,7 @@ class PricelistWriter:
         doc = SimpleDocTemplate(filename)
         story = [Spacer(0,50)]
         story.append(titlePara(self.title))
-        story.append(Paragraph(self.subtitle, styleSubTitle))
+        story.append(Paragraph(log2vis(self.subtitle), styleSubTitle))
         story.append(Spacer(0, 10))
         story.extend(self.housesFlows())
         doc.build(story, self.addTemplate, self.addTemplate)
