@@ -2108,6 +2108,6 @@ def employeesalary_season_list(request, employee_id=None, from_year=Demand.curre
         
     return render_to_response('Management/employeesalary_season_list.html', 
                               { 'salaries':salaries, 'start':date(int(from_year), int(from_month), 1), 'end':date(int(to_year), int(to_month), 1),
-                                'project':project_id and Project.objects.get(pk=project_id), 'filterForm':form},
+                                'employee':employee_id and Employee.objects.get(pk=employee_id), 'filterForm':form},
                               context_instance=RequestContext(request))
         
