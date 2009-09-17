@@ -741,8 +741,16 @@ def demand_invoice_add(request, id):
     return invoice_add(request, {'project':demand.project.id, 'month':demand.month, 'year':demand.year})
 
 @permission_required('Management.change_invoice')
-def demand_invoice_list(request):
-    q = Invoice.objects.reverse().annotate(Count('demands'))
+def demand_invoice_list(request, project_id=None, from_year=Demand.current_month().year, from_month=Demand.current_month().month, 
+                        to_year=Demand.current_month().year, to_month=Demand.current_month().month):
+    if project_id:
+        q = Invoice.objects.filter(demands__project__id = project_id).reverse()
+    else:
+        q = Invoice.objects.reverse()
+    q = q.filter(date__gte=date(from_year, from_month, 1),
+                 date__lt=date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
+                 ).annotate(Count('demands'))
+    form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
     paginator = Paginator([i for i in q if i.demands__count > 0], 25) 
 
     try:
@@ -755,7 +763,7 @@ def demand_invoice_list(request):
     except (EmptyPage, InvalidPage):
         invoices = paginator.page(paginator.num_pages)
 
-    return render_to_response('Management/demand_invoice_list.html', {'page': invoices})    
+    return render_to_response('Management/demand_invoice_list.html', {'page': invoices,'filterForm':form})    
  
  
 @permission_required('Management.change_payment')

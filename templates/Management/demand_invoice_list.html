@@ -24,6 +24,11 @@
 		});
 		//add fancybox
 		$(".fancybox").fancybox();
+		$("#monthChange").click(function(event) {
+			event.preventDefault();
+			location.replace("/demandinvoices/" + $("#id_project").val() + "/" + $("#id_from_year").val() + "/" + $("#id_from_month").val()
+							 + "/" + $("#id_to_year").val() + "/" + $("#id_to_month").val());
+		});
 	});
 </script>
 {% endblock header %}
@@ -31,6 +36,26 @@
 	<div class="title">
 		<div class="pageTitle">ריכוז חשבוניות לדרישה</div>
 	</div>
+	<div class="clearBoth"></div>
+	<div style="float:right;width:70%;">
+		<form method="POST">
+			<table class="dataTable">
+				<tr class="row1">
+					<td colspan="6" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש תקופה</td>
+				</tr>
+				<tr class="row2">
+					{% for field in filterForm %}
+					<td>
+						{{ field.label_tag }} : 
+						{{ field }}
+					</td>
+					{% endfor %}
+					<td><input id="monthChange" type="button" value="חפש" class="button"/></td>
+				</tr>
+			</table>
+		</form>
+	</div>
+	<div class="clearBoth"></div>
 	<div class="someIcon">
 		<img src="/site_media/images/add_48.png" width="20" height="20"  alt="חדש" /> 
 		<a href="/invoices/add" class="fancybox" >חדש</a>
