@@ -652,7 +652,7 @@ class EmployeeSalariesWriter:
             if self.show_employee:
                 row.append(log2vis(unicode(es.employee)))
             if self.show_month:
-                headers.append('%s/%s' % (es.month, es.year))
+                row.append('%s/%s' % (es.month, es.year))
             row.extend([log2vis(unicode(es.employee)), 
                         log2vis(u'%s - %s' % (terms.hire_type.name, terms.salary_net and u'נטו' or u'ברוטו')), 
                         commaise(es.total_amount), commaise(es.check_amount),
