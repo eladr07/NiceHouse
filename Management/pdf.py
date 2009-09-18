@@ -682,23 +682,23 @@ class EmployeeSalariesWriter:
         return doc.canv
 
 class PricelistWriter:
-    def __init__(self, houses, title, subtitle):
-        self.houses, self.title, self.subtitle = houses, title, subtitle
+    def __init__(self, pricelist, houses, title, subtitle):
+        self.pricelist, self.houses, self.title, self.subtitle = pricelist, houses, title, subtitle
     @property
     def pages_count(self):
         return len(self.houses) / 28 + 1
     def addTemplate(self, canv, doc):
-        frame2 = Frame(0, 680, 650, 150)
-        frame2.addFromList([nhLogo(), datePara()], canv)
+        #frame2 = Frame(0, 680, 650, 150)
+        #frame2.addFromList([nhLogo(), datePara()], canv)
         frame3 = Frame(50, 20, 150, 40)
         frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
                             ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
-        frame4 = Frame(50, 30, 500, 70)
-        frame4.addFromList([nhAddr()], canv)
+        #frame4 = Frame(50, 30, 500, 70)
+        #frame4.addFromList([nhAddr()], canv)
         self.current_page += 1
     def housesFlows(self):
         flows = []
-        headers = [log2vis(n) for n in [u'מס', u'קומה', u'סוג דירה', u'מס חדרים', u'שטח נטו', u'שטח גינה', u'מחיר',
+        headers = [log2vis(n) for n in [u'מס', u'קומה', u'סוג דירה', u'מס חדרים', u'שטח נטו', u'שטח מרפסת\גינה', u'מחיר',
                                         u'חניה', u'מחסן', u'הערות']]
         headers.reverse()
         colWidths = [None,None,None,None,None,None,None,None,None,None]
@@ -724,6 +724,9 @@ class PricelistWriter:
                 rows = []
 
         return flows
+    def pricelistPara(self):
+        content = '<br/>'.join([log2vis('%s : %s' % (f.verbose_name, getattr(self.pricelist, f.name))) for f in Pricelist._meta.fields])
+        return Paragraph(content, styleN)
     def build(self, filename):
         self.current_page = 1
         doc = SimpleDocTemplate(filename)
@@ -732,6 +735,7 @@ class PricelistWriter:
         story.append(Paragraph(log2vis(self.subtitle), styleSubTitle))
         story.append(Spacer(0, 10))
         story.extend(self.housesFlows())
+        story.append(self.pricelistPara())
         doc.build(story, self.addTemplate, self.addTemplate)
         return doc.canv
 

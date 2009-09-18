@@ -1027,6 +1027,8 @@ def building_pricelist_pdf(request, object_id, type_id):
     b = Building.objects.get(pk = object_id)
     pricelist_type = PricelistType.objects.get(pk = type_id)
     houses = b.houses.filter(is_deleted=False)
+    q = HouseVersion.objects.filter(house__building = b, type=pricelist_type)
+    date = q.count > 0 and q[0].latest().date or None
     for h in houses:
         try:
             h.price = h.versions.filter(type__id = type_id).latest().price
@@ -1040,13 +1042,15 @@ def building_pricelist_pdf(request, object_id, type_id):
     p = open(filename,'w+')
     p.flush()
     p.close()
-    PricelistWriter(houses, u'מחירון לפרוייקט %s' % unicode(b.project),
+    title = u'מחירון לפרוייקט %s' % unicode(b.project)
+    if date:
+        title += ' לתאריך' + date.strftime('%d/%m/%Y')
+    PricelistWriter(b.pricelist, houses, title,
                     u'בניין %s - %s' % (b.num, unicode(pricelist_type))).build(filename)
     p = open(filename,'r')
     response.write(p.read())
     p.close()
     return response
-
 
 @permission_required('Management.add_project')
 def project_add(request):
