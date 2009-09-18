@@ -1044,7 +1044,7 @@ def building_pricelist_pdf(request, object_id, type_id):
     p.close()
     title = u'מחירון לפרוייקט %s' % unicode(b.project)
     if date:
-        title += ' לתאריך' + date.strftime('%d/%m/%Y')
+        title += u' לתאריך' + date.strftime('%d/%m/%Y')
     PricelistWriter(b.pricelist, houses, title,
                     u'בניין %s - %s' % (b.num, unicode(pricelist_type))).build(filename)
     p = open(filename,'r')
