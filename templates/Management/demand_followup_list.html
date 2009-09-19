@@ -126,27 +126,27 @@
 			<td><b>{% if d.get_total_amount %} {{ d.get_total_amount|commaise }} ש"ח {% else %}----{% endif %}</b></td>
 			<td>
 				{% for i in d.invoices.all %}
-					{{i.num}}
+					{{i.num}}<br>
 				{% endfor %}
 			</td>
 			<td>
 				{% for i in d.invoices.all %}
-					{{i.amount}}
+					{{i.amount|commaise}}<br>
 				{% endfor %}
 			</td>
 			<td>
 				{% for i in d.invoices.all %}
-					{{i.date}}
+					{{i.date|date:"j/m/y"}}<br>
 				{% endfor %}
 			</td>
 			<td>
 				{% for p in d.payments.all %}
-					{{p.amount}}
+					{{p.amount|commaise}}<br>
 				{% endfor %}
 			</td>
 			<td>
 				{% for p in d.payments.all %}
-					{{p.payment_date}}
+					{{p.payment_date|date:"j/m/y"}}<br>
 				{% endfor %}
 			</td>
 		</tr>
