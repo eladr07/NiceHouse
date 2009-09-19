@@ -517,7 +517,7 @@ class MonthDemandWriter:
         return Paragraph(s, ParagraphStyle(name='remarkPara', fontName='David', fontSize=13, 
                                            leading=16, alignment=TA_RIGHT))
     def addsPara(self):
-        s = '<br/>'.join([log2vis(u'%s - %s ש"ח' % (d.reason, commaise(d.amount))) for d in self.demand.diffs.all()])
+        s = '<br/>'.join([log2vis(u'%s - %s ש"ח' % (d.reason, commaise(d.amount))) for d in self.demand.diffs.all()]) + '<br/>'
         s += '<b>%s</b>' % log2vis(u'סה"כ : %s ש"ח' % commaise(self.demand.get_total_amount())) + '<br/>'
         return Paragraph(s, ParagraphStyle(name='addsPara', fontName='David', fontSize=14, 
                                            leading=16, alignment=TA_LEFT))
