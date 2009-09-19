@@ -518,12 +518,12 @@ class MonthDemandWriter:
                                            leading=16, alignment=TA_RIGHT))
     def addsPara(self):
         s = ''
-        if self.demand.fixed_pay:
-            s += log2vis(u'%s - %s ש"ח' % (self.demand.fixed_pay_type, commaise(self.demand.fixed_pay))) + '<br/>'
-        if self.demand.var_pay:
-            s += log2vis(u'%s - %s ש"ח' % (self.demand.var_pay_type, commaise(self.demand.var_pay))) + '<br/>'
-        if self.demand.bonus:
-            s += log2vis(u'%s - %s ש"ח' % (self.demand.bonus_type, commaise(self.demand.bonus))) + '<br/>'
+        if self.demand.fixed_diff:
+            s += log2vis(u'%s - %s ש"ח' % (self.demand.fixed_diff.reason, commaise(self.demand.fixed_diff.amount))) + '<br/>'
+        if self.demand.var_diff:
+            s += log2vis(u'%s - %s ש"ח' % (self.demand.var_diff.reason, commaise(self.demand.var_diff.amount))) + '<br/>'
+        if self.demand.bonus_diff:
+            s += log2vis(u'%s - %s ש"ח' % (self.demand.bonus_diff.reason, commaise(self.demand.bonus_diff.amount))) + '<br/>'
         s += '<b>%s</b>' % log2vis(u'סה"כ : %s ש"ח' % commaise(self.demand.get_total_amount())) + '<br/>'
         return Paragraph(s, ParagraphStyle(name='addsPara', fontName='David', fontSize=14, 
                                            leading=16, alignment=TA_LEFT))

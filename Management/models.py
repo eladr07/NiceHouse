@@ -1150,7 +1150,8 @@ class CZilber(models.Model):
         month is datetime
         '''
         d = Demand.objects.get(project = self.projectcommission.project, year = month.year, month = month.month)
-        d.bonus, d.bonus_type, d.var_pay, d.var_pay_type = 0, None, 0, None
+        d.var_diff.delete()
+        d.bonus_diff.delete()
         demand = d
         sales = list(d.get_sales().all())
         while demand != None and demand.zilber_cycle_index() != 1:
@@ -1188,8 +1189,7 @@ class CZilber(models.Model):
             else:
                 pc_base = s.pc_base
             prev_adds += (base - pc_base) * s.project_price() / 100
-        d.var_pay = prev_adds
-        d.var_pay_type = u'הפרשי קצב מכירות (נספח א)'
+        d.diffs.create(type=u'משתנה', reason=u'הפרשי קצב מכירות (נספח א)', amount=prev_adds)
         if d.include_zilber_bonus():
             demand, bonus = d, 0
             while demand != None:
@@ -1198,8 +1198,7 @@ class CZilber(models.Model):
                 if demand.zilber_cycle_index() == 1:
                     break
                 demand = demand.get_previous_demand()
-            d.bonus = bonus
-            d.bonus_type = u'בונוס חסכון בהנחה (נספח ב)'
+            d.diffs.create(type=u'בונוס', reason=u'בונוס חסכון בהנחה (נספח ב)', amount=bonus)
         d.save()
     class Meta:
         db_table = 'CZilber'
@@ -1287,7 +1286,7 @@ class ProjectCommission(models.Model):
         if sales.count() == 0: return
         demand = sales[0].actual_demand
         if self.commission_by_signups and sub == 0:
-            demand.bonus, demand.bonus_type = (0,None)
+            demand.bonus_diff.delete()
             bonus = 0
             for (m, y) in demand.get_signup_months():
                 #get sales that were signed up for specific month, not including future sales.
@@ -1318,9 +1317,7 @@ class ProjectCommission(models.Model):
                         diff = (s.c_final - paid_final_value) * s.price_final / 100
                         bonus += int(diff)
             if bonus > 0:
-                demand.bonus = bonus
-                demand.bonus_type = u'הפרשי עמלה (ניספח א)'
-                demand.save()
+                demand.diffs.create(type=u'בונוס', reason = u'הפרשי עמלה (ניספח א)', amount=bonus)
             return
         if getattr(self, 'c_zilber') != None:
             month = date(demand.year, demand.month, 1)
@@ -1419,6 +1416,14 @@ class DemandManager(models.Manager):
         now = Demand.current_month()
         return self.filter(year = now.year, month = now.month)
 
+class DemandDiff(models.Model):
+    demand = models.ForeignKey('Demand', editable=False, related_name='diffs')
+    type = models.CharField(ugettext('type'), max_length=30)
+    reason = models.CharField(ugettext('reason'), max_length=30, null=True, blank=True)
+    amount = models.FloatField(ugettext('amount'))
+    class Meta:
+        db_table = 'DemandDiff'
+
 DemandNoInvoice, DemandNoPayment, DemandPaidPlus, DemandPaidMinus, DemandPaid = range(1, 6)
       
 class Demand(models.Model):
@@ -1446,6 +1451,22 @@ class Demand(models.Model):
 
     objects = DemandManager()
     
+    @property
+    def fixed_diff(self):
+        q = self.diffs.filter(type=u'קבועה')
+        return q.count() == 1 and q[0] or None
+    @property    
+    def var_diff(self):
+        q = self.diffs.filter(type=u'משתנה')
+        return q.count() == 1 and q[0] or None
+    @property    
+    def bonus_diff(self):
+        q = self.diffs.filter(type=u'בונוס')
+        return q.count() == 1 and q[0] or None
+    @property   
+    def fee_diff(self):
+        q = self.diffs.filter(type=u'קיזוז')
+        return q.count() == 1 and q[0] or None
     def current_month():
         now = datetime.now()
         if now.day <= 22:
@@ -1559,7 +1580,10 @@ class Demand(models.Model):
             i += s.c_final_worth
         return i
     def get_total_amount(self):
-        return self.get_sales_commission() + (self.fixed_pay or 0) + (self.var_pay or 0) + (self.bonus or 0) - (self.fee or 0)
+        return self.get_sales_commission() + (self.fixed_diff and self.fixed_diff.value or 0) + \
+                                            (self.var_diff and self.var_diff.value or 0) + \
+                                            (self.bonus_diff and self.bonus_diff.value or 0) - \
+                                            (self.fee_diff and self.fee_diff.value or 0)
     def get_deleted_sales(self):
         return [s for s in self.sales.filter(is_deleted=True)]
     def diff(self):
@@ -1871,9 +1895,8 @@ class SaleCancel(SaleMod):
     def save(self, *args, **kw):
         models.Model.save(self, *args, **kw)
         d = self.sale.demand
-        d.fee = self.fee
-        d.fee_type = u"ביטול מכירה מס' %s" % self.sale.id
-        d.save()
+        d.fee_diff.delete()
+        d.diffs.create(type=u'קיזוז', reason = u"ביטול מכירה מס' %s" % self.sale.id, amount = self.fee * -1)
     class Meta:
         db_table = 'SaleCancel'
         

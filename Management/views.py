@@ -535,9 +535,9 @@ def demand_list(request, year=Demand.current_month().year, month=Demand.current_
     alredy created. if project has status other than Feed, it is handled'''        
     for p in Project.objects.active():
         if ds.filter(project = p).count() == 0:
-            demand = Demand(project = p, month = month, year = year, fixed_pay = p.commissions.add_amount,
-                            fixed_pay_type = p.commissions.add_type)
+            demand = Demand(project = p, month = month, year = year)
             demand.save()
+            demand.diffs.create(type=u'קבועה', amount = p.commissions.add_amount, reason = p.commissions.add_type)
         elif ds.get(project=p).statuses.count() > 0 and ds.get(project=p).statuses.latest().type.id != DemandFeed:
             unhandled_projects.remove(p)
     sales_count, sales_amount = (0,0)
