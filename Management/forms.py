@@ -572,11 +572,15 @@ class MadadBIForm(forms.Form):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self, *args, **kw)
         self.fields['publish_date'].widget.attrs = {'class':'vDateField'}
+    class Meta:
+        model = MadadBI
 
 class MadadCPForm(forms.Form):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self, *args, **kw)
         self.fields['publish_date'].widget.attrs = {'class':'vDateField'}
+    class Meta:
+        model = MadadCP
         
 class ContactFilterForm(forms.Form):
     first_name = forms.CharField(label=ugettext('first_name'), required=False)
