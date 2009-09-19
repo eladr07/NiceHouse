@@ -1,0 +1,173 @@
+﻿{% extends "./base.html" %}
+{% load management_extras %}
+{% block header %}
+{{ block.super }}
+<script>
+	var selectedID = 0;
+	var prev_class;
+	$(document).ready(function() {
+		$("#demandTable tr").click(function() { 
+			var tr = $(this);
+			if (selectedID > 0)
+				$("#demandTable tr[objid='"+selectedID+"']").attr("class", prev_class);
+			selectedID = tr.attr("objid");
+			if (!selectedID)
+				return;
+			prev_class = tr.attr("class");
+			tr.attr("class","selectedRow");
+			//sync links
+			if (selectedID > 0)
+				$("#demandEdit").attr("href", "/demands/" + selectedID);
+				$("#demandCalc").attr("href", "/demands/" + selectedID + "/calc");
+			});
+		$(".fancybox").fancybox();
+		$(".bigfancybox").fancybox({'frameWidth':800});	
+		$("#demandSend").click(function(event) {
+			event.preventDefault();
+			$("#demandTable input[type='checkbox'][checked]").each(function () {
+				if (!$(this).attr("checked"))
+					return;
+				var row = $(this).parent().parent();
+				$.get("demands/" + row.attr("objid") + "/send");
+			});
+			alert("הדרישות נשלחו ליזמים");
+		});
+		$("#monthChange").click(function(event) {
+			event.preventDefault();
+			location.replace("/demandseason/" + $("#id_project").val() + "/" + $("#id_from_year").val() + "/" + $("#id_from_month").val()
+							 + "/" + $("#id_to_year").val() + "/" + $("#id_to_month").val());
+		});
+		$("#demandCalc").click(function(event) {
+			if (!confirm("האם אתה בטוח שברצונך לחשב את העמלות מחדש ?"))
+				event.preventDefault();
+		});
+		//add filters
+		var filterSelect = $("#filterSelect");
+		$("#demandTable th").each(function (index, elem) {
+			filterSelect.append("<option value='" + index + "'>" + $(elem).text() + "</option>");
+		});
+	});
+</script>
+{% endblock header %}
+{% block content %}
+<div class="title">
+	<div class="pageTitle">מעקב דרישות לפי תקופה</div>
+</div>
+<div class="clearBoth"></div>
+<div style="float:right;width:70%;">
+	<form method="POST">
+		<table class="dataTable">
+			<tr class="row1">
+				<td colspan="6" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש תקופה</td>
+			</tr>
+			<tr class="row2">
+				{% for field in filterForm %}
+				<td>
+					{{ field.label_tag }} : 
+					{{ field }}
+				</td>
+				{% endfor %}
+				<td><input id="monthChange" type="button" value="חפש" class="button"/></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div class="clearBoth"></div>
+<div class="someIcon" style="width:100px;">
+	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
+	<a id="demandEdit">שינוי דרישה</a>
+</div>
+<div class="someIcon"style="width:120px;">
+	<img src="/site_media/images/thumbs_up_48.png" width="20" height="20"  alt="שליחה" /> 
+	<a href="/demands/sendall">אשר ושלח דרישות</a>
+</div>
+<div class="someIcon"style="width:130px;">
+	<img src="/site_media/images/advanced-48.png" width="20" height="20"  alt="שליחה" /> 
+	<a id="demandCalc">חישוב עמלות מחדש</a>
+</div>
+<div class="someIcon" style="width:100px;">
+	<img src="/site_media/images/print-48.png" width="20" height="20"  alt="הדפסה" /> 
+	<a href="/reports/project_season/{{project.id}}/{{start.year}}/{{start.month}}/{{end.year}}/{{end.month}}">גרסה להדפסה</a>
+</div>
+<div class="clearBoth"></div>
+<br>
+<table id="demandTable" class="dataTable" border="1">
+<caption>מציג סה"כ {{demands|length}} דרישות לתשלום לפרוייקט {{project}}</caption>
+	<tr>
+		<th colspan="4">פרטי דרישה</th>
+		<th colspan="3">פרטי חשבונית</th>
+		<th colspan="2">פרטי צ'קים</th>
+		<th colspan="3">הפרשי דרישה</th>
+	</tr>
+	<tr>
+		<th>מס'</th>
+		<th>PDF</th>
+		<th>חודש</th>
+		<th>סכום דרישה</th>
+		<th>מס'</th>
+		<th>סכום</th>
+		<th>תאריך</th>
+		<th>סכום</th>
+		<th>תאריך</th>
+		<th>דרישה לחשבונית</th>
+		<th>צ'ק לחשבונית</th>
+		<th>טיפול בדרישה</th>
+	</tr>
+    {% for d in demands %}
+	{% if not d.statuses.count %}
+    	<tr class="row3" objid={{d.id}}>
+	{% else %}
+		{% ifequal d.statuses.latest.type.id 1 %}
+			<tr class="{% cycle 'row1' 'row2' %}" objid={{d.id}}>
+		{% endifequal %}
+		{% ifequal d.statuses.latest.type.id 2 %}
+			<tr class="row4" objid={{d.id}}>
+		{% endifequal %}
+		{% ifequal d.statuses.latest.type.id 3 %}
+			<tr class="row5" objid={{d.id}}>
+		{% endifequal %}
+		{% ifequal d.statuses.latest.type.id 4 %}
+			<tr class="row5" objid={{d.id}}>
+		{% endifequal %}
+	{% endif %}
+			<td><a href="/demands/{{d.id}}">{{d.id}}</a></td>
+			<td>
+				<a href="/reports/project_month/{{d.project.id}}/{{d.year}}/{{d.month}}">
+				<img src="/site_media/images/mail_new-48.png" width="15" height="15"/>
+				</a>
+			</td>
+			<td>{{ d.month }}/{{d.year}}</td>
+			<td><b>{% if d.get_total_amount %} {{ d.get_total_amount|commaise }} ש"ח {% else %}----{% endif %}</b></td>
+			<td>
+				{% for i in d.invoices.all %}
+					{{i.num}}
+				{% endfor %}
+			</td>
+			<td>
+				{% for i in d.invoices.all %}
+					{{i.amount}}
+				{% endfor %}
+			</td>
+			<td>
+				{% for i in d.invoices.all %}
+					{{i.date}}
+				{% endfor %}
+			</td>
+			<td>
+				{% for p in d.payments.all %}
+					{{p.amount}}
+				{% endfor %}
+			</td>
+			<td>
+				{% for p in d.payments.all %}
+					{{p.payment_date}}
+				{% endfor %}
+			</td>
+		</tr>
+	{% endfor %}
+	<tr height="30px">
+		<td colspan="3" align="center" style="color:#CF2222;"><b>סיכום</b></td>
+		<td><b style="color:#CF2222;">{{total_amount|commaise}} ש"ח</b></td>
+	</tr>
+</table>
+{% endblock content %}

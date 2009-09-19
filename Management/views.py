@@ -2132,6 +2132,29 @@ def demand_season_list(request, project_id=None, from_year=Demand.current_month(
                                 'total_amount':total_amount},
                               context_instance=RequestContext(request))
 
+def demand_followup_list(request, project_id=None, from_year=Demand.current_month().year, from_month=Demand.current_month().month, 
+                          to_year=Demand.current_month().year, to_month=Demand.current_month().month):
+    form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
+    ds = []
+    total_amount = 0
+    if project_id:
+        current = date(int(from_year), int(from_month), 1)
+        end = date(int(to_year), int(to_month), 1)
+        while current <= end:
+            q = Demand.objects.filter(project__id = project_id, year = current.year, month = current.month)
+            if q.count() > 0:
+                ds.append(q[0])
+            current = date(current.month == 12 and current.year + 1 or current.year,
+                           current.month == 12 and 1 or current.month + 1, 1)
+        for d in ds:
+            total_amount += d.get_total_amount()
+        
+    return render_to_response('Management/demand_followup_list.html', 
+                              { 'demands':ds, 'start':date(int(from_year), int(from_month), 1), 'end':date(int(to_year), int(to_month), 1),
+                                'project':project_id and Project.objects.get(pk=project_id), 'filterForm':form,
+                                'total_amount':total_amount},
+                              context_instance=RequestContext(request))
+
 def employeesalary_season_list(request, employee_id=None, from_year=Demand.current_month().year, from_month=Demand.current_month().month, 
                                to_year=Demand.current_month().year, to_month=Demand.current_month().month):
     form = EmployeeSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
