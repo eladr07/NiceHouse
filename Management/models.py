@@ -1418,8 +1418,8 @@ class DemandManager(models.Manager):
 
 class DemandDiff(models.Model):
     demand = models.ForeignKey('Demand', editable=False, related_name='diffs')
-    type = models.CharField(ugettext('type'), max_length=30)
-    reason = models.CharField(ugettext('reason'), max_length=30, null=True, blank=True)
+    type = models.CharField(ugettext('diff_type'), max_length=30)
+    reason = models.CharField(ugettext('diff_reason'), max_length=30, null=True, blank=True)
     amount = models.FloatField(ugettext('amount'))
     class Meta:
         db_table = 'DemandDiff'
