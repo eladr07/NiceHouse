@@ -725,7 +725,7 @@ class PricelistWriter:
 
         return flows
     def pricelistPara(self):
-        content = '<br/>'.join([log2vis('%s : %s' % (f.verbose_name, getattr(self.pricelist, f.name, ''))) 
+        content = '<br/>'.join([log2vis('%s : %s' % (f.verbose_name, getattr(self.pricelist, f.name) or u'לא ידוע')) 
                                 for f in models.Pricelist._meta.fields if f.name != 'id'])
         return Paragraph(content, styleN)
     def build(self, filename):
