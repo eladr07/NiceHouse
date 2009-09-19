@@ -840,8 +840,8 @@ def demand_adddiff(request, object_id):
     if request.method == 'POST':
         form = DemandDiffForm(request.POST)
         if form.is_valid():
-            diff = form.save()
-            demand.diffs.add(diff)
+            form.instance.demand = demand
+            form.save()
     else:
         form = DemandDiffForm()
     return render_to_response('Management/object_edit.html', 
