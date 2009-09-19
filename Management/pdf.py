@@ -278,7 +278,7 @@ class MonthDemandWriter:
                 i += 1
                 row = ['%s-%s' % (s.actual_demand.id, i), log2vis(s.clients),'%s/%s' % (s.house.building.num, s.house.num), 
                        s.sale_date.strftime('%d/%m/%y'), commaise(s.price)]
-                doh0prices = s.house.versions.filter(type__id = models.PricelistTypeDoh0)
+                doh0prices = s.house.versions.filter(type__id = models.PricelistType.Doh0)
                 if doh0prices.count() > 0:
                     doh0price = doh0prices.latest().price
                     memudad = (((current_madad / base_madad) - 1) * 0.6 + 1) * doh0price
