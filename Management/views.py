@@ -1346,7 +1346,7 @@ def obj_add_reminder(request, obj_id, model):
             obj.reminders.add(r)
             return HttpResponseRedirect('reminders')
     else:
-        form = ReminderForm(initial={'status':ReminderStatusAdded})
+        form = ReminderForm(initial={'status':ReminderStatusType.Added})
     
     return render_to_response('Management/object_edit.html',
                               {'form': form}, context_instance=RequestContext(request))
@@ -1360,7 +1360,7 @@ def obj_reminders(request, obj_id, model):
 @permission_required('Management.delete_reminder')
 def reminder_del(request, id):
     r = Reminder.objects.get(pk= id)
-    if r.statuses.latest().type.id == ReminderStatusDeleted:
+    if r.statuses.latest().type.id == ReminderStatusType.Deleted:
         return HttpResponse('reminder is already deleted')
     else:
         r.delete()
@@ -1369,7 +1369,7 @@ def reminder_del(request, id):
 @permission_required('Management.change_reminder')
 def reminder_do(request, id):
     r = Reminder.objects.get(pk= id)
-    if r.statuses.latest().type.id == ReminderStatusDone:
+    if r.statuses.latest().type.id == ReminderStatusType.Done:
         return HttpResponse('reminder is already done')
     else:
         r.do()
@@ -1460,7 +1460,7 @@ def building_addhouse(request, type_id, building_id):
         form = HouseForm(type_id)
         form.instance.building = b
         if b.is_cottage():
-            form.initial['type'] = HouseTypeCottage
+            form.initial['type'] = HouseType.Cottage
 
     ps = Parking.objects.filter(building = b)
     ss = Storage.objects.filter(building = b)
@@ -1486,7 +1486,7 @@ def house_edit(request,id , type_id):
     else:
         form = HouseForm(type_id, instance = h)
         if b.is_cottage():
-            form.initial['type'] = HouseTypeCottage
+            form.initial['type'] = HouseType.Cottage
 
     ps = Parking.objects.filter(building = b)
     ss = Storage.objects.filter(building = b)

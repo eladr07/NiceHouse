@@ -91,8 +91,8 @@ class Task(models.Model):
         ordering = ['is_done', '-time']
         db_table = 'Task'
         
-ReminderStatusAdded, ReminderStatusDone, ReminderStatusDeleted = range(1,4)
 class ReminderStatusType(models.Model):
+    Added, Done, Deleted = 1,2,3
     name = models.CharField(max_length=20, unique=True)
     def __unicode__(self):
         return unicode(self.name)
@@ -113,9 +113,9 @@ class ReminderStatus(models.Model):
 class Reminder(models.Model):
     content = models.TextField(ugettext('content'))
     def do(self):
-        self.statuses.create(type = ReminderStatusType.objects.get(pk = ReminderStatusDone)).save()
+        self.statuses.create(type = ReminderStatusType.objects.get(pk = ReminderStatusType.Done)).save()
     def delete(self):
-        self.statuses.create(type = ReminderStatusType.objects.get(pk = ReminderStatusDeleted)).save()
+        self.statuses.create(type = ReminderStatusType.objects.get(pk = ReminderStatusType.Deleted)).save()
     class Meta:
         db_table = 'Reminder'
     
@@ -195,7 +195,7 @@ class Project(models.Model):
             return None
     def get_open_reminders(self):
         return [r for r in self.reminders.all() if r.statuses.latest().type.id 
-                not in (ReminderStatusDeleted,ReminderStatusDone)]
+                not in (ReminderStatusType.Deleted,ReminderStatusType.Done)]
     def sales(self, year = datetime.now().year, month = datetime.now().month):
         return Sale.objects.filter(house__building__project = self,
                                    contractor_pay__month = month,
@@ -234,10 +234,9 @@ class ParkingType(models.Model):
         return unicode(self.name)
     class Meta:
         db_table='ParkingType'
-
-PricelistTypeCompany = 1 
-PricelistTypeDoh0 = 2       
+      
 class PricelistType(models.Model):
+    Company, Doh0 = 1, 2
     name = models.CharField(ugettext('name'), max_length=20, unique=True)
     def __unicode__(self):
         return unicode(self.name)
@@ -311,16 +310,16 @@ class House(models.Model):
         ordering = ['num']
         db_table = 'House'
 
-BuildingTypeCottage = 3
 class BuildingType(models.Model):
+    Cottage = 3
     name = models.CharField(max_length=20, unique=True)
     def __unicode__(self):
         return unicode(self.name)
     class Meta:
         db_table = 'BuildingType'
 
-HouseTypeCottage = 2
 class HouseType(models.Model):
+    Cottage = 2
     name = models.CharField(max_length=20, unique=True)
     def __unicode__(self):
         return unicode(self.name)
@@ -395,7 +394,7 @@ class Building(models.Model):
     def avalible_houses(self):
         return [h for h in self.houses.filter(is_deleted=False) if h.get_signup() == None and h.get_sale() == None and not h.is_sold]
     def is_cottage(self):
-        return self.type.id == BuildingTypeCottage
+        return self.type.id == BuildingType.Cottage
     def pricelist_types(self):
         types = []
         for h in self.houses.filter(is_deleted=False):
@@ -484,7 +483,7 @@ class Employee(EmployeeBase):
     
     def get_open_reminders(self):
         return [r for r in self.reminders.all() if r.statuses.latest().type.id 
-                not in (ReminderStatusDeleted,ReminderStatusDone)]
+                not in (ReminderStatusType.Deleted,ReminderStatusType.Done)]
     def end(self):
         self.work_end = datetime.now()
     def save(self, *args, **kw):
@@ -648,7 +647,7 @@ class NHEmployee(EmployeeBase):
     
     def get_open_reminders(self):
         return [r for r in self.reminders.all() if r.statuses.latest().type.id 
-                not in (ReminderStatusDeleted,ReminderStatusDone)]
+                not in (ReminderStatusType.Deleted,ReminderStatusType.Done)]
     def end(self):
         self.work_end = datetime.now()
     def loan_left(self):
@@ -1171,7 +1170,7 @@ class CZilber(models.Model):
             s.save()
             if self.base_madad:
                 current_madad = d.get_madad() < self.base_madad and self.base_madad or d.get_madad()
-                doh0prices = s.house.versions.filter(type__id = PricelistTypeDoh0)
+                doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0)
                 if doh0prices.count() == 0:
                     continue
                 memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * doh0prices.latest().price
@@ -1525,7 +1524,7 @@ class Demand(models.Model):
                                   salepre=None, salereject=None).count() > 0
     def get_open_reminders(self):
         return [r for r in self.reminders.all() if r.statuses.latest().type.id 
-                not in (ReminderStatusDeleted,ReminderStatusDone)]
+                not in (ReminderStatusType.Deleted,ReminderStatusType.Done)]
     def get_pricemodsales(self):
         return self.sales.exclude(salepricemod=None)
     def get_housemodsales(self):
