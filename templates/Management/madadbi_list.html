@@ -54,7 +54,7 @@
 				<td>{{ m.month }}/{{m.year}}</td>
 				<td>{{ m.publish_date }}</td>
 				<td><a class="fancybox" href="{{m.id}}">{{ m.value }}</a></td>
-				<td>{{ m.diff }}%</td>
+				<td>{{ m.diff|floatformat:1 }}%</td>
 			</tr>
 		{% endfor %}
 	</table>
