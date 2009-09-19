@@ -1640,6 +1640,10 @@ class MadadBI(models.Model):
     month = models.PositiveSmallIntegerField(ugettext('year'))
     publish_date = models.DateField(ugettext('publish_date'))
     value = models.FloatField(ugettext('value'))
+    def diff(self):
+        q = MadadBI.objects.filter(year = self.month == 1 and self.year - 1 or self.year,
+                                   month = self.month == 1 and 12 or self.month - 1)
+        return q.count() == 1 and self.value - q[0].value or 0
     class Meta:
         db_table = 'MadadBI'
         get_latest_by = 'publish_date'
@@ -1652,6 +1656,10 @@ class MadadCP(models.Model):
     month = models.PositiveSmallIntegerField(ugettext('year'))
     publish_date = models.DateField(ugettext('publish_date'))
     value = models.FloatField(ugettext('value'))
+    def diff(self):
+        q = MadadCP.objects.filter(year = self.month == 1 and self.year - 1 or self.year,
+                                   month = self.month == 1 and 12 or self.month - 1)
+        return q.count() == 1 and (self.value - q[0].value) / (q[0].value / 100) or 0
     class Meta:
         db_table = 'MadadCP'
         get_latest_by = 'publish_date'

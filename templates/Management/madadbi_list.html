@@ -46,12 +46,15 @@
 	<div class="clearBoth"> </div>
 	<br /> 		
 	<table class="dataTable" border="1">
-		<th>תאריך</th>
-		<th>מדד</th>
+		<th>חודש</th>
+		<th>ת. פרסום</th>
+		<th>שינוי ב-%</th>
 		{% for m in madads %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{m.id}}>
-				<td>{{ m.date }}</td>
+				<td>{{ m.month }}/{{m.year}}</td>
+				<td>{{ m.publish_date }}</td>
 				<td><a class="fancybox" href="{{m.id}}">{{ m.value }}</a></td>
+				<td>{{ m.diff }}%</td>
 			</tr>
 		{% endfor %}
 	</table>
