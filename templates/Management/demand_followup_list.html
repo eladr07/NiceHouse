@@ -22,16 +22,6 @@
 			});
 		$(".fancybox").fancybox();
 		$(".bigfancybox").fancybox({'frameWidth':800});	
-		$("#demandSend").click(function(event) {
-			event.preventDefault();
-			$("#demandTable input[type='checkbox'][checked]").each(function () {
-				if (!$(this).attr("checked"))
-					return;
-				var row = $(this).parent().parent();
-				$.get("demands/" + row.attr("objid") + "/send");
-			});
-			alert("הדרישות נשלחו ליזמים");
-		});
 		$("#monthChange").click(function(event) {
 			event.preventDefault();
 			location.replace("/demandseason/" + $("#id_project").val() + "/" + $("#id_from_year").val() + "/" + $("#id_from_month").val()
@@ -77,17 +67,13 @@
 	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
 	<a id="demandEdit">שינוי דרישה</a>
 </div>
-<div class="someIcon"style="width:120px;">
-	<img src="/site_media/images/thumbs_up_48.png" width="20" height="20"  alt="שליחה" /> 
-	<a href="/demands/sendall">אשר ושלח דרישות</a>
-</div>
 <div class="someIcon"style="width:130px;">
 	<img src="/site_media/images/advanced-48.png" width="20" height="20"  alt="שליחה" /> 
 	<a id="demandCalc">חישוב עמלות מחדש</a>
 </div>
 <div class="someIcon" style="width:100px;">
 	<img src="/site_media/images/print-48.png" width="20" height="20"  alt="הדפסה" /> 
-	<a href="/reports/project_season/{{project.id}}/{{start.year}}/{{start.month}}/{{end.year}}/{{end.month}}">גרסה להדפסה</a>
+	<a href="#">גרסה להדפסה</a>
 </div>
 <div class="clearBoth"></div>
 <br>
