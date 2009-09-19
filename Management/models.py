@@ -1575,10 +1575,10 @@ class Demand(models.Model):
             i += s.c_final_worth
         return i
     def get_total_amount(self):
-        return self.get_sales_commission() + (self.fixed_diff and self.fixed_diff.amount or 0) + \
-                                            (self.var_diff and self.var_diff.amount or 0) + \
-                                            (self.bonus_diff and self.bonus_diff.amount or 0) - \
-                                            (self.fee_diff and self.fee_diff.amount or 0)
+        diffs = 0
+        for d in self.diffs.all():
+            diffs += d.amount
+        return self.get_sales_commission() + diffs
     def get_deleted_sales(self):
         return [s for s in self.sales.filter(is_deleted=True)]
     def diff(self):
