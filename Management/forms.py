@@ -568,14 +568,14 @@ class MonthFilterForm(forms.Form):
     month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('month'),
                               initial = Demand.current_month().month)
 
-class MadadBIForm(forms.Form):
+class MadadBIForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self, *args, **kw)
         self.fields['publish_date'].widget.attrs = {'class':'vDateField'}
     class Meta:
         model = MadadBI
 
-class MadadCPForm(forms.Form):
+class MadadCPForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self, *args, **kw)
         self.fields['publish_date'].widget.attrs = {'class':'vDateField'}
