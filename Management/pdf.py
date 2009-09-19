@@ -538,7 +538,7 @@ class MonthDemandWriter:
         story.extend(self.saleFlows())
         if self.demand.get_sales().count() == 10:
             story.append(PageBreak())
-        if self.demand.fixed_pay or self.demand.var_pay or self.demand.bonus:
+        if self.demand.diffs.count() > 0:
             story.extend([Spacer(0, 20), self.addsPara()])
         if self.demand.project.is_zilber():
             story.extend([PageBreak(), Spacer(0,30)])
