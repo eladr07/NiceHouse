@@ -224,6 +224,10 @@ class SignupCancelForm(forms.ModelForm):
         self.fields['date'].widget.attrs = {'class':'vDateField'}
     class Meta:
         model =SignupCancel
+
+class DemandDiffForm(forms.ModelForm):
+    class Meta:
+        model = DemandDiff
         
 class SaleForm(forms.ModelForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label=ugettext('project'))

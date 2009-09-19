@@ -1421,8 +1421,11 @@ class DemandDiff(models.Model):
     type = models.CharField(ugettext('diff_type'), max_length=30)
     reason = models.CharField(ugettext('diff_reason'), max_length=30, null=True, blank=True)
     amount = models.FloatField(ugettext('amount'))
+    def __unicode__(self):
+        return u'תוספת מסוג %s על סך %s ש"ח - %s' % (self.type, self.amount, self.reason)
     class Meta:
         db_table = 'DemandDiff'
+        unique_together = ('demand','type')
 
 DemandNoInvoice, DemandNoPayment, DemandPaidPlus, DemandPaidMinus, DemandPaid = range(1, 6)
       

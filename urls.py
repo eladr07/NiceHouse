@@ -313,6 +313,15 @@ urlpatterns = patterns('',
           'template_name' : 'Management/demand_remarks_edit.html',
           'permission':'add_demand',
           'post_save_redirect' : 'remarks'}),
+
+
+    (r'^demands/(?P<object_id>\d+)/adddiff$', 'Management.views.demand_adddiff'),
+    (r'^demanddiff/(?P<object_id>\d+)$', 'Management.views.limited_update_object',
+         {'model' : Management.models.DemandDiff,
+          'template_name' : 'Management/object_edit.html',
+          'permission':'change_demanddiff',
+          'post_save_redirect' : '%(id)s'}),
+    (r'^demanddiff/(?P<object_id>\d+)/del$', 'Management.views.demanddiff_del'),
           
     (r'^demandinvoices/$', 'Management.views.demand_invoice_list'),
     (r'^demandinvoices/(?P<project_id>\d*)/(?P<from_year>\d+)/(?P<from_month>\d+)/(?P<to_year>\d+)/(?P<to_month>\d+)$', 'Management.views.demand_invoice_list'),

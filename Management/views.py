@@ -833,7 +833,27 @@ def invoice_details(request, project, year, month):
                                   { 'demand':d}, context_instance=RequestContext(request))
     except Demand.DoesNotExist:
         return HttpResponse('')
-    
+
+@permission_required('Management.add_demanddiff')
+def demand_adddiff(request, object_id):
+    demand = Demand.objects.get(pk=object_id)
+    if request.method == 'POST':
+        form = DemandDiffForm(request.POST)
+        if form.is_valid():
+            diff = form.save()
+            demand.diffs.add(diff)
+    else:
+        form = DemandDiffForm()
+    return render_to_response('Management/object_edit.html', 
+                              { 'form':form }, context_instance=RequestContext(request))
+
+@permission_required('Management.delete_demanddiff')
+def demanddiff_del(request, object_id):
+    diff = DemandDiff.objects.get(pk=object_id)
+    url = diff.demand.get_absolute_url()
+    diff.delete()
+    return HttpResponseRedirect(url)
+
 @permission_required('Management.add_payment')
 def demand_payment_add(request, id):
     demand = Demand.objects.get(pk=id)
