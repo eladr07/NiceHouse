@@ -1454,7 +1454,7 @@ class Demand(models.Model):
         return now
     current_month = Callable(current_month)
     def get_madad(self):
-        return Madad.objects.filter(date__lte=date(self.year, self.month, 15)).latest().value
+        return MadadBI.objects.get(year = self.year, month=self.month).value
     def zilber_cycle_index(self):
         start = self.project.commissions.c_zilber.third_start
         if (start.year == self.year and start.month > self.month) or self.year < start.year:
@@ -1634,14 +1634,29 @@ class Tax(models.Model):
         db_table = 'Tax'
         get_latest_by = 'date'
         ordering = ['-date']    
-
-class Madad(models.Model):
-    date = models.DateField(ugettext('date'))
+#Building Input
+class MadadBI(models.Model):
+    year = models.PositiveSmallIntegerField(ugettext('year'))
+    month = models.PositiveSmallIntegerField(ugettext('year'))
+    publish_date = models.DateField(ugettext('publish_date'))
     value = models.FloatField(ugettext('value'))
     class Meta:
-        db_table = 'Madad'
-        get_latest_by = 'date'
-        ordering = ['-date']
+        db_table = 'MadadBI'
+        get_latest_by = 'publish_date'
+        ordering = ['-publish_date']
+        unique_together = ('year', 'month')
+
+#Consumer Prices
+class MadadCP(models.Model):
+    year = models.PositiveSmallIntegerField(ugettext('year'))
+    month = models.PositiveSmallIntegerField(ugettext('year'))
+    publish_date = models.DateField(ugettext('publish_date'))
+    value = models.FloatField(ugettext('value'))
+    class Meta:
+        db_table = 'MadadCP'
+        get_latest_by = 'publish_date'
+        ordering = ['-publish_date']
+        unique_together = ('year', 'month')
 
 class NHPay(models.Model):
     nhsaleside = models.ForeignKey('NHSaleSide', editable=False, related_name='pays')

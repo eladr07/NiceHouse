@@ -1043,10 +1043,10 @@ def building_pricelist_pdf(request, object_id, type_id):
     p.flush()
     p.close()
     title = u'מחירון לפרוייקט %s' % unicode(b.project)
+    subtitle = u'בניין %s - %s' % (b.num, unicode(pricelist_type)) 
     if date:
-        title += u' לתאריך ' + date.strftime('%d/%m/%Y')
-    PricelistWriter(b.pricelist, houses, title,
-                    u'בניין %s - %s' % (b.num, unicode(pricelist_type))).build(filename)
+        subtitle += u' לתאריך ' + date.strftime('%d/%m/%Y')
+    PricelistWriter(b.pricelist, houses, title, subtitle).build(filename)
     p = open(filename,'r')
     response.write(p.read())
     p.close()
@@ -1892,7 +1892,7 @@ def tax_list(request):
                               {'taxs':Tax.objects.all()},
                               context_instance=RequestContext(request))   
     
-@permission_required('Management.delete_madad')
+@permission_required('Management.delete_tax')
 def tax_del(request, id):
     Tax.objects.get(pk=id).delete()
     return HttpResponseRedirect('/tax')
