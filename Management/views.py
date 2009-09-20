@@ -1825,32 +1825,16 @@ def attachment_add(request):
     return render_to_response('Management/attachment_edit.html', 
                               {'form':form },
                               context_instance=RequestContext(request))
-@login_required
-def madadbi_list(request):
-    return render_to_response('Management/madadbi_list.html', 
-                              {'madads':MadadBI.objects.all()},
-                              context_instance=RequestContext(request))   
     
 @permission_required('Management.delete_madadbi')
 def madadbi_del(request, id):
     MadadBI.objects.get(pk=id).delete()
     return HttpResponseRedirect('/madadbi')
-@login_required
-def madadcp_list(request):
-    return render_to_response('Management/madadcp_list.html', 
-                              {'madads':MadadCP.objects.all()},
-                              context_instance=RequestContext(request))   
     
 @permission_required('Management.delete_madadcp')
 def madadcp_del(request, id):
     MadadCP.objects.get(pk=id).delete()
     return HttpResponseRedirect('/madadcp')
-
-@login_required
-def tax_list(request):
-    return render_to_response('Management/tax_list.html', 
-                              {'taxs':Tax.objects.all()},
-                              context_instance=RequestContext(request))   
     
 @permission_required('Management.delete_tax')
 def tax_del(request, id):

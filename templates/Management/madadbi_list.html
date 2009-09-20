@@ -50,7 +50,7 @@
 		<th>ת. פרסום</th>
 		<th>מדד</th>
 		<th>שינוי ב-%</th>
-		{% for m in madads %}
+		{% for m in object_list %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{m.id}}>
 				<td>{{ m.month }}/{{m.year}}</td>
 				<td>{{ m.publish_date }}</td>
