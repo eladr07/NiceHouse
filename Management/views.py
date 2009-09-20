@@ -81,8 +81,11 @@ def limited_update_object(request, permission, *args, **kwargs):
         return HttpResponse('No permission. contact Elad.')
 
 @login_required
-def limited_object_list(*args, **kwargs):
-    return object_list(*args, **kwargs)
+def limited_object_list(request, permission=None, *args, **kwargs):
+    if not permission or request.user.has_perm('Management.' + permission):
+        return object_list(request, *args, **kwargs)
+    else:
+        return HttpResponse('No permission. contact Elad.')
     
 @login_required
 def house_details(request, id):
@@ -611,11 +614,6 @@ def nhemployee_remarks(request, year, month):
                               { 'form':form, 'month':month, 'year':year },
                               context_instance=RequestContext(request))
         
-def demand_sales(request, id):
-    return render_to_response('Management/demand_sales.html', 
-                              { 'demand':Demand.objects.get(pk=id) },
-                              context_instance=RequestContext(request))
-
 @permission_required('Management.change_demand')
 def demand_close(request, id):
     d = Demand.objects.get(pk=id)
@@ -892,13 +890,6 @@ def payment_del(request, id):
 def project_list(request):    
     projects = Project.objects.filter(end_date = None)
     return render_to_response('Management/project_list.html',
-                              {'projects': projects}, 
-                              context_instance=RequestContext(request))
-
-@login_required
-def project_archive(request):    
-    projects = Project.objects.exclude(end_date = None)
-    return render_to_response('Management/project_archive.html',
                               {'projects': projects}, 
                               context_instance=RequestContext(request))
 

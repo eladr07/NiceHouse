@@ -62,7 +62,7 @@
 <div class="clearBoth"></div>
 <br /> 
 <table id="projectTable" class="dataTable" border="1">
-<caption>מציג סה"כ {{projects|length}} פרוייקטים</caption>
+<caption>מציג סה"כ {{object_list|length}} פרוייקטים</caption>
 <tr>
 	<th/>
 	<th>יזם</th>
@@ -76,7 +76,7 @@
 	<th>דירות ומחירונים</th>
 	<th>אתר אינטרנט</th>
 </tr>
-{% for i in projects %}
+{% for i in object_list %}
 	<tr class="{% cycle 'row1' 'row2' %}" objid={{i.id}}>
 		<td><a href="{{i.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
 		<td>{{ i.initiator }}</td>
