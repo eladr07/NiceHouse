@@ -67,8 +67,8 @@ def limited_create_object(request, permission, *args, **kwargs):
         return HttpResponse('No permission. contact Elad.')
     
 @login_required
-def limited_object_detail(request, permission, *args, **kwargs):
-    if request.user.has_perm('Management.' + permission):
+def limited_object_detail(request, permission=None, *args, **kwargs):
+    if not permission or request.user.has_perm('Management.' + permission):
         return create_object(request, *args, **kwargs)
     else:
         return HttpResponse('No permission. contact Elad.')
