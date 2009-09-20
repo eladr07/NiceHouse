@@ -10,6 +10,7 @@ from forms import *
 from django.core import serializers
 from django.views.generic.create_update import create_object, update_object
 from django.views.generic.list_detail import object_list, object_detail
+from django.views.generic.simple import direct_to_template
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, NHEmployeeSalariesWriter, PricelistWriter
@@ -58,6 +59,13 @@ def locate_house(request):
                                   context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect('/')
+
+@login_required
+def limited_direct_to_template(request, permission=None, *args, **kwargs):
+    if not permission or request.user.has_perm('Management.' + permission):
+        return direct_to_template(request, *args, **kwargs)
+    else:
+        return HttpResponse('No permission. contact Elad.')
 
 @login_required
 def limited_create_object(request, permission, *args, **kwargs):
@@ -1456,24 +1464,6 @@ def house_edit(request,id , type_id):
         form.fields[f].queryset = ss
     return render_to_response('Management/house_edit.html', 
                               {'form' : form, 'type':PricelistType.objects.get(pk = type_id) })
-
-@login_required
-def employee_archive(request):
-    return render_to_response('Management/employee_archive.html', 
-                              { 'employee_list': Employee.objects.archive()},
-                              context_instance=RequestContext(request)) 
-@login_required
-def employee_list(request):
-    return render_to_response('Management/employee_list.html', 
-                              { 'employee_list': Employee.objects.active(),
-                               'nhemployee_list': NHEmployee.objects.active()},
-                              context_instance=RequestContext(request)) 
-
-@permission_required('Management.add_loan')
-def employee_loans(request, employee_id, model):
-    return render_to_response('Management/employee_loans.html', 
-                              { 'employee': model.objects.get(pk=employee_id)},
-                              context_instance=RequestContext(request))
         
 @permission_required('Management.add_loan')
 def employee_addloan(request, employee_id):
