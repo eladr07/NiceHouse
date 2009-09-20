@@ -1137,8 +1137,8 @@ class CByPrice(models.Model):
     class Meta:
         db_table = 'CByPrice'
 
-ZILBER_CYCLE = 4   
 class CZilber(models.Model):
+    Cycle = 4
     base = models.FloatField(ugettext('commission_base'))
     b_discount = models.FloatField(ugettext('b_discount'))
     b_sale_rate = models.FloatField(ugettext('b_sale_rate'))
@@ -1189,7 +1189,8 @@ class CZilber(models.Model):
             else:
                 pc_base = s.pc_base
             prev_adds += (base - pc_base) * s.project_price() / 100
-        d.diffs.create(type=u'משתנה', reason=u'הפרשי קצב מכירות (נספח א)', amount=prev_adds)
+        if prev_adds:
+            d.diffs.create(type=u'משתנה', reason=u'הפרשי קצב מכירות (נספח א)', amount=prev_adds)
         if d.include_zilber_bonus():
             demand, bonus = d, 0
             while demand != None:
@@ -1198,7 +1199,8 @@ class CZilber(models.Model):
                 if demand.zilber_cycle_index() == 1:
                     break
                 demand = demand.get_previous_demand()
-            d.diffs.create(type=u'בונוס', reason=u'בונוס חסכון בהנחה (נספח ב)', amount=bonus)
+            if bonus:
+                d.diffs.create(type=u'בונוס', reason=u'בונוס חסכון בהנחה (נספח ב)', amount=bonus)
         d.save()
     class Meta:
         db_table = 'CZilber'
@@ -1479,7 +1481,7 @@ class Demand(models.Model):
             start = date(start.month == 12 and start.year + 1 or start.year,
                          start.month == 12 and 1 or start.month + 1, 1)
             i += 1
-        return (i % ZILBER_CYCLE) or ZILBER_CYCLE
+        return (i % CZilber.Cycle) or CZilber.Cycle
     def get_previous_demand(self):
         try:
             return Demand.objects.get(project = self.project,
@@ -1519,7 +1521,7 @@ class Demand(models.Model):
             months[(signup.date.month, signup.date.year)] += 1
         return months
     def include_zilber_bonus(self):
-        return self.zilber_cycle_index() == ZILBER_CYCLE
+        return self.zilber_cycle_index() == CZilber.Cycle
     def get_absolute_url(self):
         return '/demands/%s' % self.id
     def get_salaries(self):

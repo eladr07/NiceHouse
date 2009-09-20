@@ -531,7 +531,7 @@ class MonthDemandWriter:
         story.append(Spacer(0, 10))
         subTitle = u"דרישה מס' %s" % self.demand.id
         if self.demand.project.is_zilber():
-            subTitle += u' (%s מתוך %s)' % (self.demand.zilber_cycle_index(), models.ZILBER_CYCLE)
+            subTitle += u' (%s מתוך %s)' % (self.demand.zilber_cycle_index(), models.CZilber.Cycle)
 
         story.append(Paragraph('<u>%s</u>' % log2vis(subTitle), styleSubTitleBold))
         story.extend([Spacer(0,20), self.introPara(), Spacer(0,20)])
