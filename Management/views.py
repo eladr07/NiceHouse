@@ -34,12 +34,6 @@ def index(request):
             d.finish()
             time.sleep(1)
     '''
-    for o in MadadBI.objects.all():
-        o.publish_date = date(o.publish_date.year, o.publish_date.month, 15)
-        o.save()
-    for o in MadadCP.objects.all():
-        o.publish_date = date(o.publish_date.year, o.publish_date.month, 15)
-        o.save()
     return render_to_response('Management/index.html',
                               {'locateHouseForm':LocateHouseForm(),
                                'nhbranches':NHBranch.objects.all()},
