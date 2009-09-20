@@ -140,6 +140,8 @@ class ProjectDetails(models.Model):
 class ProjectManager(models.Manager):
     def active(self):
         return self.filter(end_date=None, is_marketing=True)
+    def archive(self):
+        return self.exclude(end_date=None)
 
 class Project(models.Model):
     details = models.OneToOneField('ProjectDetails', editable=False, null=True)
