@@ -1088,6 +1088,23 @@ def salecommissiondetail_edit(request, sale_id):
                               context_instance=RequestContext(request))
     
 @permission_required('Management.change_project')
+def projectcommission_edit(request, project_id):
+    p = Project.objects.get(pk=project_id)
+    if request.method == 'POST':
+        form = ProjectCommissionForm(request.POST, request.FILES, instance=p.commissions)
+        if request.FILES.has_key('agreement'):
+            form.instance.agreement = request.FILES['agreement']
+        if form.is_valid():
+            form.save()
+    else:
+        form = ProjectCommissionForm(instance = p.commissions)
+        
+    return render_to_response('Management/object_edit.html', 
+                              { 'form':form },
+                              context_instance=RequestContext(request))  
+    
+    
+@permission_required('Management.change_project')
 def project_edit(request, id):
     project = Project.objects.get(pk=id)
     details = project.details or ProjectDetails()
