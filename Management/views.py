@@ -1259,25 +1259,6 @@ def project_deletecontact(request, id, project_id):
     contact.projects_payment.clear()
     contact.delete()
     return HttpResponseRedirect('/projects/%s' % p.id)
-
-def contact_list(request):
-    c = Contact.objects.all()
-    if request.method=='POST':
-        form = ContactFilterForm(request.POST)
-        if form.is_valid():
-            if form.cleaned_data['first_name']:
-                c = c.filter(first_name = form.cleaned_data['first_name'])
-            if form.cleaned_data['last_name']:
-                c = c.filter(last_name = form.cleaned_data['last_name'])
-            if form.cleaned_data['role']:
-                c = c.filter(role = form.cleaned_data['role'])
-            if form.cleaned_data['company']:
-                c = c.filter(company = form.cleaned_data['company'])
-    else:
-        form = ContactFilterForm()
-    return render_to_response('Management/contact_list.html', 
-                              { 'object_list':c.all(), 'filterForm':form },
-                              context_instance=RequestContext(request))
     
 @permission_required('Management.delete_contact')
 def contact_delete(request, id):
