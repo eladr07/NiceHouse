@@ -9,7 +9,7 @@ from datetime import datetime, date
 from forms import *
 from django.core import serializers
 from django.views.generic.create_update import create_object, update_object
-from django.views.generic.list_detail import object_list 
+from django.views.generic.list_detail import object_list, object_detail
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, NHEmployeeSalariesWriter, PricelistWriter
@@ -61,6 +61,13 @@ def locate_house(request):
 
 @login_required
 def limited_create_object(request, permission, *args, **kwargs):
+    if request.user.has_perm('Management.' + permission):
+        return create_object(request, *args, **kwargs)
+    else:
+        return HttpResponse('No permission. contact Elad.')
+    
+@login_required
+def limited_object_detail(request, permission, *args, **kwargs):
     if request.user.has_perm('Management.' + permission):
         return create_object(request, *args, **kwargs)
     else:
@@ -370,29 +377,7 @@ def employee_salary_approve(request, id):
     es = EmployeeSalaryBase.objects.get(pk=id)
     es.approve()
     return HttpResponse('ok')
-
-def employee_salary_details(request, id):
-    return render_to_response('Management/employee_commission_details.html', 
-                              { 'salary':EmployeeSalary.objects.get(pk=id)},
-                              context_instance=RequestContext(request))
     
-def nhemployee_salary_details(request, id):
-    salary = NHEmployeeSalary.objects.get(pk=id)
-    details = salary.nhsalecommissiondetail_set.all()
-    return render_to_response('Management/nhemployee_commission_details.html', 
-                              { 'salary':salary, 'details':details},
-                              context_instance=RequestContext(request))
-
-def employee_salary_check_details(request, model, id):
-    return render_to_response('Management/employee_salary_check_details.html', 
-                              { 'salary':model.objects.get(pk=id)},
-                              context_instance=RequestContext(request))
-
-def employee_salary_total_details(request, model, id):
-    return render_to_response('Management/employee_salary_total_details.html', 
-                              { 'salary':model.objects.get(pk=id)},
-                              context_instance=RequestContext(request))
-
 @permission_required('Management.list_employeesalary')
 def employee_salary_list(request, year = date.today().year, month = date.today().month):
     for e in Employee.objects.active():

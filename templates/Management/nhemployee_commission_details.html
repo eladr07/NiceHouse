@@ -10,6 +10,7 @@
 		<th>סוג עמלה</th>
 		<th>שווי עמלה</th>
 		<th>מכירה</th>
+		{% with salary.nhsalecommissiondetail_set.all as details %}
 		{% for scd in details %}
 		<tr>
 			<td>
@@ -29,6 +30,7 @@
 			<td><a href="{{scd.nhsaleside.nhsale.get_absolute_url}}" target="_blank">{{scd.nhsaleside.nhsale.verbose_id}}</a></td>
 		</tr>
 		{% endfor %}
+		{% endwith %}
 	</table>
 </div>
 {% endblock page %}
