@@ -1834,6 +1834,7 @@ class NHMonth(models.Model):
 class NHSale(models.Model):
     nhmonth = models.ForeignKey('NHMonth', editable=False, related_name='nhsales')
     
+    num = models.IntegerField(ugettext('sale_num'))
     address = models.CharField(ugettext('address'), max_length=50)
     hood = models.CharField(ugettext('hood'), max_length=50)
     rooms = models.PositiveSmallIntegerField(ugettext('rooms'))
