@@ -602,6 +602,7 @@ class MultipleDemandWriter:
         sumRow = [None, None, commaise(total_sales_amount), commaise(total_amount), None, None, None, None]
         sumRow.reverse()
         rows.append(sumRow)
+        rowHeights.append(28)
         data = [headers]
         data.extend(rows)
         t = Table(data, colWidths, rowHeights)
