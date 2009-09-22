@@ -1,4 +1,5 @@
 ﻿{% load management_extras %}
+{% if payments %}
 <table class="formTable">
 	<caption>צ'קים שהוקלדו</caption>
 	<th>מס' צ'ק</th>
@@ -18,3 +19,4 @@
 	</tr>
 	{% endfor %}
 </table>
+{% endif %}
