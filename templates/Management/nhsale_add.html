@@ -141,13 +141,13 @@ function updateValues() {
 		<table cellspacing="2" cellpadding="2" class="formTable" align="center">
 			<tr>
 				<td>{{ saleForm.id }}</td>
-			</tr>
-			<tr>
 				<th>{{ saleForm.num.label_tag }}</th>
 				<td>
 					{{ saleForm.num }}
 					{% if saleForm.num.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{saleForm.num.errors|join:""}}'/>{% endif %}
 				</td>
+			</tr>
+			<tr>
 				<th>{{ saleForm.address.label_tag }}</th>
 				<td>
 					{{ saleForm.address }}
