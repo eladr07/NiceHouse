@@ -13,10 +13,12 @@
 {% endblock header %}
 {% block page %}
 <div id="content">	
+	{% if title %}
 	<div class="title">
-		<div class="pageTitle">{{title|default_if_none:""}}</div>
+		<div class="pageTitle">{{title}}</div>
 	</div>
 	<div class="clearBoth"></div>
+	{% endif %}
 	<form method="POST" enctype="multipart/form-data">
 		<table class="formTable">
 			{% for field in form %}
