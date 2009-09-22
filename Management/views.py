@@ -2049,7 +2049,7 @@ def demand_season_list(request, project_id=None, from_year=Demand.current_month(
                           to_year=Demand.current_month().year, to_month=Demand.current_month().month):
     form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
     ds = []
-    total_sales_count,total_sales_amount, total_sales_commission, total_amount = (0,0,0,0)
+    total_sales_count,total_sales_amount, total_sales_commission, total_amount = 0,0,0,0
     if project_id:
         current = date(int(from_year), int(from_month), 1)
         end = date(int(to_year), int(to_month), 1)
