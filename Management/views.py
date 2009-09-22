@@ -69,9 +69,10 @@ def limited_direct_to_template(request, permission=None, *args, **kwargs):
 
 @login_required
 def limited_create_object(request, *args, **kwargs):
-    model, form_class = kwargs['model'], kwargs['form_class']
-    if not model and form_class:
-        model = form_class._meta.model
+    if kwargs.has_key('model'):
+        model = kwargs['model']
+    elif kwargs.has_key('form_class'):
+        model = kwargs['form_class']._meta.model
     if request.user.has_perm('Management.add_' + model.__name__.lower()):
         return create_object(request, *args, **kwargs)
     else:
@@ -95,9 +96,10 @@ def limited_object_detail(request, *args, **kwargs):
 
 @login_required
 def limited_update_object(request, *args, **kwargs):
-    model, form_class = kwargs['model'], kwargs['form_class']
-    if not model and form_class:
-        model = form_class._meta.model
+    if kwargs.has_key('model'):
+        model = kwargs['model']
+    elif kwargs.has_key('form_class'):
+        model = kwargs['form_class']._meta.model
     if request.user.has_perm('Management.change_' + model.__name__.lower()):
         return update_object(request, *args, **kwargs)
     else:
