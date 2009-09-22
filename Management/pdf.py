@@ -595,7 +595,11 @@ class MultipleDemandWriter:
                 row.extend([log2vis(d.project.initiator), project_name])
             if self.show_month:
                 row.append('%s/%s' % (d.month, d.year))
-            row.extend([commaise(d.get_sales_amount()), commaise(d.get_total_amount()), None, None, None, None]) 
+            row.extend([commaise(d.get_sales_amount()), commaise(d.get_total_amount())])
+            row.append(', '.join([i.num for i in d.invoices.all()]))
+            row.append(', '.join([i.amount for i in d.invoices.all()]))
+            row.append(', '.join([p.num for p in d.payments.all()]))
+            row.append(', '.join([p.amount for p in d.payments.all()]))
             row.reverse()
             rows.append(row)
             rowHeights.append(28)
