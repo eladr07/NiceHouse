@@ -68,37 +68,36 @@ def limited_direct_to_template(request, permission=None, *args, **kwargs):
         return HttpResponse('No permission. contact Elad.')
 
 @login_required
-def limited_create_object(request, permission=None, *args, **kwargs):
+def limited_create_object(request, *args, **kwargs):
     model, form_class = kwargs['model'], kwargs['form_class']
     if not model and form_class:
         model = form_class._meta.model
-    if request.user.has_perm('Management.add_' + model.__name__):
+    if request.user.has_perm('Management.add_' + model.__name__.lower()):
         return create_object(request, *args, **kwargs)
     else:
         return HttpResponse('No permission. contact Elad.')
     
 @login_required
 def limited_delete_object(request, model, object_id, post_delete_redirect):
-    if request.user.has_perm('Management.delete_' + model.__name__):
-        return HttpResponse('Management.delete_' + model.__name__)
+    if request.user.has_perm('Management.delete_' + model.__name__.lower()):
         model.delete(object_id)
         return HttpResponseRedirect(post_delete_redirect)
     else:
         return HttpResponse('No permission. contact Elad.')
     
 @login_required
-def limited_object_detail(request, permission=None, *args, **kwargs):
+def limited_object_detail(request, *args, **kwargs):
     if not permission or request.user.has_perm('Management.' + permission):
         return object_detail(request, *args, **kwargs)
     else:
         return HttpResponse('No permission. contact Elad.')
 
 @login_required
-def limited_update_object(request, permission=None, *args, **kwargs):
+def limited_update_object(request, *args, **kwargs):
     model, form_class = kwargs['model'], kwargs['form_class']
     if not model and form_class:
         model = form_class._meta.model
-    if request.user.has_perm('Management.change_' + model.__name__):
+    if request.user.has_perm('Management.change_' + model.__name__.lower()):
         return update_object(request, *args, **kwargs)
     else:
         return HttpResponse('No permission. contact Elad.')
