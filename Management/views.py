@@ -80,7 +80,8 @@ def limited_create_object(request, *args, **kwargs):
 @login_required
 def limited_delete_object(request, model, object_id, post_delete_redirect):
     if request.user.has_perm('Management.delete_' + model.__name__.lower()):
-        model.delete(object_id)
+        obj = model.get(pk=object_id)
+        obj.delete()
         return HttpResponseRedirect(post_delete_redirect)
     else:
         return HttpResponse('No permission. contact Elad.')
