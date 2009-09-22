@@ -1,12 +1,5 @@
 ﻿{% load management_extras %}
 <table class="formTable">
-	<tr>
-		<th>סכום דרישה</th>
-		<td>{{demand.get_total_amount|commaise}} ש"ח</td>
-	</tr>
-</table>
-{% if demand.payments.count %}
-<table class="formTable">
 	<caption>צ'קים שהוקלדו</caption>
 	<th>מס' צ'ק</th>
 	<th>מס' אסמכתא</th>
@@ -14,7 +7,7 @@
 	<th>ת. תשלום</th>
 	<th>סכום</th>
 	<th>הערות</th>
-	{% for p in demand.payments.all %}
+	{% for p in payments %}
 	<tr>
 		<td>{{p.num}}</td>
 		<td>{{p.support_num}}</td>
@@ -25,4 +18,3 @@
 	</tr>
 	{% endfor %}
 </table>
-{% endif %}

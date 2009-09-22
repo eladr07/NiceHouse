@@ -813,7 +813,7 @@ def payment_details(request, project, year, month):
     try:
         d = Demand.objects.get(project = project, year = year, month = month)
         return render_to_response('Management/demand_payment_details.html', 
-                                  { 'demand':d}, context_instance=RequestContext(request))
+                                  { 'payments':d.payments.all()}, context_instance=RequestContext(request))
     except Demand.DoesNotExist:
         return HttpResponse('')
     
@@ -821,6 +821,14 @@ def invoice_details(request, project, year, month):
     try:
         d = Demand.objects.get(project = project, year = year, month = month)
         return render_to_response('Management/demand_invoice_details.html', 
+                                  { 'invoices':d.invoices.all()}, context_instance=RequestContext(request))
+    except Demand.DoesNotExist:
+        return HttpResponse('')
+    
+def demand_details(request, project, year, month):
+    try:
+        d = Demand.objects.get(project = project, year = year, month = month)
+        return render_to_response('Management/demand_details.html', 
                                   { 'demand':d}, context_instance=RequestContext(request))
     except Demand.DoesNotExist:
         return HttpResponse('')

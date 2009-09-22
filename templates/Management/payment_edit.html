@@ -17,6 +17,9 @@
 		var year = $("#id_year").val();
 		var month = $("#id_month").val();
 		$("#leftSide").empty();
+		$.get("/demand_details/" + project + "/" + year + "/" + month, function(data){
+			$("#leftSide").append(data);
+		});
 		$.get("/invoice_details/" + project + "/" + year + "/" + month, function(data){
 			$("#leftSide").append(data);
 		});
