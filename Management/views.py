@@ -79,7 +79,7 @@ def limited_create_object(request, permission=None, *args, **kwargs):
     
 @login_required
 def limited_delete_object(request, model, object_id, post_delete_redirect):
-    if not permission or request.user.has_perm('Management.delete_' + model.__name__):
+    if request.user.has_perm('Management.delete_' + model.__name__):
         return HttpResponse('Management.delete_' + model.__name__)
         model.delete(object_id)
         return HttpResponseRedirect(post_delete_redirect)
