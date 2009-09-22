@@ -186,7 +186,7 @@ function updateValues() {
 					{% if saleForm.price.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{saleForm.price.errors|join:""}}'/>{% endif %}
 				</td>
 				<th>{{ saleForm.remarks.label_tag }}</th>
-				<td colspan="5">
+				<td>
 					{{ saleForm.remarks }}
 					{% if saleForm.remarks.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{saleForm.remarks.errors|join:""}}'/>{% endif %}
 				</td>
