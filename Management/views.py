@@ -1172,7 +1172,7 @@ def project_cvpf(request, project_id):
     else:
         form = CVarPrecentageFixedForm(instance= cvpf)
             
-    return render_to_response('Management/commission.html', 
+    return render_to_response('Management/object_edit.html', 
                               { 'form':form, 'project':project},
                               context_instance=RequestContext(request))
     
@@ -1189,7 +1189,7 @@ def project_cz(request, project_id):
     else:
         form = CZilberForm(instance= cz)
             
-    return render_to_response('Management/commission.html', 
+    return render_to_response('Management/object_edit.html', 
                               { 'form':form, 'project':project},
                               context_instance=RequestContext(request))
 
@@ -1206,7 +1206,7 @@ def project_bdsp(request, project_id):
     else:
         form = BDiscountSavePrecentageForm(instance=bdsp)
             
-    return render_to_response('Management/commission.html', 
+    return render_to_response('Management/object_edit.html', 
                               { 'form':form, 'project':project},
                               context_instance=RequestContext(request))
     
@@ -1684,7 +1684,7 @@ def employee_bds(request, employee_id, project_id):
     else:
         form = BDiscountSaveForm(instance=bds)
             
-    return render_to_response('Management/commission.html', 
+    return render_to_response('Management/object_edit.html', 
                               { 'form':form, 'employee':employee },
                               context_instance=RequestContext(request))
         

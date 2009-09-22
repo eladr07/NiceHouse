@@ -1,5 +1,6 @@
-﻿{% extends "./template.html" %}
+﻿{% extends "./base.html" %}
 {% block header %}
+{{block.super}}
 <script>
 	$(document).ready(function() {		
 		$("input[type!='submit']").attr("class", "inputText");
@@ -16,14 +17,16 @@
 		var year = $("#id_year").val();
 		var month = $("#id_month").val();
 		$("#leftSide").empty();
+		$.get("/invoice_details/" + project + "/" + year + "/" + month, function(data){
+			$("#leftSide").append(data);
+		});
 		$.get("/payment_details/" + project + "/" + year + "/" + month, function(data){
 			$("#leftSide").append(data);
 		});
 	}
 </script>
 {% endblock header %}
-{% block page %}
-<div id="content">	
+{% block content %}
 	<div class="title">
 		<div class="pageTitle">הוספת תשלום (צ'ק)</div>
 	</div>
@@ -96,9 +99,6 @@
 					</td>
 				</tr>
 				<tr>
-					<td colspan="3">לידיעתך מע"מ הדרישה הוא בסך XXX ש"ח</th>
-				</tr>
-				<tr>
 					<td></td>
 					<td>
 						<input type="submit" value="אישור" class="button"/>
@@ -112,5 +112,4 @@
 
 	</div>	
 	<div class="clearBoth"></div>
-</div>
-{% endblock page %}
+{% endblock content %}

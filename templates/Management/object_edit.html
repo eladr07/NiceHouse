@@ -12,7 +12,11 @@
 </script>
 {% endblock header %}
 {% block page %}
-<div id="content">
+<div id="content">	
+	<div class="title">
+		<div class="pageTitle">{{title|default_if_none:""}}</div>
+	</div>
+	<div class="clearBoth"></div>
 	<form method="POST" enctype="multipart/form-data">
 		<table class="formTable">
 			{% for field in form %}

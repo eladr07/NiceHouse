@@ -1,5 +1,6 @@
 ﻿{% extends "./template.html" %}
 {% block header %}
+{{block.super}}
 <script>
 	$(document).ready(function() {		
 		$("input[type!='submit']").attr("class", "inputText");
@@ -19,13 +20,15 @@
 		$.get("/invoice_details/" + project + "/" + year + "/" + month, function(data){
 			$("#leftSide").append(data);
 		});
+		$.get("/payment_details/" + project + "/" + year + "/" + month, function(data){
+			$("#leftSide").append(data);
+		});
 	}
 </script>
 {% endblock header %}
-{% block page %}
-<div id="content">
+{% block content %}
 	<div class="title">
-		<div class="pageTitle">הוספת חשבונית</div>
+		<div class="pageTitle">חשבונית חדשה</div>
 	</div>
 	<div class="clearBoth"> </div>
 	<br /> 	
@@ -95,5 +98,4 @@
 
 	</div>	
 	<div class="clearBoth"></div>
-</div>
-{% endblock page %}
+{% endblock content %}
