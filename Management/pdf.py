@@ -576,9 +576,11 @@ class MultipleDemandWriter:
         if self.show_project:
             headers.extend([log2vis(n) for n in [u'שם היזם', u'שם הפרוייקט']])
             colWidths.extend([90,140])
+            sumRow = [None, None]
         if self.show_month:
             headers.append(log2vis(u'חודש'))
             colWidths.append(None)
+            sumRow = [None]
         headers.extend(log2vis(n) for n in[u'סה"כ מכירות', u'סה"כ עמלה', u'מס ח-ן', u'סך ח-ן', u'מס צק', u'סך צק'])
         headers.reverse()
         colWidths.extend([None,None,None,None,None,None])
@@ -599,7 +601,7 @@ class MultipleDemandWriter:
             rowHeights.append(28)
             total_sales_amount += d.get_sales_amount()
             total_amount += d.get_total_amount()
-        sumRow = [None, None, commaise(total_sales_amount), commaise(total_amount), None, None, None, None]
+        sumRow.extend([commaise(total_sales_amount), commaise(total_amount), None, None, None, None])
         sumRow.reverse()
         rows.append(sumRow)
         rowHeights.append(28)
