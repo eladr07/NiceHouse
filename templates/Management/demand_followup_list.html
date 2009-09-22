@@ -144,11 +144,13 @@
 					<a href="/payments/{{p.id}}">{{p.amount|commaise}}</a><br>
 				{% endfor %}
 			</td>
+			<td>{{d.diff_invoice}}</td>
 			<td>
 				{% for p in d.payments.all %}
 					{{p.payment_date|date:"j/m/y"}}<br>
 				{% endfor %}
 			</td>
+			<td>{{d.diff_invoice_payment}}</td>
 		</tr>
 	{% endfor %}
 	<tr height="30px">

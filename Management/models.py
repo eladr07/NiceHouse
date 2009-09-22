@@ -1542,6 +1542,18 @@ class Demand(models.Model):
     def is_fixed(self):
         return self.sales.exclude(salehousemod=None, salepricemod=None,
                                   salepre=None, salereject=None).count() > 0
+    @property
+    def diff_invoice(self):
+        if self.invoices.count() == 0: return self.get_total_amount()
+        return self.invoices.latest().amount - self.get_total_amount()
+    @property
+    def diff_invoice_payment(self):
+        if self.invoices.count() == 0 and self.payments.count() == 0: return 0
+        if self.invoices.count() == 0:
+            return self.payments.latest().amount
+        if self.payments.count() == 0:
+            return self.invoices.latest().amount
+        return self.payments.latest().amount - self.invoices.latest().amount
     def get_open_reminders(self):
         return [r for r in self.reminders.all() if r.statuses.latest().type.id 
                 not in (ReminderStatusType.Deleted,ReminderStatusType.Done)]
