@@ -135,18 +135,6 @@ def employeecheck_list(request, year=None, month=None):
                                                                      issue_date__month = date.month),
                                 'date':date},
                               context_instance=RequestContext(request))
-    
-@login_required
-def employeecheck_del(request, id):
-    ec = EmployeeCheck.objects.get(pk=id)
-    ec.delete()
-    return HttpResponseRedirect('/employeechecks') 
-
-@permission_required('Management.delete_advancepayment')
-def advance_payment_del(request, id):
-    ap = AdvancePayment.objects.get(pk=id)
-    ap.delete()
-    return HttpResponseRedirect('/advancepayments') 
 
 @permission_required('Management.delete_advancepayment')
 def advance_payment_toloan(request, id):
@@ -161,12 +149,6 @@ def advance_payment_toloan(request, id):
    
     return render_to_response('Management/object_edit.html',
                               {'form':form}, context_instance=RequestContext(request))
-
-@permission_required('Management.delete_loan')
-def loan_del(request, id):
-    l = Loan.objects.get(pk=id)
-    l.delete()
-    return HttpResponseRedirect('/loans') 
 
 @login_required
 def check_list(request, year=None, month=None):
@@ -219,12 +201,6 @@ def check_edit(request, id):
     return render_to_response('Management/check_edit.html', 
                               { 'accountForm':accountForm, 'form':form },
                               context_instance=RequestContext(request))
-    
-@login_required
-def check_del(request, id):
-    c = Check.objects.get(pk=id)
-    c.delete()
-    return HttpResponseRedirect('checks') 
 
 def signup_list(request, project_id):
     p = Project.objects.get(pk = project_id)
@@ -1807,12 +1783,6 @@ def task_del(request, id):
         t.delete()
         return HttpResponseRedirect('/tasks')
 
-@permission_required('Management.delete_car')
-def car_del(request, id):
-    c = Car.objects.get(pk = id)
-    c.delete()
-    return HttpResponseRedirect('/cars')
-
 @permission_required('Management.delete_attachment')
 def attachment_delete(request, id):
     a = Attachment.objects.get(pk= id)
@@ -1835,21 +1805,6 @@ def attachment_add(request):
     return render_to_response('Management/attachment_edit.html', 
                               {'form':form },
                               context_instance=RequestContext(request))
-    
-@permission_required('Management.delete_madadbi')
-def madadbi_del(request, id):
-    MadadBI.objects.get(pk=id).delete()
-    return HttpResponseRedirect('/madadbi')
-    
-@permission_required('Management.delete_madadcp')
-def madadcp_del(request, id):
-    MadadCP.objects.get(pk=id).delete()
-    return HttpResponseRedirect('/madadcp')
-    
-@permission_required('Management.delete_tax')
-def tax_del(request, id):
-    Tax.objects.get(pk=id).delete()
-    return HttpResponseRedirect('/tax')
 
 @permission_required('Management.change_sale')
 def sale_edit(request, id):
