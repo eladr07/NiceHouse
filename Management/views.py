@@ -68,9 +68,21 @@ def limited_direct_to_template(request, permission=None, *args, **kwargs):
         return HttpResponse('No permission. contact Elad.')
 
 @login_required
-def limited_create_object(request, permission, *args, **kwargs):
-    if request.user.has_perm('Management.' + permission):
+def limited_create_object(request, permission=None, *args, **kwargs):
+    model, form_class = kwargs['model'], kwargs['form_class']
+    if not model and form_class:
+        model = form_class._meta.model
+    if request.user.has_perm('Management.add_' + model.__name__):
         return create_object(request, *args, **kwargs)
+    else:
+        return HttpResponse('No permission. contact Elad.')
+    
+@login_required
+def limited_delete_object(request, model, object_id, post_delete_redirect):
+    model = kwargs['model']
+    if not permission or request.user.has_perm('Management.delete_' + model.__name__):
+        model.delete(object_id)
+        return HttpResponseRedirect(post_delete_redirect)
     else:
         return HttpResponse('No permission. contact Elad.')
     
@@ -82,8 +94,11 @@ def limited_object_detail(request, permission=None, *args, **kwargs):
         return HttpResponse('No permission. contact Elad.')
 
 @login_required
-def limited_update_object(request, permission, *args, **kwargs):
-    if request.user.has_perm('Management.' + permission):
+def limited_update_object(request, permission=None, *args, **kwargs):
+    model, form_class = kwargs['model'], kwargs['form_class']
+    if not model and form_class:
+        model = form_class._meta.model
+    if request.user.has_perm('Management.change_' + model.__name__):
         return update_object(request, *args, **kwargs)
     else:
         return HttpResponse('No permission. contact Elad.')
@@ -1793,23 +1808,11 @@ def task_del(request, id):
         t.delete()
         return HttpResponseRedirect('/tasks')
 
-@permission_required('Management.delete_link')
-def link_del(request, id):
-    l = Link.objects.get(pk = id)
-    l.delete()
-    return HttpResponseRedirect('/links')
-
 @permission_required('Management.delete_car')
 def car_del(request, id):
     c = Car.objects.get(pk = id)
     c.delete()
     return HttpResponseRedirect('/cars')
-
-@login_required
-def attachment_list(request):
-    attachments = Attachment.objects.all()
-    return render_to_response('Management/attachment_list.html',
-                              {'attachments': attachments}, context_instance=RequestContext(request))
 
 @permission_required('Management.delete_attachment')
 def attachment_delete(request, id):
