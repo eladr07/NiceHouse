@@ -605,7 +605,8 @@ class MultipleDemandWriter:
             rowHeights.append(28)
             total_sales_amount += d.get_sales_amount()
             total_amount += d.get_total_amount()
-        sumRow.extend([commaise(total_sales_amount), commaise(total_amount), None, None, None, None])
+        sumRow.extend([Paragraph(commaise(total_sales_amount), styleSumRow), 
+                       Paragraph(commaise(total_amount), styleSumRow), None, None, None, None])
         sumRow.reverse()
         rows.append(sumRow)
         rowHeights.append(28)
