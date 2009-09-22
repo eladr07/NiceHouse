@@ -1,8 +1,7 @@
-﻿{% load management_extras %}
-<table class="formTable">
+﻿<table class="formTable">
 	<caption>פרטי הדרישה</caption>
 	<tr>
 		<th>סכום הדרישה</th>
-		<td>{{demand.get_total_amount}}</td>
+		<td>{{demand.get_total_amount|commaise}} ש"ח</td>
 	</tr>
 </table>
