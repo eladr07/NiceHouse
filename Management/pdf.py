@@ -368,6 +368,7 @@ class MonthDemandWriter:
                                         u'חדשה\nעמלה', u'עמלה\nהפרש', u'בש"ח\nהפרש']]
         headers.reverse()
         rows = []
+        total = 0
         i = 1
         for subSales in self.demand.get_affected_sales().values():
             for s in subSales.all():
@@ -386,6 +387,7 @@ class MonthDemandWriter:
                 else:
                     paid_final_value = float(log.latest().new_value)
                     diff = s.c_final - paid_final_value
+		    total += diff * s.price_final / 100
                     row.extend([paid_final_value, s.c_final, 
                                 diff, commaise(diff * s.price_final / 100)])
                 row.reverse()
@@ -397,7 +399,7 @@ class MonthDemandWriter:
                     t.setStyle(saleTableStyle)
                     flows.extend([t, PageBreak(), Spacer(0,70)])
                     rows = []
-        sum_row = [None,None,None,None,None,None,None,None,None,Paragraph(commaise(self.demand.bonus), styleSumRow)]
+        sum_row = [None,None,None,None,None,None,None,None,None,Paragraph(commaise(total), styleSumRow)]
         sum_row.reverse()
         rows.append(sum_row)      
         data = [headers]
