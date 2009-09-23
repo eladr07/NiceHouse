@@ -1450,6 +1450,12 @@ class Demand(models.Model):
 
     objects = DemandManager()
     
+    def current_month():
+        now = datetime.now()
+        if now.day <= 22:
+            now = datetime(now.year, now.month == 1 and 12 or now.month - 1, now.day)
+        return now
+    current_month = Callable(current_month)
     @property
     def fixed_diff(self):
         q = self.diffs.filter(type=u'קבועה')
@@ -1466,12 +1472,6 @@ class Demand(models.Model):
     def fee_diff(self):
         q = self.diffs.filter(type=u'קיזוז')
         return q.count() == 1 and q[0] or None
-    def current_month():
-        now = datetime.now()
-        if now.day <= 22:
-            now = datetime(now.year, now.month == 1 and 12 or now.month - 1, now.day)
-        return now
-    current_month = Callable(current_month)
     def get_madad(self):
         return MadadBI.objects.get(year = self.year, month=self.month).value
     def zilber_cycle_index(self):

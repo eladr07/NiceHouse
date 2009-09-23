@@ -1847,29 +1847,34 @@ def sale_edit(request, id):
     else:
         form = SaleForm(instance= sale)
     return render_to_response('Management/sale_edit.html', 
-                              {'form':form},
+                              {'form':form, 'year':sale.actual_demand.year, 'month':sale.actual_demand.month},
                               context_instance=RequestContext(request))    
 
 @permission_required('Management.add_sale')
 def sale_add(request, demand_id=None):
+    if demand_id:
+        demand = Demand.objects.get(pk = demand_id)
+        year, month = demand.year, demand.month
+    else:
+        year, month = Demand.current_month().year, Demand.current_month().month
     if request.POST:
         form = SaleForm(request.POST)
         if form.is_valid():
-            project = form.cleaned_data['project']
-            demand = demand_id and Demand.objects.get(pk=demand_id) or project.current_demand()
+            if not demand_id:
+                demand = Demand.objects.get(year = year, month = month, project = form.cleaned_data['project'])
             form.instance.demand = demand
             form.save()
             next = None
             if demand.statuses.count() == 0:
                 demand.feed()
             if demand.statuses.latest().type.id == DemandSent:
-                y,m = (demand.year, demand.month)
+                y,m = demand.year, demand.month
                 sp = SalePre(sale = form.instance, date=date.today(),
-                             employee_pay = date(m+1==13 and y+1 or y,m+1==13 and 1 or m, 1))
+                             employee_pay = date(m==12 and y+1 or y,m==12 and 1 or m, 1))
                 sp.save()
                 next = '/salepre/%s' % sp.id 
             demand.calc_sales_commission()
-            for employee in project.employees.all():
+            for employee in demand.project.employees.all():
                 if not employee.work_end:
                     continue
                 es = employee.salaries.get_or_create(year = demand.year, month = demand.month)
@@ -1882,23 +1887,22 @@ def sale_add(request, demand_id=None):
     else:
         form = SaleForm()
         if demand_id:
-            p = Demand.objects.get(pk=demand_id).project
+            p = demand.project
             form.fields['project'].initial = p.id
             form.fields['employee'].queryset = p.employees.all()
             form.fields['building'].queryset = p.buildings.all()
     return render_to_response('Management/sale_edit.html', 
-                              {'form':form},
+                              {'form':form, 'year':year, 'month':month},
                               context_instance=RequestContext(request))
        
-def project_sales(request, id):
-    p = Project.objects.get(pk=id)
-    d = p.current_demand()
+def demand_sales(request, project_id, year, month):
     salesTotal = 0
-    if d:    
+    try:
+        d = Demand.objects.get(project__id = project_id, year=year, month=month)
         sales = d.get_sales().all()
         for s in sales:
             salesTotal = salesTotal + s.price
-    else:
+    except Demand.DoesNotExist:
         sales=[]
     return render_to_response('Management/sale_table.html', 
                               {'sales':sales, 'salesTotal':salesTotal },
