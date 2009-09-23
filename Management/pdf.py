@@ -378,18 +378,9 @@ class MonthDemandWriter:
                        clientsPara(s.clients), '%s/%s' % (s.house.building.num, s.house.num), 
                        s.sale_date.strftime('%d/%m/%y'), commaise(s.price)]
                 scd_final = s.project_commission_details.filter(commission='final')[0]
-                log = models.ChangeLog.objects.filter(object_type='SaleCommissionDetail',
-                                                      object_id=scd_final.id, 
-                                                      attribute='value',
-                                                      date__lt=s.actual_demand.finish_date)
-                if log.count() == 0:
-                    row.extend([None, s.c_final, s.c_final, commaise(s.c_final_worth)])
-                else:
-                    paid_final_value = float(log.latest().new_value)
-                    diff = s.c_final - paid_final_value
-		    total += diff * s.price_final / 100
-                    row.extend([paid_final_value, s.c_final, 
-                                diff, commaise(diff * s.price_final / 100)])
+                diff = scd_final.value - s.c_final
+                total += diff * s.price_final / 100
+                row.extend([scd_final.value, s.c_final, diff, commaise(diff * s.price_final / 100)])
                 row.reverse()
                 rows.append(row)
                 if i % 17 == 0:
