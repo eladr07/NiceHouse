@@ -1915,7 +1915,7 @@ class SaleCancel(SaleMod):
 class Sale(models.Model):
     def __init__(self, *args, **kw):
         models.Model.__init__(self, *args, **kw)
-        self.restore = False
+        self.restore = True
     demand = models.ForeignKey('Demand', related_name='sales', editable=False)
     house = models.ForeignKey('House', related_name = 'sales', verbose_name=ugettext('house'))
     employee = models.ForeignKey('Employee', related_name = 'sales', verbose_name=ugettext('employee'),
