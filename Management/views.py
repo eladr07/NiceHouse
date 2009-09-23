@@ -30,6 +30,8 @@ def index(request):
                     scd.delete()
             for ds in d.statuses.all():
                 ds.delete()
+            for diff in d.diffs.all():
+                diff.delete()
             d.calc_sales_commission()
             d = Demand.objects.get(project__id = p_id, year = 2009, month=m)
             d.finish()
