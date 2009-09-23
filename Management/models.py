@@ -1152,8 +1152,8 @@ class CZilber(models.Model):
         month is datetime
         '''
         d = Demand.objects.get(project = self.projectcommission.project, year = month.year, month = month.month)
-        d.var_diff.delete()
-        d.bonus_diff.delete()
+        if d.var_diff: d.var_diff.delete()
+        if d.bonus_diff: d.bonus_diff.delete()
         demand = d
         sales = list(d.get_sales().all())
         while demand != None and demand.zilber_cycle_index() != 1:
@@ -1290,7 +1290,7 @@ class ProjectCommission(models.Model):
         if sales.count() == 0: return
         demand = sales[0].actual_demand
         if self.commission_by_signups and sub == 0:
-            demand.bonus_diff.delete()
+            if demand.bonus_diff: demand.bonus_diff.delete()
             bonus = 0
             for (m, y) in demand.get_signup_months():
                 #get sales that were signed up for specific month, not including future sales.
