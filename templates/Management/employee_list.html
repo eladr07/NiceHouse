@@ -6,7 +6,7 @@
 	var prev_class;
 	var filterIndex;
 	$(document).ready(function() {
-		$("#employee_table tr").click(function() { 
+		$("#employee_table, nhemployee_table tr").click(function() { 
 			var tr = $(this);
 			if (selectedID > 0)
 				$("tr[objid='"+selectedID+"']").attr("class", prev_class);
@@ -19,34 +19,34 @@
 				$("#employeeEdit").attr("href", "/employees/" + selectedID);
 				$("#employeeEnd").attr("href", "/employees/end/" + selectedID);
 			}
-			});
-			//add filters
-			var filterSelect = $("#filterSelect");
-			$("#employee_table th").each(function (index, elem) {
-				filterSelect.append("<option value='" + index + "'>" + $(elem).text() + "</option>");
-			});
-			$("#filterSelect").change(function () {
-				filterIndex = $(this).val();
-			});
-			$("#filterBtn").click(function (event) {
-				$("#employee_table tr").each(function (index, elem) {
-					if ($("td", elem).length == 0)
-						return;
-					var cell = $("td", elem).get(filterIndex);
-					var content = $(cell).text();
-					var filterText = $("#filterText").val();
-					if (content.match(filterText))
-						$(elem).show();
-					else
-						$(elem).hide();
-				});
-			});
-			$("#filterClearBtn").click(function (event) {
-				$("#employee_table tr").each(function (index, elem) {
+		});
+		//add filters
+		var filterSelect = $("#filterSelect");
+		$("#employee_table th").each(function (index, elem) {
+			filterSelect.append("<option value='" + index + "'>" + $(elem).text() + "</option>");
+		});
+		$("#filterSelect").change(function () {
+			filterIndex = $(this).val();
+		});
+		$("#filterBtn").click(function (event) {
+			$("#employee_table tr").each(function (index, elem) {
+				if ($("td", elem).length == 0)
+					return;
+				var cell = $("td", elem).get(filterIndex);
+				var content = $(cell).text();
+				var filterText = $("#filterText").val();
+				if (content.match(filterText))
 					$(elem).show();
-				});
+				else
+					$(elem).hide();
 			});
 		});
+		$("#filterClearBtn").click(function (event) {
+			$("#employee_table tr").each(function (index, elem) {
+				$(elem).show();
+			});
+		});
+	});
 </script>
 {% endblock header %}
 
@@ -139,7 +139,7 @@
 		{% endfor %}
 	</table>
 	<br><br>
-	<table id="employee_table" class="dataTable" border="1">
+	<table id="nhemployee_table" class="dataTable" border="1">
 		<caption>מציג סה"כ {{nhemployee_list.count}} עובדים בנייס האוס</caption>
 		<th/>
 		<th>מספר</th>

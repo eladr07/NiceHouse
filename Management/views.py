@@ -1046,7 +1046,7 @@ def building_pricelist(request, object_id, type_id):
 def building_pricelist_pdf(request, object_id, type_id):
     b = Building.objects.get(pk = object_id)
     pricelist_type = PricelistType.objects.get(pk = type_id)
-    houses = b.houses.filter(is_deleted=False)
+    houses = [h for h in b.houses.filter(is_deleted=False, is_sold=False) if h.get_sale() == None]
     q = HouseVersion.objects.filter(house__building = b, type=pricelist_type)
     date = q.count > 0 and q.latest().date or None
     for h in houses:
