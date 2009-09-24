@@ -712,7 +712,7 @@ def demand_sale_reject(request, id):
     y,m = sale.demand.year, sale.demand.month
     sr = sale.salereject or SaleReject(sale = sale, employee_pay = date(y,m,1))
     sr.date = date.today()
-    sr.to_month = date(m+1==13 and y+1 or y, m+1==13 and 1 or m+1,1)
+    sr.to_month = date(m==12 and y+1 or y, m==12 and 1 or m+1,1)
     sr.save()
     return HttpResponseRedirect('/salereject/%s' % sr.id)
 
