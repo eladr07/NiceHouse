@@ -70,19 +70,23 @@ def limited_direct_to_template(request, permission=None, *args, **kwargs):
         return HttpResponse('No permission. contact Elad.')
 
 @login_required
-def limited_create_object(request, *args, **kwargs):
+def limited_create_object(request, permission=None, *args, **kwargs):
     if kwargs.has_key('model'):
         model = kwargs['model']
     elif kwargs.has_key('form_class'):
         model = kwargs['form_class']._meta.model
-    if request.user.has_perm('Management.add_' + model.__name__.lower()):
+    if not permission:
+        permission = 'Management.change_' + model.__name__.lower()
+    if request.user.has_perm(permission):
         return create_object(request, *args, **kwargs)
     else:
         return HttpResponse('No permission. contact Elad.')
     
 @login_required
-def limited_delete_object(request, model, object_id, post_delete_redirect):
-    if request.user.has_perm('Management.delete_' + model.__name__.lower()):
+def limited_delete_object(request, model, object_id, post_delete_redirect, permission=None):
+    if not permission:
+        permission = 'Management.change_' + model.__name__.lower()
+    if request.user.has_perm(permission):
         obj = model.objects.get(pk=object_id)
         obj.delete()
         return HttpResponseRedirect(post_delete_redirect)
@@ -97,12 +101,14 @@ def limited_object_detail(request, permission=None, *args, **kwargs):
         return HttpResponse('No permission. contact Elad.')
 
 @login_required
-def limited_update_object(request, *args, **kwargs):
+def limited_update_object(request, permission=None, *args, **kwargs):
     if kwargs.has_key('model'):
         model = kwargs['model']
     elif kwargs.has_key('form_class'):
         model = kwargs['form_class']._meta.model
-    if request.user.has_perm('Management.change_' + model.__name__.lower()):
+    if not permission:
+        permission = 'Management.change_' + model.__name__.lower()
+    if request.user.has_perm(permission):
         return update_object(request, *args, **kwargs)
     else:
         return HttpResponse('No permission. contact Elad.')
@@ -730,12 +736,14 @@ def demand_invoice_add(request, id):
     return invoice_add(request, {'project':demand.project.id, 'month':demand.month, 'year':demand.year})
 
 @permission_required('Management.change_invoice')
-def demand_invoice_list(request, project_id=None, from_year=Demand.current_month().year, from_month=Demand.current_month().month, 
-                        to_year=Demand.current_month().year, to_month=Demand.current_month().month):
-    if project_id:
-        q = Invoice.objects.filter(demands__project__id = project_id).reverse()
-    else:
-        q = Invoice.objects.reverse()
+def demand_invoice_list(request):
+    month = Demand.current_month()
+    project_id = int(request.GET.get('project'))
+    from_year = int(request.GET.get('from_year', month.year))
+    from_month = int(request.GET.get('from_month', month.month))
+    to_year = int(request.GET.get('to_year', month.year))
+    to_month = int(request.GET.get('to_month', month.month))
+    q = project_id and Invoice.objects.filter(demands__project__id = project_id).reverse() or Invoice.objects.reverse()
     q = q.filter(date__gte=date(int(from_year), int(from_month), 1),
                  date__lt=date(int(to_month) == 12 and int(to_year) + 1 or int(to_year), int(to_month) == 12 and 1 or int(to_month) + 1, 1)
                  ).annotate(Count('demands'))
@@ -756,12 +764,14 @@ def demand_invoice_list(request, project_id=None, from_year=Demand.current_month
  
  
 @permission_required('Management.change_payment')
-def demand_payment_list(request, project_id=None, from_year=Demand.current_month().year, from_month=Demand.current_month().month, 
-                        to_year=Demand.current_month().year, to_month=Demand.current_month().month):
-    if project_id:
-        q = Payment.objects.filter(demands__project__id = project_id).reverse()
-    else:
-        q = Payment.objects.reverse()
+def demand_payment_list(request):
+    month = Demand.current_month()
+    project_id = int(request.GET.get('project'))
+    from_year = int(request.GET.get('from_year', month.year))
+    from_month = int(request.GET.get('from_month', month.month))
+    to_year = int(request.GET.get('to_year', month.year))
+    to_month = int(request.GET.get('to_month', month.month))
+    q = project_id and Payment.objects.filter(demands__project__id = project_id).reverse() or Payment.objects.reverse()
     q = q.filter(payment_date__gte=date(int(from_year), int(from_month), 1),
                  payment_date__lt=date(int(to_month) == 12 and int(to_year) + 1 or int(to_year), int(to_month) == 12 and 1 or int(to_month) + 1, 1)
                  ).annotate(Count('demands'))

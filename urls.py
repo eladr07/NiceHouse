@@ -270,9 +270,7 @@ urlpatterns += patterns('Management.views',
     (r'^demanddiff/(?P<object_id>\d+)/del$', 'demanddiff_del'),
           
     (r'^demandinvoices/$', 'demand_invoice_list'),
-    (r'^demandinvoices/(?P<project_id>\d*)/(?P<from_year>\d+)/(?P<from_month>\d+)/(?P<to_year>\d+)/(?P<to_month>\d+)$', 'demand_invoice_list'),
     (r'^demandpayments/$', 'demand_payment_list'),
-    (r'^demandpayments/(?P<project_id>\d*)/(?P<from_year>\d+)/(?P<from_month>\d+)/(?P<to_year>\d+)/(?P<to_month>\d+)$', 'demand_payment_list'),
 
     (r'^employeesalaries/$', 'employee_salary_list'),
     (r'^employeesalaries/(?P<year>\d+)/(?P<month>\d+)$', 'employee_salary_list'),
