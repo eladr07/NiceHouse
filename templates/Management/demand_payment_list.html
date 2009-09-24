@@ -26,8 +26,11 @@
 		$(".fancybox").fancybox();
 		$("#monthChange").click(function(event) {
 			event.preventDefault();
-			location.replace("/demandpayments/" + $("#id_project").val() + "/" + $("#id_from_year").val() + "/" + $("#id_from_month").val()
-							 + "/" + $("#id_to_year").val() + "/" + $("#id_to_month").val());
+			var fields = new Array("project", "from_year", "from_month", "to_year", "to_month");
+			var url = "/demandinvoices/?";
+			for ( var i=0; i < fields.length; ++i )
+				url += fields[i] + "=" + $("#id_" + fields[i]).val() + ";"
+			location.replace(url);
 		});
 	});
 </script>
