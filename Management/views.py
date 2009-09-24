@@ -766,7 +766,7 @@ def demand_invoice_list(request):
 @permission_required('Management.change_payment')
 def demand_payment_list(request):
     month = Demand.current_month()
-    project_id = int(request.GET.get('project'))
+    project_id = int(request.GET.get('project', 0))
     from_year = int(request.GET.get('from_year', month.year))
     from_month = int(request.GET.get('from_month', month.month))
     to_year = int(request.GET.get('to_year', month.year))
