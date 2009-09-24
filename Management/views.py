@@ -709,13 +709,12 @@ def demand_sale_del(request, id):
 @permission_required('Management.delete_sale')
 def demand_sale_reject(request, id):
     sale = Sale.objects.get(pk=id)
-    if sale.demand.statuses.latest().type.id == DemandSent:
-        y,m = (sale.demand.year, sale.demand.month)
-        sr = sale.salereject or SaleReject(sale = sale, employee_pay = date(y,m,1))
-        sr.date = date.today()
-        sr.to_month = date(m+1==13 and y+1 or y, m+1==13 and 1 or m+1,1)
-        sr.save()
-        return HttpResponseRedirect('/salereject/%s' % sr.id)
+    y,m = sale.demand.year, sale.demand.month
+    sr = sale.salereject or SaleReject(sale = sale, employee_pay = date(y,m,1))
+    sr.date = date.today()
+    sr.to_month = date(m+1==13 and y+1 or y, m+1==13 and 1 or m+1,1)
+    sr.save()
+    return HttpResponseRedirect('/salereject/%s' % sr.id)
 
 @permission_required('Management.add_invoice')
 def invoice_add(request, initial=None):

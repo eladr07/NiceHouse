@@ -254,16 +254,11 @@ urlpatterns += patterns('Management.views',
     (r'^demands/(?P<demand_id>\d+)/sale/add$', 'sale_add'),
     (r'^demands/\d+/sale/(?P<id>\d+)/del$', 'demand_sale_del'),
     (r'^demands/\d+/sale/(?P<id>\d+)/reject$', 'demand_sale_reject'),
-    
     (r'^demands/(?P<id>\d+)/invoice/add$', 'demand_invoice_add'),
-
     (r'^demands/(?P<id>\d+)/payment/add$', 'demand_payment_add'),
-    
     (r'^demands/(?P<id>\d+)/close$', 'demand_close'),
     (r'^demands/(?P<object_id>\d+)/remarks$', 'limited_update_object',
      {'form_class' : Management.forms.DemandRemarksForm, 'template_name' : 'Management/demand_remarks_edit.html', 'post_save_redirect' : 'remarks'}),
-
-
     (r'^demands/(?P<object_id>\d+)/adddiff$', 'demand_adddiff'),
     (r'^demanddiff/(?P<object_id>\d+)$', 'limited_update_object',
      {'model' : Management.models.DemandDiff, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '%(id)s'}),
