@@ -34,7 +34,7 @@
 		<div class="pageTitle">הוספת תשלום (צ'ק)</div>
 	</div>
 	<div class="clearBoth"> </div>
-	<br /> 	{{form.errors}}
+	<br />
 	<div id="rightSide">
 		<form method="POST">
 			<table class="formTable">
@@ -71,6 +71,20 @@
 					<td>
 						{{form.support_num}}
 						{% if form.support_num.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.support_num.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>{{form.bank.label_tag}}</th>
+					<td>
+						{{form.bank}}
+						{% if form.bank.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.bank.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				<tr>
+					<th>{{form.branch_num.label_tag}}</th>
+					<td>
+						{{form.branch_num}}
+						{% if form.branch_num.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.branch_num.errors|join:""}}'/>{% endif %}
 					</td>
 				</tr>
 				<tr>
