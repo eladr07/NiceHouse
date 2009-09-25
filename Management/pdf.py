@@ -738,16 +738,16 @@ class PricelistWriter:
         include_str += ', '.join(log2vis(ugettext(attr)) for attr in ['tax','lawyer','parking','storage','registration']
                                  if getattr(self.pricelist, 'include_' + attr))
         story.append(Paragraph(include_str, ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
-        notinclude_str = '<u>%s</u> : %s' % (log2vis(u'המחיר אינו כולל'), log2vis(u'מס רכישה כחוק'))
+        notinclude_str = '<u>המחיר אינו כולל</u> : מס רכישה כחוק'
         if self.pricelist.include_registration == False:
             notinclude_str += log2vis('%s  (%s)%%' % (ugettext('lawyer_fee'), self.pricelist.lawyer_fee)) 
         if self.pricelist.include_lawyer == False:
             notinclude_str += log2vis('%s  (%s)' % (ugettext('register_expense'), self.pricelist.register_expense))
         story.append(Paragraph(notinclude_str, ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
         assets_str = '<u>%s</u><br/>' % log2vis(u'נכסים משניים פנויים')
-        assets_str += '<u>%s</u>' % log2vis(u'מחסנים')
+        assets_str += '<u>%s</u> : ' % log2vis(u'מחסנים')
         assets_str += ','.join(s.num for s in self.pricelist.building.storages.filter(house=None)) + '<br/>'
-        assets_str += '<u>%s</u>' % log2vis(u'חניות') 
+        assets_str += '<u>%s</u> : ' % log2vis(u'חניות') 
         assets_str += ','.join(p.num for p in self.pricelist.building.parkings.filter(house=None)) + '<br/>'
         story.append(Paragraph(assets_str, ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
         doc.build(story, self.addTemplate, self.addTemplate)
