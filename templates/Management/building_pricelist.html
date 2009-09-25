@@ -229,6 +229,13 @@
 					</td>
 				</tr>
 				<tr>
+					<th>{{form.include_pricelist.label_tag}}</th>
+					<td>
+						{{form.include_pricelist}}
+						{% if form.include_pricelist.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.include_pricelist.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
+				<tr>
 					<th>{{form.settle_date.label_tag}}</th>
 					<td>
 						{{form.settle_date}}

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-09-25 17:16+0200\n"
+"POT-Creation-Date: 2009-09-25 17:30+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -389,9 +389,6 @@ msgstr "עלות"
 msgid "include_tax"
 msgstr "כולל מעמ"
 
-msgid "tax"
-msgstr "מעמ"
-
 #: .\Management\models.py:367 .\Management\models.py:1647
 msgid "include_lawyer"
 msgstr "כולל ע\"וד"
@@ -400,9 +397,13 @@ msgstr "כולל ע\"וד"
 msgid "include_parking"
 msgstr "כולל חנייה"
 
-#: .\Management\models.py:369 .\Management\models.py:370
+#: .\Management\models.py:369
 msgid "include_storage"
 msgstr "כולל מחסן"
+
+#: .\Management\models.py:370 .\Management\models.py:1921
+msgid "include_registration"
+msgstr "כולל הוצאות רישום"
 
 #: .\Management\models.py:371
 msgid "settle_date"
@@ -420,11 +421,11 @@ msgstr "יש היתר"
 msgid "permit_date"
 msgstr "ת. קבלת היתר"
 
-#: .\Management\models.py:375 .\Management\pdf.py:744
+#: .\Management\models.py:375 .\Management\pdf.py:746
 msgid "lawyer_fee"
 msgstr "שכר טרחת עו\"ד"
 
-#: .\Management\models.py:376 .\Management\pdf.py:746
+#: .\Management\models.py:376 .\Management\pdf.py:748
 msgid "register_expense"
 msgstr "הוצאות רישום"
 
@@ -870,10 +871,6 @@ msgstr "מחיר חוזה"
 msgid "company_price"
 msgstr "מחיר מחירון חברה"
 
-#: .\Management\models.py:1921
-msgid "include_registration"
-msgstr "כולל הוצאות רישום"
-
 #: .\Management\models.py:1927
 msgid "price_include_lawyer"
 msgstr "מחיר כולל ע\"וד"
@@ -921,3 +918,6 @@ msgstr "שם הספק"
 #: .\Management\models.py:2059 .\Management\models.py:2064
 msgid "expense_type"
 msgstr "סוג הוצאה"
+
+#~ msgid "tax"
+#~ msgstr "מעמ"
