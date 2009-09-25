@@ -21,7 +21,8 @@ pdfmetrics.registerFontFamily('David', normal='David', bold='David-Bold')
 #template styles
 styleN = ParagraphStyle('normal', fontName='David',fontSize=16, leading=15, alignment=TA_RIGHT)
 styleDate = ParagraphStyle('date', fontName='David',fontSize=14, leading=15)
-styleSumRow = ParagraphStyle('sumRow', fontName='David-Bold',fontSize=11, leading=15)
+styleRow = ParagraphStyle('sumRow', fontName='David-Bold',fontSize=11, leading=15)
+styleSumRow = ParagraphStyle('Row', fontName='David',fontSize=11, leading=15)
 styleSubj = ParagraphStyle('subject', fontName='David',fontSize=16, leading=15, alignment=TA_CENTER)
 styleSubTitleBold = ParagraphStyle('subtitle', fontName='David-Bold', fontSize=15, alignment=TA_CENTER)
 styleSubTitle = ParagraphStyle('subtitle', fontName='David', fontSize=15, alignment=TA_CENTER)
@@ -707,7 +708,7 @@ class PricelistWriter:
             parkings = '<br/>'.join([log2vis(unicode(p)) for p in h.parkings.all()])
             storages = '<br/>'.join([log2vis(unicode(s)) for s in h.storages.all()])
             row = [h.num, h.floor,  log2vis(unicode(h.type)), h.rooms, h.net_size, h.garden_size, h.price and commaise(h.price) or '-',
-                   parkings, storages, log2vis(h.remarks[:15] + (len(h.remarks)>15 and ' ...' or ''))]
+                   Paragraph(parkings, styleRow), Paragraph(storages, styleRow), log2vis(h.remarks[:15] + (len(h.remarks)>15 and ' ...' or ''))]
             row.reverse()
             rows.append(row)
             i += 1
@@ -731,7 +732,7 @@ class PricelistWriter:
         story.append(Spacer(0, 10))
         story.extend(self.housesFlows())
         if self.pricelist.settle_date:
-            story.append(Paragraph('<u>%s</u> : %s' % (log2vis(u'מועד אכלוס'), self.pricelist.settle_date.strftime('%d/%m/%Y')),
+            story.append(Paragraph(log2vis(u'מועד אכלוס : ' + self.pricelist.settle_date.strftime('%d/%m/%Y')),
                                    ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
         story.append(Paragraph(log2vis('מדד תשומות הבנייה : ' + str(models.MadadBI.objects.latest().value)),
                                ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_LEFT)))
