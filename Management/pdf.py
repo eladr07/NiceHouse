@@ -732,13 +732,13 @@ class PricelistWriter:
         if self.pricelist.settle_date:
             story.append(Paragraph('<u>%s</u> : %s' % (log2vis(u'מועד אכלוס'), self.pricelist.settle_date.strftime('%d/%m/%Y')),
                                    ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
-        story.append(Paragraph(log2vis('<u>מדד תשומות הבנייה</u> : ' + str(models.MadadBI.objects.latest().value)),
+        story.append(Paragraph(log2vis('מדד תשומות הבנייה : ' + str(models.MadadBI.objects.latest().value)),
                                ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_LEFT)))
-        include_str = '<u>%s</u> : ' % log2vis(u'המחיר כולל')
+        include_str = log2vis(u'המחיר כולל : ')
         include_str += ', '.join(log2vis(ugettext(attr)) for attr in ['tax','lawyer','parking','storage','registration']
                                  if getattr(self.pricelist, 'include_' + attr))
         story.append(Paragraph(include_str, ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
-        notinclude_str = log2vis('<u>המחיר אינו כולל</u> : מס רכישה כחוק')
+        notinclude_str = log2vis('המחיר אינו כולל : מס רכישה כחוק')
         if self.pricelist.include_registration == False:
             notinclude_str += log2vis('%s  (%s)%%' % (ugettext('lawyer_fee'), self.pricelist.lawyer_fee)) 
         if self.pricelist.include_lawyer == False:
