@@ -4,6 +4,7 @@ from templatetags.management_extras import commaise
 import reportlab.rl_config
 reportlab.rl_config.warnOnMissingFontGlyphs = 0
 
+from django.utils.translation import ugettext
 from reportlab.pdfgen import canvas
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Image, Spacer, Frame, Table, PageBreak
@@ -745,9 +746,9 @@ class PricelistWriter:
             notinclude_str += log2vis('%s  (%s)' % (ugettext('register_expense'), self.pricelist.register_expense))
         story.append(Paragraph(notinclude_str, ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
         assets_str = '<u>%s</u><br/>' % log2vis(u'נכסים משניים פנויים')
-        assets_str += '<u>%s</u> : ' % log2vis(u'מחסנים')
+        assets_str += log2vis(u'מחסנים')
         assets_str += ','.join(s.num for s in self.pricelist.building.storages.filter(house=None)) + '<br/>'
-        assets_str += '<u>%s</u> : ' % log2vis(u'חניות') 
+        assets_str += log2vis(u'חניות') 
         assets_str += ','.join(p.num for p in self.pricelist.building.parkings.filter(house=None)) + '<br/>'
         story.append(Paragraph(assets_str, ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
         doc.build(story, self.addTemplate, self.addTemplate)
