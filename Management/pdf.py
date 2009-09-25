@@ -689,13 +689,9 @@ class PricelistWriter:
     def pages_count(self):
         return len(self.houses) / 28 + 1
     def addTemplate(self, canv, doc):
-        #frame2 = Frame(0, 680, 650, 150)
-        #frame2.addFromList([nhLogo(), datePara()], canv)
         frame3 = Frame(50, 20, 150, 40)
         frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
                             ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
-        #frame4 = Frame(50, 30, 500, 70)
-        #frame4.addFromList([nhAddr()], canv)
         self.current_page += 1
     def housesFlows(self):
         flows = []
@@ -725,10 +721,6 @@ class PricelistWriter:
                 rows = []
 
         return flows
-    def pricelistPara(self):
-        content = '<br/>'.join([log2vis('%s : %s' % (f.verbose_name, getattr(self.pricelist, f.name) or u'לא ידוע')) 
-                                for f in models.Pricelist._meta.fields if f.name != 'id'])
-        return Paragraph(content, styleN)
     def build(self, filename):
         self.current_page = 1
         doc = SimpleDocTemplate(filename)
@@ -737,7 +729,26 @@ class PricelistWriter:
         story.append(Paragraph(log2vis(self.subtitle), styleSubTitle))
         story.append(Spacer(0, 10))
         story.extend(self.housesFlows())
-        story.append(self.pricelistPara())
+        story.append(Paragraph('<u>%s</u> : %s' % (log2vis(u'מועד אכלוס'), self.pricelist.settle_date.strftime('%d/%m/%Y')),
+                               ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
+        story.append(Paragraph('<u>%s</u> : %s' % (log2vis(u'מדד תשומות הבנייה'), MadadBI.objects.latest().value),
+                               ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_LEFT)))
+        include_str = '<u>%s</u> : ' % log2vis(u'המחיר כולל')
+        include_str += ', '.join(log2vis(ugettext(attr)) for attr in ['tax','lawyer','parking','storage','registration']
+                                 if getattr(self.pricelist, 'include_' + attr))
+        story.append(Paragraph(include_str, ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
+        notinclude_str = '<u>%s</u> : %s' % (log2vis(u'המחיר אינו כולל'), log2vis(u'מס רכישה כחוק'))
+        if self.pricelist.include_registration == False:
+            notinclude_str += log2vis('%s  (%s)%%' % (ugettext('lawyer_fee'), self.pricelist.lawyer_fee)) 
+        if self.pricelist.include_lawyer == False:
+            notinclude_str += log2vis('%s  (%s)' % (ugettext('register_expense'), self.pricelist.register_expense))
+        story.append(Paragraph(notinclude_str, ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
+        assets_str = '<u>%s</u><br/>' % log2vis(u'נכסים משניים פנויים')
+        assets_str += '<u>%s</u>' % log2vis(u'מחסנים')
+        assets_str += ','.join(s.num for s in self.pricelist.building.storages.filter(house=None)) + '<br/>'
+        assets_str += '<u>%s</u>' % log2vis(u'חניות') 
+        assets_str += ','.join(p.num for p in self.pricelist.building.parkings.filter(house=None)) + '<br/>'
+        story.append(Paragraph(assets_str, ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
         doc.build(story, self.addTemplate, self.addTemplate)
         return doc.canv
 
