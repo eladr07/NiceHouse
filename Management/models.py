@@ -367,7 +367,7 @@ class Pricelist(models.Model):
     include_lawyer = models.NullBooleanField(ugettext('include_lawyer'))
     include_parking = models.NullBooleanField(ugettext('include_parking'))
     include_storage = models.NullBooleanField(ugettext('include_storage'))
-    include_registration = models.NullBooleanField(ugettext('include_storage'))
+    include_registration = models.NullBooleanField(ugettext('include_registration'))
     settle_date = models.DateField(ugettext('settle_date'), null=True, blank=True)
     allowed_discount = models.FloatField(ugettext('allowed_discount'), default=0)
     is_permit = models.NullBooleanField(ugettext('is_permit'))
