@@ -738,7 +738,7 @@ class PricelistWriter:
         include_str += ', '.join(log2vis(ugettext(attr)) for attr in ['tax','lawyer','parking','storage','registration']
                                  if getattr(self.pricelist, 'include_' + attr))
         story.append(Paragraph(include_str, ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
-        notinclude_str = '<u>המחיר אינו כולל</u> : מס רכישה כחוק'
+        notinclude_str = log2vis('<u>המחיר אינו כולל</u> : מס רכישה כחוק')
         if self.pricelist.include_registration == False:
             notinclude_str += log2vis('%s  (%s)%%' % (ugettext('lawyer_fee'), self.pricelist.lawyer_fee)) 
         if self.pricelist.include_lawyer == False:
