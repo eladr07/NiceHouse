@@ -747,10 +747,8 @@ class PricelistWriter:
             notinclude_str += log2vis('%s  (%s)' % (ugettext('register_expense'), self.pricelist.register_expense))
         story.append(Paragraph(notinclude_str, ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
         assets_str = '<u>%s</u><br/>' % log2vis(u'נכסים משניים פנויים')
-        assets_str += log2vis(u'מחסנים')
-        assets_str += ','.join(str(s.num) for s in self.pricelist.building.storages.filter(house=None)) + '<br/>'
-        assets_str += log2vis(u'חניות') 
-        assets_str += ','.join(str(p.num) for p in self.pricelist.building.parkings.filter(house=None)) + '<br/>'
+        assets_str += log2vis(u'מחסנים : ' + ','.join(str(s.num) for s in self.pricelist.building.storages.filter(house=None)) + '<br/>')
+        assets_str += log2vis(u'חניות : ' + ','.join(str(p.num) for p in self.pricelist.building.parkings.filter(house=None))) + '<br/>'
         story.append(Paragraph(assets_str, ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
         doc.build(story, self.addTemplate, self.addTemplate)
         return doc.canv
