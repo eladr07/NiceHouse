@@ -736,18 +736,17 @@ class PricelistWriter:
                                    ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
         story.append(Paragraph(log2vis('מדד תשומות הבנייה : ' + str(models.MadadBI.objects.latest().value)),
                                ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_LEFT)))
-        include_str = log2vis(u'המחיר כולל : ')
-        include_str += ', '.join(log2vis(ugettext(attr)) for attr in ['tax','lawyer','parking','storage','registration']
-                                 if getattr(self.pricelist, 'include_' + attr))
+        include_str = log2vis(u'המחיר כולל : ' + ', '.join(log2vis(ugettext(attr)) for attr in ['tax','lawyer','parking','storage','registration']
+                                                           if getattr(self.pricelist, 'include_' + attr)))
         story.append(Paragraph(include_str, ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
-        notinclude_str = log2vis('המחיר אינו כולל : מס רכישה כחוק')
+        notinclude_str = 'המחיר אינו כולל : מס רכישה כחוק'
         if self.pricelist.include_registration == False:
             notinclude_str += log2vis('%s  (%s)%%' % (ugettext('lawyer_fee'), self.pricelist.lawyer_fee)) 
         if self.pricelist.include_lawyer == False:
             notinclude_str += log2vis('%s  (%s)' % (ugettext('register_expense'), self.pricelist.register_expense))
-        story.append(Paragraph(notinclude_str, ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
+        story.append(Paragraph(log2vis(notinclude_str), ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
         assets_str = '<u>%s</u><br/>' % log2vis(u'נכסים משניים פנויים')
-        assets_str += log2vis(u'מחסנים : ' + ','.join(str(s.num) for s in self.pricelist.building.storages.filter(house=None)) + '<br/>')
+        assets_str += log2vis(u'מחסנים : ' + ','.join(str(s.num) for s in self.pricelist.building.storages.filter(house=None))) + '<br/>'
         assets_str += log2vis(u'חניות : ' + ','.join(str(p.num) for p in self.pricelist.building.parkings.filter(house=None))) + '<br/>'
         story.append(Paragraph(assets_str, ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
         doc.build(story, self.addTemplate, self.addTemplate)
