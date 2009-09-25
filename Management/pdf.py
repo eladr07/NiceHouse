@@ -697,7 +697,7 @@ class PricelistWriter:
         self.current_page += 1
     def housesFlows(self):
         flows = []
-        headers = [log2vis(n) for n in [u'מס', u'קומה', u'סוג דירה', u'מס חדרים', u'שטח נטו', u'שטח מרפסת\גינה', u'מחיר',
+        headers = [log2vis(n) for n in [u'מס', u'קומה', u'דירה\nסוג', u'חדרים\nמס', u'נטו\nשטח', u'גינה\nמרפסת/\nשטח', u'מחיר',
                                         u'חניה', u'מחסן', u'הערות']]
         headers.reverse()
         colWidths = [None,None,None,None,None,None,None,None,None,None]
