@@ -727,6 +727,8 @@ def invoice_add(request, initial=None):
             form.save()
             if request.POST.has_key('addanother'):
                 form = DemandInvoiceForm(initial=initial)
+            if request.POST.has_key('addpayment'):
+                return HttpResponseRedirect('/payments/add')
     else:
         form = DemandInvoiceForm(initial=initial)
     return render_to_response('Management/invoice_edit.html', {'form':form}, context_instance=RequestContext(request))
@@ -812,6 +814,8 @@ def payment_add(request, initial=None):
             form.save()
             if request.POST.has_key('addanother'):
                 form = DemandPaymentForm(initial=initial)
+            if request.POST.has_key('addinvoice'):
+                return HttpResponseRedirect('/invoices/add')
     else:
         form = DemandPaymentForm(initial=initial)
     return render_to_response('Management/payment_edit.html', 
