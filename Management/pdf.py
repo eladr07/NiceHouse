@@ -732,7 +732,7 @@ class PricelistWriter:
         if self.pricelist.settle_date:
             story.append(Paragraph('<u>%s</u> : %s' % (log2vis(u'מועד אכלוס'), self.pricelist.settle_date.strftime('%d/%m/%Y')),
                                    ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
-        story.append(Paragraph('<u>%s</u> : %s' % (log2vis(u'מדד תשומות הבנייה'), MadadBI.objects.latest().value),
+        story.append(Paragraph('<u>%s</u> : %s' % (log2vis(u'מדד תשומות הבנייה'), models.MadadBI.objects.latest().value),
                                ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_LEFT)))
         include_str = '<u>%s</u> : ' % log2vis(u'המחיר כולל')
         include_str += ', '.join(log2vis(ugettext(attr)) for attr in ['tax','lawyer','parking','storage','registration']
