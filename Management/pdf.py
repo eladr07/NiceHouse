@@ -731,7 +731,7 @@ class PricelistWriter:
                 rows = []
         row = self.include_clients and [None] or []
         row.extend([None, None, None, None, None, None, None, None, 
-                    Paragraph(log2vis(u'סה"כ'), styleSumRow), Paragraph(len(self.houses), styleSumRow)])
+                    Paragraph(log2vis(u'סה"כ'), styleSumRow), Paragraph(str(len(self.houses)), styleSumRow)])
         row.reverse()
         rows.append(row)
         data = [headers]
