@@ -1074,7 +1074,7 @@ def building_pricelist_pdf(request, object_id, type_id):
     elif type == 'clients':
         title = u'מצבת רוכשים לפרוייקט %s' % unicode(b.project)
     subtitle = u'בניין %s' % b.num
-    if type=='full':
+    if type in ['full','avaliable']:
         subtitle += ' - %s' % unicode(pricelist_type)
         q = HouseVersion.objects.filter(house__building = b, type=pricelist_type)
         if q.count > 0:
