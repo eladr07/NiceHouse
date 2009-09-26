@@ -685,8 +685,8 @@ class EmployeeSalariesWriter:
         return doc.canv
 
 class PricelistWriter:
-    def __init__(self, pricelist, houses, title, subtitle):
-        self.pricelist, self.houses, self.title, self.subtitle = pricelist, houses, title, subtitle
+    def __init__(self, pricelist, houses, title, subtitle, include_clients=False):
+        self.pricelist, self.houses, self.title, self.subtitle, self.include_clients = pricelist, houses, title, subtitle, include_clients
     @property
     def pages_count(self):
         return len(self.houses) / 28 + 1
@@ -697,18 +697,26 @@ class PricelistWriter:
         self.current_page += 1
     def housesFlows(self):
         flows = []
-        headers = [log2vis(n) for n in [u'מס', u'קומה', u'דירה\nסוג', u'חדרים\nמס', u'נטו\nשטח', u'גינה\nמרפסת/\nשטח', u'מחיר',
-                                        u'חניה', u'מחסן', u'הערות']]
+        headers = self.include_clients and [log2vis(u'הרוכשים\nשם')] or []
+        colWidths = self.include_clients and [None] or []
+        headers.extend([log2vis(n) for n in [u'מס', u'קומה', u'דירה\nסוג', u'חדרים\nמס', u'נטו\nשטח', u'גינה\nמרפסת/\nשטח', u'מחיר',
+                                             u'חניה', u'מחסן', u'הערות']])
         headers.reverse()
-        colWidths = [None,None,None,None,None,None,None,None,None,None]
+        colWidths.extend([None,None,None,None,None,None,None,None,None,None])
         colWidths.reverse()
         rows = []
         i = 0
         for h in self.houses:
             parkings = '<br/>'.join([log2vis(unicode(p.num)) for p in h.parkings.all()])
             storages = '<br/>'.join([log2vis(unicode(s.num)) for s in h.storages.all()])
-            row = [h.num, h.floor,  log2vis(unicode(h.type)), h.rooms, h.net_size, h.garden_size, h.price and commaise(h.price) or '-',
-                   Paragraph(parkings, styleRow), Paragraph(storages, styleRow), log2vis(h.remarks[:15] + (len(h.remarks)>15 and ' ...' or ''))]
+            if self.include_clients:
+                s = h.get_sale()
+                row = [s and s.clients or '']
+            else:
+                row = []
+            row.extend([h.num, h.floor,  log2vis(unicode(h.type)), h.rooms, h.net_size, h.garden_size, 
+                        h.price and commaise(h.price) or '-', Paragraph(parkings, styleRow), Paragraph(storages, styleRow), 
+                        log2vis(h.remarks[:15] + (len(h.remarks)>15 and ' ...' or ''))])
             row.reverse()
             rows.append(row)
             i += 1
@@ -721,14 +729,24 @@ class PricelistWriter:
                 if i < len(self.houses):
                     flows.extend([PageBreak(), Spacer(0, 50)])
                 rows = []
-
+        row = self.include_clients and [None] or []
+        row.extend([None, None, None, None, None, None, None, None, 
+                    Paragraph(log2vis(u'סה"כ'), styleSumRow), Paragraph(len(self.houses), styleSumRow)])
+        row.reverse()
+        rows.append(row)
+        data = [headers]
+        data.extend(rows)
+        t = Table(data, colWidths)
+        t.setStyle(saleTableStyle)
+        flows.append(t)
         return flows
     def build(self, filename):
         self.current_page = 1
         doc = SimpleDocTemplate(filename)
         story = [Spacer(0,50)]
         story.append(titlePara(self.title))
-        story.append(Paragraph(log2vis(self.subtitle), styleSubTitle))
+        if self.subtitle:
+            story.append(Paragraph(log2vis(self.subtitle), styleSubTitle))
         story.append(Spacer(0, 10))
         story.extend(self.housesFlows())
         if self.pricelist.settle_date:
@@ -743,9 +761,11 @@ class PricelistWriter:
         story.append(Paragraph(include_str, ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_LEFT)))
         notinclude_str = 'המחיר אינו כולל : מס רכישה כחוק'
         if self.pricelist.include_registration == False:
-            notinclude_str += log2vis('%s  (%s)%%' % (ugettext('lawyer_fee'), self.pricelist.lawyer_fee)) 
+            notinclude_str += log2vis('%s  (%s)' % (ugettext('register_amount'), self.pricelist.register_amount))
+        if self.pricelist.include_guarantee == False:
+            notinclude_str += log2vis('%s  (%s)' % (ugettext('guarantee_amount'), self.pricelist.guarantee_amount))
         if self.pricelist.include_lawyer == False:
-            notinclude_str += log2vis('%s  (%s)' % (ugettext('register_expense'), self.pricelist.register_expense))
+            notinclude_str += log2vis('%s  (%s)%%' % (ugettext('lawyer_fee'), self.pricelist.lawyer_fee)) 
         story.append(Paragraph(log2vis(notinclude_str), ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
         story.append(Spacer(0,10))
         assets_str = '<u>%s</u><br/>' % log2vis(u'נכסים משניים פנויים')

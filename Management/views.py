@@ -1076,6 +1076,33 @@ def building_pricelist_pdf(request, object_id, type_id):
     p.close()
     return response
 
+@permission_required('Management.change_pricelist')
+def building_pricelist_clients_pdf(request, object_id, type_id):
+    b = Building.objects.get(pk = object_id)
+    pricelist_type = PricelistType.objects.get(pk = type_id)
+    houses = b.houses.filter(is_deleted=False)
+    q = HouseVersion.objects.filter(house__building = b, type=pricelist_type)
+    for h in houses:
+        try:
+            h.price = h.versions.filter(type__id = type_id).latest().price
+        except HouseVersion.DoesNotExist:
+            h.price = None
+    
+    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    
+    response = HttpResponse(mimetype='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=' + filename
+    p = open(filename,'w+')
+    p.flush()
+    p.close()
+    title = u'מצבת רוכשים לפרוייקט %s' % unicode(b.project)
+    subtitle = u'בניין %s - %s' % (b.num, unicode(pricelist_type))
+    PricelistWriter(b.pricelist, houses, title, subtitle, True).build(filename)
+    p = open(filename,'r')
+    response.write(p.read())
+    p.close()
+    return response
+
 @permission_required('Management.add_project')
 def project_add(request):
     if request.method == 'POST':
