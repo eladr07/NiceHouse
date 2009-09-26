@@ -720,7 +720,7 @@ class PricelistWriter:
             row.reverse()
             rows.append(row)
             i += 1
-            if i % 27 == 0 or i == len(self.houses):
+            if i % 27 == 0:
                 data = [headers]
                 data.extend(rows)
                 t = Table(data, colWidths)
@@ -761,11 +761,11 @@ class PricelistWriter:
         story.append(Paragraph(include_str, ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_LEFT)))
         notinclude_str = u'המחיר אינו כולל : מס רכישה כחוק'
         if self.pricelist.include_registration == False:
-            notinclude_str += '%s  (%s)' % (ugettext('register_amount'), self.pricelist.register_amount)
+            notinclude_str += ', %s  (%s)' % (ugettext('register_amount'), self.pricelist.register_amount)
         if self.pricelist.include_guarantee == False:
-            notinclude_str += '%s  (%s)' % (ugettext('guarantee_amount'), self.pricelist.guarantee_amount)
+            notinclude_str += ', %s  (%s)' % (ugettext('guarantee_amount'), self.pricelist.guarantee_amount)
         if self.pricelist.include_lawyer == False:
-            notinclude_str += '%s  (%s)%%' % (ugettext('lawyer_fee'), self.pricelist.lawyer_fee)
+            notinclude_str += ', %s  %%(%s)' % (ugettext('lawyer_fee'), self.pricelist.lawyer_fee)
         story.append(Paragraph(log2vis(notinclude_str), ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
         story.append(Spacer(0,10))
         assets_str = '<u>%s</u><br/>' % log2vis(u'נכסים משניים פנויים')
