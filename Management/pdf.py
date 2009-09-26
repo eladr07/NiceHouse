@@ -698,7 +698,7 @@ class PricelistWriter:
     def housesFlows(self):
         flows = []
         headers = self.include_clients and [log2vis(u'הרוכשים\nשם')] or []
-        colWidths = self.include_clients and [100] or []
+        colWidths = self.include_clients and [80] or []
         headers.extend([log2vis(n) for n in [u'מס', u'קומה', u'דירה\nסוג', u'חדרים\nמס', u'נטו\nשטח', u'גינה\nמרפסת/\nשטח', u'מחיר',
                                              u'חניה', u'מחסן', u'הערות']])
         headers.reverse()
@@ -710,7 +710,7 @@ class PricelistWriter:
             parkings = '<br/>'.join([log2vis(unicode(p.num)) for p in h.parkings.all()])
             storages = '<br/>'.join([log2vis(unicode(s.num)) for s in h.storages.all()])
             s = h.get_sale()
-            row = self.include_clients and [s and log2vis(s.clients) or ''] or []
+            row = self.include_clients and [s and clientsPara(s.clients) or ''] or []
             row.extend([h.num, h.floor,  log2vis(unicode(h.type)), h.rooms, h.net_size, h.garden_size, 
                         h.price and commaise(h.price) or '-', Paragraph(parkings, styleRow), Paragraph(storages, styleRow), 
                         log2vis(h.remarks[:15] + (len(h.remarks)>15 and ' ...' or ''))])
