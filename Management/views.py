@@ -907,10 +907,10 @@ def nhsaleside_invoice_add(request, object_id):
 @permission_required('Management.delete_payment')
 def payment_del(request, id):
     p = Payment.objects.get(pk=id)
-    if i.demands.count() == 1:
-        next = '/demands/%s' % i.demands.all()[0].id
+    if p.demands.count() == 1:
+        next = '/demands/%s' % p.demands.all()[0].id
     elif i.nhsaleside_set.count() == 1:
-        next = '/nhsale/%s' % i.nhsaleside_set.all()[0].nhsale.id
+        next = '/nhsale/%s' % p.nhsaleside_set.all()[0].nhsale.id
     p.delete()
     return HttpResponseRedirect(next)
 
