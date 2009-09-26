@@ -702,7 +702,7 @@ class PricelistWriter:
         headers.extend([log2vis(n) for n in [u'מס', u'קומה', u'דירה\nסוג', u'חדרים\nמס', u'נטו\nשטח', u'גינה\nמרפסת/\nשטח', u'מחיר',
                                              u'חניה', u'מחסן', u'הערות']])
         headers.reverse()
-        colWidths.extend([None,None,None,None,None,None,None,None,None,None])
+        colWidths.extend([None,None,50,None,None,None,None,None,None,None])
         colWidths.reverse()
         rows = []
         i = 0
@@ -761,11 +761,11 @@ class PricelistWriter:
         story.append(Paragraph(include_str, ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_LEFT)))
         notinclude_str = u'המחיר אינו כולל : מס רכישה כחוק'
         if self.pricelist.include_registration == False:
-            notinclude_str += log2vis('%s  (%s)' % (ugettext('register_amount'), self.pricelist.register_amount))
+            notinclude_str += '%s  (%s)' % (ugettext('register_amount'), self.pricelist.register_amount)
         if self.pricelist.include_guarantee == False:
-            notinclude_str += log2vis('%s  (%s)' % (ugettext('guarantee_amount'), self.pricelist.guarantee_amount))
+            notinclude_str += '%s  (%s)' % (ugettext('guarantee_amount'), self.pricelist.guarantee_amount)
         if self.pricelist.include_lawyer == False:
-            notinclude_str += log2vis('%s  (%s)%%' % (ugettext('lawyer_fee'), self.pricelist.lawyer_fee)) 
+            notinclude_str += '%s  (%s)%%' % (ugettext('lawyer_fee'), self.pricelist.lawyer_fee)
         story.append(Paragraph(log2vis(notinclude_str), ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
         story.append(Spacer(0,10))
         assets_str = '<u>%s</u><br/>' % log2vis(u'נכסים משניים פנויים')
