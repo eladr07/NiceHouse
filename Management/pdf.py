@@ -702,7 +702,7 @@ class PricelistWriter:
         headers.extend([log2vis(n) for n in [u'מס', u'קומה', u'דירה\nסוג', u'חדרים\nמס', u'נטו\nשטח', u'גינה\nמרפסת/\nשטח', u'מחיר',
                                              u'חניה', u'מחסן', u'הערות']])
         headers.reverse()
-        colWidths.extend([None,None,50,None,None,None,None,None,None,None])
+        colWidths.extend([None,None,70,None,None,None,None,None,None,None])
         colWidths.reverse()
         rows = []
         i = 0
