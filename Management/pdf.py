@@ -759,7 +759,7 @@ class PricelistWriter:
         story.append(Paragraph(include_str, ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
         include_str = log2vis(u'היתר : ' + (self.pricelist.is_permit and u'יש' or u'אין'))
         story.append(Paragraph(include_str, ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_LEFT)))
-        notinclude_str = 'המחיר אינו כולל : מס רכישה כחוק'
+        notinclude_str = u'המחיר אינו כולל : מס רכישה כחוק'
         if self.pricelist.include_registration == False:
             notinclude_str += log2vis('%s  (%s)' % (ugettext('register_amount'), self.pricelist.register_amount))
         if self.pricelist.include_guarantee == False:
