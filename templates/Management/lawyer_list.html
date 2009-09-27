@@ -29,7 +29,7 @@
 {% endblock header %}
 {% block content %}
 	<div class="title">
-		<div class="pageTitle">ריכוז הלוואות לעובדים</div>
+		<div class="pageTitle">ריכוז עורכי דין</div>
 	</div>
 	<div class="someIcon">
 		<img src="/site_media/images/add_48.png" width="20" height="20"  alt="חדש" /> 
@@ -46,21 +46,23 @@
 	<div class="clearBoth"> </div>
 	<br /> 		
 	<table class="dataTable" border="1">
-		<th>שם העובד</th>
-		<th>תאריך ההלוואה</th>
-		<th>סכום ההלוואה</th>
-		<th>מס' תשלומים</th>
-		<th>יתרה לתשלום</th>
-		{% for loan in object_list %}
-		{% if loan.employee.loan_left %}
-			<tr class="{% cycle 'row1' 'row2' %}" objid={{loan.id}}>
-				<td><a href="/employees/{{ loan.employee.id }}">{{ loan.employee }}</td>
-				<td>{{ loan.date }}</td>
-				<td>{{ loan.amount|commaise }} ש"ח</td>
-				<td>{{ loan.pay_num }}</td>
-				<td>{{ loan.employee.loan_left|commaise }} ש"ח</td>
-			</tr>
-		{% endif %}
+		<th>שם פרטי</th>
+		<th>שם משפחה</th>
+		<th>טלפון</th>
+		<th>סלולרי</th>
+		<th>דוא"ל</th>
+		<th>כתובת</th>
+		<th>תפקיד</th>
+		{% for o in object_list %}
+		<tr>
+			<td>{{o.first_name}}</td>
+			<td>{{o.last_name}}</td>
+			<td>{{o.phone}}</td>
+			<td>{{o.cell_phone}}</td>
+			<td>{{o.mail}}</td>
+			<td>{{o.address}}</td>
+			<td>{{o.role}}</td>
+		</tr>
 		{% endfor %}
 	</table>
 {% endblock content %}

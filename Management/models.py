@@ -1711,6 +1711,8 @@ class NHPay(models.Model):
         db_table='NHPay'
 
 class Lawyer(Person):
+    def get_absolute_url(self):
+        return '/lawyers/%s' % self.id
     class Meta:
         db_table='Lawyer'
 
