@@ -821,6 +821,7 @@ class BuildingClientsWriter:
     def build(self, filename):
         self.current_page = 1
         doc = SimpleDocTemplate(filename, pagesize = landscape(A4))
+        story = []
         story.append(titlePara(self.title))
         if self.subtitle:
             story.append(Paragraph(log2vis(self.subtitle), styleSubTitle))
