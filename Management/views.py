@@ -1082,7 +1082,7 @@ def building_pricelist_pdf(request, object_id, type_id):
 @permission_required('Management.change_pricelist')
 def building_clients_pdf(request, object_id, type_id):
     b = Building.objects.get(pk = object_id)
-    houses = [h for h in houses.filter(is_deleted=False) if h.get_sale() != None or h.is_sold == True]
+    houses = [h for h in b.houses.filter(is_deleted=False) if h.get_sale() != None or h.is_sold == True]
     for h in houses:
         try:
             h.price = h.versions.filter(type__id = PricelistType.Company).latest().price
