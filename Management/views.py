@@ -13,7 +13,7 @@ from django.views.generic.list_detail import object_list, object_detail
 from django.views.generic.simple import direct_to_template
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
-from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, NHEmployeeSalariesWriter, PricelistWriter
+from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, NHEmployeeSalariesWriter, PricelistWriter, BuildingClientsWriter
 from mail import mail
 
 @login_required
@@ -1054,8 +1054,6 @@ def building_pricelist_pdf(request, object_id, type_id):
     houses = b.houses.filter(is_deleted=False)
     if type == 'avaliable':
         houses = [h for h in houses.filter(is_sold=False) if h.get_sale() == None]
-    elif type == 'clients':
-        houses = [h for h in houses if h.is_sold == True or h.get_sale() != None]
     for h in houses:
         try:
             h.price = h.versions.filter(type__id = type_id).latest().price
@@ -1069,17 +1067,38 @@ def building_pricelist_pdf(request, object_id, type_id):
     p = open(filename,'w+')
     p.flush()
     p.close()
-    if type in ['full','avaliable']:
-        title = u'מחירון לפרוייקט %s' % unicode(b.project)
-    elif type == 'clients':
-        title = u'מצבת רוכשים לפרוייקט %s' % unicode(b.project)
+    title = u'מחירון לפרוייקט %s' % unicode(b.project)
     subtitle = u'בניין %s' % b.num
-    if type in ['full','avaliable']:
-        subtitle += ' - %s' % unicode(pricelist_type)
-        q = HouseVersion.objects.filter(house__building = b, type=pricelist_type)
-        if q.count > 0:
-            subtitle += u' לתאריך ' + q.latest().date.strftime('%d/%m/%Y')
-    PricelistWriter(b.pricelist, houses, title, subtitle, include_clients = type == 'clients').build(filename)
+    subtitle += ' - %s' % unicode(pricelist_type)
+    q = HouseVersion.objects.filter(house__building = b, type=pricelist_type)
+    if q.count > 0:
+        subtitle += u' לתאריך ' + q.latest().date.strftime('%d/%m/%Y')
+    PricelistWriter(b.pricelist, houses, title, subtitle).build(filename)
+    p = open(filename,'r')
+    response.write(p.read())
+    p.close()
+    return response
+
+@permission_required('Management.change_pricelist')
+def building_clients_pdf(request, object_id, type_id):
+    b = Building.objects.get(pk = object_id)
+    houses = [h for h in houses.filter(is_deleted=False) if h.get_sale() != None or h.is_sold == True]
+    for h in houses:
+        try:
+            h.price = h.versions.filter(type__id = PricelistType.Company).latest().price
+        except HouseVersion.DoesNotExist:
+            h.price = None
+    
+    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    
+    response = HttpResponse(mimetype='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=' + filename
+    p = open(filename,'w+')
+    p.flush()
+    p.close()
+    title = u'מצבת רוכשים לפרוייקט %s' % unicode(b.project)
+    subtitle = u'בניין %s' % b.num
+    BuildingClientsWriter(houses, title, subtitle).build(filename)
     p = open(filename,'r')
     response.write(p.read())
     p.close()

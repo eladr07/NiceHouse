@@ -4,6 +4,7 @@ from templatetags.management_extras import commaise
 import reportlab.rl_config
 reportlab.rl_config.warnOnMissingFontGlyphs = 0
 
+from reportlab.lib.pagesizes import A4, landscape
 from django.utils.translation import ugettext
 from reportlab.pdfgen import canvas
 from reportlab.lib.styles import ParagraphStyle
@@ -685,8 +686,8 @@ class EmployeeSalariesWriter:
         return doc.canv
 
 class PricelistWriter:
-    def __init__(self, pricelist, houses, title, subtitle, include_clients=False):
-        self.pricelist, self.houses, self.title, self.subtitle, self.include_clients = pricelist, houses, title, subtitle, include_clients
+    def __init__(self, pricelist, houses, title, subtitle):
+        self.pricelist, self.houses, self.title, self.subtitle = pricelist, houses, title, subtitle
     @property
     def pages_count(self):
         return len(self.houses) / 28 + 1
@@ -697,23 +698,19 @@ class PricelistWriter:
         self.current_page += 1
     def housesFlows(self):
         flows = []
-        headers = self.include_clients and [log2vis(u'הרוכשים\nשם')] or []
-        colWidths = self.include_clients and [80] or []
-        headers.extend([log2vis(n) for n in [u'מס', u'קומה', u'דירה\nסוג', u'חדרים\nמס', u'נטו\nשטח', u'גינה\nמרפסת/\nשטח', u'מחיר',
-                                             u'חניה', u'מחסן', u'הערות']])
+        headers = [log2vis(n) for n in [u'מס', u'קומה', u'דירה\nסוג', u'חדרים\nמס', u'נטו\nשטח', u'גינה\nמרפסת/\nשטח', u'מחיר',
+                                        u'חניה', u'מחסן', u'הערות']]
         headers.reverse()
-        colWidths.extend([None,None,70,None,None,None,None,None,None,None])
+        colWidths = [None,None,70,None,None,None,None,None,None,None]
         colWidths.reverse()
         rows = []
         i = 0
         for h in self.houses:
             parkings = '<br/>'.join([log2vis(unicode(p.num)) for p in h.parkings.all()])
             storages = '<br/>'.join([log2vis(unicode(s.num)) for s in h.storages.all()])
-            s = h.get_sale()
-            row = self.include_clients and [s and clientsPara(s.clients) or ''] or []
-            row.extend([h.num, h.floor,  log2vis(unicode(h.type)), h.rooms, h.net_size, h.garden_size, 
-                        h.price and commaise(h.price) or '-', Paragraph(parkings, styleRow), Paragraph(storages, styleRow), 
-                        log2vis(h.remarks[:15] + (len(h.remarks)>15 and ' ...' or ''))])
+            row = [h.num, h.floor,  log2vis(unicode(h.type)), h.rooms, h.net_size, h.garden_size, 
+                   h.price and commaise(h.price) or '-', Paragraph(parkings, styleRow), Paragraph(storages, styleRow), 
+                   log2vis(h.remarks[:15] + (len(h.remarks)>15 and ' ...' or ''))]
             row.reverse()
             rows.append(row)
             i += 1
@@ -726,9 +723,8 @@ class PricelistWriter:
                 if i < len(self.houses):
                     flows.extend([PageBreak(), Spacer(0, 50)])
                 rows = []
-        row = self.include_clients and [None] or []
-        row.extend([None, None, None, None, None, None, None, None, 
-                    Paragraph(log2vis(u'סה"כ'), styleSumRow), Paragraph(str(len(self.houses)), styleSumRow)])
+        row = [None, None, None, None, None, None, None, None, 
+               Paragraph(log2vis(u'סה"כ'), styleSumRow), Paragraph(str(len(self.houses)), styleSumRow)]
         row.reverse()
         rows.append(row)
         data = [headers]
@@ -769,6 +765,68 @@ class PricelistWriter:
         assets_str += log2vis(u'מחסנים : ' + ','.join(str(s.num) for s in self.pricelist.building.storages.filter(house=None))) + '<br/>'
         assets_str += log2vis(u'חניות : ' + ','.join(str(p.num) for p in self.pricelist.building.parkings.filter(house=None))) + '<br/>'
         story.append(Paragraph(assets_str, ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
+        doc.build(story, self.addTemplate, self.addTemplate)
+        return doc.canv
+
+class BuildingClientsWriter:
+    def __init__(self, houses, title, subtitle):
+        self.houses, self.title, self.subtitle = houses, title, subtitle
+    @property
+    def pages_count(self):
+        return len(self.houses) / 28 + 1
+    def addTemplate(self, canv, doc):
+        frame3 = Frame(50, 20, 150, 40)
+        frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
+                            ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
+        self.current_page += 1
+    def housesFlows(self):
+        flows = []
+        headers = [log2vis(n) for n in [u'מס',u'נטו\nשטח',u'קומה',u'דירה\nסוג',u'הרוכשים\nשם',u'ת.ז',u'כתובת',u'טלפונים',
+                                        u'דוא"ל',u'ת. הרשמה',u'ת. חוזה',u'מחירון',u'חוזה\nמחיר',u'חנייה',u'מחסן',
+                                        u'נלוות\nהוצאות',u'חזוי\nאכלוס\nמועד',u'לקוח\nארכיב',u'חשבון\nמצב']]
+        headers.reverse()
+        rows = []
+        i = 0
+        for h in self.houses:
+            parkings = '<br/>'.join([log2vis(unicode(p.num)) for p in h.parkings.all()])
+            storages = '<br/>'.join([log2vis(unicode(s.num)) for s in h.storages.all()])
+            sale = h.get_sale()
+            signup = h.get_signup()
+            if sale:
+                clients_name, clients_address, clients_phone = clientsPara(sale.clients), '', clientsPara(sale.clients_phone)
+            else:
+                clients_name, clients_address, clients_phone = '','',''
+            row = [h.num, h.net_size, h.floor, log2vis(unicode(h.type)), clients_name, '', clients_address, clients_phone, 
+                   '', signup and signup.date.strftime('%d/%m/%Y'), sale and sale.sale_date.strftime('%d/%m/%Y') or '',
+                   h.price and commaise(h.price) or '-', commaise(h.price), Paragraph(parkings, styleRow), Paragraph(storages, styleRow), 
+                   '','','','']
+            row.reverse()
+            rows.append(row)
+            i += 1
+            if i % 27 == 0:
+                data = [headers]
+                data.extend(rows)
+                t = Table(data, colWidths)
+                t.setStyle(saleTableStyle)
+                flows.append(t)
+                if i < len(self.houses):
+                    flows.extend([PageBreak(), Spacer(0, 50)])
+                rows = []
+        data = [headers]
+        data.extend(rows)
+        t = Table(data)
+        t.setStyle(saleTableStyle)
+        flows.append(t)
+        return flows
+    def build(self, filename):
+        self.current_page = 1
+        doc = SimpleDocTemplate(filename, pagesize = landscape(A4))
+        story = [Spacer(0,50)]
+        story.append(titlePara(self.title))
+        if self.subtitle:
+            story.append(Paragraph(log2vis(self.subtitle), styleSubTitle))
+        story.append(Spacer(0, 10))
+        story.extend(self.housesFlows())
         doc.build(story, self.addTemplate, self.addTemplate)
         return doc.canv
 
