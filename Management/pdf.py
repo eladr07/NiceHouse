@@ -331,6 +331,7 @@ class MonthDemandWriter:
                 row = [log2vis('%s/%s' % (demand.month, demand.year)), clientsPara(s.clients), 
                                '%s/%s' % (s.house.building.num, s.house.num), s.sale_date.strftime('%d/%m/%y'), 
                                commaise(s.price)]
+                s.restore = False
                 new_commission = s.c_final
                 scd_final = s.project_commission_details.filter(commission='final')[0]
                 log = models.ChangeLog.objects.filter(object_type='SaleCommissionDetail',
