@@ -761,9 +761,6 @@ class EmployeeSalaryBaseStatus(models.Model):
         get_latest_by = 'date'
         
 class EmployeeSalaryBase(models.Model):
-    employee = models.ForeignKey('Employee', verbose_name=ugettext('employee'), related_name='salaries', null=True, blank=True)
-    nhemployee = models.ForeignKey('NHEmployee', verbose_name=ugettext('nhemployee'), related_name='salaries', null=True, blank=True)
-    
     month = models.PositiveSmallIntegerField(ugettext('month'), editable=False, choices=((i,i) for i in range(1,13)))
     year = models.PositiveSmallIntegerField(ugettext('year'), editable=False, choices=((i,i) for i in range(datetime.now().year - 10,
                                                                                              datetime.now().year + 10)))
@@ -809,7 +806,6 @@ class EmployeeSalaryBase(models.Model):
             return self.nhemployeesalary.nhemployee
     class Meta:
         db_table = 'EmployeeSalaryBase'
-        unique_together = ('employee', 'nhemployee','year','month')
 
 class NHEmployeeSalary(EmployeeSalaryBase):
     nhemployee = models.ForeignKey('NHEmployee', verbose_name=ugettext('nhemployee'), related_name='salaries')
