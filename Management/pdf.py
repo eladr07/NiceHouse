@@ -331,8 +331,13 @@ class MonthDemandWriter:
                 row = [log2vis('%s/%s' % (demand.month, demand.year)), clientsPara(s.clients), 
                                '%s/%s' % (s.house.building.num, s.house.num), s.sale_date.strftime('%d/%m/%y'), 
                                commaise(s.price)]
-                orig_commission = s.c_final
-                new_commission = s.project_commission_details.filter(commission='final')[0].value
+                new_commission = s.c_final
+                scd_final = s.project_commission_details.filter(commission='final')[0]
+                log = models.ChangeLog.objects.filter(object_type='SaleCommissionDetail',
+                                                      object_id=scd_final.id, 
+                                                      attribute='value',
+                                                      date__lte=last_demand_sent.finish_date)
+                orig_commission = log.count() > 0 and float(log.latest().new_value) or new_commission
                 if orig_commission == new_commission:
                     continue
                 i += 1
