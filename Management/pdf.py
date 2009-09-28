@@ -265,7 +265,7 @@ class MonthDemandWriter:
         flows = [tableCaption(caption=log2vis(u'נספח ב - דו"ח חסכון בהנחה')), Spacer(0,20),
                  tableCaption(caption=log2vis(u'מדד בסיס - %s' % self.demand.project.commissions.c_zilber.base_madad)),
                  Spacer(0,30)]
-        headers = [log2vis(n) for n in [u'מס"ד', u'שם הרוכשים', u'ודירה\nבניין', u'חוזה\nתאריך',
+        headers = [log2vis(n) for n in [u'מס"ד',u'דרישה\nחודש', u'שם הרוכשים', u'ודירה\nבניין', u'חוזה\nתאריך',
                                         u'חוזה\nמחיר', u'0 דו"ח\nמחירון', u'חדש\nמדד', 
                                         u'60%\nממודד\nמחירון', u'מחיר\nהפרש', u'בהנחה\nחסכון\nשווי',
                                         u'הערות']]
@@ -279,8 +279,8 @@ class MonthDemandWriter:
         while demand != None:
             for s in demand.get_sales():
                 i += 1
-                row = ['%s-%s' % (s.actual_demand.id, i), log2vis(s.clients),'%s/%s' % (s.house.building.num, s.house.num), 
-                       s.sale_date.strftime('%d/%m/%y'), commaise(s.price)]
+                row = ['%s-%s' % (s.actual_demand.id, i),'%s/%s' % (s.actual_demand.month, s.actual_demand.year), log2vis(s.clients),
+                       '%s/%s' % (s.house.building.num, s.house.num), s.sale_date.strftime('%d/%m/%y'), commaise(s.price)]
                 doh0prices = s.house.versions.filter(type__id = models.PricelistType.Doh0)
                 if doh0prices.count() > 0:
                     doh0price = doh0prices.latest().price
@@ -300,7 +300,7 @@ class MonthDemandWriter:
             if demand.zilber_cycle_index() == 1:
                 break
             demand = demand.get_previous_demand()
-        sum_row = [None, None, None, None, Paragraph(commaise(total_prices), styleSumRow), None, None, None, None, 
+        sum_row = [None, None, None, None, None, Paragraph(commaise(total_prices), styleSumRow), None, None, None, None, 
                    Paragraph(commaise(total_adds), styleSumRow), None]
         sum_row.reverse()
         rows.append(sum_row)
@@ -329,13 +329,8 @@ class MonthDemandWriter:
                 row = [log2vis('%s/%s' % (demand.month, demand.year)), clientsPara(s.clients), 
                                '%s/%s' % (s.house.building.num, s.house.num), s.sale_date.strftime('%d/%m/%y'), 
                                commaise(s.price)]
-                new_commission = s.c_final
-                scd_final = s.project_commission_details.filter(commission='final')[0]
-                log = models.ChangeLog.objects.filter(object_type='SaleCommissionDetail',
-                                                      object_id=scd_final.id, 
-                                                      attribute='value',
-                                                      date__lte=last_demand_sent.finish_date)
-                orig_commission = log.count() > 0 and float(log.latest().new_value) or new_commission
+                orig_commission = s.c_final
+                new_commission = s.project_commission_details.filter(commission='final')[0].value
                 if orig_commission == new_commission:
                     continue
                 i += 1

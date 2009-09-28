@@ -1166,12 +1166,10 @@ class CZilber(models.Model):
         if base > self.b_sale_rate_max:
             base = self.b_sale_rate_max
         for s in sales:
-            scd = s.commission_details.get_or_create(commission='c_zilber_base')[0]
-            scd.value = base
-            scd.save()
-            scd = s.commission_details.get_or_create(commission='final')[0]
-            scd.value = base
-            scd.save()
+            for c in ['c_zilber_base', 'final']:
+                scd = s.commission_details.get_or_create(commission=c)[0]
+                scd.value = base
+                scd.save()
             s.price_final = s.project_price()
             s.save()
             if self.base_madad:
@@ -1185,15 +1183,7 @@ class CZilber(models.Model):
                 scd.save()
         prev_adds = 0
         for s in sales:
-            q = s.project_commission_details.filter(commission='final')
-            last_demand_finish_date = d.get_previous_demand().finish_date
-            if q.count() > 0 and last_demand_finish_date:
-                log = ChangeLog.objects.filter(object_type='SaleCommissionDetail', object_id=q[0].id, 
-                                               attribute='value', date__lte=last_demand_finish_date)
-                pc_base = log.count() > 0 and float(log.latest().new_value) or q[0].value
-            else:
-                pc_base = s.pc_base
-            prev_adds += (base - pc_base) * s.project_price() / 100
+            prev_adds += (base - s.c_final) * s.project_price() / 100
         if prev_adds:
             d.diffs.create(type=u'משתנה', reason=u'הפרשי קצב מכירות (נספח א)', amount=prev_adds)
         if d.include_zilber_bonus():
