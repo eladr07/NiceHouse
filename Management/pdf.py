@@ -267,8 +267,9 @@ class MonthDemandWriter:
                  Spacer(0,30)]
         headers = [log2vis(n) for n in [u'מס"ד',u'דרישה\nחודש', u'שם הרוכשים', u'ודירה\nבניין', u'חוזה\nתאריך',
                                         u'חוזה\nמחיר', u'0 דו"ח\nמחירון', u'חדש\nמדד', 
-                                        u'60%\nממודד\nמחירון', u'מחיר\nהפרש', u'בהנחה\nחסכון\nשווי',u'הערות']]
-        colWidths  =[None,None,70,None,None,None,None,None,None,None,None,None]
+                                        u'60%\nממודד\nמחירון', u'מחיר\nהפרש', u'בהנחה\nחסכון\nשווי']]
+        colWidths  =[None,None,70,None,None,None,None,None,None,None,None]
+        colWidths.reverse()
         headers.reverse()
         rows = []
         i = 1
@@ -285,7 +286,7 @@ class MonthDemandWriter:
                 if doh0prices.count() > 0:
                     doh0price = doh0prices.latest().price
                     memudad = (((current_madad / base_madad) - 1) * 0.6 + 1) * doh0price
-                    row.extend([commaise(doh0price), current_madad, commaise(memudad), commaise(s.price-memudad), s.zdb, None])
+                    row.extend([commaise(doh0price), current_madad, commaise(memudad), commaise(s.price-memudad), s.zdb])
                     row.reverse()
                 rows.append(row)
                 total_prices += s.price
@@ -301,7 +302,7 @@ class MonthDemandWriter:
                 break
             demand = demand.get_previous_demand()
         sum_row = [None, None, None, None, None, Paragraph(commaise(total_prices), styleSumRow), None, None, None, None, 
-                   Paragraph(commaise(total_adds), styleSumRow), None]
+                   Paragraph(commaise(total_adds), styleSumRow)]
         sum_row.reverse()
         rows.append(sum_row)
         data = [headers]
@@ -317,6 +318,7 @@ class MonthDemandWriter:
         headers = [log2vis(n) for n in [u'דרישה\nחודש', u'שם הרוכשים', u'ודירה\nבניין',u'מכירה\nתאריך', u'חוזה\nמחיר',
                                         u'בדרישה\nעמלה',u'חדשה\nעמלה', u'הפרש\nאחוז', u'בש"ח\nהפרש']]
         colWidths  =[None,70,None,None,None,None,None,None,None]
+        colWidths.reverse()
         headers.reverse()
         rows = []
         demand = self.demand
