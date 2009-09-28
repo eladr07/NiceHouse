@@ -1161,7 +1161,7 @@ class CZilber(models.Model):
         sales = list(d.get_sales().all())
         while demand != None and demand.zilber_cycle_index() != 1:
             demand = demand.get_previous_demand()
-            sales.extend(demand.get_sales())
+            sales.extend(demand.get_sales().filter(commission_include=True))
         base = self.base + self.b_sale_rate * (len(sales) - 1)
         if base > self.b_sale_rate_max:
             base = self.b_sale_rate_max
@@ -1298,12 +1298,14 @@ class ProjectCommission(models.Model):
                 subSales = Sale.objects.filter(house__signups__date__year=y,
                                                house__signups__date__month=m,
                                                house__signups__cancel=None,
-                                               house__building__project = demand.project
+                                               house__building__project = demand.project,
+                                               commission_include=True
                                         ).exclude(contractor_pay__gte = date(demand.month==12 and demand.year+1 or demand.year, 
                                                                              demand.month==12 and 1 or demand.month+1,1))
                 self.calc(subSales, 1)
             for subSales in demand.get_affected_sales().values():
                 for s in subSales:
+                    if not s.commission_include: continue
                     signup = s.house.get_signup()
                     if not signup: continue
                     #get the finish date when the demand for the month the signup 
@@ -1579,7 +1581,7 @@ class Demand(models.Model):
         if self.get_sales().count() == 0:
             return
         c = self.project.commissions
-        c.calc(self.get_sales())
+        c.calc(self.get_sales().filter(commission_include=True))
     def get_sales_commission(self):
         i=0
         for s in self.get_sales():
@@ -1911,9 +1913,6 @@ class SaleCancel(SaleMod):
         db_table = 'SaleCancel'
         
 class Sale(models.Model):
-    def __init__(self, *args, **kw):
-        models.Model.__init__(self, *args, **kw)
-        self.restore = True
     demand = models.ForeignKey('Demand', related_name='sales', editable=False)
     house = models.ForeignKey('House', related_name = 'sales', verbose_name=ugettext('house'))
     employee = models.ForeignKey('Employee', related_name = 'sales', verbose_name=ugettext('employee'),
@@ -1939,6 +1938,10 @@ class Sale(models.Model):
     include_tax = models.BooleanField(ugettext('include_tax'), choices=Boolean, default=1)
     discount = models.FloatField(ugettext('given_discount'), null=True, blank=True)
     allowed_discount = models.FloatField(ugettext('allowed_discount'), null=True, blank=True)
+    commission_include = models.BooleanField(ugettext('commission include'), default=True, blank=True)
+    def __init__(self, *args, **kw):
+        models.Model.__init__(self, *args, **kw)
+        self.restore = True
     @property
     def actual_demand(self):
         return Demand.objects.get(month=self.contractor_pay.month, year=self.contractor_pay.year,
@@ -2017,7 +2020,9 @@ class Sale(models.Model):
         models.Model.save(self, args, kw)
     @property
     def is_fixed(self):
-        return self.salehousemod or self.salepricemod or self.salepre or self.salereject
+        for attr in ['salehousemod', 'salepricemod', 'salepre', 'salereject']:
+            if getattr(self, attr):
+                return True
     @property
     def is_ep_ok(self):
         return self.employee_pay.year == self.demand.year and self.employee_pay.month == self.demand.month 

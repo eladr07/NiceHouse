@@ -288,6 +288,13 @@
 					{% if form.remarks.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.remarks.errors|join:""}}'/>{% endif %}
 				</td>
 			</tr>
+			<tr>
+				<th>{{ form.commission_include.label_tag }}</th>
+				<td>
+					{{ form.commission_include }}
+					{% if form.commission_include.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.commission_include.errors|join:""}}'/>{% endif %}
+				</td>
+			</tr>
 		</table>
 		<input name="addanother" type="submit" value="שמור והמשך בהזנה" class="button" />
 		<input name="todemand" type="submit" value="שמור וחזור לכרטיס הדרישה" class="button" />
