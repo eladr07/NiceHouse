@@ -29,7 +29,7 @@
 			var fields = new Array("project", "from_year", "from_month", "to_year", "to_month");
 			var url = "/demandinvoices/?";
 			for ( var i=0; i < fields.length; ++i )
-				url += fields[i] + "=" + $("#id_" + fields[i]).val() + ";"
+				url += fields[i] + "=" + $("#id_" + fields[i]).val() + "&"
 			location.replace(url);
 		});
 	});

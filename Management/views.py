@@ -2056,8 +2056,13 @@ def report_employeesalary_season(request, employee_id=None, from_year=Demand.cur
     p.close()
     return response
 
-def demand_season_list(request, project_id=None, from_year=Demand.current_month().year, from_month=Demand.current_month().month, 
-                          to_year=Demand.current_month().year, to_month=Demand.current_month().month):
+def demand_season_list(request):
+    month=Demand.current_month()
+    project_id = int(request.GET.get('project', 0))
+    from_year = int(request.GET.get('from_year', month.year))
+    from_month = int(request.GET.get('from_month', month.month))
+    to_year = int(request.GET.get('to_year', month.year))
+    to_month = int(request.GET.get('to_month', month.month))
     form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
     ds = []
     total_sales_count,total_sales_amount, total_sales_commission, total_amount = 0,0,0,0
@@ -2085,8 +2090,13 @@ def demand_season_list(request, project_id=None, from_year=Demand.current_month(
                                 'total_amount':total_amount},
                               context_instance=RequestContext(request))
 
-def demand_followup_list(request, project_id=None, from_year=Demand.current_month().year, from_month=Demand.current_month().month, 
-                          to_year=Demand.current_month().year, to_month=Demand.current_month().month):
+def demand_followup_list(request):
+    month=Demand.current_month()
+    project_id = int(request.GET.get('project', 0))
+    from_year = int(request.GET.get('from_year', month.year))
+    from_month = int(request.GET.get('from_month', month.month))
+    to_year = int(request.GET.get('to_year', month.year))
+    to_month = int(request.GET.get('to_month', month.month))
     form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
     ds = []
     total_amount = 0
