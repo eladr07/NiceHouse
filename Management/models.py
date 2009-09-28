@@ -761,9 +761,6 @@ class EmployeeSalaryBaseStatus(models.Model):
         get_latest_by = 'date'
         
 class EmployeeSalaryBase(models.Model):
-    employee = models.ForeignKey('Employee', verbose_name=ugettext('employee'), related_name='salaries', null=True, blank=True)
-    nhemployee = models.ForeignKey('NHEmployee', verbose_name=ugettext('nhemployee'), related_name='salaries', null=True, blank=True)
-    
     month = models.PositiveSmallIntegerField(ugettext('month'), editable=False, choices=((i,i) for i in range(1,13)))
     year = models.PositiveSmallIntegerField(ugettext('year'), editable=False, choices=((i,i) for i in range(datetime.now().year - 10,
                                                                                              datetime.now().year + 10)))
@@ -803,12 +800,16 @@ class EmployeeSalaryBase(models.Model):
             amount += lp.amount
         return amount
     def get_employee(self):
-        return self.employee or self.nhemployee
+        if hasattr(self, 'employeesalary'):
+            return self.employeesalary.employee
+        elif hasattr(self, 'nhemployeesalary'):
+            return self.nhemployeesalary.nhemployee
     class Meta:
         db_table = 'EmployeeSalaryBase'
         unique_together = ('employee', 'nhemployee','year','month')
 
 class NHEmployeeSalary(EmployeeSalaryBase):
+    nhemployee = models.ForeignKey('NHEmployee', verbose_name=ugettext('nhemployee'), related_name='salaries')
     admin_commission = models.IntegerField(editable=False, null=True)
     @property
     def total_amount(self):
@@ -858,6 +859,7 @@ class NHEmployeeSalary(EmployeeSalaryBase):
         db_table='NHEmployeeSalary'
         
 class EmployeeSalary(EmployeeSalaryBase):
+    employee = models.ForeignKey('Employee', verbose_name=ugettext('employee'), related_name='salaries')
     @property
     def sales(self):
         sales = {}
@@ -913,7 +915,7 @@ class EmployeeSalary(EmployeeSalaryBase):
     def get_absolute_url(self):
         return '/employeesalaries/%s' % self.id
     class Meta:
-        proxy = True
+        db_table = 'EmployeeSalary'
     
 class EPCommission(models.Model):
     employee = models.ForeignKey('Employee', related_name='commissions')
