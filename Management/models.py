@@ -1186,6 +1186,8 @@ class CZilber(models.Model):
                 scd.save()
         prev_adds = 0
         for s in sales:
+            if not s.commission_include:
+                continue
             q = s.project_commission_details.filter(commission='final')
             last_demand_finish_date = d.get_previous_demand().finish_date
             if q.count() > 0 and last_demand_finish_date:
@@ -1194,13 +1196,13 @@ class CZilber(models.Model):
                 pc_base = log.count() > 0 and float(log.latest().new_value) or q[0].value
             else:
                 pc_base = s.pc_base
-            prev_adds += (base - pc_base) * s.project_price() / 100
+            prev_adds += (base - pc_base) * s.price_final / 100
         if prev_adds:
             d.diffs.create(type=u'משתנה', reason=u'הפרשי קצב מכירות (נספח א)', amount=prev_adds)
         if d.include_zilber_bonus():
             demand, bonus = d, 0
             while demand != None:
-                for s in demand.get_sales():
+                for s in demand.get_sales().filter(commission_include=True):
                     bonus += s.zdb
                 if demand.zilber_cycle_index() == 1:
                     break
