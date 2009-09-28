@@ -1169,10 +1169,12 @@ class CZilber(models.Model):
         for s in sales:
             for c in ['c_zilber_base', 'final']:
                 scd = s.commission_details.get_or_create(commission=c)[0]
-                scd.value = base
+                scd.value = s.commission_include and base or 0
                 scd.save()
             s.price_final = s.project_price()
             s.save()
+            if not s.commission_include:
+                continue
             if self.base_madad:
                 current_madad = d.get_madad() < self.base_madad and self.base_madad or d.get_madad()
                 doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0)
@@ -1345,10 +1347,10 @@ class ProjectCommission(models.Model):
         for s in details:
             for c, v in details[s].items():
                 scd = s.commission_details.get_or_create(employee_salary=None, commission=c)[0]
-                scd.value = v
+                scd.value = s.commission_include and v or 0
                 scd.save()
             scd = s.commission_details.get_or_create(employee_salary=None, commission='final')[0]
-            scd.value = dic[s]
+            scd.value = s.commission_include and dic[s] or 0
             scd.save()
             s.price_final = s.project_price()
             s.save()
@@ -1582,7 +1584,7 @@ class Demand(models.Model):
         if self.get_sales().count() == 0:
             return
         c = self.project.commissions
-        c.calc(self.get_sales().filter(commission_include=True))
+        c.calc(self.get_sales())
     def get_sales_commission(self):
         i=0
         for s in self.get_sales():
