@@ -278,7 +278,7 @@ class MonthDemandWriter:
         base_madad = demand.project.commissions.c_zilber.base_madad
         current_madad = demand.get_madad() < base_madad and base_madad or demand.get_madad()
         while demand != None:
-            for s in demand.get_sales():
+            for s in demand.get_sales().filter(commission_include=True):
                 i += 1
                 row = ['%s-%s' % (s.actual_demand.id, i),'%s/%s' % (s.actual_demand.month, s.actual_demand.year), log2vis(s.clients),
                        '%s/%s' % (s.house.building.num, s.house.num), s.sale_date.strftime('%d/%m/%y'), commaise(s.price)]
@@ -327,7 +327,7 @@ class MonthDemandWriter:
         total_prices, total_adds = 0, 0
         while demand != None and demand.zilber_cycle_index() != 1:
             demand = demand.get_previous_demand()
-            for s in demand.get_sales():
+            for s in demand.get_sales().filter(commission_include=True):
                 row = [log2vis('%s/%s' % (demand.month, demand.year)), clientsPara(s.clients), 
                                '%s/%s' % (s.house.building.num, s.house.num), s.sale_date.strftime('%d/%m/%y'), 
                                commaise(s.price)]
@@ -415,7 +415,7 @@ class MonthDemandWriter:
         s += log2vis(u' + %s מחודשים קודמים' % count)
         return Paragraph(s, ParagraphStyle('signup_months', fontName='David', fontSize=10, alignment=TA_CENTER))
     def saleFlows(self):
-        sales = self.demand.get_sales()
+        sales = self.demand.get_sales().filter(commission_include=True)
         names = [u'מס"ד']
         colWidths = [35]
         contract_num, discount, final, zilber = (False, False, False, False)
