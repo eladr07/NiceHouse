@@ -6,7 +6,7 @@
 	</div>
 	<div class="someIcon" style="width:100px;">
 		<img src="/site_media/images/print-48.png" width="20" height="20" /> 
-		<a href="pdf" >מצבת רוכשים</a>
+		<a href="pdf" >גרסת הדפסה</a>
 	</div>
 	<div class="clearBoth"></div>
 	<br /> 		
@@ -36,7 +36,7 @@
 				<td>{{ h.type }}</td>
 				<td>{{ h.net_size }}</td>
 				<td>{{ h.floor }}</td>
-				{% with h.get_sale as s %}
+				{% with s as h.get_sale%}
 				<td>{{ s.clients|default_if_none:"" }}</td>
 				<td></td>
 				<td></td>
