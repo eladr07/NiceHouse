@@ -19,7 +19,6 @@
 		<th>כתובת</th>
 		<th>טלפונים</th>
 		<th>דוא"ל</th>
-		<th>טלפונים</th>
 		<th>ת.<br>הרשמה</th>
 		<th>ת.<br>חוזה</th>
 		<th>מחירון</th>
@@ -41,8 +40,9 @@
 				<td></td>
 				<td></td>
 				<td>{{ s.clients_phones|default_if_none:"" }}</td>
+				<td></td>
 				<td>{{ s.get_signup.date|default_if_none:"" }}</td>
-				<td>{{ s.sale_date|date:"j/m/y"|default_if_none:"" }}</td>
+				<td>{{ s.sale_date|date:"j/m/Y"|default_if_none:"" }}</td>
 				<td>{{ h.price|default_if_none:"" }}</td>
 				<td>{{ s.price|default_if_none:"" }}</td>
 				<td>{% for p in h.parkings.all %} {{p}} {% endfor %}</td>
