@@ -1206,7 +1206,7 @@ class CZilber(models.Model):
                 if demand.zilber_cycle_index() == 1:
                     break
                 demand = demand.get_previous_demand()
-            if bonus:
+            if bonus != 0:
                 d.diffs.create(type=u'בונוס', reason=u'בונוס חסכון בהנחה (נספח ב)', amount=bonus)
         d.save()
     class Meta:
