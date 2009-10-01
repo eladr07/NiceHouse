@@ -115,8 +115,7 @@ class EmployeeListWriter:
         flows=[Paragraph(log2vis(u'נווה העיר - %s עובדים' % len(self.employees)), styleSubTitleBold),
                Spacer(0,10)]
         headers=[]
-        for header in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'כתובת',
-                       u'העסקה\nתחילת',u'העסקה\nסוג',u'פרוייקטים',u'הערות']:
+        for header in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'כתובת',u'העסקה\nתחילת',u'העסקה\nסוג',u'פרוייקטים']:
             headers.append(log2vis(header))
         headers.reverse()
         rows=[]
@@ -135,7 +134,7 @@ class EmployeeListWriter:
             projects=''
             for p in e.projects.all():
                 projects += log2vis(p.name) + '\n'
-            row.extend([projects, log2vis(e.remarks)])
+            row.append(projects)
             row.reverse()
             rows.append(row)
             i+=1
@@ -151,7 +150,7 @@ class EmployeeListWriter:
                       Spacer(0,10)])
         headers=[]
         for header in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'כתובת',
-                       u'העסקה\nתחילת',u'העסקה\nסוג',u'הערות']:
+                       u'העסקה\nתחילת',u'העסקה\nסוג']:
             headers.append(log2vis(header))
         headers.reverse()
         i, nhbranch_count, nhbranch = (0,0,None)
@@ -165,9 +164,7 @@ class EmployeeListWriter:
                 i+=1
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name),
                  log2vis(e.phone), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
-                 log2vis(unicode(e.employment_terms and 
-                                 e.employment_terms.hire_type or '')), 
-                 log2vis(e.remarks)]
+                 log2vis(unicode(e.employment_terms and e.employment_terms.hire_type or ''))]
             row.reverse()
             rows.append(row)
             i+=1

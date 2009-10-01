@@ -1178,11 +1178,10 @@ class CZilber(models.Model):
             if self.base_madad:
                 current_madad = d.get_madad() < self.base_madad and self.base_madad or d.get_madad()
                 doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0)
-                if doh0prices.count() == 0:
-                    continue
+                if doh0prices.count() == 0: continue
                 memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * doh0prices.latest().price
                 scd = s.commission_details.get_or_create(commission='c_zilber_discount')[0]
-                scd.value = s.price > memudad and (s.price - memudad) * self.b_discount / 100 or 0
+                scd.value = (s.price - memudad) * self.b_discount / 100
                 scd.save()
         prev_adds = 0
         for s in sales:
