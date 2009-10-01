@@ -32,7 +32,7 @@
 		<th>מצב<br>חשבון</th>
 		{% for h in object.houses.all %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{car.id}}>
-				<td>{{ h.num }}</td>
+				<td><a href="../house/{{h.id}}/type1">{{ h.num }}</a></td>
 				<td>{{ h.type }}</td>
 				<td>{{ h.net_size }}</td>
 				<td>{{ h.floor }}</td>
