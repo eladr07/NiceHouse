@@ -781,9 +781,9 @@ class BuildingClientsWriter:
         self.current_page += 1
     def housesFlows(self):
         flows = []
-        headers = [log2vis(n) for n in [u'מס',u'נטו\nשטח',u'קומה',u'דירה\nסוג',u'הרוכשים\nשם',u'ת.ז',u'כתובת',u'טלפונים',
+        headers = [log2vis(n) for n in [u'דירה\nמס',u'דירה\nסוג',u'נטו\nשטח',u'קומה',u'הרוכשים\nשם',u'ת.ז',u'כתובת',u'טלפונים',
                                         u'דוא"ל',u'הרשמה\nתאריך',u'חוזה\nתאריך',u'מחירון',u'חוזה\nמחיר',u'חנייה',u'מחסן',
-                                        u'נלוות\nהוצאות',u'חזוי\nאכלוס\nמועד',u'לקוח\nארכיב',u'חשבון\nמצב']]
+                                        u'נלוות\nהוצאות',u'חזוי\nאכלוס\nמועד']]
         headers.reverse()
         rows = []
         i = 0
@@ -796,10 +796,10 @@ class BuildingClientsWriter:
                 clients_name, clients_address, clients_phone = clientsPara(sale.clients), '', clientsPara(sale.clients_phone)
             else:
                 clients_name, clients_address, clients_phone = '','',''
-            row = [h.num, h.net_size, h.floor, log2vis(unicode(h.type)), clients_name, '', clients_address, clients_phone, 
+            row = [h.num, log2vis(unicode(h.type)), h.net_size, h.floor, clients_name, '', clients_address, clients_phone, 
                    '', signup and signup.date.strftime('%d/%m/%Y'), sale and sale.sale_date.strftime('%d/%m/%Y') or '',
                    h.price and commaise(h.price) or '-', commaise(h.price), Paragraph(parkings, styleRow), Paragraph(storages, styleRow), 
-                   '','','','']
+                   '','']
             row.reverse()
             rows.append(row)
             i += 1

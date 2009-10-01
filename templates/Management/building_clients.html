@@ -1,0 +1,59 @@
+﻿{% extends "./base.html" %}
+{% block content %}
+<div id="content">
+	<div class="title">
+		<div class="pageTitle">מצבת רוכשים לבניין {{object.num}} בפרוייקט {{object.project}}</div>
+	</div>
+	<div class="someIcon" style="width:100px;">
+		<img src="/site_media/images/print-48.png" width="20" height="20" /> 
+		<a href="pdf" >מצבת רוכשים</a>
+	</div>
+	<br /> 		
+	<table class="dataTable" border="1">
+		<th>מס'<br>דירה</th>
+		<th>סוג<br>דירה</th>
+		<th>שטח<br>נטו</th>
+		<th>קומה</th>
+		<th>שם<br>הרוכשים</th>
+		<th>ת.ז.</th>
+		<th>כתובת</th>
+		<th>טלפונים</th>
+		<th>דוא"ל</th>
+		<th>טלפונים</th>
+		<th>ת.<br>הרשמה</th>
+		<th>ת.<br>חוזה</th>
+		<th>מחירון</th>
+		<th>מחיר<br>חוזה</th>
+		<th>חנייה</th>
+		<th>מחסן</th>
+		<th>הוצאות<br>נלוות</th>
+		<th>מועד<br>אכלוס<br>חזוי</th>
+		<th>ארכיב<br>לקוח</th>
+		<th>מצב<br>חשבון</th>
+		{% for h in object.houses.all %}
+			<tr class="{% cycle 'row1' 'row2' %}" objid={{car.id}}>
+				<td>{{ h.num }}</td>
+				<td>{{ h.type }}</td>
+				<td>{{ h.net_size }}</td>
+				<td>{{ h.floor }}</td>
+				{% with h.get_sale as s %}
+				<td>{{ s.clients|default_if_none:"" }}</td>
+				<td></td>
+				<td></td>
+				<td>{{ s.clients_phones|default_if_none:"" }}</td>
+				<td>{{ s.get_signup.date|default_if_none:"" }}</td>
+				<td>{{ s.sale_date|date:"j/m/y"|default_if_none:"" }}</td>
+				<td>{{ h.price|default_if_none:"" }}</td>
+				<td>{{ s.price|default_if_none:"" }}</td>
+				<td>{% for p in h.parkings.all %} {{p}} {% endfor %}</td>
+				<td>{% for s in h.storages.all %} {{s}} {% endfor %}</td>
+				<td></td>
+				<td></td>
+				<td></td>
+				<td></td>
+				{% endwith %}
+			</tr>
+		{% endfor %}
+	</table>
+</div>
+{% endblock content %}

@@ -1080,7 +1080,19 @@ def building_pricelist_pdf(request, object_id, type_id):
     return response
 
 @permission_required('Management.change_pricelist')
-def building_clients_pdf(request, object_id, type_id):
+def building_clients_pdf(request, object_id):
+    b = Building.objects.get(pk = object_id)
+    for h in b.houses.all():
+        try:
+            h.price = h.versions.filter(type__id = PricelistType.Company).latest().price
+        except HouseVersion.DoesNotExist:
+            h.price = None
+    return render_to_response('Management/building_clients.html',
+                              { 'object':b},
+                              context_instance=RequestContext(request))
+
+@permission_required('Management.change_pricelist')
+def building_clients_pdf(request, object_id):
     b = Building.objects.get(pk = object_id)
     houses = [h for h in b.houses.filter(is_deleted=False) if h.get_sale() != None or h.is_sold == True]
     for h in houses:
