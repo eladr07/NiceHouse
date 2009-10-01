@@ -44,8 +44,8 @@
 				<td></td>
 				<td>{{ s.get_signup.date|default_if_none:"" }}</td>
 				<td>{{ s.sale_date|date:"j/m/Y"|default_if_none:"" }}</td>
-				<td>{{ h.price|default_if_none:"" }}</td>
-				<td>{{ s.price|default_if_none:"" }}</td>
+				<td>{% if h.price %}{{ h.price|commaise }} ש"ח{% endif %}</td>
+				<td>{% if s.price %}{{ s.price|commaise }} ש"ח{% endif %}</td>
 				<td>{% for p in h.parkings.all %} {{p}} {% endfor %}</td>
 				<td>{% for s in h.storages.all %} {{s}} {% endfor %}</td>
 				<td></td>
