@@ -1080,7 +1080,7 @@ def building_pricelist_pdf(request, object_id, type_id):
     return response
 
 @permission_required('Management.change_pricelist')
-def building_clients_pdf(request, object_id):
+def building_clients(request, object_id):
     b = Building.objects.get(pk = object_id)
     for h in b.houses.all():
         try:
