@@ -36,11 +36,11 @@
 				<td>{{ h.type }}</td>
 				<td>{{ h.net_size }}</td>
 				<td>{{ h.floor }}</td>
-				{% with s as h.get_sale%}
+				{% with h.get_sale as s %}
 				<td>{{ s.clients|default_if_none:"" }}</td>
 				<td></td>
 				<td></td>
-				<td>{{ s.clients_phones|default_if_none:"" }}</td>
+				<td>{{ s.clients_phone|default_if_none:"" }}</td>
 				<td></td>
 				<td>{{ s.get_signup.date|default_if_none:"" }}</td>
 				<td>{{ s.sale_date|date:"j/m/Y"|default_if_none:"" }}</td>
