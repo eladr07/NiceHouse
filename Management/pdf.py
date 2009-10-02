@@ -738,12 +738,12 @@ class PricelistWriter:
             story.append(Paragraph(log2vis(self.subtitle), styleSubTitle))
         story.append(Spacer(0, 10))
         story.extend(self.housesFlows())
-        if self.pricelist.settle_date:
-            story.append(Paragraph(log2vis(u'מועד אכלוס : ' + self.pricelist.settle_date.strftime('%d/%m/%Y')),
-                                   ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
+        settle_date = self.pricelist.settle_date
+        story.append(Paragraph(log2vis(u'מועד אכלוס : ' + settle_date and settle_date.strftime('%d/%m/%Y') or '----'),
+                               ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
         story.append(Paragraph(log2vis('מדד תשומות הבנייה : ' + str(models.MadadBI.objects.latest().value)),
                                ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_LEFT)))
-        include_str = log2vis(u'המחיר כולל : ' + ', '.join(ugettext(attr) for attr in ['tax','lawyer','parking','storage','registration']
+        include_str = log2vis(u'המחיר כולל : ' + ', '.join(ugettext(attr) for attr in ['tax','lawyer','parking','storage','registration','guarantee']
                                                            if getattr(self.pricelist, 'include_' + attr)))
         story.append(Paragraph(include_str, ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
         include_str = log2vis(u'היתר : ' + (self.pricelist.is_permit and u'יש' or u'אין'))

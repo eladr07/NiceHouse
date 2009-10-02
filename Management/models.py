@@ -305,6 +305,10 @@ class House(models.Model):
         elif s.count() == 1:
             return s[0]
         return None
+    def save(self, *args, **kw):
+        if len(self.num) < 5:
+            self.num = self.num.ljust(5, ' ')
+        models.Model.save(self, *args, **kw)
     def __unicode__(self):
         return unicode(self.num)
     class Meta:
