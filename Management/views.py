@@ -18,7 +18,7 @@ from mail import mail
 
 @login_required
 def index(request):
-    
+    '''
     for p_id in [21]:
         for m in range(1,9):
             q = Demand.objects.filter(project__id = p_id, year = 2009, month=m)
@@ -36,7 +36,7 @@ def index(request):
             d = Demand.objects.get(project__id = p_id, year = 2009, month=m)
             d.finish()
             time.sleep(1)
-    
+    '''
     return render_to_response('Management/index.html',
                               {'locateHouseForm':LocateHouseForm(),
                                'nhbranches':NHBranch.objects.all()},
@@ -304,7 +304,9 @@ def demand_function(request,id , function):
 @permission_required('Management.list_demand')
 def demand_calc(request, id):
     d = Demand.objects.get(pk=id)
-    d.calc_sales_commission()
+    c = d.project.commissions
+    if not c.c_zilber and not c.commission_by_signups:
+        d.calc_sales_commission()
     return HttpResponseRedirect('/demandsold/%s/%s' % (d.year,d.month))
 
 @permission_required('Management.list_demand')
