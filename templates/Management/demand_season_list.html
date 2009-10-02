@@ -125,7 +125,7 @@
 			<td>{{ d.month }}/{{d.year}}</td>
 			<td><a href="/demands/{{d.id}}/sales" class="bigfancybox">{{ d.get_sales.count|default:"אין מכירות" }}</a></td>
 			<td>{{d.sale_count}}</td>
-			<td>{% if d.get_sales_amount %} {{ d.get_sales_amount|commaise }} ש"ח {% else %}----{% endif %}</td>
+			<td>{% if d.get_final_sales_amount %} {{ d.get_final_sales_amount|commaise }} ש"ח {% else %}----{% endif %}</td>
 			<td>{% if d.get_sales_commission %} {{ d.get_sales_commission|commaise }} ש"ח {% else %}----{% endif %}</td>
 			<td style="color:#08A600;">{% if d.fixed_diff %} {{ d.fixed_diff.amount }} ש"ח {% endif %}</td>
 			<td style="color:#08A600;">{% if d.var_diff %} {{ d.var_diff.amount }} ש"ח - {{ d.var_diff.reason }} {% endif %}</td>

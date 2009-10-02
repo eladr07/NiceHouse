@@ -898,7 +898,8 @@ class EmployeeSalary(EmployeeSalaryBase):
         #clean any sale commission details associated with this salary
         for scd in SaleCommissionDetail.objects.filter(employee_salary=self):
             scd.delete()
-        self.commissions, self.base = 0, self.employee.employment_terms.salary_base
+        terms = self.employee.employment_terms
+        self.commissions, self.base = 0, terms and terms.salary_base or 0
         for epc in self.employee.commissions.all():
             total_sales = self.sales
             for k in total_sales:
@@ -1181,7 +1182,7 @@ class CZilber(models.Model):
                 if doh0prices.count() == 0: continue
                 memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * doh0prices.latest().price
                 scd = s.commission_details.get_or_create(commission='c_zilber_discount')[0]
-                scd.value = (s.price - memudad) * self.b_discount / 100
+                scd.value = (s.price - memudad) * self.b_discount
                 scd.save()
         prev_adds = 0
         for s in sales:

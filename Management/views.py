@@ -18,7 +18,7 @@ from mail import mail
 
 @login_required
 def index(request):
-    '''
+    
     for p_id in [21]:
         for m in range(1,9):
             q = Demand.objects.filter(project__id = p_id, year = 2009, month=m)
@@ -36,7 +36,7 @@ def index(request):
             d = Demand.objects.get(project__id = p_id, year = 2009, month=m)
             d.finish()
             time.sleep(1)
-    '''
+    
     return render_to_response('Management/index.html',
                               {'locateHouseForm':LocateHouseForm(),
                                'nhbranches':NHBranch.objects.all()},
@@ -313,7 +313,7 @@ def demand_old_list(request, year=Demand.current_month().year, month=Demand.curr
     total_sales_count,total_sales_amount, total_sales_commission, total_amount = (0,0,0,0)
     for d in ds:
         total_sales_count += d.get_sales().count()
-        total_sales_amount += d.get_sales_amount()
+        total_sales_amount += d.get_final_sales_amount()
         total_sales_commission += d.get_sales_commission()
         total_amount += d.get_total_amount()
     unhandled_projects = []
@@ -2089,7 +2089,7 @@ def demand_season_list(request):
                            current.month == 12 and 1 or current.month + 1, 1)
         for d in ds:
             total_sales_count += d.get_sales().count()
-            total_sales_amount += d.get_sales_amount()
+            total_sales_amount += d.get_final_sales_amount()
             total_sales_commission += d.get_sales_commission()
             total_amount += d.get_total_amount()
         

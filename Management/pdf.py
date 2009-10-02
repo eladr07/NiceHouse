@@ -806,7 +806,7 @@ class BuildingClientsWriter:
             if i % 27 == 0:
                 data = [headers]
                 data.extend(rows)
-                t = Table(data, colWidths)
+                t = Table(data)
                 t.setStyle(saleTableStyle)
                 flows.append(t)
                 if i < len(self.houses):
