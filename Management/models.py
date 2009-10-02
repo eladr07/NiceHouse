@@ -306,7 +306,7 @@ class House(models.Model):
             return s[0]
         return None
     def save(self, *args, **kw):
-        if len(self.num) < 5:
+        if len(self.num) < 5:#patch to make house ordering work. because it is char field, '2' > '19'
             self.num = self.num.ljust(5, ' ')
         models.Model.save(self, *args, **kw)
     def __unicode__(self):
