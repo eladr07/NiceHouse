@@ -512,6 +512,11 @@ class DemandRemarksForm(forms.ModelForm):
     class Meta:
         model = Demand
         fields= ('remarks',)
+        
+class DemandSaleCountForm(forms.ModelForm):
+    class Meta:
+        model = Demand
+        fields= ('sale_count',)
 
 class EmployeeSalaryRemarksForm(forms.ModelForm):
     class Meta:

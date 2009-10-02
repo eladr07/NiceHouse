@@ -420,6 +420,7 @@ class Building(models.Model):
     class Meta:
         unique_together = ('project', 'num')
         db_table = 'Building'
+        permissions = (('building_clients', 'Building Clients'), ('building_clients_pdf', 'Building Clients PDF'))
         
 class Person(models.Model):
     first_name = models.CharField(ugettext('first_name'), max_length=20)
@@ -1630,8 +1631,10 @@ class Demand(models.Model):
         ordering = ['project']
         get_latest_by = 'month'
         unique_together = ('project', 'month', 'year')
-        permissions = (("list_demand", "Can list demands"),("report_project_month", "Report project month"),
-                       ("report_projects_month", "Report projects month"),)
+        permissions = (('list_demand', 'Can list demands'),('demand_pdf', 'Demand PDF'), ('demands_pdf', 'Demands PDF'),
+                       ('demand_season', 'Demand Season'), ('demand_followup', 'Demand Followup'), 
+                       ('demand_remarks', 'Demand Remarks'), ('demand_sale_count', 'Demand Sale Count'),
+                       ('demand_invoices', 'Demand Invoices'), ('demand_payments', 'Demand Payments'))
 
 class SignupCancel(models.Model):
     date = models.DateField(ugettext('cancel_date'))

@@ -741,7 +741,7 @@ def demand_invoice_add(request, id):
     demand = Demand.objects.get(pk=id)
     return invoice_add(request, {'project':demand.project.id, 'month':demand.month, 'year':demand.year})
 
-@permission_required('Management.change_invoice')
+@permission_required('Management.demand_invoices')
 def demand_invoice_list(request):
     month = Demand.current_month()
     project_id = int(request.GET.get('project', 0))
@@ -769,7 +769,7 @@ def demand_invoice_list(request):
     return render_to_response('Management/demand_invoice_list.html', {'page': invoices,'filterForm':form})    
  
  
-@permission_required('Management.change_payment')
+@permission_required('Management.demand_payments')
 def demand_payment_list(request):
     month = Demand.current_month()
     project_id = int(request.GET.get('project', 0))
@@ -1081,7 +1081,7 @@ def building_pricelist_pdf(request, object_id, type_id):
     p.close()
     return response
 
-@permission_required('Management.change_pricelist')
+@permission_required('Management.building_clients')
 def building_clients(request, object_id):
     b = Building.objects.get(pk = object_id)
     for h in b.houses.all():
@@ -1093,7 +1093,7 @@ def building_clients(request, object_id):
                               { 'object':b},
                               context_instance=RequestContext(request))
 
-@permission_required('Management.change_pricelist')
+@permission_required('Management.building_clients_pdf')
 def building_clients_pdf(request, object_id):
     b = Building.objects.get(pk = object_id)
     houses = [h for h in b.houses.filter(is_deleted=False) if h.get_sale() != None or h.is_sold == True]
