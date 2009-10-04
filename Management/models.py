@@ -1838,7 +1838,6 @@ class NHSaleSide(models.Model):
             nhp.save()
     class Meta:
         db_table = 'NHSaleSide'
-        permissions = (('nhmonth_season', 'NHMonth Season'))
 
 class NHMonth(models.Model):
     nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'))
@@ -1899,6 +1898,7 @@ class NHMonth(models.Model):
     class Meta:
         db_table = 'NHMonth'
         ordering = ['-year', '-month']
+        permissions = (('nhmonth_season', 'NHMonth Season'),)
 
 class NHSale(models.Model):
     nhmonth = models.ForeignKey('NHMonth', editable=False, related_name='nhsales')
