@@ -75,7 +75,7 @@
 			<td>{{nhm.total_lawyer_pay|commaise}}</td>
 			<td>{{nhm.total_net_income|commaise}}</td>
 			{% for nhe in nhm.employees %}
-			<td>{{nhe.month_total}}</td>
+			<td>{{nhe.month_total|commaise}}</td>
 			{% endfor %}
 			<td>{{nhm.total_commission|commaise}}</td>
 		</tr>
