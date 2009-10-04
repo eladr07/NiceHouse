@@ -498,8 +498,9 @@ def nh_season_income(request):
         nhmonth_set.append(q[0])
         y = m == 12 and y + 1 or y
         m = m == 12 and 1 or m + 1
+    nhbranch = NHBranch.objects.get(pk=nhbranch_id)
     season_income, season_net_income = 0, 0
-    employees = list(nhm.nhbranch.nhemployees.all())
+    employees = list(nhbranch.nhemployees.all())
     for nhm in nhmonth_set:
         nhm.employees = list(nhm.nhbranch.nhemployees.all())
         season_income += nhm.total_income
@@ -517,7 +518,7 @@ def nh_season_income(request):
     return render_to_response('Management/nh_season_income.html', 
                               { 'nhmonths':nhmonth_set, 'filterForm':form, 'employees':employees,
                                'season_income':season_income,'season_net_income':season_net_income,
-                               'nhbranch':NHBranch.objects.get(pk=nhbranch_id) },
+                               'nhbranch':nhbranch },
                               context_instance=RequestContext(request))
     
 def nhmonth_sales(request, nhbranch_id, year=None, month=None):
