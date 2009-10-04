@@ -485,9 +485,10 @@ def employee_list_pdf(request):
     p.close()
     return response
 
+@permission_required('Management.nhmonth_season')
 def nh_season_income(request):
     month, nhmonth_set, y, m = date.today(), [], 0, 0
-    nhbranch_id = int(request.GET.get('branch', 0))
+    nhbranch_id = int(request.GET.get('nhbranch', 0))
     from_year = y = int(request.GET.get('from_year', month.year))
     from_month = m = int(request.GET.get('from_month', month.month))
     to_year = int(request.GET.get('to_year', month.year))

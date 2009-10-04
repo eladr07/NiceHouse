@@ -1838,6 +1838,7 @@ class NHSaleSide(models.Model):
             nhp.save()
     class Meta:
         db_table = 'NHSaleSide'
+        permissions = (('nhmonth_season', 'NHMonth Season'))
 
 class NHMonth(models.Model):
     nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'))

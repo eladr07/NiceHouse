@@ -161,7 +161,6 @@
 		<div class="listTitle">נייס האוס - הנהלה</div>
 		<ul>
 			<li><a href="#">ריכוז מכירות לחודש לכל הסניפים</a></li>
-			<li><a href="nhseasonincome">ריכוז הכנסה לסניף - תקופתי</a></li>
 			<li><a href="nhemployeesalaries">ריכוז שכר עובדי נייס האוס</a></li>
 		</ul>
 		{% for b in nhbranches %}
@@ -170,6 +169,7 @@
 			<li><a href="nhbranch/{{b.id}}">פרטי הסניף</a></li>
 			<li><a href="nhbranch/{{b.id}}/nhsale/add">עסקה חדשה</a></li>
 			<li><a href="nhbranch/{{b.id}}/sales">ריכוז מכירות לחודש</a></li>
+			<li><a href="nhseasonincome/?nhbranch={{b.id}}">ריכוז הכנסה תקופתי</a></li>
 		</ul>
 		{% endfor %}
 		<li><a href="links">שימושון נדל"ן</a></li>
