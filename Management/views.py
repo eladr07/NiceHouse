@@ -514,7 +514,7 @@ def nh_season_income(request):
                 for e in nhm.employees:
                     if not hasattr(e, 'month_total'): e.month_total = 0
                     e.month_total += nhss.get_employee_pay(e)
-    form = NHBranchSeasonForm(initial={'nhbranch':nhm.nhbranch.id,'from_year':from_year, 'from_month':from_month,
+    form = NHBranchSeasonForm(initial={'nhbranch':nhbranch.id,'from_year':from_year, 'from_month':from_month,
                                        'to_year':to_year, 'to_month':to_month})
     return render_to_response('Management/nh_season_income.html', 
                               { 'nhmonths':nhmonth_set, 'filterForm':form, 'employees':employees,
