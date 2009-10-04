@@ -533,7 +533,7 @@ def nhmonth_sales(request, nhbranch_id, year=None, month=None):
     for e in employees:
         e.month_total = 0
     for sale in nhm.nhsales.all():
-        for saleside in sale.nhsaleside_set.all():
+        for nhss in sale.nhsaleside_set.all():
             for e in employees:
                 e.month_total += nhss.get_employee_pay(e)
     form = MonthFilterForm(initial={'year':nhm.year,'month':nhm.month})
