@@ -493,7 +493,7 @@ def nh_season_income(request):
     to_year = int(request.GET.get('to_year', month.year))
     to_month = int(request.GET.get('to_month', month.month))
     while date(y,m,1) <= date(to_year, to_month, 1):
-        q = NHMonth.objects.filter(branch__id = nhbranch_id, year = y, month = m)
+        q = NHMonth.objects.filter(nhbranch__id = nhbranch_id, year = y, month = m)
         if q.count() == 0: continue
         nhmonth_set.append(q[0])
         y = m == 12 and y + 1 or y
