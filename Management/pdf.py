@@ -577,7 +577,7 @@ class MultipleDemandWriter:
             sumRow = [None]
         headers.extend(log2vis(n) for n in[u'סה"כ מכירות', u'סה"כ עמלה', u'מס ח-ן', u'סך ח-ן', u'מס צק', u'סך צק'])
         headers.reverse()
-        colWidths.extend([50,50,50,50,50,50])
+        colWidths.extend([60,60,50,50,50,50])
         colWidths.reverse()
         rows = []
         rowHeights = [28]
