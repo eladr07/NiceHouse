@@ -1805,11 +1805,11 @@ class NHSaleSide(models.Model):
         return self.employee1 == employee or self.employee2 == employee or self.director == employee
     def get_employee_pay(self, employee):
         if self.employee1 == employee:
-            return self.employee1_pay
+            return self.employee1_pay or 0
         if self.employee2 == employee:
-            return self.employee2_pay
+            return self.employee2_pay or 0
         if self.director == employee:
-            return self.director_pay
+            return self.director_pay or 0
         return 0
     def save(self,*args, **kw):
         if not self.income and self.actual_commission:
