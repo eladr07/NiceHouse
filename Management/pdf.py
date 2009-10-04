@@ -45,6 +45,8 @@ projectTableStyle = TableStyle(
                                 ('ALIGN', (0,0), (-1,-1), 'CENTER'),
                                 ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
                                 ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+                                ('LEFTPADDING', (0,0), (-1,-1), 8),
+                                ('RIGHTPADDING', (0,0), (-1,-1), 8),
                                 ]
                                )
 
