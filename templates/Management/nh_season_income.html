@@ -7,7 +7,7 @@
 		$("#monthChange").click(function(event) {
 			event.preventDefault();
 			var fields = new Array("nhbranch", "from_year", "from_month", "to_year", "to_month");
-			var url = "/nhseason/?";
+			var url = "/nhseasonincome/?";
 			for ( var i=0; i < fields.length; ++i )
 				url += fields[i] + "=" + $("#id_" + fields[i]).val() + "&"
 			location.replace(url);

@@ -1869,7 +1869,7 @@ class NHMonth(models.Model):
         amount = 0
         for nhs in self.nhsales.all():
             for nhss in nhs.nhsaleside_set.all():
-                amount += self.income
+                amount += nhss.income
         return amount
     @property
     def total_lawyer_pay(self):
