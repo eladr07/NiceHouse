@@ -488,8 +488,8 @@ def employee_list_pdf(request):
 def nh_season_income(request):
     month, nhmonth_set, y, m = date.today(), [], 0, 0
     nhbranch_id = int(request.GET.get('branch', 0))
-    from_year = int(request.GET.get('from_year', month.year))
-    from_month = int(request.GET.get('from_month', month.month))
+    from_year = y = int(request.GET.get('from_year', month.year))
+    from_month = m = int(request.GET.get('from_month', month.month))
     to_year = int(request.GET.get('to_year', month.year))
     to_month = int(request.GET.get('to_month', month.month))
     while date(y,m,1) <= date(to_year, to_month, 1):
