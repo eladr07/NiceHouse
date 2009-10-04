@@ -1,0 +1,89 @@
+﻿{% extends "./base.html" %}
+{% load management_extras %}
+{% block header %}
+{{ block.super }}
+<script>
+	$(document).ready(function() {
+		$("#monthChange").click(function(event) {
+			event.preventDefault();
+			var fields = new Array("nhbranch", "from_year", "from_month", "to_year", "to_month");
+			var url = "/nhseason/?";
+			for ( var i=0; i < fields.length; ++i )
+				url += fields[i] + "=" + $("#id_" + fields[i]).val() + "&"
+			location.replace(url);
+		});
+		$("#monthClose").click(function(event) {
+			if (!confirm("האם אתה בטוח שברצונך לסגור את החודש ?"))
+				event.preventDefault();
+		});		
+	});
+</script>
+{% endblock header %}
+{% block content %}
+<div class="title">
+	<div class="pageTitle">דו"ח ריכוז הכנסות תקופתי<br>{{nhbranch}}</div>
+</div>
+<div class="clearBoth"></div>
+<div style="float:right;width:30%;">
+	<form method="POST">
+		<table class="dataTable">
+			<tr class="row1">
+				<td colspan="3" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש תקופה</td>
+			</tr>
+			<tr class="row2">
+				{% for field in filterForm %}
+				<td>
+					{{ field.label_tag }} : 
+					{{ field }}
+				</td>
+				{% endfor %}
+				<td><input id="monthChange" type="button" value="חפש" class="button"/></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div class="clearBoth"></div>
+<div class="someIcon" style="width:100px">
+	<img src="/site_media/images/print-48.png" width="20" height="20"  alt="הדפסה" /> 
+	<a href="#">גרסת הדפסה</a>
+</div>
+<div class="clearBoth"></div>	
+<table id="salesTable" class="dataTable" style="text-align:center;" border="1">
+<caption>מציג סה"כ {{nhmonths|length}} חודשים</caption>
+	<tr>
+		<th>חודש</th>
+		<th>PDF</th>
+		<th>ריכוז<br>עסקאות</th>
+		<th>% עמלה<br>חתום</th>
+		<th>% עמלה<br>בפועל</th>
+		<th>סה"כ<br>הכנסה</th>
+		<th>תשלום<br>לעו"ד</th>
+		<th>הכנסה<BR>נטו</th>
+		{% for nhe in employees %}
+		<th>{{nhe}}</th>
+		{% endfor %}
+		<th>סיכום</th>
+	</tr>
+    {% for nhm in nhmonths %}
+		<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}}>
+			<td>{{nhm.month}}/{{nhm.year}}</a></td>
+			<td></td>
+			<td><a href="nhbranch/{{nhm.nhbranch.id}}/sales/{{nhm.year}}/{{nhm.month}}" target="_blank">{{nhm.nhsales.count}}</td>
+			<td>{{nhm.avg_signed_commission}}</td>
+			<td>{{nhm.avg_actual_commission}}</td>
+			<td>{{nhm.total_income|commaise}}</td>
+			<td>{{nhm.total_lawyer_pay|commaise}}</td>
+			<td>{{nhm.total_net_income|commaise}}</td>
+			{% for nhe in nhm.employees %}
+			<td>{{nhe.month_total}}</td>
+			{% endfor %}
+			<td>{{nhm.total_commission|commaise}}</td>
+		</tr>
+	{% endfor %}
+	<tr class="row3">
+		<td colspan="5"></td>
+		<td colspan="2">{{season_income|commaise}}</td>
+		<td>{{season_net_income|commaise}}</td>
+	</tr>
+</table>
+{% endblock content %}

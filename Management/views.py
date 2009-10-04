@@ -485,6 +485,41 @@ def employee_list_pdf(request):
     p.close()
     return response
 
+def nh_season_income(request):
+    month, nhmonth_set, y, m = date.today(), [], 0, 0
+    nhbranch_id = int(request.GET.get('branch', 0))
+    from_year = int(request.GET.get('from_year', month.year))
+    from_month = int(request.GET.get('from_month', month.month))
+    to_year = int(request.GET.get('to_year', month.year))
+    to_month = int(request.GET.get('to_month', month.month))
+    while date(y,m,1) <= date(to_year, to_month, 1):
+        q = NHMonth.objects.filter(branch__id = nhbranch_id, year = y, month = m)
+        if q.count() == 0: continue
+        nhmonth_set.append(q[0])
+        y = m == 12 and y + 1 or y
+        m = m == 12 and 1 or m + 1
+    season_income, season_net_income = 0, 0
+    employees = list(nhm.nhbranch.nhemployees.all())
+    for nhm in nhmonth_set:
+        nhm.employees = list(nhm.nhbranch.nhemployees.all())
+        season_income += nhm.total_income
+        season_net_income += nhm.total_net_income
+        for nhs in nhm.nhsales.all():
+            for nhss in nhs.nhsaleside_set.all():
+                for e in employees:
+                    if not hasattr(e, 'season_total'): e.season_total = 0
+                    e.season_total += nhss.get_employee_pay(e)
+                for e in nhm.employees:
+                    if not hasattr(e, 'month_total'): e.month_total = 0
+                    e.month_total += nhss.get_employee_pay(e)
+    form = NHBranchSeasonForm(initial={'nhbranch':nhm.nhbranch.id,'from_year':from_year, 'from_month':from_month,
+                                       'to_year':to_year, 'to_month':to_month})
+    return render_to_response('Management/nh_season_income.html', 
+                              { 'nhmonths':nhmonth_set, 'filterForm':form, 'employees':employees,
+                               'season_income':season_income,'season_net_income':season_net_income,
+                               'nhbranch':NHBranch.objects.get(pk=nhbranch_id) },
+                              context_instance=RequestContext(request))
+    
 def nhmonth_sales(request, nhbranch_id, year=None, month=None):
     if year and month:
         q = NHMonth.objects.filter(nhbranch__id = nhbranch_id, year=year, month=month)
@@ -492,27 +527,16 @@ def nhmonth_sales(request, nhbranch_id, year=None, month=None):
         q = NHMonth.objects.filter(nhbranch__id = nhbranch_id)
     nhb = NHBranch.objects.get(pk=nhbranch_id)
     nhm = q.count() > 0 and q[0] or NHMonth(nhbranch = nhb, year = year or date.today().year, month = month or date.today().month)
-    total_net_income, multi_total, count, signed_avg, actual_avg = 0, 0,0,0.0,0.0
-    employees = list(nhb.nhemployees.all())
+    employees = nhb.nhemployees.all()
     for e in employees:
-        e.total_for_month = 0
+        e.month_total = 0
     for sale in nhm.nhsales.all():
         for saleside in sale.nhsaleside_set.all():
-            count += 1
-            signed_avg += saleside.signed_commission
-            actual_avg += saleside.actual_commission
-            total_net_income += saleside.net_income
-            multi_total += saleside.all_employee_commission
-            #collect employee totals
-            for attr in ['employee1', 'employee2', 'director']:
-                e = getattr(saleside, attr)
-                if e != None: 
-                    employees[employees.index(e)].total_for_month += getattr(saleside, attr + '_pay')
+            for e in employees:
+                e.month_total += nhss.get_employee_pay(e)
     form = MonthFilterForm(initial={'year':nhm.year,'month':nhm.month})
     return render_to_response('Management/nhmonth_sales.html', 
-                              { 'nhmonth':nhm, 'filterForm':form, 'total_net_income':total_net_income,
-                               'employees':employees, 'multi_total':multi_total,
-                               'signed_avg':count > 0 and signed_avg/count or 0,'actual_avg':count>0 and actual_avg/count or 0 },
+                              { 'nhmonth':nhm, 'filterForm':form, 'employees':employees },
                               context_instance=RequestContext(request))
 
 @permission_required('Management.change_nhmonth')

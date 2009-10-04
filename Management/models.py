@@ -1284,7 +1284,7 @@ class ProjectCommission(models.Model):
     add_amount = models.PositiveIntegerField(ugettext('add_amount'), null=True, blank=True)
     add_type = models.CharField(ugettext('add_type'), max_length = 20, null=True, blank=True)
     registration_amount = models.PositiveIntegerField(ugettext('registration_amount'), null=True, blank=True)
-    include_tax = models.NullBooleanField(ugettext('commission_include_tax'), blank=True)
+    include_tax = models.NullBooleanField(ugettext('commission_include_tax'), blank=True, default=True)
     include_lawyer = models.NullBooleanField(ugettext('commission_include_lawyer'), blank=True,
                                              choices = (
                                                         ('','לא משנה'),
@@ -1769,12 +1769,18 @@ class NHSaleSide(models.Model):
 
     @property
     def employee1_pay(self):
+        if not self.employee1_commission:
+            return None
         return self.net_income * self.employee1_commission / 100
     @property
     def employee2_pay(self):
+        if not self.employee2_commission:
+            return None
         return self.net_income * self.employee2_commission / 100
     @property
     def director_pay(self):
+        if not self.director_commission:
+            return None
         return self.net_income * self.director_commission / 100
     @property
     def lawyers_pay(self):
@@ -1797,6 +1803,14 @@ class NHSaleSide(models.Model):
         return self.net_income * self.all_employee_commission_precentage / 100
     def is_employee_related(self, employee):
         return self.employee1 == employee or self.employee2 == employee or self.director == employee
+    def get_employee_pay(self, employee):
+        if self.employee1 == employee:
+            return employee1_pay
+        if self.employee2 == employee:
+            return employee2_pay
+        if self.director == employee:
+            return director_pay
+        return 0
     def save(self,*args, **kw):
         if not self.income and self.actual_commission:
             self.income = self.nhsale.price * self.actual_commission / 100
@@ -1833,6 +1847,50 @@ class NHMonth(models.Model):
                                             choices=((i,i) for i in range(datetime.now().year - 10,
                                                                           datetime.now().year + 10)))
     is_closed = models.BooleanField(editable=False, default=False)
+    @property
+    def avg_signed_commission(self):
+        count, total = 0, 0
+        for nhs in self.nhsales.all():
+            for nhss in nhs.nhsaleside_set.all():
+                count += 1
+                total += nhss.signed_commission
+        return count > 0 and total / count or 0
+    @property 
+    def avg_actual_commission(self):
+        count, total = 0, 0
+        for nhs in self.nhsales.all():
+            for nhss in nhs.nhsaleside_set.all():
+                count += 1
+                total += nhss.signed_commission
+        return count > 0 and total / count or 0
+    @property
+    def total_income(self):
+        amount = 0
+        for nhs in self.nhsales.all():
+            for nhss in nhs.nhsaleside_set.all():
+                amount += self.income
+        return amount
+    @property
+    def total_lawyer_pay(self):
+        amount = 0
+        for nhs in self.nhsales.all():
+            for nhss in nhs.nhsaleside_set.all():
+                amount += nhss.lawyers_pay
+        return amount
+    @property
+    def total_net_income(self):
+        amount = 0
+        for nhs in self.nhsales.all():
+            for nhss in nhs.nhsaleside_set.all():
+                amount += nhss.net_income
+        return amount
+    @property
+    def total_commission(self):
+        amount = 0
+        for nhs in self.nhsales.all():
+            for nhss in nhs.nhsaleside_set.all():
+                amount += nhss.all_employee_commission
+        return amount
     def close(self):
         self.is_closed = True
     def tax(self):

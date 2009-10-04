@@ -112,14 +112,14 @@
 	{% endfor %}
 	<tr class="row3">
 		<td colspan="4"></td>
-		<td>{{signed_avg|floatformat:-2}}</td>
-		<td>{{actual_avg|floatformat:-2}}</td>
-		<td>{{total_net_income|commaise}} ש"ח</td>
+		<td>{{nhmonth.avg_signed_commission|floatformat:-2}}</td>
+		<td>{{nhmonth.avg_actual_commission|floatformat:-2}}</td>
+		<td>{{nhmonth.total_net_income|commaise}} ש"ח</td>
 		<td colspan="5"></td>
 		{% for e in employees %}
-			<td>{{e.total_for_month|commaise}} ש"ח</td>
+			<td>{{e.month_total|commaise}} ש"ח</td>
 		{% endfor %}
-		<td>{{multi_total|commaise}} ש"ח</td>
+		<td>{{nhmonth.total_commission|commaise}} ש"ח</td>
 	</tr>
 </table>
 {% endblock content %}
