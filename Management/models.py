@@ -1778,10 +1778,10 @@ class NHSaleSide(models.Model):
             return None
         amount = self.net_income * self.employee1_commission / 100
         terms = self.employee1.employment_terms
+        if not terms: return amount
         nhmonth = self.nhsale.nhmonth
         tax = Tax.objects.filter(date__lte=date(nhmonth.year, nhmonth.month,1)).latest().value / 100 + 1
-        if not terms: return amount
-        if terms.hire_type != HireType.SelfEmployed:
+        if terms.hire_type.id != HireType.SelfEmployed:
             return amount
         else:
             return self.include_tax and amount or amount / tax
@@ -1791,10 +1791,10 @@ class NHSaleSide(models.Model):
             return None
         amount = self.net_income * self.employee2_commission / 100
         terms = self.employee2.employment_terms
+        if not terms: return amount
         nhmonth = self.nhsale.nhmonth
         tax = Tax.objects.filter(date__lte=date(nhmonth.year, nhmonth.month,1)).latest().value / 100 + 1
-        if not terms: return amount
-        if terms.hire_type != HireType.SelfEmployed:
+        if terms.hire_type.id != HireType.SelfEmployed:
             return amount
         else:
             return self.include_tax and amount or amount / tax
@@ -1804,10 +1804,10 @@ class NHSaleSide(models.Model):
             return None
         amount =  self.net_income * self.director_commission / 100
         terms = self.director.employment_terms
+        if not terms: return amount
         nhmonth = self.nhsale.nhmonth
         tax = Tax.objects.filter(date__lte=date(nhmonth.year, nhmonth.month,1)).latest().value / 100 + 1
-        if not terms: return amount
-        if terms.hire_type != HireType.SelfEmployed:
+        if terms.hire_type.id != HireType.SelfEmployed:
             return amount
         else:
             return self.include_tax and amount or amount / tax
