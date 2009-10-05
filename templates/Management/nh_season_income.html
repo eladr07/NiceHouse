@@ -82,7 +82,8 @@
 	{% endfor %}
 	<tr class="rowSumGreen">
 		<td colspan="5">סה"כ כולל מע"מ</td>
-		<td colspan="2">{{season_income|commaise}}</td>
+		<td>{{season_income|commaise}}</td>
+		<td></td>
 		<td>{{season_net_income|commaise}}</td>
 		{% for nhe in employees %}
 		<td>{{nhe.season_total|commaise}}</td>
