@@ -269,8 +269,15 @@ BODY {
 
 
 .dataTable .rowSum td {
-	background-color: #EFEFEF;
 	color: #CF2222;
+	font-size: 12px;
+	font-weight: bold;
+	font-family: Arial;
+	padding: 4px 4px 4px 4px;
+}
+
+.dataTable .rowSumGreen td {
+	color: #039E33;
 	font-size: 12px;
 	font-weight: bold;
 	font-family: Arial;
@@ -317,7 +324,7 @@ BODY {
 }
 
 .dataTable .selectedRow td {
-	background-color: #FFFF00;
+	background-color: #E4B001;
 	color: #000;
 	font-size: 12px;
 	font-family: Arial;
