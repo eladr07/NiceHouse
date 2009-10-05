@@ -838,7 +838,7 @@ class NHEmployeeSalary(EmployeeSalaryBase):
                                                   precentage = nhss.employee1_commission,
                                                   income = nhss.net_income)
         for nhss in NHSaleSide.objects.filter(employee2=self.nhemployee):
-            self.commissions += nhss.employee2_pay
+            self.commissions += (nhss.employee2_pay or 0)
             NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss,
                                                   commission='base', amount = nhss.employee2_pay,
                                                   precentage = nhss.employee2_commission,
@@ -1478,7 +1478,8 @@ class Demand(models.Model):
         q = self.diffs.filter(type=u'קיזוז')
         return q.count() == 1 and q[0] or None
     def get_madad(self):
-        return MadadBI.objects.get(year = self.year, month=self.month).value
+        q = MadadBI.objects.filter(year = self.year, month=self.month)
+        return q.count() > 0 and q[0].value or MadadBI.objects.latest().value
     def zilber_cycle_index(self):
         start = self.project.commissions.c_zilber.third_start
         if (start.year == self.year and start.month > self.month) or self.year < start.year:
@@ -1676,6 +1677,7 @@ class Tax(models.Model):
         get_latest_by = 'date'
         ordering = ['-date']
         verbose_name = ugettext('tax')
+                
 #Building Input
 class MadadBI(models.Model):
     year = models.PositiveSmallIntegerField(ugettext('year'))
