@@ -509,6 +509,7 @@ def nh_season_income(request):
         for nhs in nhm.nhsales.all():
             for nhss in nhs.nhsaleside_set.all():
                 for e in employees:
+                    nhss.include_tax = True
                     if not hasattr(e, 'season_total'): e.season_total = 0
                     e.season_total += nhss.get_employee_pay(e)
                     if not hasattr(e, 'season_total_notax'): e.season_total_notax = 0
