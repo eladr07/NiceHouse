@@ -840,7 +840,7 @@ class NHEmployeeSalary(EmployeeSalaryBase):
         for nhss in NHSaleSide.objects.filter(employee2=self.nhemployee):
             self.commissions += (nhss.employee2_pay or 0)
             NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss,
-                                                  commission='base', amount = nhss.employee2_pay,
+                                                  commission='base', amount = nhss.employee2_pay or 0,
                                                   precentage = nhss.employee2_commission,
                                                   income = nhss.net_income)
         if self.nhemployee.nhbranch:
