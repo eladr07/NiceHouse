@@ -148,14 +148,14 @@
 			<td>{{ d.remarks|default_if_none:"" }}</td>
 		</tr>
 	{% endfor %}
-	<tr height="30px">
-		<td colspan="3" align="center" style="color:#CF2222;"><b>סיכום</b></td>
-		<td><b style="color:#CF2222;">{{total_sales_count}} מכירות</b></td>
+	<tr height="30px" class="rowSum">
+		<td colspan="3" align="center">סיכום</td>
+		<td>{{total_sales_count}} מכירות</td>
 		<td></td>
-		<td><b style="color:#CF2222;">{{total_sales_amount|commaise}} ש"ח</b></td>
-		<td><b style="color:#CF2222;">{{total_sales_commission|commaise}} ש"ח</b></td>
+		<td>{{total_sales_amount|commaise}} ש"ח</td>
+		<td>{{total_sales_commission|commaise}} ש"ח</td>
 		<td colspan="4"></td>
-		<td><b style="color:#CF2222;">{{total_amount|commaise}} ש"ח</b></td>
+		<td>{{total_amount|commaise}} ש"ח</td>
 	</tr>
 </table>
 {% endblock content %}

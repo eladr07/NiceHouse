@@ -68,7 +68,7 @@
 				<td><a id="reject{{s.id}}" href="/demands/{{s.demand.id}}/sale/{{s.id}}/reject" target="_parent"><img src="/site_media/images/agt_back-48.png" width="15" height="15" alt="דחייה" border="0" /></a></td>
 			</tr>
 		{% endfor %}
-		<tr>
+		<tr class="sumRow">
 			<td colspan="5"></td>
 			<td><b>סה"כ מכירות</b></td>
 			<td colspan="2"><b>{{demand.get_sales_amount|commaise}}</b></td>
