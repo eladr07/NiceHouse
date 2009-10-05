@@ -80,7 +80,7 @@
 			<td>{{nhm.total_commission|commaise}}</td>
 		</tr>
 	{% endfor %}
-	<tr class="row3">
+	<tr class="rowSum">
 		<td colspan="5">סה"כ כולל מע"מ</td>
 		<td colspan="2">{{season_income|commaise}}</td>
 		<td>{{season_net_income|commaise}}</td>
@@ -88,7 +88,7 @@
 		<td>{{nhe.season_total|commaise}}</td>
 		{% endfor %}		
 	</tr>
-	<tr class="row3">
+	<tr class="rowSum">
 		<td colspan="5">סה"כ ללא מע"מ</td>
 		<td colspan="2">{{season_income_notax|commaise}}</td>
 		<td>{{season_net_income_notax|commaise}}</td>
