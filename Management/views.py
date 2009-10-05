@@ -312,12 +312,13 @@ def demand_calc(request, id):
 @permission_required('Management.list_demand')
 def demand_old_list(request, year=Demand.current_month().year, month=Demand.current_month().month):
     ds = Demand.objects.filter(year = year, month = month)
-    total_sales_count,total_sales_amount, total_sales_commission, total_amount = (0,0,0,0)
+    total_sales_count,total_sales_amount, total_sales_commission, total_amount, expected_sales_count = 0,0,0,0,0
     for d in ds:
         total_sales_count += d.get_sales().count()
         total_sales_amount += d.get_final_sales_amount()
         total_sales_commission += d.get_sales_commission()
         total_amount += d.get_total_amount()
+        expected_sales_count += d.sale_count
     unhandled_projects = []
     for p in Project.objects.active():
         try:
@@ -334,7 +335,8 @@ def demand_old_list(request, year=Demand.current_month().year, month=Demand.curr
                                 'total_sales_count':total_sales_count,
                                 'total_sales_amount':total_sales_amount,
                                 'total_sales_commission':total_sales_commission,
-                                'total_amount':total_amount, 
+                                'total_amount':total_amount,
+                                'expected_sales_count':expected_sales_count,
                                 'unhandled_projects':unhandled_projects},
                               context_instance=RequestContext(request))
 
@@ -566,14 +568,15 @@ def demand_list(request, year=Demand.current_month().year, month=Demand.current_
                 demand.diffs.create(type=u'קבועה', amount = p.commissions.add_amount, reason = p.commissions.add_type)
         elif ds.get(project=p).statuses.count() > 0 and ds.get(project=p).statuses.latest().type.id != DemandFeed:
             unhandled_projects.remove(p)
-    sales_count, sales_amount = (0,0)
+    sales_count, expected_sales_count, sales_amount = 0,0,0
     for d in ds:
         sales_count += d.get_sales().count()
         sales_amount += d.get_final_sales_amount()
+        expected_sales_count += d.sale_count
     return render_to_response('Management/demand_list.html', 
                               { 'demands':ds, 'unhandled_projects':unhandled_projects, 
-                               'month':date(int(year), int(month), 1), 'filterForm':form,
-                               'sales_count':sales_count ,'sales_amount':sales_amount },
+                               'month':date(int(year), int(month), 1), 'filterForm':form, 'sales_count':sales_count ,
+                               'sales_amount':sales_amount, 'expected_sales_count':expected_sales_count },
                               context_instance=RequestContext(request))
 
 def employee_sales(request, id, year, month):
