@@ -269,8 +269,8 @@ BODY {
 
 
 .dataTable .rowSum td {
-	background-color: #CF2222;
-	color: #000;
+	background-color: #EFEFEF;
+	color: #CF2222;
 	font-size: 12px;
 	font-weight: bold;
 	font-family: Arial;
