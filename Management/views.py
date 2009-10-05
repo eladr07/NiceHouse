@@ -516,14 +516,15 @@ def nh_season_income(request):
                     nhss.include_tax = False
                     e.season_total_notax += nhss.get_employee_pay(e)
                 for e in nhm.employees:
+                    nhss.include_tax = True
                     if not hasattr(e, 'month_total'): e.month_total = 0
                     e.month_total += nhss.get_employee_pay(e)
-        season_income += nhm.total_income
-        season_net_income += nhm.total_net_income
         nhm.include_tax = False
         season_income_notax += nhm.total_income
         season_net_income_notax += nhm.total_net_income
         nhm.include_tax = True
+        season_income += nhm.total_income
+        season_net_income += nhm.total_net_income
         
     form = NHBranchSeasonForm(initial={'nhbranch':nhbranch.id,'from_year':from_year, 'from_month':from_month,
                                        'to_year':to_year, 'to_month':to_month})
