@@ -1771,17 +1771,17 @@ class NHSaleSide(models.Model):
 
     @property
     def employee1_pay(self):
-        if not self.employee1_commission:
+        if self.employee1_commission == None:
             return None
         return self.net_income * self.employee1_commission / 100
     @property
     def employee2_pay(self):
-        if not self.employee2_commission:
+        if self.employee2_commission == None:
             return None
         return self.net_income * self.employee2_commission / 100
     @property
     def director_pay(self):
-        if not self.director_commission:
+        if self.director_commission == None:
             return None
         return self.net_income * self.director_commission / 100
     @property
