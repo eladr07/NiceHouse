@@ -81,11 +81,19 @@
 		</tr>
 	{% endfor %}
 	<tr class="row3">
-		<td colspan="5"></td>
+		<td colspan="5">סה"כ כולל מע"מ</td>
 		<td colspan="2">{{season_income|commaise}}</td>
 		<td>{{season_net_income|commaise}}</td>
 		{% for nhe in employees %}
 		<td>{{nhe.season_total|commaise}}</td>
+		{% endfor %}		
+	</tr>
+	<tr class="row3">
+		<td colspan="5">סה"כ ללא מע"מ</td>
+		<td colspan="2">{{season_income_notax|commaise}}</td>
+		<td>{{season_net_income_notax|commaise}}</td>
+		{% for nhe in employees %}
+		<td>{{nhe.season_total_notax|commaise}}</td>
 		{% endfor %}		
 	</tr>
 </table>

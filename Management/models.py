@@ -333,6 +333,7 @@ class HouseType(models.Model):
         db_table = 'HouseType'
 
 class HireType(models.Model):
+    SelfEmployed, Salaried, DailySalaried = 1,2,3
     name = models.CharField(max_length=20, unique=True)
     def __unicode__(self):
         return unicode(self.name)
@@ -1768,22 +1769,48 @@ class NHSaleSide(models.Model):
     remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
     invoices = models.ManyToManyField('Invoice', null=True, editable=False)
     payments = models.ManyToManyField('Payment', null=True, editable=False)
-
+    def __init__(self, *args, **kw):
+        models.Model.__init__(self, *args, **kw)
+        self.include_tax = True
     @property
     def employee1_pay(self):
-        if self.employee1_commission == None:
+        if self.employee1_commission == None or self.employee1 == None:
             return None
-        return self.net_income * self.employee1_commission / 100
+        amount = self.net_income * self.employee1_commission / 100
+        terms = self.employee1.employment_terms
+        nhmonth = self.nhsale.nhmonth
+        tax = Tax.objects.filter(date__lte=date(nhmonth.year, nhmonth.month,1)).latest().value / 100 + 1
+        if not terms: return amount
+        if terms.hire_type != HireType.SelfEmployed:
+            return amount
+        else:
+            return self.include_tax and amount or amount / tax
     @property
     def employee2_pay(self):
-        if self.employee2_commission == None:
+        if self.employee2_commission == None or self.employee2 == None:
             return None
-        return self.net_income * self.employee2_commission / 100
+        amount = self.net_income * self.employee2_commission / 100
+        terms = self.employee2.employment_terms
+        nhmonth = self.nhsale.nhmonth
+        tax = Tax.objects.filter(date__lte=date(nhmonth.year, nhmonth.month,1)).latest().value / 100 + 1
+        if not terms: return amount
+        if terms.hire_type != HireType.SelfEmployed:
+            return amount
+        else:
+            return self.include_tax and amount or amount / tax
     @property
     def director_pay(self):
-        if self.director_commission == None:
+        if self.director_commission == None or self.director == None:
             return None
-        return self.net_income * self.director_commission / 100
+        amount =  self.net_income * self.director_commission / 100
+        terms = self.director.employment_terms
+        nhmonth = self.nhsale.nhmonth
+        tax = Tax.objects.filter(date__lte=date(nhmonth.year, nhmonth.month,1)).latest().value / 100 + 1
+        if not terms: return amount
+        if terms.hire_type != HireType.SelfEmployed:
+            return amount
+        else:
+            return self.include_tax and amount or amount / tax
     @property
     def lawyers_pay(self):
         amount = 0
@@ -1802,7 +1829,7 @@ class NHSaleSide(models.Model):
         return (self.employee1_commission or 0) + (self.employee2_commission or 0) + (self.director_commission or 0)
     @property
     def all_employee_commission(self):
-        return self.net_income * self.all_employee_commission_precentage / 100
+        return (self.employee1_pay or 0) + (self.employee2_pay or 0) + (self.director_pay or 0)
     def is_employee_related(self, employee):
         return self.employee1 == employee or self.employee2 == employee or self.director == employee
     def get_employee_pay(self, employee):
@@ -1849,6 +1876,9 @@ class NHMonth(models.Model):
                                             choices=((i,i) for i in range(datetime.now().year - 10,
                                                                           datetime.now().year + 10)))
     is_closed = models.BooleanField(editable=False, default=False)
+    def __init__(self, *args, **kw):
+        models.Model.__init__(self, *args, **kw)
+        self.include_tax = True
     @property
     def avg_signed_commission(self):
         count, total = 0, 0
@@ -1871,6 +1901,9 @@ class NHMonth(models.Model):
         for nhs in self.nhsales.all():
             for nhss in nhs.nhsaleside_set.all():
                 amount += nhss.income
+        if not self.include_tax:
+            t = Tax.objects.filter(date__lte=date(self.year, self.month,1)).latest().value / 100 + 1
+            amount = amount / t
         return amount
     @property
     def total_lawyer_pay(self):
@@ -1885,6 +1918,9 @@ class NHMonth(models.Model):
         for nhs in self.nhsales.all():
             for nhss in nhs.nhsaleside_set.all():
                 amount += nhss.net_income
+        if not self.include_tax:
+            t = Tax.objects.filter(date__lte=date(self.year, self.month,1)).latest().value / 100 + 1
+            amount = amount / t
         return amount
     @property
     def total_commission(self):

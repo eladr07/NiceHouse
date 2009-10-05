@@ -502,25 +502,34 @@ def nh_season_income(request):
         y = m == 12 and y + 1 or y
         m = m == 12 and 1 or m + 1
     nhbranch = NHBranch.objects.get(pk=nhbranch_id)
-    season_income, season_net_income = 0, 0
+    season_income, season_net_income, season_income_notax, season_net_income_notax = 0, 0, 0, 0
     employees = list(nhbranch.nhemployees.all())
     for nhm in nhmonth_set:
         nhm.employees = list(nhm.nhbranch.nhemployees.all())
-        season_income += nhm.total_income
-        season_net_income += nhm.total_net_income
         for nhs in nhm.nhsales.all():
             for nhss in nhs.nhsaleside_set.all():
                 for e in employees:
                     if not hasattr(e, 'season_total'): e.season_total = 0
                     e.season_total += nhss.get_employee_pay(e)
+                    if not hasattr(e, 'season_total_notax'): e.season_total_notax = 0
+                    nhss.include_tax = False
+                    e.season_total_notax += nhss.get_employee_pay(e)
                 for e in nhm.employees:
                     if not hasattr(e, 'month_total'): e.month_total = 0
                     e.month_total += nhss.get_employee_pay(e)
+        season_income += nhm.total_income
+        season_net_income += nhm.total_net_income
+        nhm.include_tax = False
+        season_income_notax += nhm.total_income
+        season_net_income_notax += nhm.total_net_income
+        nhm.include_tax = True
+        
     form = NHBranchSeasonForm(initial={'nhbranch':nhbranch.id,'from_year':from_year, 'from_month':from_month,
                                        'to_year':to_year, 'to_month':to_month})
     return render_to_response('Management/nh_season_income.html', 
                               { 'nhmonths':nhmonth_set, 'filterForm':form, 'employees':employees,
                                'season_income':season_income,'season_net_income':season_net_income,
+                               'season_income_notax':season_income_notax,'season_net_income_notax':season_net_income_notax,
                                'nhbranch':nhbranch },
                               context_instance=RequestContext(request))
     
