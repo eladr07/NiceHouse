@@ -694,7 +694,7 @@ class PricelistWriter:
         frame3 = Frame(50, 20, 150, 40)
         frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
                             ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
-        frame4 = Frame(50, 650, 500, 70)
+        frame4 = Frame(50, 670, 500, 70)
         frame4.addFromList([titlePara(self.title), Paragraph(log2vis(self.subtitle), styleSubTitle)], canv)
         self.current_page += 1
     def housesFlows(self):
@@ -737,7 +737,7 @@ class PricelistWriter:
     def build(self, filename):
         self.current_page = 1
         doc = SimpleDocTemplate(filename)
-        story = [Spacer(0,100)]
+        story = [Spacer(0,80)]
         story.extend(self.housesFlows())
         settle_date = self.pricelist.settle_date
         story.append(Paragraph(log2vis(u'מועד אכלוס : ' + (settle_date and settle_date.strftime('%d/%m/%Y') or '----')),
