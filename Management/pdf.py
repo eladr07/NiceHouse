@@ -722,7 +722,7 @@ class PricelistWriter:
                 t.setStyle(saleTableStyle)
                 flows.append(t)
                 if i < len(self.houses):
-                    flows.extend([PageBreak(), Spacer(0, 50)])
+                    flows.extend([PageBreak(), Spacer(0, 80)])
                 rows = []
         row = [None, None, None, None, None, None, None, None, 
                Paragraph(log2vis(u'סה"כ'), styleSumRow), Paragraph(str(len(self.houses)), styleSumRow)]

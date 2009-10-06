@@ -832,13 +832,15 @@ class NHEmployeeSalary(EmployeeSalaryBase):
         for scd in NHSaleCommissionDetail.objects.filter(nhemployeesalary = self):
             scd.delete()
         self.admin_commission, self.commissions, self.base = 0, 0, 0
-        for nhss in NHSaleSide.objects.filter(employee1=self.nhemployee):
+        for nhss in NHSaleSide.objects.filter(employee1=self.nhemployee, nhsale__nhmonth__year = self.year,
+                                              nhsale__nhmonth__month = self.month):
             self.commissions += nhss.employee1_pay
             NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss,
                                                   commission='base', amount = nhss.employee1_pay,
                                                   precentage = nhss.employee1_commission,
                                                   income = nhss.net_income)
-        for nhss in NHSaleSide.objects.filter(employee2=self.nhemployee):
+        for nhss in NHSaleSide.objects.filter(employee2=self.nhemployee, nhsale__nhmonth__year = self.year,
+                                              nhsale__nhmonth__month = self.month):
             self.commissions += (nhss.employee2_pay or 0)
             NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss,
                                                   commission='base', amount = nhss.employee2_pay or 0,
