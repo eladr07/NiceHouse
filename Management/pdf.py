@@ -689,7 +689,7 @@ class PricelistWriter:
         self.pricelist, self.houses, self.title, self.subtitle = pricelist, houses, title, subtitle
     @property
     def pages_count(self):
-        return len(self.houses) / 28 + 1
+        return len(self.houses) / 28 + 2
     def addTemplate(self, canv, doc):
         frame3 = Frame(50, 20, 150, 40)
         frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
@@ -739,6 +739,7 @@ class PricelistWriter:
         doc = SimpleDocTemplate(filename)
         story = [Spacer(0,80)]
         story.extend(self.housesFlows())
+        story.extend([PageBreak(), Spacer(0,80)])
         settle_date = self.pricelist.settle_date
         story.append(Paragraph(log2vis(u'מועד אכלוס : ' + (settle_date and settle_date.strftime('%d/%m/%Y') or '----')),
                                ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
