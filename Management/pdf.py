@@ -740,7 +740,7 @@ class PricelistWriter:
         story = [Spacer(0,100)]
         story.extend(self.housesFlows())
         settle_date = self.pricelist.settle_date
-        story.append(Paragraph(log2vis(u'מועד אכלוס : ' + settle_date and settle_date.strftime('%d/%m/%Y') or '----'),
+        story.append(Paragraph(log2vis(u'מועד אכלוס : ' + (settle_date and settle_date.strftime('%d/%m/%Y') or '----')),
                                ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_RIGHT)))
         story.append(Paragraph(log2vis('מדד תשומות הבנייה : ' + str(models.MadadBI.objects.latest().value)),
                                ParagraphStyle('1', fontName='David',fontSize=14, leading=15, alignment=TA_LEFT)))
