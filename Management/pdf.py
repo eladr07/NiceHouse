@@ -694,7 +694,7 @@ class PricelistWriter:
         frame3 = Frame(50, 20, 150, 40)
         frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
                             ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
-        frame4 = Frame(50, 50, 500, 70)
+        frame4 = Frame(50, 650, 500, 70)
         frame4.addFromList([titlePara(self.title), Paragraph(log2vis(self.subtitle), styleSubTitle)], canv)
         self.current_page += 1
     def housesFlows(self):
