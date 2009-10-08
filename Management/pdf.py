@@ -204,7 +204,7 @@ class MonthDemandWriter:
         if count <= 40:
             return base + 3
         return base + 4
-    def __init__(self, demand, to_mail=True):
+    def __init__(self, demand, to_mail=False):
         if demand.sales.count() == 0:
             raise AttributeError('demand','has no sales')
         self.demand = demand

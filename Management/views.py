@@ -2039,7 +2039,7 @@ def project_demands(request, project_id, func, template_name):
                                {'demands':demands(), 'project':p},
                                context_instance=RequestContext(request))
 
-def write_demand_pdf(demand, filename, to_mail=False):
+def write_demand_pdf(demand, filename, to_mail=True):
     p = open(filename,'w+')
     p.flush()
     p.close()
