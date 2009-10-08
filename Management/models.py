@@ -2215,7 +2215,7 @@ def restore_object(instance, date):
         raise TypeError()
     for l in ChangeLog.objects.filter(object_type = model.__name__,
                                       object_id = id,
-                                      date__gte = date):
+                                      date__gt = date):
         try:
             if isinstance(getattr(instance, l.attribute), float):
                 val = float(l.old_value)
