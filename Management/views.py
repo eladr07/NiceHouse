@@ -326,6 +326,8 @@ def demand_calc(request, id):
                 for scd in s.commission_details.all():
                     scd.delete()
             demand.calc_sales_commission()
+            demand = Demand.objects.get(pk=demand.id)
+            demand.finish()
             time.sleep(1)
     else:
         d.calc_sales_commission()
