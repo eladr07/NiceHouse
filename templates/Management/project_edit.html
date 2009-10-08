@@ -255,19 +255,19 @@
 			<table class="formTable">
 				<tr>
 					<th>מקס עמלה</th>
-					<td>{{c.max}}%</td>
+					<td>{{c.max|default_if_none:""}}</td>
 				</tr>
 				<tr>
 					<th>סכום תוספת</th>
-					<td>{{c.add_amount|commaise}}</td>
+					<td>{{c.add_amount|commaise|default_if_none:""}}</td>
 				</tr>
 				<tr>
 					<th>סוג תוספת</th>
-					<td>{{c.add_type}}</td>
+					<td>{{c.add_type|default_if_none:""}}</td>
 				</tr>
 				<tr>
 					<th>הוצאות רישום</th>
-					<td>{{c.registration_amount}}</td>
+					<td>{{c.registration_amount|default_if_none:""}}</td>
 				</tr>
 				<tr>
 					<th>כולל מע"מ לעמלה</th>
