@@ -2105,6 +2105,7 @@ class Sale(models.Model):
             price = self.include_tax and price or price * TAX
         else:
             price = self.include_tax and price / TAX or price
+        if price == None: raise ValueError
         return price
     def employee_price(self):
         et = self.employee.employment_terms
