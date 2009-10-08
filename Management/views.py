@@ -301,11 +301,44 @@ def demand_function(request,id , function):
     function(d)
     return HttpResponse('ok')
 
+    for p_id in [21]:
+        for m in range(1,9):
+            q = Demand.objects.filter(project__id = p_id, year = 2009, month=m)
+            if q.count() == 0:
+                continue
+            d = q[0]
+            for ds in d.statuses.all():
+                ds.delete()
+            for diff in d.diffs.all():
+                diff.delete()
+            d.calc_sales_commission()
+            d = Demand.objects.get(project__id = p_id, year = 2009, month=m)
+            d.finish()
+            time.sleep(1)
+
 @permission_required('Management.list_demand')
 def demand_calc(request, id):
     d = Demand.objects.get(pk=id)
     c = d.project.commissions
-    if not c.c_zilber and not c.commission_by_signups:
+    if c.c_zilber:
+        demand = d
+        while demand.zilber_cycle_index() > 1:
+            demand = d.get_previous_demand()
+        while demand != d:
+            for s in demand.get_sales():
+                for scd in s.commission_details.all():
+                    scd.delete()
+            demand.calc_sales_commission()
+            demand = demand.get_next_demand()
+            time.sleep(1)
+    elif c.commission_by_signups:
+        for demand in Demand.objects.filter(project = d.project):
+            for s in demand.get_sales():
+                for scd in s.commission_details.all():
+                    scd.delete()
+            demand.calc_sales_commission()
+            time.sleep(1)
+    else:
         d.calc_sales_commission()
     return HttpResponseRedirect('/demandsold/%s/%s' % (d.year,d.month))
 
