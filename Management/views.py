@@ -330,6 +330,7 @@ def demand_calc(request, id):
                     scd.delete()
             demand.calc_sales_commission()
             demand = demand.get_next_demand()
+            if demand == None: break
             time.sleep(1)
     elif c.commission_by_signups:
         for demand in Demand.objects.filter(project = d.project):
