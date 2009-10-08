@@ -322,15 +322,16 @@ def demand_calc(request, id):
     c = d.project.commissions
     if c.c_zilber:
         demand = d
+        demands = [d]
         while demand.zilber_cycle_index() > 1:
             demand = d.get_previous_demand()
-        while demand != d:
-            for s in demand.get_sales():
+            demands.append(demand)
+        demands.reverse()
+        for d2 in demands:
+            for s in d2.get_sales():
                 for scd in s.commission_details.all():
                     scd.delete()
-            demand.calc_sales_commission()
-            demand = demand.get_next_demand()
-            if demand == None: break
+            d2.calc_sales_commission()
             time.sleep(1)
     elif c.commission_by_signups:
         for demand in Demand.objects.filter(project = d.project):
