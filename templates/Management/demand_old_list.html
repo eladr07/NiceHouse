@@ -192,10 +192,10 @@
 			<td>{{d.sale_count}}</td>
 			<td>{% if d.get_final_sales_amount %} {{ d.get_sales_amount|commaise }} ש"ח {% else %}----{% endif %}</td>
 			<td>{% if d.get_sales_commission %} {{ d.get_sales_commission|commaise }} ש"ח {% else %}----{% endif %}</td>
-			<td style="color:#08A600;">{% if d.fixed_diff %} {{ d.fixed_diff.amount }} ש"ח {% endif %}</td>
-			<td style="color:#08A600;">{% if d.var_diff %} {{ d.var_diff.amount }} ש"ח - {{ d.var_diff.reason }} {% endif %}</td>
-			<td style="color:#08A600; width:150px;">{% if d.bonus_diff %} {{ d.bonus_diff.amount }} ש"ח - {{ d.bonus_diff.reason }} {% endif %}</td>
-			<td style="color:#D50808;">{% if d.fee_diff %} {{ d.fee_diff.amount }} ש"ח - {{ d.fee_diff.reason }} {% endif %}</td>
+			<td style="color:#08A600;">{% if d.fixed_diff %} {{ d.fixed_diff.amount|commaise }} ש"ח {% endif %}</td>
+			<td style="color:#08A600;">{% if d.var_diff %} {{ d.var_diff.amount|commaise }} ש"ח - {{ d.var_diff.reason }} {% endif %}</td>
+			<td style="color:#08A600; width:150px;">{% if d.bonus_diff %} {{ d.bonus_diff.amount|commaise }} ש"ח - {{ d.bonus_diff.reason }} {% endif %}</td>
+			<td style="color:#D50808;">{% if d.fee_diff %} {{ d.fee_diff.amount|commaise }} ש"ח - {{ d.fee_diff.reason }} {% endif %}</td>
 			<td><b>{% if d.get_total_amount %} {{ d.get_total_amount|commaise }} ש"ח {% else %}----{% endif %}</b></td>
 			<td>
 			{% if d.is_fixed %}
