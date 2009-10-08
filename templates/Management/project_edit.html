@@ -151,12 +151,13 @@
 	{% if user.is_staff %}
 		<fieldset class="cardFieldset">
 			<legend>עמלות</legend>
-			{% if project.commissions.c_var_precentage %}	
+			{% with project.commissions as c %}
+			{% if c.c_var_precentage %}	
 				<div>		
 					<table class="formTable" style="text-align:center;">
 						<th>דירה</th>
 						<th>סכום</th>
-						{% for p in project.commissions.c_var_precentage.precentages.all %}
+						{% for p in c.c_var_precentage.precentages.all %}
 							<tr>
 								<td>{{p.index}}</td>
 								<td>{{p.precentage}} ש"ח</td>
@@ -165,8 +166,8 @@
 						<tr>
 							<td></td>
 							<td>
-								{% if project.commissions.c_var_precentage.is_retro %}
-									רטרואקטיבי מדירה {{project.commissions.c_var_precentage.start_retro}}
+								{% if c.c_var_precentage.is_retro %}
+									רטרואקטיבי מדירה {{c.c_var_precentage.start_retro}}
 								{% else %}
 									לא רטרואקטיבי
 								{% endif %}
@@ -177,50 +178,50 @@
 					<a href="cvp/del"><img src="/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
 				</div>
 			{% endif %}
-			{% if project.commissions.c_var_precentage_fixed %}		
+			{% if c.c_var_precentage_fixed %}		
 				<div>
-					{{project.commissions.c_var_precentage_fixed.first_precentage}}%
+					{{c.c_var_precentage_fixed.first_precentage}}%
 					עבור
-					{{project.commissions.c_var_precentage_fixed.first_count}}
+					{{c.c_var_precentage_fixed.first_count}}
 					דירות ראשונות.<br>
 					כל דירה נוספת, תוספת של
-					{{project.commissions.c_var_precentage_fixed.step}}%.<br>
-					{% if project.commissions.c_var_precentage_fixed.last_precentage %}
-						{{project.commissions.c_var_precentage_fixed.last_precentage}}%
+					{{c.c_var_precentage_fixed.step}}%.<br>
+					{% if c.c_var_precentage_fixed.last_precentage %}
+						{{c.c_var_precentage_fixed.last_precentage}}%
 						עבור
-						{{project.commissions.c_var_precentage_fixed.last_count}}
+						{{c.c_var_precentage_fixed.last_count}}
 						דירות אחרונות.
 					{% endif %}
 					<a id="edit_cvpf" href="cvpf" class="fancybox"><img src="/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
 					<a href="cvpf/del"><img src="/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
 				</div>
 			{% endif %}
-			{% if project.commissions.c_zilber %}		
+			{% if c.c_zilber %}		
 				<div>
 					עמלת בסיס 
-					{{project.commissions.c_zilber.base}}%.<br>
+					{{c.c_zilber.base}}%.<br>
 					בונוס חסכון בהנחה 
-					{{project.commissions.c_zilber.b_discount}}%
+					{{c.c_zilber.b_discount}}%
 					מההפרש למחיר דוח אפס.<br>
 					בונוס קצב מכירות 
-					{{project.commissions.c_zilber.b_sale_rate}}% 
+					{{c.c_zilber.b_sale_rate}}% 
 					לכל דירה עד מקס' של 
-					{{project.commissions.c_zilber.b_sale_rate_max}}%.<br>
+					{{c.c_zilber.b_sale_rate_max}}%.<br>
 					מדד בסיס 
-					{{project.commissions.c_zilber.base_madad}},
+					{{c.c_zilber.base_madad}},
 					בתאריך 
-					{{project.commissions.c_zilber.third_start|date:"j/m/y"}}.
+					{{c.c_zilber.third_start|date:"j/m/y"}}.
 					<a id="edit_cz" href="cz" class="fancybox"><img src="/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
 					<a href="cz/del"><img src="/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
 				</div>
 			{% endif %}
-			{% if project.commissions.b_discount_save_precentage %}	
+			{% if c.b_discount_save_precentage %}	
 				<div>
-					{{project.commissions.b_discount_save_precentage.precentage_bonus}}%
+					{{c.b_discount_save_precentage.precentage_bonus}}%
 					עבור כל 1%  חסכון בהנחה 
-					{% if project.commissions.b_discount_save_precentage.max_for_bonus %}
+					{% if c.b_discount_save_precentage.max_for_bonus %}
 						עד מקס' של
-						{{project.commissions.b_discount_save_precentage.max_for_bonus}}%
+						{{c.b_discount_save_precentage.max_for_bonus}}%
 					{% endif %}
 					<a id="edit_bdsp" href="bdsp" class="fancybox"><img src="/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
 					<a href="bdsp/del"><img src="/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
@@ -230,29 +231,76 @@
 				<button id="add_commissionsBtn" type="button" class="button">הוספה</button>
 			</div>
 			<div id="new_commissions">
-				{% if not project.commissions.c_var_precentage %}
+				{% if not c.c_var_precentage %}
 					עמלה משתנה (באחוזים)
 					<a id="add_cvp" href="cvp" class="fancybox"><img src="/site_media/images/add_48.png" width="20" height="20" border="0" alt="הוספה" /></a> 
 				{% endif %}
-				{% if not project.commissions.c_var_precentage_fixed %}
+				{% if not c.c_var_precentage_fixed %}
 					<br>עמלה משתנה בקצב קבוע (באחוזים)
 					<a id="add_cvpf" href="cvpf" class="fancybox"><img src="/site_media/images/add_48.png" width="20" height="20" border="0" alt="הוספה" /></a> 
 				{% endif %}
-				{% if not project.commissions.c_zilber %}
+				{% if not c.c_zilber %}
 					<br>עמלת זילברמינץ
 					<a id="add_cz" href="cz" class="fancybox"><img src="/site_media/images/add_48.png" width="20" height="20" border="0" alt="הוספה" /></a> 
 				{% endif %}
-				{% if not project.commissions.b_discount_save_precentage %}
+				{% if not c.b_discount_save_precentage %}
 					<br>בונוס חיסכון בהנחה (באחוזים)
 					<a id="add_bdsp" href="bdsp" class="fancybox"><img src="/site_media/images/add_48.png" width="20" height="20" border="0" alt="הוספה" /></a> 
 				{% endif %}
 			</div>
-			{% if project.commissions.agreement %}
-				<a target="_blank" href="{{project.commissions.agreement.url}}">מסמך ההסכם</a>
+			{% if c.agreement %}
+				<a target="_blank" href="{{c.agreement.url}}">מסמך ההסכם</a>
 			{% endif %}
 			<br><br>
-			<a href="/projectcommission/{{project.commissions.id}}" class="fancybox">פרטים נוספים</a>
+			<table class="formTable">
+				<tr>
+					<th>מקס עמלה</th>
+					<td>{{c.max}}%</td>
+				</tr>
+				<tr>
+					<th>סכום תוספת</th>
+					<td>{{c.add_amount|commaise}}</td>
+				</tr>
+				<tr>
+					<th>סוג תוספת</th>
+					<td>{{c.add_type}}</td>
+				</tr>
+				<tr>
+					<th>הוצאות רישום</th>
+					<td>{{c.registration_amount}}</td>
+				</tr>
+				<tr>
+					<th>כולל מע"מ לעמלה</th>
+					<td>
+					{% ifnotequal c.include_tax None %}
+						{{c.include_tax|yesno}}
+					{% else %}
+						לא ידוע
+					{% endifnotequal %}
+					</td>
+				</tr>
+				<tr>
+					<th>כולל עו"ד לעמלה</th>
+					<td>
+					{% ifnotequal c.include_lawyer None %}
+						{{c.include_lawyer|yesno}}
+					{% else %}
+						לא ידוע
+					{% endifnotequal %}
+					</td>
+				</tr>
+				<tr>
+					<th>עמלה לפי הרשמות</th>
+					<td>{{c.commission_by_signups|yesno}}</td>
+				</tr>
+				<tr>
+					<th>נקודות חשובות להסכם</th>
+					<td>{{c.remarks}}</td>
+				</tr>
+			</table>
+			<a href="/projectcommission/{{c.id}}" class="fancybox">שנה תנאים</a>
 		</fieldset>
+		{% endwith %}
 	{% endif %}
 	</div>
 	<div class="clearBoth"> </div>
