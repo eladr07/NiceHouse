@@ -318,9 +318,6 @@ def demand_function(request,id , function):
 
 @permission_required('Management.list_demand')
 def demand_calc(request, id):
-    for s in Sale.objects.all():
-        if s.price_final == None:
-            s.save()
     d = Demand.objects.get(pk=id)
     c = d.project.commissions
     if c.c_zilber:
