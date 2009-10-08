@@ -1180,7 +1180,6 @@ class CZilber(models.Model):
                 scd = s.commission_details.get_or_create(commission=c)[0]
                 scd.value = s.commission_include and base or 0
                 scd.save()
-            s.price_final = s.project_price()
             s.save()
             if not s.commission_include:
                 continue
@@ -1317,8 +1316,6 @@ class ProjectCommission(models.Model):
             for subSales in demand.get_affected_sales().values():
                 for s in subSales:
                     if not s.commission_include: continue
-                    s.price_final = s.project_price()
-                    s.save()
                     signup = s.house.get_signup()
                     if not signup: continue
                     #get the finish date when the demand for the month the signup 
@@ -1362,7 +1359,6 @@ class ProjectCommission(models.Model):
             scd = s.commission_details.get_or_create(employee_salary=None, commission='final')[0]
             scd.value = s.commission_include and dic[s] or 0
             scd.save()
-            s.price_final = s.project_price()
             s.save()
 
     class Meta:
@@ -2128,6 +2124,8 @@ class Sale(models.Model):
             self.employee_pay = d
         if not self.contractor_pay:
             self.contractor_pay = d
+        if self.price_final == None:
+            self.price_final = self.project_price()
         models.Model.save(self, args, kw)
     @property
     def is_fixed(self):
