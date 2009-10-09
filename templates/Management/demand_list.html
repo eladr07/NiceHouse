@@ -38,7 +38,7 @@
 			event.preventDefault();
 			var fields = new Array("year", "month");
 			for (var i=0; i < fields.length; ++i )
-				fields[0] += "=" + $("#id_" + fields[i]).val()
+				fields[i] += "=" + $("#id_" + fields[i]).val()
 			location.replace("/demandsold/?" + fields.join("&"));
 		});
 		//add filters
