@@ -372,8 +372,8 @@ def projects_profit(request):
                     p.total_expense += commission
                     total_expense += commission
     for p in projects:
-        p.relative_income = p.income / total_income * 100
-        p.relative_expense_income = p.total_expense / p.income * 100
+        p.relative_income = p.total_income / total_income * 100
+        p.relative_expense_income = p.total_expense / p.total_income * 100
         p.profit = p.income - p.total_expense
         total_profit += p.profit
     
