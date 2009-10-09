@@ -333,6 +333,56 @@ def demand_calc(request, id):
         d.calc_sales_commission()
     return HttpResponseRedirect('/demandsold/%s/%s' % (d.year,d.month))
 
+def projects_profit(request):
+    month = Demand.current_month()
+    from_year = int(request.GET.get('from_year', month.year))
+    from_month = int(request.GET.get('from_month', month.month))
+    to_year = int(request.GET.get('to_year', month.year))
+    to_month = int(request.GET.get('to_month', month.month))
+    demands, salaries = [], []
+    total_sales_count,total_sales_amount, total_sales_commission, total_amount = 0,0,0,0
+    current = date(int(from_year), int(from_month), 1)
+    end = date(int(to_year), int(to_month), 1)
+    while current <= end:
+        q = Demand.objects.filter(year = current.year, month = current.month)
+        if q.count() > 0:
+            demands.extend(q)
+        q = EmployeeSalary.objects.filter(year = current.year, month = current.month)
+        if q.count() > 0:
+            salaries.extend(q)
+        current = date(current.month == 12 and current.year + 1 or current.year, current.month == 12 and 1 or current.month + 1, 1)
+    projects = [d.project for d in demands if d.project not in projects]
+    total_income, total_expense, total_profit = 0,0,0
+    for p in projects:
+        p.sale_count, p.total_income, total_expense, p.relative_income, p.relative_expense_income, p.profit = 0,0,0,0,0,0
+        p.employee_expense = {}
+    for d in demands:
+        d.project.total_income += d.get_total_amount()
+        d.project.sale_count += d.get_sales().count()
+        total_income += d.project.total_income
+    for s in salaries:
+        s.calculate()
+        for project, commission in s.project_commission.items():
+            for p in projects:
+                if p.id == project.id:
+                    p.employee_expense[s.employee] = commission
+                    p.total_expense += commission
+                    total_expense += commission
+    for p in projects:
+        p.relative_income = p.income / total_income * 100
+        p.relative_expense_income = p.total_expense / p.income * 100
+        p.profit = p.income - p.total_expense
+        total_profit += p.profit
+    
+    return render_to_response('Management/projects_profit.html', 
+                              { 'projects':projects,
+                                'filterForm':SeasonForm(initial={'from_year':from_year,'from_month':from_month,
+                                                                 'to_year':to_year,'to_month':to_month}),
+                                'total_income':total_income,
+                                'total_expense':total_expense,
+                                'total_profit':total_profit},
+                              context_instance=RequestContext(request))
+
 @permission_required('Management.list_demand')
 def demand_old_list(request):
     current = Demand.current_month()

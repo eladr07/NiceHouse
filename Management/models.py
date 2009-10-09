@@ -867,6 +867,9 @@ class NHEmployeeSalary(EmployeeSalaryBase):
         
 class EmployeeSalary(EmployeeSalaryBase):
     employee = models.ForeignKey('Employee', verbose_name=ugettext('employee'), related_name='salaries')
+    def __init__(self, *args, **kw):
+        super(EmployeeSalary, self).__init__(*args, **kw)
+        self.project_commission = {}
     @property
     def sales(self):
         sales = {}
@@ -916,7 +919,8 @@ class EmployeeSalary(EmployeeSalaryBase):
                 sales = total_sales[k].filter(house__building__project = epc.project)
                 if sales.count() == 0:
                     continue
-                self.commissions += epc.calc(sales, self)
+                self.project_commission[epc.project] = epc.calc(sales, self)
+                self.commissions += self.project_commission[epc.project]
                 for s in sales.all():
                     s.employee_paid = True
                     s.save() 
