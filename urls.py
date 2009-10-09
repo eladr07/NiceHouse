@@ -245,7 +245,7 @@ urlpatterns += patterns('Management.views',
     
     (r'^demands/$', 'demand_list'),
     (r'^demands/(?P<id>\d+)/calc$', 'demand_calc'),
-    (r'^demandsold$', 'demand_old_list'),
+    (r'^demandsold/$', 'demand_old_list'),
     (r'^demandseason/$', 'demand_season_list'),
     (r'^demandfollowup/$', 'demand_followup_list'),
     (r'^demands/closeall$', 'demand_closeall'),
