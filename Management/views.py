@@ -374,7 +374,7 @@ def projects_profit(request):
     for p in projects:
         p.relative_income = p.total_income / total_income * 100
         p.relative_expense_income = p.total_expense / p.total_income * 100
-        p.profit = p.income - p.total_expense
+        p.profit = p.total_income - p.total_expense
         total_profit += p.profit
     
     return render_to_response('Management/projects_profit.html', 
