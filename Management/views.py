@@ -351,7 +351,10 @@ def projects_profit(request):
         if q.count() > 0:
             salaries.extend(q)
         current = date(current.month == 12 and current.year + 1 or current.year, current.month == 12 and 1 or current.month + 1, 1)
-    projects = [d.project for d in demands if d.project not in projects]
+    projects = []
+    for d in demands:
+        if d.project not in projects:
+            projects.append(d.project)
     total_income, total_expense, total_profit = 0,0,0
     for p in projects:
         p.sale_count, p.total_income, total_expense, p.relative_income, p.relative_expense_income, p.profit = 0,0,0,0,0,0
