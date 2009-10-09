@@ -27,7 +27,7 @@
 			var fields = new Array("from_year", "from_month", "to_year", "to_month");
 			for (var i=0; i < fields.length; ++i )
 				fields[i] += "=" + $("#id_" + fields[i]).val()
-			location.replace("/projectprofit/?" + fields.join("&"));
+			location.replace("/projectsprofit/?" + fields.join("&"));
 		});
 		$("#demandCalc").click(function(event) {
 			if (!confirm("האם אתה בטוח שברצונך לחשב את העמלות מחדש ?"))
