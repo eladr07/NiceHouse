@@ -357,7 +357,7 @@ def projects_profit(request):
             projects.append(d.project)
     total_income, total_expense, total_profit = 0,0,0
     for p in projects:
-        p.sale_count, p.total_income, total_expense, p.relative_income, p.relative_expense_income, p.profit = 0,0,0,0,0,0
+        p.sale_count, p.total_income, p.total_expense, p.relative_income, p.relative_expense_income, p.profit = 0,0,0,0,0,0
         p.employee_expense = {}
     for d in demands:
         d.project.total_income += d.get_total_amount()
