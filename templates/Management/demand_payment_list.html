@@ -27,10 +27,9 @@
 		$("#monthChange").click(function(event) {
 			event.preventDefault();
 			var fields = new Array("project", "from_year", "from_month", "to_year", "to_month");
-			var url = "/demandinvoices/?";
-			for ( var i=0; i < fields.length; ++i )
-				url += fields[i] + "=" + $("#id_" + fields[i]).val() + "&"
-			location.replace(url);
+			for (var i=0; i < fields.length; ++i )
+				fields[i] += "=" + $("#id_" + fields[i]).val()
+			location.replace("/demandpayments/?" + fields.join("&"));
 		});
 	});
 </script>
