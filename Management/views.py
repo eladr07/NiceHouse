@@ -360,9 +360,12 @@ def projects_profit(request):
         p.sale_count, p.total_income, p.total_expense, p.relative_income, p.relative_expense_income, p.profit = 0,0,0,0,0,0
         p.employee_expense = {}
     for d in demands:
-        d.project.total_income += d.get_total_amount()
-        d.project.sale_count += d.get_sales().count()
-        total_income += d.project.total_income
+        for p in projects:
+            if p.id == d.project.id:
+                p.total_income += d.get_total_amount()
+                p.sale_count += d.get_sales().count()
+                total_income += p.total_income
+                break
     for s in salaries:
         s.calculate()
         for project, commission in s.project_commission.items():
