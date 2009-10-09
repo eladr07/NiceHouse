@@ -79,7 +79,7 @@
 		<th>% שכר<BR>מההכנסות</th>
 		<th>רווח כולל מע"מ</th>
 	</tr>
-    {% for p in demands projects%}
+    {% for p in projects %}
 		<tr class="{% cycle 'row1' 'row2' %}" objid={{d.id}}>
 			<td><a href="{{p.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
 			<td>{{ p.initiator }}</td>
