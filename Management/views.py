@@ -371,7 +371,9 @@ def projects_profit(request):
         for project, commission in s.project_commission.items():
             for p in projects:
                 if p.id == project.id:
-                    p.employee_expense[s.employee] = commission
+                    if not p.employee_expense.has_key(s.employee):
+                        p.employee_expense[s.employee]=0
+                    p.employee_expense[s.employee] += commission
                     p.total_expense += commission
                     total_expense += commission
                     break
