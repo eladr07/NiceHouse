@@ -24,7 +24,7 @@
 		$(".bigfancybox").fancybox({'frameWidth':800});	
 		$("#monthChange").click(function(event) {
 			event.preventDefault();
-			var fields = new Array("project", "from_year", "from_month", "to_year", "to_month");
+			var fields = new Array("from_year", "from_month", "to_year", "to_month");
 			for (var i=0; i < fields.length; ++i )
 				fields[i] += "=" + $("#id_" + fields[i]).val()
 			location.replace("/projectprofit/?" + fields.join("&"));
@@ -69,6 +69,7 @@
 <table id="Table" class="dataTable" border="1">
 <caption>מציג סה"כ {{project|length}} פרוייקטים</caption>
 	<tr>
+		<th></th>
 		<th>שם היזם</th>
 		<th>שם הפרוייקט</th>
 		<th>מס' מכירות</th>
