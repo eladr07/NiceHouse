@@ -364,7 +364,7 @@ def projects_profit(request):
             if p.id == d.project.id:
                 p.total_income += d.get_total_amount()
                 p.sale_count += d.get_sales().count()
-                total_income += p.total_income
+                total_income += d.get_total_amount()
                 break
     for s in salaries:
         s.calculate()
@@ -374,6 +374,7 @@ def projects_profit(request):
                     p.employee_expense[s.employee] = commission
                     p.total_expense += commission
                     total_expense += commission
+                    break
     for p in projects:
         p.relative_income = total_income and (p.total_income / total_income * 100) or 100
         p.relative_expense_income = p.total_income and (p.total_expense / p.total_income * 100) or 100
