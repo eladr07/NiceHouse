@@ -86,7 +86,7 @@
 			<td>{{ p.name }}</td>
 			<td>{{ p.sale_count }}</td>
 			<td>{{p.total_income|commaise}}</td>
-			<td>{{p.relative_income|floatformate:-2}}%</td>
+			<td>{{p.relative_income|floatformat:-2}}%</td>
 			<td>
 			{% for employee, commission in p.employee_expense.items %}
 				{{employee}}<Br>
@@ -97,7 +97,7 @@
 				{{commission|commaise}}<Br>
 			{% endfor %}
 			</td>
-			<td>{{ p.relative_expense_income|floatformate:-2 }}%</td>
+			<td>{{ p.relative_expense_income|floatformat:-2 }}%</td>
 			<td>{{ p.profit|commaise }}</td>
 		</tr>
 	{% endfor %}
