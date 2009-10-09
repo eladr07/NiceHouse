@@ -35,7 +35,10 @@
 		});
 		$("#monthChange").click(function(event) {
 			event.preventDefault();
-			location.replace("/demandsold/" + $("#id_year").val() + "/" + $("#id_month").val());
+			var fields = new Array("year", "month");
+			for (var i=0; i < fields.length; ++i )
+				fields[0] += "=" + $("#id_" + fields[i]).val()
+			location.replace("/demandsold/?" + fields.join("&"));
 		});
 		$("#demandCalc").click(function(event) {
 			if (!confirm("האם אתה בטוח שברצונך לחשב את העמלות מחדש ?"))

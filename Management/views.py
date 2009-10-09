@@ -334,7 +334,10 @@ def demand_calc(request, id):
     return HttpResponseRedirect('/demandsold/%s/%s' % (d.year,d.month))
 
 @permission_required('Management.list_demand')
-def demand_old_list(request, year=Demand.current_month().year, month=Demand.current_month().month):
+def demand_old_list(request):
+    current = Demand.current_month()
+    year = int(request.GET.get('year', current.year))
+    month = int(request.GET.get('month', current.month))
     ds = Demand.objects.filter(year = year, month = month)
     total_sales_count,total_sales_amount, total_sales_commission, total_amount, expected_sales_count = 0,0,0,0,0
     for d in ds:
@@ -589,7 +592,10 @@ def nhmonth_close(request, id):
                               context_instance=RequestContext(request))
 
 @permission_required('Management.add_demand')
-def demand_list(request, year=Demand.current_month().year, month=Demand.current_month().month):
+def demand_list(request):
+    current = Demand.current_month()
+    year = int(request.GET.get('year', current.year))
+    month = int(request.GET.get('month', current.month))
     ds = Demand.objects.filter(year = year, month = month)
     form = MonthFilterForm(initial={'year':year,'month':month})
     unhandled_projects = list(Project.objects.active())
@@ -2039,7 +2045,7 @@ def project_demands(request, project_id, func, template_name):
                                {'demands':demands(), 'project':p},
                                context_instance=RequestContext(request))
 
-def write_demand_pdf(demand, filename, to_mail=True):
+def write_demand_pdf(demand, filename, to_mail=False):
     p = open(filename,'w+')
     p.flush()
     p.close()
