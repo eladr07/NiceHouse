@@ -33,13 +33,7 @@
 			});
 			alert("הדרישות נשלחו ליזמים");
 		});
-		$("#monthChange").click(function(event) {
-			event.preventDefault();
-			var fields = new Array("year", "month");
-			for (var i=0; i < fields.length; ++i )
-				fields[i] += "=" + $("#id_" + fields[i]).val()
-			location.replace("/demandsold/?" + fields.join("&"));
-		});
+
 		$("#demandCalc").click(function(event) {
 			if (!confirm("האם אתה בטוח שברצונך לחשב את העמלות מחדש ?"))
 				event.preventDefault();
@@ -79,7 +73,7 @@
 </div>
 <div class="clearBoth"></div>
 <div style="float:right;width:30%;">
-	<form method="POST">
+	<form method="GET">
 		<table class="dataTable">
 			<tr class="row1">
 				<td colspan="3" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש דרישה</td>
@@ -91,7 +85,7 @@
 					{{ field }}
 				</td>
 				{% endfor %}
-				<td><input id="monthChange" type="button" value="חפש" class="button"/></td>
+				<td><input type="button" value="חפש" class="button"/></td>
 			</tr>
 		</table>
 	</form>
