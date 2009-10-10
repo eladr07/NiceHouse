@@ -901,17 +901,15 @@ class EmployeeSalary(EmployeeSalaryBase):
         return self.total_amount - self.loan_pay
     @property
     def bruto_amount(self):
-        if not self.employee.employment_terms or self.employee.employment_terms.salary_net:
-            return None
         return self.total_amount
     def project_salary(self):
         res = {}
         if not len(self.project_commission): return res
         if self.employee.main_project:
             for project, commission in self.project_commission.items():
-                res[project] = commission + (self.employee.main_project.id == project.id and self.check_amount-self.commissions or 0)
+                res[project] = commission + (self.employee.main_project.id == project.id and self.bruto_amount-self.commissions or 0)
         else:
-            check_part = (self.check_amount-self.commissions) / len(self.project_commission) 
+            check_part = (self.bruto_amount-self.commissions) / len(self.project_commission) 
             for project, commission in self.project_commission.items():
                 res[project] = commission + check_part
         return res 
@@ -1795,8 +1793,6 @@ class NHSaleSide(models.Model):
         if not terms: return amount
         nhmonth = self.nhsale.nhmonth
         tax = Tax.objects.filter(date__lte=date(nhmonth.year, nhmonth.month,1)).latest().value / 100 + 1
-        if self.include_tax and terms.hire_type.id != HireType.SelfEmployed:
-            amount = amount * tax
         if not self.include_tax and terms.hire_type.id == HireType.SelfEmployed:
             amount = amount / tax
         return amount
@@ -1809,8 +1805,6 @@ class NHSaleSide(models.Model):
         if not terms: return amount
         nhmonth = self.nhsale.nhmonth
         tax = Tax.objects.filter(date__lte=date(nhmonth.year, nhmonth.month,1)).latest().value / 100 + 1
-        if self.include_tax and terms.hire_type.id != HireType.SelfEmployed:
-            amount = amount * tax
         if not self.include_tax and terms.hire_type.id == HireType.SelfEmployed:
             amount = amount / tax
         return amount
@@ -1823,8 +1817,6 @@ class NHSaleSide(models.Model):
         if not terms: return amount
         nhmonth = self.nhsale.nhmonth
         tax = Tax.objects.filter(date__lte=date(nhmonth.year, nhmonth.month,1)).latest().value / 100 + 1
-        if self.include_tax and terms.hire_type.id != HireType.SelfEmployed:
-            amount = amount * tax
         if not self.include_tax and terms.hire_type.id == HireType.SelfEmployed:
             amount = amount / tax
         return amount
