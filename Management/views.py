@@ -2193,7 +2193,7 @@ def report_employeesalary_season(request, employee_id=None, from_year=Demand.cur
     response.write(p.read())
     p.close()
     return response
-
+@permission_required('Management.demand_season')
 def demand_season_list(request):
     month=Demand.current_month()
     project_id = int(request.GET.get('project', 0))
@@ -2226,6 +2226,39 @@ def demand_season_list(request):
                                 'total_sales_amount':total_sales_amount,
                                 'total_sales_commission':total_sales_commission,
                                 'total_amount':total_amount},
+                              context_instance=RequestContext(request))
+
+@permission_required('Management.season_income')
+def season_income(request):
+    month=Demand.current_month()
+    from_year = int(request.GET.get('from_year', month.year))
+    from_month = int(request.GET.get('from_month', month.month))
+    to_year = int(request.GET.get('to_year', month.year))
+    to_month = int(request.GET.get('to_month', month.month))
+    form = SeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
+    ds = []
+    current = date(int(from_year), int(from_month), 1)
+    end = date(int(to_year), int(to_month), 1)
+    while current <= end:
+        q = Demand.objects.filter(year = current.year, month = current.month)
+        if q.count() > 0:
+            ds.append(q[0])
+        current = date(current.month == 12 and current.year + 1 or current.year, current.month == 12 and 1 or current.month + 1, 1)
+    projects = []
+    total_sale_count, total_amount = 0,0
+    for d in ds:
+        if projects.count(d.project) == 0:
+            projects.append(d.project)
+        p = projects.index(d.project)
+        if not hasattr(p,'total_amount'): p.total_amount = 0
+        if not hasattr(p,'total_sale_count'): p.total_sale_count = 0
+        p.total_amount += d.get_total_amount()
+        p.total_sale_count += d.get_sales().count()
+        total_sale_count += p.total_sale_count
+        total_amount += p.total_amount
+    return render_to_response('Management/demand_season_list.html', 
+                              { 'start':date(int(from_year), int(from_month), 1), 'end':date(int(to_year), int(to_month), 1),
+                                'projects':project, 'filterForm':form},
                               context_instance=RequestContext(request))
 
 def demand_followup_list(request):

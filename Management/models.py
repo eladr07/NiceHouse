@@ -1652,7 +1652,8 @@ class Demand(models.Model):
         permissions = (('list_demand', 'Can list demands'),('demand_pdf', 'Demand PDF'), ('demands_pdf', 'Demands PDF'),
                        ('demand_season', 'Demand Season'), ('demand_followup', 'Demand Followup'), 
                        ('demand_remarks', 'Demand Remarks'), ('demand_sale_count', 'Demand Sale Count'),
-                       ('demand_invoices', 'Demand Invoices'), ('demand_payments', 'Demand Payments'))
+                       ('demand_invoices', 'Demand Invoices'), ('demand_payments', 'Demand Payments'),
+                       ('season_income', 'Season Income'))
 
 class SignupCancel(models.Model):
     date = models.DateField(ugettext('cancel_date'))

@@ -219,6 +219,8 @@ urlpatterns += patterns('Management.views',
     (r'^nhmonth/(?P<id>\d+)/close$', 'nhmonth_close'),
     (r'^nhseasonincome/$', 'nh_season_income'),
     
+    (r'^seasonincome/$', 'season_income'),
+    
     (r'^projects/(?P<project_id>\d+)/signups/$', 'signup_list'),
     (r'^projects/(?P<project_id>\d+)/signups/add$', 'signup_edit'),
     (r'^signups/(?P<id>\d+)/cancel$', 'signup_cancel'),
