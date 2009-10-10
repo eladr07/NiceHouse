@@ -69,6 +69,7 @@
 		<th>שם הפרוייקט</th>
 		<th>מס' מכירות</th>
 		<th>סה"כ הכנסות<br>כולל מע"מ</th>
+		<th>סה"כ הכנסות<br>לא כולל מע"מ</th>
 	</tr>
     {% for p in projects %}
 		<tr class="{% cycle 'row1' 'row2' %}" objid={{d.id}}>
@@ -79,15 +80,15 @@
 				</a>
 			</td>
 			<td>
-				<a href="/reports/project_season/{{p.id}}/{{start.month}}/{{start.year}}/{{end.month}}/{{end.year}}">
+				<a href="/reports/project_season/{{p.id}}/{{start.year}}/{{start.month}}/{{end.year}}/{{end.month}}">
 				<img src="/site_media/images/mail_new-48.png" width="15" height="15"/>
 				</a>
 			</td>
 			<td>{{ p.initiator }}</td>
 			<td>{{ p.name }}</td>
 			<td>{{ p.total_sale_count }}</td>
-			<td>{{p.total_amount|commaise}}<td>
-			<td>{{p.total_amount_notax|commaise}}<td>
+			<td>{{p.total_amount|commaise}}</td>
+			<td>{{p.total_amount_notax|commaise}}</td>
 		</tr>
 	{% endfor %}
 	<tr height="30px" class="rowSum">
