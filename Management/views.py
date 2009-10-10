@@ -2256,7 +2256,7 @@ def season_income(request):
         p.total_sale_count += d.get_sales().count()
         total_sale_count += p.total_sale_count
         total_amount += p.total_amount
-    return render_to_response('Management/demand_season_list.html', 
+    return render_to_response('Management/season_income.html', 
                               { 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
                                 'projects':projects, 'filterForm':form},
                               context_instance=RequestContext(request))
