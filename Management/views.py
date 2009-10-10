@@ -2193,6 +2193,7 @@ def report_employeesalary_season(request, employee_id=None, from_year=Demand.cur
     response.write(p.read())
     p.close()
     return response
+
 @permission_required('Management.demand_season')
 def demand_season_list(request):
     month=Demand.current_month()
@@ -2247,15 +2248,15 @@ def season_income(request):
     projects = []
     total_sale_count, total_amount = 0,0
     for d in ds:
-        if projects.count(d.project) == 0:
+        if not d.project in projects:
             projects.append(d.project)
         p = projects[projects.index(d.project)]
         if not hasattr(p,'total_amount'): p.total_amount = 0
         if not hasattr(p,'total_sale_count'): p.total_sale_count = 0
         p.total_amount += d.get_total_amount()
         p.total_sale_count += d.get_sales().count()
-        total_sale_count += p.total_sale_count
-        total_amount += p.total_amount
+        total_sale_count += d.get_sales().count()
+        total_amount += d.get_total_amount()
     return render_to_response('Management/season_income.html', 
                               { 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
                                 'projects':projects, 'filterForm':form,'total_amount':total_amount,'total_sale_count':total_sale_count},
