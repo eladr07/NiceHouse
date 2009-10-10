@@ -2205,8 +2205,8 @@ def demand_season_list(request):
     ds = []
     total_sales_count,total_sales_amount, total_sales_commission, total_amount = 0,0,0,0
     if project_id:
-        current = date(int(from_year), int(from_month), 1)
-        end = date(int(to_year), int(to_month), 1)
+        current = date(from_year, from_month, 1)
+        end = date(to_year, to_month, 1)
         while current <= end:
             q = Demand.objects.filter(project__id = project_id, year = current.year, month = current.month)
             if q.count() > 0:
@@ -2220,7 +2220,7 @@ def demand_season_list(request):
             total_amount += d.get_total_amount()
         
     return render_to_response('Management/demand_season_list.html', 
-                              { 'demands':ds, 'start':date(int(from_year), int(from_month), 1), 'end':date(int(to_year), int(to_month), 1),
+                              { 'demands':ds, 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
                                 'project':project_id and Project.objects.get(pk=project_id), 'filterForm':form,
                                 'total_sales_count':total_sales_count,
                                 'total_sales_amount':total_sales_amount,
@@ -2237,8 +2237,8 @@ def season_income(request):
     to_month = int(request.GET.get('to_month', month.month))
     form = SeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
     ds = []
-    current = date(int(from_year), int(from_month), 1)
-    end = date(int(to_year), int(to_month), 1)
+    current = date(from_year, from_month, 1)
+    end = date(to_year, to_month, 1)
     while current <= end:
         q = Demand.objects.filter(year = current.year, month = current.month)
         if q.count() > 0:
@@ -2257,7 +2257,7 @@ def season_income(request):
         total_sale_count += p.total_sale_count
         total_amount += p.total_amount
     return render_to_response('Management/demand_season_list.html', 
-                              { 'start':date(int(from_year), int(from_month), 1), 'end':date(int(to_year), int(to_month), 1),
+                              { 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
                                 'projects':projects, 'filterForm':form},
                               context_instance=RequestContext(request))
 
