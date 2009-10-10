@@ -63,6 +63,8 @@
 <caption>מציג סה"כ {{projects|length}} פרוייקטים</caption>
 	<tr>
 		<th></th>
+		<th>ריכוז</th>
+		<th>PDF</th>
 		<th>שם היזם</th>
 		<th>שם הפרוייקט</th>
 		<th>מס' מכירות</th>
@@ -71,20 +73,28 @@
     {% for p in projects %}
 		<tr class="{% cycle 'row1' 'row2' %}" objid={{d.id}}>
 			<td><a href="{{p.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
+			<td>
+				<a href="/demandseason/?project={{p.id}}&from_year={{start.year}}&from_month={{start.month}}&to_year={{end.year}}&to_month={{end.month}}">
+				פתח
+				</a>
+			</td>
+			<td>
+				<a href="/reports/project_season/{{p.id}}/{{start.month}}/{{start.year}}/{{end.month}}/{{end.year}}">
+				<img src="/site_media/images/mail_new-48.png" width="15" height="15"/>
+				</a>
+			</td>
 			<td>{{ p.initiator }}</td>
 			<td>{{ p.name }}</td>
 			<td>{{ p.total_sale_count }}</td>
-			<td>
-				<a href="/demandseason/?project={{p.id}}&from_year={{start.year}}&from_month={{start.month}}&to_year={{end.year}}&to_month={{end.month}}">
-				{{p.total_amount|commaise}}
-				</a>
-			</td>
+			<td>{{p.total_amount|commaise}}<td>
+			<td>{{p.total_amount_notax|commaise}}<td>
 		</tr>
 	{% endfor %}
 	<tr height="30px" class="rowSum">
 		<td colspan="3" align="center">סיכום</td>
 		<td>{{total_sale_count}}</td>
 		<td>{{total_amount|commaise}} ש"ח</td>
+		<td>{{total_amount_notax|commaise}} ש"ח</td>
 	</tr>
 </table>
 {% endblock content %}

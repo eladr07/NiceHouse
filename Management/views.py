@@ -885,7 +885,8 @@ def demand_invoice_list(request):
     q = q.filter(date__gte=date(int(from_year), int(from_month), 1),
                  date__lt=date(int(to_month) == 12 and int(to_year) + 1 or int(to_year), int(to_month) == 12 and 1 or int(to_month) + 1, 1)
                  ).annotate(Count('demands'))
-    form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
+    form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month,
+                                      'project':project_id})
     paginator = Paginator([i for i in q if i.demands__count > 0], 25) 
 
     try:
@@ -913,7 +914,8 @@ def demand_payment_list(request):
     q = q.filter(payment_date__gte=date(int(from_year), int(from_month), 1),
                  payment_date__lt=date(int(to_month) == 12 and int(to_year) + 1 or int(to_year), int(to_month) == 12 and 1 or int(to_month) + 1, 1)
                  ).annotate(Count('demands'))
-    form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
+    form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month,
+                                      'project':project_id})
 
     paginator = Paginator([i for i in q if i.demands__count > 0], 25) 
 
@@ -2202,7 +2204,8 @@ def demand_season_list(request):
     from_month = int(request.GET.get('from_month', month.month))
     to_year = int(request.GET.get('to_year', month.year))
     to_month = int(request.GET.get('to_month', month.month))
-    form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
+    form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month,
+                                      'project':project_id})
     ds = []
     total_sales_count,total_sales_amount, total_sales_commission, total_amount = 0,0,0,0
     if project_id:
@@ -2246,20 +2249,25 @@ def season_income(request):
             ds.extend(q)
         current = date(current.month == 12 and current.year + 1 or current.year, current.month == 12 and 1 or current.month + 1, 1)
     projects = []
-    total_sale_count, total_amount = 0,0
+    total_sale_count, total_amount, total_amount_notax = 0,0,0
     for d in ds:
+        tax = Tax.objects.filter(date__lte=date(d.year, d.month,1)).latest().value / 100 + 1
         if not d.project in projects:
             projects.append(d.project)
         p = projects[projects.index(d.project)]
         if not hasattr(p,'total_amount'): p.total_amount = 0
+        if not hasattr(p,'total_amount_notax'): p.total_amount_notax = 0
         if not hasattr(p,'total_sale_count'): p.total_sale_count = 0
         p.total_amount += d.get_total_amount()
+        p.total_amount_notax += d.get_total_amount() / tax
         p.total_sale_count += d.get_sales().count()
         total_sale_count += d.get_sales().count()
         total_amount += d.get_total_amount()
+        total_amount += d.get_total_amount() / tax
     return render_to_response('Management/season_income.html', 
                               { 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
-                                'projects':projects, 'filterForm':form,'total_amount':total_amount,'total_sale_count':total_sale_count},
+                                'projects':projects, 'filterForm':form,'total_amount':total_amount,'total_sale_count':total_sale_count,
+                                'total_amount_notax':total_amount_notax},
                               context_instance=RequestContext(request))
 
 def demand_followup_list(request):
@@ -2269,7 +2277,8 @@ def demand_followup_list(request):
     from_month = int(request.GET.get('from_month', month.month))
     to_year = int(request.GET.get('to_year', month.year))
     to_month = int(request.GET.get('to_month', month.month))
-    form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
+    form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month,
+                                      'project':project_id})
     ds = []
     total_amount = 0
     if project_id:
