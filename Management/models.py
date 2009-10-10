@@ -1795,10 +1795,11 @@ class NHSaleSide(models.Model):
         if not terms: return amount
         nhmonth = self.nhsale.nhmonth
         tax = Tax.objects.filter(date__lte=date(nhmonth.year, nhmonth.month,1)).latest().value / 100 + 1
-        if terms.hire_type.id != HireType.SelfEmployed:
-            return amount
-        else:
-            return self.include_tax and amount or amount / tax
+        if self.include_tax and terms.hire_type.id != HireType.SelfEmployed:
+            amount = amount * tax
+        if not self.include_tax and terms.hire_type.id == HireType.SelfEmployed:
+            amount = amount / tax
+        return amount
     @property
     def employee2_pay(self):
         if self.employee2_commission == None or self.employee2 == None:
@@ -1808,10 +1809,11 @@ class NHSaleSide(models.Model):
         if not terms: return amount
         nhmonth = self.nhsale.nhmonth
         tax = Tax.objects.filter(date__lte=date(nhmonth.year, nhmonth.month,1)).latest().value / 100 + 1
-        if terms.hire_type.id != HireType.SelfEmployed:
-            return amount
-        else:
-            return self.include_tax and amount or amount / tax
+        if self.include_tax and terms.hire_type.id != HireType.SelfEmployed:
+            amount = amount * tax
+        if not self.include_tax and terms.hire_type.id == HireType.SelfEmployed:
+            amount = amount / tax
+        return amount
     @property
     def director_pay(self):
         if self.director_commission == None or self.director == None:
@@ -1821,10 +1823,11 @@ class NHSaleSide(models.Model):
         if not terms: return amount
         nhmonth = self.nhsale.nhmonth
         tax = Tax.objects.filter(date__lte=date(nhmonth.year, nhmonth.month,1)).latest().value / 100 + 1
-        if terms.hire_type.id != HireType.SelfEmployed:
-            return amount
-        else:
-            return self.include_tax and amount or amount / tax
+        if self.include_tax and terms.hire_type.id != HireType.SelfEmployed:
+            amount = amount * tax
+        if not self.include_tax and terms.hire_type.id == HireType.SelfEmployed:
+            amount = amount / tax
+        return amount
     @property
     def lawyers_pay(self):
         amount = 0
