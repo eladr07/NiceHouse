@@ -2258,12 +2258,13 @@ def season_income(request):
         if not hasattr(p,'total_amount'): p.total_amount = 0
         if not hasattr(p,'total_amount_notax'): p.total_amount_notax = 0
         if not hasattr(p,'total_sale_count'): p.total_sale_count = 0
-        p.total_amount += d.get_total_amount()
-        p.total_amount_notax += d.get_total_amount() / tax
+        amount = d.get_total_amount()
+        p.total_amount += amount
+        p.total_amount_notax += amount / tax
         p.total_sale_count += d.get_sales().count()
         total_sale_count += d.get_sales().count()
-        total_amount += d.get_total_amount()
-        total_amount += d.get_total_amount() / tax
+        total_amount += amount
+        total_amount += amount / tax
     return render_to_response('Management/season_income.html', 
                               { 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
                                 'projects':projects, 'filterForm':form,'total_amount':total_amount,'total_sale_count':total_sale_count,
