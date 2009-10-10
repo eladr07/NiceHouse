@@ -375,7 +375,7 @@ def projects_profit(request, tax):
                 if p.id == project.id:
                     if not p.employee_expense.has_key(s.employee):
                         p.employee_expense[s.employee]=0
-                    fixed_salary = salarys
+                    fixed_salary = salary
                     if tax == False and terms.hire_type.id == HireType.SelfEmployed:
                         fixed_salary = salary / tax_val
                     if tax == True and terms.hire_type.id != HireType.SelfEmployed:
