@@ -2242,7 +2242,7 @@ def season_income(request):
     while current <= end:
         q = Demand.objects.filter(year = current.year, month = current.month)
         if q.count() > 0:
-            ds.append(q[0])
+            ds.extend(q)
         current = date(current.month == 12 and current.year + 1 or current.year, current.month == 12 and 1 or current.month + 1, 1)
     projects = []
     total_sale_count, total_amount = 0,0
