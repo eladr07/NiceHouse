@@ -909,9 +909,9 @@ class EmployeeSalary(EmployeeSalaryBase):
         if not len(self.project_commission): return res
         if self.employee.main_project:
             for project, commission in self.project_commission.items():
-                res[project] = commission + (self.employee.main_project.id == project.id and self.check_amount or 0)
+                res[project] = commission + (self.employee.main_project.id == project.id and self.check_amount-self.commissions or 0)
         else:
-            check_part = self.check_amount / len(self.project_commission) 
+            check_part = (self.check_amount-self.commissions) / len(self.project_commission) 
             for project, commission in self.project_commission.items():
                 res[project] = commission + check_part
         return res 
