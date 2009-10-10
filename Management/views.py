@@ -358,7 +358,10 @@ def projects_profit(request, tax):
             tax_val = Tax.objects.filter(date__lte=date(d.year, d.month,1)).latest().value / 100 + 1
         for p in projects:
             if p.id == d.project.id:
-                total_amount = tax and d.get_total_amount() or d.get_total_amount() / tax_val
+                if tax:
+                    total_amount = d.get_total_amount()
+                else:
+                    total_amount = d.get_total_amount() / tax_val
                 p.total_income += total_amount
                 p.sale_count += d.get_sales().count()
                 total_income += total_amount
