@@ -54,14 +54,6 @@
 </div>
 <div class="clearBoth"></div>
 <div class="someIcon" style="width:100px;">
-	<img src="/site_media/images/edit_add-48.png" width="20" height="20" /> 
-	<a href="tax">כולל מע"מ</a>
-</div>
-<div class="someIcon" style="width:100px;">
-	<img src="/site_media/images/edit_remove-48.png" width="20" height="20" /> 
-	<a href="notax">לא כולל מע"מ</a>
-</div>
-<div class="someIcon" style="width:100px;">
 	<img src="/site_media/images/print-48.png" width="20" height="20"  alt="הדפסה" /> 
 	<a href="#">גרסה להדפסה</a>
 </div>
@@ -74,12 +66,12 @@
 		<th>שם היזם</th>
 		<th>שם הפרוייקט</th>
 		<th>מס' מכירות</th>
-		<th>סה"כ הכנסות<br>{{tax|yesno:"כולל מעמ,לא כולל מעמ"}}</th>
+		<th>סה"כ הכנסות<br>לא כולל מע"מ</th>
 		<th>% מסך <BR>המחזור</th>
 		<th>שם העובד</th>
-		<th>הוצאות שכר<BR>{{tax|yesno:"כולל מעמ,לא כולל מעמ"}}</th>
+		<th>הוצאות שכר<BR>לא כולל מע"מ</th>
 		<th>% שכר<BR>מההכנסות</th>
-		<th>רווח {{tax|yesno:"כולל מעמ,לא כולל מעמ"}}</th>
+		<th>רווח</th>
 	</tr>
     {% for p in projects %}
 		<tr class="{% cycle 'row1' 'row2' %}" objid={{d.id}}>

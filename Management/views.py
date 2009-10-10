@@ -328,7 +328,7 @@ def demand_calc(request, id):
         d.calc_sales_commission()
     return HttpResponseRedirect('/demandsold/%s/%s' % (d.year,d.month))
 
-def projects_profit(request, tax):
+def projects_profit(request):
     month = Demand.current_month()
     from_year = int(request.GET.get('from_year', month.year))
     from_month = int(request.GET.get('from_month', month.month))
@@ -354,14 +354,10 @@ def projects_profit(request, tax):
         p.sale_count, p.total_income, p.total_expense, p.relative_income, p.relative_expense_income, p.profit = 0,0,0,0,0,0
         p.employee_expense = {}
     for d in demands:
-        if tax == False:
-            tax_val = Tax.objects.filter(date__lte=date(d.year, d.month,1)).latest().value / 100 + 1
+        tax_val = Tax.objects.filter(date__lte=date(d.year, d.month,1)).latest().value / 100 + 1
         for p in projects:
             if p.id == d.project.id:
-                if tax:
-                    total_amount = d.get_total_amount()
-                else:
-                    total_amount = d.get_total_amount() / tax_val
+                total_amount = d.get_total_amount() / tax_val
                 p.total_income += total_amount
                 p.sale_count += d.get_sales().count()
                 total_income += total_amount
@@ -376,10 +372,8 @@ def projects_profit(request, tax):
                     if not p.employee_expense.has_key(s.employee):
                         p.employee_expense[s.employee]=0
                     fixed_salary = salary
-                    if tax == False and terms.hire_type.id == HireType.SelfEmployed:
+                    if terms.hire_type.id == HireType.SelfEmployed:
                         fixed_salary = salary / tax_val
-                    if tax == True and terms.hire_type.id != HireType.SelfEmployed:
-                        fixed_salary = salary * tax_val
                     p.employee_expense[s.employee] += fixed_salary
                     p.total_expense += fixed_salary
                     total_expense += fixed_salary

@@ -95,8 +95,7 @@ urlpatterns += patterns('Management.views',
      {'func':'demands_mispaid', 'template_name' : 'Management/project_demands_mispaid.html'}),
     (r'^demandsall$', 'demands_all'),
     
-    (r'^projectsprofit/tax$', 'projects_profit',{'tax':True}),
-    (r'^projectsprofit/notax$', 'projects_profit',{'tax':False}),
+    (r'^projectsprofit$', 'projects_profit'),
     
     (r'^buildings/add$', 'building_add'),
      
