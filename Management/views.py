@@ -385,7 +385,7 @@ def projects_profit(request):
         total_profit += p.profit
     
     return render_to_response('Management/projects_profit.html', 
-                              { 'projects':projects, 'tax':tax,
+                              { 'projects':projects,
                                 'filterForm':SeasonForm(initial={'from_year':from_year,'from_month':from_month,
                                                                  'to_year':to_year,'to_month':to_month}),
                                 'total_income':total_income,'total_expense':total_expense, 'total_profit':total_profit},
