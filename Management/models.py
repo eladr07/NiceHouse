@@ -906,6 +906,7 @@ class EmployeeSalary(EmployeeSalaryBase):
         return self.total_amount
     def project_salary(self):
         res = {}
+        if not len(self.project_commission): return res
         if self.employee.main_project:
             for project, commission in self.project_commission.items():
                 res[project] = commission + (self.employee.main_project.id == project.id and self.check_amount or 0)
