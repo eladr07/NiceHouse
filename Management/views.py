@@ -2249,7 +2249,7 @@ def season_income(request):
     for d in ds:
         if projects.count(d.project) == 0:
             projects.append(d.project)
-        p = projects.index(d.project)
+        p = projects[projects.index(d.project)]
         if not hasattr(p,'total_amount'): p.total_amount = 0
         if not hasattr(p,'total_sale_count'): p.total_sale_count = 0
         p.total_amount += d.get_total_amount()
