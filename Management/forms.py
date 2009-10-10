@@ -539,8 +539,8 @@ class NHEmployeeSalaryRefundForm(forms.ModelForm):
         fields= ('nhemployee', 'refund','refund_type')
 
 class TaskFilterForm(forms.Form):
-    status = forms.ChoiceField(initial = 'undone', choices = [('done', 'בוצעו'), ('undone','לא בוצעו'), ('all','הכל')])
-    sender = forms.ChoiceField(initial = 'others', choices = [('me', 'אני שלחתי'), ('others','נשלחו אלי')])
+    status = forms.ChoiceField(choices = [('done', 'בוצעו'), ('undone','לא בוצעו'), ('all','הכל')])
+    sender = forms.ChoiceField(choices = [('me', 'אני שלחתי'), ('others','נשלחו אלי')])
 
 class DemandReportForm(forms.Form):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label=ugettext('project'))

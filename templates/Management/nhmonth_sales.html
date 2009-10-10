@@ -4,10 +4,6 @@
 {{ block.super }}
 <script>
 	$(document).ready(function() {
-		$("#monthChange").click(function(event) {
-			event.preventDefault();
-			location.replace("/nhbranch/{{nhmonth.nhbranch.id}}/sales/" + $("#id_year").val() + "/" + $("#id_month").val())
-		});	
 		$("#monthClose").click(function(event) {
 			if (!confirm("האם אתה בטוח שברצונך לסגור את החודש ?"))
 				event.preventDefault();
@@ -21,10 +17,10 @@
 </div>
 <div class="clearBoth"></div>
 <div style="float:right;width:30%;">
-	<form method="POST">
+	<form method="GET">
 		<table class="dataTable">
 			<tr class="row1">
-				<td colspan="3" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש דרישה</td>
+				<td colspan="3" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש חודש</td>
 			</tr>
 			<tr class="row2">
 				{% for field in filterForm %}
@@ -33,7 +29,7 @@
 					{{ field }}
 				</td>
 				{% endfor %}
-				<td><input id="monthChange" type="button" value="חפש" class="button"/></td>
+				<td><input type="submit" value="חפש" class="button"/></td>
 			</tr>
 		</table>
 	</form>

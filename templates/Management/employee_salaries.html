@@ -37,10 +37,6 @@
 					alert('השכר אושר !');
 			});
 		});
-		$("#monthChange").click(function(event) {
-			event.preventDefault();
-			location.replace("/employeesalaries/" + $("#id_year").val() + "/" + $("#id_month").val())
-		});
 		$("#calcSalary").click(function(event) {
 			if (!confirm("האם אתה בטוח שברצונך לחשב את העמלות מחדש ?"))
 				event.preventDefault();
@@ -53,7 +49,7 @@
 	<div class="pageTitle">ריכוז שכר עובדים לחודש {{month|date:"M Y"}}</div>
 </div>
 <div class="clearBoth"></div>
-<form method="POST">
+<form method="GET">
 	<table class="dataTable" style="width: 30%;" border="1">
 		<tr class="row1">
 			<td colspan="3" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש</td>
@@ -65,7 +61,7 @@
 				{{ field }}
 			</td>
 			{% endfor %}
-			<td><input id="monthChange" type="button" value="חפש" class="button"/></td>
+			<td><input type="submit" value="חפש" class="button"/></td>
 		</tr>
 	</table>
 </form>

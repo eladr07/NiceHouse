@@ -24,13 +24,6 @@
 		});
 		//add fancybox
 		$(".fancybox").fancybox();
-		$("#monthChange").click(function(event) {
-			event.preventDefault();
-			var fields = new Array("project", "from_year", "from_month", "to_year", "to_month");
-			for (var i=0; i < fields.length; ++i )
-				fields[i] += "=" + $("#id_" + fields[i]).val()
-			location.replace("/demandinvoices/?" + fields.join("&"));
-		});
 	});
 </script>
 {% endblock header %}
@@ -40,7 +33,7 @@
 	</div>
 	<div class="clearBoth"></div>
 	<div style="float:right;width:70%;">
-		<form method="POST">
+		<form method="GET">
 			<table class="dataTable">
 				<tr class="row1">
 					<td colspan="6" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש תקופה</td>
@@ -52,7 +45,7 @@
 						{{ field }}
 					</td>
 					{% endfor %}
-					<td><input id="monthChange" type="button" value="חפש" class="button"/></td>
+					<td><input type="submit" value="חפש" class="button"/></td>
 				</tr>
 			</table>
 		</form>

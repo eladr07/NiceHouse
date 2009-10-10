@@ -214,18 +214,13 @@ def check_edit(request, id):
                               context_instance=RequestContext(request))
 
 def signup_list(request, project_id):
+    month = date.today()
+    y = int(request.GET.get('year', month.year))
+    m = int(request.GET.get('month', month.month))
+    month = datetime(y,m,1)
+    form = MonthFilterForm(initial={'year':y,'month':m})
     p = Project.objects.get(pk = project_id)
-    if request.method == 'POST':
-        filterForm = MonthFilterForm(request.POST)
-        if filterForm.is_valid():
-            y = int(filterForm.cleaned_data['year'])
-            m = int(filterForm.cleaned_data['month'])
-            month = datetime(y,m,1)
-            signups = p.signups(y, m)
-    else:
-        filterForm = MonthFilterForm()
-        signups = p.signups()
-        month = datetime.now()
+    signups = p.signups(y, m)
     return render_to_response('Management/signup_list.html', 
                           { 'project':p, 'signups':signups, 'month':month, 'filterForm':filterForm },
                           context_instance=RequestContext(request))
@@ -481,7 +476,10 @@ def employee_salary_approve(request, id):
     return HttpResponse('ok')
     
 @permission_required('Management.list_employeesalary')
-def employee_salary_list(request, year = date.today().year, month = date.today().month):
+def employee_salary_list(request):
+    current = date.today()
+    year = int(request.GET.get('year', current.year))
+    month = int(request.GET.get('month', current.month))
     for e in Employee.objects.active():
         es, new = EmployeeSalary.objects.get_or_create(employee = e, month = month, year = year)
         if new or not es.commissions or not es.base: 
@@ -494,7 +492,10 @@ def employee_salary_list(request, year = date.today().year, month = date.today()
                                context_instance=RequestContext(request))
 
 @permission_required('Management.list_nhemployeesalary')
-def nhemployee_salary_list(request, year=Demand.current_month().year, month=Demand.current_month().month):
+def nhemployee_salary_list(request):
+    current = Demand.current_month()
+    year = int(request.GET.get('year', current.year))
+    month = int(request.GET.get('month', current.month))
     for e in NHEmployee.objects.active():
         es, new = NHEmployeeSalary.objects.get_or_create(nhemployee = e, month = month, year = year)
         if new or not es.commissions or not es.base or not es.admin_commission: 
@@ -621,7 +622,9 @@ def nh_season_income(request):
                                'nhbranch':nhbranch },
                               context_instance=RequestContext(request))
     
-def nhmonth_sales(request, nhbranch_id, year=None, month=None):
+def nhmonth_sales(request, nhbranch_id):
+    year = int(request.GET.get('year', 0))
+    month = int(request.GET.get('month', 0))
     if year and month:
         q = NHMonth.objects.filter(nhbranch__id = nhbranch_id, year=year, month=month)
     else:
@@ -779,17 +782,15 @@ def demand_send_mail(demand, addr):
 
 @permission_required('Management.change_demand')
 def demands_send(request):
+    current = Demand.current_month()
+    y = int(request.GET.get('year', current.year))
+    m = int(request.GET.get('month', current.month))
+    form = MonthFilterForm(initial={'year':y,'month':m})
+    month = datetime(y,m,1)
+    ds = Demand.objects.filter(year = y, month = m)
     forms=[]
     if request.method == 'POST':
-        form = MonthFilterForm(request.POST)
-        if form.is_valid():
-            ds = Demand.objects.filter(year = form.cleaned_data['year'], month = form.cleaned_data['month'])
-            month = datetime(int(form.cleaned_data['year']),int(form.cleaned_data['month']),1)
-            error = True
-        else:
-            month = Demand.current_month()
-            error = False
-        for d in Demand.objects.filter(year=month.year, month=month.month):
+        for d in ds:
             f = DemandSendForm(request.POST, instance=d, prefix = str(d.id))
             if f.is_valid():
                 if f.cleaned_data['is_finished']:
@@ -804,9 +805,7 @@ def demands_send(request):
         if not error:
             return HttpResponseRedirect('/demandsold')
     else:
-        month = Demand.current_month()
-        form = MonthFilterForm()
-        for d in Demand.objects.filter(year=month.year, month=month.month):
+        for d in ds:
             if d.project.demand_contact:
                 initial = {'mail':d.project.demand_contact.mail,
                            'fax':d.project.demand_contact.fax}
@@ -1920,26 +1919,18 @@ def json_links(request):
 
 @login_required
 def task_list(request):
+    sender = request.GET.get('sender', 'others')
+    status = request.GET.get('status', 'undone')
+    filterForm = TaskFilterForm(initial={'sender':sender, 'status':status})
     tasks = request.user.tasks.filter(is_deleted = False)
-    if request.method=='POST':
-        filterForm = TaskFilterForm(request.POST)
-        if filterForm.is_valid():
-            sender = filterForm.cleaned_data['sender']
-            status = filterForm.cleaned_data['status']
-            if sender == 'me':
-                tasks = tasks.filter(sender = request.user)
-            if sender == 'others':
-                tasks = tasks.filter(user = request.user)
-            if status == 'done':
-                tasks = tasks.filter(is_done = True)
-            if status == 'undone':
-                tasks = tasks.filter(is_done = False)
-        else:
-            tasks = tasks.filter(is_done= False, user = request.user)
-            filterForm = TaskFilterForm()            
-    else:
-        tasks = tasks.filter(is_done= False, user = request.user)
-        filterForm = TaskFilterForm()
+    if sender == 'me':
+        tasks = tasks.filter(sender = request.user)
+    if sender == 'others':
+        tasks = tasks.filter(user = request.user)
+    if status == 'done':
+        tasks = tasks.filter(is_done = True)
+    if status == 'undone':
+        tasks = tasks.filter(is_done = False)
     
     return render_to_response('Management/task_list.html',
                               {'tasks': tasks, 'filterForm' : filterForm}, context_instance=RequestContext(request))
@@ -2261,8 +2252,13 @@ def demand_followup_list(request):
                                 'total_amount':total_amount},
                               context_instance=RequestContext(request))
 
-def employeesalary_season_list(request, employee_id=None, from_year=Demand.current_month().year, from_month=Demand.current_month().month, 
-                               to_year=Demand.current_month().year, to_month=Demand.current_month().month):
+def employeesalary_season_list(request):
+    month=Demand.current_month()
+    employee_id = int(request.GET.get('employee', 0))
+    from_year = int(request.GET.get('from_year', month.year))
+    from_month = int(request.GET.get('from_month', month.month))
+    to_year = int(request.GET.get('to_year', month.year))
+    to_month = int(request.GET.get('to_month', month.month))
     form = EmployeeSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
     salaries = []
     if employee_id:
