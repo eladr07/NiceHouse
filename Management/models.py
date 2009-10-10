@@ -486,10 +486,9 @@ class EmployeeBase(Person):
 
 class Employee(EmployeeBase):
     rank = models.ForeignKey('RankType', verbose_name=ugettext('rank'))
-   
     projects = models.ManyToManyField('Project', verbose_name=ugettext('projects'), related_name='employees', 
                                       null=True, blank=True)
-    
+    main_project = models.ForeignKey('Project', verbose_name=ugettext('main_project'), null=True, blank=True)
     objects = EmployeeManager()
     
     def get_open_reminders(self):
@@ -905,6 +904,16 @@ class EmployeeSalary(EmployeeSalaryBase):
         if not self.employee.employment_terms or self.employee.employment_terms.salary_net:
             return None
         return self.total_amount
+    def project_salary(self):
+        res = {}
+        if self.employee.main_project:
+            for project, commission in self.project_commission.items():
+                res[project] = commission + (self.employee.main_project.id == project.id and self.check_amount or 0)
+        else:
+            check_part = self.check_amount / len(self.project_commission) 
+            for project, commission in self.project_commission.items():
+                res[project] = commission + check_part
+        return res 
     def calculate(self):
         #clean any sale commission details associated with this salary
         for scd in SaleCommissionDetail.objects.filter(employee_salary=self):

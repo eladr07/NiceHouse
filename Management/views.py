@@ -363,7 +363,7 @@ def projects_profit(request):
                 break
     for s in salaries:
         s.calculate()
-        for project, commission in s.project_commission.items():
+        for project, commission in s.project_salary().items():
             for p in projects:
                 if p.id == project.id:
                     if not p.employee_expense.has_key(s.employee):

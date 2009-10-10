@@ -144,6 +144,8 @@ class EmployeeForm(forms.ModelForm):
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
         self.fields['work_start'].widget = forms.TextInput(attrs={'class':'vDateField'})
         self.fields['work_end'].widget = forms.TextInput(attrs={'class':'vDateField'})
+        if self.instance.id:
+            self.fields['main_project'].queryset = self.instance.projects
     class Meta:
         model = Employee
 
