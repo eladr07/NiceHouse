@@ -166,9 +166,9 @@ class ProjectCommissionForm(forms.ModelForm):
         model = ProjectCommission
 
 class EmployeeAddProjectForm(forms.Form):
-    project = forms.ModelChoiceField(queryset=Project.objects.active(), label=ugettext('project'))
     employee = forms.ModelChoiceField(queryset=Employee.objects.active(), label=ugettext('employee'))
-    start_date = forms.DateField(label=ugettext('start_date'))
+    project = forms.ModelChoiceField(queryset=Project.objects.active(), label=ugettext('project'))
+    start_date = forms.DateField(label=ugettext('start date'))
     def save(self):
         project = self.cleaned_date['project']
         employee.projects.add(project)
