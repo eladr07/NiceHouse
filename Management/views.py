@@ -1097,7 +1097,7 @@ def nhsale_add(request, branch_id):
                 for p in payment1Forms.save():
                     side1.payments.add(p)
             else:
-                error = payment1Forms.has_changed()
+                error = True
             if invoice2Form.is_valid():
                 side2.invoices.add(invoice2Form.save())
             else:
@@ -1106,7 +1106,7 @@ def nhsale_add(request, branch_id):
                 for p in payment2Forms.save():
                     side2.payments.add(p)
             else:
-                error = payment2Forms.has_changed()
+                error = True
             if not error:
                 if request.POST.has_key('addanother'):
                     return HttpResponseRedirect('add')
