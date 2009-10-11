@@ -2,7 +2,7 @@
 import sys
 from django.utils.translation import ugettext
 from models import *
-from datetime import datetime
+from datetime import datetime, date
 
 class ContactForm(forms.ModelForm):
     def __init__(self, *args, **kw):
@@ -164,7 +164,19 @@ class ProjectCommissionForm(forms.ModelForm):
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'5'})
     class Meta:
         model = ProjectCommission
-                        
+
+class EmployeeAddProjectForm(forms.Form):
+    project = forms.ModelChoiceField(queryset=Project.objects.active(), label=ugettext('project'))
+    employee = forms.ModelChoiceField(queryset=Employee.objects.active(), label=ugettext('employee'))
+    start_date = forms.DateField(label=ugettext('start_date'))
+    def save(self):
+        project = self.cleaned_date['project']
+        employee.projects.add(project)
+        employee.commissions.add(EPCommission(project = project, start_date = date.today()))
+    def __init__(self, *args, **kw):
+        super(EmployeeAddProjectForm, self).__init__(*args, **kw)
+        self.fields['start_date'].widget.attrs = {'class':'vDateField'}
+    
 class BDiscountSaveForm(forms.ModelForm):
     class Meta:
         model = BDiscountSave

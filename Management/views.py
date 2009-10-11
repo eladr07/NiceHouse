@@ -1461,6 +1461,29 @@ def project_contact(request, project_id, demand=False, payment=False):
                               { 'form':form, 'existForm':existForm },
                               context_instance=RequestContext(request))
 
+@permission_required('Management.change_employee')
+def employee_project_add(request, employee_id):
+    if request.method == 'POST':
+        form = EmployeeAddProjectForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = EmployeeAddProjectForm(initial={'employee':employee_id})
+    return render_to_response('Management/object_edit.html', 
+                              { 'form':form },
+                              context_instance=RequestContext(request))
+
+@permission_required('Management.change_employee')
+def employee_project_remove(request, employee_id, project_id):
+    project = Project.objects.get(pk = project_id)
+    employee = Employee.objects.get(pk = employee_id)
+    q = employee.commissions.filter(project = project)
+    if q.count() > 0:
+        q[0].end_date = date.today()
+        q[0].save()
+    employee.projects.remove(project)
+    return HttpResponseRedirect(employee.get_absolute_url())
+
 @permission_required('Management.change_contact')
 def project_removecontact(request, id, project_id):
     p = Project.objects.get(pk=project_id)

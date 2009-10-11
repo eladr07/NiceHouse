@@ -487,7 +487,7 @@ class EmployeeBase(Person):
 class Employee(EmployeeBase):
     rank = models.ForeignKey('RankType', verbose_name=ugettext('rank'))
     projects = models.ManyToManyField('Project', verbose_name=ugettext('projects'), related_name='employees', 
-                                      null=True, blank=True)
+                                      null=True, blank=True, editable=False)
     main_project = models.ForeignKey('Project', verbose_name=ugettext('main_project'), null=True, blank=True)
     objects = EmployeeManager()
     
@@ -940,12 +940,20 @@ class EmployeeSalary(EmployeeSalaryBase):
 class EPCommission(models.Model):
     employee = models.ForeignKey('Employee', related_name='commissions')
     project = models.ForeignKey('Project', related_name= 'epcommission')
-    c_var = models.OneToOneField('CVar', related_name= 'epcommission', null=True)
-    c_var_precentage = models.OneToOneField('CVarPrecentage', related_name= 'epcommission', null=True)
-    c_by_price = models.OneToOneField('CByPrice', related_name= 'epcommission', null= True)
-    b_house_type = models.OneToOneField('BHouseType', related_name= 'epcommission', null=True)
-    b_discount_save = models.OneToOneField('BDiscountSave', related_name= 'epcommission', null=True)
-    b_sale_rate = models.OneToOneField('BSaleRate', related_name= 'epcommission', null=True)
+    start_date = models.DateField(ugettext('start_date'))
+    end_date = models.DateField(ugettext('end_date'), null=True, blank=True)
+    c_var = models.OneToOneField('CVar', related_name= 'epcommission', null=True, editable=False)
+    c_var_precentage = models.OneToOneField('CVarPrecentage', related_name= 'epcommission', null=True, editable=False)
+    c_by_price = models.OneToOneField('CByPrice', related_name= 'epcommission', null= True, editable=False)
+    b_house_type = models.OneToOneField('BHouseType', related_name= 'epcommission', null=True, editable=False)
+    b_discount_save = models.OneToOneField('BDiscountSave', related_name= 'epcommission', null=True, editable=False)
+    b_sale_rate = models.OneToOneField('BSaleRate', related_name= 'epcommission', null=True, editable=False)
+    def is_active(self, date=date.today()):
+        if not end_date:
+            return True
+        if date > self.start_date and date < self.end_date:
+            return True
+        return False 
     def calc(self, sales, salary):
         dic = {}# key: sale value: commission amount for sale
         for c in ['c_var', 'c_by_price', 'b_house_type', 'b_discount_save']:
