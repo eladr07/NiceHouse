@@ -60,7 +60,7 @@
 		<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}}>
 			<td>{{nhm.month}}/{{nhm.year}}</a></td>
 			<td></td>
-			<td><a href="/nhbranch/{{nhm.nhbranch.id}}/sales/{{nhm.year}}/{{nhm.month}}" target="_blank">{{nhm.nhsales.count}}</td>
+			<td><a href="/nhbranch/{{nhm.nhbranch.id}}/sales/?year={{nhm.year}}?month={{nhm.month}}" target="_blank">{{nhm.nhsales.count}}</td>
 			<td>{{nhm.avg_signed_commission}}</td>
 			<td>{{nhm.avg_actual_commission}}</td>
 			<td>{{nhm.total_income|commaise}}</td>
