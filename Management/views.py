@@ -1087,7 +1087,7 @@ def nhsale_add(request, branch_id):
         if saleForm.is_valid() and side1Form.is_valid() and side2Form.is_valid():
             nhsale = saleForm.save()
             side1Form.instance.nhsale = side2Form.instance.nhsale = nhsale
-            side1, side2 = (side1Form.save(), side2Form.save())
+            side1, side2 = side1Form.save(), side2Form.save()
             error = False
             if invoice1Form.is_valid():
                 side1.invoices.add(invoice1Form.save())
@@ -1119,9 +1119,9 @@ def nhsale_add(request, branch_id):
         side1Form = NHSaleSideForm(prefix='side1')
         side2Form = NHSaleSideForm(prefix='side2')
         invoice1Form = InvoiceForm(prefix='invoice1')
-        payment1Forms = PaymentFormset(prefix='payments1')
+        payment1Forms = PaymentFormset(prefix='payments1', queryset=Payment.objects.none())
         invoice2Form = InvoiceForm(prefix='invoice2')
-        payment2Forms = PaymentFormset(prefix='payments2')
+        payment2Forms = PaymentFormset(prefix='payments2', queryset=Payment.objects.none())
         
     return render_to_response('Management/nhsale_add.html',
                               {'monthForm':monthForm, 'saleForm':saleForm, 
