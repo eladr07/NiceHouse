@@ -349,7 +349,7 @@ def projects_profit(request):
     for d in demands:
         if d.project not in projects:
             projects.append(d.project)
-    total_income, total_expense, total_profit = 0,0,0
+    total_income, total_expense, total_profit, avg_relative_expense_income = 0,0,0,0
     for p in projects:
         p.sale_count, p.total_income, p.total_expense, p.relative_income, p.relative_expense_income, p.profit = 0,0,0,0,0,0
         p.employee_expense = {}
@@ -383,12 +383,15 @@ def projects_profit(request):
         p.relative_expense_income = p.total_income and (p.total_expense / p.total_income * 100) or 100
         p.profit = p.total_income - p.total_expense
         total_profit += p.profit
+        avg_relative_expense_income += p.relative_expense_income
+    avg_relative_expense_income = avg_relative_expense_income / len(projects)
     
     return render_to_response('Management/projects_profit.html', 
                               { 'projects':projects,
                                 'filterForm':SeasonForm(initial={'from_year':from_year,'from_month':from_month,
                                                                  'to_year':to_year,'to_month':to_month}),
-                                'total_income':total_income,'total_expense':total_expense, 'total_profit':total_profit},
+                                'total_income':total_income,'total_expense':total_expense, 'total_profit':total_profit,
+                                'avg_relative_expense_income':avg_relative_expense_income},
                               context_instance=RequestContext(request))
 
 @permission_required('Management.list_demand')
