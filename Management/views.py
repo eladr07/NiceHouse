@@ -2264,7 +2264,7 @@ def season_income(request):
         p.total_sale_count += d.get_sales().count()
         total_sale_count += d.get_sales().count()
         total_amount += amount
-        total_amount += amount / tax
+        total_amount_notax += amount / tax
     return render_to_response('Management/season_income.html', 
                               { 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
                                 'projects':projects, 'filterForm':form,'total_amount':total_amount,'total_sale_count':total_sale_count,
