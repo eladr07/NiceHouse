@@ -18,8 +18,8 @@ from mail import mail
 
 @login_required
 def index(request):
-    '''
-    for p_id in [21]:
+    
+    for p_id in [21,5]:
         for m in range(1,9):
             q = Demand.objects.filter(project__id = p_id, year = 2009, month=m)
             if q.count() == 0:
@@ -36,7 +36,7 @@ def index(request):
             d = Demand.objects.get(project__id = p_id, year = 2009, month=m)
             d.finish()
             time.sleep(1)
-    '''
+    
     return render_to_response('Management/index.html',
                               {'locateHouseForm':LocateHouseForm(),
                                'nhbranches':NHBranch.objects.all()},
