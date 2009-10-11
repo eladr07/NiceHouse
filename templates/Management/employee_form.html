@@ -51,7 +51,6 @@
 	<div id="leftSide"> 
 	{% if form.instance.id %}
 		{% if user.is_staff %}
-		<div>
 			<fieldset class="cardFieldset" style="float:right; width:45%">
 				<legend>תנאי העסקה</legend>
 				{% if form.instance.employment_terms %}
@@ -124,7 +123,7 @@
 					</a>
 				{% endif %}
 			</fieldset>
-		</div>
+			<div class="clearBoth"></div>
 			{% for c in form.instance.commissions.all %}
 			<fieldset class="cardFieldset">
 				<legend>עמלות למנהל מכירות בגין פרוייקט {{c.project}}</legend>
