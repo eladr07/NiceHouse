@@ -1315,16 +1315,23 @@ def project_edit(request, id):
                               context_instance=RequestContext(request))
   
 @login_required  
-def project_commission_del(request, project_id, attribute):
+def project_commission_del(request, project_id, commission):
     project = Project.objects.get(pk = project_id)
-    c = project.commissions
-    obj = getattr(c, attribute)
+    c = project.commissions    
+    for field in c._meta.fields:
+        if abbrevate(field.name) == commission:
+            obj = getattr(c, field.name)
+            break
     #unlink commission from project
-    setattr(c, attribute, None)
+    setattr(c, commission, None)
     project.commissions.save()
     #delete commission
     obj.delete()
     return HttpResponseRedirect('/projects/%s' % project.id)
+
+@login_required
+def project_commission_add(request, project_id, commission):
+    return getattr(inspect.getmodule(project_commission_add), 'project_' + commission)(request, project_id)
 
 @login_required
 def employee_commission_del(request, employee_id, project_id, commission):
@@ -1335,7 +1342,7 @@ def employee_commission_del(request, employee_id, project_id, commission):
             obj = getattr(c, field.name)
             break
     #unlink commission from employee
-    setattr(c, attribute, None)
+    setattr(c, commission, None)
     c.save()
     #delete commission
     obj.delete()
