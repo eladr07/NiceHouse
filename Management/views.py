@@ -1026,7 +1026,7 @@ def nhsaleside_payment_add(request, object_id):
                 form = PaymentForm()
     else:
         form = PaymentForm()
-    return render_to_response('Management/payment_edit.html', 
+    return render_to_response('Management/object_edit.html', 
                               { 'form':form }, context_instance=RequestContext(request))
     
 @permission_required('Management.add_invoice')
@@ -1039,7 +1039,7 @@ def nhsaleside_invoice_add(request, object_id):
             nhs.invoices.add(i)
     else:
         form = InvoiceForm()
-    return render_to_response('Management/invoice_edit.html', 
+    return render_to_response('Management/object_edit.html', 
                               { 'form':form }, context_instance=RequestContext(request))
 
  
