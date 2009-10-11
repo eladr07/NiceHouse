@@ -593,7 +593,7 @@ def nh_season_income(request):
     from_month = m = int(request.GET.get('from_month', month.month))
     to_year = int(request.GET.get('to_year', month.year))
     to_month = int(request.GET.get('to_month', month.month))
-    form = NHBranchSeasonForm(initial={'nhbranch':nhbranch.id,'from_year':from_year, 'from_month':from_month,
+    form = NHBranchSeasonForm(initial={'nhbranch':nhbranch_id,'from_year':from_year, 'from_month':from_month,
                                        'to_year':to_year, 'to_month':to_month})
     while date(y,m,1) <= date(to_year, to_month, 1):
         q = NHMonth.objects.filter(nhbranch__id = nhbranch_id, year = y, month = m)
