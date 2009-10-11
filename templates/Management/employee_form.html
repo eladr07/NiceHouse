@@ -51,6 +51,7 @@
 	<div id="leftSide"> 
 	{% if form.instance.id %}
 		{% if user.is_staff %}
+		<div>
 			<fieldset class="cardFieldset" style="float:right; width:45%">
 				<legend>תנאי העסקה</legend>
 				{% if form.instance.employment_terms %}
@@ -85,44 +86,45 @@
 					</a>
 				{% endif %}
 			</fieldset>
-		<fieldset class="cardFieldset" style="float:right; width:45%">
-			<legend>פרטי חשבון</legend>
-			{% if form.instance.account %}
-				<table class="formTable">
-				{% with form.instance.account as a %}
-					<tr>
-						<th>מס' חשבון</th>
-						<td>{{a.num}}</td>
-					</tr>
-					<tr>
-						<th>בנק</th>
-						<td>{{a.bank}}</td>
-					</tr>
-					<tr>
-						<th>סניף</th>
-						<td>{{a.branch}}</td>
-					</tr>
-					<tr>
-						<th>מס' סניף</th>
-						<td>{{a.branch_num}}</td>
-					</tr>
-					<tr>
-						<th>שם המוטב</th>
-						<td>{{a.payee}}</td>
-					</tr>						
-				{% endwith %}
-				</table>
-				<a href="account" class="fancybox" style="text-decoration:none;">
-					שינוי פרטי חשבון
-					<img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="שינוי" />
-				</a>
-			{% else %}
-				<a href="account" class="fancybox" style="text-decoration:none;">
-					הזנת פרטי חשבון
-					<img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="חדש" />
-				</a>
-			{% endif %}
-		</fieldset>
+			<fieldset class="cardFieldset" style="float:right; width:45%">
+				<legend>פרטי חשבון</legend>
+				{% if form.instance.account %}
+					<table class="formTable">
+					{% with form.instance.account as a %}
+						<tr>
+							<th>מס' חשבון</th>
+							<td>{{a.num}}</td>
+						</tr>
+						<tr>
+							<th>בנק</th>
+							<td>{{a.bank}}</td>
+						</tr>
+						<tr>
+							<th>סניף</th>
+							<td>{{a.branch}}</td>
+						</tr>
+						<tr>
+							<th>מס' סניף</th>
+							<td>{{a.branch_num}}</td>
+						</tr>
+						<tr>
+							<th>שם המוטב</th>
+							<td>{{a.payee}}</td>
+						</tr>						
+					{% endwith %}
+					</table>
+					<a href="account" class="fancybox" style="text-decoration:none;">
+						שינוי פרטי חשבון
+						<img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="שינוי" />
+					</a>
+				{% else %}
+					<a href="account" class="fancybox" style="text-decoration:none;">
+						הזנת פרטי חשבון
+						<img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="חדש" />
+					</a>
+				{% endif %}
+			</fieldset>
+		</div>
 			{% for c in form.instance.commissions.all %}
 			<fieldset class="cardFieldset">
 				<legend>עמלות למנהל מכירות בגין פרוייקט {{c.project}}</legend>
