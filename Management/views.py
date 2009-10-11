@@ -2246,11 +2246,13 @@ def season_income(request):
     ds = []
     current = date(from_year, from_month, 1)
     end = date(to_year, to_month, 1)
+    month_count = 0
     while current <= end:
         q = Demand.objects.filter(year = current.year, month = current.month)
         if q.count() > 0:
             ds.extend(q)
         current = date(current.month == 12 and current.year + 1 or current.year, current.month == 12 and 1 or current.month + 1, 1)
+        month_count += 1
     projects = []
     total_sale_count, total_amount, total_amount_notax = 0,0,0
     for d in ds:
@@ -2271,7 +2273,8 @@ def season_income(request):
     return render_to_response('Management/season_income.html', 
                               { 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
                                 'projects':projects, 'filterForm':form,'total_amount':total_amount,'total_sale_count':total_sale_count,
-                                'total_amount_notax':total_amount_notax},
+                                'total_amount_notax':total_amount_notax,'avg_sale_count':total_sale_count/month_count,
+                                'avg_amount':total_amount/month_count,'avg_amount_notax':total_amount_notax/month_count},
                               context_instance=RequestContext(request))
 
 def demand_followup_list(request):

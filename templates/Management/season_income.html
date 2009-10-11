@@ -67,6 +67,7 @@
 		<th>PDF</th>
 		<th>שם היזם</th>
 		<th>שם הפרוייקט</th>
+		<th>ת. סיום</th>
 		<th>מס' מכירות</th>
 		<th>סה"כ הכנסות<br>כולל מע"מ</th>
 		<th>סה"כ הכנסות<br>לא כולל מע"מ</th>
@@ -75,7 +76,7 @@
 		<tr class="{% cycle 'row1' 'row2' %}" objid={{d.id}}>
 			<td><a href="{{p.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
 			<td>
-				<a target="_blank" href="/demandseason/?project={{p.id}}&from_year={{start.year}}&from_month={{start.month}}&to_year={{end.year}}&to_month={{end.month}}">
+				<a href="/demandseason/?project={{p.id}}&from_year={{start.year}}&from_month={{start.month}}&to_year={{end.year}}&to_month={{end.month}}">
 				פתח
 				</a>
 			</td>
@@ -86,6 +87,7 @@
 			</td>
 			<td>{{ p.initiator }}</td>
 			<td>{{ p.name }}</td>
+			<td>{{ p.end_date|default_if_none:"" }}</td>
 			<td>{{ p.total_sale_count }}</td>
 			<td>{{p.total_amount|commaise}}</td>
 			<td>{{p.total_amount_notax|commaise}}</td>
@@ -96,6 +98,12 @@
 		<td>{{total_sale_count}}</td>
 		<td>{{total_amount|commaise}} ש"ח</td>
 		<td>{{total_amount_notax|commaise}} ש"ח</td>
+	</tr>
+	<tr height="30px" class="rowSum">
+		<td colspan="5" align="center">ממוצע לחודש</td>
+		<td>{{avg_sale_count|floatformat:-2}}</td>
+		<td>{{avg_amount|commaise}} ש"ח</td>
+		<td>{{avg_amount_notax|commaise}} ש"ח</td>
 	</tr>
 </table>
 {% endblock content %}
