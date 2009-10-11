@@ -608,7 +608,7 @@ def nh_season_income(request):
         e.season_total, e.season_total_notax, e.season_branch_income_notax = 0, 0, 0
     for nhm in nhmonth_set:
         nhm.employees = list(nhm.nhbranch.nhemployees.all())
-        tax = Tax.objects.filter(date__lte=date(self.year, self.month,1)).latest().value / 100 + 1
+        tax = Tax.objects.filter(date__lte=date(nhm.year, nhm.month,1)).latest().value / 100 + 1
         for e in nhm.employees:
             e.month_total = 0
         for nhs in nhm.nhsales.all():
