@@ -1349,7 +1349,7 @@ def abbrevate(s):
 
 @login_required
 def employee_commission_add(request, employee_id, project_id, commission):
-    return getattr(inspect.getmodule(employee_commission_add), 'employee_' + attribute)(request, employee_id, project_id)
+    return getattr(inspect.getmodule(employee_commission_add), 'employee_' + commission)(request, employee_id, project_id)
         
 @permission_required('Management.add_cvarprecentage')
 def project_cvp(request, project_id):
