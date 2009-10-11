@@ -39,16 +39,20 @@
 					</td>
 				</tr>
 			{% endfor %}
-			<tr>
-				<th>פרוייקטים</th>
-				<td>
-					{% for p in form.instance.projects.all %}
-						{{p}} 
-						<a href="removeproject/{{p.id}}" class="fancybox">סיים העסקה בפרוייקט</a><br>
-					{% endfor %}
-					<a href="addproject" class="fancybox">העסק בפרוייקט חדש</a>
-				</td>
-			</tr>
+				<tr>
+					<td></td>
+					<th>פרוייקטים</th>
+				</tr>
+			{% for p in form.instance.projects.all %}
+				<tr>
+					<td>{{p}}</td>
+					<td><a href="removeproject/{{p.id}}" class="fancybox">סיים העסקה בפרוייקט</a></td>
+				</tr>
+			{% endfor %}
+				<tr>
+					<td></td>
+					<td><a href="addproject" class="fancybox">העסק בפרוייקט חדש</a></td>
+				</tr>
 			</table>
 		</fieldset>
 			<tr>

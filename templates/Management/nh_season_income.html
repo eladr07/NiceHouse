@@ -90,5 +90,11 @@
 		<td>{{nhe.season_total_notax|commaise}}</td>
 		{% endfor %}		
 	</tr>
+	<tr class="rowSumGreen">
+		<td colspan="8">סה"כ הכנסות לסניף ללא מע"מ</td>
+		{% for nhe in employees %}
+		<td>{{nhe.season_branch_income_notax|commaise}}</td>
+		{% endfor %}		
+	</tr>
 </table>
 {% endblock content %}

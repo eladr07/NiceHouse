@@ -351,7 +351,7 @@ def projects_profit(request):
     for d in demands:
         if d.project not in projects:
             projects.append(d.project)
-    total_income, total_expense, total_profit, avg_relative_expense_income = 0,0,0,0
+    total_income, total_expense, total_profit, avg_relative_expense_income, total_sale_count = 0,0,0,0,0
     for p in projects:
         p.sale_count, p.total_income, p.total_expense, p.relative_income, p.relative_expense_income, p.profit = 0,0,0,0,0,0
         p.employee_expense = {}
@@ -360,8 +360,10 @@ def projects_profit(request):
         for p in projects:
             if p.id == d.project.id:
                 total_amount = d.get_total_amount() / tax_val
+                sale_count = d.get_sales().count()
                 p.total_income += total_amount
-                p.sale_count += d.get_sales().count()
+                p.sale_count += sale_count
+                total_sale_count += sale_count
                 total_income += total_amount
                 break
     for s in salaries:
@@ -393,7 +395,7 @@ def projects_profit(request):
                                 'filterForm':SeasonForm(initial={'from_year':from_year,'from_month':from_month,
                                                                  'to_year':to_year,'to_month':to_month}),
                                 'total_income':total_income,'total_expense':total_expense, 'total_profit':total_profit,
-                                'avg_relative_expense_income':avg_relative_expense_income},
+                                'avg_relative_expense_income':avg_relative_expense_income,'total_sale_count':total_sale_count},
                               context_instance=RequestContext(request))
 
 @permission_required('Management.list_demand')
@@ -524,7 +526,7 @@ def employee_salary_pdf(request, year, month):
     p = open(filename,'w+')
     p.flush()
     p.close()
-    EmployeeSalariesWriter([es for es in models.EmployeeSalary.objects.filter(year = year, month= month, nhemployee=None)
+    EmployeeSalariesWriter([es for es in EmployeeSalary.objects.filter(year = year, month= month, nhemployee=None)
                             if es.approved_date], u'שכר עבודה למנהלי פרויקטים לחודש %s\%s' % (self.year, self.month),
                             show_month=False, show_employee=True).build(filename)
     p = open(filename,'r')
@@ -591,6 +593,8 @@ def nh_season_income(request):
     from_month = m = int(request.GET.get('from_month', month.month))
     to_year = int(request.GET.get('to_year', month.year))
     to_month = int(request.GET.get('to_month', month.month))
+    form = NHBranchSeasonForm(initial={'nhbranch':nhbranch.id,'from_year':from_year, 'from_month':from_month,
+                                       'to_year':to_year, 'to_month':to_month})
     while date(y,m,1) <= date(to_year, to_month, 1):
         q = NHMonth.objects.filter(nhbranch__id = nhbranch_id, year = y, month = m)
         if q.count() > 0:
@@ -600,20 +604,23 @@ def nh_season_income(request):
     nhbranch = NHBranch.objects.get(pk=nhbranch_id)
     season_income, season_net_income, season_income_notax, season_net_income_notax = 0, 0, 0, 0
     employees = list(nhbranch.nhemployees.all())
+    for e in employees:
+        e.season_total, e.season_total_notax, e.season_branch_income_notax = 0, 0, 0
     for nhm in nhmonth_set:
         nhm.employees = list(nhm.nhbranch.nhemployees.all())
+        for e in nhm.employees:
+            e.month_total = 0
         for nhs in nhm.nhsales.all():
             for nhss in nhs.nhsaleside_set.all():
                 for e in employees:
                     nhss.include_tax = True
-                    if not hasattr(e, 'season_total'): e.season_total = 0
                     e.season_total += nhss.get_employee_pay(e)
-                    if not hasattr(e, 'season_total_notax'): e.season_total_notax = 0
                     nhss.include_tax = False
                     e.season_total_notax += nhss.get_employee_pay(e)
+                    if nhss.signing_advisor == e:
+                        e.season_branch_income_notax += nhss.income
                 for e in nhm.employees:
                     nhss.include_tax = True
-                    if not hasattr(e, 'month_total'): e.month_total = 0
                     e.month_total += nhss.get_employee_pay(e)
         nhm.include_tax = False
         season_income_notax += nhm.total_income
@@ -622,8 +629,6 @@ def nh_season_income(request):
         season_income += nhm.total_income
         season_net_income += nhm.total_net_income
         
-    form = NHBranchSeasonForm(initial={'nhbranch':nhbranch.id,'from_year':from_year, 'from_month':from_month,
-                                       'to_year':to_year, 'to_month':to_month})
     return render_to_response('Management/nh_season_income.html', 
                               { 'nhmonths':nhmonth_set, 'filterForm':form, 'employees':employees,
                                'season_income':season_income,'season_net_income':season_net_income,
@@ -2315,11 +2320,13 @@ def season_income(request):
         total_sale_count += d.get_sales().count()
         total_amount += amount
         total_amount_notax += amount / tax
+    for p in projects:
+        p.avg_sale_count = p.total_sale_count / month_count
     return render_to_response('Management/season_income.html', 
                               { 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
                                 'projects':projects, 'filterForm':form,'total_amount':total_amount,'total_sale_count':total_sale_count,
-                                'total_amount_notax':total_amount_notax,'avg_sale_count':total_sale_count/month_count,
-                                'avg_amount':total_amount/month_count,'avg_amount_notax':total_amount_notax/month_count},
+                                'total_amount_notax':total_amount_notax,'avg_amount':total_amount/month_count,
+                                'avg_amount_notax':total_amount_notax/month_count},
                               context_instance=RequestContext(request))
 
 def demand_followup_list(request):
