@@ -6,9 +6,6 @@
 	$(document).ready(function() {
 		$("input[type!='submit']").attr("class", "inputText");
 		$("select").attr("class", "inputText");
-		$("button[id^='add_commissions']").click(function (event) {
-			$("#new_commissions").toggle();//show/hide new commission
-		});
 		$("a[id*='commission_delete']").click(function (event) { 
 			var answer = confirm("האם אתה בטוח שברצונך למחוק את העמלה שנבחרה ?");
 			if (!answer)
@@ -91,116 +88,115 @@
 			{% for c in form.instance.commissions.all %}
 			<fieldset class="cardFieldset">
 				<legend>עמלות למנהל מכירות בגין פרוייקט {{c.project}}</legend>
-				{% if c.c_var %}
-					<div>
-						<table class="formTable" style="text-align:center;">
-							<th>דירה</th>
-							<th>סכום</th>
-							{% for a in c.c_var.amounts.all %}
+				<div style="float:right; width:45%">
+					{% if c.c_var %}
+						<div>
+							<table class="formTable" style="text-align:center;">
+								<th>דירה</th>
+								<th>סכום</th>
+								{% for a in c.c_var.amounts.all %}
+									<tr>
+										<td>{{a.index}}</td>
+										<td>{{a.amount}} ש"ח</td>
+									</tr>
+								{% endfor %}
 								<tr>
-									<td>{{a.index}}</td>
-									<td>{{a.amount}} ש"ח</td>
+									<td></td>
+									<td>{{c.c_var.is_retro|yesno:"רטרואקטיבי,לא רטרואקטיבי"}}</td>
 								</tr>
-							{% endfor %}
-							<tr>
-								<td></td>
-								<td>{{c.c_var.is_retro|yesno:"רטרואקטיבי,לא רטרואקטיבי"}}</td>
-							</tr>
-						</table>
-						<a id="edit_cv" href="cv/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
-						<a href="cv/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
-					</div>
-				{% endif %}
-				{% if c.c_var_precentage %} 
-					<div>
-						<table class="formTable" style="text-align:center;">
-							<th>דירה</th>
-							<th>סכום</th>
-							{% for p in c.c_var_precentage.precentages.all %}
+							</table>
+							<a id="edit_cv" href="cv/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+							<a id="commission_delete_cv" href="cv/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+						</div>
+					{% endif %}
+					{% if c.c_var_precentage %} 
+						<div>
+							<table class="formTable" style="text-align:center;">
+								<th>דירה</th>
+								<th>סכום</th>
+								{% for p in c.c_var_precentage.precentages.all %}
+									<tr>
+										<td>{{p.index}}</td>
+										<td>{{p.precentage}}%</td>
+									</tr>
+								{% endfor %}
 								<tr>
-									<td>{{p.index}}</td>
-									<td>{{p.precentage}}%</td>
+									<td></td>
+									<td>
+										{% if c.c_var_precentage.is_retro %}
+											רטרואקטיבי מדירה {{c.c_var_precentage.start_retro}}
+										{% else %}
+											לא רטרואקטיבי
+										{% endif %}
+									</td>
 								</tr>
-							{% endfor %}
-							<tr>
-								<td></td>
-								<td>
-									{% if c.c_var_precentage.is_retro %}
-										רטרואקטיבי מדירה {{c.c_var_precentage.start_retro}}
-									{% else %}
-										לא רטרואקטיבי
-									{% endif %}
-								</td>
-							</tr>
-						</table>			
-						<a id="edit_cvp" href="cvp/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
-						<a href="cvp/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
-					</div>
-				{% endif %}
-				{% if c.c_by_price %}	
-					<div>
-						<table class="formTable" style="text-align:center;">
-							<th>עד מחיר</th>
-							<th>סכום</th>
-							{% for pa in c.c_by_price.price_amounts.all %}
-								<tr>
-									<td>{{pa.price|commaise}} ש"ח</td>
-									<td>{{pa.amount}} ש"ח</td>
-								</tr>
-							{% endfor %}
-						</table>		
-						<a id="edit_cbp" href="cbp/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
-						<a href="cbp/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
-					</div>
-				{% endif %}
-				{% if c.b_sale_rate %}
-					<div>
-						<table class="formTable" style="text-align:center;">
-							<th>מס' דירות</th>
-							<th>סכום</th>
-							{% for b in c.b_sale_rate.bonuses.all %}
-								<tr>
-									<td>{{b.house_count}}</td>
-									<td>{{b.amount}} ש"ח</td>
-								</tr>
-							{% endfor %}
-						</table>			
-						<a id="edit_bsr" href="bsr/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
-						<a href="bsr/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
-					</div>
-				{% endif %}
-				{% if c.b_house_type %}		
-					<div>
-						<table class="formTable" style="text-align:center;">
-							<th>סוג דירה</th>
-							<th>סכום</th>
-							{% for b in c.b_house_type.bonuses.all %}
-								<tr>
-									<td>{{b.type}}</td>
-									<td>{{b.amount}} ש"ח</td>
-								</tr>
-							{% endfor %}
-						</table>		
-						<a id="edit_bht" href="bht/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
-						<a href="bht/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
-					</div>
-				{% endif %}
-				{% if c.b_discount_save %}	
-					<div>
-						{{c.b_discount_save.precentage_bonus}}
-						עבור כל 1% של חסכון בהנחה 
-						{% if c.b_discount_save.max_for_bonus %}
-							עד מקס' של
-							{{c.b_discount_save.max_for_bonus}}%
-						{% endif %}
-						<a id="edit_bds" href="bds/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
-						<a href="bds/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
-					</div>
-				{% endif %}
-				<div>
-					<button id="add_commissions{{c.project.id}}" class="button">הוספה</button>
+							</table>			
+							<a id="edit_cvp" href="cvp/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+							<a id="commission_delete_cvp" href="cvp/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+						</div>
+					{% endif %}
+					{% if c.c_by_price %}	
+						<div>
+							<table class="formTable" style="text-align:center;">
+								<th>עד מחיר</th>
+								<th>סכום</th>
+								{% for pa in c.c_by_price.price_amounts.all %}
+									<tr>
+										<td>{{pa.price|commaise}} ש"ח</td>
+										<td>{{pa.amount}} ש"ח</td>
+									</tr>
+								{% endfor %}
+							</table>		
+							<a id="edit_cbp" href="cbp/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+							<a id="commission_delete_cbp" href="cbp/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+						</div>
+					{% endif %}
+					{% if c.b_sale_rate %}
+						<div>
+							<table class="formTable" style="text-align:center;">
+								<th>מס' דירות</th>
+								<th>סכום</th>
+								{% for b in c.b_sale_rate.bonuses.all %}
+									<tr>
+										<td>{{b.house_count}}</td>
+										<td>{{b.amount}} ש"ח</td>
+									</tr>
+								{% endfor %}
+							</table>			
+							<a id="edit_bsr" href="bsr/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+							<a id="commission_delete_bsr" href="bsr/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+						</div>
+					{% endif %}
+					{% if c.b_house_type %}		
+						<div>
+							<table class="formTable" style="text-align:center;">
+								<th>סוג דירה</th>
+								<th>סכום</th>
+								{% for b in c.b_house_type.bonuses.all %}
+									<tr>
+										<td>{{b.type}}</td>
+										<td>{{b.amount}} ש"ח</td>
+									</tr>
+								{% endfor %}
+							</table>		
+							<a id="edit_bht" href="bht/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+							<a id="commission_delete_bht" href="bht/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+						</div>
+					{% endif %}
+					{% if c.b_discount_save %}	
+						<div>
+							{{c.b_discount_save.precentage_bonus}}
+							עבור כל 1% של חסכון בהנחה 
+							{% if c.b_discount_save.max_for_bonus %}
+								עד מקס' של
+								{{c.b_discount_save.max_for_bonus}}%
+							{% endif %}
+							<a id="edit_bds" href="bds/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+							<a id="commission_delete_bds" href="bds/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+						</div>
+					{% endif %}
 				</div>
-				<div id="new_commissions">
+				<div style="float:right; width:45%">
 					{% if not c.c_var %}
 						עמלה משתנה (בשקלים)
 						<a id="add_cv" href="cv/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" /></a> 
