@@ -1327,16 +1327,29 @@ def project_commission_del(request, project_id, attribute):
     return HttpResponseRedirect('/projects/%s' % project.id)
 
 @login_required
-def employee_commission_del(request, employee_id, project_id, attribute):
+def employee_commission_del(request, employee_id, project_id, commission):
     employee = Employee.objects.get(pk = employee_id)
     c = employee.commissions.filter(project__id = project_id)[0]
-    obj = getattr(c, attribute)
+    for field in c._meta.fields:
+        if abbrevate(field.name) == commission:
+            obj = getattr(c, field.name)
+            break
     #unlink commission from employee
     setattr(c, attribute, None)
     c.save()
     #delete commission
     obj.delete()
     return HttpResponseRedirect('/employees/%s' % employee.id)
+
+def abbrevate(s):
+    s2 = ''
+    for part in s.split('_'):
+        s2 += part[0]
+    return s2
+
+@login_required
+def employee_commission_add(request, employee_id, project_id, commission):
+    return __module__.getattr('employee_' + attribute)(request, employee_id, project_id)
         
 @permission_required('Management.add_cvarprecentage')
 def project_cvp(request, project_id):
