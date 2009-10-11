@@ -920,6 +920,8 @@ class EmployeeSalary(EmployeeSalaryBase):
         terms = self.employee.employment_terms
         self.commissions, self.base = 0, terms and terms.salary_base or 0
         for epc in self.employee.commissions.all():
+            if not epc.is_active(date(self.year, self.month,1)):
+                continue
             total_sales = self.sales
             for k in total_sales:
                 if total_sales[k] == None:
