@@ -951,7 +951,7 @@ class EPCommission(models.Model):
     b_discount_save = models.OneToOneField('BDiscountSave', related_name= 'epcommission', null=True, editable=False)
     b_sale_rate = models.OneToOneField('BSaleRate', related_name= 'epcommission', null=True, editable=False)
     def is_active(self, date=date.today()):
-        if not end_date:
+        if not self.end_date:
             return True
         if date > self.start_date and date < self.end_date:
             return True
