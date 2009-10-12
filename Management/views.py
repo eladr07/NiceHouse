@@ -526,7 +526,7 @@ def employee_salary_pdf(request, year, month):
     p = open(filename,'w+')
     p.flush()
     p.close()
-    EmployeeSalariesWriter([es for es in EmployeeSalary.objects.filter(year = year, month= month, nhemployee=None)
+    EmployeeSalariesWriter([es for es in EmployeeSalary.objects.filter(year = year, month= month)
                             if es.approved_date], u'שכר עבודה למנהלי פרויקטים לחודש %s\%s' % (self.year, self.month),
                             show_month=False, show_employee=True).build(filename)
     p = open(filename,'r')
