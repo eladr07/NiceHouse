@@ -1202,6 +1202,7 @@ class CZilber(models.Model):
                 scd = s.commission_details.get_or_create(commission=c)[0]
                 scd.value = s.commission_include and base or 0
                 scd.save()
+            s.price_final = s.project_price()
             s.save()
             if not s.commission_include:
                 continue
@@ -1381,6 +1382,7 @@ class ProjectCommission(models.Model):
             scd = s.commission_details.get_or_create(employee_salary=None, commission='final')[0]
             scd.value = s.commission_include and dic[s] or 0
             scd.save()
+            s.price_final = s.project_price()
             s.save()
 
     class Meta:
