@@ -328,7 +328,7 @@ def demand_calc(request, id):
             time.sleep(1)
     else:
         d.calc_sales_commission()
-    return HttpResponseRedirect('/demandsold/%s/%s' % (d.year,d.month))
+    return HttpResponseRedirect('/demandsold/?year=%s&month=%s' % (d.year,d.month))
 
 def projects_profit(request):
     month = Demand.current_month()
