@@ -2338,12 +2338,11 @@ def season_income(request):
     from_month = int(request.GET.get('from_month', month.month))
     to_year = int(request.GET.get('to_year', month.year))
     to_month = int(request.GET.get('to_month', month.month))
-    form = SeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
-    ds = []
     start = date(from_year, from_month, 1)
     current = date(from_year, from_month, 1)
     end = date(to_year, to_month, 1)
-    month_count = round((end-start).days/30)
+    form = SeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
+    ds = []
     while current <= end:
         q = Demand.objects.filter(year = current.year, month = current.month)
         if q.count() > 0:
@@ -2372,8 +2371,10 @@ def season_income(request):
         else:
             end_date = p.end_date or end
         start_date = max(p.start_date, start)
-        active_months = round((end_date - start_date).days/30)
+        active_months = round(float((end_date - start_date).days)/30)
         p.avg_sale_count = p.total_sale_count / active_months
+        
+    month_count = round(float(end-start).days)/30)
     return render_to_response('Management/season_income.html', 
                               { 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
                                 'projects':projects, 'filterForm':form,'total_amount':total_amount,'total_sale_count':total_sale_count,
