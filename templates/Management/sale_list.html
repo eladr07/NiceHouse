@@ -14,24 +14,24 @@
 {% block page %}
 <div id="content">
 	<div class="title">
-		<div class="pageTitle">ריכוז מכירות {{demand.month}}/{{demand.year}} - {{demand.project}}</div>
+		<div class="pageTitle">{{title}}</div>
 	</div>
 	<div class="clearBoth"></div>
 	<table id="sales_table" class="dataTable" border="1">
-		<caption>מציג סה"כ {{demand.get_sales.count}} עסקאות</caption>
+		<caption>מציג סה"כ {{sales|length}} עסקאות</caption>
 		<th></th>
 		<th>מס"ד</th>
-		{% if demand.get_sales.all.0.contract_num %}<th>מס' חוזה ש"ע</th>{% endif %}
+		{% if sales.0.contract_num %}<th>מס' חוזה ש"ע</th>{% endif %}
 		<th>ת. חוזה</th>
 		<th style="width:150px;">שם הרוכשים</th>
 		<th>מס' בניין</th>
 		<th>מס' דירה</th>
 		<th>מחיר חוזה</th>
-		{% if demand.get_sales.all.0.discount %}<th>% הנחה ניתן</th>{% endif %}
-		{% if demand.get_sales.all.0.allowed_discount %}<th>% הנחה מותר</th>{% endif %}
+		{% if sales.0.discount %}<th>% הנחה ניתן</th>{% endif %}
+		{% if sales.0.allowed_discount %}<th>% הנחה מותר</th>{% endif %}
 		<th>תיקונים</th>
 		<th>דחייה</th>
-		{% for s in demand.get_sales.all %}
+		{% for s in sales %}
 			<tr>
 				<td><a target="_parent" href="/sale/{{s.id}}"><img src="/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a></td>
 				<td>{{s.id}}</td>
@@ -71,7 +71,7 @@
 		<tr class="sumRow">
 			<td colspan="5"></td>
 			<td><b>סה"כ מכירות</b></td>
-			<td colspan="2"><b>{{demand.get_sales_amount|commaise}}</b></td>
+			<td colspan="2"><b>{{sales_amount|commaise}}</b></td>
 		</tr>
 	</table>
 </div>

@@ -391,7 +391,8 @@ def projects_profit(request):
     avg_relative_expense_income = avg_relative_expense_income / len(projects)
     
     return render_to_response('Management/projects_profit.html', 
-                              { 'projects':projects,
+                              { 'projects':projects,'from_year':from_year,'from_month':from_month, 
+                                'to_year':to_year,'to_month':to_month,
                                 'filterForm':SeasonForm(initial={'from_year':from_year,'from_month':from_month,
                                                                  'to_year':to_year,'to_month':to_month}),
                                 'total_income':total_income,'total_expense':total_expense, 'total_profit':total_profit,
@@ -527,7 +528,7 @@ def employee_salary_pdf(request, year, month):
     p.flush()
     p.close()
     EmployeeSalariesWriter([es for es in EmployeeSalary.objects.filter(year = year, month= month)
-                            if es.approved_date], u'שכר עבודה למנהלי פרויקטים לחודש %s\%s' % (self.year, self.month),
+                            if es.approved_date], u'שכר עבודה למנהלי פרויקטים לחודש %s\%s' % (year, month),
                             show_month=False, show_employee=True).build(filename)
     p = open(filename,'r')
     response.write(p.read())
@@ -2134,6 +2135,38 @@ def sale_add(request, demand_id=None):
     return render_to_response('Management/sale_edit.html', 
                               {'form':form, 'year':year, 'month':month},
                               context_instance=RequestContext(request))
+
+def demand_sale_list(request):
+    demand_id = int(request.GET.get('demand_id', 0))
+    project_id = int(request.GET.get('project_id', 0))
+    from_year = int(request.GET.get('from_year', 0))
+    from_month = int(request.GET.get('from_month', 0))
+    to_year = int(request.GET.get('to_year', 0))
+    to_month = int(request.GET.get('to_month', 0))
+    if demand_id:
+        d = Demand.objects.get(pk=demand_id)
+        sales = d.get_sales()
+        sales_amount = d.get_sale_amount()
+        title = u'ריכוז מכירות לפרוייקט %s לחודש %s/%s' % (unicode(d.project), d.month, d.year)
+    elif project_id:
+        current = date(from_year, from_month, 1)
+        end = date(to_year, to_month, 1)
+        sales = []
+        sales_amount = 0
+        while current <= end:
+            q = Demand.objects.filter(project__id = project_id, year = current.year, month = current.month)
+            if q.count() == 0: continue
+            sales.extend(list(q[0].get_sales()))
+            sales_amount += q[0].get_sales_amount()
+            current = date(current.month == 12 and current.year + 1 or current.year, 
+                           current.month == 12 and 1 or current.month + 1, 1)
+        title = u'ריכוז מכירות לפרוייקט %s מחודש %s/%s עד חודש %s/%s' % (unicode(d.project), from_month, from_year,
+                                                                         to_month, to_year)
+    else:
+        raise ValueError
+    return render_to_response('Management/sale_list.html', 
+                              {'sales':sales, 'sales_amount':sales_amount},
+                              context_instance=RequestContext(request))  
        
 def demand_sales(request, project_id, year, month):
     salesTotal = 0

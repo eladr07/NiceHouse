@@ -28,7 +28,7 @@
 					</a>
 				</td>
 				<td>{{ d.month }}/{{ d.year }}</td>
-				<td><a href="/demands/{{d.id}}/sales">{{d.get_sales.count}}</a></td>
+				<td><a href="/demandsales/?demand_id={{d.id}}">{{d.get_sales.count}}</a></td>
 				<td>{{ d.get_sales_amount|commaise }} ש"ח</td>
 				<td>{{ d.get_total_amount|commaise }} ש"ח</td>
 				<td>
