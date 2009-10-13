@@ -1395,7 +1395,7 @@ class Invoice(models.Model):
     amount = models.IntegerField(ugettext('amount'))
     remarks = models.TextField(ugettext('remarks'), null=True,blank=True)
     def __unicode__(self):
-        return u'צק על סך %s ש"ת' % commaise(self.amount)
+        return u'צק על סך %s ש"ח' % commaise(self.amount)
     class Meta:
         db_table = 'Invoice'
         get_latest_by = 'creation_date'
