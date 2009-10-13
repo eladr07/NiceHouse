@@ -2166,7 +2166,7 @@ def demand_sale_list(request):
     else:
         raise ValueError
     return render_to_response('Management/sale_list.html', 
-                              {'sales':sales, 'sales_amount':sales_amount},
+                              {'sales':sales, 'sales_amount':sales_amount,'title':title},
                               context_instance=RequestContext(request))  
        
 def demand_sales(request, project_id, year, month):
