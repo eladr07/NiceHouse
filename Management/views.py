@@ -2342,7 +2342,7 @@ def season_income(request):
     ds = []
     current = date(from_year, from_month, 1)
     end = date(to_year, to_month, 1)
-    month_count = round((end-start)/30)
+    month_count = round((end-current)/30)
     while current <= end:
         q = Demand.objects.filter(year = current.year, month = current.month)
         if q.count() > 0:
