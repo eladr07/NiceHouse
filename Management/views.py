@@ -2370,7 +2370,7 @@ def season_income(request):
             end_date = end
         else:
             end_date = p.end_date or end
-        start_date = max(p.start_date, start)
+        start_date = max(p.start_date, start_date)
         active_months = round((end_date - start_date)/30)
         p.avg_sale_count = p.total_sale_count / active_months
     return render_to_response('Management/season_income.html', 
