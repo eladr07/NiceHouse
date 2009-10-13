@@ -2146,7 +2146,7 @@ def demand_sale_list(request):
     if demand_id:
         d = Demand.objects.get(pk=demand_id)
         sales = d.get_sales()
-        sales_amount = d.get_sale_amount()
+        sales_amount = d.get_sales_amount()
         title = u'ריכוז מכירות לפרוייקט %s לחודש %s/%s' % (unicode(d.project), d.month, d.year)
     elif project_id:
         current = date(from_year, from_month, 1)
