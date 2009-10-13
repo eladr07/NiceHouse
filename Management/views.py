@@ -2342,7 +2342,7 @@ def season_income(request):
     ds = []
     current = date(from_year, from_month, 1)
     end = date(to_year, to_month, 1)
-    month_count = round((end-current)/30)
+    month_count = round((end-current).days/30)
     while current <= end:
         q = Demand.objects.filter(year = current.year, month = current.month)
         if q.count() > 0:
@@ -2371,7 +2371,7 @@ def season_income(request):
         else:
             end_date = p.end_date or end
         start_date = max(p.start_date, start_date)
-        active_months = round((end_date - start_date)/30)
+        active_months = round((end_date - start_date).days/30)
         p.avg_sale_count = p.total_sale_count / active_months
     return render_to_response('Management/season_income.html', 
                               { 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
