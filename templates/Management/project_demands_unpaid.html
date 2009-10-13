@@ -39,7 +39,8 @@
 				{% for r in d.get_open_reminders %}
 					{{ r.content|truncatewords:5 }}
 					<a href="/reminders/{{r.id}}"><img src="/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a>
-					<a href="/reminders/{{r.id}}"><img src="/site_media/images/thumbs_up_48" width="15" height="15" alt="בצע" border="0" /></a>
+					<a href="/reminders/{{r.id}}"><img src="/site_media/images/thumbs_up_48.png" width="15" height="15" alt="בצע" border="0" /></a>
+					<br>
 				{% endfor %}
 					<a href="/demands/{{d.id}}/addreminder" class="fancybox">
 						<img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" />
