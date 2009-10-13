@@ -2366,10 +2366,10 @@ def season_income(request):
         total_amount += amount
         total_amount_notax += amount / tax
     for p in projects:
-        if p.end_date and p.end_date > end:
-            end_date = end
+        if p.end_date:
+            end_date = min(end, p.end_date)
         else:
-            end_date = p.end_date or end
+            end_date = end
         start_date = max(p.start_date, start)
         active_months = round((end_date - start_date).days/30) + 1
         p.avg_sale_count = p.total_sale_count / active_months
@@ -2379,7 +2379,7 @@ def season_income(request):
                               { 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
                                 'projects':projects, 'filterForm':form,'total_amount':total_amount,'total_sale_count':total_sale_count,
                                 'total_amount_notax':total_amount_notax,'avg_amount':total_amount/month_count,
-                                'avg_amount_notax':total_amount_notax/month_count},
+                                'avg_amount_notax':total_amount_notax/month_count,'avg_sale_count':total_sale_count/month_count},
                               context_instance=RequestContext(request))
 
 def demand_followup_list(request):
