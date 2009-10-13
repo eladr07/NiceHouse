@@ -2155,9 +2155,9 @@ def demand_sale_list(request):
         sales_amount = 0
         while current <= end:
             q = Demand.objects.filter(project__id = project_id, year = current.year, month = current.month)
-            if q.count() == 0: continue
-            sales.extend(list(q[0].get_sales()))
-            sales_amount += q[0].get_sales_amount()
+            if q.count() > 0:
+                sales.extend(list(q[0].get_sales()))
+                sales_amount += q[0].get_sales_amount()
             current = date(current.month == 12 and current.year + 1 or current.year, 
                            current.month == 12 and 1 or current.month + 1, 1)
         title = u'ריכוז מכירות לפרוייקט %s מחודש %s/%s עד חודש %s/%s' % (unicode(d.project), from_month, from_year,
