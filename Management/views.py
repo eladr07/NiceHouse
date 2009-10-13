@@ -391,7 +391,7 @@ def projects_profit(request):
             if p.sale_count > 0:
                 project_count += 1
         else:
-            if p.total_income and p.total_expense == 0:
+            if p.total_income == 0 and p.total_expense == 0:
                 p.relative_expense_income_str = u'אפס'
             elif p.total_income == 0:
                 p.relative_expense_income_str = u'גרעון'
