@@ -382,13 +382,24 @@ def projects_profit(request):
                     p.total_expense += fixed_salary
                     total_expense += fixed_salary
                     break
+    project_count = 0
     for p in projects:
         p.relative_income = total_income and (p.total_income / total_income * 100) or 100
-        p.relative_expense_income = p.total_income and (p.total_expense / p.total_income * 100) or 100
+        if p.total_income and p.total_expense:
+            p.relative_expense_income = p.total_income and (p.total_expense / p.total_income * 100) or 100
+            avg_relative_expense_income += p.relative_expense_income
+            if p.sale_count > 0:
+                project_count += 1
+        else:
+            if p.total_income and p.total_expense == 0:
+                p.relative_expense_income_str = u'אפס'
+            elif p.total_income == 0:
+                p.relative_expense_income_str = u'גרעון'
+            elif p.total_expense == 0:
+                p.relative_expense_income_str = u'עודף'
         p.profit = p.total_income - p.total_expense
         total_profit += p.profit
-        avg_relative_expense_income += p.relative_expense_income
-    avg_relative_expense_income = avg_relative_expense_income / len(projects)
+    avg_relative_expense_income = avg_relative_expense_income / project_count
     
     return render_to_response('Management/projects_profit.html', 
                               { 'projects':projects,'from_year':from_year,'from_month':from_month, 

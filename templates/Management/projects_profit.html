@@ -93,7 +93,12 @@
 				{{commission|commaise}}</a><br>
 			{% endfor %}
 			</td>
-			<td>{{ p.relative_expense_income|floatformat:-2 }}%</td>
+			<td>{% if p.relative_expense_income %}
+					{{ p.relative_expense_income|floatformat:-2 }}%
+				{% else %}
+					{{ p.relative_expense_income_str }}
+				{% endif %}
+			</td>
 			<td>{{ p.profit|commaise }}</td>
 		</tr>
 	{% endfor %}
