@@ -2366,7 +2366,10 @@ def season_income(request):
         total_amount += amount
         total_amount_notax += amount / tax
     for p in projects:
-        end_date = p.end_date or end
+        if p.end_date and p.end_date > end:
+            end_date = end
+        else:
+            end_date = p.end_date or end
         start_date = max(p.start_date, start)
         active_months = round((end_date - start_date)/30)
         p.avg_sale_count = p.total_sale_count / active_months
