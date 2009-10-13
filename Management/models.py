@@ -1629,8 +1629,11 @@ class Demand(models.Model):
     def get_deleted_sales(self):
         return [s for s in self.sales.filter(is_deleted=True)]
     def diff(self):
-        if self.invoices.count() > 0 and self.payments.count() > 0:
-            return self.invoices.latest().amount - self.payments.latest().amount
+        pay = 0
+        for p in self.payments.all():
+            pay += pay.amount
+        if self.invoices.count() > 0:
+            return self.invoices.latest().amount - pay
         else:
             return None
     def state(self):
