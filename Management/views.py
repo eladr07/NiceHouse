@@ -2342,13 +2342,12 @@ def season_income(request):
     ds = []
     current = date(from_year, from_month, 1)
     end = date(to_year, to_month, 1)
-    month_count = 0
+    month_count = round((end-start)/30)
     while current <= end:
         q = Demand.objects.filter(year = current.year, month = current.month)
         if q.count() > 0:
             ds.extend(q)
         current = date(current.month == 12 and current.year + 1 or current.year, current.month == 12 and 1 or current.month + 1, 1)
-        month_count += 1
     projects = []
     total_sale_count, total_amount, total_amount_notax = 0,0,0
     for d in ds:
@@ -2367,7 +2366,10 @@ def season_income(request):
         total_amount += amount
         total_amount_notax += amount / tax
     for p in projects:
-        p.avg_sale_count = p.total_sale_count / month_count
+        end_date = p.end_date or end
+        start_date = max(p.start_date, start)
+        active_months = round((end_date - start_date)/30)
+        p.avg_sale_count = p.total_sale_count / active_months
     return render_to_response('Management/season_income.html', 
                               { 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
                                 'projects':projects, 'filterForm':form,'total_amount':total_amount,'total_sale_count':total_sale_count,
