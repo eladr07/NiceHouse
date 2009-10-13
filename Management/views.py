@@ -605,6 +605,8 @@ def nh_season_income(request):
     from_month = m = int(request.GET.get('from_month', month.month))
     to_year = int(request.GET.get('to_year', month.year))
     to_month = int(request.GET.get('to_month', month.month))
+    if not request.user.has_perm('Management.nhbranch_' + str(nhbranch_id)):
+        return HttpResponse('No Permission. Contact Elad.') 
     form = NHBranchSeasonForm(initial={'nhbranch':nhbranch_id,'from_year':from_year, 'from_month':from_month,
                                        'to_year':to_year, 'to_month':to_month})
     while date(y,m,1) <= date(to_year, to_month, 1):
@@ -673,6 +675,8 @@ def nhmonth_sales(request, nhbranch_id):
 @permission_required('Management.change_nhmonth')
 def nhmonth_close(request, id):
     nhm = NHMonth.objects.get(pk=id)
+    if not request.user.has_perm('Management.nhbranch_' + str(nhm.nhbranch.id)):
+        return HttpResponse('No Permission. Contact Elad.') 
     nhm.close()
     nhm.save()
     form = MonthFilterForm(initial={'year':nhm.year,'month':nhm.month})
@@ -1037,6 +1041,8 @@ def project_payment_add(request, id):
 @permission_required('Management.add_payment')
 def nhsaleside_payment_add(request, object_id):
     nhs = NHSaleSide.objects.get(pk=object_id)
+    if not request.user.has_perm('Management.nhbranch_' + str(nhs.nhmonth.nhbranch.id)):
+        return HttpResponse('No Permission. Contact Elad.') 
     if request.method == 'POST':
         form = PaymentForm(request.POST)
         if form.is_valid():
@@ -1052,6 +1058,8 @@ def nhsaleside_payment_add(request, object_id):
 @permission_required('Management.add_invoice')
 def nhsaleside_invoice_add(request, object_id):
     nhs = NHSaleSide.objects.get(pk=object_id)
+    if not request.user.has_perm('Management.nhbranch_' + str(nhs.nhmonth.nhbranch.id)):
+        return HttpResponse('No Permission. Contact Elad.') 
     if request.method == 'POST':
         form = InvoiceForm(request.POST)
         if form.is_valid():
@@ -1083,12 +1091,16 @@ def project_list(request):
 @permission_required('Management.change_nhsale')
 def nhsale_edit(request, object_id):
     nhs = NHSale.objects.get(pk=object_id)
+    if not request.user.has_perm('Management.nhbranch_' + str(nhs.nhmonth.nhbranch.id)):
+        return HttpResponse('No Permission. Contact Elad.') 
     return render_to_response('Management/nhsale_edit.html',
                               {'nhs': nhs}, 
                               context_instance=RequestContext(request))
 
 @permission_required('Management.add_nhsale')
 def nhsale_add(request, branch_id):
+    if not request.user.has_perm('Management.nhbranch_' + str(branch_id)):
+        return HttpResponse('No Permission. Contact Elad.') 
     PaymentFormset = modelformset_factory(Payment, PaymentForm, extra=5)
     if request.method=='POST':
         saleForm = NHSaleForm(request.POST, prefix='sale')

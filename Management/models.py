@@ -648,6 +648,7 @@ class NHBranch(models.Model):
         return unicode(self.name)
     class Meta:
         db_table='NHBranch'
+        permissions = (('nhbranch_1', 'NHBranch Shoham'),('nhbranch_2', 'NHBranch Modiin'),('nhbranch_3', 'NHBranch Nes Ziona'))
     
 class NHEmployee(EmployeeBase):
     nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'), related_name='nhemployees')
