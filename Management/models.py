@@ -920,20 +920,17 @@ class EmployeeSalary(EmployeeSalaryBase):
             scd.delete()
         terms = self.employee.employment_terms
         self.commissions, self.base = 0, terms and terms.salary_base or 0
-        for epc in self.employee.commissions.all():
-            if not epc.is_active(date(self.year, self.month,1)):
+        for project, sales in self.sales.items():
+            epc = self.employee.commissions.filter(project__id = project.id)
+            if not epc.is_active(date(self.year, self.month,1)): continue
+            if not sales or sales.count() == 0:
+                self.project_commission[epc.project] = 0
                 continue
-            for project, sales in self.sales.items():
-                if not sales:
-                    continue
-                if sales.count() == 0:
-                    self.project_commission[project] = 0
-                    continue
-                self.project_commission[project] = epc.calc(sales, self)
-                self.commissions += self.project_commission[project]
-                for s in sales.all():
-                    s.employee_paid = True
-                    s.save() 
+            self.project_commission[epc.project] = epc.calc(sales, self)
+            self.commissions += self.project_commission[epc.project]
+            for s in sales.all():
+                s.employee_paid = True
+                s.save() 
     def get_absolute_url(self):
         return '/employeesalaries/%s' % self.id
     class Meta:
