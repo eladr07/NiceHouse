@@ -921,7 +921,9 @@ class EmployeeSalary(EmployeeSalaryBase):
         terms = self.employee.employment_terms
         self.commissions, self.base = 0, terms and terms.salary_base or 0
         for project, sales in self.sales.items():
-            epc = self.employee.commissions.filter(project__id = project.id)
+            q = self.employee.commissions.filter(project__id = project.id)
+            if q.count() == 0: continue
+            epc = q[0]
             if not epc.is_active(date(self.year, self.month,1)): continue
             if not sales or sales.count() == 0:
                 self.project_commission[epc.project] = 0
