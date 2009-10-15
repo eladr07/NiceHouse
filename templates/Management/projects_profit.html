@@ -100,7 +100,7 @@
 					{{ p.relative_expense_income_str }}
 				{% endif %}
 			</td>
-			<td>{{ p.relative_sales_expense|floatformat:-2 }}%</td>
+			<td>{{ p.relative_sales_expense }}%</td>
 			<td>{{ p.profit|commaise }}</td>
 		</tr>
 	{% endfor %}
