@@ -363,7 +363,7 @@ def projects_profit(request):
                 sale_count = d.get_sales().count()
                 p.total_income += total_amount
                 for s in d.get_sales().all():
-                    p.total_sales_amount += s.include_tax and s.price or s.price / tax_val
+                    p.total_sales_amount += s.include_tax and s.price or (s.price / tax_val)
                 p.sale_count += sale_count
                 total_sale_count += sale_count
                 total_income += total_amount
