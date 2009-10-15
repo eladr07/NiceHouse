@@ -1067,12 +1067,12 @@ class CVar(models.Model):
         dic = {}
         i = 0
         if self.is_retro:
-            c = self.get_amount(sales.count()).amount
-            for s in sales.all():
+            c = self.get_amount(len(sales)).amount
+            for s in sales:
                 dic[s] = c
         else:
             i=0
-            for s in sales.all():
+            for s in sales:
                 i += 1
                 dic[s] = self.get_amount(i).amount
         return dic
@@ -1096,13 +1096,13 @@ class CVarPrecentage(models.Model):
     def calc(self, sales):
         dic={}
         i=0
-        if self.is_retro and sales.count() >= self.start_retro:
-            c = self.get_precentage(sales.count()).precentage
-            for s in sales.all():
+        if self.is_retro and len(sales) >= self.start_retro:
+            c = self.get_precentage(len(sales)).precentage
+            for s in sales:
                 dic[s] = c
         else:
             i=0
-            for s in sales.all():
+            for s in sales:
                 i += 1
                 c = self.get_precentage(i).precentage
                 dic[s] = c
@@ -1128,28 +1128,27 @@ class CVarPrecentageFixed(models.Model):
     last_count = models.PositiveSmallIntegerField(ugettext('cvf last count'), null=True, blank=True)
     last_precentage = models.FloatField(ugettext('commission precentage'), null=True, blank=True)
     def calc(self, sales):
-        if sales.count() == 0:
-            return {}
-        houses_remaning = sales.count()
-        for h in sales.all()[0].house.building.project.houses():
+        if len(sales) == 0: return {}
+        houses_remaning = len(sales)
+        for h in sales[0].house.building.project.houses():
             if h.get_sale() == None and not h.is_sold:
                 houses_remaning += 1
         dic = {}
-        if self.is_retro and sales.count() > self.first_count:
-            precentage = self.first_precentage + self.step * (sales.count() - self.first_count)
-            for s in sales.all():
+        if self.is_retro and len(sales) > self.first_count:
+            precentage = self.first_precentage + self.step * (len(sales) - self.first_count)
+            for s in sales:
                 if self.last_count and houses_remaning <= self.last_count:
                     dic[s] = self.last_precentage
                 else:
                     dic[s] = precentage
                 houses_remaning -= 1
         else:
-            for s in sales.all()[:self.first_count]:
+            for s in sales[:self.first_count]:
                 dic[s] = self.first_precentage
-            if sales.all().count() <= self.first_count:
+            if len(sales) <= self.first_count:
                 return dic
             i = self.first_count + 1
-            for s in sales.all()[self.first_count+1:]:
+            for s in sales[self.first_count+1:]:
                 if self.last_count and houses_remaning <= self.last_count:
                     dic[s] = self.last_precentage
                 else:
@@ -1163,7 +1162,7 @@ class CVarPrecentageFixed(models.Model):
 class CByPrice(models.Model):
     def calc(self, sales):
         dic = {}
-        for s in sales.all():
+        for s in sales:
             dic[s] = self.get_amount(s.price)
         return dic
     def get_amount(self, price):
@@ -1248,7 +1247,7 @@ class BDiscountSave(models.Model):
     max_for_bonus = models.FloatField(ugettext('max_bonus'), blank=True, null=True)
     def calc(self, sales):
         dic = {}
-        for s in sales.all():
+        for s in sales:
             if s.allowed_discount and s.discount:
                 saved = s.allowed_discount - s.discount
             else:
@@ -1267,7 +1266,7 @@ class BDiscountSavePrecentage(models.Model):
     max_for_bonus = models.FloatField(ugettext('max_bonus'), blank=True, null=True)
     def calc(self, sales):
         dic = {}
-        for s in sales.all():
+        for s in sales:
             if s.allowed_discount and s.discount:
                 saved = s.allowed_discount - s.discount
             else:
@@ -1284,7 +1283,7 @@ class BDiscountSavePrecentage(models.Model):
 class BHouseType(models.Model):
     def calc(self, sales):
         dic={}
-        for s in sales.all():
+        for s in sales:
             b = self.bonuses.filter(type = s.house.type)
             dic[s] = b.count() == 1 and b[0].amount or 0
         return dic
@@ -1293,7 +1292,7 @@ class BHouseType(models.Model):
         
 class BSaleRate(models.Model):
     def calc(self,sales):
-        c = sales.count()
+        c = len(sales)
         for b in self.bonuses.reverse():
             if c >= b.house_count:
                 return b.amount
