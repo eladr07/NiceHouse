@@ -503,7 +503,7 @@ def employee_salary_approve(request, id):
     
 @permission_required('Management.list_employeesalary')
 def employee_salary_list(request):
-    current = date.today()
+    current = Demand.current_month()
     year = int(request.GET.get('year', current.year))
     month = int(request.GET.get('month', current.month))
     for e in Employee.objects.active():
@@ -553,7 +553,7 @@ def employee_salary_calc(request, model, id):
     es = model.objects.get(pk=id)
     es.calculate()
     es.save()
-    return HttpResponseRedirect('/employeesalaries/%s/%s' % (es.year, es.month))
+    return HttpResponseRedirect('/employeesalaries/?year=%s&month=%s' % (es.year, es.month))
 
 @permission_required('Management.list_demand')
 def demands_all(request):

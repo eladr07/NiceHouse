@@ -927,7 +927,7 @@ class EmployeeSalary(EmployeeSalaryBase):
             for k in total_sales:
                 if total_sales[k] == None:
                     continue
-                sales = total_sales[k].filter(house__building__project = epc.project)
+                sales = total_sales[k].filter(house__building__project__id = epc.project.id)
                 if sales.count() == 0:
                     self.project_commission[epc.project] = 0
                     continue
