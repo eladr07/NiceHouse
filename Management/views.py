@@ -387,9 +387,9 @@ def projects_profit(request):
     project_count = 0
     for p in projects:
         p.relative_income = total_income and (p.total_income / total_income * 100) or 100
+        p.relative_sales_expense = p.total_sales_amount and (p.total_expense / p.total_sales_amount * 100) or 100
         if p.total_income and p.total_expense:
             p.relative_expense_income = p.total_income and (p.total_expense / p.total_income * 100) or 100
-            p.relative_sales_expense = p.total_sales_amount and (p.total_expense / p.total_sales_amount * 100) or 100
             avg_relative_expense_income += p.relative_expense_income
             if p.sale_count > 0:
                 project_count += 1
