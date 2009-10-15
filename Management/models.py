@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from templatetags.management_extras import *
 from django.db.models.signals import pre_save
 from decimal import InvalidOperation
+from django.db.backends.dummy.base import IntegrityError
 
 class Callable:
     def __init__(self, anycallable):
@@ -297,7 +298,9 @@ class House(models.Model):
         return self.num[:-1]
     def get_signup(self):
         s = self.signups.filter(cancel=None)
-        return s.count() == 1 and s[0] or None 
+        if s.count() > 1:
+            raise IntegrityError('More than 1 active signup for house %s' % self.id)
+        return s.count() > 0 and s[0] or None 
     def get_sale(self):
         s = self.sales.filter(salecancel=None)
         if s.count() > 1:

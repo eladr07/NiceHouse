@@ -304,7 +304,7 @@
 						{{s.house}}
 					</a>
 				</td>
-				<td>{{s.house.get_signup.date}}</td>
+				<td>{{s.house.get_signup.date|date:"j/m/Y"}}</td>
 				<td>{{s.sale_date|date:"j/m/Y"}}</td>
 				<td {% if s.salepricemod.id %}style="background-color: #F69F9F;"{% endif %}>
 					{{s.price|commaise}} ש"ח
