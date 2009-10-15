@@ -910,9 +910,9 @@ class EmployeeSalary(EmployeeSalaryBase):
             for project, commission in self.project_commission.items():
                 res[project] = commission + (self.employee.main_project.id == project.id and self.bruto_amount-self.commissions or 0)
         else:
-            check_part = (self.bruto_amount-self.commissions) / len(self.project_commission) 
+            base = (self.bruto_amount-self.commissions) / len(self.project_commission) 
             for project, commission in self.project_commission.items():
-                res[project] = commission + check_part
+                res[project] = commission + base
         return res 
     def calculate(self):
         #clean any sale commission details associated with this salary
@@ -929,6 +929,7 @@ class EmployeeSalary(EmployeeSalaryBase):
                     continue
                 sales = total_sales[k].filter(house__building__project = epc.project)
                 if sales.count() == 0:
+                    self.project_commission[epc.project] = 0
                     continue
                 self.project_commission[epc.project] = epc.calc(sales, self)
                 self.commissions += self.project_commission[epc.project]
