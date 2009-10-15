@@ -71,6 +71,7 @@
 		<th>שם העובד</th>
 		<th>הוצאות שכר<BR>לא כולל מע"מ</th>
 		<th>% שכר<BR>מההכנסות</th>
+		<th>% שכר ממכירות<BR>ללא מע"מ</th>
 		<th>רווח</th>
 	</tr>
     {% for p in projects %}
@@ -84,7 +85,7 @@
 			<td>{{p.relative_income|floatformat:-2}}%</td>
 			<td>
 			{% for employee, commission in p.employee_expense.items %}
-				{{employee}}<Br>
+				<a target="_blank" href="{{employee.get_absolute_url}}">{{employee}}</a><Br>
 			{% endfor %}
 			</td>
 			<td>
@@ -99,6 +100,7 @@
 					{{ p.relative_expense_income_str }}
 				{% endif %}
 			</td>
+			<td>{{ p.relative_sales_expense|floatformat:-2 }}%</td>
 			<td>{{ p.profit|commaise }}</td>
 		</tr>
 	{% endfor %}

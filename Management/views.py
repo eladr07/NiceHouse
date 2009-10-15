@@ -354,7 +354,7 @@ def projects_profit(request):
     total_income, total_expense, total_profit, avg_relative_expense_income, total_sale_count = 0,0,0,0,0
     for p in projects:
         p.sale_count, p.total_income, p.total_expense, p.relative_income, p.relative_expense_income, p.profit = 0,0,0,0,0,0
-        p.employee_expense = {}
+        p.employee_expense, p.total_sales_amount, p.relative_sales_expense = {}, 0, 0
     for d in demands:
         tax_val = Tax.objects.filter(date__lte=date(d.year, d.month,1)).latest().value / 100 + 1
         for p in projects:
@@ -362,6 +362,8 @@ def projects_profit(request):
                 total_amount = d.get_total_amount() / tax_val
                 sale_count = d.get_sales().count()
                 p.total_income += total_amount
+                for s in d.get_sales().all():
+                    p.total_sales_amount += s.include_tax and s.price or s.price / tax_val
                 p.sale_count += sale_count
                 total_sale_count += sale_count
                 total_income += total_amount
@@ -387,6 +389,7 @@ def projects_profit(request):
         p.relative_income = total_income and (p.total_income / total_income * 100) or 100
         if p.total_income and p.total_expense:
             p.relative_expense_income = p.total_income and (p.total_expense / p.total_income * 100) or 100
+            p.relative_sales_expense = p.total_sales_amount and (p.total_expense / p.total_sales_amount * 100) or 100
             avg_relative_expense_income += p.relative_expense_income
             if p.sale_count > 0:
                 project_count += 1
