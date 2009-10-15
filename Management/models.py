@@ -927,10 +927,10 @@ class EmployeeSalary(EmployeeSalaryBase):
                 if not sales:
                     continue
                 if sales.count() == 0:
-                    self.project_commission[epc.project] = 0
+                    self.project_commission[project] = 0
                     continue
-                self.project_commission[epc.project] = epc.calc(sales, self)
-                self.commissions += self.project_commission[epc.project]
+                self.project_commission[project] = epc.calc(sales, self)
+                self.commissions += self.project_commission[project]
                 for s in sales.all():
                     s.employee_paid = True
                     s.save() 
