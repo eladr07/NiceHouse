@@ -199,7 +199,11 @@
 				</tr>
 				<tr>
 					<th>הערות</th>
-					<td>{{signup.remarks}}</td>
+					<td>{{signup.remarks|default_if_none:""}}</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><a href="{{signup.get_absolute_url}}" class="fancybox">תיקון פרטים</a>
 				</tr>
 			</table>
 		</fieldset>
@@ -250,7 +254,7 @@
 				</tr>
 				<tr>
 					<td></td>
-					<td><a href="/sale/{{sale.id}}">לפרטים מלאים</a>
+					<td><a href="{{sale.get_absolute_url}}">לפרטים מלאים</a>
 				</tr>
 			</table>
 		</fieldset>

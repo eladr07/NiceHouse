@@ -1690,7 +1690,8 @@ class Signup(models.Model):
     price_include_lawyer = models.BooleanField(ugettext('include_lawyer'), choices = Boolean)
     remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
     cancel = models.OneToOneField('SignupCancel', related_name = 'signup', null=True, editable=False)
-       
+    def get_absolute_url(self):
+        return '/signups/%s' % self.id
     class Meta:
         ordering = ['-date']
         db_table = 'Signup'
