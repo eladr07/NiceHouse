@@ -960,7 +960,7 @@ class EPCommission(models.Model):
         return False 
     def calc(self, sales, salary):
         dic = {}# key: sale value: commission amount for sale
-        for s in sales():
+        for s in sales:
             for scd in s.commission_details.filter(employee_salary=salary):
                 scd.delete()
         for c in ['c_var', 'c_by_price', 'b_house_type', 'b_discount_save']:
