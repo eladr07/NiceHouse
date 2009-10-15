@@ -354,7 +354,7 @@ def projects_profit(request):
     total_income, total_expense, total_profit, avg_relative_expense_income, total_sale_count = 0,0,0,0,0
     for p in projects:
         p.sale_count, p.total_income, p.total_expense, p.relative_income, p.relative_expense_income, p.profit = 0,0,0,0,0,0
-        p.employee_expense, p.total_sales_amount, p.relative_sales_expense = {}, 0, 0
+        p.employee_expense, p.total_sales_amount, p.relative_sales_expense = {}, 0, 0.0
     for d in demands:
         tax_val = Tax.objects.filter(date__lte=date(d.year, d.month,1)).latest().value / 100 + 1
         for p in projects:
