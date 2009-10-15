@@ -924,10 +924,10 @@ class EmployeeSalary(EmployeeSalaryBase):
             if not epc.is_active(date(self.year, self.month,1)):
                 continue
             total_sales = self.sales
-            for k in total_sales:
-                if total_sales[k] == None:
+            for p in total_sales:
+                if total_sales[p] == None:
                     continue
-                sales = total_sales[k].filter(house__building__project__id = epc.project.id)
+                sales = total_sales[p]
                 if sales.count() == 0:
                     self.project_commission[epc.project] = 0
                     continue
