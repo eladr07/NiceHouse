@@ -18,7 +18,7 @@
 		<th>מחיר חוזה</th>
 		<th>עו"ד</th>
 		{% for sales in es.sales.values %}
-		{% for sale in sales.all %}
+		{% for sale in sales %}
 			<tr {% if sale.salereject %}class="row3"{% endif %} {% if sale.salepre %}class="row4"{% endif %}>
 				<td><a target="_parent" href="/sale/{{sale.id}}">פרטים</a></td>
 				<td>{{sale.id}}</td>

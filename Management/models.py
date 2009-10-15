@@ -874,25 +874,25 @@ class EmployeeSalary(EmployeeSalaryBase):
     def sales(self):
         sales = {}
         if self.employee.rank.id != RankType.RegionalSaleManager:
-            sales['direct'] = self.employee.sales.filter(employee_pay__year = self.year, employee_pay__month = self.month)
+            for s in self.employee.sales.filter(employee_pay__year = self.year, employee_pay__month = self.month):
+                if not sales.has_key(s.house.building.project): sales[s.house.building.project]= []
+                sales[s.house.building.project].append(s)
             for p in self.employee.projects.all():
-                all = Sale.objects.filter(house__building__project = p,
-                                          employee_pay__month = self.month,
-                                          employee_pay__year = self.year)
-                if all:
-                    sales[p] = all.filter(employee = None)
+                if not sales.has_key(p): sales[p]= []                    
+                sales[p].extend(list(Sale.objects.filter(house__building__project = p, employee_pay__month = self.month,
+                                                         employee_pay__year = self.year, employee = None)))
         else:
             for p in self.employee.projects.all():
-                sales[p] = Sale.objects.filter(house__building__project = p,
-                                               employee_pay__month = self.month,
-                                               employee_pay__year = self.year)
+                sales[p] = list(Sale.objects.filter(house__building__project = p,
+                                                    employee_pay__month = self.month,
+                                                    employee_pay__year = self.year))
         return sales
     @property
     def sales_count(self):
         i=0
         for v in self.sales.values():
             if v:
-                i+=v.count()
+                i += len(v)
         return i
     @property
     def total_amount(self):
@@ -925,12 +925,12 @@ class EmployeeSalary(EmployeeSalaryBase):
             if q.count() == 0: continue
             epc = q[0]
             if not epc.is_active(date(self.year, self.month,1)): continue
-            if not sales or sales.count() == 0:
+            if not sales or len(sales) == 0:
                 self.project_commission[epc.project] = 0
                 continue
             self.project_commission[epc.project] = epc.calc(sales, self)
             self.commissions += self.project_commission[epc.project]
-            for s in sales.all():
+            for s in sales:
                 s.employee_paid = True
                 s.save() 
     def get_absolute_url(self):
