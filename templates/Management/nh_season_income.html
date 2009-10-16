@@ -91,9 +91,9 @@
 		{% endfor %}		
 	</tr>
 	<tr class="rowSumGreen">
-		<td colspan="8">סה"כ הכנסות לסניף ללא מע"מ</td>
+		<td colspan="8">סה"כ יצור הכנסה לפי סוכן לסניף ללא מע"מ</td>
 		{% for nhe in employees %}
-		<td>{{nhe.season_branch_income_notax|commaise}}</td>
+		<td>{{nhe.season_branch_income_notax|commaise}} ({{nhe.season_branch_income_ratio_notax}}%)</td>
 		{% endfor %}		
 	</tr>
 </table>

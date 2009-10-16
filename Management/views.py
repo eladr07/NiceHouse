@@ -647,7 +647,8 @@ def nh_season_income(request):
         nhm.include_tax = True
         season_income += nhm.total_income
         season_net_income += nhm.total_net_income
-        
+    for e in employees:
+        e.season_branch_income_ratio_notax = e.season_branch_income_notax / season_net_income_notax * 100
     return render_to_response('Management/nh_season_income.html', 
                               { 'nhmonths':nhmonth_set, 'filterForm':form, 'employees':employees,
                                'season_income':season_income,'season_net_income':season_net_income,
