@@ -779,22 +779,6 @@ class SalaryExpenses(models.Model):
     compensation_allocation = models.FloatField(ugettext('compensation_allocation'))
     vacation = models.FloatField(ugettext('vacation'))
     convalescence_pay = models.FloatField(ugettext('convalescence_pay'))
-    @property
-    def bruto(self):
-        terms = self.salary.get_employee().employment_terms
-        if not terms.salary_net:
-            return self.salary.total_amount
-        return self.salary.total_amount + self.income_tax + self.national_insurance + self.health + self.pension_insurance
-    @property
-    def neto(self):
-        terms = self.salary.get_employee().employment_terms
-        if not terms.salary_net:
-            return self.salary.total_amount - self.income_tax - self.national_insurance - self.health - self.pension_insurance
-        return self.salary.total_amount
-    @property
-    def bruto_employer_expense(self):
-        return self.bruto + self.employer_benefit + self.employer_national_insurance + self.compensation_allocation \
-                + self.vacation + self.convalescence_pay
     class Meta:
         db_table = 'SalaryExpenses'
         
@@ -814,6 +798,25 @@ class EmployeeSalaryBase(models.Model):
     deduction_type = models.CharField(ugettext('deduction_type'), max_length=20, null=True, blank=True)
     remarks = models.TextField(ugettext('remarks'),null=True, blank=True)
     
+    @property
+    def bruto(self):
+        terms = self.get_employee().employment_terms
+        exp = self.expenses
+        if not terms.salary_net:
+            return self.salary.total_amount
+        return self.total_amount + exp.income_tax + exp.national_insurance + exp.health + exp.pension_insurance
+    @property
+    def neto(self):
+        terms = self.get_employee().employment_terms
+        exp = self.expenses
+        if not terms.salary_net:
+            return self.total_amount - exp.income_tax - exp.national_insurance - exp.health - exp.pension_insurance
+        return self.total_amount
+    @property
+    def bruto_employer_expense(self):
+        exp = self.expenses
+        return self.bruto + exp.employer_benefit + exp.employer_national_insurance + exp.compensation_allocation \
+                + exp.vacation + exp.convalescence_pay
     def approve(self):
         self.statuses.create(type = EmployeeSalaryBaseStatusType.objects.get(pk = EmployeeSalaryBaseStatusType.Approved)).save()
     def send_to_checks(self):
