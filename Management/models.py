@@ -782,8 +782,8 @@ class SalaryExpenses(models.Model):
     @property
     def bruto(self):
         terms = self.salary.get_employee().employment_terms
-        if terms.salary_net and terms.hire_type == HireType.Salaried:
-            return None
+        if not terms.salary_net:
+            return self.salary.total_amount
         return self.salary.total_amount + self.income_tax + self.national_insurance + self.health + self.pension_insurance
     @property
     def neto(self):
