@@ -781,6 +781,9 @@ class SalaryExpenses(models.Model):
     convalescence_pay = models.FloatField(ugettext('convalescence_pay'))
     @property
     def bruto(self):
+        terms = self.salary.get_employee().employment_terms
+        if terms.salary_net and terms.hire_type == HireType.Salaried:
+            return None
         return self.salary.total_amount + self.income_tax + self.national_insurance + self.health + self.pension_insurance
     @property
     def neto(self):
