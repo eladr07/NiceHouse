@@ -68,7 +68,6 @@ msgid "project"
 msgstr "פרוייקט"
 
 #: .\Management\forms.py:171
-#, fuzzy
 msgid "start date"
 msgstr "תאריך תחילה"
 
@@ -590,9 +589,8 @@ msgid "pay_num"
 msgstr "מס' תשלומים"
 
 #: .\Management\models.py:773
-#, fuzzy
 msgid "income_tax"
-msgstr "כולל מעמ"
+msgstr "מס הכנסה"
 
 #: .\Management\models.py:774
 msgid "national_insurance"
@@ -667,12 +665,10 @@ msgid "nhemployee"
 msgstr "עובד נייס האוס"
 
 #: .\Management\models.py:968
-#, fuzzy
 msgid "start_date"
 msgstr "תאריך תחילה"
 
 #: .\Management\models.py:969
-#, fuzzy
 msgid "end_date"
 msgstr "תאריך סיום"
 
