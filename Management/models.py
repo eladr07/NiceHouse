@@ -802,6 +802,7 @@ class EmployeeSalaryBase(models.Model):
     def bruto(self):
         terms = self.get_employee().employment_terms
         exp = self.expenses
+        if not exp: return None
         if not terms.salary_net:
             return self.salary.total_amount
         return self.total_amount + exp.income_tax + exp.national_insurance + exp.health + exp.pension_insurance
@@ -809,12 +810,14 @@ class EmployeeSalaryBase(models.Model):
     def neto(self):
         terms = self.get_employee().employment_terms
         exp = self.expenses
+        if not exp: return None
         if not terms.salary_net:
             return self.total_amount - exp.income_tax - exp.national_insurance - exp.health - exp.pension_insurance
         return self.total_amount
     @property
     def bruto_employer_expense(self):
         exp = self.expenses
+        if not exp: return None
         return self.bruto + exp.employer_benefit + exp.employer_national_insurance + exp.compensation_allocation \
                 + exp.vacation + exp.convalescence_pay
     def approve(self):
