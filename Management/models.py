@@ -804,6 +804,7 @@ class EmployeeSalaryBase(models.Model):
             return self.employeesalary
         if hasattr(self, 'nhemployeesalary'):
             return self.nhemployeesalary
+        raise TypeError
     @property
     def bruto(self):
         terms = self.get_employee().employment_terms
