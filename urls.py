@@ -257,6 +257,7 @@ urlpatterns += patterns('Management.views',
     (r'^demandinvoices/$', 'demand_invoice_list'),
     (r'^demandpayments/$', 'demand_payment_list'),
 
+    (r'^salary/(?P<salary_id>\d+)/expenses$', 'employee_salary_expenses'),
     (r'^employeesalaries/$', 'employee_salary_list'),
     (r'^employeesalaryseason/$', 'employeesalary_season_list'),
     (r'^employeesalaries/(?P<year>\d+)/(?P<month>\d+)/pdf$', 'employee_salary_pdf'),

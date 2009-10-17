@@ -768,8 +768,29 @@ class EmployeeSalaryBaseStatus(models.Model):
         db_table='EmployeeSalaryBaseStatus'
         ordering = ['date']
         get_latest_by = 'date'
+
+class SalaryExpenses(models.Model):
+    income_tax = models.FloatField(ugettext('income_tax'))
+    national_insurance = models.FloatField(ugettext('national_insurance'))
+    health = models.FloatField(ugettext('health'))
+    pension_insurance = models.FloatField(ugettext('pension_insurance'))
+    employer_national_insurance = models.FloatField(ugettext('employer_national_insurance'))
+    employer_benefit = models.FloatField(ugettext('employer_benefit'))
+    compensation_allocation = models.FloatField(ugettext('compensation_allocation'))
+    vacation = models.FloatField(ugettext('vacation'))
+    convalescence_pay = models.FloatField(ugettext('convalescence_pay'))
+    @property
+    def bruto(self):
+        return self.salary.total_amount + self.income_tax + self.national_insurance + self.health + self.pension_insurance
+    @property
+    def bruto_employer_expense(self):
+        return self.bruto + self.employer_benefit + self.employer_national_insurance + self.compensation_allocation \
+                + self.vacation + self.convalescence_pay
+    class Meta:
+        db_table = 'SalaryExpenses'
         
 class EmployeeSalaryBase(models.Model):
+    expenses = models.OneToOneField('SalaryExpenses', related_name='salary', editable=False, null=True)
     month = models.PositiveSmallIntegerField(ugettext('month'), editable=False, choices=((i,i) for i in range(1,13)))
     year = models.PositiveSmallIntegerField(ugettext('year'), editable=False, choices=((i,i) for i in range(datetime.now().year - 10,
                                                                                              datetime.now().year + 10)))

@@ -22,6 +22,7 @@
 				$("#calcSalary").attr("href", "/employeesalaries/" + tr.attr("objid") + "/calc");
 				$("#approve").attr("href", "/employeesalaries/" + tr.attr("objid") + "/approve");
 				$("#edit").attr("href", tr.attr("objid"));
+				$("#expenses").attr("href", "/salary/" + tr.attr("objid") + "/expenses");
 			});
 		$(".fancybox").fancybox();
 		$("#loanPay, #loanAdd, #edit").click(function (event) {
@@ -77,6 +78,10 @@
 <div class="someIcon" style="width:170px;">
 	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
 	<a id="edit" class="fancybox">שינוי מרכיבי שכר - חד פעמי</a>
+</div>
+<div class="someIcon" style="width:120px;">
+	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
+	<a id="expenses" class="fancybox">הוצאות מעביד</a>
 </div>
 <div class="someIcon"style="width:130px;">
 	<img src="/site_media/images/advanced-48.png" width="20" height="20"  alt="שליחה" /> 

@@ -501,6 +501,20 @@ def nhemployee_salary_pdf(request, nhbranch_id, year, month):
     p.close()
     return response 
 
+@permission_required('Management.change_salaryexpense')
+def employee_salary_expenses(request, salary_id):
+    es = EmployeeSalaryBase.objects.get(pk=salary_id)
+    expenses = es.expenses or SalaryExpenses(salary = es)
+    if request.method=='POST':
+        form = SalaryExpensesForm(request.POST, instance= expenses)
+        if form.is_valid():
+            form.save()
+    else:
+        form = SalaryExpensesForm(instance= expenses)
+    return render_to_response('Management/object_edit.html', 
+                              {'form':form, 'title':u'הזנת מרכיבי שכר : %s - %s/%s' % (es.employee, es.month, es.year)},
+                               context_instance=RequestContext(request))
+
 @permission_required('Management.change_employeesalary')
 def employee_salary_approve(request, id):
     es = EmployeeSalaryBase.objects.get(pk=id)

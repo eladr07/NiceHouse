@@ -463,6 +463,10 @@ class ReminderForm(forms.ModelForm):
         self.fields['content'].widget = forms.Textarea(attrs={'cols':'30', 'rows':'6'})
     class Meta:
         model = Reminder
+
+class SalaryExpensesForm(forms.ModelForm):
+    class Meta:
+        model = SalaryExpenses
         
 class TaskForm(forms.ModelForm):
     class Meta:
