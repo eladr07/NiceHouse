@@ -415,7 +415,8 @@ def projects_profit(request):
                                 'filterForm':SeasonForm(initial={'from_year':from_year,'from_month':from_month,
                                                                  'to_year':to_year,'to_month':to_month}),
                                 'total_income':total_income,'total_expense':total_expense, 'total_profit':total_profit,
-                                'avg_relative_expense_income':avg_relative_expense_income,'total_sale_count':total_sale_count},
+                                'avg_relative_expense_income':avg_relative_expense_income,'total_sale_count':total_sale_count,
+                                'avg_relative_sales_expense':avg_relative_sales_expense},
                               context_instance=RequestContext(request))
 
 @permission_required('Management.list_demand')
