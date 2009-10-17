@@ -351,7 +351,7 @@ def projects_profit(request):
     for d in demands:
         if d.project not in projects:
             projects.append(d.project)
-    total_income, total_expense, total_profit, avg_relative_expense_income, total_sale_count = 0,0,0,0,0
+    total_income, total_expense, total_profit, avg_relative_expense_income, avg_relative_sales_expense, total_sale_count = 0,0,0,0,0,0
     for p in projects:
         p.sale_count, p.total_income, p.total_expense, p.profit, p.total_sales_amount = 0,0,0,0,0
         p.employee_expense = {}
@@ -386,24 +386,28 @@ def projects_profit(request):
                     break
     project_count = 0
     for p in projects:
+        if p.sale_count > 0:
+            project_count += 1
         p.relative_income = total_income and (p.total_income / total_income * 100) or 100
         if p.total_expense and p.total_sales_amount:
             p.relative_sales_expense = float(p.total_expense) / p.total_sales_amount * 100
+            avg_relative_sales_expense += p.relative_sales_expense
+        else:
+            if p.total_expense == 0 and p.total_sales_amount == 0: p.relative_sales_expense_str = 'אפס'
+            elif p.total_sales_amount == 0: p.relative_sales_expense_str = u'גרעון'
+            elif p.total_expense == 0: p.relative_sales_expense_str = u'עודף'
         if p.total_income and p.total_expense:
             p.relative_expense_income = p.total_expense / p.total_income * 100
             avg_relative_expense_income += p.relative_expense_income
-            if p.sale_count > 0:
-                project_count += 1
         else:
-            if p.total_income == 0 and p.total_expense == 0:
-                p.relative_expense_income_str = u'אפס'
-            elif p.total_income == 0:
-                p.relative_expense_income_str = u'גרעון'
-            elif p.total_expense == 0:
-                p.relative_expense_income_str = u'עודף'
+            if p.total_income == 0 and p.total_expense == 0: p.relative_expense_income_str = u'אפס'
+            elif p.total_income == 0: p.relative_expense_income_str = u'גרעון'
+            elif p.total_expense == 0: p.relative_expense_income_str = u'עודף'
         p.profit = p.total_income - p.total_expense
         total_profit += p.profit
+        avg_relative_expense_income = avg_relative_expense_income / project_count
     avg_relative_expense_income = avg_relative_expense_income / project_count
+    avg_relative_sales_expense = avg_relative_sales_expense / project_count
     
     return render_to_response('Management/projects_profit.html', 
                               { 'projects':projects,'from_year':from_year,'from_month':from_month, 
