@@ -783,6 +783,9 @@ class SalaryExpenses(models.Model):
     def bruto(self):
         return self.salary.total_amount + self.income_tax + self.national_insurance + self.health + self.pension_insurance
     @property
+    def neto(self):
+        return self.salary.total_amount - self.income_tax - self.national_insurance - self.health - self.pension_insurance
+    @property
     def bruto_employer_expense(self):
         return self.bruto + self.employer_benefit + self.employer_national_insurance + self.compensation_allocation \
                 + self.vacation + self.convalescence_pay
@@ -915,10 +918,13 @@ class EmployeeSalary(EmployeeSalaryBase):
         return i
     @property
     def total_amount(self):
+        terms = self.employee.employment_terms
+        if not terms.salary_net and terms.hire_type.id == HireType.Salaried:
+            return self.expenses and self.expenses.neto or None
         return self.base + self.commissions + (self.var_pay or 0) + (self.safety_net or 0) - (self.deduction or 0)
     @property
     def check_amount(self):
-        return self.total_amount - self.loan_pay
+        return self.total_amount and (self.total_amount - self.loan_pay) or None
     def project_salary(self):
         res = {}
         if not len(self.project_commission): return res
