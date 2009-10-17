@@ -513,7 +513,7 @@ def employee_salary_list(request):
             es.calculate()
             es.save()
     return render_to_response('Management/employee_salaries.html', 
-                              {'salaries':EmployeeSalary.objects.filter(year = year, month = month), 
+                              {'salaries':EmployeeSalary.objects.filter(year = year, month = month).select_related().order_by('employee'), 
                                'month': date(int(year), int(month), 1),
                                'filterForm':MonthFilterForm(initial={'year':year,'month':month})},
                                context_instance=RequestContext(request))

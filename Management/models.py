@@ -815,7 +815,6 @@ class EmployeeSalaryBase(models.Model):
             return self.nhemployeesalary.nhemployee
     class Meta:
         db_table = 'EmployeeSalaryBase'
-        ordering = ['year','month']
 
 class NHEmployeeSalary(EmployeeSalaryBase):
     nhemployee = models.ForeignKey('NHEmployee', verbose_name=ugettext('nhemployee'), related_name='salaries')
@@ -941,9 +940,7 @@ class EmployeeSalary(EmployeeSalaryBase):
         return '/employeesalaries/%s' % self.id
     class Meta:
         db_table = 'EmployeeSalary'
-        order_with_respect_to = 'employee'
-        ordering = ['employee']
-    
+
 class EPCommission(models.Model):
     employee = models.ForeignKey('Employee', related_name='commissions')
     project = models.ForeignKey('Project', related_name= 'epcommission')
