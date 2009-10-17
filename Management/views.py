@@ -550,7 +550,7 @@ def nhemployee_salary_list(request):
         if new or not es.commissions or not es.base or not es.admin_commission: 
             es.calculate()
             es.save()
-    salaries.append(es)
+        salaries.append(es)
     return render_to_response('Management/nhemployee_salaries.html', 
                               {'salaries':salaries, 'month': date(int(year), int(month), 1),
                                'filterForm':MonthFilterForm(initial={'year':year,'month':month})},
