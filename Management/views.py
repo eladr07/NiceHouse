@@ -513,7 +513,7 @@ def employee_salary_expenses(request, salary_id):
     else:
         form = SalaryExpensesForm(instance= expenses)
     return render_to_response('Management/object_edit.html', 
-                              {'form':form, 'title':u'הזנת מרכיבי שכר : %s - %s/%s' % (es.employee, es.month, es.year)},
+                              {'form':form, 'title':u'הזנת מרכיבי שכר : %s - %s/%s' % (es.get_employee(), es.month, es.year)},
                                context_instance=RequestContext(request))
 
 @permission_required('Management.change_employeesalary')
