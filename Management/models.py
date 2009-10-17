@@ -924,7 +924,7 @@ class EmployeeSalary(EmployeeSalaryBase):
         return self.base + self.commissions + (self.var_pay or 0) + (self.safety_net or 0) - (self.deduction or 0)
     @property
     def check_amount(self):
-        return self.total_amount and (self.total_amount - self.loan_pay) or None
+        return self.total_amount != None and (self.total_amount - self.loan_pay) or None
     def project_salary(self):
         res = {}
         if not len(self.project_commission): return res
