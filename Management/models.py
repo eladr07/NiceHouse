@@ -804,7 +804,6 @@ class EmployeeSalaryBase(models.Model):
             return self.employeesalary
         if hasattr(self, 'nhemployeesalary'):
             return self.nhemployeesalary
-        raise TypeError
     @property
     def bruto(self):
         terms = self.get_employee().employment_terms
@@ -865,8 +864,8 @@ class NHEmployeeSalary(EmployeeSalaryBase):
     @property
     def total_amount(self):
         terms = self.employee.employment_terms
-        if not terms.salary_net and terms.hire_type.id == HireType.Salaried:
-            return self.expenses and self.expenses.neto or None
+        if not terms.salary_net:
+            return self.neto
         return self.base + self.commissions + self.admin_commission + (self.var_pay or 0) + (self.safety_net or 0) - (self.deduction or 0)
     @property
     def check_amount(self):
