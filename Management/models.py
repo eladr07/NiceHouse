@@ -787,7 +787,10 @@ class SalaryExpenses(models.Model):
         return self.salary.total_amount + self.income_tax + self.national_insurance + self.health + self.pension_insurance
     @property
     def neto(self):
-        return self.salary.total_amount - self.income_tax - self.national_insurance - self.health - self.pension_insurance
+        terms = self.salary.get_employee().employment_terms
+        if not terms.salary_net:
+            return self.salary.total_amount - self.income_tax - self.national_insurance - self.health - self.pension_insurance
+        return self.salary.total_amount
     @property
     def bruto_employer_expense(self):
         return self.bruto + self.employer_benefit + self.employer_national_insurance + self.compensation_allocation \
