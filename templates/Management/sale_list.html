@@ -33,7 +33,7 @@
 		<th>דחייה</th>
 		{% for s in sales %}
 			<tr>
-				<td><a target="_parent" href="/sale/{{s.id}}"><img src="/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a></td>
+				<td><a target="_parent" href="{{s.get_absolute_url}}"><img src="/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a></td>
 				<td>{{s.id}}</td>
 				{% if s.contract_num %}<td>{{s.contract_num}}</td>{% endif%}
 				<td>{{s.sale_date|date:"j/m/Y"}}</td>
