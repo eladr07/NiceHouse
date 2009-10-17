@@ -930,7 +930,8 @@ class EmployeeSalary(EmployeeSalaryBase):
     def project_salary(self):
         res = {}
         if not len(self.project_commission): return res
-        bruto_amount = self.expenses and self.expenses.bruto or self.total_amount    
+        ''' TODO: FIX AFTER SALARY EXPENSES ARE FEED '''
+        bruto_amount = self.base + self.commissions + (self.var_pay or 0) + (self.safety_net or 0) - (self.deduction or 0)
         if self.employee.main_project:
             for project, commission in self.project_commission.items():
                 res[project] = commission + (self.employee.main_project.id == project.id and bruto_amount-self.commissions or 0)
