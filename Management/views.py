@@ -524,14 +524,15 @@ def nhemployee_salary_list(request):
     current = Demand.current_month()
     year = int(request.GET.get('year', current.year))
     month = int(request.GET.get('month', current.month))
+    salaries = []
     for e in NHEmployee.objects.active():
         es, new = NHEmployeeSalary.objects.get_or_create(nhemployee = e, month = month, year = year)
         if new or not es.commissions or not es.base or not es.admin_commission: 
             es.calculate()
             es.save()
+    salaries.append(es)
     return render_to_response('Management/nhemployee_salaries.html', 
-                              {'salaries':NHEmployeeSalary.objects.filter(year = year, month = month), 
-                               'month': date(int(year), int(month), 1),
+                              {'salaries':salaries, 'month': date(int(year), int(month), 1),
                                'filterForm':MonthFilterForm(initial={'year':year,'month':month})},
                                context_instance=RequestContext(request))
 
