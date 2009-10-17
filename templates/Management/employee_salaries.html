@@ -131,7 +131,7 @@
 		{% else %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.employee.id}}>
 		{% endif %}
-			<td><a href="{{s.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="שינוי מרכיבי שכר" border="0" /></a></td>
+			<td><a class="fancybox" href="{{s.id}}"><img src="/site_media/images/edit_48.png" width="20" height="20" alt="שינוי מרכיבי שכר" border="0" /></a></td>
 			<td><a href="{{s.employee.get_absolute_url}}">{{ s.employee }}</a></td>
 			<td>
 				{% for p in s.employee.projects.all %}
