@@ -847,11 +847,6 @@ class NHEmployeeSalary(EmployeeSalaryBase):
     @property
     def check_amount(self):
         return self.total_amount - self.loan_pay
-    @property
-    def bruto_amount(self):
-        if not self.nhemployee.employment_terms or self.nhemployee.employment_terms.salary_net:
-            return None
-        return self.total_amount
     def calculate(self):
         for scd in NHSaleCommissionDetail.objects.filter(nhemployeesalary = self):
             scd.delete()
@@ -924,17 +919,15 @@ class EmployeeSalary(EmployeeSalaryBase):
     @property
     def check_amount(self):
         return self.total_amount - self.loan_pay
-    @property
-    def bruto_amount(self):
-        return self.total_amount
     def project_salary(self):
         res = {}
         if not len(self.project_commission): return res
+        bruto_amount = self.expenses and self.expenses.bruto or self.total_amount    
         if self.employee.main_project:
             for project, commission in self.project_commission.items():
-                res[project] = commission + (self.employee.main_project.id == project.id and self.bruto_amount-self.commissions or 0)
+                res[project] = commission + (self.employee.main_project.id == project.id and bruto_amount-self.commissions or 0)
         else:
-            base = (self.bruto_amount-self.commissions) / self.employee.projects.count() 
+            base = (bruto_amount-self.commissions) / self.employee.projects.count() 
             for project, commission in self.project_commission.items():
                 res[project] = commission + base
         return res 
