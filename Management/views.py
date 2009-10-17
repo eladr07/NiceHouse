@@ -507,14 +507,15 @@ def employee_salary_list(request):
     current = Demand.current_month()
     year = int(request.GET.get('year', current.year))
     month = int(request.GET.get('month', current.month))
+    salaries = []
     for e in Employee.objects.active():
         es, new = EmployeeSalary.objects.get_or_create(employee = e, month = month, year = year)
         if new or not es.commissions or not es.base: 
             es.calculate()
             es.save()
+        salaries.append(es)
     return render_to_response('Management/employee_salaries.html', 
-                              {'salaries':EmployeeSalary.objects.filter(year = year, month = month).select_related().order_by('employee'), 
-                               'month': date(int(year), int(month), 1),
+                              {'salaries':salaries, 'month': date(int(year), int(month), 1),
                                'filterForm':MonthFilterForm(initial={'year':year,'month':month})},
                                context_instance=RequestContext(request))
 
