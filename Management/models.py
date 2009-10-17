@@ -942,6 +942,7 @@ class EmployeeSalary(EmployeeSalaryBase):
     class Meta:
         db_table = 'EmployeeSalary'
         order_with_respect_to = 'employee'
+        ordering = ['employee']
     
 class EPCommission(models.Model):
     employee = models.ForeignKey('Employee', related_name='commissions')
