@@ -152,7 +152,7 @@
 			<td style="color:#08A600;">{{s.safety_net|default_if_none:""}}</td>
 			<td style="color:#08A600;">{% if s.var_pay %}{{s.var_pay|commaise}} - {{s.var_pay_type}} {% endif %}</td>
 			<td style="color:#D50808;">{% if s.deduction %}{{s.deduction|commaise}} - {{s.deduction_type}} {% endif %}</td>
-			<td><a href="/employeesalaries/{{s.id}}/totaldetails" class="fancybox">{{s.total_amount|default_if_none:""|commaise}}</a></td>
+			<td><a href="/employeesalaries/{{s.id}}/totaldetails" class="fancybox">{{s.neto|default_if_none:""|commaise}}</a></td>
 			<td>
 				החזר - {{s.loan_pay|commaise}} ש"ח
 				<br>
