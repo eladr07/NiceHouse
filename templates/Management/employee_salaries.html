@@ -141,8 +141,8 @@
 			<td>{{s.employee.employment_terms.hire_type}}</td>
 			<td><a class="fancybox" href="/employee/{{s.employee.id}}/sales/{{month.year}}/{{month.month}}">{{ s.sales_count }}</a></td>
 			<td style="color:#08A600;">
-				{{s.base}} + 
-				<a href="/employeesalaries/{{s.id}}/details" class="fancybox">{{s.commissions}}</a>
+				{{s.base|commaise}} + 
+				<a href="/employeesalaries/{{s.id}}/details" class="fancybox">{{s.commissions|commaise}}</a>
 			</td>
 			<td style="color:#08A600;">{{s.safety_net|default_if_none:""}}</td>
 			<td style="color:#08A600;">{% if s.var_pay %}{{s.var_pay|commaise}} - {{s.var_pay_type}} {% endif %}</td>
