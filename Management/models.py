@@ -815,6 +815,7 @@ class EmployeeSalaryBase(models.Model):
             return self.nhemployeesalary.nhemployee
     class Meta:
         db_table = 'EmployeeSalaryBase'
+        ordering = ['year','month']
 
 class NHEmployeeSalary(EmployeeSalaryBase):
     nhemployee = models.ForeignKey('NHEmployee', verbose_name=ugettext('nhemployee'), related_name='salaries')
