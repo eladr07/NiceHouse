@@ -736,7 +736,7 @@ class Loan(models.Model):
 class LoanPay(models.Model):
     employee = models.ForeignKey('EmployeeBase', related_name='loan_pays', 
                                  verbose_name=ugettext('employee'), null=True)
-    date = models.DateField(ugettext('date'), auto_now_add=True)
+    date = models.DateField(ugettext('date'))
     amount = models.FloatField(ugettext('amount'))
     remarks = models.TextField(ugettext('remarks'), blank=True, null=True)
     class Meta:
@@ -773,14 +773,14 @@ class EmployeeSalaryBase(models.Model):
     month = models.PositiveSmallIntegerField(ugettext('month'), editable=False, choices=((i,i) for i in range(1,13)))
     year = models.PositiveSmallIntegerField(ugettext('year'), editable=False, choices=((i,i) for i in range(datetime.now().year - 10,
                                                                                              datetime.now().year + 10)))
-    base = models.IntegerField(ugettext('salary_base'), null=True)
-    commissions = models.IntegerField(ugettext('commissions'), editable=False, null=True)
-    safety_net = models.PositiveSmallIntegerField(ugettext('safety_net'), null=True, blank=True)
-    var_pay = models.SmallIntegerField(ugettext('var_pay'), null=True, blank=True)
+    base = models.FloatField(ugettext('salary_base'), null=True)
+    commissions = models.FloatField(ugettext('commissions'), editable=False, null=True)
+    safety_net = models.FloatField(ugettext('safety_net'), null=True, blank=True)
+    var_pay = models.FloatField(ugettext('var_pay'), null=True, blank=True)
     var_pay_type = models.CharField(ugettext('var_pay_type'), max_length=20, null=True, blank=True)
-    refund = models.SmallIntegerField(ugettext('refund'), null=True, blank=True)
+    refund = models.FloatField(ugettext('refund'), null=True, blank=True)
     refund_type = models.CharField(ugettext('refund_type'), max_length=20, null=True, blank=True)
-    deduction = models.SmallIntegerField(ugettext('deduction'), null=True, blank=True)
+    deduction = models.FloatField(ugettext('deduction'), null=True, blank=True)
     deduction_type = models.CharField(ugettext('deduction_type'), max_length=20, null=True, blank=True)
     remarks = models.TextField(ugettext('remarks'),null=True, blank=True)
     

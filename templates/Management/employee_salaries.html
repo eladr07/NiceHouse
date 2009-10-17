@@ -131,8 +131,8 @@
 		{% else %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.employee.id}}>
 		{% endif %}
-			<td><a href="/employees/{{s.employee.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
-			<td>{{ s.employee }}</td>
+			<td><a href="{{s.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="שינוי מרכיבי שכר" border="0" /></a></td>
+			<td><a href="{{s.employee.get_absolute_url}}">{{ s.employee }}</a></td>
 			<td>
 				{% for p in s.employee.projects.all %}
 				<a href="/projects/{{p.id}}" target="_blank">{{p}}</a><br>
@@ -159,7 +159,7 @@
 				<a href="{{s.employee.get_absolute_url}}/loans" class="fancybox">כרטיס הלוואות</a><br>
 				{% endif %}
 			</td>
-			<td><a href="/employeesalaries/{{s.id}}/checkdetails" class="fancybox">{{s.check_amount}}</a></td>
+			<td><a href="/employeesalaries/{{s.id}}/checkdetails" class="fancybox">{{s.check_amount|commaise}}</a></td>
 			<td>{{s.bruto_amount|commaise}}</td>
 			<td>{% if s.refund %}{{s.refund}} - {{s.refund_type}} {% endif %}</td>
 			<td></td>

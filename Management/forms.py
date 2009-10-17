@@ -446,6 +446,9 @@ class DemandSendForm(forms.ModelForm):
         exclude = ('project','year','month','sale_count')
         
 class LoanPayForm(forms.ModelForm):
+    def __init__(self, *args, **kw):
+        super(LoanPayForm, self).__init__(*args, **kw)
+        self.fields['date'].widget.attrs = {'class':'vDateField'}
     class Meta:
         model = LoanPay
         
