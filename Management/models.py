@@ -799,14 +799,19 @@ class EmployeeSalaryBase(models.Model):
     remarks = models.TextField(ugettext('remarks'),null=True, blank=True)
     
     @property
+    def derived(self):
+        if hasattr(self, 'employeesalary'):
+            return self.employeesalary
+        if hasattr(self, 'nhemployeesalary'):
+            return self.nhemployeesalary
+    @property
     def bruto(self):
         terms = self.get_employee().employment_terms
         exp = self.expenses
         if not terms.salary_net:
-            derived = self.employeesalary or self.nhemployeesalary
-            return derived.total_amount
+            return self.derived.total_amount
         if not exp: return None
-        return self.total_amount + exp.income_tax + exp.national_insurance + exp.health + exp.pension_insurance
+        return self.derived.total_amount + exp.income_tax + exp.national_insurance + exp.health + exp.pension_insurance
     @property
     def neto(self):
         terms = self.get_employee().employment_terms
@@ -814,8 +819,7 @@ class EmployeeSalaryBase(models.Model):
         if not terms.salary_net:
             if not exp: return None
             return self.total_amount - exp.income_tax - exp.national_insurance - exp.health - exp.pension_insurance
-        derived = self.employeesalary or self.nhemployeesalary
-        return derived.total_amount
+        return self.derived.total_amount
     @property
     def bruto_employer_expense(self):
         exp = self.expenses
