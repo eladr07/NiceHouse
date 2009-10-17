@@ -863,13 +863,10 @@ class NHEmployeeSalary(EmployeeSalaryBase):
     admin_commission = models.IntegerField(editable=False, null=True)
     @property
     def total_amount(self):
-        terms = self.employee.employment_terms
-        if not terms.salary_net:
-            return self.neto
         return self.base + self.commissions + self.admin_commission + (self.var_pay or 0) + (self.safety_net or 0) - (self.deduction or 0)
     @property
     def check_amount(self):
-        return self.total_amount != None and (self.total_amount - self.loan_pay) or None
+        return self.neto != None and (self.neto - self.loan_pay) or None
     def calculate(self):
         for scd in NHSaleCommissionDetail.objects.filter(nhemployeesalary = self):
             scd.delete()
@@ -938,9 +935,6 @@ class EmployeeSalary(EmployeeSalaryBase):
         return i
     @property
     def total_amount(self):
-        terms = self.employee.employment_terms
-        if not terms.salary_net and terms.hire_type.id == HireType.Salaried:
-            return self.expenses and self.expenses.neto or None
         return self.base + self.commissions + (self.var_pay or 0) + (self.safety_net or 0) - (self.deduction or 0)
     @property
     def check_amount(self):
