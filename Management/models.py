@@ -803,7 +803,7 @@ class EmployeeSalaryBase(models.Model):
         terms = self.get_employee().employment_terms
         exp = self.expenses
         if not terms.salary_net:
-            return self.salary.total_amount
+            return self.total_amount
         if not exp: return None
         return self.total_amount + exp.income_tax + exp.national_insurance + exp.health + exp.pension_insurance
     @property
