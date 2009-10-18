@@ -1423,7 +1423,7 @@ class ProjectCommission(models.Model):
             if getattr(self,c) == None:
                 continue
             commission = getattr(self,c)
-            commission = restore_object(self, c)
+            commission = restore_object(self, date)
             precentages = commission.calc(sales)
             for s in precentages:
                 if c in ['c_var_precentage', 'c_var_precentage_fixed'] and self.max and precentages[s] > self.max:
