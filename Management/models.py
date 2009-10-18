@@ -2313,6 +2313,11 @@ def restore_object(instance, date):
             setattr(instance, l.attribute, val)
         except:
             pass
+    for field in model._meta.fields:
+        attr = getattr(instance, field.name)
+        if type(attr) in tracked_models:
+            old_attr = restore_object(attr, date)
+            setattr(instance, field.name, old_attr)
     return instance
 
 def track_changes(sender, **kwargs):
