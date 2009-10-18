@@ -2313,8 +2313,6 @@ def restore_object(instance, date):
             setattr(instance, l.attribute, val)
         except:
             pass
-    for field in model._meta.fields:
-        attr = getattr(instance, field.name)
     return instance
 
 def track_changes(sender, **kwargs):
