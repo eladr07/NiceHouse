@@ -1,0 +1,100 @@
+﻿{% extends "./base.html" %}
+{% load management_extras %}
+{% block header %}
+{{ block.super }}
+<script>
+	var selectedID = 0;
+	var prev_class;
+	$(document).ready(function() {
+		$("#salaryTable tr").click(function() { 
+			var tr = $(this);
+			if (selectedID > 0)
+				$("#salaryTable tr[employeeid='"+selectedID+"']").attr("class", prev_class);
+			selectedID = tr.attr("employeeid");
+			if (!selectedID)
+				return;
+			prev_class = tr.attr("class");
+			tr.attr("class","selectedRow");
+			//sync links
+			if (selectedID > 0)
+				$("#edit").attr("href", tr.attr("objid"));
+			});
+		$(".fancybox").fancybox();
+	});
+</script>
+{% endblock header %}
+{% block content %}
+<div class="title">
+	<div class="pageTitle">הוצאות מעביד לשכר {{month|date:"M Y"}}</div>
+</div>
+<div class="clearBoth"></div>
+<form method="GET">
+	<table class="dataTable" style="width: 30%;" border="1">
+		<tr class="row1">
+			<td colspan="3" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש</td>
+		</tr>
+		<tr class="row2">
+			{% for field in filterForm %}
+			<td>
+				{{ field.label_tag }} : 
+				{{ field }}
+			</td>
+			{% endfor %}
+			<td><input type="submit" value="חפש" class="button"/></td>
+		</tr>
+	</table>
+</form>
+<br>
+<div class="someIcon" style="width:100px;">
+	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
+	<a href="add" class="fancybox">חדש</a>
+</div>
+<div class="someIcon" style="width:100px;">
+	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
+	<a id="edit" class="fancybox">עדכון</a>
+</div>
+<div class="clearBoth"></div>
+<table id="salaryTable" class="dataTable" border="1">
+<caption>מציג סה"כ {{expenses|length}} עובדים</caption>
+	<tr>
+		<th></th>
+		<th>שם העובד</th>
+		<th>פרוייקט</th>
+		<th>סוג העסקה</th>
+		<th>מס הכנסה</th>
+		<th>ביטוח לאומי</th>
+		<th>בריאות</th>
+		<th>ביטוח פנסיה</th>
+		<th>ביטוח לאומי מעביד</th>
+		<th>גמל מעביד</th>
+		<th>הפרשה לפיצויים</th>
+		<th>חופשה</th>
+		<th>דמי הבראה</th>
+	</tr>
+	{% regroup expenses by employee.rank as rank_list %}
+	{% for rank in rank_list %}
+		<tr style="text-align:center; color:#4669D6; font-size:14px"><td colspan="15"><b>{{rank.grouper|default:"-- לא הוגדר דרג --"}}</b></td></tr>
+		{% for s in rank.list %}
+		<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.employee.id}}>
+			<td><a class="fancybox" href="{{s.id}}"><img src="/site_media/images/edit_48.png" width="20" height="20" alt="עדכון" border="0" /></a></td>
+			<td><a href="{{s.employee.get_absolute_url}}">{{ s.employee }}</a></td>
+			<td>
+				{% for p in s.employee.projects.all %}
+				<a href="/projects/{{p.id}}" target="_blank">{{p}}</a><br>
+				{% endfor %}
+			</td>
+			<td>{{s.employee.employment_terms.hire_type}}</td>
+			<td>{{s.income_tax}}</td>
+			<td>{{s.national_insurance}}</td>
+			<td>{{s.health}}</td>
+			<td>{{s.pension_insurance}}</td>
+			<td>{{s.employer_national_insurance}}</td>
+			<td>{{s.employer_benefit}}</td>
+			<td>{{s.compensation_allocation}}</td>
+			<td>{{s.vacation}}</td>
+			<td>{{s.convalescence_pay}}</td>
+		</tr>
+		{% endfor %}
+	{% endfor %}
+</table>
+{% endblock content %}

@@ -793,6 +793,7 @@ class SalaryExpenses(models.Model):
     class Meta:
         db_table = 'SalaryExpenses'
         unique_together = ('employee','year','month')
+        permissions = (('list_salaryexpenses', 'Can list salary expenses'),)
         
 class EmployeeSalaryBase(models.Model):
     month = models.PositiveSmallIntegerField(ugettext('month'), editable=False, choices=((i,i) for i in range(1,13)))
