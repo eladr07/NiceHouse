@@ -770,10 +770,10 @@ class EmployeeSalaryBaseStatus(models.Model):
         get_latest_by = 'date'
 
 class SalaryExpenses(models.Model):
-    employee = models.ForeignKey('EmployeeBase')
-    month = models.PositiveSmallIntegerField(ugettext('month'), editable=False, choices=((i,i) for i in range(1,13)))
-    year = models.PositiveSmallIntegerField(ugettext('year'), editable=False, choices=((i,i) for i in range(datetime.now().year - 10,
-                                                                                             datetime.now().year + 10)))
+    employee = models.ForeignKey('EmployeeBase', verbose_name=ugettext('employee'))
+    month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
+    year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
+                                                                                            datetime.now().year + 10)))
     
     income_tax = models.FloatField(ugettext('income_tax'))
     national_insurance = models.FloatField(ugettext('national_insurance'))
