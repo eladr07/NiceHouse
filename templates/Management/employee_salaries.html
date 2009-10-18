@@ -19,8 +19,8 @@
 			if (selectedID > 0)
 				$("#loanPay").attr("href", "/employees/" + selectedID + "/loanpay");
 				$("#loanAdd").attr("href", "/employees/" + selectedID + "/addloan");
-				$("#calcSalary").attr("href", "/employeesalaries/" + tr.attr("objid") + "/calc");
-				$("#approve").attr("href", "/employeesalaries/" + tr.attr("objid") + "/approve");
+				$("#calcSalary").attr("href", "" + tr.attr("objid") + "/calc");
+				$("#approve").attr("href", "" + tr.attr("objid") + "/approve");
 				$("#edit").attr("href", tr.attr("objid"));
 				$("#expenses").attr("href", "/salary/" + tr.attr("objid") + "/expenses");
 			});
@@ -28,15 +28,6 @@
 		$("#loanPay, #loanAdd, #edit").click(function (event) {
 			if (!$(this).attr("href"))
 				alert("לא נבחר עובד");
-		});
-		$("#approve").click(function (event) {
-			event.preventDefault();
-			if (!$(this).attr("href"))
-				alert("לא נבחר עובד");
-			$.get($(this).attr("href"), function (data) {
-				if (data == 'ok')
-					alert('השכר אושר !');
-			});
 		});
 		$("#calcSalary").click(function(event) {
 			if (!confirm("האם אתה בטוח שברצונך לחשב את העמלות מחדש ?"))
@@ -101,7 +92,7 @@
 </div>
 <div class="someIcon" style="width:100px;">
 	<img src="/site_media/images/print-48.png" width="20" height="20"  alt="שינוי" /> 
-	<a href="/employeesalaries/{{month.year}}/{{month.month}}/pdf" >גרסת הדפסה</a>
+	<a href="{{month.year}}/{{month.month}}/pdf" >גרסת הדפסה</a>
 </div>
 <div class="clearBoth"></div>
 <table id="salaryTable" class="dataTable" border="1">
@@ -147,12 +138,12 @@
 			<td><a class="fancybox" href="/employee/{{s.employee.id}}/sales/{{month.year}}/{{month.month}}">{{ s.sales_count }}</a></td>
 			<td style="color:#08A600;">
 				{{s.base|commaise}} + 
-				<a href="/employeesalaries/{{s.id}}/details" class="fancybox">{{s.commissions|commaise}}</a>
+				<a href="{{s.id}}/details" class="fancybox">{{s.commissions|commaise}}</a>
 			</td>
 			<td style="color:#08A600;">{{s.safety_net|default_if_none:""}}</td>
 			<td style="color:#08A600;">{% if s.var_pay %}{{s.var_pay|commaise}} - {{s.var_pay_type}} {% endif %}</td>
 			<td style="color:#D50808;">{% if s.deduction %}{{s.deduction|commaise}} - {{s.deduction_type}} {% endif %}</td>
-			<td><a href="/employeesalaries/{{s.id}}/totaldetails" class="fancybox">{{s.neto|default_if_none:""|commaise}}</a></td>
+			<td><a href="{{s.id}}/totaldetails" class="fancybox">{{s.neto|default_if_none:""|commaise}}</a></td>
 			<td>
 				החזר - {{s.loan_pay|commaise}} ש"ח
 				<br>
@@ -164,12 +155,18 @@
 				<a href="{{s.employee.get_absolute_url}}/loans" class="fancybox">כרטיס הלוואות</a><br>
 				{% endif %}
 			</td>
-			<td><a href="/employeesalaries/{{s.id}}/checkdetails" class="fancybox">{{s.check_amount|default_if_none:""|commaise}}</a></td>
+			<td><a href="{{s.id}}/checkdetails" class="fancybox">{{s.check_amount|default_if_none:""|commaise}}</a></td>
 			<td>{{s.bruto|default_if_none:""|commaise}}</td>
 			<td>{% if s.refund %}{{s.refund}} - {{s.refund_type}} {% endif %}</td>
 			<td></td>
 			<td>{{s.remarks|default_if_none:""}}</td>
-			<td>{{s.approved_date|default_if_none:""}}</td>
+			<td>
+			{% if s.approved_date %}
+				{{s.approved_date}}
+			{% else %}
+				<a href="{{s.id}}/approve">אשר</a>
+			{% endif %}
+			</td>
 			<td>{{s.sent_to_bookkeeping_date|default_if_none:""}}</td>
 			<td>{{s.sent_to_checks_date|default_if_none:""}}</td>
 		</tr>

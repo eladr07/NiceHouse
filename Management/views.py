@@ -519,7 +519,10 @@ def employee_salary_expenses(request, salary_id):
 def employee_salary_approve(request, id):
     es = EmployeeSalaryBase.objects.get(pk=id)
     es.approve()
-    return HttpResponse('ok')
+    if hasattr(es,'employeesalary'):
+        return HttpResponseRedirect('/employeesalaries/?year=%s&month=%s' % (es.year, es.month))
+    elif hasattr(es,'nhemployeesalary'):
+        return HttpResponseRedirect('/nhemployeesalaries/?year=%s&month=%s' % (es.year, es.month))
     
 @permission_required('Management.list_employeesalary')
 def employee_salary_list(request):
@@ -546,7 +549,7 @@ def salary_expenses_list(request):
     expenses = []
     for se in SalaryExpenses.objects.filter(year = year, month= month):
         expenses.append(se)
-    return render_to_response('Management/salaries_expenses.html.html', 
+    return render_to_response('Management/salaries_expenses.html', 
                               {'expenses':expenses, 'month': date(int(year), int(month), 1),
                                'filterForm':MonthFilterForm(initial={'year':year,'month':month})},
                                context_instance=RequestContext(request))
@@ -588,7 +591,10 @@ def employee_salary_calc(request, model, id):
     es = model.objects.get(pk=id)
     es.calculate()
     es.save()
-    return HttpResponseRedirect('/employeesalaries/?year=%s&month=%s' % (es.year, es.month))
+    if model == EmployeeSalary:
+        return HttpResponseRedirect('/employeesalaries/?year=%s&month=%s' % (es.year, es.month))
+    elif model == NHEmployeeSalary:
+        return HttpResponseRedirect('/nhemployeesalaries/?year=%s&month=%s' % (es.year, es.month))
 
 @permission_required('Management.list_demand')
 def demands_all(request):
