@@ -510,7 +510,7 @@ def employee_salary_expenses(request, salary_id):
         if form.is_valid():
             form.save()
     else:
-        form = SalaryExpensesForm(initial={'employee':es.employee.id, 'year':es.year, 'month':es.month})
+        form = SalaryExpensesForm(initial={'employee':es.get_employee().id, 'year':es.year, 'month':es.month})
     return render_to_response('Management/object_edit.html', 
                               {'form':form, 'title':u'הזנת מרכיבי שכר'},
                                context_instance=RequestContext(request))
