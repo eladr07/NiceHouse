@@ -912,10 +912,13 @@ class NHEmployeeSalary(EmployeeSalaryBase):
                 nhm = NHMonth.objects.get(nhbrnach = nhbranch, year = self.year, month = self.month)
                 self.__calc__(nhm)
     def __calc__(self, nhmonth):
+        date = date(self.year, self.month, 1)
         if self.nhemployee.nhcbase:
-            self.admin_commission += self.nhemployee.nhcbase.calc(nhmonth)
+            commission = restore_object(self.nhemployee.nhcbase, date)
+            self.admin_commission += commission.calc(nhmonth)
         if self.nhemployee.nhcbranchincome:
-            self.admin_commission += self.nhemployee.nhcbranchincome.calc(nhmonth)
+            commission = restore_object(self.nhemployee.nhcbranchincome, date)
+            self.admin_commission += commission.calc(nhmonth)
     class Meta:
         db_table='NHEmployeeSalary'
         
@@ -1009,26 +1012,27 @@ class EPCommission(models.Model):
             return True
         return False 
     def calc(self, sales, salary):
+        date = date(salary.year, salary.month , 1)
         dic = {}# key: sale value: commission amount for sale
         for s in sales:
             for scd in s.commission_details.filter(employee_salary=salary):
                 scd.delete()
         for c in ['c_var', 'c_by_price', 'b_house_type', 'b_discount_save']:
-            if getattr(self,c) == None:
-                continue
-            amounts = getattr(self,c).calc(sales)
+            commission = getattr(self,c)
+            if not commission: continue
+            commission = restore_object(commission, date)
+            amounts = commission.calc(sales)
             for s in amounts:
-                if amounts[s] == 0:
-                    continue
+                if amounts[s] == 0: continue
                 s.commission_details.create(employee_salary = salary, value = amounts[s], commission = c)
                 dic[s] = dic.has_key(s) and dic[s] + amounts[s] or amounts[s]
         for c in ['c_var_precentage']:
-            if getattr(self,c) == None:
-                continue
-            precentages = getattr(self,c).calc(sales)
+            commission = getattr(self,c)
+            if not commission: continue
+            commission = restore_object(commission, date)
+            precentages = commission.calc(sales)
             for s in precentages:
-                if precentages[s] == 0:
-                    continue
+                if precentages[s] == 0: continue
                 amount = precentages[s] * s.employee_price() / 100
                 s.commission_details.create(employee_salary = salary, value = amount, commission = c)
                 dic[s] = dic.has_key(s) and dic[s] + amount or amount
@@ -1036,11 +1040,11 @@ class EPCommission(models.Model):
         for s in dic:
             total_amount = total_amount + dic[s]
         for c in ['b_sale_rate']:
-            if getattr(self,c) == None:
-                continue
-            amount = getattr(self,c).calc(sales)
-            if amount == 0:
-                continue
+            commission = getattr(self,c)
+            if not commission: continue
+            commission = restore_object(commission, date)
+            amount = commission.calc(sales)
+            if amount == 0: continue
             total_amount = total_amount + amount
             scd = SaleCommissionDetail(employee_salary = salary, value = amount, commission = c)
             scd.save()
@@ -1374,7 +1378,7 @@ class ProjectCommission(models.Model):
     max = models.FloatField(ugettext('max_commission'), null=True, blank=True)
     agreement = models.FileField(ugettext('agreement'), upload_to='files', null=True, blank=True)
     remarks = models.TextField(ugettext('commission_remarks'), null=True, blank=True)
-    def calc(self, sales, sub=0):
+    def calc(self, sales, sub=0, date = date.today()):
         if sales.count() == 0: return
         demand = sales[0].actual_demand
         if self.commission_by_signups and sub == 0:
@@ -1409,14 +1413,18 @@ class ProjectCommission(models.Model):
             return
         if getattr(self, 'c_zilber') != None:
             month = date(demand.year, demand.month, 1)
-            getattr(self, 'c_zilber').calc(month)
+            c = getattr(self, 'c_zilber')
+            c = restore_object(c, date) 
+            c.calc(month)
             return
         dic={}
         details={}
         for c in ['c_var_precentage','c_var_precentage_fixed','b_discount_save_precentage']:
             if getattr(self,c) == None:
                 continue
-            precentages = getattr(self,c).calc(sales)
+            commission = getattr(self,c)
+            commission = restore_object(self, c)
+            precentages = commission.calc(sales)
             for s in precentages:
                 if c in ['c_var_precentage', 'c_var_precentage_fixed'] and self.max and precentages[s] > self.max:
                     precentages[s] = self.max#set base commission to max commission
@@ -1666,10 +1674,9 @@ class Demand(models.Model):
             amount = amount + (s.price_final or 0) 
         return amount
     def calc_sales_commission(self):
-        if self.get_sales().count() == 0:
-            return
+        if self.get_sales().count() == 0: return
         c = self.project.commissions
-        c.calc(self.get_sales())
+        c.calc(self.get_sales(), date = date(self.year, self.month, 1))
     def get_sales_commission(self):
         i=0
         for s in self.get_sales():
@@ -2286,7 +2293,7 @@ class ChangeLog(models.Model):
 tracked_models = [BDiscountSave, BDiscountSavePrecentage, BHouseType, BSaleRate,
                   CAmount, CByPrice, CPrecentage, CPriceAmount, CVar,
                   CVarPrecentage, CVarPrecentageFixed, CZilber, EmploymentTerms,
-                  ProjectCommission, SaleCommissionDetail, EmployeeSalaryBase, NHEmployeeSalary]
+                  ProjectCommission, SaleCommissionDetail, EmployeeSalaryBase, NHEmployeeSalary, NHCBase, NHCBranchIncome]
 
 def restore_object(instance, date):
     model = instance.__class__
