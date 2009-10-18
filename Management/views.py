@@ -1069,7 +1069,7 @@ def project_payment_add(request, id):
 @permission_required('Management.add_payment')
 def nhsaleside_payment_add(request, object_id):
     nhs = NHSaleSide.objects.get(pk=object_id)
-    if not request.user.has_perm('Management.nhbranch_' + str(nhs.nhmonth.nhbranch.id)):
+    if not request.user.has_perm('Management.nhbranch_' + str(nhs.nhsale.nhmonth.nhbranch.id)):
         return HttpResponse('No Permission. Contact Elad.') 
     if request.method == 'POST':
         form = PaymentForm(request.POST)
@@ -1086,7 +1086,7 @@ def nhsaleside_payment_add(request, object_id):
 @permission_required('Management.add_invoice')
 def nhsaleside_invoice_add(request, object_id):
     nhs = NHSaleSide.objects.get(pk=object_id)
-    if not request.user.has_perm('Management.nhbranch_' + str(nhs.nhmonth.nhbranch.id)):
+    if not request.user.has_perm('Management.nhbranch_' + str(nhs.nhsale.nhmonth.nhbranch.id)):
         return HttpResponse('No Permission. Contact Elad.') 
     if request.method == 'POST':
         form = InvoiceForm(request.POST)

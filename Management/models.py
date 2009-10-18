@@ -770,6 +770,11 @@ class EmployeeSalaryBaseStatus(models.Model):
         get_latest_by = 'date'
 
 class SalaryExpenses(models.Model):
+    employee = models.ForeignKey('EmployeeBase')
+    month = models.PositiveSmallIntegerField(ugettext('month'), editable=False, choices=((i,i) for i in range(1,13)))
+    year = models.PositiveSmallIntegerField(ugettext('year'), editable=False, choices=((i,i) for i in range(datetime.now().year - 10,
+                                                                                             datetime.now().year + 10)))
+    
     income_tax = models.FloatField(ugettext('income_tax'))
     national_insurance = models.FloatField(ugettext('national_insurance'))
     health = models.FloatField(ugettext('health'))
@@ -779,11 +784,17 @@ class SalaryExpenses(models.Model):
     compensation_allocation = models.FloatField(ugettext('compensation_allocation'))
     vacation = models.FloatField(ugettext('vacation'))
     convalescence_pay = models.FloatField(ugettext('convalescence_pay'))
+    @property
+    def salary(self):
+        if isinstance(self.employee, Employee):
+            return EmployeeSalary.objects.get(year = self.year, month = self.month, employee = self.employee.employee)
+        elif isinstance(self.employee, NHEmployee):
+            return NHEmployeeSalary.objects.get(year = self.year, month = self.month, nhemployee = self.employee.nhemployee)
     class Meta:
         db_table = 'SalaryExpenses'
+        unique_together = ('employee','year','month')
         
 class EmployeeSalaryBase(models.Model):
-    expenses = models.OneToOneField('SalaryExpenses', related_name='salary', editable=False, null=True)
     month = models.PositiveSmallIntegerField(ugettext('month'), editable=False, choices=((i,i) for i in range(1,13)))
     year = models.PositiveSmallIntegerField(ugettext('year'), editable=False, choices=((i,i) for i in range(datetime.now().year - 10,
                                                                                              datetime.now().year + 10)))
@@ -797,7 +808,10 @@ class EmployeeSalaryBase(models.Model):
     deduction = models.FloatField(ugettext('deduction'), null=True, blank=True)
     deduction_type = models.CharField(ugettext('deduction_type'), max_length=20, null=True, blank=True)
     remarks = models.TextField(ugettext('remarks'),null=True, blank=True)
-    
+    @property
+    def expenses(self):
+        q = SalaryExpenses.objects.filter(employee = self.get_employee())
+        return q.count() == 1 and q[0] or None    
     @property
     def derived(self):
         if hasattr(self, 'employeesalary'):
