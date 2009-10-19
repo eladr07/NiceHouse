@@ -999,11 +999,13 @@ class EPCommission(models.Model):
     project = models.ForeignKey('Project', related_name= 'epcommission')
     start_date = models.DateField(ugettext('start_date'))
     end_date = models.DateField(ugettext('end_date'), null=True, blank=True)
+    max = models.FloatField(ugettext('max_commission'), null=True, blank=True)
     c_var = models.OneToOneField('CVar', related_name= 'epcommission', null=True, editable=False)
     c_var_precentage = models.OneToOneField('CVarPrecentage', related_name= 'epcommission', null=True, editable=False)
     c_by_price = models.OneToOneField('CByPrice', related_name= 'epcommission', null= True, editable=False)
     b_house_type = models.OneToOneField('BHouseType', related_name= 'epcommission', null=True, editable=False)
     b_discount_save = models.OneToOneField('BDiscountSave', related_name= 'epcommission', null=True, editable=False)
+    b_discount_save_precentage = models.OneToOneField('BDiscountSavePrecentage', related_name= 'epcommission', null=True, editable=False)
     b_sale_rate = models.OneToOneField('BSaleRate', related_name= 'epcommission', null=True, editable=False)
     def is_active(self, date=date.today()):
         if not self.end_date:
@@ -1024,15 +1026,19 @@ class EPCommission(models.Model):
             amounts = commission.calc(sales)
             for s in amounts:
                 if amounts[s] == 0: continue
+                if s.max and amounts[s] > self.max:
+                    amounts[s] = self.max
                 s.commission_details.create(employee_salary = salary, value = amounts[s], commission = c)
                 dic[s] = dic.has_key(s) and dic[s] + amounts[s] or amounts[s]
-        for c in ['c_var_precentage']:
+        for c in ['c_var_precentage', 'b_discount_save_precentage']:
             commission = getattr(self,c)
             if not commission: continue
             commission = restore_object(commission, date)
             precentages = commission.calc(sales)
             for s in precentages:
                 if precentages[s] == 0: continue
+                if s.max and precentages[s] > self.max:
+                    precentages[s] = self.max
                 amount = precentages[s] * s.employee_price() / 100
                 s.commission_details.create(employee_salary = salary, value = amount, commission = c)
                 dic[s] = dic.has_key(s) and dic[s] + amount or amount
@@ -1049,6 +1055,8 @@ class EPCommission(models.Model):
             scd = SaleCommissionDetail(employee_salary = salary, value = amount, commission = c)
             scd.save()
         return total_amount
+    def get_absolute_url(self):
+        return '/epcommission/%s' % self.id
     class Meta:
         db_table = 'EPCommission'
 

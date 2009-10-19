@@ -134,7 +134,10 @@ urlpatterns += patterns('Management.views',
      {'model':EmployeeBase}),
     (r'^employees/(?P<id>\d+)/account$', 'employee_account',
      {'model':EmployeeBase}),
- 
+     
+     (r'^epcommission/(?P<object_id>\d+)$', 'limited_update_object',
+     {'model' : EPCommission, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '%(id)s'}),
+
      (r'^nhemployees/(?P<obj_id>\d+)/attachment/add$', 'obj_add_attachment',
      {'model':EmployeeBase}),
     (r'^nhemployees/(?P<obj_id>\d+)/attachments$', 'obj_attachments',
