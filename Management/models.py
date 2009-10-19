@@ -2190,7 +2190,7 @@ class Sale(models.Model):
     @property
     def price_taxed(self):
         tax = Tax.objects.filter(date__lte=date(self.contractor_pay.year, self.contractor_pay.month,1)).latest().value / 100 + 1
-        return self.include_tax and s.price or s.price * tax
+        return self.include_tax and self.price or self.price * tax
     def project_price(self):
         c = self.house.building.project.commissions
         if c.include_lawyer == None:
