@@ -153,7 +153,7 @@
 					<th>ת. תחילה</th>
 					<td>{{c.start_date|date:"j/m/y"}}</td>
 					<th>ת. סיום</th>
-					<td>{{c.end_date|date:"j/m/y"|default_if_none:"---"}}</td>
+					<td>{{c.end_date|date:"j/m/y"|default:"---"}}</td>
 					<th>מקס עמלה</th>
 					<td>{{c.max|default_if_none:"---"}}</td>
 				</table>
