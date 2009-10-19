@@ -995,8 +995,8 @@ class EmployeeSalary(EmployeeSalaryBase):
         db_table = 'EmployeeSalary'
 
 class EPCommission(models.Model):
-    employee = models.ForeignKey('Employee', related_name='commissions')
-    project = models.ForeignKey('Project', related_name= 'epcommission')
+    employee = models.ForeignKey('Employee', related_name='commissions', editable=False)
+    project = models.ForeignKey('Project', related_name= 'epcommission', editable=False)
     start_date = models.DateField(ugettext('start_date'))
     end_date = models.DateField(ugettext('end_date'), null=True, blank=True)
     max = models.FloatField(ugettext('max_commission'), null=True, blank=True)

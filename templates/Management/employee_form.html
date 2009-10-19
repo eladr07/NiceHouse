@@ -149,7 +149,7 @@
 			{% for c in form.instance.commissions.all %}
 			<fieldset class="cardFieldset">
 				<legend>עמלות למנהל מכירות בגין פרוייקט {{c.project}}</legend>
-				<a href="{{c.get_absolute_url}}">שינוי פרטים</a>
+				<a href="{{c.get_absolute_url}}" class="fancybox">שינוי פרטים</a>
 				<div style="float:right; width:45%">
 					{% if c.c_var %}
 						<div>
