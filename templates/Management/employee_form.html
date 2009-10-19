@@ -156,8 +156,8 @@
 					<td>{{c.end_date|date:"j/m/y"|default:"---"}}</td>
 					<th>מקס עמלה</th>
 					<td>{{c.max|default_if_none:"---"}}</td>
+					<td><a href="{{c.get_absolute_url}}" class="fancybox">שינוי</a></td>
 				</table>
-				<a href="{{c.get_absolute_url}}" class="fancybox">שינוי פרטים</a>
 				<div style="float:right; width:45%">
 					{% if c.c_var %}
 						<div>
