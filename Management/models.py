@@ -1037,7 +1037,7 @@ class EPCommission(models.Model):
             precentages = commission.calc(sales)
             for s in precentages:
                 if precentages[s] == 0: continue
-                if s.max and precentages[s] > self.max:
+                if self.max and precentages[s] > self.max:
                     precentages[s] = self.max
                 amount = precentages[s] * s.employee_price() / 100
                 s.commission_details.create(employee_salary = salary, value = amount, commission = c)
