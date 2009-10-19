@@ -246,6 +246,7 @@ class DemandDiffForm(forms.ModelForm):
 class SaleForm(forms.ModelForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label=ugettext('project'))
     building = forms.ModelChoiceField(queryset = Building.objects.all(), label=ugettext('building'))
+    joined_sale = forms.BooleanField(label = ugettext('joined sale'), required = False)
     signup_date = forms.DateField(label=ugettext('signup_date'), required=False)
     def save(self, *args, **kw):
         house, discount, allowed_discount = (self.cleaned_data['house'],
@@ -266,15 +267,14 @@ class SaleForm(forms.ModelForm):
             price = self.cleaned_data['price']
             self.cleaned_data['discount'] = 100 - (100 / float(max_p) * price)
             self.cleaned_data['contract_num'] = 0
-        #fill Signup automatically. it is temp fix until signup_date field will
-        #be removed.
+        '''fill Signup automatically. it is temp fix until signup_date field will be removed.'''
         if self.cleaned_data['signup_date'] != None:
             signup = house.get_signup() or Signup()
             signup.date = self.cleaned_data['signup_date']
-            for attr in ['house','clients','clients_phone','sale_date','price',
-                         'price_include_lawyer']:
+            for attr in ['house','clients','clients_phone','sale_date','price','price_include_lawyer']:
                 setattr(signup, attr, self.cleaned_data[attr])
             signup.save()
+        if self.cleaned_data['joined_sale']: self.cleaned_data['employee'] = None
         return forms.ModelForm.save(self, *args, **kw)
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)

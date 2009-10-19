@@ -70,8 +70,6 @@
 			onChangeBuilding();
 		});
 		$.getJSON("/xml/employees/" + selectedProject, function(data){
-			if (data.length > 1)
-				employeeSelect.append("<option value=''>מכירה משותפת</option>");
 			for (i in data)
 			{
 				obj = data[i];
@@ -161,6 +159,13 @@
 				<td>
 					{{ form.employee }}
 					{% if form.employee.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.employee.errors|join:""}}'/>{% endif %}
+				</td>
+			</tr>
+			<tr>
+				<th>{{ form.joined_sale.label_tag }}</th>
+				<td>
+					{{ form.joined_sale }}
+					{% if form.joined_sale.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.joined_sale.errors|join:""}}'/>{% endif %}
 				</td>
 			</tr>
 			<tr>
