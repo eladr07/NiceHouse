@@ -430,7 +430,7 @@ class AdvancePaymentForm(forms.ModelForm):
 
 class LoanForm(forms.ModelForm):
     def __init__(self, *args, **kw):
-        super(LoanPayForm, self).__init__(*args, **kw)
+        super(LoanForm, self).__init__(*args, **kw)
         self.fields['date'].widget.attrs = {'class':'vDateField'}
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'30', 'rows':'6'})
     class Meta:

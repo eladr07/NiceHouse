@@ -912,12 +912,12 @@ class NHEmployeeSalary(EmployeeSalaryBase):
                 nhm = NHMonth.objects.get(nhbrnach = nhbranch, year = self.year, month = self.month)
                 self.__calc__(nhm)
     def __calc__(self, nhmonth):
-        date = date(self.year, self.month, 1)
+        restore_date = date(self.year, self.month, 1)
         if self.nhemployee.nhcbase:
-            commission = restore_object(self.nhemployee.nhcbase, date)
+            commission = restore_object(self.nhemployee.nhcbase, restore_date)
             self.admin_commission += commission.calc(nhmonth)
         if self.nhemployee.nhcbranchincome:
-            commission = restore_object(self.nhemployee.nhcbranchincome, date)
+            commission = restore_object(self.nhemployee.nhcbranchincome, restore_date)
             self.admin_commission += commission.calc(nhmonth)
     class Meta:
         db_table='NHEmployeeSalary'
@@ -2326,6 +2326,7 @@ def restore_object(instance, date):
         if type(attr) in tracked_models:
             old_attr = restore_object(attr, date)
             setattr(instance, field.name, old_attr)
+    instance.restore_date = date
     return instance
 
 def track_changes(sender, **kwargs):
