@@ -219,7 +219,7 @@ class Project(models.Model):
     def save(self, *args, **kw):
         models.Model.save(self, *args, **kw)
         if ProjectCommission.objects.filter(project = self).count()==0 :
-            ProjectCommission(project = self).save()
+            ProjectCommission(project = self, include_tax = True).save()
     @property
     def is_active(self):
         return self.is_marketing and not self.end_date
@@ -2187,6 +2187,10 @@ class Sale(models.Model):
     @property
     def c_final_worth(self):
         return (self.c_final or 0) * (self.price_final or 0) / 100
+    @property
+    def price_taxed(self):
+        tax = Tax.objects.filter(date__lte=date(self.contractor_pay.year, self.contractor_pay.month,1)).latest().value / 100 + 1
+        return self.include_tax and s.price or s.price * tax
     def project_price(self):
         c = self.house.building.project.commissions
         if c.include_lawyer == None:

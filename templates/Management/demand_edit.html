@@ -311,7 +311,7 @@
 				</td>
 				<td>{{s.price_final|commaise}} ש"ח</td>
 				{% if s.discount %}
-				<td>{{s.price_final|commaise}}</td>
+				<td>{{s.price_taxed|commaise}}</td>
 				<td>{{s.discount|floatformat:3}}</td>
 				<td>{{s.allowed_discount|floatformat:3}}</td>
 				{% endif %}
