@@ -292,6 +292,8 @@ class SaleForm(forms.ModelForm):
             signup= self.instance.house.get_signup()
             if signup:
                 self.fields['signup_date'].initial = signup.date
+            if not self.instance.employee:
+                self.fields['joined_sale'].initial = True
     class Meta:
         model = Sale
 
