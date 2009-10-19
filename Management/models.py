@@ -1014,7 +1014,7 @@ class EPCommission(models.Model):
             return True
         return False 
     def calc(self, sales, salary):
-        date = datetime.date(salary.year, salary.month , 1)
+        restore_date = date(salary.year, salary.month , 1)
         dic = {}# key: sale value: commission amount for sale
         for s in sales:
             for scd in s.commission_details.filter(employee_salary=salary):
@@ -1022,7 +1022,7 @@ class EPCommission(models.Model):
         for c in ['c_var', 'c_by_price', 'b_house_type', 'b_discount_save']:
             commission = getattr(self,c)
             if not commission: continue
-            commission = restore_object(commission, date)
+            commission = restore_object(commission, restore_date)
             amounts = commission.calc(sales)
             for s in amounts:
                 if amounts[s] == 0: continue
@@ -1033,7 +1033,7 @@ class EPCommission(models.Model):
         for c in ['c_var_precentage', 'b_discount_save_precentage']:
             commission = getattr(self,c)
             if not commission: continue
-            commission = restore_object(commission, date)
+            commission = restore_object(commission, restore_date)
             precentages = commission.calc(sales)
             for s in precentages:
                 if precentages[s] == 0: continue
@@ -1048,7 +1048,7 @@ class EPCommission(models.Model):
         for c in ['b_sale_rate']:
             commission = getattr(self,c)
             if not commission: continue
-            commission = restore_object(commission, date)
+            commission = restore_object(commission, restore_date)
             amount = commission.calc(sales)
             if amount == 0: continue
             total_amount = total_amount + amount
