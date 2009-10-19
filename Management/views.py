@@ -1453,7 +1453,7 @@ def project_cvp(request, project_id):
         formset = InlineFormSet(instance=cvp)
         form = CVarPrecentageForm(instance=cvp)
     return render_to_response('Management/commission_inline.html', 
-                              { 'formset':formset,'form':form, 'project':project,'show_house_num':True },
+                              { 'formset':formset,'form':form, 'show_house_num':True },
                               context_instance=RequestContext(request))
 
 @permission_required('Management.add_cvarprecentagefixed')
@@ -1470,7 +1470,7 @@ def project_cvpf(request, project_id):
         form = CVarPrecentageFixedForm(instance= cvpf)
             
     return render_to_response('Management/object_edit.html', 
-                              { 'form':form, 'project':project},
+                              { 'form':form },
                               context_instance=RequestContext(request))
     
 @permission_required('Management.add_czilber')
@@ -1487,7 +1487,7 @@ def project_cz(request, project_id):
         form = CZilberForm(instance= cz)
             
     return render_to_response('Management/object_edit.html', 
-                              { 'form':form, 'project':project},
+                              { 'form':form },
                               context_instance=RequestContext(request))
 
 @permission_required('Management.add_bdiscountsaveprecentage')
@@ -1504,7 +1504,7 @@ def project_bdsp(request, project_id):
         form = BDiscountSavePrecentageForm(instance=bdsp)
             
     return render_to_response('Management/object_edit.html', 
-                              { 'form':form, 'project':project},
+                              { 'form':form },
                               context_instance=RequestContext(request))
     
 @permission_required('Management.add_contact')
@@ -1909,7 +1909,7 @@ def employee_cv(request, employee_id, project_id):
         formset = InlineFormSet(instance=cv)
         form = CVarForm(instance=cv)
     return render_to_response('Management/commission_inline.html', 
-                              { 'formset':formset,'form':form, 'employee':employee, 'show_house_num':True },
+                              { 'formset':formset,'form':form, 'show_house_num':True },
                               context_instance=RequestContext(request))
     
 @permission_required('Management.add_cvarprecentage')
@@ -1929,7 +1929,7 @@ def employee_cvp(request, employee_id, project_id):
         formset = InlineFormSet(instance=cvp)
         form = CVarPrecentageForm(instance=cvp)
     return render_to_response('Management/commission_inline.html', 
-                              { 'formset':formset,'form':form, 'employee':employee, 'show_house_num':True },
+                              { 'formset':formset,'form':form, 'show_house_num':True },
                               context_instance=RequestContext(request))
     
 @permission_required('Management.add_cbyprice')
@@ -1949,7 +1949,7 @@ def employee_cbp(request, employee_id, project_id):
         formset = InlineFormSet(instance=cbp)
         
     return render_to_response('Management/commission_inline.html', 
-                              { 'formset':formset, 'employee':employee, 'show_house_num':False },
+                              { 'formset':formset, 'show_house_num':False },
                               context_instance=RequestContext(request))
 
 @permission_required('Management.add_bsalerate')
@@ -1968,7 +1968,7 @@ def employee_bsr(request, employee_id, project_id):
     else:
         formset = InlineFormSet(instance=bsr)
     return render_to_response('Management/commission_inline.html', 
-                              { 'formset':formset, 'employee':employee, 'show_house_num':False},
+                              { 'formset':formset, 'show_house_num':False},
                               context_instance=RequestContext(request))
     
 @permission_required('Management.add_bhousetype')
@@ -1988,7 +1988,7 @@ def employee_bht(request, employee_id, project_id):
         formset = InlineFormSet(instance=htb)
         
     return render_to_response('Management/commission_inline.html', 
-                              { 'formset':formset, 'employee':employee, 'show_house_num':False},
+                              { 'formset':formset, 'show_house_num':False},
                               context_instance=RequestContext(request))
     
 @permission_required('Management.add_bdiscountsave')
@@ -2005,9 +2005,26 @@ def employee_bds(request, employee_id, project_id):
         form = BDiscountSaveForm(instance=bds)
             
     return render_to_response('Management/object_edit.html', 
-                              { 'form':form, 'employee':employee },
+                              { 'form':form },
                               context_instance=RequestContext(request))
-        
+
+@permission_required('Management.add_bdiscountsaveprecentage')
+def employee_bdsp(request, employee_id, project_id):
+    employee = Employee.objects.get(pk = employee_id)
+    c = employee.commissions.filter(project__id = project_id)[0]
+    bdsp = c.b_discount_save_precentage or BDiscountSavePrecentage()
+    if request.method == 'POST':
+        form = BDiscountSavePrecentageForm(request.POST, instance = bdsp)
+        if form.is_valid():
+            c.b_discount_save_precentage = form.save()
+            c.save()
+    else:
+        form = BDiscountSavePrecentageForm(instance=bdsp)
+            
+    return render_to_response('Management/object_edit.html', 
+                              { 'form':form },
+                              context_instance=RequestContext(request))
+    
 @login_required
 def json_buildings(request, project_id):
     data = serializers.serialize('json', Project.objects.get(pk= project_id).non_deleted_buildings(), 
