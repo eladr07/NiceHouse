@@ -2202,6 +2202,10 @@ class Sale(models.Model):
             price = self.include_tax and price / TAX or price
         return price
     def employee_price(self, employee=None):
+        '''
+        employee is used in cases where self.employee is null -> when sale is shared for all employees in the project.
+        if employee is null and self.employee is null an exception is thrown.
+        '''
         if not employee: employee = self.employee
         et = employee.employment_terms
         if et.include_lawyer:
@@ -2305,6 +2309,11 @@ tracked_models = [BDiscountSave, BDiscountSavePrecentage, BHouseType, BSaleRate,
                   ProjectCommission, SaleCommissionDetail, EmployeeSalaryBase, NHEmployeeSalary, NHCBase, NHCBranchIncome]
 
 def restore_object(instance, date):
+    '''
+    restores an object to is state at the given date, using ChangeLog records. if the object has foreign key fields, it also restores them to that date.
+    it does NOT restore many-to-many fields.
+    it also sets 'restore-date' attribute on instance to mark it as a restored object
+    '''
     model = instance.__class__
     id = getattr(instance, 'id', None)
     if not model in tracked_models or not id:
