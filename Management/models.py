@@ -1014,7 +1014,7 @@ class EPCommission(models.Model):
             return True
         return False 
     def calc(self, sales, salary):
-        date = date(salary.year, salary.month , 1)
+        date = datetime.date(salary.year, salary.month , 1)
         dic = {}# key: sale value: commission amount for sale
         for s in sales:
             for scd in s.commission_details.filter(employee_salary=salary):
