@@ -1026,7 +1026,7 @@ class EPCommission(models.Model):
             amounts = commission.calc(sales)
             for s in amounts:
                 if amounts[s] == 0: continue
-                if s.max and amounts[s] > self.max:
+                if self.max and amounts[s] > self.max:
                     amounts[s] = self.max
                 s.commission_details.create(employee_salary = salary, value = amounts[s], commission = c)
                 dic[s] = dic.has_key(s) and dic[s] + amounts[s] or amounts[s]
