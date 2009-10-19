@@ -1039,7 +1039,7 @@ class EPCommission(models.Model):
                 if precentages[s] == 0: continue
                 if self.max and precentages[s] > self.max:
                     precentages[s] = self.max
-                amount = precentages[s] * s.employee_price() / 100
+                amount = precentages[s] * s.employee_price(self.employee) / 100
                 s.commission_details.create(employee_salary = salary, value = amount, commission = c)
                 dic[s] = dic.has_key(s) and dic[s] + amount or amount
         total_amount = 0
@@ -2201,8 +2201,9 @@ class Sale(models.Model):
         else:
             price = self.include_tax and price / TAX or price
         return price
-    def employee_price(self):
-        et = self.employee.employment_terms
+    def employee_price(self, employee=None):
+        if not employee: employee = self.employee
+        et = employee.employment_terms
         if et.include_lawyer:
             price = self.price_include_lawyer and self.price or self.price * LAWYER_TAX
         else:
