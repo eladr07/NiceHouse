@@ -153,9 +153,9 @@
 					<th>ת. תחילה</th>
 					<td>{{c.start_date|date:"j/m/y"}}</td>
 					<th>ת. סיום</th>
-					<td>{{c.end_date|default_if_none:""|date:"j/m/y"}}</td>
+					<td>{{c.end_date|default_if_none:"---"|date:"j/m/y"}}</td>
 					<th>מקס עמלה</th>
-					<td>{{c.max|default_if_none:""}}</td>
+					<td>{{c.max|default_if_none:"---"}}</td>
 				</table>
 				<a href="{{c.get_absolute_url}}" class="fancybox">שינוי פרטים</a>
 				<div style="float:right; width:45%">
