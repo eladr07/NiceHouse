@@ -149,7 +149,7 @@
 			{% for c in form.instance.commissions.all %}
 			<fieldset class="cardFieldset">
 				<legend>עמלות למנהל מכירות בגין פרוייקט {{c.project}}</legend>
-				<a href="שינוי פרטים">{{c.get_absolute_url}}</a>
+				<a href="{{c.get_absolute_url}}">שינוי פרטים</a>
 				<div style="float:right; width:45%">
 					{% if c.c_var %}
 						<div>
@@ -265,8 +265,8 @@
 								עד מקס' של
 								{{c.b_discount_save_precentage.max_for_bonus}}%
 							{% endif %}
-							<a id="edit_bdsp" href="bdsp" class="fancybox"><img src="/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
-							<a href="bdsp/del"><img src="/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
+							<a id="edit_bdsp" href="bdsp" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+							<a href="bdsp/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
 						</div>
 					{% endif %}
 				</div>
@@ -297,7 +297,7 @@
 					{% endif %}
 					{% if not c.b_discount_save_precentage %}
 						<br>בונוס חיסכון בהנחה (באחוזים)
-						<a id="add_bdsp" href="bdsp" class="fancybox"><img src="/site_media/images/add_48.png" width="20" height="20" border="0" alt="הוספה" /></a> 
+						<a id="add_bdsp" href="bdsp" class="fancybox"><img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" /></a> 
 					{% endif %}
 				</div>
 			</fieldset>
