@@ -80,12 +80,10 @@ class PricelistUpdateForm(forms.Form):
     pricelisttype = forms.ModelChoiceField(queryset = PricelistType.objects.all(), 
                                            required=False, label = ugettext('pricelisttype'))
     all_pricelists = forms.BooleanField(required=False, label=ugettext('all_pricelists'))
-    date = forms.DateField(label=ugettext('date'))
+#    date = forms.DateField(label=ugettext('date'))
     amount = forms.FloatField(label=ugettext('amount'), required=False)
     precentage = forms.FloatField(label=ugettext('precentage'), required=False)
-    def __init__(self, *args, **kw):
-        super(PricelistUpdateForm, self).__init__(self, *args, **kw)
-        #self.fields['date'].widget = forms.TextInput({'class':'vDateField'})
+
 
 class ParkingForm(forms.ModelForm):
     def __init__(self, *args, **kw):
