@@ -70,7 +70,7 @@ class BuildingForm(forms.ModelForm):
 
 class PricelistForm(forms.ModelForm):
     def __init__(self, *args, **kw):
-        super(PricelistForm, self).__init__(self, *args, **kw)
+        forms.Form.__init__(self, *args, **kw)
         self.fields['remarks'].widget = forms.Textarea({'cols':'20', 'rows':'5'})
         self.fields['settle_date'].widget = forms.TextInput({'class':'vDateField'})
     class Meta:
@@ -80,10 +80,12 @@ class PricelistUpdateForm(forms.Form):
     pricelisttype = forms.ModelChoiceField(queryset = PricelistType.objects.all(), 
                                            required=False, label = ugettext('pricelisttype'))
     all_pricelists = forms.BooleanField(required=False, label=ugettext('all_pricelists'))
-#    date = forms.DateField(label=ugettext('date'))
+    date = forms.DateField(label=ugettext('date'))
     amount = forms.FloatField(label=ugettext('amount'), required=False)
     precentage = forms.FloatField(label=ugettext('precentage'), required=False)
-
+    def __init__(self, *args, **kw):
+        forms.Form.__init__(self, *args, **kw)
+        self.fields['date'].widget = forms.TextInput({'class':'vDateField'})
 
 class ParkingForm(forms.ModelForm):
     def __init__(self, *args, **kw):
