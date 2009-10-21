@@ -1547,7 +1547,7 @@ def employee_project_add(request, employee_id):
     else:
         form = EmployeeAddProjectForm(initial={'employee':employee_id})
     return render_to_response('Management/object_edit.html', 
-                              { 'form':form },
+                              { 'form':form, 'title':u'העסקה בפרוייקט חדש' },
                               context_instance=RequestContext(request))
 
 @permission_required('Management.change_employee')
@@ -1565,7 +1565,7 @@ def employee_project_remove(request, employee_id, project_id):
     else:
         form = EmployeeRemoveProjectForm(initial={'employee':employee_id, 'project':project.id})
     return render_to_response('Management/object_edit.html', 
-                              { 'form':form },
+                              { 'form':form, 'title':u'סיום העסקה בפרוייקט' },
                               context_instance=RequestContext(request))
 
 @permission_required('Management.change_contact')
