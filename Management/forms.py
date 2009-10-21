@@ -70,7 +70,7 @@ class BuildingForm(forms.ModelForm):
 
 class PricelistForm(forms.ModelForm):
     def __init__(self, *args, **kw):
-        forms.Form.__init__(self, *args, **kw)
+        forms.ModelForm.__init__(self, *args, **kw)
         self.fields['remarks'].widget = forms.Textarea({'cols':'20', 'rows':'5'})
         self.fields['settle_date'].widget = forms.TextInput({'class':'vDateField'})
     class Meta:
