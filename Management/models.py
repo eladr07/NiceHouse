@@ -1263,6 +1263,7 @@ class CZilber(models.Model):
         base = self.base + self.b_sale_rate * (len(sales) - 1)
         if base > self.b_sale_rate_max:
             base = self.b_sale_rate_max
+        prices_date = date(month.month == 12 and month.year+1 or month.year, month.month==12 and 1 or month.month+1, 1)
         for s in sales:
             for c in ['c_zilber_base', 'final']:
                 scd = s.commission_details.get_or_create(commission=c)[0]
@@ -1274,7 +1275,7 @@ class CZilber(models.Model):
                 continue
             if self.base_madad:
                 current_madad = d.get_madad() < self.base_madad and self.base_madad or d.get_madad()
-                doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0)
+                doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0, date__lte = prices_date)
                 if doh0prices.count() == 0: continue
                 memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * doh0prices.latest().price
                 scd = s.commission_details.get_or_create(commission='c_zilber_discount')[0]
