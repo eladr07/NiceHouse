@@ -38,9 +38,9 @@
 		
 		$("#storages_table, #parkings_table, #parking_costs_table").hide();//hide the parkings/storages table
 		$("#all-checkboxes").change(function() {
-			var value = $(this).val();
+			var value = $(this).attr("checked");
 			$("input[name^='house-']").each(function (index, elem) {
-				$(elem).attr("value", value);
+				$(elem).attr("checked", value);
 			});
 		});
 	});
