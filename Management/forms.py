@@ -84,8 +84,7 @@ class PricelistUpdateForm(forms.Form):
     amount = forms.FloatField(label=ugettext('amount'), required=False)
     precentage = forms.FloatField(label=ugettext('precentage'), required=False)
     def __init__(self, *args, **kw):
-        #super(PricelistUpdateForm, self).__init__(self, *args, **kw)
-        forms.Form.__init__(self,*args,**kw)
+        super(PricelistUpdateForm, self).__init__(self, *args, **kw)
         self.fields['date'].widget = forms.TextInput({'class':'vDateField'})
 
 class ParkingForm(forms.ModelForm):
@@ -176,13 +175,17 @@ class EmployeeAddProjectForm(forms.Form):
     employee = forms.ModelChoiceField(queryset=Employee.objects.active(), label=ugettext('employee'))
     project = forms.ModelChoiceField(queryset=Project.objects.active(), label=ugettext('project'))
     start_date = forms.DateField(label=ugettext('start date'))
-    def save(self):
-        project, employee = self.cleaned_data['project'], self.cleaned_data['employee']
-        employee.projects.add(project)
-        employee.commissions.add(EPCommission(project = project, start_date = date.today()))
     def __init__(self, *args, **kw):
         super(EmployeeAddProjectForm, self).__init__(*args, **kw)
         self.fields['start_date'].widget.attrs = {'class':'vDateField'}
+
+class EmployeeRemoveProjectForm(forms.Form):
+    employee = forms.ModelChoiceField(queryset=Employee.objects.active(), label=ugettext('employee'))
+    project = forms.ModelChoiceField(queryset=Project.objects.active(), label=ugettext('project'))
+    end_date = forms.DateField(label=ugettext('end_date'))
+    def __init__(self, *args, **kw):
+        super(EmployeeAddProjectForm, self).__init__(*args, **kw)
+        self.fields['end_date'].widget.attrs = {'class':'vDateField'}
     
 class BDiscountSaveForm(forms.ModelForm):
     class Meta:

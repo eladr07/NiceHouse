@@ -1541,7 +1541,9 @@ def employee_project_add(request, employee_id):
     if request.method == 'POST':
         form = EmployeeAddProjectForm(request.POST)
         if form.is_valid():
-            form.save()
+            project, employee, start_date = form.cleaned_data['project'], form.cleaned_data['employee'], form.cleaned_data['start_date']
+            employee.projects.add(project)
+            employee.commissions.add(EPCommission(project = project, start_date = date.today()))
     else:
         form = EmployeeAddProjectForm(initial={'employee':employee_id})
     return render_to_response('Management/object_edit.html', 
@@ -1552,12 +1554,19 @@ def employee_project_add(request, employee_id):
 def employee_project_remove(request, employee_id, project_id):
     project = Project.objects.get(pk = project_id)
     employee = Employee.objects.get(pk = employee_id)
-    q = employee.commissions.filter(project = project)
-    if q.count() > 0:
-        q[0].end_date = date.today()
-        q[0].save()
-    employee.projects.remove(project)
-    return HttpResponseRedirect(employee.get_absolute_url())
+    if request.method == 'POST':
+        form = EmployeeRemoveProjectForm(request.POST)
+        if form.is_valid():
+            project, employee, end_date = form.cleaned_data['project'], form.cleaned_data['employee'], form.cleaned_data['end_date']
+            for epc in employee.commissions.filter(project=project):
+                epc.end_date = end_date
+                epc.save()
+            employee.projects.remove(project)
+    else:
+        form = EmployeeRemoveProjectForm(initial={'employee':employee_id, 'project':project.id})
+    return render_to_response('Management/object_edit.html', 
+                              { 'form':form },
+                              context_instance=RequestContext(request))
 
 @permission_required('Management.change_contact')
 def project_removecontact(request, id, project_id):
