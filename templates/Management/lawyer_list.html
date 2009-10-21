@@ -54,7 +54,7 @@
 		<th>כתובת</th>
 		<th>תפקיד</th>
 		{% for o in object_list %}
-		<tr objid={{o.id}}>
+		<tr class="{% cycle 'row1' 'row2' %}" objid={{o.id}}>
 			<td>{{o.first_name}}</td>
 			<td>{{o.last_name}}</td>
 			<td>{{o.phone}}</td>
