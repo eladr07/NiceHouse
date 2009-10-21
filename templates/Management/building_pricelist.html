@@ -37,6 +37,12 @@
 		});
 		
 		$("#storages_table, #parkings_table, #parking_costs_table").hide();//hide the parkings/storages table
+		$("#all-checkboxes").change(function() {
+			var value = $(this).val();
+			$("input[name^='house-']").each(function (index, elem) {
+				$(elem).attr("value", value);
+			});
+		});
 	});
 </script>
 {% endblock header %}
@@ -132,7 +138,7 @@
 	<br>
 	<div class="clearBoth"></div> 
 	<table class="dataTable" border="1" id="houseTable" style="text-align:center;">
-		<th></th>
+		<th><input type="checkbox" id="all-checkboxes"/></th>
 		<th></th>
 		<th>מס'</th>
 		<th>קומה</th>
