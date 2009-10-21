@@ -1235,7 +1235,7 @@ def building_pricelist(request, object_id, type_id):
                     if amount:
                         new.price = price + amount
                     elif precentage:
-                        new.price = price * (100 + amount) / 100
+                        new.price = price * (100 + precentage) / 100
                     new.save()
     else:
         form = PricelistForm(instance = b.pricelist)
