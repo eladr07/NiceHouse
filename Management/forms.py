@@ -84,8 +84,8 @@ class PricelistUpdateForm(forms.Form):
     amount = forms.FloatField(label=ugettext('amount'), required=False)
     precentage = forms.FloatField(label=ugettext('precentage'), required=False)
     def __init__(self, *args, **kw):
-        #super(PricelistUpdateForm, self).__init__(self, *args, **kw)
-        forms.ModelForm.__init__(self,*args,**kw)
+        super(PricelistUpdateForm, self).__init__(self, *args, **kw)
+        #forms.Form.__init__(self,*args,**kw)
         self.fields['date'].widget = forms.TextInput({'class':'vDateField'})
 
 class ParkingForm(forms.ModelForm):
