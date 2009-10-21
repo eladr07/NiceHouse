@@ -86,6 +86,7 @@ class PricelistUpdateForm(forms.Form):
     def __init__(self, *args, **kw):
         super(PricelistUpdateForm, self).__init__(self, *args, **kw)
         self.fields['date'].widget = forms.TextInput({'class':'vDateField'})
+        return
 
 class ParkingForm(forms.ModelForm):
     def __init__(self, *args, **kw):
