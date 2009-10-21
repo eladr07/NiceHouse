@@ -346,7 +346,7 @@ class HireType(models.Model):
 class HouseVersion(models.Model):
     house = models.ForeignKey('House', related_name = 'versions', editable=False)
     type = models.ForeignKey('PricelistType', verbose_name = ugettext('pricelist_type'), editable=False)
-    date = models.DateTimeField(auto_now_add=True)
+    date = models.DateTimeField()
     price = models.IntegerField(ugettext('price'))    
     class Meta:
         get_latest_by = 'date'

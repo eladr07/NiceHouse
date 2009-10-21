@@ -1221,18 +1221,17 @@ def building_pricelist(request, object_id, type_id):
             if formset.is_valid():
                 formset.save()
         if updateForm.is_valid():
-            amount, precentage = (updateForm.cleaned_data['amount'],
-                                  updateForm.cleaned_data['precentage'])
+            amount, precentage, date = (updateForm.cleaned_data['amount'], updateForm.cleaned_data['precentage'],
+                                        updateForm.cleaned_data['date'])
             pricelist_types = updateForm.cleaned_data['all_pricelists'] and Pricelist.objects.all() or [updateForm.cleaned_data['pricelisttype']]
             houses = [k.replace('house-','') for k in request.POST if k.startswith('house-')]
             for id in houses:
                 h = House.objects.get(pk=id)
                 for type in pricelist_types:
                     f = h.versions.filter(type=type)
-                    if f.count() == 0:
-                        continue
+                    if f.count() == 0: continue
                     price = f.latest().price
-                    new = HouseVersion(house=h, type=type)
+                    new = HouseVersion(house=h, type=type, date = date)
                     if amount:
                         new.price = price + amount
                     elif precentage:
