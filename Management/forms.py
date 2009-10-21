@@ -184,7 +184,7 @@ class EmployeeRemoveProjectForm(forms.Form):
     project = forms.ModelChoiceField(queryset=Project.objects.active(), label=ugettext('project'))
     end_date = forms.DateField(label=ugettext('end_date'))
     def __init__(self, *args, **kw):
-        super(EmployeeAddProjectForm, self).__init__(*args, **kw)
+        super(EmployeeRemoveProjectForm, self).__init__(*args, **kw)
         self.fields['end_date'].widget.attrs = {'class':'vDateField'}
     
 class BDiscountSaveForm(forms.ModelForm):
