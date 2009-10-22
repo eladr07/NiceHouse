@@ -6,6 +6,7 @@ from templatetags.management_extras import *
 from django.db.models.signals import pre_save
 from decimal import InvalidOperation
 from django.db.backends.dummy.base import IntegrityError
+from django.db.models import Avg, Max, Min, Count, Sum
 
 class Callable:
     def __init__(self, anycallable):
@@ -1646,16 +1647,16 @@ class Demand(models.Model):
                                   salepre=None, salereject=None).count() > 0
     @property
     def diff_invoice(self):
-        if self.invoices.count() == 0: return self.get_total_amount()
-        return self.invoices.latest().amount - self.get_total_amount()
+        return self.invoices_amount - self.get_total_amount()
+    @property
+    def payments_amount(self):
+        return self.payments.all().aggregate(Sum('amount'))['amount_sum']
+    @property
+    def invoices_amount(self):
+        return self.invoices.all().aggregate(Sum('amount'))['amount_sum']
     @property
     def diff_invoice_payment(self):
-        if self.invoices.count() == 0 and self.payments.count() == 0: return 0
-        if self.invoices.count() == 0:
-            return self.payments.latest().amount
-        if self.payments.count() == 0:
-            return self.invoices.latest().amount
-        return self.payments.latest().amount - self.invoices.latest().amount
+        return self.payments_amount - self.invoices_amount
     def get_open_reminders(self):
         return [r for r in self.reminders.all() if r.statuses.latest().type.id 
                 not in (ReminderStatusType.Deleted,ReminderStatusType.Done)]
@@ -1698,20 +1699,12 @@ class Demand(models.Model):
         return self.get_sales_commission() + diffs
     def get_deleted_sales(self):
         return [s for s in self.sales.filter(is_deleted=True)]
-    def diff(self):
-        pay = 0
-        for p in self.payments.all():
-            pay += pay.amount
-        if self.invoices.count() > 0:
-            return self.invoices.latest().amount - pay
-        else:
-            return None
     def state(self):
         if self.invoices.count()==0:
             return DemandNoInvoice
         if self.payments.count()==0:
             return DemandNoPayment
-        diff = self.diff()
+        diff = self.diff_invoice_payment
         if diff > 0:
             return DemandPaidPlus
         if diff < 0:
