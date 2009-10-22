@@ -81,6 +81,7 @@
 		<th>PDF</th>
 		<th>חודש</th>
 		<th>סכום דרישה</th>
+		<th>מס' מכירות</th>
 		<th>מס'</th>
 		<th>סכום</th>
 		<th>תאריך</th>
@@ -115,6 +116,7 @@
 			</td>
 			<td>{{ d.month }}/{{d.year}}</td>
 			<td><b>{% if d.get_total_amount %} {{ d.get_total_amount|commaise }} ש"ח {% else %}----{% endif %}</b></td>
+			<td><a href="/demandsales/?demand_id={{d.id}}" class="bigfancybox">{{ d.get_sales.count|default:"אין מכירות" }}</a></td>
 			<td>
 				{% for i in d.invoices.all %}
 					{{i.num}}<br>
