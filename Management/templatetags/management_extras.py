@@ -11,8 +11,4 @@ def commaise(value):
     if abs(value) < 1000:
         return str(value)
     else:
-        if value < 0:
-            value *= -1
-            return commaise(value/1000) + ',' + str(value % 1000).rjust(3, '0') + '-'
-        else:
-            return commaise(value/1000) + ',' + str(value % 1000).rjust(3, '0')
+        return commaise(value/1000) + ',' + str(value % 1000).rjust(3, '0')
