@@ -1685,7 +1685,10 @@ class Demand(models.Model):
             amount = amount + s.price
         return amount
     def get_final_sales_amount(self):
-        return self.get_sales().aggregate(Sum('price_final'))['price_final__sum']
+        amount = 0
+        for s in self.get_sales():
+            amount += s.price_final or 0
+        return amount
     def calc_sales_commission(self):
         if self.get_sales().count() == 0: return
         c = self.project.commissions
