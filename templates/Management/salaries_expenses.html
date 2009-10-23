@@ -86,11 +86,11 @@
 				<a href="/projects/{{p.id}}" target="_blank">{{p}}</a><br>
 				{% endfor %}
 			</td>
+			<td>{{s.employee.employment_terms.hire_type}}</td>
 			<td>{{s.total_amount|commaise}}</td>
 			<td>{{s.loan_pay|commaise}}</td>
 			<td>{{s.check_amount|commaise}}</td>
 			{% with s.expenses as e %}
-				<td>{{e.employee.employment_terms.hire_type}}</td>
 				<td>{{e.income_tax}}</td>
 				<td>{{e.national_insurance}}</td>
 				<td>{{e.health}}</td>
