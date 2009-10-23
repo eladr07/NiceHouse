@@ -469,7 +469,7 @@ class ReminderForm(forms.ModelForm):
     status = forms.ModelChoiceField(queryset=ReminderStatusType.objects.all(), label=ugettext('status'))
     def save(self, *args, **kw):
         r = forms.ModelForm.save(self, *args, **kw)
-        if self.instance.statuses.count() and self.instance.statuses.latest().type.id != self.cleaned_data['status']:
+        if not self.instance.statuses.count() or self.instance.statuses.latest().type.id != self.cleaned_data['status']:
             r.statuses.create(type=self.cleaned_data['status'])
         return r
     def __init__(self, *args, **kw):

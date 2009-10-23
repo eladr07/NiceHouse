@@ -1713,6 +1713,10 @@ class Demand(models.Model):
         if diff < 0:
             return DemandPaidMinus
         return DemandPaid
+    @property
+    def is_fully_paid(self):
+        total = self.get_total_amount() + self.adjust_diff
+        return total == self.invoices_amount and total == self.payments_amount
     def feed(self):
         self.statuses.create(type= DemandStatusType.objects.get(pk=DemandFeed)).save()
     def send(self):
