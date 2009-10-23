@@ -1469,7 +1469,7 @@ class Invoice(models.Model):
     amount = models.IntegerField(ugettext('amount'))
     remarks = models.TextField(ugettext('remarks'), null=True,blank=True)
     def __unicode__(self):
-        return u'צק על סך %s ש"ח' % commaise(self.amount)
+        return u'חשבונית על סך %s ש"ח בתאריך %s' % (commaise(self.amount), self.date.strftime('%d/%m/%Y'))
     class Meta:
         db_table = 'Invoice'
         get_latest_by = 'creation_date'
@@ -1493,7 +1493,7 @@ class Payment(models.Model):
     amount = models.IntegerField(ugettext('amount'))
     remarks = models.TextField(ugettext('remarks'), null=True,blank=True)
     def __unicode__(self):
-        return u'תשלום על סך %s ש"ח' % commaise(self.amount)
+        return u'תשלום על סך %s ש"ח בתאריך %s' % (commaise(self.amount), self.payment_date.strftime('%d/%m/%Y'))
     class Meta:
         db_table = 'Payment'
         get_latest_by = 'creation_date'
