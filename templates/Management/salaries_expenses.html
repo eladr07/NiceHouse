@@ -87,9 +87,9 @@
 				{% endfor %}
 			</td>
 			<td>{{s.employee.employment_terms.hire_type}}</td>
-			<td>{{s.neto|commaise}}</td>
+			<td>{{s.neto|default_if_none:""|commaise}}</td>
 			<td>{{s.loan_pay|commaise}}</td>
-			<td>{{s.check_amount|commaise}}</td>
+			<td>{{s.check_amount|default_if_none:""|commaise}}</td>
 			{% with s.expenses as e %}
 				<td>{{e.income_tax}}</td>
 				<td>{{e.national_insurance}}</td>
