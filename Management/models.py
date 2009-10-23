@@ -781,11 +781,11 @@ class SalaryExpenses(models.Model):
     national_insurance = models.FloatField(ugettext('national_insurance'))
     health = models.FloatField(ugettext('health'))
     pension_insurance = models.FloatField(ugettext('pension_insurance'))
+    vacation = models.FloatField(ugettext('vacation'))
+    convalescence_pay = models.FloatField(ugettext('convalescence_pay'))
     employer_national_insurance = models.FloatField(ugettext('employer_national_insurance'))
     employer_benefit = models.FloatField(ugettext('employer_benefit'))
     compensation_allocation = models.FloatField(ugettext('compensation_allocation'))
-    vacation = models.FloatField(ugettext('vacation'))
-    convalescence_pay = models.FloatField(ugettext('convalescence_pay'))
     @property
     def salary(self):
         if isinstance(self.employee, Employee):
@@ -828,7 +828,8 @@ class EmployeeSalaryBase(models.Model):
         if not terms.salary_net:
             return self.derived.total_amount
         if not exp: return None
-        return self.derived.total_amount + exp.income_tax + exp.national_insurance + exp.health + exp.pension_insurance
+        return self.derived.total_amount + exp.income_tax + exp.national_insurance + exp.health + exp.pension_insurance \
+            + exp.vacation + exp.convalescence_pay
     @property
     def neto(self):
         terms = self.get_employee().employment_terms
@@ -845,8 +846,7 @@ class EmployeeSalaryBase(models.Model):
     def bruto_employer_expense(self):
         exp = self.expenses
         if not exp: return None
-        return self.bruto + exp.employer_benefit + exp.employer_national_insurance + exp.compensation_allocation \
-                + exp.vacation + exp.convalescence_pay
+        return self.bruto + exp.employer_benefit + exp.employer_national_insurance + exp.compensation_allocation 
     def approve(self):
         self.statuses.create(type = EmployeeSalaryBaseStatusType.objects.get(pk = EmployeeSalaryBaseStatusType.Approved)).save()
     def send_to_checks(self):
