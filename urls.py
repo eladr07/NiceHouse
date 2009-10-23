@@ -259,6 +259,7 @@ urlpatterns += patterns('Management.views',
     (r'^salaryexpenses/(?P<object_id>\d+)$', 'limited_update_object',
      {'model' : Management.models.SalaryExpenses, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '%(id)s'}),
      (r'^salary/(?P<salary_id>\d+)/expenses$', 'employee_salary_expenses'),
+     
     (r'^employeesalaries/$', 'employee_salary_list'),
     (r'^employeesalaryseason/$', 'employeesalary_season_list'),
     (r'^employeesalaries/(?P<year>\d+)/(?P<month>\d+)/pdf$', 'employee_salary_pdf'),

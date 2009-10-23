@@ -17,7 +17,7 @@
 			tr.attr("class","selectedRow");
 			//sync links
 			if (selectedID > 0)
-				$("#edit").attr("href", tr.attr("objid"));
+				$("#edit").attr("href", tr.attr("/salary/" + selectedID + "/expenses"));
 			});
 		$(".fancybox").fancybox();
 	});
@@ -79,7 +79,7 @@
 		<tr style="text-align:center; color:#4669D6; font-size:14px"><td colspan="15"><b>{{rank.grouper|default:"-- לא הוגדר דרג --"}}</b></td></tr>
 		{% for s in rank.list %}
 		<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.employee.id}}>
-			<td><a class="fancybox" href="{{s.id}}"><img src="/site_media/images/edit_48.png" width="20" height="20" alt="עדכון" border="0" /></a></td>
+			<td><a class="fancybox" href="/salary/{{s.id}}/expenses"><img src="/site_media/images/edit_48.png" width="20" height="20" alt="עדכון" border="0" /></a></td>
 			<td><a href="{{s.employee.get_absolute_url}}">{{ s.employee }}</a></td>
 			<td>
 				{% for p in s.employee.projects.all %}

@@ -540,7 +540,7 @@ def employee_salary_list(request):
                               {'salaries':salaries, 'month': date(int(year), int(month), 1),
                                'filterForm':MonthFilterForm(initial={'year':year,'month':month})},
                                context_instance=RequestContext(request))
-    
+
 @permission_required('Management.list_salaryexpenses')
 def salary_expenses_list(request):
     current = Demand.current_month()
