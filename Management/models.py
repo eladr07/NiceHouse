@@ -1685,6 +1685,7 @@ class Demand(models.Model):
             amount = amount + s.price
         return amount
     def get_final_sales_amount(self):
+        return self.get_sales().aggregate(Sum('price_final'))['price_final__sum'] or 0
         amount = 0
         for s in self.get_sales():
             amount += s.price_final or 0
@@ -1699,7 +1700,7 @@ class Demand(models.Model):
             i += s.c_final_worth
         return i
     def get_total_amount(self):
-        diffs = self.diffs.all().aggregate(Sum('amount'))['amount__sum']
+        diffs = self.diffs.all().aggregate(Sum('amount'))['amount__sum'] or 0
         return self.get_sales_commission() + diffs
     def get_deleted_sales(self):
         return [s for s in self.sales.filter(is_deleted=True)]
