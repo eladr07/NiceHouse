@@ -1055,7 +1055,7 @@ def demand_details(request, project, year, month):
         return HttpResponse('')
 
 @permission_required('Management.add_demanddiff')
-def demand_adddiff(request, object_id):
+def demand_adddiff(request, object_id, type = None):
     demand = Demand.objects.get(pk=object_id)
     if request.method == 'POST':
         form = DemandDiffForm(request.POST)
@@ -1063,9 +1063,13 @@ def demand_adddiff(request, object_id):
             form.instance.demand = demand
             form.save()
     else:
-        form = DemandDiffForm()
+        form = DemandDiffForm(initial={'type':type})
     return render_to_response('Management/object_edit.html', 
                               { 'form':form }, context_instance=RequestContext(request))
+
+@permission_required('Management.add_demanddiff')
+def demand_adddiff_adjust(request, object_id):
+    return demand_adddiff(request, object_id, u'התאמה')
 
 @permission_required('Management.delete_demanddiff')
 def demanddiff_del(request, object_id):

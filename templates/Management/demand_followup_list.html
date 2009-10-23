@@ -18,6 +18,7 @@
 			//sync links
 			if (selectedID > 0)
 				$("#demandEdit").attr("href", "/demands/" + selectedID);
+				$("#demandAdjust").attr("href", "/demands/" + selectedID + "/adddiffadjust");
 				$("#demandCalc").attr("href", "/demands/" + selectedID + "/calc");
 			});
 		$(".fancybox").fancybox();
@@ -62,6 +63,10 @@
 	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
 	<a id="demandEdit">שינוי דרישה</a>
 </div>
+<div class="someIcon" style="width:100px;">
+	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
+	<a class="fancybox" id="demandAdjust">התאמת דרישה</a>
+</div>
 <div class="someIcon"style="width:130px;">
 	<img src="/site_media/images/advanced-48.png" width="20" height="20"  alt="שליחה" /> 
 	<a id="demandCalc">חישוב עמלות מחדש</a>
@@ -71,7 +76,7 @@
 <table id="demandTable" class="dataTable" border="1">
 <caption>מציג סה"כ {{demands|length}} דרישות לתשלום לפרוייקט {{project}}</caption>
 	<tr>
-		<th colspan="4">פרטי דרישה</th>
+		<th colspan="6">פרטי דרישה</th>
 		<th colspan="3">פרטי חשבונית</th>
 		<th colspan="2">פרטי צ'קים</th>
 		<th colspan="3">הפרשי דרישה</th>
@@ -82,6 +87,8 @@
 		<th>חודש</th>
 		<th>סכום דרישה</th>
 		<th>מס' מכירות</th>
+		<th>התאמה</th>
+		<th>טיפול בדרישה</th>
 		<th>מס'</th>
 		<th>סכום</th>
 		<th>תאריך</th>
@@ -92,22 +99,11 @@
 		<th>טיפול בדרישה</th>
 	</tr>
     {% for d in demands %}
-	{% if not d.statuses.count %}
-    	<tr class="row3" objid={{d.id}}>
+	{% ifequal d.state 5 %}
+		<tr class="rowLightGreen" objid={{d.id}}>
 	{% else %}
-		{% ifequal d.statuses.latest.type.id 1 %}
-			<tr class="{% cycle 'row1' 'row2' %}" objid={{d.id}}>
-		{% endifequal %}
-		{% ifequal d.statuses.latest.type.id 2 %}
-			<tr class="row4" objid={{d.id}}>
-		{% endifequal %}
-		{% ifequal d.statuses.latest.type.id 3 %}
-			<tr class="row5" objid={{d.id}}>
-		{% endifequal %}
-		{% ifequal d.statuses.latest.type.id 4 %}
-			<tr class="row5" objid={{d.id}}>
-		{% endifequal %}
-	{% endif %}
+		<tr class="{% cycle 'row1' 'row2' %}" objid={{d.id}}>
+	{% endifequal %}
 			<td><a href="/demands/{{d.id}}">{{d.id}}</a></td>
 			<td>
 				<a href="/reports/project_month/{{d.project.id}}/{{d.year}}/{{d.month}}">
@@ -117,6 +113,22 @@
 			<td>{{ d.month }}/{{d.year}}</td>
 			<td><b>{% if d.get_total_amount %} {{ d.get_total_amount|commaise }} ש"ח {% else %}----{% endif %}</b></td>
 			<td><a href="/demandsales/?demand_id={{d.id}}" class="bigfancybox">{{ d.get_sales.count|default:"אין מכירות" }}</a></td>
+			<td>
+				{% if d.adjust_diff %}
+					<a href="{{d.adjust_diff.get_absolute_url}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+				{% endif %}
+			</td>
+			<td>
+			{% for r in d.get_open_reminders %}
+				{{ r.content|truncatewords:5 }}
+				<a href="/reminders/{{r.id}}"><img src="/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a>
+				<a href="/reminders/{{r.id}}"><img src="/site_media/images/thumbs_up_48" width="15" height="15" alt="בצע" border="0" /></a>
+				<br>
+			{% endfor %}
+				<a href="/demands/{{d.id}}/addreminder" class="fancybox">
+					<img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" />
+				</a>
+			</td>
 			<td>
 				{% for i in d.invoices.all %}
 					{{i.num}}<br>

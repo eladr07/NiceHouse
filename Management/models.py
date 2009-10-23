@@ -1529,6 +1529,8 @@ class DemandDiff(models.Model):
     amount = models.FloatField(ugettext('amount'))
     def __unicode__(self):
         return u'תוספת מסוג %s על סך %s ש"ח - %s' % (self.type, self.amount, self.reason)
+    def get_absolute_url(self):
+        return '/demanddiff/%s' % self.id
     class Meta:
         db_table = 'DemandDiff'
         unique_together = ('demand','type')
@@ -1561,19 +1563,23 @@ class Demand(models.Model):
     @property
     def fixed_diff(self):
         q = self.diffs.filter(type=u'קבועה')
-        return q.count() == 1 and q[0] or None
+        return q.count() == 1 and q[0] or 0
     @property    
     def var_diff(self):
         q = self.diffs.filter(type=u'משתנה')
-        return q.count() == 1 and q[0] or None
+        return q.count() == 1 and q[0] or 0
     @property    
     def bonus_diff(self):
         q = self.diffs.filter(type=u'בונוס')
-        return q.count() == 1 and q[0] or None
+        return q.count() == 1 and q[0] or 0
     @property   
     def fee_diff(self):
         q = self.diffs.filter(type=u'קיזוז')
-        return q.count() == 1 and q[0] or None
+        return q.count() == 1 and q[0] or 0
+    @property   
+    def adjust_diff(self):
+        q = self.diffs.filter(type=u'התאמה')
+        return q.count() == 1 and q[0] or 0
     def get_madad(self):
         q = MadadBI.objects.filter(year = self.year, month=self.month)
         return q.count() > 0 and q[0].value or MadadBI.objects.latest().value
@@ -1679,10 +1685,7 @@ class Demand(models.Model):
             amount = amount + s.price
         return amount
     def get_final_sales_amount(self):
-        amount = 0
-        for s in self.get_sales():
-            amount = amount + (s.price_final or 0) 
-        return amount
+        return self.get_sales().aggregate(Sum('price_final'))['price_final__sum']
     def calc_sales_commission(self):
         if self.get_sales().count() == 0: return
         c = self.project.commissions
@@ -1693,9 +1696,7 @@ class Demand(models.Model):
             i += s.c_final_worth
         return i
     def get_total_amount(self):
-        diffs = 0
-        for d in self.diffs.all():
-            diffs += d.amount
+        diffs = self.diffs.all().aggregate(Sum('amount'))['amount__sum']
         return self.get_sales_commission() + diffs
     def get_deleted_sales(self):
         return [s for s in self.sales.filter(is_deleted=True)]
@@ -1704,7 +1705,7 @@ class Demand(models.Model):
             return DemandNoInvoice
         if self.payments.count()==0:
             return DemandNoPayment
-        diff = self.diff_invoice_payment
+        diff = self.diff_invoice_payment + self.adjust_diff
         if diff > 0:
             return DemandPaidPlus
         if diff < 0:

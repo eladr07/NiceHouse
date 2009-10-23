@@ -322,6 +322,13 @@ BODY {
 	font-family: Arial;
 	padding: 4px 4px 4px 4px;
 }
+.dataTable .rowLightGreen td {
+	background-color: #98FFCE;
+	color: #000;
+	font-size: 12px;
+	font-family: Arial;
+	padding: 4px 4px 4px 4px;
+}
 
 .dataTable .selectedRow td {
 	background-color: #BCD9FF;

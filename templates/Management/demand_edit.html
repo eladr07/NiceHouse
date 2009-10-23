@@ -117,8 +117,8 @@
 		<legend>תוספות וקיזוזים</legend>
 		{% for d in form.instance.diffs.all %}
 			{{ d }}				
-			<a href="/demanddiff/{{d.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
-			<a href="/demanddiff/{{d.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+			<a href="{{d.get_absolute_url}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+			<a href="{{d.get_absolute_url}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
 			<br>
 		{% endfor %}
 		<br><a class="fancybox" href="{{form.instance.id}}/adddiff">תוספת\קיזוז חדש</a><br>
