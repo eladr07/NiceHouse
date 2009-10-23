@@ -165,7 +165,7 @@ urlpatterns += patterns('Management.views',
      {'attr':'nhcbranchincome'}),
      
     (r'^reminder/(?P<object_id>\d+)$', 'limited_update_object',
-     {'form_class' : Management.forms.ReminderForm, 'template_name' : 'Management/reminder_edit.html', 'post_save_redirect' : '%(id)s'}),
+     {'form_class' : Management.forms.ReminderForm, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '%(id)s'}),
     (r'^reminder/(?P<id>\d+)/del$', 'reminder_del'),
     (r'^reminder/(?P<id>\d+)/do$', 'reminder_do'),
     (r'^attachments$', 'limited_object_list',
