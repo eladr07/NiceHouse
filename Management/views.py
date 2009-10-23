@@ -546,11 +546,11 @@ def salary_expenses_list(request):
     current = Demand.current_month()
     year = int(request.GET.get('year', current.year))
     month = int(request.GET.get('month', current.month))
-    expenses = []
-    for se in SalaryExpenses.objects.filter(year = year, month= month):
-        expenses.append(se)
+    salaries = []
+    for es in EmployeeSalary.objects.filter(year = year, month= month):
+        salaries.append(es)
     return render_to_response('Management/salaries_expenses.html', 
-                              {'expenses':expenses, 'month': date(int(year), int(month), 1),
+                              {'salaries':salaries, 'month': date(int(year), int(month), 1),
                                'filterForm':MonthFilterForm(initial={'year':year,'month':month})},
                                context_instance=RequestContext(request))
 

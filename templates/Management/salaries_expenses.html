@@ -55,23 +55,26 @@
 </div>
 <div class="clearBoth"></div>
 <table id="salaryTable" class="dataTable" border="1">
-<caption>מציג סה"כ {{expenses|length}} עובדים</caption>
+<caption>מציג סה"כ {{salaries|length}} עובדים</caption>
 	<tr>
 		<th></th>
 		<th>שם העובד</th>
 		<th>פרוייקט</th>
-		<th>סוג העסקה</th>
-		<th>מס הכנסה</th>
-		<th>ביטוח לאומי</th>
+		<th>סוג<BR>העסקה</th>
+		<th>תלוש<BR>נטו</th>
+		<th>החזר<BR>הלוואה</th>
+		<th>שווי<BR>צ'ק</th>
+		<th>מס<BR>הכנסה</th>
+		<th>ביטוח<BR>לאומי</th>
 		<th>בריאות</th>
-		<th>ביטוח פנסיה</th>
+		<th>ביטוח<BR>פנסיה</th>
 		<th>ביטוח לאומי מעביד</th>
 		<th>גמל מעביד</th>
-		<th>הפרשה לפיצויים</th>
+		<th>הפרשה<BR>לפיצויים</th>
 		<th>חופשה</th>
 		<th>דמי הבראה</th>
 	</tr>
-	{% regroup expenses by employee.rank as rank_list %}
+	{% regroup salaries by employee.rank as rank_list %}
 	{% for rank in rank_list %}
 		<tr style="text-align:center; color:#4669D6; font-size:14px"><td colspan="15"><b>{{rank.grouper|default:"-- לא הוגדר דרג --"}}</b></td></tr>
 		{% for s in rank.list %}
@@ -83,16 +86,21 @@
 				<a href="/projects/{{p.id}}" target="_blank">{{p}}</a><br>
 				{% endfor %}
 			</td>
-			<td>{{s.employee.employment_terms.hire_type}}</td>
-			<td>{{s.income_tax}}</td>
-			<td>{{s.national_insurance}}</td>
-			<td>{{s.health}}</td>
-			<td>{{s.pension_insurance}}</td>
-			<td>{{s.employer_national_insurance}}</td>
-			<td>{{s.employer_benefit}}</td>
-			<td>{{s.compensation_allocation}}</td>
-			<td>{{s.vacation}}</td>
-			<td>{{s.convalescence_pay}}</td>
+			<td>{{s.total_amount|commaise}}</td>
+			<td>{{s.loan_pay|commaise}}</td>
+			<td>{{s.check_amount|commaise}}</td>
+			{% with s.expenses as e %}
+				<td>{{e.employee.employment_terms.hire_type}}</td>
+				<td>{{e.income_tax}}</td>
+				<td>{{e.national_insurance}}</td>
+				<td>{{e.health}}</td>
+				<td>{{e.pension_insurance}}</td>
+				<td>{{e.employer_national_insurance}}</td>
+				<td>{{e.employer_benefit}}</td>
+				<td>{{e.compensation_allocation}}</td>
+				<td>{{e.vacation}}</td>
+				<td>{{e.convalescence_pay}}</td>
+			{% endwith %}
 		</tr>
 		{% endfor %}
 	{% endfor %}
