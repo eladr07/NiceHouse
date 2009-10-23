@@ -474,6 +474,8 @@ class ReminderForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
         self.fields['content'].widget = forms.Textarea(attrs={'cols':'30', 'rows':'6'})
+        if self.instance.statuses.count():
+            self.fields['status'].initial = self.instance.statuses.latest().type.id
     class Meta:
         model = Reminder
 
