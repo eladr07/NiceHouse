@@ -118,6 +118,8 @@ class Reminder(models.Model):
         self.statuses.create(type = ReminderStatusType.objects.get(pk = ReminderStatusType.Done)).save()
     def delete(self):
         self.statuses.create(type = ReminderStatusType.objects.get(pk = ReminderStatusType.Deleted)).save()
+    def get_absolute_url(self):
+        return '/reminder/%s' % self.id
     class Meta:
         db_table = 'Reminder'
     

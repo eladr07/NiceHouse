@@ -76,7 +76,7 @@
 <table id="demandTable" class="dataTable" border="1">
 <caption>מציג סה"כ {{demands|length}} דרישות לתשלום לפרוייקט {{project}}</caption>
 	<tr>
-		<th colspan="6">פרטי דרישה</th>
+		<th colspan="7">פרטי דרישה</th>
 		<th colspan="3">פרטי חשבונית</th>
 		<th colspan="2">פרטי צ'קים</th>
 		<th colspan="3">הפרשי דרישה</th>
@@ -121,8 +121,8 @@
 			<td>
 			{% for r in d.get_open_reminders %}
 				{{ r.content|truncatewords:5 }}
-				<a href="/reminders/{{r.id}}"><img src="/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a>
-				<a href="/reminders/{{r.id}}"><img src="/site_media/images/thumbs_up_48" width="15" height="15" alt="בצע" border="0" /></a>
+				<a href="{{r.get_absolute_url}}"><img src="/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a>
+				<a href="{{r.get_absolute_url}}/do"><img src="/site_media/images/thumbs_up_48.png" width="15" height="15" alt="בצע" border="0" /></a>
 				<br>
 			{% endfor %}
 				<a href="/demands/{{d.id}}/addreminder" class="fancybox">
