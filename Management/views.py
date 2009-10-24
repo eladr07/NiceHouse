@@ -513,7 +513,7 @@ def employee_salary_expenses(request, salary_id):
         if form.is_valid():
             form.save()
     else:
-        vacation = terms.base and (terms.salary_base / 24) or (2500/12)
+        vacation = terms.salary_base and (terms.salary_base / 24) or (2500/12)
         form = SalaryExpensesForm(instance= expenses, initial={'vacation':vacation})
     return render_to_response('Management/salaryexpenses_edit.html', 
                               {'form':form, 'neto': es.neto or 0},
