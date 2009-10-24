@@ -512,7 +512,7 @@ def employee_salary_expenses(request, salary_id):
     else:
         form = SalaryExpensesForm(instance= expenses)
     return render_to_response('Management/salaryexpenses_edit.html', 
-                              {'form':form, 'neto': es.salary and es.salary.neto or 0},
+                              {'form':form, 'neto': es.neto or 0},
                                context_instance=RequestContext(request))
 
 @permission_required('Management.change_employeesalary')
