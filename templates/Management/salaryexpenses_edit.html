@@ -19,7 +19,9 @@
 				for (var j=0; j<fields1.length; j++)
 				{
 					var id2 = "#id_" + fields1[i];
-					amount += parseInt($(id2).val());
+					var val = parseInt($(id2).val());
+					if (val)
+						amount += val;
 				}
 				$("#bruto").text(amount);
 			});
@@ -32,7 +34,9 @@
 				for (var j=0; j<fields2.length; j++)
 				{
 					var id2 = "#id_" + fields2[i];
-					amount += parseInt($(id2).val());
+					var val = parseInt($(id2).val());
+					if (val)
+						amount += val;
 				}
 				$("#bruto_with_expenses").text(amount);
 			});
