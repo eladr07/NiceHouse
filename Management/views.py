@@ -504,7 +504,7 @@ def nhemployee_salary_pdf(request, nhbranch_id, year, month):
 @permission_required('Management.change_salaryexpense')
 def employee_salary_expenses(request, salary_id):
     es = EmployeeSalaryBase.objects.get(pk=salary_id)
-    expenses = es.expenses or SalaryExpenses(employee = es.employee, year = es.year, month = es.month)
+    expenses = es.expenses or SalaryExpenses(employee = es.get_employee(), year = es.year, month = es.month)
     if request.method=='POST':
         form = SalaryExpensesForm(request.POST, instance= expenses)
         if form.is_valid():
@@ -512,7 +512,7 @@ def employee_salary_expenses(request, salary_id):
     else:
         form = SalaryExpensesForm(instance= expenses)
     return render_to_response('Management/salaryexpenses_edit.html', 
-                              {'form':form, 'neto':es.salary.neto},
+                              {'form':form, 'neto': es.salary and es.salary.neto or 0},
                                context_instance=RequestContext(request))
 
 @permission_required('Management.change_employeesalary')
