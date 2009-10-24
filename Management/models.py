@@ -1979,8 +1979,8 @@ class NHMonth(models.Model):
     def avg_signed_commission(self):
         count, total = 0, 0
         for nhs in self.nhsales.all():
-            if nhs.type.id in [SaleType.RentRentee, SaleType.RentRenter]: continue
             for nhss in nhs.nhsaleside_set.all():
+                if nhss.sale_type.id in [SaleType.RentRentee, SaleType.RentRenter]: continue
                 count += 1
                 total += nhss.signed_commission
         return count > 0 and total / count or 0
@@ -1988,8 +1988,8 @@ class NHMonth(models.Model):
     def avg_actual_commission(self):
         count, total = 0, 0
         for nhs in self.nhsales.all():
-            if nhs.type.id in [SaleType.RentRentee, SaleType.RentRenter]: continue
             for nhss in nhs.nhsaleside_set.all():
+                if nhss.sale_type.id in [SaleType.RentRentee, SaleType.RentRenter]: continue
                 count += 1
                 total += nhss.signed_commission
         return count > 0 and total / count or 0
