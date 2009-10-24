@@ -162,8 +162,15 @@
 		</tr>
 	{% endfor %}
 	<tr height="30px" class="rowSum">
-		<td colspan="3" align="center">סיכום</td>
+		<td colspan="4" align="center">סיכום</td>
 		<td>{{total_amount|commaise}} ש"ח</td>
+		<td></td>
+		<td>{{total_invoices|commaise}}</td>
+		<td></td>
+		<td>{{total_payments|commaise}}</td>
+		<td></td>
+		<td>{{total_diff_invoice|commaise}}</td>
+		<td>{{total_diff_invoice_payment|commaise}}</td>
 	</tr>
 </table>
 {% endblock content %}

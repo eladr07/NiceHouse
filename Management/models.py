@@ -1651,8 +1651,7 @@ class Demand(models.Model):
         return f.count() > 0 and f.latest().date or None
     @property
     def is_fixed(self):
-        return self.sales.exclude(salehousemod=None, salepricemod=None,
-                                  salepre=None, salereject=None).count() > 0
+        return self.sales.exclude(salehousemod=None, salepricemod=None, salepre=None, salereject=None).count() > 0
     @property
     def diff_invoice(self):
         return self.invoices_amount - self.get_total_amount()

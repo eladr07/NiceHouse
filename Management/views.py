@@ -2486,7 +2486,7 @@ def demand_followup_list(request):
     form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month,
                                       'project':project_id})
     ds = []
-    total_amount = 0
+    total_amount, total_invoices, total_payments, total_diff_invoice, total_diff_invoice_payment = 0,0,0,0,0
     if project_id:
         current = date(int(from_year), int(from_month), 1)
         end = date(int(to_year), int(to_month), 1)
@@ -2498,11 +2498,16 @@ def demand_followup_list(request):
                            current.month == 12 and 1 or current.month + 1, 1)
         for d in ds:
             total_amount += d.get_total_amount()
+            total_invoices += d.invoices_amount
+            total_payments += d.payments_amount
+            total_diff_invoice += d.diff_invoice
+            total_diff_invoice_payment += d.diff_invoice_payment
         
     return render_to_response('Management/demand_followup_list.html', 
                               { 'demands':ds, 'start':date(int(from_year), int(from_month), 1), 'end':date(int(to_year), int(to_month), 1),
                                 'project':project_id and Project.objects.get(pk=project_id), 'filterForm':form,
-                                'total_amount':total_amount},
+                                'total_amount':total_amount, 'total_invoices':total_invoices, 'total_payments':total_payments,
+                                'total_diff_invoice':total_diff_invoice, 'total_diff_invoice_payment':total_diff_invoice_payment},
                               context_instance=RequestContext(request))
 
 def employeesalary_season_list(request):

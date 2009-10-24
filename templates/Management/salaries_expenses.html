@@ -59,7 +59,6 @@
 	<tr>
 		<th></th>
 		<th>שם העובד</th>
-		<th>פרוייקט</th>
 		<th>סוג<BR>העסקה</th>
 		<th>תלוש<BR>נטו</th>
 		<th>החזר<BR>הלוואה</th>
@@ -85,11 +84,6 @@
 		{% endif %}
 			<td><a class="fancybox" href="/salary/{{s.id}}/expenses"><img src="/site_media/images/edit_48.png" width="20" height="20" alt="עדכון" border="0" /></a></td>
 			<td><a href="{{s.employee.get_absolute_url}}">{{ s.employee }}</a></td>
-			<td>
-				{% for p in s.employee.projects.all %}
-				<a href="/projects/{{p.id}}" target="_blank">{{p}}</a><br>
-				{% endfor %}
-			</td>
 			<td>{{s.employee.employment_terms.hire_type}}</td>
 			<td>{{s.neto|default_if_none:""|commaise}}</td>
 			<td>{{s.loan_pay|commaise}}</td>
