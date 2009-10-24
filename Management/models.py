@@ -1657,10 +1657,10 @@ class Demand(models.Model):
         return self.invoices_amount - self.get_total_amount()
     @property
     def payments_amount(self):
-        return self.payments.all().aggregate(Sum('amount'))['amount__sum']
+        return self.payments.all().aggregate(Sum('amount'))['amount__sum'] or 0
     @property
     def invoices_amount(self):
-        return self.invoices.all().aggregate(Sum('amount'))['amount__sum']
+        return self.invoices.all().aggregate(Sum('amount'))['amount__sum'] or 0
     @property
     def diff_invoice_payment(self):
         return self.payments_amount - self.invoices_amount
