@@ -1655,7 +1655,7 @@ class Demand(models.Model):
                                   salepre=None, salereject=None).count() > 0
     @property
     def diff_invoice(self):
-        return self.invoices_amount - self.get_total_amount()
+        return self.invoices_amount - int(self.get_total_amount())
     @property
     def payments_amount(self):
         return self.payments.all().aggregate(Sum('amount'))['amount__sum']
@@ -1715,7 +1715,7 @@ class Demand(models.Model):
         return DemandPaid
     @property
     def is_fully_paid(self):
-        total = int(self.get_total_amount() + self.adjust_diff)
+        total = int(self.get_total_amount())
         return total == self.invoices_amount and total == self.payments_amount
     def feed(self):
         self.statuses.create(type= DemandStatusType.objects.get(pk=DemandFeed)).save()
