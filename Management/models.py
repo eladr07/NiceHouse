@@ -1661,6 +1661,8 @@ class Demand(models.Model):
         return self.payments.all().aggregate(Sum('amount'))['amount__sum']
     @property
     def invoices_amount(self):
+        q= self.invoices.all().aggregate(Sum('amount'))['amount__sum']
+        raise TypeError
         return self.invoices.all().aggregate(Sum('amount'))['amount__sum']
     @property
     def diff_invoice_payment(self):
