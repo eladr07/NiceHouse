@@ -67,11 +67,13 @@
 		<th>ביטוח<BR>לאומי</th>
 		<th>בריאות</th>
 		<th>ביטוח<BR>פנסיה</th>
-		<th>ביטוח לאומי מעביד</th>
-		<th>גמל מעביד</th>
-		<th>הפרשה<BR>לפיצויים</th>
 		<th>חופשה</th>
-		<th>דמי הבראה</th>
+		<th>דמי<BR>הבראה</th>
+		<th>ברוטו<BR>לעובד</th>
+		<th>ביטוח<BR>לאומי<BR>מעביד</th>
+		<th>גמל<BR>מעביד</th>
+		<th>הפרשה<BR>לפיצויים</th>
+		<th>ברוטו<BR>כולל<BR>מעביד</th>
 	</tr>
 	{% regroup salaries by employee.rank as rank_list %}
 	{% for rank in rank_list %}
@@ -105,8 +107,9 @@
 						<a href="{{e.id}}/approve">אשר</a>
 					{% endif %}
 				</td>
-				<td>{{e.compensation_allocation}}</td>
 			{% endwith %}
+			<td>{{s.bruto|commaise}}</td>
+			<td>{{s.bruto_with_employer|commaise}}</td>
 		</tr>
 		{% endfor %}
 	{% endfor %}
