@@ -8,14 +8,15 @@
 					parent.location.reload();
 				});	
 			});
-		var fields1 = new Array("income_tax","national_insurance","health"," pension_insurance ","vacation","convalescence_pay");
-		var fields2 = new Array("income_tax","national_insurance","health"," pension_insurance ","vacation","convalescence_pay",
+		var neto = {{form.instance.salary.neto}};
+		var fields1 = new Array("income_tax","national_insurance","health"," pension_insurance","vacation","convalescence_pay");
+		var fields2 = new Array("income_tax","national_insurance","health"," pension_insurance","vacation","convalescence_pay",
 			"employer_national_insurance","employer_benefit","compensation_allocation");
 		for (var i=0;i<fields1.length; i++)
 		{
 			id = "#id_" + fields1[i];
 			$(id).change(function () {
-				var amount = 0;
+				var amount = neto;
 				for (var j=0; j<fields1.length; j++)
 				{
 					var id2 = "#id_" + fields1[j];
@@ -30,7 +31,7 @@
 		{
 			id = "#id_" + fields2[i];
 			$(id).change(function () {
-				var amount = 0;
+				var amount = neto;
 				for (var j=0; j<fields2.length; j++)
 				{
 					var id2 = "#id_" + fields2[j];
