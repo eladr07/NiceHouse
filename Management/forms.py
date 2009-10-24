@@ -258,7 +258,7 @@ class DemandDiffForm(forms.ModelForm):
         if (add_type == 1 and amount < 0) or (add_type == 2 and amount > 0):
             self.cleaned_data['amount'] *= -1
     def __init__(self, *args, **kw):
-        super(DemandDiffForm, self).__init__(self, *args, **kw)
+        forms.ModelForm.__init__(self, *args, **kw)
         if self.instance.id:
             self.fields['add_type'].initial = self.instance.amount >= 0 and 1 or 2
     class Meta:
