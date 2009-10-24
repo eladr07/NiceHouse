@@ -8,7 +8,9 @@ def commaise(value):
         value = int(value)
     except:
         return value
-    if abs(value) < 1000:
+    if value < 0:
+        return '-' + commaise(value*-1)
+    elif value < 1000:
         return str(value)
     else:
         return commaise(value/1000) + ',' + str(value % 1000).rjust(3, '0')
