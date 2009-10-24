@@ -17,7 +17,10 @@
 			$(id).change(function () {
 				var amount = 0;
 				for (var j=0; j<fields1.length; j++)
-					amount += parseInt($(this).val());
+				{
+					var id2 = "#id_" + fields2[i];
+					amount += parseInt($(id2).val());
+				}
 				$("#bruto").text(amount);
 			});
 		}
@@ -27,7 +30,10 @@
 			$(id).change(function () {
 				var amount = 0;
 				for (var j=0; j<fields2.length; j++)
-					amount += parseInt($(this).val());
+				{
+					var id2 = "#id_" + fields2[i];
+					amount += parseInt($(id2).val());
+				}
 				$("#bruto_with_expenses").text(amount);
 			});
 		}
