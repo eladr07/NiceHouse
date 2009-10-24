@@ -405,9 +405,10 @@ def projects_profit(request):
             elif p.total_expense == 0: p.relative_expense_income_str = u'עודף'
         p.profit = p.total_income - p.total_expense
         total_profit += p.profit
+    if project_count:
         avg_relative_expense_income = avg_relative_expense_income / project_count
-    avg_relative_expense_income = avg_relative_expense_income / project_count
-    avg_relative_sales_expense = avg_relative_sales_expense / project_count
+        avg_relative_expense_income = avg_relative_expense_income / project_count
+        avg_relative_sales_expense = avg_relative_sales_expense / project_count
     
     return render_to_response('Management/projects_profit.html', 
                               { 'projects':projects,'from_year':from_year,'from_month':from_month, 
@@ -504,13 +505,16 @@ def nhemployee_salary_pdf(request, nhbranch_id, year, month):
 @permission_required('Management.change_salaryexpense')
 def employee_salary_expenses(request, salary_id):
     es = EmployeeSalaryBase.objects.get(pk=salary_id)
-    expenses = es.expenses or SalaryExpenses(employee = es.get_employee(), year = es.year, month = es.month)
+    employee = es.get_employee()
+    terms = employee.employment_terms
+    expenses = es.expenses or SalaryExpenses(employee = employee, year = es.year, month = es.month)
     if request.method=='POST':
         form = SalaryExpensesForm(request.POST, instance= expenses)
         if form.is_valid():
             form.save()
     else:
-        form = SalaryExpensesForm(instance= expenses)
+        vacation = terms.base and (terms.base / 24) or (2500/12)
+        form = SalaryExpensesForm(instance= expenses, initial={'vacation':vacation})
     return render_to_response('Management/salaryexpenses_edit.html', 
                               {'form':form, 'neto': es.neto or 0},
                                context_instance=RequestContext(request))

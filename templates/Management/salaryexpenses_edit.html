@@ -12,6 +12,7 @@
 		var fields1 = new Array("income_tax","national_insurance","health"," pension_insurance","vacation","convalescence_pay");
 		var fields2 = new Array("income_tax","national_insurance","health"," pension_insurance","vacation","convalescence_pay",
 			"employer_national_insurance","employer_benefit","compensation_allocation");
+		var fields3 = new Array("income_tax","national_insurance","health"," pension_insurance");
 		for (var i=0;i<fields1.length; i++)
 		{
 			id = "#id_" + fields1[i];
@@ -40,6 +41,21 @@
 						amount += val;
 				}
 				$("#bruto_with_employer").text(amount);
+			});
+		}
+		for (var i=0;i<fields3.length; i++)
+		{
+			id = "#id_" + fields3[i];
+			$(id).change(function () {
+				var amount = neto;
+				for (var j=0; j<fields3.length; j++)
+				{
+					var id2 = "#id_" + fields3[j];
+					var val = parseInt($(id2).val());
+					if (val)
+						amount += val;
+				}
+				$("#id_compensation_allocation").attr("value", amount * (8 + 1/3));
 			});
 		}
 	});
