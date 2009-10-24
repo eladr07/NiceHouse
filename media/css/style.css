@@ -11,6 +11,12 @@ BODY {
 	clear: both;
 }
 
+.helpText {
+	color: #0344D4;
+	font-family: Tahoma; 
+	font-size: 10px; 	
+}
+
 .cardFieldset {
 	border: 1px solid #708090;
 	font-family: Tahoma; 
