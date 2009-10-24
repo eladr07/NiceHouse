@@ -18,7 +18,7 @@
 				var amount = 0;
 				for (var j=0; j<fields1.length; j++)
 				{
-					var id2 = "#id_" + fields1[i];
+					var id2 = "#id_" + fields1[j];
 					var val = parseInt($(id2).val());
 					if (val)
 						amount += val;
@@ -33,12 +33,12 @@
 				var amount = 0;
 				for (var j=0; j<fields2.length; j++)
 				{
-					var id2 = "#id_" + fields2[i];
+					var id2 = "#id_" + fields2[j];
 					var val = parseInt($(id2).val());
 					if (val)
 						amount += val;
 				}
-				$("#bruto_with_expenses").text(amount);
+				$("#bruto_with_employer").text(amount);
 			});
 		}
 	});
