@@ -523,6 +523,13 @@ def employee_salary_approve(request, id):
         return HttpResponseRedirect('/employeesalaries/?year=%s&month=%s' % (es.year, es.month))
     elif hasattr(es,'nhemployeesalary'):
         return HttpResponseRedirect('/nhemployeesalaries/?year=%s&month=%s' % (es.year, es.month))
+
+@permission_required('Management.change_employeesalary')
+def salary_expenses_approve(request, id):
+    se = SalaryExpenses.objects.get(pk=id)
+    se.approve()
+    se.save()
+    return HttpResponseRedirect('/salaryexpenses/?year=%s&month=%s' % (se.year, se.month))
     
 @permission_required('Management.list_employeesalary')
 def employee_salary_list(request):
