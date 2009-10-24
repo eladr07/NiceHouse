@@ -13,13 +13,12 @@
 			"employer_national_insurance","employer_benefit","compensation_allocation");
 		for (var i=0;i<fields1.length; i++)
 		{
-			alert(1);
 			id = "#id_" + fields1[i];
 			$(id).change(function () {
 				var amount = 0;
 				for (var j=0; j<fields1.length; j++)
 					amount += parseInt($(this).val());
-				$("#bruto").attr("value", amount);
+				$("#bruto").text(amount);
 			});
 		}
 		for (var i=0;i<fields2.length; i++)
@@ -29,7 +28,7 @@
 				var amount = 0;
 				for (var j=0; j<fields2.length; j++)
 					amount += parseInt($(this).val());
-				$("#bruto_with_expenses").attr("value", amount);
+				$("#bruto_with_expenses").text(amount);
 			});
 		}
 	});
