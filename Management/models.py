@@ -786,12 +786,15 @@ class SalaryExpenses(models.Model):
     employer_national_insurance = models.FloatField(ugettext('employer_national_insurance'))
     employer_benefit = models.FloatField(ugettext('employer_benefit'))
     compensation_allocation = models.FloatField(ugettext('compensation_allocation'))
+    approved_date = models.DateTimeField(editable=False, null=True)
     @property
     def salary(self):
         if isinstance(self.employee, Employee):
             return EmployeeSalary.objects.get(year = self.year, month = self.month, employee = self.employee.employee)
         elif isinstance(self.employee, NHEmployee):
             return NHEmployeeSalary.objects.get(year = self.year, month = self.month, nhemployee = self.employee.nhemployee)
+    def approve(self):
+        self.approved_date = datetime.now()
     class Meta:
         db_table = 'SalaryExpenses'
         unique_together = ('employee','year','month')

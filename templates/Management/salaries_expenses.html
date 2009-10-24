@@ -9,8 +9,8 @@
 		$("#salaryTable tr").click(function() { 
 			var tr = $(this);
 			if (selectedID > 0)
-				$("#salaryTable tr[employeeid='"+selectedID+"']").attr("class", prev_class);
-			selectedID = tr.attr("employeeid");
+				$("#salaryTable tr[objid='"+selectedID+"']").attr("class", prev_class);
+			selectedID = tr.attr("objid");
 			if (!selectedID)
 				return;
 			prev_class = tr.attr("class");
@@ -77,8 +77,12 @@
 	{% regroup salaries by employee.rank as rank_list %}
 	{% for rank in rank_list %}
 		<tr style="text-align:center; color:#4669D6; font-size:14px"><td colspan="15"><b>{{rank.grouper|default:"-- לא הוגדר דרג --"}}</b></td></tr>
-		{% for s in rank.list %}
-		<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.employee.id}}>
+		{% for s in rank.list %}		
+		{% if s.expenses.approved_date %}
+			<tr class="rowLightGreen" objid={{s.id}} employeeid={{s.employee.id}}>
+		{% else %}
+			<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.employee.id}}>
+		{% endif %}
 			<td><a class="fancybox" href="/salary/{{s.id}}/expenses"><img src="/site_media/images/edit_48.png" width="20" height="20" alt="עדכון" border="0" /></a></td>
 			<td><a href="{{s.employee.get_absolute_url}}">{{ s.employee }}</a></td>
 			<td>
@@ -99,6 +103,14 @@
 				<td>{{e.convalescence_pay}}</td>
 				<td>{{e.employer_national_insurance}}</td>
 				<td>{{e.employer_benefit}}</td>
+				<td>{{e.compensation_allocation}}</td>
+				<td>
+					{% if e.approved_date %}
+						{{e.approved_date}}
+					{% else %}
+						<a href="{{e.id}}/approve">אשר</a>
+					{% endif %}
+				</td>
 				<td>{{e.compensation_allocation}}</td>
 			{% endwith %}
 		</tr>
