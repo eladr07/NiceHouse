@@ -247,7 +247,7 @@ urlpatterns += patterns('Management.views',
     (r'^demands/(?P<object_id>\d+)/adddiff$', 'demand_adddiff'),
     (r'^demands/(?P<object_id>\d+)/adddiffadjust$', 'demand_adddiff_adjust'),
     (r'^demanddiff/(?P<object_id>\d+)$', 'limited_update_object',
-     {'model' : Management.models.DemandDiff, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '%(id)s'}),
+     {'form_class' : Management.forms.DemandDiffForm, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '%(id)s'}),
     (r'^demanddiff/(?P<object_id>\d+)/del$', 'demanddiff_del'),
           
     (r'^demandinvoices/$', 'demand_invoice_list'),
