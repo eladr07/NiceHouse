@@ -206,9 +206,9 @@
 		{% endif %}
 		{% if not form.instance.payments.count %}
 			לתשומת לבך ! לא התקבל תשלום בגין הדרישה<br>
-		{% endif %}	{% ifnotequal form.instance.payments.latest.amount form.instance.invoices.latest.amount %}
+		{% endif %}	{% if form.instance.diff_invoice_payment %}
 			לתשומת לבך ! קיים פער בין הסכום בחשבונית שהוצאה, לסכום בתשלום שהתקבל מהיזם<br>
-		{% endifnotequal %}
+		{% endif %}
 	</p>
 	{% ifequal form.instance.statuses.latest.type.id 1 %}
 		<a href="close">סגור דרישה</a><br><br>
