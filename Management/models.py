@@ -1769,7 +1769,7 @@ class Signup(models.Model):
 LAWYER_TAX = 1.015
 
 class Tax(models.Model):
-    date = models.DateField(ugettext('date'))
+    date = models.DateField(ugettext('date'), help_text=u'בלה בלה בלה')
     value = models.FloatField(ugettext('value'))
     class Meta:
         db_table = 'Tax'
