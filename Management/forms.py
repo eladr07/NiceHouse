@@ -433,7 +433,6 @@ class NHSaleSideForm(forms.ModelForm):
         return nhs
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self, *args, **kw)
-        return
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
         self.fields['employee_remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
         self.fields['voucher_date'].widget.attrs = {'class':'vDateField'}
@@ -441,10 +440,10 @@ class NHSaleSideForm(forms.ModelForm):
             nhsale = self.instance.nhsale
             if self.instance.lawyer1:
                 pays = self.lawyer1.pays.filter(nhsale=nhsale)
-                self.fields['lawyer1_pay'].initial = pays[0]
+                self.fields['lawyer1_pay'].initial = pays[0].amount
             if self.instance.lawyer2:
                 pays = self.lawyer2.pays.filter(nhsale=nhsale)
-                self.fields['lawyer2_pay'].initial = pays[0]
+                self.fields['lawyer2_pay'].initial = pays[0].amount
     class Meta:
         model = NHSaleSide
 
