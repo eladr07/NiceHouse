@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2009-10-19 23:30+0200\n"
+"POT-Creation-Date: 2009-10-26 00:22+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -24,797 +24,799 @@ msgstr "סוג מחירון"
 msgid "all_pricelists"
 msgstr "כל המחירונים"
 
-#: .\Management\forms.py:83 .\Management\models.py:704
-#: .\Management\models.py:723 .\Management\models.py:740
-#: .\Management\models.py:1116 .\Management\models.py:1465
-#: .\Management\models.py:1489 .\Management\models.py:1527
-#: .\Management\models.py:1820 .\Management\models.py:2265
-msgid "amount"
-msgstr "סכום"
-
-#: .\Management\forms.py:84 .\Management\models.py:544
-msgid "precentage"
-msgstr "אחוז"
-
-#: .\Management\forms.py:105 .\Management\forms.py:106
-#: .\Management\forms.py:107
-msgid "parking"
-msgstr "חנייה"
-
-#: .\Management\forms.py:108 .\Management\forms.py:109
-msgid "storage"
-msgstr "מחסן"
-
-#: .\Management\forms.py:110 .\Management\models.py:350
-#: .\Management\models.py:1105 .\Management\models.py:2047
-msgid "price"
-msgstr "מחיר"
-
-#: .\Management\forms.py:169 .\Management\forms.py:607
-#: .\Management\models.py:529 .\Management\models.py:703
-#: .\Management\models.py:722 .\Management\models.py:738
-#: .\Management\models.py:773 .\Management\models.py:926
-#: .\Management\models.py:2120 .\Management\models.py:2272
-msgid "employee"
-msgstr "עובד"
-
-#: .\Management\forms.py:170 .\Management\forms.py:221
-#: .\Management\forms.py:247 .\Management\forms.py:328
-#: .\Management\forms.py:366 .\Management\forms.py:568
-#: .\Management\forms.py:575 .\Management\forms.py:644
-#: .\Management\forms.py:651 .\Management\models.py:229
-#: .\Management\models.py:394 .\Management\models.py:1537
-msgid "project"
-msgstr "פרוייקט"
-
-#: .\Management\forms.py:171
-msgid "start date"
-msgstr "תאריך תחילה"
-
-#: .\Management\forms.py:222 .\Management\forms.py:248
-#: .\Management\models.py:250 .\Management\models.py:263
-#: .\Management\models.py:276
-msgid "building"
-msgstr "בניין"
-
-#: .\Management\forms.py:249
-msgid "joined sale"
-msgstr "מכירה משותפת"
-
-#: .\Management\forms.py:250 .\Management\models.py:1752
-msgid "signup_date"
-msgstr "ת. הרשמה"
-
-#: .\Management\forms.py:316 .\Management\forms.py:498
-#: .\Management\forms.py:514 .\Management\models.py:53
-#: .\Management\models.py:136 .\Management\models.py:254
-#: .\Management\models.py:267 .\Management\models.py:283
-#: .\Management\models.py:388 .\Management\models.py:401
-#: .\Management\models.py:451 .\Management\models.py:482
-#: .\Management\models.py:726 .\Management\models.py:741
-#: .\Management\models.py:811 .\Management\models.py:1466
-#: .\Management\models.py:1490 .\Management\models.py:1542
-#: .\Management\models.py:1759 .\Management\models.py:1867
-#: .\Management\models.py:2048 .\Management\models.py:2059
-#: .\Management\models.py:2138 .\Management\models.py:2267
-msgid "remarks"
-msgstr "הערות"
-
-#: .\Management\forms.py:330 .\Management\forms.py:368
-#: .\Management\forms.py:570 .\Management\forms.py:619
-#: .\Management\forms.py:646 .\Management\models.py:775
-#: .\Management\models.py:800 .\Management\models.py:1539
-#: .\Management\models.py:1782 .\Management\models.py:1783
-#: .\Management\models.py:1798 .\Management\models.py:1799
-#: .\Management\models.py:1970
-msgid "year"
-msgstr "שנה"
-
-#: .\Management\forms.py:331 .\Management\forms.py:369
-#: .\Management\forms.py:571 .\Management\forms.py:620
-#: .\Management\forms.py:647 .\Management\models.py:774
-#: .\Management\models.py:799 .\Management\models.py:1538
-#: .\Management\models.py:1968
-msgid "month"
-msgstr "חודש"
-
-#: .\Management\forms.py:394 .\Management\forms.py:395
-msgid "lawyer_pay"
-msgstr "תשלום לעו\"ד"
-
-#: .\Management\forms.py:457
-msgid "status"
-msgstr "מצב"
-
-#: .\Management\forms.py:477
-msgid "tag_new"
-msgstr "תגית נושא חדשה"
-
-#: .\Management\forms.py:499
-msgid "new_expense_type"
-msgstr "סוג הוצאה חדש"
-
-#: .\Management\forms.py:577 .\Management\forms.py:587
-#: .\Management\forms.py:598 .\Management\forms.py:609
-msgid "from_year"
-msgstr "משנה"
-
-#: .\Management\forms.py:578 .\Management\forms.py:588
-#: .\Management\forms.py:599 .\Management\forms.py:610
-msgid "from_month"
-msgstr "מחודש"
-
-#: .\Management\forms.py:581 .\Management\forms.py:591
-#: .\Management\forms.py:602 .\Management\forms.py:613
-msgid "to_year"
-msgstr "עד שנה"
-
-#: .\Management\forms.py:582 .\Management\forms.py:592
-#: .\Management\forms.py:603 .\Management\forms.py:614
-msgid "to_month"
-msgstr "עד חודש"
-
-#: .\Management\forms.py:596 .\Management\models.py:657
-#: .\Management\models.py:1967
-msgid "nhbranch"
-msgstr "סניף"
-
-#: .\Management\forms.py:638 .\Management\models.py:434
-msgid "first_name"
-msgstr "שם פרטי"
-
-#: .\Management\forms.py:639 .\Management\models.py:435
-msgid "last_name"
-msgstr "שם משפחה"
-
-#: .\Management\forms.py:640 .\Management\models.py:440
-msgid "role"
-msgstr "תפקיד"
-
-#: .\Management\forms.py:641 .\Management\models.py:450
-msgid "company"
-msgstr "חברה"
-
-#: .\Management\forms.py:653 .\Management\models.py:395
-msgid "building_num"
-msgstr "מס' בניין"
-
-#: .\Management\forms.py:655 .\Management\models.py:278
-msgid "house_num"
-msgstr "מספר דירה"
-
-#: .\Management\models.py:46 .\Management\models.py:77
-msgid "user"
-msgstr "משתמש"
-
-#: .\Management\models.py:47
-msgid "tags"
-msgstr "תגיות נושא"
-
-#: .\Management\models.py:48
-msgid "filename"
-msgstr "שם הקובץ"
-
-#: .\Management\models.py:50
-msgid "attachment_type"
-msgstr "סוג מסמך"
-
-#: .\Management\models.py:51
-msgid "sr_name"
-msgstr "שם השולח/הנשלח"
-
-#: .\Management\models.py:52
-msgid "is_private"
-msgstr "האם חסוי"
-
-#: .\Management\models.py:63
-msgid "car_num"
-msgstr "מס' רכב"
-
-#: .\Management\models.py:64
-msgid "car_owner"
-msgstr "בעל רכב"
-
-#: .\Management\models.py:65
-msgid "insurance_expire_date"
-msgstr "ת. תפוגת ביטוח"
-
-#: .\Management\models.py:66
-msgid "insurance_man"
-msgstr "סוכן ביטוח"
-
-#: .\Management\models.py:67
-msgid "insurance_phone"
-msgstr "טלפון ביטוח"
-
-#: .\Management\models.py:68
-msgid "tow_company"
-msgstr "חברת גרירה"
-
-#: .\Management\models.py:69
-msgid "tow_phone"
-msgstr "טלפון גרר"
-
-#: .\Management\models.py:70
-msgid "compulsory_insurance_cost"
-msgstr "עלות ביטוח חובה"
-
-#: .\Management\models.py:71
-msgid "comprehensive_insurance_cost"
-msgstr "עלות ביטוח מקיף"
-
-#: .\Management\models.py:78 .\Management\models.py:115
-msgid "content"
-msgstr "תוכן"
-
-#: .\Management\models.py:124 .\Management\models.py:235
-#: .\Management\models.py:243 .\Management\models.py:396
-#: .\Management\models.py:637 .\Management\models.py:1840
-#: .\Management\models.py:1841
-msgid "name"
-msgstr "שם"
-
-#: .\Management\models.py:125 .\Management\models.py:135
-#: .\Management\models.py:645
-msgid "url"
-msgstr "כתובת אינטרנט"
-
-#: .\Management\models.py:131
-msgid "architect"
-msgstr "שם האדריכל"
-
-#: .\Management\models.py:132 .\Management\models.py:399
-msgid "houses_num"
-msgstr "סה\"כ מס' יחידות"
-
-#: .\Management\models.py:133
-msgid "buildings_num"
-msgstr "מס' מבנים"
-
-#: .\Management\models.py:134
-msgid "accompanied_bank"
-msgstr "בנק מלווה"
-
-#: .\Management\models.py:137 .\Management\models.py:397
-msgid "building_types"
-msgstr "סוגי מבנים"
-
-#: .\Management\models.py:149
-msgid "initiator"
-msgstr "יזם"
-
-#: .\Management\models.py:150
-msgid "project name"
-msgstr "שם הפרוייקט"
-
-#: .\Management\models.py:151
-msgid "city"
-msgstr "עיר"
-
-#: .\Management\models.py:152 .\Management\models.py:2041
-msgid "hood"
-msgstr "שכונה"
-
-#: .\Management\models.py:153
-msgid "office address"
-msgstr "כתובת המשרד"
-
-#: .\Management\models.py:154
-msgid "project phone"
-msgstr "טלפון בפרוייקט"
-
-#: .\Management\models.py:155
-msgid "project cell phone"
-msgstr "טלפון סלולרי בפרוייקט"
-
-#: .\Management\models.py:156
-msgid "project fax"
-msgstr "פקס בפרוייקט"
-
-#: .\Management\models.py:157 .\Management\models.py:438
-#: .\Management\models.py:643
-msgid "mail"
-msgstr "דואר אלקטרוני"
-
-#: .\Management\models.py:158
-msgid "is_marketing"
-msgstr "בשיווק?"
-
-#: .\Management\models.py:159
-msgid "startdate"
-msgstr "תאריך תחילה"
-
-#: .\Management\models.py:160
-msgid "enddate"
-msgstr "תאריך סיום"
-
-#: .\Management\models.py:161
-msgid "special_data"
-msgstr "הערות מיוחדות"
-
-#: .\Management\models.py:230 .\Management\models.py:492
-msgid "projects"
-msgstr "פרוייקטים"
-
-#: .\Management\models.py:251 .\Management\models.py:264
-#: .\Management\models.py:1751 .\Management\models.py:2119
-msgid "house"
-msgstr "דירה"
-
-#: .\Management\models.py:252
-msgid "parking_num"
-msgstr "מס' חנייה"
-
-#: .\Management\models.py:253 .\Management\models.py:367
-msgid "parking_type"
-msgstr "סוג חנייה"
-
-#: .\Management\models.py:265
-msgid "storage_num"
-msgstr "מס' מחסן"
-
-#: .\Management\models.py:266
-msgid "size"
-msgstr "גודל"
-
-#: .\Management\models.py:277
-msgid "asset_type"
-msgstr "סוג נכס"
-
-#: .\Management\models.py:279 .\Management\models.py:2043
-msgid "floor"
-msgstr "קומה"
-
-#: .\Management\models.py:280 .\Management\models.py:2042
-msgid "rooms"
-msgstr "חדרים"
-
-#: .\Management\models.py:281
-msgid "net_size"
-msgstr "שטח נטו"
-
-#: .\Management\models.py:282
-msgid "garden_size"
-msgstr "גודל גינה/מרפסת"
-
-#: .\Management\models.py:285
-msgid "bruto_size"
-msgstr "שטח ברוטו"
-
-#: .\Management\models.py:286
-msgid "load_precentage"
-msgstr "אחוז העמסה"
-
-#: .\Management\models.py:287
-msgid "parking_size"
-msgstr "שטח חנייה"
-
-#: .\Management\models.py:289
-msgid "is_sold"
-msgstr "האם נמכר?"
-
-#: .\Management\models.py:348
-msgid "pricelist_type"
-msgstr "סוג מחירון"
-
-#: .\Management\models.py:358 .\Management\models.py:491
-msgid "rank"
-msgstr "דרג"
-
-#: .\Management\models.py:368
-msgid "cost"
-msgstr "עלות"
-
-#: .\Management\models.py:374 .\Management\models.py:2140
-msgid "include_tax"
-msgstr "כולל מעמ"
-
-#: .\Management\models.py:375 .\Management\models.py:1758
-msgid "include_lawyer"
-msgstr "כולל ע\"וד"
-
-#: .\Management\models.py:376
-msgid "include_parking"
-msgstr "כולל חנייה"
-
-#: .\Management\models.py:377
-msgid "include_storage"
-msgstr "כולל מחסן"
-
-#: .\Management\models.py:378 .\Management\models.py:2125
-msgid "include_registration"
-msgstr "כולל הוצאות רישום"
-
-#: .\Management\models.py:379
-msgid "include_guarantee"
-msgstr "כולל ערבות"
-
-#: .\Management\models.py:380
-msgid "settle_date"
-msgstr "מועד אכלוס"
-
-#: .\Management\models.py:381 .\Management\models.py:2142
-msgid "allowed_discount"
-msgstr "% הנחת מו\"מ מאושר"
-
-#: .\Management\models.py:382
-msgid "is_permit"
-msgstr "יש היתר"
-
-#: .\Management\models.py:383
-msgid "permit_date"
-msgstr "ת. קבלת היתר"
-
-#: .\Management\models.py:384 .\Management\pdf.py:759
-msgid "lawyer_fee"
-msgstr "שכר טרחת עו\"ד"
-
-#: .\Management\models.py:385 .\Management\pdf.py:755
-msgid "register_amount"
-msgstr "הוצאות רישום"
-
-#: .\Management\models.py:386 .\Management\pdf.py:757
-msgid "guarantee_amount"
-msgstr "סכות ערבות"
-
-#: .\Management\models.py:387
-msgid "storage_cost"
-msgstr "עלות מחסן"
-
-#: .\Management\models.py:398
-msgid "floors"
-msgstr "מס' קומות"
-
-#: .\Management\models.py:400
-msgid "stage"
-msgstr "שלב"
-
-#: .\Management\models.py:436 .\Management\models.py:642
-#: .\Management\models.py:1755 .\Management\models.py:1842
-#: .\Management\models.py:1843 .\Management\models.py:2134
-msgid "phone"
-msgstr "טלפון"
-
-#: .\Management\models.py:437
-msgid "cell_phone"
-msgstr "טלפון סלולרי"
-
-#: .\Management\models.py:439 .\Management\models.py:641
-#: .\Management\models.py:1844 .\Management\models.py:2040
-msgid "address"
-msgstr "כתובת"
-
-#: .\Management\models.py:445
-msgid "person"
-msgstr "איש"
-
-#: .\Management\models.py:446
-msgid "persons"
-msgstr "אנשים"
-
-#: .\Management\models.py:449 .\Management\models.py:644
-msgid "fax"
-msgstr "פקס"
-
-#: .\Management\models.py:457
-msgid "salary base"
-msgstr "שכר בסיס"
-
-#: .\Management\models.py:458
-msgid "salary net"
-msgstr "שכר נטו"
-
-#: .\Management\models.py:459
-msgid "safety"
-msgstr "רשת בטחון"
-
-#: .\Management\models.py:460
-msgid "hire_type"
-msgstr "סוג העסקה"
-
-#: .\Management\models.py:461 .\Management\models.py:1378
-msgid "commission_include_tax"
-msgstr "כולל מע\"מ לעמלה"
-
-#: .\Management\models.py:462 .\Management\models.py:1379
-msgid "commission_include_lawyer"
-msgstr "כולל ע\"וד לעמלה"
-
-#: .\Management\models.py:473
-msgid "pid"
-msgstr "ת.ז"
-
-#: .\Management\models.py:474
-msgid "birth_date"
-msgstr "תאריך לידה"
-
-#: .\Management\models.py:475
-msgid "home phone"
-msgstr "טלפון בבית"
-
-#: .\Management\models.py:476
-msgid "mate phone"
-msgstr "טלפון בן/בת זוג"
-
-#: .\Management\models.py:477
-msgid "family state"
-msgstr "מצב משפחתי"
-
-#: .\Management\models.py:478
-msgid "child num"
-msgstr "מספר ילדים"
-
-#: .\Management\models.py:479
-msgid "work start"
-msgstr "ת. תחילת עבודה"
-
-#: .\Management\models.py:480
-msgid "work end"
-msgstr "ת. סיום עבודה"
-
-#: .\Management\models.py:494
-msgid "main_project"
-msgstr "פרוייקט עיקרי"
-
-#: .\Management\models.py:530
-msgid "employees"
-msgstr "עובדים"
-
-#: .\Management\models.py:543
-msgid "min_commission"
-msgstr "מינימום עמלה"
-
-#: .\Management\models.py:545 .\Management\models.py:589
-msgid "filter"
-msgstr "סינון"
-
-#: .\Management\models.py:590
-msgid "if_branch_income"
-msgstr "אם הכנסות סניף"
-
-#: .\Management\models.py:591
-msgid "then_precentage"
-msgstr "אז אחוז"
-
-#: .\Management\models.py:592
-msgid "else_amount"
-msgstr "אחרת סכום"
-
-#: .\Management\models.py:640
-msgid "nhbranch_manager"
-msgstr "מנהל סניף"
-
-#: .\Management\models.py:705 .\Management\models.py:724
-#: .\Management\models.py:739 .\Management\models.py:1772
-#: .\Management\models.py:2058
+#: .\Management\forms.py:83 .\Management\models.py:708
+#: .\Management\models.py:727 .\Management\models.py:742
+#: .\Management\models.py:1772 .\Management\models.py:2061
 msgid "date"
 msgstr "תאריך"
 
-#: .\Management\models.py:725
-msgid "pay_num"
-msgstr "מס' תשלומים"
+#: .\Management\forms.py:84 .\Management\models.py:707
+#: .\Management\models.py:726 .\Management\models.py:743
+#: .\Management\models.py:1119 .\Management\models.py:1469
+#: .\Management\models.py:1493 .\Management\models.py:1531
+#: .\Management\models.py:1820 .\Management\models.py:2268
+msgid "amount"
+msgstr "סכום"
 
-#: .\Management\models.py:778
-msgid "income_tax"
-msgstr "מס הכנסה"
+#: .\Management\forms.py:85 .\Management\models.py:547
+msgid "precentage"
+msgstr "אחוז"
 
-#: .\Management\models.py:779
-msgid "national_insurance"
-msgstr "ביטוח לאומי"
+#: .\Management\forms.py:109 .\Management\forms.py:110
+#: .\Management\forms.py:111
+msgid "parking"
+msgstr "חנייה"
 
-#: .\Management\models.py:780
-msgid "health"
-msgstr "בריאות"
+#: .\Management\forms.py:112 .\Management\forms.py:113
+msgid "storage"
+msgstr "מחסן"
 
-#: .\Management\models.py:781
-msgid "pension_insurance"
-msgstr "ביטוח פנסיה"
+#: .\Management\forms.py:114 .\Management\models.py:353
+#: .\Management\models.py:1108 .\Management\models.py:2050
+msgid "price"
+msgstr "מחיר"
 
-#: .\Management\models.py:782
-msgid "employer_national_insurance"
-msgstr "ביטוח לאומי מעביד"
+#: .\Management\forms.py:175 .\Management\forms.py:183
+#: .\Management\forms.py:633 .\Management\models.py:532
+#: .\Management\models.py:706 .\Management\models.py:725
+#: .\Management\models.py:741 .\Management\models.py:776
+#: .\Management\models.py:932 .\Management\models.py:2123
+#: .\Management\models.py:2275
+msgid "employee"
+msgstr "עובד"
 
-#: .\Management\models.py:783
-msgid "employer_benefit"
-msgstr "גמול מעביד"
+#: .\Management\forms.py:176 .\Management\forms.py:184
+#: .\Management\forms.py:231 .\Management\forms.py:268
+#: .\Management\forms.py:351 .\Management\forms.py:389
+#: .\Management\forms.py:594 .\Management\forms.py:601
+#: .\Management\forms.py:670 .\Management\forms.py:677
+#: .\Management\models.py:232 .\Management\models.py:397
+#: .\Management\models.py:1543
+msgid "project"
+msgstr "פרוייקט"
 
-#: .\Management\models.py:784
-msgid "compensation_allocation"
-msgstr "הפרשות לפיצויים"
-
-#: .\Management\models.py:785
-msgid "vacation"
-msgstr "חופשה"
-
-#: .\Management\models.py:786
-msgid "convalescence_pay"
-msgstr "דמי הבראה"
-
-#: .\Management\models.py:802
-msgid "salary_base"
-msgstr "שכר בסיס"
-
-#: .\Management\models.py:803
-msgid "commissions"
-msgstr "עמלות"
-
-#: .\Management\models.py:804
-msgid "safety_net"
-msgstr "רשת בטחון"
-
-#: .\Management\models.py:805
-msgid "var_pay"
-msgstr "תוספת משתנה לעמלה"
-
-#: .\Management\models.py:806
-msgid "var_pay_type"
-msgstr "סוג תוספת משתנה"
-
-#: .\Management\models.py:807
-msgid "refund"
-msgstr "החזר הוצאות"
-
-#: .\Management\models.py:808
-msgid "refund_type"
-msgstr "סיבת ההחזר"
-
-#: .\Management\models.py:809
-msgid "deduction"
-msgstr "קיזוז שכר"
-
-#: .\Management\models.py:810
-msgid "deduction_type"
-msgstr "סיבת קיזוז"
-
-#: .\Management\models.py:877
-msgid "nhemployee"
-msgstr "עובד נייס האוס"
-
-#: .\Management\models.py:1000
-msgid "start_date"
+#: .\Management\forms.py:177
+msgid "start date"
 msgstr "תאריך תחילה"
 
-#: .\Management\models.py:1001
+#: .\Management\forms.py:185 .\Management\models.py:1004
 msgid "end_date"
 msgstr "תאריך סיום"
 
-#: .\Management\models.py:1002 .\Management\models.py:1248
-#: .\Management\models.py:1386
-msgid "max_commission"
-msgstr "מקס עמלה"
+#: .\Management\forms.py:232 .\Management\forms.py:269
+#: .\Management\models.py:253 .\Management\models.py:266
+#: .\Management\models.py:279
+msgid "building"
+msgstr "בניין"
 
-#: .\Management\models.py:1065 .\Management\models.py:1106
-#: .\Management\models.py:1124
-msgid "commission amount"
-msgstr "עמלה בשקלים"
-
-#: .\Management\models.py:1085 .\Management\models.py:1191
-#: .\Management\models.py:1194
-msgid "commission precentage"
-msgstr "עמלה באחוזים"
-
-#: .\Management\models.py:1115 .\Management\models.py:2044
-msgid "house_type"
-msgstr "סוג דירה"
-
-#: .\Management\models.py:1123
-msgid "house count"
-msgstr "מס' דירות"
-
-#: .\Management\models.py:1130 .\Management\models.py:1159
-#: .\Management\models.py:1189
-msgid "retroactive"
-msgstr "רטרואקטיבי"
-
-#: .\Management\models.py:1160
-msgid "retroactive_start"
-msgstr "רטרואקטיבי מדירה"
-
-#: .\Management\models.py:1190
-msgid "cvf first count"
-msgstr "מס' דירות ראשונות"
-
-#: .\Management\models.py:1192
-msgid "cvf step"
-msgstr "מדרגה"
-
-#: .\Management\models.py:1193
-msgid "cvf last count"
-msgstr "מס' דירות אחרונות"
-
-#: .\Management\models.py:1245
-msgid "commission_base"
-msgstr "עמלת בסיס"
-
-#: .\Management\models.py:1246
-msgid "b_discount"
-msgstr "בונוס חיסכון בהנחה"
-
-#: .\Management\models.py:1247
-msgid "b_sale_rate"
-msgstr "בונוס קצב מכירות"
-
-#: .\Management\models.py:1249
-msgid "madad_base"
-msgstr "מדד בסיס"
-
-#: .\Management\models.py:1250
-msgid "third_start"
-msgstr "ת. תחילת שלישון"
-
-#: .\Management\models.py:1311 .\Management\models.py:1330
-msgid "precentage_bonus"
-msgstr "בונוס לאחוז"
-
-#: .\Management\models.py:1312 .\Management\models.py:1331
-msgid "max_bonus"
-msgstr "מקס' עבור בונוס"
-
-#: .\Management\models.py:1375
-msgid "add_amount"
-msgstr "סכום תוספת"
-
-#: .\Management\models.py:1376
+#: .\Management\forms.py:255 .\Management\models.py:1380
 msgid "add_type"
 msgstr "סוג תוספת"
 
-#: .\Management\models.py:1377
+#: .\Management\forms.py:270
+msgid "joined sale"
+msgstr "מכירה משותפת"
+
+#: .\Management\forms.py:271 .\Management\models.py:1752
+msgid "signup_date"
+msgstr "ת. הרשמה"
+
+#: .\Management\forms.py:339 .\Management\forms.py:524
+#: .\Management\forms.py:540 .\Management\models.py:54
+#: .\Management\models.py:139 .\Management\models.py:257
+#: .\Management\models.py:270 .\Management\models.py:286
+#: .\Management\models.py:391 .\Management\models.py:404
+#: .\Management\models.py:454 .\Management\models.py:485
+#: .\Management\models.py:729 .\Management\models.py:744
+#: .\Management\models.py:816 .\Management\models.py:1470
+#: .\Management\models.py:1494 .\Management\models.py:1548
+#: .\Management\models.py:1759 .\Management\models.py:1868
+#: .\Management\models.py:2051 .\Management\models.py:2062
+#: .\Management\models.py:2141 .\Management\models.py:2270
+msgid "remarks"
+msgstr "הערות"
+
+#: .\Management\forms.py:353 .\Management\forms.py:391
+#: .\Management\forms.py:596 .\Management\forms.py:645
+#: .\Management\forms.py:672 .\Management\models.py:778
+#: .\Management\models.py:805 .\Management\models.py:1545
+#: .\Management\models.py:1782 .\Management\models.py:1783
+#: .\Management\models.py:1798 .\Management\models.py:1799
+#: .\Management\models.py:1971
+msgid "year"
+msgstr "שנה"
+
+#: .\Management\forms.py:354 .\Management\forms.py:392
+#: .\Management\forms.py:597 .\Management\forms.py:646
+#: .\Management\forms.py:673 .\Management\models.py:777
+#: .\Management\models.py:804 .\Management\models.py:1544
+#: .\Management\models.py:1969
+msgid "month"
+msgstr "חודש"
+
+#: .\Management\forms.py:417 .\Management\forms.py:418
+msgid "lawyer_pay"
+msgstr "תשלום לעו\"ד"
+
+#: .\Management\forms.py:480
+msgid "status"
+msgstr "מצב"
+
+#: .\Management\forms.py:503
+msgid "tag_new"
+msgstr "תגית נושא חדשה"
+
+#: .\Management\forms.py:525
+msgid "new_expense_type"
+msgstr "סוג הוצאה חדש"
+
+#: .\Management\forms.py:603 .\Management\forms.py:613
+#: .\Management\forms.py:624 .\Management\forms.py:635
+msgid "from_year"
+msgstr "משנה"
+
+#: .\Management\forms.py:604 .\Management\forms.py:614
+#: .\Management\forms.py:625 .\Management\forms.py:636
+msgid "from_month"
+msgstr "מחודש"
+
+#: .\Management\forms.py:607 .\Management\forms.py:617
+#: .\Management\forms.py:628 .\Management\forms.py:639
+msgid "to_year"
+msgstr "עד שנה"
+
+#: .\Management\forms.py:608 .\Management\forms.py:618
+#: .\Management\forms.py:629 .\Management\forms.py:640
+msgid "to_month"
+msgstr "עד חודש"
+
+#: .\Management\forms.py:622 .\Management\models.py:660
+#: .\Management\models.py:1968
+msgid "nhbranch"
+msgstr "סניף"
+
+#: .\Management\forms.py:664 .\Management\models.py:437
+msgid "first_name"
+msgstr "שם פרטי"
+
+#: .\Management\forms.py:665 .\Management\models.py:438
+msgid "last_name"
+msgstr "שם משפחה"
+
+#: .\Management\forms.py:666 .\Management\models.py:443
+msgid "role"
+msgstr "תפקיד"
+
+#: .\Management\forms.py:667 .\Management\models.py:453
+msgid "company"
+msgstr "חברה"
+
+#: .\Management\forms.py:679 .\Management\models.py:398
+msgid "building_num"
+msgstr "מס' בניין"
+
+#: .\Management\forms.py:681 .\Management\models.py:281
+msgid "house_num"
+msgstr "מספר דירה"
+
+#: .\Management\models.py:47 .\Management\models.py:78
+msgid "user"
+msgstr "משתמש"
+
+#: .\Management\models.py:48
+msgid "tags"
+msgstr "תגיות נושא"
+
+#: .\Management\models.py:49
+msgid "filename"
+msgstr "שם הקובץ"
+
+#: .\Management\models.py:51
+msgid "attachment_type"
+msgstr "סוג מסמך"
+
+#: .\Management\models.py:52
+msgid "sr_name"
+msgstr "שם השולח/הנשלח"
+
+#: .\Management\models.py:53
+msgid "is_private"
+msgstr "האם חסוי"
+
+#: .\Management\models.py:64
+msgid "car_num"
+msgstr "מס' רכב"
+
+#: .\Management\models.py:65
+msgid "car_owner"
+msgstr "בעל רכב"
+
+#: .\Management\models.py:66
+msgid "insurance_expire_date"
+msgstr "ת. תפוגת ביטוח"
+
+#: .\Management\models.py:67
+msgid "insurance_man"
+msgstr "סוכן ביטוח"
+
+#: .\Management\models.py:68
+msgid "insurance_phone"
+msgstr "טלפון ביטוח"
+
+#: .\Management\models.py:69
+msgid "tow_company"
+msgstr "חברת גרירה"
+
+#: .\Management\models.py:70
+msgid "tow_phone"
+msgstr "טלפון גרר"
+
+#: .\Management\models.py:71
+msgid "compulsory_insurance_cost"
+msgstr "עלות ביטוח חובה"
+
+#: .\Management\models.py:72
+msgid "comprehensive_insurance_cost"
+msgstr "עלות ביטוח מקיף"
+
+#: .\Management\models.py:79 .\Management\models.py:116
+msgid "content"
+msgstr "תוכן"
+
+#: .\Management\models.py:127 .\Management\models.py:238
+#: .\Management\models.py:246 .\Management\models.py:399
+#: .\Management\models.py:640 .\Management\models.py:1841
+#: .\Management\models.py:1842
+msgid "name"
+msgstr "שם"
+
+#: .\Management\models.py:128 .\Management\models.py:138
+#: .\Management\models.py:648
+msgid "url"
+msgstr "כתובת אינטרנט"
+
+#: .\Management\models.py:134
+msgid "architect"
+msgstr "שם האדריכל"
+
+#: .\Management\models.py:135 .\Management\models.py:402
+msgid "houses_num"
+msgstr "סה\"כ מס' יחידות"
+
+#: .\Management\models.py:136
+msgid "buildings_num"
+msgstr "מס' מבנים"
+
+#: .\Management\models.py:137
+msgid "accompanied_bank"
+msgstr "בנק מלווה"
+
+#: .\Management\models.py:140 .\Management\models.py:400
+msgid "building_types"
+msgstr "סוגי מבנים"
+
+#: .\Management\models.py:152
+msgid "initiator"
+msgstr "יזם"
+
+#: .\Management\models.py:153
+msgid "project name"
+msgstr "שם הפרוייקט"
+
+#: .\Management\models.py:154
+msgid "city"
+msgstr "עיר"
+
+#: .\Management\models.py:155 .\Management\models.py:2044
+msgid "hood"
+msgstr "שכונה"
+
+#: .\Management\models.py:156
+msgid "office address"
+msgstr "כתובת המשרד"
+
+#: .\Management\models.py:157
+msgid "project phone"
+msgstr "טלפון בפרוייקט"
+
+#: .\Management\models.py:158
+msgid "project cell phone"
+msgstr "טלפון סלולרי בפרוייקט"
+
+#: .\Management\models.py:159
+msgid "project fax"
+msgstr "פקס בפרוייקט"
+
+#: .\Management\models.py:160 .\Management\models.py:441
+#: .\Management\models.py:646
+msgid "mail"
+msgstr "דואר אלקטרוני"
+
+#: .\Management\models.py:161
+msgid "is_marketing"
+msgstr "בשיווק?"
+
+#: .\Management\models.py:162
+msgid "startdate"
+msgstr "תאריך תחילה"
+
+#: .\Management\models.py:163
+msgid "enddate"
+msgstr "תאריך סיום"
+
+#: .\Management\models.py:164
+msgid "special_data"
+msgstr "הערות מיוחדות"
+
+#: .\Management\models.py:233 .\Management\models.py:495
+msgid "projects"
+msgstr "פרוייקטים"
+
+#: .\Management\models.py:254 .\Management\models.py:267
+#: .\Management\models.py:1751 .\Management\models.py:2122
+msgid "house"
+msgstr "דירה"
+
+#: .\Management\models.py:255
+msgid "parking_num"
+msgstr "מס' חנייה"
+
+#: .\Management\models.py:256 .\Management\models.py:370
+msgid "parking_type"
+msgstr "סוג חנייה"
+
+#: .\Management\models.py:268
+msgid "storage_num"
+msgstr "מס' מחסן"
+
+#: .\Management\models.py:269
+msgid "size"
+msgstr "גודל"
+
+#: .\Management\models.py:280
+msgid "asset_type"
+msgstr "סוג נכס"
+
+#: .\Management\models.py:282 .\Management\models.py:2046
+msgid "floor"
+msgstr "קומה"
+
+#: .\Management\models.py:283 .\Management\models.py:2045
+msgid "rooms"
+msgstr "חדרים"
+
+#: .\Management\models.py:284
+msgid "net_size"
+msgstr "שטח נטו"
+
+#: .\Management\models.py:285
+msgid "garden_size"
+msgstr "גודל גינה/מרפסת"
+
+#: .\Management\models.py:288
+msgid "bruto_size"
+msgstr "שטח ברוטו"
+
+#: .\Management\models.py:289
+msgid "load_precentage"
+msgstr "אחוז העמסה"
+
+#: .\Management\models.py:290
+msgid "parking_size"
+msgstr "שטח חנייה"
+
+#: .\Management\models.py:292
+msgid "is_sold"
+msgstr "האם נמכר?"
+
+#: .\Management\models.py:351
+msgid "pricelist_type"
+msgstr "סוג מחירון"
+
+#: .\Management\models.py:361 .\Management\models.py:494
+msgid "rank"
+msgstr "דרג"
+
+#: .\Management\models.py:371
+msgid "cost"
+msgstr "עלות"
+
+#: .\Management\models.py:377 .\Management\models.py:2143
+msgid "include_tax"
+msgstr "כולל מעמ"
+
+#: .\Management\models.py:378 .\Management\models.py:1758
+msgid "include_lawyer"
+msgstr "כולל ע\"וד"
+
+#: .\Management\models.py:379
+msgid "include_parking"
+msgstr "כולל חנייה"
+
+#: .\Management\models.py:380
+msgid "include_storage"
+msgstr "כולל מחסן"
+
+#: .\Management\models.py:381 .\Management\models.py:2128
+msgid "include_registration"
+msgstr "כולל הוצאות רישום"
+
+#: .\Management\models.py:382
+msgid "include_guarantee"
+msgstr "כולל ערבות"
+
+#: .\Management\models.py:383
+msgid "settle_date"
+msgstr "מועד אכלוס"
+
+#: .\Management\models.py:384 .\Management\models.py:2145
+msgid "allowed_discount"
+msgstr "% הנחת מו\"מ מאושר"
+
+#: .\Management\models.py:385
+msgid "is_permit"
+msgstr "יש היתר"
+
+#: .\Management\models.py:386
+msgid "permit_date"
+msgstr "ת. קבלת היתר"
+
+#: .\Management\models.py:387 .\Management\pdf.py:759
+msgid "lawyer_fee"
+msgstr "שכר טרחת עו\"ד"
+
+#: .\Management\models.py:388 .\Management\pdf.py:755
+msgid "register_amount"
+msgstr "הוצאות רישום"
+
+#: .\Management\models.py:389 .\Management\pdf.py:757
+msgid "guarantee_amount"
+msgstr "סכות ערבות"
+
+#: .\Management\models.py:390
+msgid "storage_cost"
+msgstr "עלות מחסן"
+
+#: .\Management\models.py:401
+msgid "floors"
+msgstr "מס' קומות"
+
+#: .\Management\models.py:403
+msgid "stage"
+msgstr "שלב"
+
+#: .\Management\models.py:439 .\Management\models.py:645
+#: .\Management\models.py:1755 .\Management\models.py:1843
+#: .\Management\models.py:1844 .\Management\models.py:2137
+msgid "phone"
+msgstr "טלפון"
+
+#: .\Management\models.py:440
+msgid "cell_phone"
+msgstr "טלפון סלולרי"
+
+#: .\Management\models.py:442 .\Management\models.py:644
+#: .\Management\models.py:1845 .\Management\models.py:2043
+msgid "address"
+msgstr "כתובת"
+
+#: .\Management\models.py:448
+msgid "person"
+msgstr "איש"
+
+#: .\Management\models.py:449
+msgid "persons"
+msgstr "אנשים"
+
+#: .\Management\models.py:452 .\Management\models.py:647
+msgid "fax"
+msgstr "פקס"
+
+#: .\Management\models.py:460
+msgid "salary base"
+msgstr "שכר בסיס"
+
+#: .\Management\models.py:461
+msgid "salary net"
+msgstr "שכר נטו"
+
+#: .\Management\models.py:462
+msgid "safety"
+msgstr "רשת בטחון"
+
+#: .\Management\models.py:463
+msgid "hire_type"
+msgstr "סוג העסקה"
+
+#: .\Management\models.py:464 .\Management\models.py:1382
+msgid "commission_include_tax"
+msgstr "כולל מע\"מ לעמלה"
+
+#: .\Management\models.py:465 .\Management\models.py:1383
+msgid "commission_include_lawyer"
+msgstr "כולל ע\"וד לעמלה"
+
+#: .\Management\models.py:476
+msgid "pid"
+msgstr "ת.ז"
+
+#: .\Management\models.py:477
+msgid "birth_date"
+msgstr "תאריך לידה"
+
+#: .\Management\models.py:478
+msgid "home phone"
+msgstr "טלפון בבית"
+
+#: .\Management\models.py:479
+msgid "mate phone"
+msgstr "טלפון בן/בת זוג"
+
+#: .\Management\models.py:480
+msgid "family state"
+msgstr "מצב משפחתי"
+
+#: .\Management\models.py:481
+msgid "child num"
+msgstr "מספר ילדים"
+
+#: .\Management\models.py:482
+msgid "work start"
+msgstr "ת. תחילת עבודה"
+
+#: .\Management\models.py:483
+msgid "work end"
+msgstr "ת. סיום עבודה"
+
+#: .\Management\models.py:497
+msgid "main_project"
+msgstr "פרוייקט עיקרי"
+
+#: .\Management\models.py:533
+msgid "employees"
+msgstr "עובדים"
+
+#: .\Management\models.py:546
+msgid "min_commission"
+msgstr "מינימום עמלה"
+
+#: .\Management\models.py:548 .\Management\models.py:592
+msgid "filter"
+msgstr "סינון"
+
+#: .\Management\models.py:593
+msgid "if_branch_income"
+msgstr "אם הכנסות סניף"
+
+#: .\Management\models.py:594
+msgid "then_precentage"
+msgstr "אז אחוז"
+
+#: .\Management\models.py:595
+msgid "else_amount"
+msgstr "אחרת סכום"
+
+#: .\Management\models.py:643
+msgid "nhbranch_manager"
+msgstr "מנהל סניף"
+
+#: .\Management\models.py:728
+msgid "pay_num"
+msgstr "מס' תשלומים"
+
+#: .\Management\models.py:780
+msgid "income_tax"
+msgstr "מס הכנסה"
+
+#: .\Management\models.py:781
+msgid "national_insurance"
+msgstr "ביטוח לאומי"
+
+#: .\Management\models.py:782
+msgid "health"
+msgstr "בריאות"
+
+#: .\Management\models.py:783
+msgid "pension_insurance"
+msgstr "ביטוח פנסיה"
+
+#: .\Management\models.py:784
+msgid "vacation"
+msgstr "חופשה"
+
+#: .\Management\models.py:785
+msgid "convalescence_pay"
+msgstr "דמי הבראה"
+
+#: .\Management\models.py:786
+msgid "employer_national_insurance"
+msgstr "ביטוח לאומי מעביד"
+
+#: .\Management\models.py:787
+msgid "employer_benefit"
+msgstr "גמול מעביד"
+
+#: .\Management\models.py:788
+msgid "compensation_allocation"
+msgstr "הפרשות לפיצויים"
+
+#: .\Management\models.py:807
+msgid "salary_base"
+msgstr "שכר בסיס"
+
+#: .\Management\models.py:808
+msgid "commissions"
+msgstr "עמלות"
+
+#: .\Management\models.py:809
+msgid "safety_net"
+msgstr "רשת בטחון"
+
+#: .\Management\models.py:810
+msgid "var_pay"
+msgstr "תוספת משתנה לעמלה"
+
+#: .\Management\models.py:811
+msgid "var_pay_type"
+msgstr "סוג תוספת משתנה"
+
+#: .\Management\models.py:812
+msgid "refund"
+msgstr "החזר הוצאות"
+
+#: .\Management\models.py:813
+msgid "refund_type"
+msgstr "סיבת ההחזר"
+
+#: .\Management\models.py:814
+msgid "deduction"
+msgstr "קיזוז שכר"
+
+#: .\Management\models.py:815
+msgid "deduction_type"
+msgstr "סיבת קיזוז"
+
+#: .\Management\models.py:886
+msgid "nhemployee"
+msgstr "עובד נייס האוס"
+
+#: .\Management\models.py:1003
+msgid "start_date"
+msgstr "תאריך תחילה"
+
+#: .\Management\models.py:1005 .\Management\models.py:1251
+#: .\Management\models.py:1390
+msgid "max_commission"
+msgstr "מקס עמלה"
+
+#: .\Management\models.py:1068 .\Management\models.py:1109
+#: .\Management\models.py:1127
+msgid "commission amount"
+msgstr "עמלה בשקלים"
+
+#: .\Management\models.py:1088 .\Management\models.py:1194
+#: .\Management\models.py:1197
+msgid "commission precentage"
+msgstr "עמלה באחוזים"
+
+#: .\Management\models.py:1118 .\Management\models.py:2047
+msgid "house_type"
+msgstr "סוג דירה"
+
+#: .\Management\models.py:1126
+msgid "house count"
+msgstr "מס' דירות"
+
+#: .\Management\models.py:1133 .\Management\models.py:1162
+#: .\Management\models.py:1192
+msgid "retroactive"
+msgstr "רטרואקטיבי"
+
+#: .\Management\models.py:1163
+msgid "retroactive_start"
+msgstr "רטרואקטיבי מדירה"
+
+#: .\Management\models.py:1193
+msgid "cvf first count"
+msgstr "מס' דירות ראשונות"
+
+#: .\Management\models.py:1195
+msgid "cvf step"
+msgstr "מדרגה"
+
+#: .\Management\models.py:1196
+msgid "cvf last count"
+msgstr "מס' דירות אחרונות"
+
+#: .\Management\models.py:1248
+msgid "commission_base"
+msgstr "עמלת בסיס"
+
+#: .\Management\models.py:1249
+msgid "b_discount"
+msgstr "בונוס חיסכון בהנחה"
+
+#: .\Management\models.py:1250
+msgid "b_sale_rate"
+msgstr "בונוס קצב מכירות"
+
+#: .\Management\models.py:1252
+msgid "madad_base"
+msgstr "מדד בסיס"
+
+#: .\Management\models.py:1253
+msgid "third_start"
+msgstr "ת. תחילת שלישון"
+
+#: .\Management\models.py:1315 .\Management\models.py:1334
+msgid "precentage_bonus"
+msgstr "בונוס לאחוז"
+
+#: .\Management\models.py:1316 .\Management\models.py:1335
+msgid "max_bonus"
+msgstr "מקס' עבור בונוס"
+
+#: .\Management\models.py:1379
+msgid "add_amount"
+msgstr "סכום תוספת"
+
+#: .\Management\models.py:1381
 msgid "registration_amount"
 msgstr "הוצאות רישום"
 
-#: .\Management\models.py:1385
+#: .\Management\models.py:1389
 msgid "commission_by_signups"
 msgstr "עמלה לפי הרשמות?"
 
-#: .\Management\models.py:1387
+#: .\Management\models.py:1391
 msgid "agreement"
 msgstr "קובץ ההסכם"
 
-#: .\Management\models.py:1388
+#: .\Management\models.py:1392
 msgid "commission_remarks"
 msgstr "נקודות חשובות להסכם"
 
-#: .\Management\models.py:1462 .\Management\models.py:2279
+#: .\Management\models.py:1466 .\Management\models.py:2282
 msgid "invoice_num"
 msgstr "מס' חשבונית"
 
-#: .\Management\models.py:1464
+#: .\Management\models.py:1468
 msgid "invoice_date"
 msgstr "ת. חשבונית"
 
-#: .\Management\models.py:1482 .\Management\models.py:2263
+#: .\Management\models.py:1486 .\Management\models.py:2266
 msgid "check_num"
 msgstr "מס' שיק"
 
-#: .\Management\models.py:1483
+#: .\Management\models.py:1487
 msgid "support_num"
 msgstr "מס' אסמכתא"
 
-#: .\Management\models.py:1484 .\Management\models.py:2255
+#: .\Management\models.py:1488 .\Management\models.py:2258
 msgid "bank"
 msgstr "בנק"
 
-#: .\Management\models.py:1485 .\Management\models.py:2257
+#: .\Management\models.py:1489 .\Management\models.py:2260
 msgid "branch_num"
 msgstr "מס' סניף"
 
-#: .\Management\models.py:1486
+#: .\Management\models.py:1490
 msgid "payment_type"
 msgstr "סוג תשלום"
 
-#: .\Management\models.py:1487 .\Management\models.py:2266
+#: .\Management\models.py:1491 .\Management\models.py:2269
 msgid "payment_date"
 msgstr "ת. תשלום"
 
-#: .\Management\models.py:1525
+#: .\Management\models.py:1529
 msgid "diff_type"
 msgstr "סוג הפרש"
 
-#: .\Management\models.py:1526
+#: .\Management\models.py:1530
 msgid "diff_reason"
 msgstr "סיבת הפרש"
 
-#: .\Management\models.py:1541
+#: .\Management\models.py:1547
 msgid "sale_count"
 msgstr "מס' מכירות"
 
@@ -834,7 +836,7 @@ msgstr "האם היה קנס"
 msgid "cancel_reason"
 msgstr "סיבת הביטול"
 
-#: .\Management\models.py:1753 .\Management\models.py:2133
+#: .\Management\models.py:1753 .\Management\models.py:2136
 msgid "clients"
 msgstr "שמות הרוכשים"
 
@@ -867,135 +869,135 @@ msgstr "מע\"מ"
 msgid "publish_date"
 msgstr "תאריך פרסום"
 
-#: .\Management\models.py:1839
+#: .\Management\models.py:1840
 msgid "action_type"
 msgstr "סוג פעולה"
 
-#: .\Management\models.py:1845 .\Management\models.py:1847
+#: .\Management\models.py:1846 .\Management\models.py:1848
 msgid "advisor"
 msgstr "יועץ נדל\"ן"
 
-#: .\Management\models.py:1846 .\Management\models.py:1849
-#: .\Management\models.py:1853
+#: .\Management\models.py:1847 .\Management\models.py:1850
+#: .\Management\models.py:1854
 msgid "commission_precent"
 msgstr "% עמלה"
 
-#: .\Management\models.py:1851
+#: .\Management\models.py:1852
 msgid "director"
 msgstr "גורם מפנה"
 
-#: .\Management\models.py:1855
+#: .\Management\models.py:1856
 msgid "signing_advisor"
 msgstr "יועץ מחתים"
 
-#: .\Management\models.py:1856 .\Management\models.py:1858
+#: .\Management\models.py:1857 .\Management\models.py:1859
 msgid "lawyer"
 msgstr "עו\"ד"
 
-#: .\Management\models.py:1860
+#: .\Management\models.py:1861
 msgid "signed_commission"
 msgstr "% עמלה חתום"
 
-#: .\Management\models.py:1861
+#: .\Management\models.py:1862
 msgid "actual_commission"
 msgstr "% עמלה בפועל"
 
-#: .\Management\models.py:1862
+#: .\Management\models.py:1863
 msgid "return_worth"
 msgstr "שווי תמורה"
 
-#: .\Management\models.py:1863
+#: .\Management\models.py:1864
 msgid "voucher_num"
 msgstr "מס' הזמנת שרותי תיווך"
 
-#: .\Management\models.py:1864
+#: .\Management\models.py:1865
 msgid "voucher_date"
 msgstr "ת. הוצאת הזמנה"
 
-#: .\Management\models.py:1865
+#: .\Management\models.py:1866
 msgid "temp_receipt_num"
 msgstr "מס' קבלה זמנית"
 
-#: .\Management\models.py:1866
+#: .\Management\models.py:1867
 msgid "employee_remarks"
 msgstr "הערות עובדים"
 
-#: .\Management\models.py:2039
+#: .\Management\models.py:2042
 msgid "sale_num"
 msgstr "מס' עסקה"
 
-#: .\Management\models.py:2046 .\Management\models.py:2122
+#: .\Management\models.py:2049 .\Management\models.py:2125
 msgid "sale_date"
 msgstr "ת. מכירה"
 
-#: .\Management\models.py:2088 .\Management\models.py:2098
+#: .\Management\models.py:2091 .\Management\models.py:2101
 msgid "employee_pay"
 msgstr "ת. תשלום לעובד"
 
-#: .\Management\models.py:2097
+#: .\Management\models.py:2100
 msgid "reject_month"
 msgstr "נדחה לחודש"
 
-#: .\Management\models.py:2108
+#: .\Management\models.py:2111
 msgid "fee"
 msgstr "קיזוז"
 
-#: .\Management\models.py:2123
+#: .\Management\models.py:2126
 msgid "sale_price"
 msgstr "מחיר חוזה"
 
-#: .\Management\models.py:2124
+#: .\Management\models.py:2127
 msgid "company_price"
 msgstr "מחיר מחירון חברה"
 
-#: .\Management\models.py:2131
+#: .\Management\models.py:2134
 msgid "price_include_lawyer"
 msgstr "מחיר כולל ע\"וד"
 
-#: .\Management\models.py:2132
+#: .\Management\models.py:2135
 msgid "sale_price_no_lawyer"
 msgstr "מחיר חוזה ללא ע\"וד"
 
-#: .\Management\models.py:2136
+#: .\Management\models.py:2139
 msgid "employee_paid"
 msgstr "שולם עובד?"
 
-#: .\Management\models.py:2137
+#: .\Management\models.py:2140
 msgid "contractor_paid"
 msgstr "שולם לקבלן?"
 
-#: .\Management\models.py:2139
+#: .\Management\models.py:2142
 msgid "so_contact_num"
 msgstr "מס' חוזה ש\"ע"
 
-#: .\Management\models.py:2141
+#: .\Management\models.py:2144
 msgid "given_discount"
 msgstr "% הנחה בלוח תשלומים"
 
-#: .\Management\models.py:2143
+#: .\Management\models.py:2146
 msgid "commission include"
 msgstr "לחישוב עמלה"
 
-#: .\Management\models.py:2254
+#: .\Management\models.py:2257
 msgid "account_num"
 msgstr "מס' חשבון"
 
-#: .\Management\models.py:2256
+#: .\Management\models.py:2259
 msgid "branch"
 msgstr "סניף"
 
-#: .\Management\models.py:2258
+#: .\Management\models.py:2261
 msgid "payee"
 msgstr "שם המוטב"
 
-#: .\Management\models.py:2264
+#: .\Management\models.py:2267
 msgid "issue_date"
 msgstr "ת. הוצאה"
 
-#: .\Management\models.py:2277
+#: .\Management\models.py:2280
 msgid "supplier"
 msgstr "שם הספק"
 
-#: .\Management\models.py:2280 .\Management\models.py:2285
+#: .\Management\models.py:2283 .\Management\models.py:2288
 msgid "expense_type"
 msgstr "סוג הוצאה"
