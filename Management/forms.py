@@ -433,6 +433,7 @@ class NHSaleSideForm(forms.ModelForm):
         return nhs
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self, *args, **kw)
+        return
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
         self.fields['employee_remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
         self.fields['voucher_date'].widget.attrs = {'class':'vDateField'}
