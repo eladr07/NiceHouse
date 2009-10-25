@@ -442,7 +442,7 @@ class Person(models.Model):
     address = models.CharField(ugettext('address'), max_length=40, null=True, blank=True)
     role = models.CharField(ugettext('role'), max_length= 20, null=True, blank=True)
     def __unicode__(self):
-        return u'%s %s' % (self.first_name, self.last_name)
+        return '%s %s' % (self.first_name, self.last_name)
     class Meta:
         abstract = True
         verbose_name = ugettext('person')
