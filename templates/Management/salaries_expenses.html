@@ -94,6 +94,9 @@
 		{% if s.expenses.approved_date and s.approved_date %}
 			<tr class="rowLightBlue" objid={{s.id}} employeeid={{s.employee.id}}>
 		{% endif %}
+		{% if not s.expenses.approved_date and not s.approved_date %}
+			<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.employee.id}}>
+		{% endif %}
 		{% if s.approved_date %}
 			<tr class="rowMediumBlue" objid={{s.id}} employeeid={{s.employee.id}}>
 		{% endif %}
