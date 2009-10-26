@@ -1390,7 +1390,7 @@ class ProjectCommission(models.Model):
     max = models.FloatField(ugettext('max_commission'), null=True, blank=True)
     agreement = models.FileField(ugettext('agreement'), upload_to='files', null=True, blank=True)
     remarks = models.TextField(ugettext('commission_remarks'), null=True, blank=True)
-    def calc(self, sales, sub=0, date = date.today()):
+    def calc(self, sales, sub=0, restore_date = date.today()):
         if sales.count() == 0: return
         demand = sales[0].actual_demand
         if self.commission_by_signups and sub == 0:
@@ -1426,7 +1426,7 @@ class ProjectCommission(models.Model):
         if getattr(self, 'c_zilber') != None:
             month = date(demand.year, demand.month, 1)
             c = getattr(self, 'c_zilber')
-            c = restore_object(c, date) 
+            c = restore_object(c, restore_date) 
             c.calc(month)
             return
         dic={}
@@ -1435,7 +1435,7 @@ class ProjectCommission(models.Model):
             if getattr(self,c) == None:
                 continue
             commission = getattr(self,c)
-            commission = restore_object(commission, date)
+            commission = restore_object(commission, restore_date)
             precentages = commission.calc(sales)
             for s in precentages:
                 if c in ['c_var_precentage', 'c_var_precentage_fixed'] and self.max and precentages[s] > self.max:
