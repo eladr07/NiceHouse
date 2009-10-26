@@ -6,10 +6,10 @@
 	var selectedID = 0;
 	var prev_class;
 	$(document).ready(function() {
-		$("#salaryTable tr").click(function() { 
+		$("#objectTable tr").click(function() { 
 			var tr = $(this);
 			if (selectedID > 0)
-				$("#salaryTable tr[objid='"+selectedID+"']").attr("class", prev_class);
+				$("#objectTable tr[objid='"+selectedID+"']").attr("class", prev_class);
 			selectedID = tr.attr("objid");
 			if (!selectedID)
 				return;
@@ -66,7 +66,7 @@
 	</table>
 </div>
 <div class="clearBoth"></div>
-<table id="salaryTable" class="dataTable" border="1">
+<table id="objectTable" class="dataTable" border="1">
 <caption>מציג סה"כ {{salaries|length}} עובדים</caption>
 	<tr>
 		<th></th>
@@ -92,13 +92,13 @@
 		<tr style="text-align:center; color:#4669D6; font-size:14px"><td colspan="15"><b>{{rank.grouper|default:"-- לא הוגדר דרג --"}}</b></td></tr>
 		{% for s in rank.list %}
 		{% if s.expenses.approved_date and s.approved_date %}
-			<tr class="row1" style="color:739DE6;" objid={{s.id}} employeeid={{s.employee.id}}>
+			<tr class="rowLightBlue" objid={{s.id}} employeeid={{s.employee.id}}>
 		{% endif %}
 		{% if s.approved_date %}
-			<tr class="row1" style="color:BED1F3;" objid={{s.id}} employeeid={{s.employee.id}}>
+			<tr class="rowMediumBlue" objid={{s.id}} employeeid={{s.employee.id}}>
 		{% endif %}
 		{% if s.expenses.approved_date %}
-			<tr class="row1" style="color:A5BEEC;" objid={{s.id}} employeeid={{s.employee.id}}>
+			<tr class="rowBlue" objid={{s.id}} employeeid={{s.employee.id}}>
 		{% endif %}
 			<td><a class="fancybox" href="/salary/{{s.id}}/expenses"><img src="/site_media/images/edit_48.png" width="20" height="20" alt="עדכון" border="0" /></a></td>
 			<td><a href="{{s.employee.get_absolute_url}}">{{ s.employee }}</a></td>

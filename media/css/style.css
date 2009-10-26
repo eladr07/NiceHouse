@@ -335,6 +335,27 @@ BODY {
 	font-family: Arial;
 	padding: 4px 4px 4px 4px;
 }
+.dataTable .rowLightBlue td {
+	background-color: #BED1F3;
+	color: #000;
+	font-size: 12px;
+	font-family: Arial;
+	padding: 4px 4px 4px 4px;
+}
+.dataTable .rowMeduimBlue td {
+	background-color: #A5BEEC;
+	color: #000;
+	font-size: 12px;
+	font-family: Arial;
+	padding: 4px 4px 4px 4px;
+}
+.dataTable .rowBlue td {
+	background-color: #739DE6;
+	color: #000;
+	font-size: 12px;
+	font-family: Arial;
+	padding: 4px 4px 4px 4px;
+}
 
 .dataTable .selectedRow td {
 	background-color: #BCD9FF;
