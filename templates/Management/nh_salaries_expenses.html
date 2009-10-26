@@ -91,18 +91,18 @@
 	{% for branch in branch_list %}
 		<tr style="text-align:center; color:#4669D6; font-size:14px"><td colspan="15"><b>{{branch.grouper|default:"-- לא הוגדר דרג --"}}</b></td></tr>
 		{% for s in branch.list %}		
-		{% if s.expenses.approved_date and s.approved_date %}
-			<tr class="rowBlue" objid={{s.id}} employeeid={{s.get_employee.id}}>
-		{% endif %}
-		{% if not s.expenses.approved_date and not s.approved_date %}
-			<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.get_employee.id}}>
-		{% endif %}
-		{% if s.approved_date %}
-			<tr class="rowMediumBlue" objid={{s.id}} employeeid={{s.get_employee.id}}>
-		{% endif %}
-		{% if s.expenses.approved_date %}
-			<tr class="rowLightBlue" objid={{s.id}} employeeid={{s.get_employee.id}}>
-		{% endif %}
+			{% if s.expenses.approved_date and s.approved_date %}
+				<tr class="rowBlue" objid={{s.id}} employeeid={{s.get_employee.id}}>
+			{% endif %}
+			{% if not s.expenses.approved_date and not s.approved_date %}
+				<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.get_employee.id}}>
+			{% endif %}
+			{% if s.approved_date %}
+				<tr class="rowMediumBlue" objid={{s.id}} employeeid={{s.get_employee.id}}>
+			{% endif %}
+			{% if s.expenses.approved_date %}
+				<tr class="rowLightBlue" objid={{s.id}} employeeid={{s.get_employee.id}}>
+			{% endif %}
 			<td><a class="fancybox" href="/salary/{{s.id}}/expenses"><img src="/site_media/images/edit_48.png" width="20" height="20" alt="עדכון" border="0" /></a></td>
 			<td><a href="{{s.get_employee.get_absolute_url}}">{{ s.get_employee }}</a></td>
 			<td>{{s.get_employee.employment_terms.hire_type}}</td>
@@ -129,7 +129,7 @@
 					{% endif %}
 				</td>
 			{% endwith %}
-		</tr>
+			</tr>
 		{% endfor %}
 	{% endfor %}
 </table>
