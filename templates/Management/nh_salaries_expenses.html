@@ -49,6 +49,22 @@
 	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
 	<a id="edit" class="fancybox">עדכון</a>
 </div>
+<div style="float:left;">
+	<table class="formTable" >
+		<tr>
+			<th>שכר אושר</th>
+			<td style="width:20px; background-color:#BED1F3;"></td>
+		</tr>
+		<tr>
+			<th>הוצאות שכר אושרו</th>
+			<td style="width:20px; background-color:#A5BEEC;"></td>
+		</tr>
+		<tr>
+			<th>שכר והוצאות שכר אושרו</th>
+			<td style="width:20px; background-color:#739DE6;"></td>
+		</tr>
+	</table>
+</div>
 <div class="clearBoth"></div>
 <table id="salaryTable" class="dataTable" border="1">
 <caption>מציג סה"כ {{salaries|length}} עובדים</caption>
@@ -75,10 +91,17 @@
 	{% for branch in branch_list %}
 		<tr style="text-align:center; color:#4669D6; font-size:14px"><td colspan="15"><b>{{rank.grouper|default:"-- לא הוגדר דרג --"}}</b></td></tr>
 		{% for s in branch.list %}		
-		{% if s.expenses.approved_date %}
-			<tr class="rowLightGreen" objid={{s.id}} employeeid={{s.employee.id}}>
-		{% else %}
+		{% if s.expenses.approved_date and s.approved_date %}
+			<tr class="rowBlue" objid={{s.id}} employeeid={{s.employee.id}}>
+		{% endif %}
+		{% if not s.expenses.approved_date and not s.approved_date %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.employee.id}}>
+		{% endif %}
+		{% if s.approved_date %}
+			<tr class="rowMediumBlue" objid={{s.id}} employeeid={{s.employee.id}}>
+		{% endif %}
+		{% if s.expenses.approved_date %}
+			<tr class="rowLightBlue" objid={{s.id}} employeeid={{s.employee.id}}>
 		{% endif %}
 			<td><a class="fancybox" href="/salary/{{s.id}}/expenses"><img src="/site_media/images/edit_48.png" width="20" height="20" alt="עדכון" border="0" /></a></td>
 			<td><a href="{{s.employee.get_absolute_url}}">{{ s.employee }}</a></td>
@@ -93,11 +116,11 @@
 				<td>{{e.pension_insurance}}</td>
 				<td>{{e.vacation}}</td>
 				<td>{{e.convalescence_pay}}</td>
-				<td style="color:#C2FFDB;">{{s.bruto|commaise|default_if_none:""}}</td>
+				<td style="background-color:#C2FFDB;">{{s.bruto|commaise|default_if_none:""}}</td>
 				<td>{{e.employer_national_insurance}}</td>
 				<td>{{e.employer_benefit}}</td>
 				<td>{{e.compensation_allocation}}</td>
-				<td style="color:#C2FFDB;">{{s.bruto_with_employer|commaise}}</td>
+				<td style="background-color:#C2FFDB;">{{s.bruto_with_employer|commaise}}</td>
 				<td>
 					{% if e.approved_date %}
 						{{e.approved_date}}
