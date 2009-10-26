@@ -65,7 +65,7 @@
 		<th>ביטוח<BR>פנסיה</th>
 		<th>חופשה</th>
 		<th>דמי<BR>הבראה</th>
-		<th>ברוטו<BR>לעובד</th>
+		<th>סה"כ<BR>ברוטו<BR>לעובד</th>
 		<th>ביטוח<BR>לאומי<BR>מעביד</th>
 		<th>גמל<BR>מעביד</th>
 		<th>הפרשה<BR>לפיצויים</th>
@@ -93,11 +93,11 @@
 				<td>{{e.pension_insurance}}</td>
 				<td>{{e.vacation}}</td>
 				<td>{{e.convalescence_pay}}</td>
-				<td>{{s.bruto|commaise|default_if_none:""}}</td>
+				<td style="color:#C2FFDB;">{{s.bruto|commaise|default_if_none:""}}</td>
 				<td>{{e.employer_national_insurance}}</td>
 				<td>{{e.employer_benefit}}</td>
 				<td>{{e.compensation_allocation}}</td>
-				<td>{{s.bruto_with_employer|commaise}}</td>
+				<td style="color:#C2FFDB;">{{s.bruto_with_employer|commaise}}</td>
 				<td>
 					{% if e.approved_date %}
 						{{e.approved_date}}
