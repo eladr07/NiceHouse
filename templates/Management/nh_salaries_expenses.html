@@ -87,7 +87,7 @@
 		<th>הפרשה<BR>לפיצויים</th>
 		<th>ברוטו<BR>כולל<BR>מעביד</th>
 	</tr>
-	{% regroup salaries by get_employee.nhbranch as branch_list %}
+	{% regroup salaries by nhemployeesalary.nhemployee.nhbranch as branch_list %}
 	{% for branch in branch_list %}
 		<tr style="text-align:center; color:#4669D6; font-size:14px"><td colspan="15"><b>{{branch.grouper|default:"-- לא הוגדר דרג --"}}</b></td></tr>
 		{% for s in branch.list %}		
