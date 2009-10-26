@@ -2042,7 +2042,7 @@ class NHSale(models.Model):
     num = models.IntegerField(ugettext('sale_num'))
     address = models.CharField(ugettext('address'), max_length=50)
     hood = models.CharField(ugettext('hood'), max_length=50)
-    rooms = models.PositiveSmallIntegerField(ugettext('rooms'))
+    rooms = models.FloatField(ugettext('rooms'))
     floor = models.PositiveSmallIntegerField(ugettext('floor'))
     type = models.ForeignKey('HouseType', verbose_name = ugettext('house_type'))
     

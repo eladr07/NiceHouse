@@ -2180,6 +2180,7 @@ def sale_edit(request, id):
                     spm = SalePriceMod(sale = sale, old_price = sale.price, date=date.today())
                     spm.save()
                     next = '/salepricemod/%s' % spm.id
+                    sale.price = sale.project_price()
                 if sale.house != form.cleaned_data['house']:
                     shm = SaleHouseMod(sale = sale, old_house = sale.house, date=date.today())
                     shm.save()
