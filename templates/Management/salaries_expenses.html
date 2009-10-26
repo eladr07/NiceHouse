@@ -48,21 +48,23 @@
 <div class="someIcon">
 	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
 	<a id="edit" class="fancybox">עדכון</a>
-</div>		
-<table class="formTable" style="float:left;">
-	<tr>
-		<th>שכר אושר</th>
-		<td style="width:20px; background-color:#BED1F3;"></td>
-	</tr>
-	<tr>
-		<th>הוצאות שכר אושרו</th>
-		<td style="width:20px; background-color:#A5BEEC;"></td>
-	</tr>
-	<tr>
-		<th>שכר והוצאות שכר אושרו</th>
-		<td style="width:20px; background-color:#8BAEED;"></td>
-	</tr>
-</table>
+</div>
+<div style="float:left;">
+	<table class="formTable" >
+		<tr>
+			<th>שכר אושר</th>
+			<td style="width:20px; background-color:#BED1F3;"></td>
+		</tr>
+		<tr>
+			<th>הוצאות שכר אושרו</th>
+			<td style="width:20px; background-color:#A5BEEC;"></td>
+		</tr>
+		<tr>
+			<th>שכר והוצאות שכר אושרו</th>
+			<td style="width:20px; background-color:#739DE6;"></td>
+		</tr>
+	</table>
+</div>
 <div class="clearBoth"></div>
 <table id="salaryTable" class="dataTable" border="1">
 <caption>מציג סה"כ {{salaries|length}} עובדים</caption>
@@ -90,7 +92,7 @@
 		<tr style="text-align:center; color:#4669D6; font-size:14px"><td colspan="15"><b>{{rank.grouper|default:"-- לא הוגדר דרג --"}}</b></td></tr>
 		{% for s in rank.list %}
 		{% if s.expenses.approved_date and s.approved_date %}
-			<tr class="row1" style="color:8BAEED;" objid={{s.id}} employeeid={{s.employee.id}}>
+			<tr class="row1" style="color:739DE6;" objid={{s.id}} employeeid={{s.employee.id}}>
 		{% endif %}
 		{% if s.approved_date %}
 			<tr class="row1" style="color:BED1F3;" objid={{s.id}} employeeid={{s.employee.id}}>
