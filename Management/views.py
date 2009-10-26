@@ -569,7 +569,7 @@ def nh_salary_expenses_list(request):
     year = int(request.GET.get('year', current.year))
     month = int(request.GET.get('month', current.month))
     salaries = list(NHEmployeeSalary.objects.filter(year = year, month= month))
-    return render_to_response('Management/salaries_expenses.html', 
+    return render_to_response('Management/nh_salaries_expenses.html', 
                               {'salaries':salaries, 'month': date(int(year), int(month), 1),
                                'filterForm':MonthFilterForm(initial={'year':year,'month':month})},
                                context_instance=RequestContext(request))
