@@ -565,6 +565,19 @@ def salary_expenses_list(request):
                                'filterForm':MonthFilterForm(initial={'year':year,'month':month})},
                                context_instance=RequestContext(request))
 
+@permission_required('Management.list_salaryexpenses')
+def nh_salary_expenses_list(request):
+    current = Demand.current_month()
+    year = int(request.GET.get('year', current.year))
+    month = int(request.GET.get('month', current.month))
+    salaries = []
+    for es in NHEmployeeSalary.objects.filter(year = year, month= month):
+        salaries.append(es)
+    return render_to_response('Management/salaries_expenses.html', 
+                              {'salaries':salaries, 'month': date(int(year), int(month), 1),
+                               'filterForm':MonthFilterForm(initial={'year':year,'month':month})},
+                               context_instance=RequestContext(request))
+
 @permission_required('Management.list_nhemployeesalary')
 def nhemployee_salary_list(request):
     current = Demand.current_month()

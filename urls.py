@@ -254,6 +254,7 @@ urlpatterns += patterns('Management.views',
     (r'^demandpayments/$', 'demand_payment_list'),
 
     (r'^salaryexpenses/$', 'salary_expenses_list'),
+    (r'^nhsalaryexpenses/$', 'nh_salary_expenses_list'),
     (r'^salaryexpenses/(?P<id>)\d+/approve$', 'salary_expenses_approve'),
     (r'^salaryexpenses/(?P<object_id>\d+)$', 'limited_update_object',
      {'model' : Management.models.SalaryExpenses, 'template_name' : 'Management/salaryexpenses_edit.html', 'post_save_redirect' : '%(id)s'}),
