@@ -987,7 +987,6 @@ class EmployeeSalary(EmployeeSalaryBase):
             if not sales or len(sales) == 0:
                 self.project_commission[epc.project] = 0
                 continue
-            epc = restore_object(epc, date(self.year, self.month, 1))
             self.project_commission[epc.project] = epc.calc(sales, self)
             self.commissions += self.project_commission[epc.project]
             for s in sales:
