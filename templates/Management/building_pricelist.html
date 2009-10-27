@@ -23,6 +23,7 @@
 			}
 		});
 		$(".fancybox").fancybox();
+		$(".bigfancybox").fancybox({'frameWidth':800});
 		$("#changeType").change(function() {
 			location.replace("type" + $(this).val());
 		});
@@ -81,7 +82,7 @@
 		<td colspan="7">{{b.remarks}}</td>
 	</tr>
 	<tr>
-		<th colspan="6"><a href="/projects/{{b.project.id}}/buildings" class="fancybox">בניינים ומחירונים בפרוייקט</a></th>
+		<th colspan="6"><a href="/projects/{{b.project.id}}/buildings" class="bigfancybox">בניינים ומחירונים בפרוייקט</a></th>
 		<td>שנה סוג מחירון : </td>
 		<td>
 			<select id="changeType">
