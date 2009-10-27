@@ -93,12 +93,6 @@
 		{% endfor %}		
 	</tr>
 	<tr class="rowSumGreen">
-		<td colspan="8">סה"כ יצור הכנסה לפי סוכן לסניף ללא מע"מ</td>
-		{% for nhe in employees %}
-		<td>{{nhe.season_branch_income_notax|commaise}} ({{nhe.season_branch_income_ratio_notax|floatformat:-2}}%)</td>
-		{% endfor %}		
-	</tr>
-	<tr class="rowSumGreen">
 		<td colspan="8">סה"כ יצור הכנסה לפי סוכן לסניף ממוכרים ללא מע"מ</td>
 		{% for nhe in employees %}
 		<td>{{nhe.season_branch_income_sellers_notax|commaise}} ({{nhe.season_branch_income_sellers_ratio_notax|floatformat:-2}}%)</td>
@@ -108,6 +102,12 @@
 		<td colspan="8">סה"כ יצור הכנסה לפי סוכן לסניף מקונים ללא מע"מ</td>
 		{% for nhe in employees %}
 		<td>{{nhe.season_branch_income_buyers_notax|commaise}} ({{nhe.season_branch_income_buyers_ratio_notax|floatformat:-2}}%)</td>
+		{% endfor %}		
+	</tr>
+	<tr class="rowSumGreen">
+		<td colspan="8">סה"כ יצור הכנסה לפי סוכן לסניף ללא מע"מ</td>
+		{% for nhe in employees %}
+		<td>{{nhe.season_branch_income_notax|commaise}} ({{nhe.season_branch_income_ratio_notax|floatformat:-2}}%)</td>
 		{% endfor %}		
 	</tr>
 </table>

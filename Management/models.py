@@ -1991,7 +1991,7 @@ class NHMonth(models.Model):
             for nhss in nhs.nhsaleside_set.all():
                 if nhss.sale_type.id in [SaleType.RentRentee, SaleType.RentRenter]: continue
                 count += 1
-                total += nhss.signed_commission
+                total += nhss.actual_commission
         return count > 0 and total / count or 0
     @property
     def total_income(self):
