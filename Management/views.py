@@ -701,9 +701,9 @@ def nh_season_income(request):
                     if nhss.signing_advisor == e:
                         income_notax = nhss.income / tax
                         e.season_branch_income_notax += income_notax
-                        if nhss.sale_type.id in [SaleType.SaleSeller, RentRenter]:
+                        if nhss.sale_type.id in [SaleType.SaleSeller, SaleType.RentRenter]:
                             e.season_branch_income_sellers_notax += income_notax
-                        elif nhss.sale_type.id in [SaleType.SaleBuyer, RentRentee]:
+                        elif nhss.sale_type.id in [SaleType.SaleBuyer, SaleType.RentRentee]:
                             e.season_branch_income_buyers_notax += income_notax
                 for e in nhm.employees:
                     nhss.include_tax = True
