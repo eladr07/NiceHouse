@@ -61,8 +61,8 @@
 			<td>{{nhm.month}}/{{nhm.year}}</a></td>
 			<td></td>
 			<td><a href="/nhbranch/{{nhm.nhbranch.id}}/sales/?year={{nhm.year}}&month={{nhm.month}}" target="_blank">{{nhm.nhsales.count}}</td>
-			<td>{{nhm.avg_signed_commission}}</td>
-			<td>{{nhm.avg_actual_commission}}</td>
+			<td>{{nhm.avg_signed_commission|floatformat:-2}}</td>
+			<td>{{nhm.avg_actual_commission|floatformat:-2}}</td>
 			<td>{{nhm.total_income|commaise}}</td>
 			<td>{{nhm.total_lawyer_pay|commaise}}</td>
 			<td>{{nhm.total_net_income|commaise}}</td>
@@ -73,7 +73,9 @@
 		</tr>
 	{% endfor %}
 	<tr class="rowSumGreen">
-		<td colspan="5">סה"כ כולל מע"מ</td>
+		<td colspan="3">סה"כ כולל מע"מ</td>
+		<td>{{total_avg_signed_commission|floatformat:-2}}</td>
+		<td>{{total_avg_actual_commission|floatformat:-2}}</td>
 		<td>{{season_income|commaise}}</td>
 		<td></td>
 		<td>{{season_net_income|commaise}}</td>
@@ -94,6 +96,18 @@
 		<td colspan="8">סה"כ יצור הכנסה לפי סוכן לסניף ללא מע"מ</td>
 		{% for nhe in employees %}
 		<td>{{nhe.season_branch_income_notax|commaise}} ({{nhe.season_branch_income_ratio_notax|floatformat:-2}}%)</td>
+		{% endfor %}		
+	</tr>
+	<tr class="rowSumGreen">
+		<td colspan="8">סה"כ יצור הכנסה לפי סוכן לסניף ממוכרים ללא מע"מ</td>
+		{% for nhe in employees %}
+		<td>{{nhe.season_branch_income_sellers_notax|commaise}} ({{nhe.season_branch_income_sellers_ratio_notax|floatformat:-2}}%)</td>
+		{% endfor %}		
+	</tr>
+	<tr class="rowSumGreen">
+		<td colspan="8">סה"כ יצור הכנסה לפי סוכן לסניף מקונים ללא מע"מ</td>
+		{% for nhe in employees %}
+		<td>{{nhe.season_branch_income_buyers_notax|commaise}} ({{nhe.season_branch_income_buyers_ratio_notax|floatformat:-2}}%)</td>
 		{% endfor %}		
 	</tr>
 </table>

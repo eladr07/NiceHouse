@@ -681,9 +681,11 @@ def nh_season_income(request):
         m = m == 12 and 1 or m + 1
     nhbranch = NHBranch.objects.get(pk=nhbranch_id)
     season_income, season_net_income, season_income_notax, season_net_income_notax = 0, 0, 0, 0
+    total_avg_signed_commission, total_avg_actual_commission = 0,0
     employees = list(nhbranch.nhemployees.all())
     for e in employees:
         e.season_total, e.season_total_notax, e.season_branch_income_notax = 0, 0, 0
+        e.season_branch_income_buyers_notax, e.season_branch_income_sellers_notax = 0, 0
     for nhm in nhmonth_set:
         nhm.employees = list(nhm.nhbranch.nhemployees.all())
         tax = Tax.objects.filter(date__lte=date(nhm.year, nhm.month,1)).latest().value / 100 + 1
@@ -697,7 +699,12 @@ def nh_season_income(request):
                     nhss.include_tax = False
                     e.season_total_notax += nhss.get_employee_pay(e)
                     if nhss.signing_advisor == e:
-                        e.season_branch_income_notax += nhss.income / tax
+                        income_notax = nhss.income / tax
+                        e.season_branch_income_notax += income_notax
+                        if nhss.sale_type.id in [SaleType.SaleSeller, RentRenter]:
+                            e.season_branch_income_sellers_notax += income_notax
+                        elif nhss.sale_type.id in [SaleType.SaleBuyer, RentRentee]:
+                            e.season_branch_income_buyers_notax += income_notax
                 for e in nhm.employees:
                     nhss.include_tax = True
                     e.month_total += nhss.get_employee_pay(e)
@@ -707,14 +714,22 @@ def nh_season_income(request):
         nhm.include_tax = True
         season_income += nhm.total_income
         season_net_income += nhm.total_net_income
+        total_avg_signed_commission += nhm.avg_signed_commission
+        total_avg_actual_commission += nhm.avg_actual_commission
+        
+    total_avg_signed_commission /= len(nhmonth_set)
+    total_avg_actual_commission /= len(nhmonth_set)
     if season_net_income_notax:
         for e in employees:
             e.season_branch_income_ratio_notax = e.season_branch_income_notax / season_net_income_notax * 100
+            e.season_branch_income_buyers_ratio_notax = e.season_branch_income_buyers_notax / season_net_income_notax * 100
+            e.season_branch_income_sellers_ratio_notax = e.season_branch_income_sellers_notax / season_net_income_notax * 100
     return render_to_response('Management/nh_season_income.html', 
                               { 'nhmonths':nhmonth_set, 'filterForm':form, 'employees':employees,
                                'season_income':season_income,'season_net_income':season_net_income,
                                'season_income_notax':season_income_notax,'season_net_income_notax':season_net_income_notax,
-                               'nhbranch':nhbranch },
+                               'nhbranch':nhbranch, 'total_avg_actual_commission':total_avg_actual_commission,
+                               'total_avg_signed_commission':total_avg_signed_commission },
                               context_instance=RequestContext(request))
     
 def nhmonth_sales(request, nhbranch_id):
