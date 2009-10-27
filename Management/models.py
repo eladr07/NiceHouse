@@ -987,6 +987,7 @@ class EmployeeSalary(EmployeeSalaryBase):
             if not sales or len(sales) == 0:
                 self.project_commission[epc.project] = 0
                 continue
+            epc = restore_object(epc, date(self.year, self.month, 1))
             self.project_commission[epc.project] = epc.calc(sales, self)
             self.commissions += self.project_commission[epc.project]
             for s in sales:
@@ -1690,7 +1691,7 @@ class Demand(models.Model):
     def calc_sales_commission(self):
         if self.get_sales().count() == 0: return
         c = self.project.commissions
-        c.calc(self.get_sales(), date = date(self.year, self.month, 1))
+        c.calc(self.get_sales(), restore_date = date(self.year, self.month, 1))
     def get_sales_commission(self):
         i=0
         for s in self.get_sales():
