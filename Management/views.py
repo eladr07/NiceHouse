@@ -2588,4 +2588,29 @@ def employeesalary_season_expenses(request):
                               { 'salaries':salaries, 'start':date(int(from_year), int(from_month), 1), 'end':date(int(to_year), int(to_month), 1),
                                 'employee':employee_id and Employee.objects.get(pk=employee_id), 'filterForm':form},
                               context_instance=RequestContext(request))
+
+def employeesalary_season_total_expenses(request):
+    return
+    month=Demand.current_month()
+    from_year = int(request.GET.get('from_year', month.year))
+    from_month = int(request.GET.get('from_month', month.month))
+    to_year = int(request.GET.get('to_year', month.year))
+    to_month = int(request.GET.get('to_month', month.month))
+    form = SeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
+    salaries = []
+    months = []
+    current = date(int(from_year), int(from_month), 1)
+    end = date(int(to_year), int(to_month), 1)
+    while current <= end:
+        months.append(current)
+        q = EmployeeSalary.objects.filter(year = current.year, month = current.month)
+        if q.count() > 0:
+            salaries.extend(q.all())
+        current = date(current.month == 12 and current.year + 1 or current.year,
+                       current.month == 12 and 1 or current.month + 1, 1)
+        
+    return render_to_response('Management/employeesalary_season_total_expenses.html', 
+                              { 'salaries':salaries, 'start':date(int(from_year), int(from_month), 1), 'end':date(int(to_year), int(to_month), 1),
+                                'employee':employee_id and Employee.objects.get(pk=employee_id), 'filterForm':form},
+                              context_instance=RequestContext(request))
         
