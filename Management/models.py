@@ -570,7 +570,7 @@ class NHCBase(models.Model):
                 for nhss in NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=nhe).exclude(employee2=self.nhemployee):
                     if nhss in saleSides: continue
                     saleSides.append(nhss)
-                    x = nhss.employee1_pay * 2.5 * self.precentage / 100
+                    x = nhss.income * self.precentage / 100
                     amount += x
                     scds.append(NHSaleCommissionDetail(nhemployeesalary=es, commission='nhcbase',amount=x,
                                                        nhsaleside=nhss, income=nhss.employee1_pay,
@@ -578,7 +578,7 @@ class NHCBase(models.Model):
                 for nhss in NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=nhe).exclude(employee1=self.nhemployee):
                     if nhss in saleSides: continue
                     saleSides.append(nhss)
-                    x = nhss.employee2_pay * 2.5 * self.precentage / 100
+                    x = nhss.income * self.precentage / 100
                     amount += x 
                     scds.append(NHSaleCommissionDetail(nhemployeesalary=es, commission='nhcbase',amount=x,
                                                        nhsaleside=nhss, income=nhss.employee2_pay,
