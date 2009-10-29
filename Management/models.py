@@ -721,8 +721,7 @@ class AdvancePayment(models.Model):
         ordering = ['-date']
         
 class Loan(models.Model):
-    employee = models.ForeignKey('EmployeeBase', related_name = 'loans', 
-                                 verbose_name=ugettext('employee'), null=True)
+    employee = models.ForeignKey('EmployeeBase', related_name = 'loans', verbose_name=ugettext('employee'))
     amount = models.IntegerField(ugettext('amount'))
     date = models.DateField(ugettext('date'), default=date.today())
     pay_num = models.PositiveSmallIntegerField(ugettext('pay_num'))
@@ -737,9 +736,8 @@ class Loan(models.Model):
         db_table = 'Loan'
 
 class LoanPay(models.Model):
-    employee = models.ForeignKey('EmployeeBase', related_name='loan_pays', 
-                                 verbose_name=ugettext('employee'), null=True)
-    date = models.DateField(ugettext('date'))
+    employee = models.ForeignKey('EmployeeBase', related_name='loan_pays', verbose_name=ugettext('employee'))
+    date = models.DateField(ugettext('date'), default=date.today())
     amount = models.FloatField(ugettext('amount'))
     remarks = models.TextField(ugettext('remarks'), blank=True, null=True)
     class Meta:
