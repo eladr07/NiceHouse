@@ -103,8 +103,6 @@
 <table id="salaryTable" class="dataTable" border="1">
 <caption>מציג סה"כ {{salaries|length}} משכורות</caption>
 	<tr>
-		<th></th>
-		<th>שם העובד</th>
 		<th>חודש</th>
 		<th>פרוייקט</th>
 		<th>סוג <BR>העסקה</th>
@@ -128,8 +126,6 @@
 		{% else %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.employee.id}}>
 		{% endif %}
-			<td><a href="/employees/{{s.employee.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
-			<td>{{ s.employee }}</td>
 			<td>{{ s.month }}/{{ s.year }}</td>
 			<td>
 				{% for p in s.employee.projects.all %}
