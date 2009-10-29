@@ -573,16 +573,16 @@ class NHCBase(models.Model):
                     x = nhss.income * self.precentage / 100
                     amount += x
                     scds.append(NHSaleCommissionDetail(nhemployeesalary=es, commission='nhcbase',amount=x,
-                                                       nhsaleside=nhss, income=nhss.employee1_pay,
-                                                       precentage = self.precentage * 2.5))
+                                                       nhsaleside=nhss, income=nhss.income,
+                                                       precentage = self.precentage))
                 for nhss in NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=nhe).exclude(employee1=self.nhemployee):
                     if nhss in saleSides: continue
                     saleSides.append(nhss)
                     x = nhss.income * self.precentage / 100
                     amount += x 
                     scds.append(NHSaleCommissionDetail(nhemployeesalary=es, commission='nhcbase',amount=x,
-                                                       nhsaleside=nhss, income=nhss.employee2_pay,
-                                                       precentage = self.precentage * 2.5))
+                                                       nhsaleside=nhss, income=nhss.income,
+                                                       precentage = self.precentage))
         if amount >= self.min:
             for scd in scds:
                 scd.save()
