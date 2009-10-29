@@ -798,6 +798,8 @@ class SalaryExpenses(models.Model):
             return NHEmployeeSalary.objects.get(year = self.year, month = self.month, nhemployee = self.employee.nhemployee)
     def approve(self):
         self.approved_date = datetime.now()
+    def get_absolute_url(self):
+        return '/salaryexpenses/%s' % self.id
     class Meta:
         db_table = 'SalaryExpenses'
         unique_together = ('employee','year','month')
