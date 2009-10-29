@@ -124,10 +124,7 @@
 		<th>ת.שליחה להנה"ח</th>
 		<th>ת.שליחה לצ'קים</th>
 	</tr>
-	{% regroup salaries by employee.rank as rank_list %}
-	{% for rank in rank_list %}
-		<tr style="text-align:center; color:#4669D6; font-size:14px"><td colspan="15"><b>{{rank.grouper|default:"-- לא הוגדר דרג --"}}</b></td></tr>
-		{% for s in rank.list %}
+	{% for s in salaries %}
 		{% if s.approved_date %}
 			<tr class="row5" objid={{s.id}} employeeid={{s.employee.id}}>
 		{% else %}
@@ -171,7 +168,6 @@
 			<td>{{s.sent_to_bookkeeping_date|default_if_none:""}}</td>
 			<td>{{s.sent_to_checks_date|default_if_none:""}}</td>
 		</tr>
-		{% endfor %}
 	{% endfor %}
 </table>
 {% endblock content %}
