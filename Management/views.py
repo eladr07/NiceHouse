@@ -2546,7 +2546,8 @@ def employeesalary_season_list(request):
     from_month = int(request.GET.get('from_month', month.month))
     to_year = int(request.GET.get('to_year', month.year))
     to_month = int(request.GET.get('to_month', month.month))
-    form = EmployeeSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
+    form = EmployeeSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month,
+                                       'employee':employee_id})
     salaries = []
     if employee_id:
         current = date(int(from_year), int(from_month), 1)
@@ -2570,7 +2571,8 @@ def employeesalary_season_expenses(request):
     from_month = int(request.GET.get('from_month', month.month))
     to_year = int(request.GET.get('to_year', month.year))
     to_month = int(request.GET.get('to_month', month.month))
-    form = EmployeeSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
+    form = EmployeeSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month,
+                                       'employee':employee_id})
     salaries = []
     if employee_id:
         current = date(int(from_year), int(from_month), 1)

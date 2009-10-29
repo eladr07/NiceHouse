@@ -21,7 +21,7 @@
 				$("#loanAdd").attr("href", "/employees/" + selectedID + "/addloan");
 				$("#calcSalary").attr("href", "/employeesalaries/" + tr.attr("objid") + "/calc");
 				$("#approve").attr("href", "/employeesalaries/" + tr.attr("objid") + "/approve");
-				$("#edit").attr("href", tr.attr("objid"));
+				$("#edit").attr("href",  "/employeesalaries/" + tr.attr("objid"));
 			});
 		$(".fancybox").fancybox();
 		$("#loanPay, #loanAdd, #edit").click(function (event) {
@@ -138,8 +138,8 @@
 			</td>
 			<td>{{s.employee.employment_terms.hire_type}}</td>
 			<td><a class="fancybox" href="/employee/{{s.employee.id}}/sales/{{month.year}}/{{month.month}}">{{ s.sales_count }}</a></td>
-			<td><a href="{{s.get_absolute_url}}/totaldetails" class="fancybox">{{s.total_amount|commaise}}</a></td>
-			<td><a href="{{s.get_absolute_url}}/checkdetails" class="fancybox">{{s.check_amount}}</a></td>
+			<td><a href="{{s.get_absolute_url}}/totaldetails" class="fancybox">{{s.neto|commaise}}</a></td>
+			<td><a href="{{s.get_absolute_url}}/checkdetails" class="fancybox">{{s.check_amount|commaise}}</a></td>
 			<td>{% if s.bruto %}<a href="{{s.expenses.get_absolute_url}}" class="fancybox">{{s.bruto|commaise}}</a>{% endif %}</td>
 			<td>{% if s.bruto_employer_expense %}<a href="{{s.expenses.get_absolute_url}}" class="fancybox">{{s.bruto_employer_expense|commaise}}</a>{% endif %}</td>
 			<td>{% if s.refund %}{{s.refund}} - {{s.refund_type}} {% endif %}</td>
