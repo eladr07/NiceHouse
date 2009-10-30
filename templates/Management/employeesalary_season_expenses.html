@@ -126,7 +126,7 @@
 			<td>{{ s.month }}/{{ s.year }}</td>
 			<td>
 				{% for p in s.employee.projects.all %}
-				<a href="/projects/{{p.id}}" target="_blank">{{p}}</a><br>
+				<a href="{{p.get_absolute_url}}" target="_blank">{{p}}</a><br>
 				{% endfor %}
 			</td>
 			<td>{{s.employee.employment_terms.hire_type}}</td>

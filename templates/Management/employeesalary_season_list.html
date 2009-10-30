@@ -131,14 +131,14 @@
 			<td>{{ s.month }}/{{ s.year }}</td>
 			<td>
 				{% for p in s.employee.projects.all %}
-				<a href="/projects/{{p.id}}" target="_blank">{{p}}</a><br>
+				<a href="{{p.get_absolute_url}}" target="_blank">{{p}}</a><br>
 				{% endfor %}
 			</td>
 			<td>{{s.employee.employment_terms.hire_type}}</td>
 			<td><a class="fancybox" href="/employee/{{s.employee.id}}/sales/{{month.year}}/{{month.month}}">{{ s.sales_count }}</a></td>
 			<td style="color:#08A600;">
 				{{s.base}} + 
-				<a href="/employeesalaries/{{s.id}}/details" class="fancybox">{{s.commissions}}</a>
+				<a href="{{s.get_absolute_url}}/details" class="fancybox">{{s.commissions}}</a>
 			</td>
 			<td style="color:#08A600;">{{s.safety_net|default_if_none:""}}</td>
 			<td style="color:#08A600;">{% if s.var_pay %}{{s.var_pay}} ש"ח {% endif %}</td>

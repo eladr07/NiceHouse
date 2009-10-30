@@ -68,6 +68,7 @@
 <caption>מציג סה"כ {{employees|length}} עובדים</caption>
 	<tr>
 		<th>שם העובד</th>
+		<th>פרוייקט</th>
 		<th>סוג העסקה</th>
 		<th>סה"כ<BR>נטו</th>
 		<th>סה"כ<BR>ברוטו</th>
@@ -78,7 +79,12 @@
 		<tr style="text-align:center; color:#4669D6; font-size:14px"><td colspan="15"><b>{{rank.grouper|default:"-- לא הוגדר דרג --"}}</b></td></tr>
 		{% for e in rank.list %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.employee.id}}>
-				<td><a href="{{e.get_absolute_url}}" target="_blank">{{ e }}</a></td>
+				<td><a href="{{e.get_absolute_url}}" target="_blank">{{ e }}</a></td>			
+				<td>
+					{% for p in e.projects.all %}
+					<a href="{{p.get_absolute_url}}" target="_blank">{{p}}</a><br>
+					{% endfor %}
+				</td>
 				<td>{{e.employment_terms.hire_type}}</td>
 				<td>
 					<a target="_blank" href="/employeesalaryseason/?employee={{e.id}};from_year={{start.year}};from_month={{start.month}};to_year={{end.year}};to_month={{end.month}}">
