@@ -2597,7 +2597,7 @@ def employeesalary_season_total_expenses(request):
     form = SeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
     employees = Employee.objects.all()
     for e in employees:
-        e.total_neto, total_bruto, total_bruto_employer_expense = 0,0,0
+        e.total_neto, e.total_bruto, e.total_bruto_employer_expense = 0,0,0
     current = date(from_year, from_month, 1)
     end = date(to_year, to_month, 1)
     while current <= end:
