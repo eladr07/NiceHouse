@@ -81,17 +81,17 @@
 				<td><a href="{{e.get_absolute_url}}" target="_blank">{{ e }}</a></td>
 				<td>{{e.employment_terms.hire_type}}</td>
 				<td>
-					<a target="_blank" href="/employeesalaryseason/?employee={{e.id}};from_year={{start.year}};from_month={{start.month}};to_year={{end.year}};to_month={{end.month">
+					<a target="_blank" href="/employeesalaryseason/?employee={{e.id}};from_year={{start.year}};from_month={{start.month}};to_year={{end.year}};to_month={{end.month}}">
 					{{e.total_neto|commaise}}
 					</a>
 				</td>
 				<td>
-					<a target="_blank" href="/esseasonexpenses/?employee={{e.id}};from_year={{start.year}};from_month={{start.month}};to_year={{end.year}};to_month={{end.month">
+					<a target="_blank" href="/esseasonexpenses/?employee={{e.id}};from_year={{start.year}};from_month={{start.month}};to_year={{end.year}};to_month={{end.month}}">
 					{{e.total_bruto|commaise}}
 					</a>
 				</td>
 				<td>
-					<a target="_blank" href="/esseasontotalexpenses/?employee={{e.id}};from_year={{start.year}};from_month={{start.month}};to_year={{end.year}};to_month={{end.month">
+					<a target="_blank" href="/esseasontotalexpenses/?employee={{e.id}};from_year={{start.year}};from_month={{start.month}};to_year={{end.year}};to_month={{end.month}}">
 					{{e.total_bruto_with_employer|commaise}}
 					</a>
 				</td>
