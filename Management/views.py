@@ -16,27 +16,11 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, NHEmployeeSalariesWriter, PricelistWriter, BuildingClientsWriter
 from mail import mail
 
+def generate_unique_pdf_filename():
+    return settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+
 @login_required
 def index(request):
-    '''
-    for p_id in [21,5]:
-        for m in range(1,9):
-            q = Demand.objects.filter(project__id = p_id, year = 2009, month=m)
-            if q.count() == 0:
-                continue
-            d = q[0]
-            for s in d.get_sales():
-                for scd in s.commission_details.all():
-                    scd.delete()
-            for ds in d.statuses.all():
-                ds.delete()
-            for diff in d.diffs.all():
-                diff.delete()
-            d.calc_sales_commission()
-            d = Demand.objects.get(project__id = p_id, year = 2009, month=m)
-            d.finish()
-            time.sleep(1)
-    '''
     return render_to_response('Management/index.html',
                               {'locateHouseForm':LocateHouseForm(),
                                'nhbranches':NHBranch.objects.all()},
@@ -456,7 +440,7 @@ def demand_old_list(request):
 
 def nhemployee_salary_send(request, nhbranch_id, year, month):
     nhm = NHMonth.objects.get(nhbranch__id = nhbranch_id, year = year, month = month)
-    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    filename = generate_unique_pdf_filename()
     
     p = open(filename,'w+')
     p.flush()
@@ -468,7 +452,7 @@ def nhemployee_salary_send(request, nhbranch_id, year, month):
 
     mail('adush07@gmail.com', u'שכר עובדים %s לחודש %s/%s' % (nhm.nhbranch, nhm.month, nhm.year), '', filename)
 
-    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    filename = generate_unique_pdf_filename()
     
     p = open(filename,'w+')
     p.flush()
@@ -488,7 +472,7 @@ def nhemployee_salary_send(request, nhbranch_id, year, month):
     return HttpResponseRedirect('/nhemployeesalaries/%s/%s' % (year,month))
     
 def nhemployee_salary_pdf(request, nhbranch_id, year, month):
-    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    filename = generate_unique_pdf_filename()
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
@@ -592,7 +576,7 @@ def nhemployee_salary_list(request):
                                context_instance=RequestContext(request))
 
 def employee_salary_pdf(request, year, month):
-    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    filename = generate_unique_pdf_filename()
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
@@ -647,7 +631,7 @@ def demands_all(request):
                               context_instance=RequestContext(request))
 
 def employee_list_pdf(request):
-    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    filename = generate_unique_pdf_filename()
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
@@ -885,7 +869,7 @@ def demand_zero(request, id):
     return HttpResponseRedirect('/demands')
 
 def demand_send_mail(demand, addr):
-    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    filename = generate_unique_pdf_filename()
     write_demand_pdf(demand, filename, to_mail=True)
     mail(addr,
          u'עמלה לפרויקט %s לחודש %s/%s' % (demand.project, demand.month, demand.year),
@@ -1315,7 +1299,7 @@ def building_pricelist_pdf(request, object_id, type_id):
         except HouseVersion.DoesNotExist:
             h.price = None
     
-    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    filename = generate_unique_pdf_filename()
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
@@ -1356,7 +1340,7 @@ def building_clients_pdf(request, object_id):
         except HouseVersion.DoesNotExist:
             h.price = None
     
-    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    filename = generate_unique_pdf_filename()
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
@@ -2336,7 +2320,7 @@ def report_project_month(request, project_id, year, month):
         return render_to_response('Management/error.html', 
                                   {'error':u'לדרישה שנבחרה אין מכירות'},
                                   context_instance=RequestContext(request))
-    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    filename = generate_unique_pdf_filename()
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
@@ -2349,13 +2333,11 @@ def report_project_month(request, project_id, year, month):
 
 @permission_required('Management.report_projects_month')
 def report_projects_month(request, year, month):
-    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    filename = generate_unique_pdf_filename()
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
-    p = open(filename,'w+')
-    p.flush()
-    p.close()
+
     demands = Demand.objects.filter(year = year, month=month).all()
     MultipleDemandWriter(demands, u'ריכוז דרישות לפרוייקטים לחודש %s\%s' % (year, month),
                          show_month=False, show_project=True).build(filename)
@@ -2377,7 +2359,7 @@ def report_project_season(request, project_id=None, from_year=Demand.current_mon
         current = date(current.month == 12 and current.year + 1 or current.year,
                        current.month == 12 and 1 or current.month + 1, 1)
     
-    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    filename = generate_unique_pdf_filename()
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
@@ -2404,7 +2386,7 @@ def report_employeesalary_season(request, employee_id=None, from_year=Demand.cur
         current = date(current.month == 12 and current.year + 1 or current.year,
                        current.month == 12 and 1 or current.month + 1, 1)
     
-    filename = settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
+    filename = generate_unique_pdf_filename()
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename

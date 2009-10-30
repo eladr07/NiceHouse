@@ -73,26 +73,30 @@
 		<th>סה"כ<BR>ברוטו</th>
 		<th>סה"כ ברוטו<BR>+ מעביד</th>
 	</tr>
-	{% for e in employees %}
-		<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.employee.id}}>
-			<td><a href="{{e.get_absolute_url}}" target="_blank">{{ e }}</a></td>
-			<td>{{e.employment_terms.hire_type}}</td>
-			<td>
-				<a target="_blank" href="/employeesalaryseason/?employee={{e.id}};from_year={{start.year}};from_month={{start.month}};to_year={{end.year}};to_month={{end.month">
-				{{e.total_neto|commaise}}
-				</a>
-			</td>
-			<td>
-				<a target="_blank" href="/esseasonexpenses/?employee={{e.id}};from_year={{start.year}};from_month={{start.month}};to_year={{end.year}};to_month={{end.month">
-				{{e.total_bruto|commaise}}
-				</a>
-			</td>
-			<td>
-				<a target="_blank" href="/esseasontotalexpenses/?employee={{e.id}};from_year={{start.year}};from_month={{start.month}};to_year={{end.year}};to_month={{end.month">
-				{{e.total_bruto_with_employer|commaise}}
-				</a>
-			</td>
-		</tr>
+	{% regroup employees by rank as rank_list %}
+	{% for rank in rank_list %}
+		<tr style="text-align:center; color:#4669D6; font-size:14px"><td colspan="15"><b>{{rank.grouper|default:"-- לא הוגדר דרג --"}}</b></td></tr>
+		{% for e in rank.list %}
+			<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.employee.id}}>
+				<td><a href="{{e.get_absolute_url}}" target="_blank">{{ e }}</a></td>
+				<td>{{e.employment_terms.hire_type}}</td>
+				<td>
+					<a target="_blank" href="/employeesalaryseason/?employee={{e.id}};from_year={{start.year}};from_month={{start.month}};to_year={{end.year}};to_month={{end.month">
+					{{e.total_neto|commaise}}
+					</a>
+				</td>
+				<td>
+					<a target="_blank" href="/esseasonexpenses/?employee={{e.id}};from_year={{start.year}};from_month={{start.month}};to_year={{end.year}};to_month={{end.month">
+					{{e.total_bruto|commaise}}
+					</a>
+				</td>
+				<td>
+					<a target="_blank" href="/esseasontotalexpenses/?employee={{e.id}};from_year={{start.year}};from_month={{start.month}};to_year={{end.year}};to_month={{end.month">
+					{{e.total_bruto_with_employer|commaise}}
+					</a>
+				</td>
+			</tr>
+		{% endfor %}
 	{% endfor %}
 </table>
 {% endblock content %}
