@@ -441,26 +441,16 @@ def demand_old_list(request):
 def nhemployee_salary_send(request, nhbranch_id, year, month):
     nhm = NHMonth.objects.get(nhbranch__id = nhbranch_id, year = year, month = month)
     filename = generate_unique_pdf_filename()
-    
-    p = open(filename,'w+')
-    p.flush()
-    p.close()
+
     NHEmployeeSalariesWriter(NHMonth.objects.get(nhbranch__id = int(nhbranch_id), year = int(year), month=int(month)),
                                                  bookkeeping=True).build(filename)
-    p = open(filename,'r')
-    p.close()
 
     mail('adush07@gmail.com', u'שכר עובדים %s לחודש %s/%s' % (nhm.nhbranch, nhm.month, nhm.year), '', filename)
 
     filename = generate_unique_pdf_filename()
     
-    p = open(filename,'w+')
-    p.flush()
-    p.close()
     NHEmployeeSalariesWriter(NHMonth.objects.get(nhbranch__id = int(nhbranch_id), year = int(year), month=int(month)),
                                                  bookkeeping=False).build(filename)
-    p = open(filename,'r')
-    p.close()
 
     mail('adush07@gmail.com', u'שכר עובדים %s לחודש %s/%s' % (nhm.nhbranch, nhm.month, nhm.year), '', filename)
     '''
@@ -476,9 +466,7 @@ def nhemployee_salary_pdf(request, nhbranch_id, year, month):
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
-    p = open(filename,'w+')
-    p.flush()
-    p.close()
+
     NHEmployeeSalariesWriter(NHMonth.objects.get(nhbranch__id = int(nhbranch_id), year = int(year), month=int(month)),
                                                  bookkeeping=True).build(filename)
     p = open(filename,'r')
@@ -580,9 +568,7 @@ def employee_salary_pdf(request, year, month):
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
-    p = open(filename,'w+')
-    p.flush()
-    p.close()
+
     EmployeeSalariesWriter([es for es in EmployeeSalary.objects.filter(year = year, month= month)
                             if es.approved_date], u'שכר עבודה למנהלי פרויקטים לחודש %s\%s' % (year, month),
                             show_month=False, show_employee=True).build(filename)
@@ -635,9 +621,7 @@ def employee_list_pdf(request):
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
-    p = open(filename,'w+')
-    p.flush()
-    p.close()
+
     EmployeeListWriter(employees = Employee.objects.active(),
                        nhemployees = NHEmployee.objects.active()).build(filename)
     p = open(filename,'r')
@@ -1303,9 +1287,7 @@ def building_pricelist_pdf(request, object_id, type_id):
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
-    p = open(filename,'w+')
-    p.flush()
-    p.close()
+
     title = u'מחירון לפרוייקט %s' % unicode(b.project)
     subtitle = u'בניין %s' % b.num
     subtitle += ' - %s' % unicode(pricelist_type)
@@ -1344,9 +1326,7 @@ def building_clients_pdf(request, object_id):
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
-    p = open(filename,'w+')
-    p.flush()
-    p.close()
+
     title = u'מצבת רוכשים לפרוייקט %s' % unicode(b.project)
     subtitle = u'בניין %s' % b.num
     BuildingClientsWriter(houses, title, subtitle).build(filename)
@@ -2308,9 +2288,6 @@ def project_demands(request, project_id, func, template_name):
                                context_instance=RequestContext(request))
 
 def write_demand_pdf(demand, filename, to_mail=False):
-    p = open(filename,'w+')
-    p.flush()
-    p.close()
     MonthDemandWriter(demand, to_mail).build(filename)    
 
 @permission_required('Management.report_project_month')
@@ -2363,9 +2340,7 @@ def report_project_season(request, project_id=None, from_year=Demand.current_mon
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
-    p = open(filename,'w+')
-    p.flush()
-    p.close()
+
     MultipleDemandWriter(ds, u'ריכוז דרישות תקופתי לפרוייקט %s' % Project.objects.get(pk=project_id),
                          show_month=True, show_project=False).build(filename)
     p = open(filename,'r')
@@ -2390,9 +2365,7 @@ def report_employeesalary_season(request, employee_id=None, from_year=Demand.cur
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
-    p = open(filename,'w+')
-    p.flush()
-    p.close()
+
     EmployeeSalariesWriter(salaries, u'ריכוז שכר תקופתי לעובד - %s' % Employee.objects.get(pk=employee_id),
                            show_month=True, show_employee=False).build(filename)
     p = open(filename,'r')
