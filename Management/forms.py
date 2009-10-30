@@ -1,5 +1,6 @@
 ﻿import django.forms as forms
 import sys
+from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext
 from models import *
 from datetime import datetime, date
@@ -276,7 +277,7 @@ class SaleForm(forms.ModelForm):
         if self.instance.id:
             s = house.get_sale()
             if s != None and s != self.instance:
-                raise ValidationError()
+                raise ValidationError
         else:
             if house.get_sale() != None:
                 raise ValidationError
