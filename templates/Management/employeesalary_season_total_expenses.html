@@ -19,34 +19,18 @@
 			if (selectedID > 0)
 				$("#loanPay").attr("href", "/employees/" + selectedID + "/loanpay");
 				$("#loanAdd").attr("href", "/employees/" + selectedID + "/addloan");
-				$("#calcSalary").attr("href", "/employeesalaries/" + tr.attr("objid") + "/calc");
-				$("#approve").attr("href", "/employeesalaries/" + tr.attr("objid") + "/approve");
-				$("#edit").attr("href",  "/employeesalaries/" + tr.attr("objid"));
 			});
 		$(".fancybox").fancybox();
 		$("#loanPay, #loanAdd, #edit").click(function (event) {
 			if (!$(this).attr("href"))
 				alert("לא נבחר עובד");
 		});
-		$("#approve").click(function (event) {
-			event.preventDefault();
-			if (!$(this).attr("href"))
-				alert("לא נבחר עובד");
-			$.get($(this).attr("href"), function (data) {
-				if (data == 'ok')
-					alert('השכר אושר !');
-			});
-		});
-		$("#calcSalary").click(function(event) {
-			if (!confirm("האם אתה בטוח שברצונך לחשב את העמלות מחדש ?"))
-				event.preventDefault();
-		});
 	});
 </script>
 {% endblock header %}
 {% block content %}
 <div class="title">
-	<div class="pageTitle">ריכוז שכר לעובד כולל הוצאות מעביד תקופתי<br>{{employee}}</div>
+	<div class="pageTitle">ריכוז שכר לעובד כולל הוצאות מעביד תקופתי<br>{{start|date:"m/y"}} - {{end|date:"m/y"}}</div>
 </div>
 <div class="clearBoth"></div>
 <form method="GET">
@@ -74,26 +58,6 @@
 	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="החזר הלוואה" /> 
 	<a id="loanPay" class="fancybox">עדכון החזר הלוואה</a>
 </div>
-<div class="someIcon" style="width:170px;">
-	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
-	<a id="edit" class="fancybox">שינוי מרכיבי שכר - חד פעמי</a>
-</div>
-<div class="someIcon"style="width:130px;">
-	<img src="/site_media/images/advanced-48.png" width="20" height="20"  alt="שליחה" /> 
-	<a id="calcSalary">חישוב עמלות מחדש</a>
-</div>
-<div class="someIcon" style="width:120px;">
-	<img src="/site_media/images/edit_48.png" width="20" height="20" /> 
-	<a id="approve" >אישור שכר לתשלום</a>
-</div>
-<div class="someIcon" style="width:100px;">
-	<img src="/site_media/images/edit_48.png" width="20" height="20" /> 
-	<a id="#" >תיק עובד</a>
-</div>
-<div class="someIcon" style="width:100px;">
-	<img src="/site_media/images/print-48.png" width="20" height="20"/> 
-	<a id="#" >שלח להנה"ח</a>
-</div>
 <div class="someIcon" style="width:100px;">
 	<img src="/site_media/images/print-48.png" width="20" height="20" /> 
 	<a href="/reports/employeesalary_season/{{employee.id}}/{{start.year}}/{{start.month}}/{{end.year}}/{{end.month}}" >גרסת הדפסה</a>
@@ -101,45 +65,33 @@
 <div class="clearBoth"></div>
 <br>
 <table id="salaryTable" class="dataTable" border="1">
-<caption>מציג סה"כ {{salaries|length}} משכורות</caption>
+<caption>מציג סה"כ {{employees|length}} עובדים</caption>
 	<tr>
-		<th>חודש</th>
-		<th>פרוייקט</th>
-		<th>סוג <BR>העסקה</th>
-		<th>מס'<BR>עסקאות</th>
-		<th>סה"כ<BR>שווי <BR>תלוש</th>
-		<th>שווי<BR>צ'ק</th>
+		<th>שם העובד</th>
+		<th>סוג העסקה</th>
+		<th>סה"כ<BR>נטו</th>
 		<th>סה"כ<BR>ברוטו</th>
-		<th>ברוטו<BR>כולל<BR>הוצאות</th>
-		<th>החזר<BR>הוצאות <BR>(בנפרד)</th>
-		<th>הערות</th>
-		<th>ת.אישור</th>
-		<th>ת.שליחה <BR>להנה"ח</th>
-		<th>ת.שליחה <BR>לצ'קים</th>
+		<th>סה"כ ברוטו<BR>+ מעביד</th>
 	</tr>
-	{% for s in salaries %}
-		{% if s.approved_date %}
-			<tr class="row5" objid={{s.id}} employeeid={{s.employee.id}}>
-		{% else %}
-			<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.employee.id}}>
-		{% endif %}
-			<td>{{ s.month }}/{{ s.year }}</td>
+	{% for e in employees %}
+		<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.employee.id}}>
+			<td><a href="{{e.get_absolute_url}}" target="_blank">{{ e }}</a></td>
+			<td>{{e.employment_terms.hire_type}}</td>
 			<td>
-				{% for p in s.employee.projects.all %}
-				<a href="/projects/{{p.id}}" target="_blank">{{p}}</a><br>
-				{% endfor %}
+				<a target="_blank" href="/employeesalaryseason/?employee={{e.id}};from_year={{start.year}};from_month={{start.month}};to_year={{end.year}};to_month={{end.month">
+				{{e.total_neto|commaise}}
+				</a>
 			</td>
-			<td>{{s.employee.employment_terms.hire_type}}</td>
-			<td><a class="fancybox" href="/employee/{{s.employee.id}}/sales/{{month.year}}/{{month.month}}">{{ s.sales_count }}</a></td>
-			<td><a href="{{s.get_absolute_url}}/totaldetails" class="fancybox">{{s.neto|commaise}}</a></td>
-			<td><a href="{{s.get_absolute_url}}/checkdetails" class="fancybox">{{s.check_amount|commaise}}</a></td>
-			<td>{% if s.bruto %}<a href="{{s.expenses.get_absolute_url}}" class="fancybox">{{s.bruto|commaise}}</a>{% endif %}</td>
-			<td>{% if s.bruto_employer_expense %}<a href="{{s.expenses.get_absolute_url}}" class="fancybox">{{s.bruto_employer_expense|commaise}}</a>{% endif %}</td>
-			<td>{% if s.refund %}{{s.refund}} - {{s.refund_type}} {% endif %}</td>
-			<td>{{s.remarks|default_if_none:""}}</td>
-			<td>{{s.approved_date|default_if_none:""}}</td>
-			<td>{{s.sent_to_bookkeeping_date|default_if_none:""}}</td>
-			<td>{{s.sent_to_checks_date|default_if_none:""}}</td>
+			<td>
+				<a target="_blank" href="/esseasonexpenses/?employee={{e.id}};from_year={{start.year}};from_month={{start.month}};to_year={{end.year}};to_month={{end.month">
+				{{e.total_bruto|commaise}}
+				</a>
+			</td>
+			<td>
+				<a target="_blank" href="/esseasontotalexpenses/?employee={{e.id}};from_year={{start.year}};from_month={{start.month}};to_year={{end.year}};to_month={{end.month">
+				{{e.total_bruto_with_employer|commaise}}
+				</a>
+			</td>
 		</tr>
 	{% endfor %}
 </table>
