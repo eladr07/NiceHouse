@@ -832,6 +832,7 @@ class EmployeeSalaryBase(models.Model):
     @property
     def bruto(self):
         terms = self.get_employee().employment_terms
+        if not terms: return None
         exp = self.expenses
         if not terms.salary_net:
             return self.derived.total_amount
@@ -841,6 +842,7 @@ class EmployeeSalaryBase(models.Model):
     @property
     def neto(self):
         terms = self.get_employee().employment_terms
+        if not terms: return None
         exp = self.expenses
         if not terms.salary_net:
             if not exp: return None
