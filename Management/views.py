@@ -2468,8 +2468,7 @@ def season_income(request):
     ds = []
     while current <= end:
         q = Demand.objects.filter(year = current.year, month = current.month)
-        if q.count() > 0:
-            ds.extend(q)
+        ds.extend(q)
         current = date(current.month == 12 and current.year + 1 or current.year, current.month == 12 and 1 or current.month + 1, 1)
     projects = []
     total_sale_count, total_amount, total_amount_notax = 0,0,0
@@ -2597,7 +2596,7 @@ def employeesalary_season_total_expenses(request):
     to_month = int(request.GET.get('to_month', month.month))
     form = SeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
     employees = Employee.objects.all()
-    for e in employee:
+    for e in employees:
         e.total_neto, total_bruto, total_bruto_employer_expense = 0,0,0
     current = date(from_year, from_month, 1)
     end = date(to_year, to_month, 1)
