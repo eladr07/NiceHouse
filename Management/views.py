@@ -854,7 +854,7 @@ def demand_zero(request, id):
 
 def demand_send_mail(demand, addr):
     filename = generate_unique_pdf_filename()
-    write_demand_pdf(demand, filename, to_mail=True)
+    MonthDemandWriter(demand, to_mail=True).build(filename)
     mail(addr,
          u'עמלה לפרויקט %s לחודש %s/%s' % (demand.project, demand.month, demand.year),
          '', filename)
@@ -2287,9 +2287,6 @@ def project_demands(request, project_id, func, template_name):
                                {'demands':demands(), 'project':p},
                                context_instance=RequestContext(request))
 
-def write_demand_pdf(demand, filename, to_mail=False):
-    MonthDemandWriter(demand, to_mail).build(filename)    
-
 @permission_required('Management.report_project_month')
 def report_project_month(request, project_id, year, month):
     demand = Demand.objects.get(project__id = project_id, year = year, month = month)
@@ -2302,7 +2299,8 @@ def report_project_month(request, project_id, year, month):
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
     
-    write_demand_pdf(demand, filename)
+    MonthDemandWriter(demand, to_mail=False).build(filename)
+    
     p = open(filename,'r')
     response.write(p.read())
     p.close()
