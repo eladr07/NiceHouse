@@ -2552,7 +2552,7 @@ def employeesalary_season_expenses(request):
                 total_check_amount += salary.check_amount or 0
                 total_loan_pay += salary.loan_pay or 0
                 total_bruto += salary.bruto or 0
-                total_bruto_employer += salary.bruto_with_employer
+                total_bruto_employer += salary.bruto_employer_expense
                 total_refund += salary.refund
                 total_sale_count += salary.sale_count
             current = date(current.month == 12 and current.year + 1 or current.year,
