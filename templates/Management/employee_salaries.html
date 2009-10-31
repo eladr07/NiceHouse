@@ -135,7 +135,7 @@
 				{% endfor %}
 			</td>
 			<td>{{s.employee.employment_terms.hire_type}}</td>
-			<td><a class="fancybox" href="/employee/{{s.employee.id}}/sales/{{month.year}}/{{month.month}}">{{ s.sales_count }}</a></td>
+			<td><a class="fancybox" href="{{s.employee.get_absolute_url}}/sales/{{month.year}}/{{month.month}}">{{ s.sales_count }}</a></td>
 			<td style="color:#08A600;">
 				{{s.base|commaise}} + 
 				<a href="{{s.id}}/details" class="fancybox">{{s.commissions|commaise}}</a>
