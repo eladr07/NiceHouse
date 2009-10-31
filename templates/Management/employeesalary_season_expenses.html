@@ -46,7 +46,7 @@
 {% endblock header %}
 {% block content %}
 <div class="title">
-	<div class="pageTitle">ריכוז שכר לעובד כולל הוצאות מעביד תקופתי<br>{{employee}}</div>
+	<div class="pageTitle">ריכוז שכר לעובד כולל הוצאות מעביד תקופתי<br><a href="{{employee.get_absolute_url}}">{{employee}}</a></div>
 </div>
 <div class="clearBoth"></div>
 <form method="GET">
@@ -101,13 +101,14 @@
 <div class="clearBoth"></div>
 <br>
 <table id="salaryTable" class="dataTable" border="1">
-<caption>מציג סה"כ {{salaries|length}} משכורות</caption>
+<caption>מציג סה"כ {{salaries|length}} משכורות לעובד {{employee}}</caption>
 	<tr>
 		<th>חודש</th>
-		<th>פרוייקט</th>
 		<th>סוג <BR>העסקה</th>
+		<th>פרוייקט</th>
 		<th>מס'<BR>עסקאות</th>
 		<th>סה"כ<BR>שווי <BR>תלוש</th>
+		<th>החזר<BR>הלוואה</th>
 		<th>שווי<BR>צ'ק</th>
 		<th>סה"כ<BR>ברוטו</th>
 		<th>ברוטו<BR>כולל<BR>הוצאות</th>
@@ -124,14 +125,24 @@
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.employee.id}}>
 		{% endif %}
 			<td>{{ s.month }}/{{ s.year }}</td>
+			<td>{{s.employee.employment_terms.hire_type}}</td>
 			<td>
-				{% for p in s.employee.projects.all %}
-				<a href="{{p.get_absolute_url}}" target="_blank">{{p}}</a><br>
+				{% for p in s.sales %}
+					<a href="{{p.get_absolute_url}}" target="_blank">{{p}}</a>
+					<a href="/reports/project_month/{{p.id}}/{{s.year}}/{{s.month}}">
+						<img src="/site_media/images/PDF-48.png" width="15" height="15"/>
+					</a>
+					<br>
 				{% endfor %}
 			</td>
-			<td>{{s.employee.employment_terms.hire_type}}</td>
-			<td><a class="fancybox" href="/employee/{{s.employee.id}}/sales/{{month.year}}/{{month.month}}">{{ s.sales_count }}</a></td>
+			<td>
+				{% for p,sales in s.sales.items %}
+					{{p}} - {{sales|length}}<br>
+				{% endfor %}
+				<a class="fancybox" href="{{s.employee.get_absolute_url}}/sales/{{s.year}}/{{s.month}}">פירוט</a>
+			</td>
 			<td><a href="{{s.get_absolute_url}}/totaldetails" class="fancybox">{{s.neto|commaise}}</a></td>
+			<td>{{s.loan_pay|commaise}}</td>
 			<td><a href="{{s.get_absolute_url}}/checkdetails" class="fancybox">{{s.check_amount|commaise}}</a></td>
 			<td>{% if s.bruto %}<a href="{{s.expenses.get_absolute_url}}" class="fancybox">{{s.bruto|commaise}}</a>{% endif %}</td>
 			<td>{% if s.bruto_employer_expense %}<a href="{{s.expenses.get_absolute_url}}" class="fancybox">{{s.bruto_employer_expense|commaise}}</a>{% endif %}</td>

@@ -355,6 +355,7 @@ def projects_profit(request):
     for s in salaries:
         tax_val = Tax.objects.filter(date__lte=date(s.year, s.month,1)).latest().value / 100 + 1
         terms = s.employee.employment_terms
+        if not terms: continue
         s.calculate()
         for project, salary in s.project_salary().items():
             for p in projects:
