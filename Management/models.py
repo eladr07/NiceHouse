@@ -1486,7 +1486,7 @@ class Invoice(models.Model):
         ordering = ['creation_date']
 
 class InvoiceOffset(models.Model):
-    invoice = models.OneToOneField('Invoice', related_name='offset', editable=False)
+    invoice = models.OneToOneField('Invoice', related_name='offset', editable=False, null=True)
     date = models.DateField(ugettext('date'))
     amount = models.IntegerField(ugettext('amount'))
     reason = models.CharField(ugettext('reason'), max_length=30)
