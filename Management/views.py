@@ -2502,6 +2502,42 @@ def employeesalary_season_list(request):
     form = EmployeeSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month,
                                        'employee':employee_id})
     salaries = []
+    total_neto, total_check_amount, total_loan_pay, total_bruto, total_refund, total_sale_count = 0,0,0,0,0,0
+    if employee_id:
+        current = date(from_year, from_month, 1)
+        end = date(to_year, to_month, 1)
+        while current <= end:
+            q = EmployeeSalary.objects.filter(employee__id = employee_id, year = current.year, month = current.month)
+            if q.count() == 1:
+                salary = q[0]
+                salaries.append(salary)
+                total_neto += salary.neto or 0
+                total_check_amount += salary.check_amount or 0
+                total_loan_pay += salary.loan_pay or 0
+                total_bruto += salary.bruto or 0
+                total_refund += salary.refund
+                total_sale_count += salary.sale_count
+            current = date(current.month == 12 and current.year + 1 or current.year,
+                           current.month == 12 and 1 or current.month + 1, 1)
+        
+    return render_to_response('Management/employeesalary_season_list.html', 
+                              { 'salaries':salaries, 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
+                                'employee':employee_id and Employee.objects.get(pk=employee_id), 'filterForm':form,
+                                'total_neto':total_neto,'total_check_amount':total_check_amount,
+                                'total_loan_pay':total_loan_pay,'total_bruto':total_bruto,
+                                'total_refund':total_refund,'total_sale_count':total_sale_count},
+                              context_instance=RequestContext(request))
+
+def employeesalary_season_expenses(request):
+    month=Demand.current_month()
+    employee_id = int(request.GET.get('employee', 0))
+    from_year = int(request.GET.get('from_year', month.year))
+    from_month = int(request.GET.get('from_month', month.month))
+    to_year = int(request.GET.get('to_year', month.year))
+    to_month = int(request.GET.get('to_month', month.month))
+    form = EmployeeSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month,
+                                       'employee':employee_id})
+    salaries = []
     total_neto, total_check_amount, total_loan_pay, total_bruto, total_bruto_employer, total_refund = 0,0,0,0,0,0
     total_sale_count = 0
     if employee_id:
@@ -2522,37 +2558,12 @@ def employeesalary_season_list(request):
             current = date(current.month == 12 and current.year + 1 or current.year,
                            current.month == 12 and 1 or current.month + 1, 1)
         
-    return render_to_response('Management/employeesalary_season_list.html', 
+    return render_to_response('Management/employeesalary_season_expenses.html', 
                               { 'salaries':salaries, 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
                                 'employee':employee_id and Employee.objects.get(pk=employee_id), 'filterForm':form,
                                 'total_neto':total_neto,'total_check_amount':total_check_amount,
                                 'total_loan_pay':total_loan_pay,'total_bruto':total_bruto,'total_bruto_employer':total_bruto_employer,
                                 'total_refund':total_refund,'total_sale_count':total_sale_count},
-                              context_instance=RequestContext(request))
-
-def employeesalary_season_expenses(request):
-    month=Demand.current_month()
-    employee_id = int(request.GET.get('employee', 0))
-    from_year = int(request.GET.get('from_year', month.year))
-    from_month = int(request.GET.get('from_month', month.month))
-    to_year = int(request.GET.get('to_year', month.year))
-    to_month = int(request.GET.get('to_month', month.month))
-    form = EmployeeSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month,
-                                       'employee':employee_id})
-    salaries = []
-    if employee_id:
-        current = date(from_year, from_month, 1)
-        end = date(to_year, to_month, 1)
-        while current <= end:
-            q = EmployeeSalary.objects.filter(employee__id = employee_id, year = current.year, month = current.month)
-            if q.count() > 0:
-                salaries.append(q[0])
-            current = date(current.month == 12 and current.year + 1 or current.year,
-                           current.month == 12 and 1 or current.month + 1, 1)
-        
-    return render_to_response('Management/employeesalary_season_expenses.html', 
-                              { 'salaries':salaries, 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
-                                'employee':employee_id and Employee.objects.get(pk=employee_id), 'filterForm':form},
                               context_instance=RequestContext(request))
 
 def employeesalary_season_total_expenses(request):
