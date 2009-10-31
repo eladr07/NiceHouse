@@ -1036,7 +1036,9 @@ def invoice_offset(request, id):
     else:
         form = InvoiceOffsetForm(instance = offset)
     
-    return render_to_response('Management/object_edit.html', {'form': form}, context_instance = RequestContext(request))    
+    return render_to_response('Management/object_edit.html', 
+                              {'form': form, 'title':u'זיכוי לחשבונית מס %s' % i.num}, 
+                              context_instance = RequestContext(request))    
 
 @permission_required('Management.delete_invoiceoffset')
 def invoice_offset_del(request, id):
