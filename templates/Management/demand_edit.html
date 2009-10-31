@@ -175,12 +175,24 @@
 		{% for i in form.instance.invoices.all %}
 			{{ i.num }}
 			- בתאריך
-			<b>{{i.date}}</b>
+			<b>{{i.date|date:"j/m/y"}}</b>
 			על סך
 			<b>{{i.amount|commaise}} ש"ח</b>  				
-			<a id="edit_invoice" href="/invoices/{{i.id}}" ><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+			<a href="/invoices/{{i.id}}" ><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
 			<a href="/invoices/{{i.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
 			<br>
+			{% if i.offset %}
+				בתאריך 
+				{{i.offset.date|date:"j/m/y"}}
+				זיכוי על סך של 
+				{{i.offset.amount|commaise}} ש"ח
+				בגלל 
+				{{i.offset.reason}} 
+				<a href="{{i.offset.get_absolute_url}}" ><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+				<a href="{{i.offset.get_absolute_url}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+			{% else %}
+				<a href="/invoices/{{i.id}}/offset">הזנת זיכוי לחשבונית</a><br>
+			{% endif %}
 		{% endfor %}
 		<br><a href="{{form.instance.id}}/invoice/add">חשבונית חדשה</a><br>
 	</fieldset>
@@ -189,10 +201,10 @@
 		{% for p in form.instance.payments.all %}
 			{{ p.num }}
 			- לתאריך
-			<b>{{p.payment_date}}</b>
+			<b>{{p.payment_date|date:"j/m/y"}}</b>
 			על סך
 			<b>{{p.amount|commaise}} ש"ח</b>  				
-			<a id="edit_invoice" href="/payments/{{p.id}}" ><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+			<a href="/payments/{{p.id}}" ><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
 			<a href="/payments/{{p.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
 			<br>
 		{% endfor %}

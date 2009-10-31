@@ -376,6 +376,14 @@ class InvoiceForm(forms.ModelForm):
     class Meta:
         model = Invoice
         
+class InvoiceOffsetForm(forms.ModelForm):
+    def __init__(self, *args, **kw):
+        forms.ModelForm.__init__(self,*args,**kw)
+        self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
+        self.fields['date'].widget.attrs = {'class':'vDateField'}
+    class Meta:
+        model = Invoice
+        
 class PaymentForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)

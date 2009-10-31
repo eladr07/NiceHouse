@@ -318,7 +318,12 @@ urlpatterns += patterns('Management.views',
     (r'^invoices/add$', 'invoice_add'),      
     (r'^invoices/(?P<object_id>\d+)$', 'limited_update_object',
      {'form_class' : Management.forms.InvoiceForm, 'template_name' : 'Management/invoice_edit.html', 'post_save_redirect' : '%(id)s'}),
-    (r'^invoices/(?P<id>\d+)/del$', 'invoice_del'),    
+    (r'^invoices/(?P<id>\d+)/del$', 'invoice_del'),
+     
+    (r'^invoices/(?P<id>\d+)/offset$', 'invoice_offset'),      
+    (r'^invoiceoffset/(?P<object_id>\d+)$', 'limited_update_object',
+     {'model' : InvoiceOffset, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '%(id)s'}),
+    (r'^invoiceoffset/(?P<id>\d+)/del$', 'invoice_offset_del'),
     
     (r'^checks(/(?P<year>\d{4})/(?P<month>\d{2}))?$', 'check_list'),
     (r'^checks/add$', 'check_add'),

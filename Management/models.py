@@ -1475,6 +1475,9 @@ class Invoice(models.Model):
     date = models.DateField(ugettext('invoice_date'))
     amount = models.IntegerField(ugettext('amount'))
     remarks = models.TextField(ugettext('remarks'), null=True,blank=True)
+    @property
+    def amount_offset(self):
+        return self.offset and self.offset.amount + self.amount or self.amount
     def __unicode__(self):
         return u'חשבונית על סך %s ש"ח בתאריך %s' % (commaise(self.amount), self.date.strftime('%d/%m/%Y'))
     class Meta:
@@ -1482,6 +1485,17 @@ class Invoice(models.Model):
         get_latest_by = 'creation_date'
         ordering = ['creation_date']
 
+class InvoiceOffset(models.Model):
+    invoice = models.OneToOneField('Invoice', related_name='offset', editable=False)
+    date = models.DateField(ugettext('date'))
+    amount = models.IntegerField(ugettext('amount'))
+    reason = models.CharField(ugettext('reason'), max_length=30)
+    remarks = models.TextField(ugettext('remarks'), null=True,blank=True)
+    def get_absolute_url(self):
+        return '/invoiceoffset/%s' % self.id
+    class Meta:
+        db_table = 'InvoiceOffset'
+        
 class PaymentType(models.Model):
     name = models.CharField(max_length=20)
     def __unicode__(self):
@@ -1667,7 +1681,10 @@ class Demand(models.Model):
         return self.payments.all().aggregate(Sum('amount'))['amount__sum'] or 0
     @property
     def invoices_amount(self):
-        return self.invoices.all().aggregate(Sum('amount'))['amount__sum'] or 0
+        amount = 0
+        for i in self.invoices.all():
+            amount += i.amount_offset
+        return amount
     @property
     def diff_invoice_payment(self):
         return self.payments_amount - self.invoices_amount

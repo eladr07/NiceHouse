@@ -685,9 +685,12 @@ def nh_season_income(request):
         season_net_income += nhm.total_net_income
         total_avg_signed_commission += nhm.avg_signed_commission
         total_avg_actual_commission += nhm.avg_actual_commission
-        
-    total_avg_signed_commission /= len(nhmonth_set)
-    total_avg_actual_commission /= len(nhmonth_set)
+    if nhmonth_set > 0:
+        total_avg_signed_commission /= len(nhmonth_set)
+        total_avg_actual_commission /= len(nhmonth_set)
+    else:
+        total_avg_signed_commission = 0
+        total_avg_actual_commission = 0        
     if season_net_income_notax:
         for e in employees:
             e.season_branch_income_ratio_notax = e.season_branch_income_notax / season_net_income_notax * 100
@@ -976,7 +979,8 @@ def demand_invoice_list(request):
     except (EmptyPage, InvalidPage):
         invoices = paginator.page(paginator.num_pages)
 
-    return render_to_response('Management/demand_invoice_list.html', {'page': invoices,'filterForm':form})    
+    return render_to_response('Management/demand_invoice_list.html', {'page': invoices,'filterForm':form},
+                              context_instance = RequestContext(request))    
  
  
 @permission_required('Management.demand_payments')
@@ -1006,7 +1010,8 @@ def demand_payment_list(request):
     except (EmptyPage, InvalidPage):
         payments = paginator.page(paginator.num_pages)
 
-    return render_to_response('Management/demand_payment_list.html', {'page': payments,'filterForm':form})    
+    return render_to_response('Management/demand_payment_list.html', {'page': payments,'filterForm':form},
+                              context_instance = RequestContext(request))    
    
 @permission_required('Management.add_invoice')
 def project_invoice_add(request, id):
@@ -1016,6 +1021,26 @@ def project_invoice_add(request, id):
 def invoice_del(request, id):
     i = Invoice.objects.get(pk=id)
     demand_id = i.demands.all()[0].id
+    i.delete()
+    return HttpResponseRedirect('/demands/%s' % demand_id)
+
+@permission_required('Management.add_invoiceoffset')
+def invoice_offset(request, id):
+    i = Invoice.objects.get(pk=id)
+    offset = i.offset or InvoiceOffset(invoice = i)
+    if request.method == 'POST':
+        form = InvoiceOffsetForm(request.POST, instance = offset)
+        if form.is_valid():
+            form.save()
+    else:
+        form = InvoiceOffsetForm(instance = offset)
+    
+    return render_to_response('Management/object_edit.html', {'form': form}, context_instance = RequestContext(request))    
+
+@permission_required('Management.delete_invoiceoffset')
+def invoice_offset_del(request, id):
+    i = InvoiceOffset.objects.get(pk=id)
+    demand_id = i.invoice.demands.all()[0].id
     i.delete()
     return HttpResponseRedirect('/demands/%s' % demand_id)
 
