@@ -1478,6 +1478,12 @@ class Invoice(models.Model):
     @property
     def amount_offset(self):
         return self.offset and self.offset.amount + self.amount or self.amount
+    @property
+    def offset(self):
+        try:
+            return self.offset
+        except InvoiceOffset.DoesNotExist:
+            return None            
     def __unicode__(self):
         return u'חשבונית על סך %s ש"ח בתאריך %s' % (commaise(self.amount), self.date.strftime('%d/%m/%Y'))
     class Meta:
@@ -1486,7 +1492,7 @@ class Invoice(models.Model):
         ordering = ['creation_date']
 
 class InvoiceOffset(models.Model):
-    invoice = models.OneToOneField('Invoice', related_name='offset', editable=False, null=True)
+    invoice = models.OneToOneField('Invoice', editable=False)
     date = models.DateField(ugettext('date'))
     amount = models.IntegerField(ugettext('amount'))
     reason = models.CharField(ugettext('reason'), max_length=30)
