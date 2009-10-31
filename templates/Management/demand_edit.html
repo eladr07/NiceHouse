@@ -188,10 +188,10 @@
 				{{i.offset.amount|commaise}} ש"ח
 				בגלל 
 				{{i.offset.reason}} 
-				<a href="{{i.offset.get_absolute_url}}" ><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+				<a href="{{i.offset.get_absolute_url}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
 				<a href="{{i.offset.get_absolute_url}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
 			{% else %}
-				<a href="/invoices/{{i.id}}/offset">הזנת זיכוי לחשבונית</a><br>
+				<a href="/invoices/{{i.id}}/offset" class="fancybox">הזנת זיכוי לחשבונית</a><br>
 			{% endif %}
 		{% endfor %}
 		<br><a href="{{form.instance.id}}/invoice/add">חשבונית חדשה</a><br>
