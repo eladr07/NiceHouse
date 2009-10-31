@@ -153,5 +153,15 @@
 			<td>{{s.sent_to_checks_date|default_if_none:""}}</td>
 		</tr>
 	{% endfor %}
+		<tr class="rowSum" height="30px">
+			<td colspan="3"></td>
+			<td>{{total_sale_count}}</td>
+			<td>{{total_neto|commaise}}</td>
+			<td>{{total_loan_pay|commaise}}</td>
+			<td>{{total_check_amount|commaise}}</td>
+			<td>{{total_bruto|commaise}}</td>
+			<td>{{total_bruto_employer|commaise}}</td>
+			<td>{{total_refund|commaise}}</td>
+		</tr>
 </table>
 {% endblock content %}
