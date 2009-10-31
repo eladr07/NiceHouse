@@ -180,7 +180,6 @@
 			<b>{{i.amount|commaise}} ש"ח</b>  				
 			<a href="/invoices/{{i.id}}" ><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
 			<a href="/invoices/{{i.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
-			<br>
 			{% if i.offset %}
 				בתאריך 
 				{{i.offset.date|date:"j/m/y"}}
@@ -191,8 +190,9 @@
 				<a href="{{i.offset.get_absolute_url}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
 				<a href="{{i.offset.get_absolute_url}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
 			{% else %}
-				<a href="/invoices/{{i.id}}/offset" class="fancybox">הזנת זיכוי לחשבונית</a><br>
+				<a href="/invoices/{{i.id}}/offset" class="fancybox">הזנת זיכוי לחשבונית</a>
 			{% endif %}
+			<br>
 		{% endfor %}
 		<br><a href="{{form.instance.id}}/invoice/add">חשבונית חדשה</a><br>
 	</fieldset>
