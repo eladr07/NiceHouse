@@ -254,10 +254,11 @@ class DemandDiffForm(forms.ModelForm):
     add_type = forms.ChoiceField(choices=((1,u'תוספת'),
                                           (2,'קיזוז')), 
                                           label=ugettext('add_type'))
-    def save(self):
+    def save(self, *args, **kw):
         add_type, amount = self.cleaned_data['add_type'], self.cleaned_data['amount']
         if (add_type == 1 and amount < 0) or (add_type == 2 and amount > 0):
             self.cleaned_data['amount'] *= -1
+        return forms.ModelForm.save(self, *args, **kw)
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self, *args, **kw)
         if self.instance.id:
