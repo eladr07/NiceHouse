@@ -475,7 +475,7 @@ def nhemployee_salary_pdf(request, nhbranch_id, year, month):
     p.close()
     return response 
 
-@permission_required('Management.change_salaryexpense')
+@permission_required('Management.change_salaryexpenses')
 def employee_salary_expenses(request, salary_id):
     es = EmployeeSalaryBase.objects.get(pk=salary_id)
     employee = es.get_employee()
