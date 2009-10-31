@@ -1027,11 +1027,12 @@ def invoice_del(request, id):
 @permission_required('Management.add_invoiceoffset')
 def invoice_offset(request, id):
     i = Invoice.objects.get(pk=id)
-    offset = i.offset or InvoiceOffset(invoice = i)
+    offset = i.offset or InvoiceOffset()
     if request.method == 'POST':
         form = InvoiceOffsetForm(request.POST, instance = offset)
         if form.is_valid():
-            form.save()
+            i.offset = form.save()
+            i.save()
     else:
         form = InvoiceOffsetForm(instance = offset)
     
