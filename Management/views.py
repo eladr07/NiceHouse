@@ -2516,7 +2516,7 @@ def employeesalary_season_list(request):
                 total_loan_pay += salary.loan_pay or 0
                 total_bruto += salary.bruto or 0
                 total_refund += salary.refund or 0
-                total_sale_count += salary.sale_count
+                total_sale_count += salary.sales_count
             current = date(current.month == 12 and current.year + 1 or current.year,
                            current.month == 12 and 1 or current.month + 1, 1)
         
@@ -2554,7 +2554,7 @@ def employeesalary_season_expenses(request):
                 total_bruto += salary.bruto or 0
                 total_bruto_employer += salary.bruto_employer_expense or 0
                 total_refund += salary.refund or 0
-                total_sale_count += salary.sale_count
+                total_sale_count += salary.sales_count
             current = date(current.month == 12 and current.year + 1 or current.year,
                            current.month == 12 and 1 or current.month + 1, 1)
         
