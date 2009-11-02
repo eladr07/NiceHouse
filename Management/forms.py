@@ -256,7 +256,7 @@ class DemandDiffForm(forms.ModelForm):
                                           label=ugettext('add_type'))
     def clean(self):
         add_type, amount = self.cleaned_data['add_type'], self.cleaned_data['amount']
-        self.cleaned_data['amount'] = add_type == 2 and amount * -1 or amount 
+        self.cleaned_data['amount'] = add_type == 2 and (amount * -1) or amount 
         return self.cleaned_data
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self, *args, **kw)
