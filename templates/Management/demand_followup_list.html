@@ -144,13 +144,15 @@
 			<td>
 				{% for i in d.invoices.all %}
 					{% if i.offset %}
+						<a href="{{i.offset.get_absolute_url}}" class="fancybox">
 						{{i.offset.amount|commaise}} - {{i.reason}}
+						</a>
 					{% endif %}
 				{% endfor %}
 			</td>
 			<td>
 				{% if d.adjust_diff %}
-					<a href="{{d.adjust_diff.get_absolute_url}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+					<a href="{{d.adjust_diff.get_absolute_url}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
 				{% endif %}
 			</td>
 			<td
