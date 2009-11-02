@@ -279,6 +279,7 @@ class SaleForm(forms.ModelForm):
         else:
             if house.get_sale() != None:
                 raise ValidationError("כבר קיימת מכירה לדירה זו")
+        return house
         
     def save(self, *args, **kw):
         house, discount, allowed_discount = (self.cleaned_data['house'],

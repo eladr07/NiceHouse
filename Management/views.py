@@ -956,7 +956,7 @@ def demand_invoice_add(request, id):
 @permission_required('Management.demand_invoices')
 def demand_invoice_list(request):
     month = Demand.current_month()
-    project_id = int(request.GET.get('project', 0))
+    project_id = int(request.GET.get('project') or 0)
     from_year = int(request.GET.get('from_year', month.year))
     from_month = int(request.GET.get('from_month', month.month))
     to_year = int(request.GET.get('to_year', month.year))
@@ -986,7 +986,7 @@ def demand_invoice_list(request):
 @permission_required('Management.demand_payments')
 def demand_payment_list(request):
     month = Demand.current_month()
-    project_id = int(request.GET.get('project', 0))
+    project_id = int(request.GET.get('project') or 0)
     from_year = int(request.GET.get('from_year', month.year))
     from_month = int(request.GET.get('from_month', month.month))
     to_year = int(request.GET.get('to_year', month.year))
@@ -2403,7 +2403,7 @@ def report_employeesalary_season(request, employee_id=None, from_year=Demand.cur
 @permission_required('Management.demand_season')
 def demand_season_list(request):
     month=Demand.current_month()
-    project_id = int(request.GET.get('project', 0))
+    project_id = int(request.GET.get('project') or 0)
     from_year = int(request.GET.get('from_year', month.year))
     from_month = int(request.GET.get('from_month', month.month))
     to_year = int(request.GET.get('to_year', month.year))
@@ -2488,7 +2488,7 @@ def season_income(request):
 
 def demand_followup_list(request):
     month=Demand.current_month()
-    project_id = int(request.GET.get('project', 0))
+    project_id = int(request.GET.get('project') or 0)
     from_year = int(request.GET.get('from_year', month.year))
     from_month = int(request.GET.get('from_month', month.month))
     to_year = int(request.GET.get('to_year', month.year))
