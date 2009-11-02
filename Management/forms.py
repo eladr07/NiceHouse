@@ -254,11 +254,9 @@ class DemandDiffForm(forms.ModelForm):
     add_type = forms.ChoiceField(choices=((1,u'תוספת'),
                                           (2,'קיזוז')), 
                                           label=ugettext('add_type'))
-    def save(self, *args, **kw):
+    def clean_amount(self):
         add_type, amount = self.cleaned_data['add_type'], self.cleaned_data['amount']
-        if add_type == 2:
-            self.cleaned_data['amount'] *= -1
-        return forms.ModelForm.save(self, *args, **kw)
+        return add_type == 2 and amount * -1 or amount 
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self, *args, **kw)
         if self.instance.id:
@@ -271,17 +269,20 @@ class SaleForm(forms.ModelForm):
     building = forms.ModelChoiceField(queryset = Building.objects.all(), label=ugettext('building'))
     joined_sale = forms.BooleanField(label = ugettext('joined sale'), required = False)
     signup_date = forms.DateField(label=ugettext('signup_date'), required=False)
+    def clean_house(self):
+        house = self.cleaned_data['house']
+        if self.instance.id:
+            s = house.get_sale()
+            if s != None and s != self.instance:
+                raise ValidationError("כבר קיימת מכירה לדירה זו")
+        else:
+            if house.get_sale() != None:
+                raise ValidationError("כבר קיימת מכירה לדירה זו")
+        
     def save(self, *args, **kw):
         house, discount, allowed_discount = (self.cleaned_data['house'],
                                              self.cleaned_data['discount'],
                                              self.cleaned_data['allowed_discount'])
-        if self.instance.id:
-            s = house.get_sale()
-            if s != None and s != self.instance:
-                raise ValidationError
-        else:
-            if house.get_sale() != None:
-                raise ValidationError
         '''checks if entered a allowed discount but not discount -> will fill
         discount automatically'''
         if allowed_discount and not discount:
