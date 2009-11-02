@@ -1314,7 +1314,6 @@ class CZilber(models.Model):
                 demand = demand.get_previous_demand()
             if bonus != 0:
                 d.diffs.create(type=u'בונוס', reason=u'בונוס חסכון בהנחה (נספח ב)', amount=bonus)
-        d.save()
     class Meta:
         db_table = 'CZilber'
 
@@ -1456,6 +1455,9 @@ class ProjectCommission(models.Model):
                 if dic[s] > self.max:
                     dic[s] = self.max
         for s in details:
+            #clear commission details for all sales
+            for scd in s.commission_details.all():
+                scd.delete()
             for c, v in details[s].items():
                 scd = s.commission_details.get_or_create(employee_salary=None, commission=c)[0]
                 scd.value = s.commission_include and v or 0
@@ -1465,7 +1467,6 @@ class ProjectCommission(models.Model):
             scd.save()
             s.price_final = s.project_price()
             s.save()
-
     class Meta:
         db_table = 'ProjectCommission'
   
