@@ -685,7 +685,7 @@ def nh_season_income(request):
         season_net_income += nhm.total_net_income
         total_avg_signed_commission += nhm.avg_signed_commission
         total_avg_actual_commission += nhm.avg_actual_commission
-    if nhmonth_set > 0:
+    if len(nhmonth_set) > 0:
         total_avg_signed_commission /= len(nhmonth_set)
         total_avg_actual_commission /= len(nhmonth_set)
     else:
