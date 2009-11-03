@@ -514,21 +514,23 @@ def employee_salary_list(request):
     year = int(request.GET.get('year', current.year))
     month = int(request.GET.get('month', current.month))
     salaries = []
-    for e in Employee.objects.active():
-        terms = e.employment_terms
-        if not terms:
-            continue
-        if year < e.work_start.year or (year == e.work_start.year and month < e.work_start.month):
-            continue
-        es, new = EmployeeSalary.objects.get_or_create(employee = e, month = month, year = year)
-        if year == e.work_start.year and month == e.work_start.month:
-            base = float(30 - e.work_start.day) / 30 * terms.salary_base 
-        else:
-            base = terms.salary_base
-        if new:
-            es.base = base
-            es.save()
-        salaries.append(es)
+    today = date.today()
+    if date(year, month, 1) <= today:
+        for e in Employee.objects.active():
+            terms = e.employment_terms
+            if not terms:
+                continue
+            if year < e.work_start.year or (year == e.work_start.year and month < e.work_start.month):
+                continue
+            es, new = EmployeeSalary.objects.get_or_create(employee = e, month = month, year = year)
+            if year == e.work_start.year and month == e.work_start.month:
+                base = float(30 - e.work_start.day) / 30 * terms.salary_base 
+            else:
+                base = terms.salary_base
+            if new:
+                es.base = base
+                es.save()
+            salaries.append(es)
     return render_to_response('Management/employee_salaries.html', 
                               {'salaries':salaries, 'month': date(int(year), int(month), 1),
                                'filterForm':MonthFilterForm(initial={'year':year,'month':month})},
