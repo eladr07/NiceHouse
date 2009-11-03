@@ -985,7 +985,7 @@ class EmployeeSalary(EmployeeSalaryBase):
         for scd in SaleCommissionDetail.objects.filter(employee_salary=self):
             scd.delete()
         terms = self.employee.employment_terms
-        self.commissions, self.base = 0, terms and terms.salary_base or 0
+        self.commissions = 0
         for project, sales in self.sales.items():
             q = self.employee.commissions.filter(project__id = project.id)
             if q.count() == 0: continue
@@ -1721,7 +1721,7 @@ class Demand(models.Model):
         i=0
         for s in self.get_sales():
             i += s.c_final_worth
-        return i
+        return int(i)
     def get_total_amount(self):
         diffs = self.diffs.all().aggregate(Sum('amount'))['amount__sum'] or 0
         return self.get_sales_commission() + diffs
