@@ -522,7 +522,7 @@ def employee_salary_list(request):
             continue
         es, new = EmployeeSalary.objects.get_or_create(employee = e, month = month, year = year)
         if year == e.work_start.year and month == e.work_start.month:
-            base = float(e.work_start.day) / 30 * terms.salary_base 
+            base = float(30 - e.work_start.day) / 30 * terms.salary_base 
         else:
             base = terms.salary_base
         if new:

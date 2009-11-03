@@ -173,7 +173,7 @@ class ProjectCommissionForm(forms.ModelForm):
         model = ProjectCommission
 
 class EmployeeAddProjectForm(forms.Form):
-    employee = forms.ModelChoiceField(queryset=Employee.objects.active(), label=ugettext('employee'))
+    employee = forms.ModelChoiceField(queryset=Employee.objects.all(), label=ugettext('employee'))
     project = forms.ModelChoiceField(queryset=Project.objects.active(), label=ugettext('project'))
     start_date = forms.DateField(label=ugettext('start date'))
     def __init__(self, *args, **kw):
@@ -181,7 +181,7 @@ class EmployeeAddProjectForm(forms.Form):
         self.fields['start_date'].widget.attrs = {'class':'vDateField'}
 
 class EmployeeRemoveProjectForm(forms.Form):
-    employee = forms.ModelChoiceField(queryset=Employee.objects.active(), label=ugettext('employee'))
+    employee = forms.ModelChoiceField(queryset=Employee.objects.all(), label=ugettext('employee'))
     project = forms.ModelChoiceField(queryset=Project.objects.active(), label=ugettext('project'))
     end_date = forms.DateField(label=ugettext('end_date'))
     def __init__(self, *args, **kw):
