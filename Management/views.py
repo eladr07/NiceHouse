@@ -392,7 +392,6 @@ def projects_profit(request):
         total_profit += p.profit
     if project_count:
         avg_relative_expense_income = avg_relative_expense_income / project_count
-        avg_relative_expense_income = avg_relative_expense_income / project_count
         avg_relative_sales_expense = avg_relative_sales_expense / project_count
     
     return render_to_response('Management/projects_profit.html', 
