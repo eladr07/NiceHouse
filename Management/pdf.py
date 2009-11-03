@@ -621,7 +621,8 @@ class MultipleDemandWriter:
         return doc.canv
 
 class EmployeeSalariesWriter:
-    def __init__(self, salaries, title, show_employee, show_month):
+    def __init__(self, salaries, title, show_employee, show_month, bookkeeping):
+        self.bookkeeping = bookkeeping
         self.salaries, self.title, self.show_employee, self.show_month = salaries, title, show_employee, show_month
     @property
     def pages_count(self):
@@ -642,8 +643,12 @@ class EmployeeSalariesWriter:
             headers.append(log2vis(u'העובד\nשם'))
         if self.show_month:
             headers.append(log2vis(u'חודש'))
-        headers.extend([log2vis(n) for n in [u'סטטוס', u'התלוש\nסכום', u'הצק\nסכום', u'לעובד\nהוצאות\nהחזר', 
-                                        u'מנה"ח\nלחישוב\nברוטו', u'לנטו\nמחושב\nברוטו', u'הערות']])
+        headers.append(log2vis(u'העסקה\nסוג'))
+        if self.bookkeeping:
+            headers.extend([log2vis(n) for n in [u'התלוש\nסכום', u'הלוואה\nהחזר']])
+        headers.append(log2vis(u'הצק\nסכום'))
+        if self.bookkeeping:
+            headers.extend([log2vis(n) for n in [u'לעובד\nהוצאות\nהחזר',u'מנה"ח\nלחישוב\nברוטו',u'לנטו\nמחושב\nברוטו',u'הערות']])
         headers.reverse()
         colWidths = [None,None,None,None,None,None,None,None]
         colWidths.reverse()
@@ -656,10 +661,12 @@ class EmployeeSalariesWriter:
                 row.append(log2vis(unicode(es.employee)))
             if self.show_month:
                 row.append('%s/%s' % (es.month, es.year))
-            row.extend([log2vis(u'%s - %s' % (terms.hire_type.name, terms.salary_net and u'נטו' or u'ברוטו')), 
-                        commaise(es.total_amount), commaise(es.check_amount),
-                        commaise(es.refund or 0), es.bruto and commaise(es.bruto),
-                        None, log2vis(es.remarks or '')])
+            row.extend([log2vis(u'%s - %s' % (terms.hire_type.name, terms.salary_net and u'נטו' or u'ברוטו'))])
+            if self.bookkeeping:
+                row.extend([commaise(es.neto),commaise(es.loan_pay)])
+            row.append(commaise(es.check_amount))
+            if self.bookkeeping: 
+                row.extend([commaise(es.refund or 0), es.bruto and commaise(es.bruto),None, log2vis(es.remarks or '')])
             row.reverse()
             rows.append(row)
             i += 1
