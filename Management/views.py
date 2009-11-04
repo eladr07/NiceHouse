@@ -582,7 +582,7 @@ def employee_salary_pdf(request, year, month):
 
     EmployeeSalariesWriter([es for es in EmployeeSalary.objects.filter(year = year, month= month)
                             if es.approved_date], u'שכר עבודה למנהלי פרויקטים לחודש %s\%s' % (year, month),
-                            show_month=False, show_employee=True).build(filename)
+                            show_month=False, show_employee=True, bookkeeping =False).build(filename)
     p = open(filename,'r')
     response.write(p.read())
     p.close()
@@ -2407,7 +2407,7 @@ def report_employeesalary_season(request, employee_id=None, from_year=Demand.cur
     response['Content-Disposition'] = 'attachment; filename=' + filename
 
     EmployeeSalariesWriter(salaries, u'ריכוז שכר תקופתי לעובד - %s' % Employee.objects.get(pk=employee_id),
-                           show_month=True, show_employee=False).build(filename)
+                           show_month=True, show_employee=False, bookkeeping =False).build(filename)
     p = open(filename,'r')
     response.write(p.read())
     p.close()
