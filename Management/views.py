@@ -2214,8 +2214,11 @@ def sale_edit(request, id):
                     next = '/salehousemod/%s' % shm.id
             form.save()
             sale.demand.calc_sales_commission()
+            year, month = sale.demand.year, sale.demand.month
             for employee in project.employees.all():
-                es = employee.salaries.get_or_create(year = sale.demand.year, month = sale.demand.month)
+                if employee.work_end and employee.work_end < date(year, month, 1):
+                    continue
+                es = employee.salaries.get_or_create(year = year, month = month)
                 es[0].calculate()
                 es[0].save()
             if request.POST.has_key('addanother'):
@@ -2253,9 +2256,9 @@ def sale_add(request, demand_id=None):
                 next = '/salepre/%s' % sp.id 
             demand.calc_sales_commission()
             for employee in demand.project.employees.all():
-                if not employee.work_end:
+                if employee.work_end and employee.work_end < date(year, month, 1):
                     continue
-                es = employee.salaries.get_or_create(year = demand.year, month = demand.month)
+                es = employee.salaries.get_or_create(year = year, month = month)
                 es[0].calculate()
                 es[0].save()
             if request.POST.has_key('addanother'):

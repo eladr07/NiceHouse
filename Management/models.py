@@ -976,9 +976,10 @@ class EmployeeSalary(EmployeeSalaryBase):
             for project, commission in self.project_commission.items():
                 res[project] = commission + (self.employee.main_project.id == project.id and bruto_amount-self.commissions or 0)
         else:
-            base = (bruto_amount-self.commissions) / self.employee.projects.count() 
-            for project, commission in self.project_commission.items():
-                res[project] = commission + base
+            if self.employee.projects.count():
+                base = (bruto_amount-self.commissions) / self.employee.projects.count()
+                for project, commission in self.project_commission.items():
+                    res[project] = commission + base
         return res 
     def calculate(self):
         #clean any sale commission details associated with this salary
