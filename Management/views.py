@@ -661,12 +661,15 @@ def nh_season_income(request):
     nhbranch = NHBranch.objects.get(pk=nhbranch_id)
     season_income, season_net_income, season_income_notax, season_net_income_notax = 0, 0, 0, 0
     total_avg_signed_commission, total_avg_actual_commission = 0,0
-    employees = list(nhbranch.nhemployees.all())
+    q = nhbranch.nhemployees.exclude(work_end__lt = date(from_year, from_month, 1),
+                                     work_start__gt = date(to_month == 12 and to_year + 1 or to_year,
+                                                           to_month == 12 and 1 or to_month + 1, 1))
+    employees = list(q)
     for e in employees:
         e.season_total, e.season_total_notax, e.season_branch_income_notax = 0, 0, 0
         e.season_branch_income_buyers_notax, e.season_branch_income_sellers_notax = 0, 0
     for nhm in nhmonth_set:
-        nhm.employees = list(nhm.nhbranch.nhemployees.all())
+        nhm.employees = list(q)
         tax = Tax.objects.filter(date__lte=date(nhm.year, nhm.month,1)).latest().value / 100 + 1
         for e in nhm.employees:
             e.month_total = 0
