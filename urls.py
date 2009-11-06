@@ -283,7 +283,7 @@ urlpatterns += patterns('Management.views',
      {'queryset':EmployeeSalary.objects.all(), 'template_name':'Management/employee_salary_total_details.html', 
       'template_object_name':'salary', 'context_processors':[RequestContext]}),
     (r'^employeesalaries/(?P<id>\d+)/approve$', 'employee_salary_approve'),
-    (r'^employees/(?P<id>\d+)/sales/(?P<year>\d+)/(?P<month>\d+)$', 'employee_sales'),
+    (r'^employee/(?P<id>\d+)/sales/(?P<year>\d+)/(?P<month>\d+)$', 'employee_sales'),
     
     (r'^employee/remarks/(?P<year>\d+)/(?P<month>\d+)$', 'employee_remarks'),
     (r'^employee/refund/(?P<year>\d+)/(?P<month>\d+)$', 'employee_refund'),
