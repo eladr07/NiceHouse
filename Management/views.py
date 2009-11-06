@@ -664,7 +664,7 @@ def nh_season_income(request):
     from_date = date(from_year, from_month, 1)
     to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
     q = nhbranch.nhemployees.filter(work_start__lt = to_date) \
-                            .exclude(work_end__lt = from_date)
+                            .exclude(work_end__isnull=False, work_end__lt = from_date)
     employees = list(q)
     for e in employees:
         e.season_total, e.season_total_notax, e.season_branch_income_notax = 0, 0, 0
