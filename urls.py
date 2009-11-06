@@ -1,4 +1,4 @@
-from django.conf.urls.defaults import *
+﻿from django.conf.urls.defaults import *
 from Management.models import *
 from django.template import RequestContext
 import Management.forms
