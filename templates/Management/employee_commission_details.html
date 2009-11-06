@@ -11,10 +11,10 @@
 		<th>שווי עמלה</th>
 		<th>פירוט מכירות</th>
 		{% regroup salary.commission_details.all by sale.house.building.project as project_list %}
-		<tr>
-			<td colspan="0">{{pl.grouper}}</td>
-		</tr>
 		{% for pl in project_list %}
+			<tr>
+				<td colspan="0">{{pl.grouper}}</td>
+			</tr>
 			{% regroup pl.list by commission as commission_list %}
 			{% for cl in commission_list %}
 			<tr>
@@ -31,7 +31,7 @@
 			{% for v in value_list %}
 			<tr>
 				<td></td>
-				<td>{{v.grouper}} * {{v.list|length}}</td>
+				<td>{{v.grouper|commaise}} * {{v.list|length}}</td>
 				<td>
 				{% for scd in v.list %}
 					<a href="{{scd.sale.get_absolute_url}}" target="_parent">{{scd.sale.house.building.num}}/{{scd.sale.house.num}}</a> ,
