@@ -10,7 +10,7 @@
 		<th>סוג עמלה</th>
 		<th>שווי עמלה</th>
 		<th>פירוט מכירות</th>
-		{% regroup salary.commission_details.all by commission as project_list %}
+		{% regroup salary.commission_details.all by sale.house.building.project as project_list %}
 		<tr>
 			<td colspan="0">{{pl.grouper}}</td>
 		</tr>
