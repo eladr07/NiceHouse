@@ -34,7 +34,7 @@
 <div id="leftSide">
 	<fieldset class="cardFieldset">
 		<legend>יועצי נדל"ן</legend>
-		{% for e in form.instance.nhemployees.all %}
+		{% for e in form.instance.nhemployees.active %}
 			<a href="{{e.get_absolute_url}}">{{e}}</a><br>
 		{% endfor %}
 	</fieldset>
