@@ -663,8 +663,8 @@ def nh_season_income(request):
     total_avg_signed_commission, total_avg_actual_commission = 0,0
     from_date = date(from_year, from_month, 1)
     to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
-    q = nhbranch.nhemployees.filter(work_start__lt = to_date, work_end = None) \
-                            .filter(work_end__gt = from_date)
+    q = nhbranch.nhemployees.filter(work_start__lt = to_date) \
+                            .filter(work_end__isnull=False, work_end__gt = from_date)
     employees = list(q)
     for e in employees:
         e.season_total, e.season_total_notax, e.season_branch_income_notax = 0, 0, 0
