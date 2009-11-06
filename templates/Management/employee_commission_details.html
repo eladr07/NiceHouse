@@ -10,29 +10,35 @@
 		<th>סוג עמלה</th>
 		<th>שווי עמלה</th>
 		<th>פירוט מכירות</th>
-		{% regroup salary.commission_details.all by commission as commission_list %}
-		{% for cl in commission_list %}
+		{% regroup salary.commission_details.all by commission as project_list %}
 		<tr>
-			<td>
-			{% ifequal cl.grouper "c_var" %}עמלה משתנה{% endifequal %}
-			{% ifequal cl.grouper "c_var_precentage" %}עמלה משתנה באחוזים{% endifequal %}
-			{% ifequal cl.grouper "c_by_price" %}עמלה לפי מחיר דירה{% endifequal %}
-			{% ifequal cl.grouper "b_discount_save" %}בונוס חסכון בהנחה{% endifequal %}
-			{% ifequal cl.grouper "b_house_type" %}בונוס לסוג דירה{% endifequal %}
-			{% ifequal cl.grouper "b_sale_rate" %}בונוס קצב מכירות{% endifequal %}
-			</td>
+			<td colspan="0">{{pl.grouper}}</td>
 		</tr>
-		{% regroup cl.list by value as value_list %}
-		{% for v in value_list %}
-		<tr>
-			<td></td>
-			<td>{{v.grouper}} * {{v.list|length}}</td>
-			<td>
-			{% for scd in v.list %}
-				<a href="{{scd.sale.get_absolute_url}}" target="_parent">{{scd.sale.house.building.num}}/{{scd.sale.house.num}}</a> ,
+		{% for pl in project_list %}
+			{% regroup pl.list by commission as commission_list %}
+			{% for cl in commission_list %}
+			<tr>
+				<td>
+				{% ifequal cl.grouper "c_var" %}עמלה משתנה{% endifequal %}
+				{% ifequal cl.grouper "c_var_precentage" %}עמלה משתנה באחוזים{% endifequal %}
+				{% ifequal cl.grouper "c_by_price" %}עמלה לפי מחיר דירה{% endifequal %}
+				{% ifequal cl.grouper "b_discount_save" %}בונוס חסכון בהנחה{% endifequal %}
+				{% ifequal cl.grouper "b_house_type" %}בונוס לסוג דירה{% endifequal %}
+				{% ifequal cl.grouper "b_sale_rate" %}בונוס קצב מכירות{% endifequal %}
+				</td>
+			</tr>
+			{% regroup cl.list by value as value_list %}
+			{% for v in value_list %}
+			<tr>
+				<td></td>
+				<td>{{v.grouper}} * {{v.list|length}}</td>
+				<td>
+				{% for scd in v.list %}
+					<a href="{{scd.sale.get_absolute_url}}" target="_parent">{{scd.sale.house.building.num}}/{{scd.sale.house.num}}</a> ,
+				{% endfor %}
+				</td>
 			{% endfor %}
-			</td>
-		{% endfor %}
+			{% endfor %}
 		{% endfor %}
 	</table>
 </div>
