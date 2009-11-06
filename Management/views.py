@@ -661,10 +661,10 @@ def nh_season_income(request):
     nhbranch = NHBranch.objects.get(pk=nhbranch_id)
     season_income, season_net_income, season_income_notax, season_net_income_notax = 0, 0, 0, 0
     total_avg_signed_commission, total_avg_actual_commission = 0,0
-    q = nhbranch.nhemployees.exclude(work_end__isnull=True) \
-                            .exclude(work_end__lt = date(from_year, from_month, 1)) \
-                            .exclude(work_start__gt = date(to_month == 12 and to_year + 1 or to_year,
-                                                           to_month == 12 and 1 or to_month + 1, 1))
+    from_date = date(from_year, from_month, 1)
+    to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
+    q = nhbranch.nhemployees.filter(work_start__range=(from_date, to_date)) \
+                            .filter(work_end = None).filter(work_end__range=(from_date, to_date))
     employees = list(q)
     for e in employees:
         e.season_total, e.season_total_notax, e.season_branch_income_notax = 0, 0, 0
