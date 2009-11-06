@@ -1218,7 +1218,6 @@ class CVarPrecentageFixed(models.Model):
                 else:
                     dic[s] = precentage
                 houses_remaning -= 1
-            raise TypeError
         else:
             for s in sales[:self.first_count]:
                 dic[s] = self.first_precentage
