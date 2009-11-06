@@ -2083,7 +2083,7 @@ def json_buildings(request, project_id):
 
 @login_required
 def json_employees(request, project_id):
-    l = [EmployeeBase.objects.get(pk=e.id) for e in Project.objects.get(pk=project_id).employees.all()]
+    l = [EmployeeBase.objects.get(pk=e.id) for e in Project.objects.get(pk=project_id).employees.active()]
     data = serializers.serialize('json', l, 
                                  fields=('id','pid','first_name','last_name'))
     return HttpResponse(data)

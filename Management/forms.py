@@ -182,7 +182,7 @@ class EmployeeAddProjectForm(forms.Form):
 
 class EmployeeRemoveProjectForm(forms.Form):
     employee = forms.ModelChoiceField(queryset=Employee.objects.all(), label=ugettext('employee'))
-    project = forms.ModelChoiceField(queryset=Project.objects.active(), label=ugettext('project'))
+    project = forms.ModelChoiceField(queryset=Project.objects.all(), label=ugettext('project'))
     end_date = forms.DateField(label=ugettext('end_date'))
     def __init__(self, *args, **kw):
         super(EmployeeRemoveProjectForm, self).__init__(*args, **kw)

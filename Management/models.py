@@ -894,7 +894,7 @@ class NHEmployeeSalary(EmployeeSalaryBase):
     admin_commission = models.IntegerField(editable=False, null=True)
     @property
     def total_amount(self):
-        return self.base + self.commissions + self.admin_commission + (self.var_pay or 0) + (self.safety_net or 0) - (self.deduction or 0)
+        return self.base + (self.commissions or 0) + (self.admin_commission or 0) + (self.var_pay or 0) + (self.safety_net or 0) - (self.deduction or 0)
     def calculate(self):
         for scd in NHSaleCommissionDetail.objects.filter(nhemployeesalary = self):
             scd.delete()
@@ -966,7 +966,7 @@ class EmployeeSalary(EmployeeSalaryBase):
         return i
     @property
     def total_amount(self):
-        return self.base + self.commissions + (self.var_pay or 0) + (self.safety_net or 0) - (self.deduction or 0)
+        return self.base + (self.commissions or 0) + (self.var_pay or 0) + (self.safety_net or 0) - (self.deduction or 0)
     def project_salary(self):
         res = {}
         if not len(self.project_commission): return res
@@ -1218,6 +1218,7 @@ class CVarPrecentageFixed(models.Model):
                 else:
                     dic[s] = precentage
                 houses_remaning -= 1
+            raise TypeError
         else:
             for s in sales[:self.first_count]:
                 dic[s] = self.first_precentage
