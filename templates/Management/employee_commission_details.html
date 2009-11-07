@@ -13,7 +13,7 @@
 		{% regroup salary.commission_details.all by sale.house.building.project as project_list %}
 		{% for pl in project_list %}
 			<tr>
-				<td colspan="3" style="text-align:center; color:#A9D0FF; font-weight:bold;">{{pl.grouper}}</td>
+				<td colspan="3" style="text-align:center; background-color:#A9D0FF; font-weight:bold;">{{pl.grouper}}</td>
 			</tr>
 			{% regroup pl.list by commission as commission_list %}
 			{% for cl in commission_list %}
