@@ -978,6 +978,7 @@ class EmployeeSalary(EmployeeSalaryBase):
         else:
             if self.employee.projects.count():
                 base = (bruto_amount-self.commissions) / self.employee.projects.count()
+                if base<0:base=0
                 for project, commission in self.project_commission.items():
                     res[project] = commission + base
         return res 
