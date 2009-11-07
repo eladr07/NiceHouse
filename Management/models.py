@@ -971,7 +971,7 @@ class EmployeeSalary(EmployeeSalaryBase):
         res = {}
         if not len(self.project_commission): return res
         ''' TODO: FIX AFTER SALARY EXPENSES ARE FEED '''
-        bruto_amount = self.neto
+        bruto_amount = self.neto or self.bruto
         if self.employee.main_project:
             for project, commission in self.project_commission.items():
                 res[project] = commission + (self.employee.main_project.id == project.id and bruto_amount-self.commissions or 0)
