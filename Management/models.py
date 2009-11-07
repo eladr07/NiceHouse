@@ -728,7 +728,7 @@ class AdvancePayment(models.Model):
 class Loan(models.Model):
     employee = models.ForeignKey('EmployeeBase', related_name = 'loans', verbose_name=ugettext('employee'))
     amount = models.IntegerField(ugettext('amount'))
-    date = models.DateField(ugettext('date'), default=Demand.current_month(), help_text=u'החודש שממנו תילקח ההלוואה')
+    date = models.DateField(ugettext('date'), default=date.today(), help_text=u'החודש שממנו תילקח ההלוואה')
     pay_num = models.PositiveSmallIntegerField(ugettext('pay_num'))
     remarks = models.TextField(ugettext('remarks'), blank=True, null=True)
     def save(self, *args, **kw):
@@ -742,7 +742,7 @@ class Loan(models.Model):
 
 class LoanPay(models.Model):
     employee = models.ForeignKey('EmployeeBase', related_name='loan_pays', verbose_name=ugettext('employee'))
-    date = models.DateField(ugettext('date'), default=Demand.current_month(), help_text=u'החודש שממנו תקוזז ההלוואה')
+    date = models.DateField(ugettext('date'), default=date.today(), help_text=u'החודש שממנו תקוזז ההלוואה')
     amount = models.FloatField(ugettext('amount'))
     remarks = models.TextField(ugettext('remarks'), blank=True, null=True)
     class Meta:
