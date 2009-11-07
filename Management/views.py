@@ -522,12 +522,11 @@ def employee_salary_list(request):
             if year < e.work_start.year or (year == e.work_start.year and month < e.work_start.month):
                 continue
             es, new = EmployeeSalary.objects.get_or_create(employee = e, month = month, year = year)
-            if year == e.work_start.year and month == e.work_start.month:
-                base = float(30 - e.work_start.day) / 30 * terms.salary_base 
-            else:
-                base = terms.salary_base
             if new:
-                es.base = base
+                if year == e.work_start.year and month == e.work_start.month:
+                    es.base = float(30 - e.work_start.day) / 30 * terms.salary_base 
+                else:
+                    es.base = terms.salary_base
                 es.save()
             salaries.append(es)
     return render_to_response('Management/employee_salaries.html', 
@@ -859,9 +858,9 @@ def nhemployee_remarks(request, year, month):
 @permission_required('Management.change_demand')
 def demand_close(request, id):
     d = Demand.objects.get(pk=id)
-    if d.statuses.count() == 0 or d.statuses.latest().type.id == DemandFeed:
-        d.close()
-    return HttpResponseRedirect('/demands')
+    return render_to_response('Management/demand_close.html', 
+                              { 'demand':d },
+                              context_instance=RequestContext(request))
 
 @permission_required('Management.change_demand')
 def demand_zero(request, id):

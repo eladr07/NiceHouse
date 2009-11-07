@@ -26,10 +26,6 @@
 			});
 		$(".fancybox").fancybox();
 		$(".bigfancybox").fancybox({'frameWidth':800});	
-		$("#demandClose").click(function (event) {
-			if (!confirm("האם אתה בטוח שברצונך לאשר את הדרישה?"))
-				event.preventDefault();
-		});
 		$("#demandCloseAll").click(function (event) {
 			if (!confirm("האם אתה בטוח שברצונך לאשר את כל הדרישות?"))
 				event.preventDefault();
@@ -125,7 +121,7 @@
 </div>
 <div class="someIcon" style="width:90px;">
 	<img src="/site_media/images/thumbs_up_48.png" width="20" height="20"  alt="סגירה" /> 
-	<a id="demandClose">אשר דרישה</a>
+	<a id="demandClose" class="fancybox">אשר דרישה</a>
 </div>
 <div class="someIcon" style="width: 80px;">
 	<img src="/site_media/images/thumbs_up_48.png" width="20" height="20"  alt="סגירה" /> 
@@ -211,7 +207,7 @@
 				{% if d.statuses.count %}
 					{{ d.statuses.latest.type }}
 				{% else %}
-					<a href="{{d.get_absolute_url}}/close">אשר</a>
+					<a href="{{d.get_absolute_url}}/close" class="fancybox">אשר</a>
 				{% endif %}
 			</td>
 		</tr>
