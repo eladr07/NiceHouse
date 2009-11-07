@@ -25,9 +25,9 @@
 				<td>{{sale.sale_date|date:"j/m/Y"}}</td>
 				<td>{{sale.clients}}</td>
 				{% with sale.house.building as b %}
-				<td><a href="/project/{{b.project.id}}" target="_parent">{{b.project}}</a></td>
-				<td><a target="_parent" href="/buildings/{{b.id}}/pricelist/type1">{{sale.house.building.num}}</a></td>
-				<td><a target="_parent" href="/buildings/{{b.id}}/house/{{sale.house.id}}/type1">{{sale.house.num}}</a></td>
+				<td><a href="{{b.project.get_absolute_url}}" target="_parent">{{b.project}}</a></td>
+				<td><a target="_parent" href="{{b.get_absolute_url}}/pricelist/type1">{{sale.house.building.num}}</a></td>
+				<td><a target="_parent" href="{{sale.house.get_absolute_url}}/type1">{{sale.house.num}}</a></td>
 				{% endwith %}
 				<td>{{sale.price|commaise}}</td>
 				<td>{{sale.price_include_lawyer|yesno:"כולל, לא כולל"}}</td>

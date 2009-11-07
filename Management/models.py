@@ -317,6 +317,8 @@ class House(models.Model):
         models.Model.save(self, *args, **kw)
     def __unicode__(self):
         return unicode(self.num)
+    def get_absolute_url(self):
+        return self.building.get_absolute_url() + '/house/%s' % self.id
     class Meta:
         unique_together = ('building', 'num')
         ordering = ['num']
@@ -428,6 +430,8 @@ class Building(models.Model):
         models.Model.save(self, *args, **kw)
     def __unicode__(self):
         return self.num
+    def get_absolute_url(self):
+        return '/buildings/%s' % self.id
     class Meta:
         unique_together = ('project', 'num')
         db_table = 'Building'
