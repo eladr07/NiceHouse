@@ -846,7 +846,7 @@ class EmployeeSalaryBase(models.Model):
         exp = self.expenses
         if not terms.salary_net:
             if not exp: return None
-            return self.total_amount - exp.income_tax - exp.national_insurance - exp.health - exp.pension_insurance
+            return self.derived.total_amount - exp.income_tax - exp.national_insurance - exp.health - exp.pension_insurance
         return self.derived.total_amount    
     @property
     def check_amount(self):
@@ -971,7 +971,7 @@ class EmployeeSalary(EmployeeSalaryBase):
         res = {}
         if not len(self.project_commission): return res
         ''' TODO: FIX AFTER SALARY EXPENSES ARE FEED '''
-        bruto_amount = self.neto or self.bruto
+        bruto_amount = self.total_amount
         if self.employee.main_project:
             for project, commission in self.project_commission.items():
                 res[project] = commission + (self.employee.main_project.id == project.id and bruto_amount-self.commissions or 0)
