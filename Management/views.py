@@ -521,6 +521,8 @@ def employee_salary_list(request):
                 continue
             if year < e.work_start.year or (year == e.work_start.year and month < e.work_start.month):
                 continue
+            if e.work_end and (year > e.work_end.year or (year == e.work_end.year and month > e.work_end.month)):
+                continue
             es, new = EmployeeSalary.objects.get_or_create(employee = e, month = month, year = year)
             if new:
                 if year == e.work_start.year and month == e.work_start.month:
