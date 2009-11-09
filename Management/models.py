@@ -173,27 +173,26 @@ class Project(models.Model):
         return self.commissions.c_zilber != None
     def demands_unpaid(self):
         return [d for d in self.demands.all() 
-                if d.statuses.count()>0 
-                and d.payments.count()==0 
-                and d.invoices.count()==0
-                and d.get_total_amount()>0]
+                if d.statuses.count() 
+                and not d.payments.count() 
+                and not d.invoices.count()
+                and d.get_total_amount()]
     def demands_noinvoice(self):
         return [d for d in self.demands.all() 
-                if d.statuses.count()>0 
-                and d.payments.count()>0 
-                and d.invoices.count()==0
-                and d.get_total_amount()>0]
+                if d.statuses.count() 
+                and d.payments.count() 
+                and not d.invoices.count()
+                and d.get_total_amount()]
     def demands_nopayment(self):
         return [d for d in self.demands.all() 
-                if d.statuses.count()>0 
-                and d.payments.count()==0 
-                and d.invoices.count()>0
-                and d.get_total_amount()>0]
+                if d.statuses.count() 
+                and not d.payments.count() 
+                and d.invoices.count()
+                and d.get_total_amount()]
     def demands_mispaid(self):
         return [d for d in self.demands.all() 
-                if d.statuses.count()>0 
-                and d.diff()
-                and d.get_total_amount()>0]
+                if d.statuses.count() 
+                and (d.diff_invoice or d.diff_invoice_payment)]
     def current_demand(self):
         try:
             return Demand.objects.current().get(project = self)
