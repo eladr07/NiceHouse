@@ -80,5 +80,12 @@
 			<td><a href="/projects/{{p.id}}/demands/noinvoice" class="bigfancybox">{{ p.demands_noinvoice|length }}</a></td>
 		</tr>
 	{% endfor %}
+	<tr class="sumRow">
+		<td colspan="5"></td>
+		<td>{{total_mispaid}}</td>
+		<td>{{total_unpaid}}</td>
+		<td>{{total_nopayment}}</td>
+		<td>{{total_noinvoice}}</td>
+	</tr>
 </table>
 {% endblock content %}

@@ -619,8 +619,18 @@ def demands_all(request):
             if demands.count()>0:
                 return HttpResponseRedirect('/reports/project_month/%s/%s/%s' % (demands[0].project.id,
                                                                          demands[0].year, demands[0].month))
+    
+    total_mispaid, total_unpaid, total_nopayment, total_noinvoice = 0,0,0,0
+    projects = Project.objects.all()
+    for p in projects:
+        total_mispaid += len(p.demands_mispaid)
+        total_unpaid += len(p.demands_unpaid)
+        total_nopayment += len(p.demands_nopayment)
+        total_noinvoice += len(p.demands_noinvoice)
+    
     return render_to_response('Management/demands_all.html', 
-                              { 'projects':Project.objects.all(),
+                              { 'projects':projects, 'total_mispaid':total_mispaid, 'total_unpaid':total_unpaid,
+                               'total_nopayment':total_nopayment, 'total_noinvoice':total_noinvoice,
                                'houseForm':LocateHouseForm(), 
                                'demandForm':LocateDemandForm(),
                                'error':error },
