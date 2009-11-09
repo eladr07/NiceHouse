@@ -623,10 +623,10 @@ def demands_all(request):
     total_mispaid, total_unpaid, total_nopayment, total_noinvoice = 0,0,0,0
     projects = Project.objects.all()
     for p in projects:
-        total_mispaid += len(p.demands_mispaid)
-        total_unpaid += len(p.demands_unpaid)
-        total_nopayment += len(p.demands_nopayment)
-        total_noinvoice += len(p.demands_noinvoice)
+        total_mispaid += len(p.demands_mispaid())
+        total_unpaid += len(p.demands_unpaid())
+        total_nopayment += len(p.demands_nopayment())
+        total_noinvoice += len(p.demands_noinvoice())
     
     return render_to_response('Management/demands_all.html', 
                               { 'projects':projects, 'total_mispaid':total_mispaid, 'total_unpaid':total_unpaid,
