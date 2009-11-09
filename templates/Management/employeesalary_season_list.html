@@ -4,25 +4,32 @@
 {{ block.super }}
 <script>
 	var selectedID = 0;
+	var employeeID = 0;
 	var prev_class;
 	$(document).ready(function() {
 		$("#salaryTable tr").click(function() { 
 			var tr = $(this);
 			if (selectedID > 0)
-				$("#salaryTable tr[employeeid='"+selectedID+"']").attr("class", prev_class);
-			selectedID = tr.attr("employeeid");
+				$("#salaryTable tr[objid='"+selectedID+"']").attr("class", prev_class);
+			selectedID = tr.attr("objid");
+			employeeID = tr.attr("employeeid");
 			if (!selectedID)
 				return;
 			prev_class = tr.attr("class");
 			tr.attr("class","selectedRow");
 			//sync links
 			if (selectedID > 0)
-				$("#loanPay").attr("href", "/employees/" + selectedID + "/loanpay");
-				$("#loanAdd").attr("href", "/employees/" + selectedID + "/addloan");
-				$("#calcSalary").attr("href", "/employeesalaries/" + tr.attr("objid") + "/calc");
-				$("#approve").attr("href", "/employeesalaries/" + tr.attr("objid") + "/approve");
-				$("#edit").attr("href", tr.attr("objid"));
-			});
+			{
+				$("#loanPay").attr("href", "/employees/" + employeeID + "/loanpay");
+				$("#loanAdd").attr("href", "/employees/" + employeeID + "/addloan");
+			}
+			if (employeeID > 0)
+			{
+				$("#calcSalary").attr("href", "/employeesalaries/" + selectedID + "/calc");
+				$("#approve").attr("href", "/employeesalaries/" + selectedID + "/approve");
+				$("#edit").attr("href", selectedID);
+			}
+		});
 		$(".fancybox").fancybox();
 		$("#loanPay, #loanAdd, #edit").click(function (event) {
 			if (!$(this).attr("href"))
@@ -46,7 +53,7 @@
 {% endblock header %}
 {% block content %}
 <div class="title">
-	<div class="pageTitle">ריכוז שכ"ע לפי תקופה<br>{{employee}}</div>
+	<div class="pageTitle">ריכוז שכ"ע לפי תקופה<br><a href="{{employee.get_absolute_url}}" target="_blank">{{employee}}</a></div>
 </div>
 <div class="clearBoth"></div>
 <form method="GET">
