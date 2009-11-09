@@ -515,7 +515,7 @@ def employee_salary_list(request):
     salaries = []
     today = date.today()
     if date(year, month, 1) <= today:
-        for e in Employee.objects.active():
+        for e in Employee.objects.all():
             terms = e.employment_terms
             if not terms:
                 continue
