@@ -1097,9 +1097,12 @@ def split_payment_add(request):
                     setattr(p, attr, value)
                 p.amount = form.cleaned_data['amount']
                 p.save()
-                d = Demand.objects.get(project = form.cleaned_data['project'], year = form.cleaned_data['year'],
-                                       month = form.cleaned_data['month'])
-                d.payments.add(p)
+                project, year, month = form.cleaned_data['project'], form.cleaned_data['year'], form.cleaned_data['month']
+                q = Demand.objects.filter(project = project, year = year, month = month)
+                if q.count() == 1:
+                    q[0].payments.add(p)
+                else:
+                    error += '\r\n' + u'לא קיימת דרישה לפרוייקט %s לחודש %s\%s' % (project, year, month)
             return HttpResponseRedirect('/demandpayments')
     else:
         spf = SplitPaymentForm()
