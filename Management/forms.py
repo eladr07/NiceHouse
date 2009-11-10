@@ -399,6 +399,10 @@ class PaymentForm(forms.ModelForm):
         model = Payment
 
 class SplitPaymentForm(forms.ModelForm):
+    def __init__(self, *args, **kw):
+        forms.ModelForm.__init__(self,*args,**kw)
+        self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'1'})
+        self.fields['payment_date'].widget.attrs = {'class':'vDateField', 'size':10}
     class Meta:
         model = Payment
         exclude = ('amount')
