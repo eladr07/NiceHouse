@@ -1099,7 +1099,7 @@ def split_payment_add(request):
                 d = Demand.objects.get(project = form.cleaned_data['project'], year = form.cleaned_data['year'],
                                        month = form.cleaned_data['month'])
                 d.payments.add(p)
-        return HttpResponseRedirect('/demandpayments')
+            return HttpResponseRedirect('/demandpayments')
     else:
         spf = SplitPaymentForm()
         spdForms = DemandFormset()
