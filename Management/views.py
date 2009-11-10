@@ -1088,6 +1088,7 @@ def invoice_offset_del(request, id):
 def split_payment_add(request):
     DemandFormset = formset_factory(SplitPaymentDemandForm, extra=5)
     if request.method == 'POST':
+        error = ''
         spf = SplitPaymentForm(request.POST)
         spdForms = DemandFormset(request.POST)
         if spf.is_valid() and spdForms.is_valid():
