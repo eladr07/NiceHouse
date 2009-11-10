@@ -623,16 +623,27 @@ def demands_all(request):
                                                                          demands[0].year, demands[0].month))
     
     total_mispaid, total_unpaid, total_nopayment, total_noinvoice = 0,0,0,0
+    amount_mispaid, amount_unpaid, amount_nopayment, amount_noinvoice = 0,0,0,0
     projects = Project.objects.all()
     for p in projects:
-        total_mispaid += len(p.demands_mispaid())
-        total_unpaid += len(p.demands_unpaid())
-        total_nopayment += len(p.demands_nopayment())
-        total_noinvoice += len(p.demands_noinvoice())
+        for d in p.demands_mispaid():
+            amount_mispaid += d.get_total_amount()
+            total_mispaid += 1
+        for d in p.demands_unpaid():
+            amount_unpaid += d.get_total_amount()
+            total_unpaid += 1
+        for d in p.demands_nopayment():
+            amount_nopayment += d.get_total_amount()
+            total_nopayment += 1
+        for d in p.demands_noinvoice():
+            amount_noinvoice += d.get_total_amount()
+            total_noinvoice += 1
     
     return render_to_response('Management/demands_all.html', 
                               { 'projects':projects, 'total_mispaid':total_mispaid, 'total_unpaid':total_unpaid,
                                'total_nopayment':total_nopayment, 'total_noinvoice':total_noinvoice,
+                               'amount_mispaid':amount_mispaid, 'amount_unpaid':amount_unpaid, 
+                               'amount_nopayment':amount_nopayment, 'amount_noinvoice':amount_noinvoice,
                                'houseForm':LocateHouseForm(), 
                                'demandForm':LocateDemandForm(),
                                'error':error },

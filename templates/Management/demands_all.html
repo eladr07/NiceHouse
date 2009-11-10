@@ -87,5 +87,12 @@
 		<td>{{total_nopayment}}</td>
 		<td>{{total_noinvoice}}</td>
 	</tr>
+	<tr class="rowSum">
+		<td colspan="5"></td>
+		<td>{{amount_mispaid|commaise}}</td>
+		<td>{{amount_unpaid|commaise}}</td>
+		<td>{{amount_nopayment|commaise}}</td>
+		<td>{{amount_noinvoice|commaise}}</td>
+	</tr>
 </table>
 {% endblock content %}
