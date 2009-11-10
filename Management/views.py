@@ -1093,6 +1093,8 @@ def split_payment_add(request):
         spdForms = DemandFormset(request.POST)
         if spf.is_valid() and spdForms.is_valid():
             for form in spdForms.forms:
+                if not form.is_valid():
+                    continue
                 p = Payment()
                 for attr, value in spf.cleaned_data.items():
                     setattr(p, attr, value)
