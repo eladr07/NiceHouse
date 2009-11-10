@@ -398,6 +398,19 @@ class PaymentForm(forms.ModelForm):
     class Meta:
         model = Payment
 
+class SplitPaymentForm(forms.ModelForm):
+    class Meta:
+        model = Payment
+        exclude = ('amount')
+
+class SplitPaymentDemandForm(forms.Form):
+    project = forms.ModelChoiceField(queryset = Project.objects.all(), label = ugettext('project'))
+    year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
+                             label = ugettext('year'), initial = datetime.now().year)
+    month = forms.ChoiceField(choices=((i+1,i+1) for i in range(12)), label = ugettext('month'),
+                              initial = datetime.now().month)
+    amount = forms.IntegerField(label=ugettext('amount'))
+    
 class DemandPaymentForm(forms.ModelForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label = ugettext('project'))
     year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 

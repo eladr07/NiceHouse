@@ -1508,7 +1508,7 @@ class PaymentType(models.Model):
         db_table = 'PaymentType'
 
 class Payment(models.Model):
-    num = models.IntegerField(ugettext('check_num'), unique=True, null=True, blank=True)
+    num = models.IntegerField(ugettext('check_num'), null=True, blank=True)
     support_num = models.IntegerField(ugettext('support_num'), null=True, blank=True)
     bank = models.CharField(ugettext('bank'), max_length=40)
     branch_num = models.PositiveSmallIntegerField(ugettext('branch_num'))

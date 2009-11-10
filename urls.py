@@ -253,6 +253,8 @@ urlpatterns += patterns('Management.views',
     (r'^demandinvoices/$', 'demand_invoice_list'),
     (r'^demandpayments/$', 'demand_payment_list'),
 
+    (r'^splitpayment/add$', 'split_payment_add'),
+
     (r'^salaryexpenses/$', 'salary_expenses_list'),
     (r'^nhsalaryexpenses/$', 'nh_salary_expenses_list'),
     (r'^salaryexpenses/(?P<id>)\d+/approve$', 'salary_expenses_approve'),

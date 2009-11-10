@@ -1,4 +1,5 @@
-﻿import settings, inspect
+﻿from django.forms.formsets import formset_factory
+import settings, inspect
 import time
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
@@ -1082,6 +1083,29 @@ def invoice_offset_del(request, id):
     demand_id = i.invoice.demands.all()[0].id
     i.delete()
     return HttpResponseRedirect('/demands/%s' % demand_id)
+
+@permission_required('Management.add_payment')
+def split_payment_add(request):
+    DemandFormset = formset_factory(SplitPaymentDemandForm, extra=5)
+    if request.method == 'POST':
+        spf = SplitPaymentForm(request.POST)
+        spdForms = DemandFormset(request.POST)
+        if spf.is_valid() and spdForms.is_valid():
+            for form in spdForms.forms:
+                p = Payment()
+                for attr, value in spf.cleaned_data.items():
+                    setattr(d, attr, value)
+                p.save()
+                d = Demand.objects.get(project = form.cleaned_data['project'], year = form.cleaned_data['year'],
+                                       month = form.cleaned_data['month'])
+                d.payments.add(p)
+        return HttpResponseRedirect('/demandpayments')
+    else:
+        spf = SplitPaymentForm()
+        spdForms = DemandFormset()
+        
+    return render_to_response('Management/split_payment_edit.html', 
+                              { 'spf':spf, 'spdForms':spdForms }, context_instance=RequestContext(request))
 
 @permission_required('Management.add_payment')
 def payment_add(request, initial=None):
