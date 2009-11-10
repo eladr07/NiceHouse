@@ -1106,7 +1106,8 @@ def split_payment_add(request):
                     q[0].payments.add(p)
                 else:
                     error += '\r\n' + u'לא קיימת דרישה לפרוייקט %s לחודש %s\%s' % (project, year, month)
-            return HttpResponseRedirect('/demandpayments')
+            if error == '':
+                return HttpResponseRedirect('/demandpayments')
     else:
         spf = SplitPaymentForm()
         spdForms = DemandFormset()
