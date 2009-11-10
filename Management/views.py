@@ -1095,6 +1095,7 @@ def split_payment_add(request):
                 p = Payment()
                 for attr, value in spf.cleaned_data.items():
                     setattr(p, attr, value)
+                p.amount = form.cleaned_data['amount']
                 p.save()
                 d = Demand.objects.get(project = form.cleaned_data['project'], year = form.cleaned_data['year'],
                                        month = form.cleaned_data['month'])
