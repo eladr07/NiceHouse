@@ -1104,7 +1104,7 @@ def split_payment_add(request):
         spf = SplitPaymentForm()
         spdForms = DemandFormset()
         
-    return render_to_response('Management/split_payment_edit.html', 
+    return render_to_response('Management/split_payment_add.html', 
                               { 'spf':spf, 'spdForms':spdForms }, context_instance=RequestContext(request))
 
 @permission_required('Management.add_payment')

@@ -1519,6 +1519,8 @@ class Payment(models.Model):
     remarks = models.TextField(ugettext('remarks'), null=True,blank=True)
     def __unicode__(self):
         return u'תשלום על סך %s ש"ח בתאריך %s' % (commaise(self.amount), self.payment_date.strftime('%d/%m/%Y'))
+    def is_split(self):
+        return self.demands.count() > 1
     class Meta:
         db_table = 'Payment'
         get_latest_by = 'creation_date'
