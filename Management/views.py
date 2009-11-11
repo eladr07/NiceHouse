@@ -911,6 +911,7 @@ def demands_send(request):
     ds = Demand.objects.filter(year = y, month = m)
     forms=[]
     if request.method == 'POST':
+        error = False
         for d in ds:
             f = DemandSendForm(request.POST, instance=d, prefix = str(d.id))
             if f.is_valid():
@@ -1087,8 +1088,8 @@ def invoice_offset_del(request, id):
 @permission_required('Management.add_payment')
 def split_payment_add(request):
     DemandFormset = formset_factory(SplitPaymentDemandForm, extra=5)
+    error = ''
     if request.method == 'POST':
-        error = ''
         spf = SplitPaymentForm(request.POST)
         spdForms = DemandFormset(request.POST)
         if spf.is_valid() and spdForms.is_valid():
