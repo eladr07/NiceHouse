@@ -1294,11 +1294,20 @@ def nhsale_add(request, branch_id):
                 elif request.POST.has_key('tomonth'):
                     return HttpResponseRedirect('/nhbranch/%s/sales' % nhsale.nhbranch.id)
     else:
+        branch = NHBranch.objects.get(pk=branch_id)
         saleForm = NHSaleForm(prefix='sale')
         monthForm = NHMonthForm(prefix='month')
         monthForm.fields['nhbranch'].initial = branch_id
         side1Form = NHSaleSideForm(prefix='side1')
+        side1Form.fields['employee1'].queryset = branch.nhemployees.active()
+        side1Form.fields['employee2'].queryset = branch.nhemployees.active()
+        side1Form.fields['signing_advisor'].queryset = branch.nhemployees.active()
+        side1Form.fields['director'].queryset = EmployeeBase.objects.active()
         side2Form = NHSaleSideForm(prefix='side2')
+        side2Form.fields['employee1'].queryset = branch.nhemployees.active()
+        side2Form.fields['employee2'].queryset = branch.nhemployees.active()
+        side2Form.fields['signing_advisor'].queryset = branch.nhemployees.active()
+        side2Form.fields['director'].queryset = EmployeeBase.objects.active()
         invoice1Form = InvoiceForm(prefix='invoice1')
         payment1Forms = PaymentFormset(prefix='payments1', queryset=Payment.objects.none())
         invoice2Form = InvoiceForm(prefix='invoice2')
