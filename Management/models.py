@@ -1728,7 +1728,7 @@ class Demand(models.Model):
         i=0
         for s in self.get_sales():
             i += s.c_final_worth
-        return int(i)
+        return i
     def get_total_amount(self):
         diffs = self.diffs.all().aggregate(Sum('amount'))['amount__sum'] or 0
         return self.get_sales_commission() + diffs
