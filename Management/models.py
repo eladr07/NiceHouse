@@ -500,6 +500,7 @@ class Employee(EmployeeBase):
     projects = models.ManyToManyField('Project', verbose_name=ugettext('projects'), related_name='employees', 
                                       null=True, blank=True, editable=False)
     main_project = models.ForeignKey('Project', verbose_name=ugettext('main_project'), null=True, blank=True)
+    objects = EmployeeManager()
     
     def get_open_reminders(self):
         return [r for r in self.reminders.all() if r.statuses.latest().type.id 
@@ -669,6 +670,7 @@ class NHEmployee(EmployeeBase):
     nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'), related_name='nhemployees')
     nhcbase = models.OneToOneField('NHCBase', editable=False, null=True, related_name='nhemployee')
     nhcbranchincome = models.OneToOneField('NHCBranchIncome', editable=False, null=True, related_name='nhemployee')
+    objects = EmployeeManager()
     
     def get_open_reminders(self):
         return [r for r in self.reminders.all() if r.statuses.latest().type.id 
