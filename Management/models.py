@@ -1942,10 +1942,10 @@ class NHSaleSide(models.Model):
     def lawyers_pay(self):
         amount = 0
         if self.lawyer1:
-            for nhp in self.lawyer1.nhpays.all(nhsaleside = self):
+            for nhp in self.lawyer1.nhpays.filter(nhsaleside = self):
                 amount += nhp.amount
         if self.lawyer2:
-            for nhp in self.lawyer2.nhpays.all(nhsaleside = self):
+            for nhp in self.lawyer2.nhpays.filter(nhsaleside = self):
                 amount += nhp.amount
         return amount             
     @property
