@@ -1684,7 +1684,7 @@ class Demand(models.Model):
     @property
     def diff_invoice(self):
         if self.invoices.count() == 0: return 0
-        return self.invoices_amount - self.get_total_amount()
+        return self.invoices_amount - int(self.get_total_amount())
     @property
     def payments_amount(self):
         return self.payments.all().aggregate(Sum('amount'))['amount__sum'] or 0
