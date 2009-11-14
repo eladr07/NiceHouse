@@ -1428,7 +1428,7 @@ class ProjectCommission(models.Model):
                     if not s.actual_demand.finish_date : continue
                     q = s.project_commission_details.filter(commission='final')
                     if q.count()==0: continue
-                    s.restore_date = restore_date
+                    s.restore_date = date(demand.year, demand.month ,1)
                     diff = (q[0].value - s.c_final) * s.price_final / 100
                     bonus += int(diff)
             if bonus > 0:
@@ -1720,7 +1720,7 @@ class Demand(models.Model):
     def calc_sales_commission(self):
         if self.get_sales().count() == 0: return
         c = self.project.commissions
-        c.calc(self.get_sales(), restore_date = date(self.year, self.month, 1))
+        c.calc(self.get_sales())
     def get_sales_commission(self):
         i=0
         for s in self.get_sales():

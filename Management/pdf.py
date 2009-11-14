@@ -379,6 +379,7 @@ class MonthDemandWriter:
                        clientsPara(s.clients), '%s/%s' % (s.house.building.num, s.house.num), 
                        s.sale_date.strftime('%d/%m/%y'), commaise(s.price)]
                 scd_final = s.project_commission_details.filter(commission='final')[0]
+                s.restore_date = date(self.demand.year, self.demand.month, 1)
                 diff = scd_final.value - s.c_final
                 total += diff * s.price_final / 100
                 row.extend([s.c_final, scd_final.value, diff, commaise(diff * s.price_final / 100)])
