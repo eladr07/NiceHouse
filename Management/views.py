@@ -302,6 +302,8 @@ def demand_calc(request, id):
     c = d.project.commissions
     if c.commission_by_signups or c.c_zilber:
         for demand in Demand.objects.filter(project = d.project):
+            for s in demand.statuses.all():
+                s.delete()
             for s in demand.get_sales():
                 for scd in s.commission_details.all():
                     for cl in ChangeLog.objects.filter(object_type='SaleCommissionDetail', object_id = scd.id):
