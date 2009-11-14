@@ -1465,10 +1465,12 @@ class ProjectCommission(models.Model):
             for scd in s.commission_details.all():
                 scd.delete()
             for c, v in details[s].items():
-                scd = s.commission_details.get_or_create(employee_salary=None, commission=c)[0]
+                scd, new = s.commission_details.get_or_create(employee_salary=None, commission=c)
                 scd.value = s.commission_include and v or 0
                 scd.save()
-            scd = s.commission_details.get_or_create(employee_salary=None, commission='final')[0]
+            scd, new = s.commission_details.get_or_create(employee_salary=None, commission='final')
+            if not new:
+                raise TypeError
             scd.value = s.commission_include and dic[s] or 0
             scd.save()
             s.price_final = s.project_price()
