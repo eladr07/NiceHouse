@@ -1425,10 +1425,10 @@ class ProjectCommission(models.Model):
                     #get the finish date when the demand for the month the signup 
                     #were made we use it to find out what was the commission at
                     #that time
-                    finish_date = s.actual_demand.finish_date 
-                    if not finish_date: continue
+                    if not s.actual_demand.finish_date : continue
                     q = s.project_commission_details.filter(commission='final')
                     if q.count()==0: continue
+                    s.restore_date = restore_date
                     diff = (q[0].value - s.c_final) * s.price_final / 100
                     bonus += int(diff)
             if bonus > 0:
@@ -2177,6 +2177,7 @@ class Sale(models.Model):
     def __init__(self, *args, **kw):
         models.Model.__init__(self, *args, **kw)
         self.restore = True
+        self.restore_date = None
     @property
     def actual_demand(self):
         return Demand.objects.get(month=self.contractor_pay.month, year=self.contractor_pay.year,
@@ -2190,27 +2191,27 @@ class Sale(models.Model):
             q = self.project_commission_details.filter(commission=c)
             if q.count() == 0:
                 continue
-            finish_date = self.actual_demand.finish_date
-            return self.restore and finish_date and restore_object(q[0], finish_date).value or q[0].value
+            restore_date = self.restore_date or self.actual_demand.finish_date
+            return self.restore and restore_date and restore_object(q[0], restore_date).value or q[0].value
         return 0
     @property
     def zdb(self):
         q = self.project_commission_details.filter(commission='c_zilber_discount')
         if q.count() == 0: return 0
-        finish_date = self.actual_demand.finish_date
-        return self.restore and finish_date and restore_object(q[0], finish_date).value or q[0].value
+        restore_date = self.restore_date or self.actual_demand.finish_date
+        return self.restore and restore_date and restore_object(q[0], restore_date).value or q[0].value
     @property
     def pb_dsp(self):
         q = self.project_commission_details.filter(commission='b_discount_save_precentage')
         if q.count() == 0: return 0
-        finish_date = self.actual_demand.finish_date
-        return self.restore and finish_date and restore_object(q[0], finish_date).value or q[0].value
+        restore_date = self.restore_date or self.actual_demand.finish_date
+        return self.restore and restore_date and restore_object(q[0], restore_date).value or q[0].value
     @property
     def c_final(self):
         q = self.project_commission_details.filter(commission='final')
         if q.count() == 0: return 0
-        finish_date = self.actual_demand.finish_date
-        return self.restore and finish_date and restore_object(q[0], finish_date).value or q[0].value
+        restore_date = self.restore_date or self.actual_demand.finish_date
+        return self.restore and restore_date and restore_object(q[0], restore_date).value or q[0].value
     @property
     def pc_base_worth(self):
         return self.pc_base * self.price_final / 100
