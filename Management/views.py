@@ -301,16 +301,16 @@ def demand_calc(request, id):
     d = Demand.objects.get(pk=id)
     c = d.project.commissions
     if c.commission_by_signups or c.c_zilber:
-        for demand in Demand.objects.filter(project = d.project):
-            for s in demand.statuses.all():
+        for d2 in Demand.objects.filter(project = d.project):
+            for s in d2.statuses.all():
                 s.delete()
-            for s in demand.get_sales():
+            for s in d2.get_sales():
                 for scd in s.commission_details.all():
                     for cl in ChangeLog.objects.filter(object_type='SaleCommissionDetail', object_id = scd.id):
                         cl.delete()
                     scd.delete()
-            demand.calc_sales_commission()
-            demand = Demand.objects.get(pk=demand.id)
+            d2.calc_sales_commission()
+            demand = Demand.objects.get(pk=d2.id)
             demand.finish()
             time.sleep(1)
     else:
