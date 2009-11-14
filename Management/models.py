@@ -1429,6 +1429,7 @@ class ProjectCommission(models.Model):
                     if not finish_date: continue
                     q = s.project_commission_details.filter(commission='final')
                     if q.count()==0: continue
+                    raise AttributeError
                     diff = (q[0].value - s.c_final) * s.price_final / 100
                     bonus += int(diff)
             if bonus > 0:
