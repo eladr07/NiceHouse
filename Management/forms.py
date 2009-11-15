@@ -448,16 +448,17 @@ class NHSaleSideForm(forms.ModelForm):
     lawyer2_pay = forms.FloatField(label=ugettext('lawyer_pay'), required=False)
     def save(self, *args, **kw):
         nhs = forms.ModelForm.save(self, *args,**kw)
+        year, month = nhs.nhsale.nhmonth.year, nhs.nhsale.nhmonth.month
         l1, l2 = self.cleaned_data['lawyer1'], self.cleaned_data['lawyer2']
         lp1, lp2 = self.cleaned_data['lawyer1_pay'], self.cleaned_data['lawyer2_pay']
         if l1 and lp1:
             q = l1.nhpays.filter(nhsaleside = self)
-            nhp = q.count() == 1 and q[0] or NHPay(laywer=l1, nhsaleside = nhs, year = nhs.nhmonth.year, month = nhs.nhmonth.month)
+            nhp = q.count() == 1 and q[0] or NHPay(laywer=l1, nhsaleside = nhs, year = year, month = month)
             nhp.amount = nhp.amount and (nhp.amount + lp1) or lp1
             nhp.save()
         if l2 and lp2:
             q = l2.nhpays.filter(nhsaleside = self)
-            nhp = q.count() == 1 and q[0] or NHPay(laywer=l2, nhsaleside = nhs, year = nhs.nhmonth.year, month = nhs.nhmonth.month)
+            nhp = q.count() == 1 and q[0] or NHPay(laywer=l2, nhsaleside = nhs, year = year, month = month)
             nhp.amount = nhp.amount and (nhp.amount + lp2) or lp2
             nhp.save()
         return nhs
