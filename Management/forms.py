@@ -468,12 +468,12 @@ class NHSaleSideForm(forms.ModelForm):
         self.fields['employee_remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
         self.fields['voucher_date'].widget.attrs = {'class':'vDateField'}
         if self.instance.id:
-            nhsale = self.instance.nhsale
+            nhss = self.instance
             if self.instance.lawyer1:
-                pays = self.instance.lawyer1.pays.filter(nhsale=nhsale)
+                pays = self.instance.lawyer1.nhpays.filter(nhsaleside=nhss)
                 self.fields['lawyer1_pay'].initial = pays[0].amount
             if self.instance.lawyer2:
-                pays = self.instance.lawyer2.pays.filter(nhsale=nhsale)
+                pays = self.instance.lawyer2.nhpays.filter(nhsaleside=nhss)
                 self.fields['lawyer2_pay'].initial = pays[0].amount
     class Meta:
         model = NHSaleSide
