@@ -1473,7 +1473,7 @@ class ProjectCommission(models.Model):
         db_table = 'ProjectCommission'
   
 class Invoice(models.Model):
-    num = models.IntegerField(ugettext('invoice_num'), unique=True)
+    num = models.IntegerField(ugettext('invoice_num'), unique=True, null=True, blank=True)
     creation_date = models.DateField(auto_now_add = True)
     date = models.DateField(ugettext('invoice_date'))
     amount = models.IntegerField(ugettext('amount'))
@@ -1938,6 +1938,12 @@ class NHSaleSide(models.Model):
             amount = amount / tax
         return amount
     @property
+    def lawyer1_pays(self):
+        return self.lawyer1.nhpays.filter(nhsaleside = self)
+    @property
+    def lawyer2_pays(self):
+        return self.lawyer2.nhpays.filter(nhsaleside = self)
+    @property
     def lawyers_pay(self):
         amount = 0
         if self.lawyer1:
@@ -1946,7 +1952,7 @@ class NHSaleSide(models.Model):
         if self.lawyer2:
             for nhp in self.lawyer2.nhpays.filter(nhsaleside = self):
                 amount += nhp.amount
-        return amount             
+        return amount
     @property
     def net_income(self):
         return self.income - self.lawyers_pay
