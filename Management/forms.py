@@ -454,12 +454,12 @@ class NHSaleSideForm(forms.ModelForm):
         if l1 and lp1:
             q = l1.nhpays.filter(nhsaleside = self)
             nhp = q.count() == 1 and q[0] or NHPay(lawyer=l1, nhsaleside = nhs, year = year, month = month)
-            nhp.amount = nhp.amount and (nhp.amount + lp1) or lp1
+            nhp.amount = lp1
             nhp.save()
         if l2 and lp2:
             q = l2.nhpays.filter(nhsaleside = self)
             nhp = q.count() == 1 and q[0] or NHPay(lawyer=l2, nhsaleside = nhs, year = year, month = month)
-            nhp.amount = nhp.amount and (nhp.amount + lp2) or lp2
+            nhp.amount = lp2
             nhp.save()
         return nhs
     def __init__(self, *args, **kw):
