@@ -452,12 +452,12 @@ class NHSaleSideForm(forms.ModelForm):
         l1, l2 = self.cleaned_data['lawyer1'], self.cleaned_data['lawyer2']
         lp1, lp2 = self.cleaned_data['lawyer1_pay'], self.cleaned_data['lawyer2_pay']
         if l1 and lp1:
-            q = l1.nhpays.filter(nhsaleside = self)
+            q = l1.nhpays.filter(nhsaleside = nhs)
             nhp = q.count() == 1 and q[0] or NHPay(lawyer=l1, nhsaleside = nhs, year = year, month = month)
             nhp.amount = lp1
             nhp.save()
         if l2 and lp2:
-            q = l2.nhpays.filter(nhsaleside = self)
+            q = l2.nhpays.filter(nhsaleside = nhs)
             nhp = q.count() == 1 and q[0] or NHPay(lawyer=l2, nhsaleside = nhs, year = year, month = month)
             nhp.amount = lp2
             nhp.save()
@@ -471,10 +471,12 @@ class NHSaleSideForm(forms.ModelForm):
             nhss = self.instance
             if self.instance.lawyer1:
                 pays = self.instance.lawyer1.nhpays.filter(nhsaleside=nhss)
-                self.fields['lawyer1_pay'].initial = pays[0].amount
+                if pays.count() == 1:
+                    self.fields['lawyer1_pay'].initial = pays[0].amount
             if self.instance.lawyer2:
                 pays = self.instance.lawyer2.nhpays.filter(nhsaleside=nhss)
-                self.fields['lawyer2_pay'].initial = pays[0].amount
+                if pays.count() == 1:
+                    self.fields['lawyer2_pay'].initial = pays[0].amount
     class Meta:
         model = NHSaleSide
 
