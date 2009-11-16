@@ -1810,7 +1810,7 @@ class Tax(models.Model):
 #Building Input
 class MadadBI(models.Model):
     year = models.PositiveSmallIntegerField(ugettext('year'))
-    month = models.PositiveSmallIntegerField(ugettext('year'))
+    month = models.PositiveSmallIntegerField(ugettext('month'))
     publish_date = models.DateField(ugettext('publish_date'))
     value = models.FloatField(ugettext('value'))
     def diff(self):
@@ -1826,7 +1826,7 @@ class MadadBI(models.Model):
 #Consumer Prices
 class MadadCP(models.Model):
     year = models.PositiveSmallIntegerField(ugettext('year'))
-    month = models.PositiveSmallIntegerField(ugettext('year'))
+    month = models.PositiveSmallIntegerField(ugettext('month'))
     publish_date = models.DateField(ugettext('publish_date'))
     value = models.FloatField(ugettext('value'))
     def diff(self):
