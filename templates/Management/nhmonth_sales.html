@@ -53,6 +53,7 @@
 		<th>סוג פעולה</th>
 		<th>% עמלה<br>חתום</th>
 		<th>% עמלה<br>בפועל</th>
+		<th>יועץ<br>מחתים</th>
 		<th>סה"כ<br>עמלה</th>
 		<th>תשלום<br>לעו"ד</th>
 		<th>עמלה נטו</th>
@@ -78,6 +79,7 @@
 				<td>{{ss.sale_type}}</td>
 				<td>{{ss.signed_commission|floatformat:-2}}%</td>
 				<td>{{ss.actual_commission|floatformat:-2}}%</td>
+				<td>{{ss.signing_advisor}}</td>
 				<td>{{ss.income|commaise}}</td>
 				<td>
 					{% for p in ss.lawyer1_pays %}
@@ -94,18 +96,18 @@
 				{% for nhe in employees %}
 				<td>
 					{% ifequal nhe ss.employee1 %}
-						{{ss.employee1_pay|commaise}} ש"ח<br>{{ss.employee1_commission}}%
+						{{ss.employee1_pay|commaise}}<br>{{ss.employee1_commission}}%
 					{% endifequal %}
 					{% ifequal nhe ss.employee2 %}
-						{{ss.employee2_pay|commaise}} ש"ח<br>{{ss.employee2_commission}}%
+						{{ss.employee2_pay|commaise}}<br>{{ss.employee2_commission}}%
 					{% endifequal %}
 					{% ifequal nhe ss.director %}
-						{{ss.director_pay|commaise}} ש"ח<br>{{ss.director_commission}}%
+						{{ss.director_pay|commaise}}<br>{{ss.director_commission}}%
 					{% endifequal %}
 				</td>
 				{% endfor %}
 				<td>
-					{{ss.all_employee_commission|commaise}} ש"ח<br>{{ss.all_employee_commission_precentage}}%
+					{{ss.all_employee_commission|commaise}}<br>{{ss.all_employee_commission_precentage}}%
 				</td>
 				{% if forloop.first %}
 					</tr>
