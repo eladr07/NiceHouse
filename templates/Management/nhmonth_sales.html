@@ -119,12 +119,12 @@
 		<td colspan="4"></td>
 		<td>{{nhmonth.avg_signed_commission|floatformat:-2}}</td>
 		<td>{{nhmonth.avg_actual_commission|floatformat:-2}}</td>
-		<td>{{nhmonth.total_net_income|commaise}} ש"ח</td>
+		<td>{{nhmonth.total_net_income|commaise}}</td>
 		<td colspan="5"></td>
 		{% for e in employees %}
-			<td>{{e.month_total|commaise}} ש"ח</td>
+			<td>{{e.month_total|commaise}}</td>
 		{% endfor %}
-		<td>{{nhmonth.total_commission|commaise}} ש"ח</td>
+		<td>{{nhmonth.total_commission|commaise}}</td>
 	</tr>
 </table>
 {% endblock content %}
