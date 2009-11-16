@@ -918,6 +918,13 @@ class NHEmployeeSalary(EmployeeSalaryBase):
                                                   commission='base', amount = nhss.employee2_pay or 0,
                                                   precentage = nhss.employee2_commission,
                                                   income = nhss.net_income)
+        for nhss in NHSaleSide.objects.filter(employee3=self.nhemployee, nhsale__nhmonth__year__exact = self.year,
+                                              nhsale__nhmonth__month__exact = self.month):
+            self.commissions += (nhss.employee3_pay or 0)
+            NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss,
+                                                  commission='base', amount = nhss.employee3_pay or 0,
+                                                  precentage = nhss.employee3_commission,
+                                                  income = nhss.net_income)
         if self.nhemployee.nhbranch:
             try:
                 nhm = NHMonth.objects.get(nhbranch = self.nhemployee.nhbranch, year = self.year,
