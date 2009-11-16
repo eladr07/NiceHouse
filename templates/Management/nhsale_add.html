@@ -5,7 +5,7 @@
 var p = 0;
 var ac1 = 0;
 var ac2 = 0;
-var fields = new Array("employee1", "employee2", "director");
+var fields = new Array("employee1", "employee2", "employee3", "director");
 var priceInput, actualCommission1, actualCommission2;
 
 $(document).ready(function() {	
@@ -50,6 +50,12 @@ $(document).ready(function() {
 	});
 	$("#id_side2-employee2_commission").change(function () {
 		$("#id_side2-employee2_pay").attr("value", p * ac2/ 100 * parseFloat($(this).val())/100);
+	});
+	$("#id_side1-employee3_commission").change(function () {
+		$("#id_side1-employee3_pay").attr("value", p * ac1/ 100 * parseFloat($(this).val())/100);
+	});
+	$("#id_side2-employee3_commission").change(function () {
+		$("#id_side2-employee3_pay").attr("value", p * ac2/ 100 * parseFloat($(this).val())/100);
 	});
 	$("#id_side1-director_commission").change(function () {
 		$("#id_side1-director_pay").attr("value", p * ac1/ 100 * parseFloat($(this).val())/100);
@@ -378,6 +384,11 @@ function updateValues() {
 						{{ side1form.employee2 }}
 						{% if side1form.employee2.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.employee2.errors|join:""}}'/>{% endif %}
 					</td>
+					<th>{{ side1form.employee3.label_tag }}</th>
+					<td>
+						{{ side1form.employee3 }}
+						{% if side1form.employee3.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.employee3.errors|join:""}}'/>{% endif %}
+					</td>
 					<th>{{ side1form.director.label_tag }}</th>
 					<td>
 						{{ side1form.director }}
@@ -400,6 +411,11 @@ function updateValues() {
 						{{ side1form.employee2_commission }}
 						{% if side1form.employee2_commission.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.employee2_commission.errors|join:""}}'/>{% endif %}
 					</td>
+					<th>{{ side1form.employee3_commission.label_tag }}</th>
+					<td>
+						{{ side1form.employee3_commission }}
+						{% if side1form.employee3_commission.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{side1form.employee3_commission.errors|join:""}}'/>{% endif %}
+					</td>
 					<th>{{ side1form.director_commission.label_tag }}</th>
 					<td>
 						{{ side1form.director_commission }}
@@ -411,6 +427,8 @@ function updateValues() {
 					<td><input id="id_side1-employee1_pay" type="text" readonly="readonly"/></td>
 					<th>עמלה בש"ח</th>
 					<td><input id="id_side1-employee2_pay" type="text" readonly="readonly"/></td>
+					<th>עמלה בש"ח</th>
+					<td><input id="id_side1-employee3_pay" type="text" readonly="readonly"/></td>
 					<th>עמלה בש"ח</th>
 					<td><input id="id_side1-director_pay" type="text" readonly="readonly"/></td>
 				</tr>

@@ -165,6 +165,16 @@
 				</td>
 			</tr>
 			<tr>
+				<th>עובד 3</th>
+				<td>
+					{% if side.employee3 %}
+						{{side.employee3}} - 
+						{{side.employee3_commission}}% - 
+						{{side.employee3_pay|commaise}} ש"ח
+					{% endif %}
+				</td>
+			</tr>
+			<tr>
 				<th>גורם מפנה</th>
 				<td>
 					{% if side.director %}

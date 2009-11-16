@@ -1875,14 +1875,15 @@ class NHSaleSide(models.Model):
     address = models.CharField(ugettext('address'), max_length=40)
     employee1 = models.ForeignKey('NHEmployee', verbose_name=ugettext('advisor'), related_name='nhsaleside1s')
     employee1_commission = models.FloatField(ugettext('commission_precent'))
-    employee2 = models.ForeignKey('NHEmployee', verbose_name=ugettext('advisor'), related_name='nhsaleside2s', 
-                                null=True, blank=True)
-    employee2_commission = models.FloatField(ugettext('commission_precent'), 
-                                            null=True, blank=True)
+    employee2 = models.ForeignKey('NHEmployee', verbose_name=ugettext('advisor'), related_name='nhsaleside2s', null=True, 
+                                  blank=True)
+    employee2_commission = models.FloatField(ugettext('commission_precent'), null=True, blank=True)
+    employee3 = models.ForeignKey('NHEmployee', verbose_name=ugettext('advisor'), related_name='nhsaleside3s', null=True, 
+                                  blank=True)
+    employee3_commission = models.FloatField(ugettext('commission_precent'), null=True, blank=True)
     director = models.ForeignKey('EmployeeBase', verbose_name=ugettext('director'), related_name='nhsaleside_director', 
                                 null=True, blank=True)    
-    director_commission = models.FloatField(ugettext('commission_precent'), 
-                                            null=True, blank=True)
+    director_commission = models.FloatField(ugettext('commission_precent'), null=True, blank=True)
     signing_advisor = models.ForeignKey('NHEmployee', verbose_name=ugettext('signing_advisor'), related_name='nhsaleside_signer')
     lawyer1 = models.ForeignKey('Lawyer', verbose_name=ugettext('lawyer'), related_name='nhsaleside1s', 
                                 null=True, blank=True)
@@ -1919,6 +1920,18 @@ class NHSaleSide(models.Model):
             return None
         amount = self.net_income * self.employee2_commission / 100
         terms = self.employee2.employment_terms
+        if not terms: return amount
+        nhmonth = self.nhsale.nhmonth
+        tax = Tax.objects.filter(date__lte=date(nhmonth.year, nhmonth.month,1)).latest().value / 100 + 1
+        if not self.include_tax and terms.hire_type.id == HireType.SelfEmployed:
+            amount = amount / tax
+        return amount
+    @property
+    def employee3_pay(self):
+        if self.employee3_commission == None or self.employee3 == None:
+            return None
+        amount = self.net_income * self.employee3_commission / 100
+        terms = self.employee3.employment_terms
         if not terms: return amount
         nhmonth = self.nhsale.nhmonth
         tax = Tax.objects.filter(date__lte=date(nhmonth.year, nhmonth.month,1)).latest().value / 100 + 1
@@ -1963,14 +1976,16 @@ class NHSaleSide(models.Model):
     def all_employee_commission(self):
         return (self.employee1_pay or 0) + (self.employee2_pay or 0) + (self.director_pay or 0)
     def is_employee_related(self, employee):
-        return self.employee1 == employee or self.employee2 == employee or self.director == employee
+        for attr in ['employee1','employee2', 'employee3', 'director']:
+            if getattr(self, attr) == employee:
+                return True
+        return False
     def get_employee_pay(self, employee):
-        if self.employee1 == employee:
-            return self.employee1_pay or 0
-        if self.employee2 == employee:
-            return self.employee2_pay or 0
-        if self.director == employee:
-            return self.director_pay or 0
+        for attr in ['employee1','employee2', 'employee3', 'director']:
+            e = getattr(self, attr)
+            if e == employee:
+                pay = getattr(self, attr + '_pay')
+                return pay or 0
         return 0
     def save(self,*args, **kw):
         if not self.income and self.actual_commission:
@@ -1978,8 +1993,9 @@ class NHSaleSide(models.Model):
         elif self.income and not self.actual_commission:
             self.actual_commission = self.income / self.nhsale.price * 100
         models.Model.save(self, *args, **kw)
-        e1, ec1, e2, ec2, d, dc = (self.employee1, self.employee1_commission,
+        e1, ec1, e2, ec2, e3, ec3, d, dc = (self.employee1, self.employee1_commission,
                                    self.employee2, self.employee2_commission,
+                                   self.employee3, self.employee3_commission,
                                    self.director, self.director_commission)
         y, m = self.nhsale.nhmonth.year,self.nhsale.nhmonth.month 
         if e1 and ec1:
@@ -1991,6 +2007,11 @@ class NHSaleSide(models.Model):
             q = e2.nhpays.filter(nhsaleside = self)
             nhp = q.count() == 1 and q[0] or NHPay(employee=e2, nhsaleside = self, year = y, month = m)
             nhp.amount = self.employee2_pay
+            nhp.save()
+        if e3 and ec3:
+            q = e3.nhpays.filter(nhsaleside = self)
+            nhp = q.count() == 1 and q[0] or NHPay(employee=e3, nhsaleside = self, year = y, month = m)
+            nhp.amount = self.employee3_pay
             nhp.save()
         if d and dc:
             q = d.nhpays.filter(nhsaleside = self)
