@@ -6,7 +6,7 @@
 	var selectedID = 0;
 	var prev_class;
 	$(document).ready(function() {
-		$("#salaryTable tr").click(function() { 
+		$("table tr").click(function() { 
 			var tr = $(this);
 			if (selectedID > 0)
 				$("table tr[employeeid='"+selectedID+"']").attr("class", prev_class);
