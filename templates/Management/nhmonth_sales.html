@@ -53,8 +53,8 @@
 		<th>סוג פעולה</th>
 		<th>% עמלה<br>חתום</th>
 		<th>% עמלה<br>בפועל</th>
-		<th>יועץ<br>מחתים</th>
 		<th>סה"כ<br>עמלה</th>
+		<th>יועץ<br>מחתים</th>
 		<th>תשלום<br>לעו"ד</th>
 		<th>עמלה נטו</th>
 		<th>% מהכנסה<br>חודשי</th>
@@ -79,8 +79,8 @@
 				<td>{{ss.sale_type}}</td>
 				<td>{{ss.signed_commission|floatformat:-2}}%</td>
 				<td>{{ss.actual_commission|floatformat:-2}}%</td>
-				<td>{{ss.signing_advisor}}</td>
 				<td>{{ss.income|commaise}}</td>
+				<td>{{ss.signing_advisor}}</td>
 				<td>
 					{% for p in ss.lawyer1_pays %}
 						<a href="{{p.lawyer.get_absolute_url}}" class="fancybox">{{p.lawyer}} - {{p.amount|commaise}}</a><br>
