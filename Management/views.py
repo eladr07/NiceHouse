@@ -746,13 +746,14 @@ def nhmonth_sales(request, nhbranch_id):
         return HttpResponse('No Permission. Contact Elad.') 
     year = int(request.GET.get('year', 0))
     month = int(request.GET.get('month', 0))
+    d = date(year, month, 1)
     if year and month:
         q = NHMonth.objects.filter(nhbranch__id = nhbranch_id, year=year, month=month)
     else:
         q = NHMonth.objects.filter(nhbranch__id = nhbranch_id)
     nhb = NHBranch.objects.get(pk=nhbranch_id)
     nhm = q.count() > 0 and q[0] or NHMonth(nhbranch = nhb, year = year or date.today().year, month = month or date.today().month)
-    employees = nhb.nhemployees.all()
+    employees = nhb.nhemployees.filter(work_start__lt = d).exclude(work_end__isnull=False, work_end__lt = d)
     for e in employees:
         e.month_total = 0
     for sale in nhm.nhsales.all():
