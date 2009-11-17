@@ -9,7 +9,7 @@
 		$("#salaryTable tr").click(function() { 
 			var tr = $(this);
 			if (selectedID > 0)
-				$("#salaryTable tr[employeeid='"+selectedID+"']").attr("class", prev_class);
+				$("table tr[employeeid='"+selectedID+"']").attr("class", prev_class);
 			selectedID = tr.attr("employeeid");
 			if (!selectedID)
 				return;
@@ -98,7 +98,7 @@
 		<a href="{{branch.grouper.id}}/{{month.year}}/{{month.month}}/send">שלח להנה"ח</a>
 	</div>
 	<div class="clearBoth"></div>
-	<table id="salaryTable" class="dataTable" border="1">
+	<table class="dataTable" border="1">
 	<caption>{{branch.grouper}}</caption>
 		<tr>
 			<th></th>
