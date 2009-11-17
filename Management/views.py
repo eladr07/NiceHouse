@@ -742,6 +742,8 @@ def nh_season_income(request):
                               context_instance=RequestContext(request))
     
 def nhmonth_sales(request, nhbranch_id):
+    if not request.user.has_perm('Management.nhbranch_' + nhbranch_id):
+        return HttpResponse('No Permission. Contact Elad.') 
     year = int(request.GET.get('year', 0))
     month = int(request.GET.get('month', 0))
     if year and month:
