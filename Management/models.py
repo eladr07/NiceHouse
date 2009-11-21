@@ -562,7 +562,9 @@ class NHCBase(models.Model):
             sales.extend(list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=self.nhemployee)))
             for nhss in NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=self.nhemployee):
                 pay = nhss.get_employee_pay(self.nhemployee)
-                relative_income = pay / nhss.all_employee_commission * nhss.net_income
+                all_pay = nhss.all_employee_commission
+                if not all_pay: continue
+                relative_income = pay / all_pay * nhss.net_income
                 x = relative_income * self.precentage / 100
                 amount += x
                 scds.append(NHSaleCommissionDetail(nhemployeesalary=es, commission='nhcbase',amount=x,
@@ -575,7 +577,9 @@ class NHCBase(models.Model):
                 sales.extend(list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=nhe)))
                 for nhss in sales:
                     pay = nhss.get_employee_pay(nhe)
-                    relative_income = pay / nhss.all_employee_commission * nhss.net_income
+                    all_pay = nhss.all_employee_commission
+                    if not all_pay: continue
+                    relative_income = pay / all_pay * nhss.net_income
                     x = relative_income * self.precentage / 100
                     amount += x
                     scds.append(NHSaleCommissionDetail(nhemployeesalary=es, commission='nhcbase',amount=x,
@@ -607,7 +611,9 @@ class NHCBranchIncome(models.Model):
             sales.extend(list(NHSaleSide.objects.filter(employee3=self.nhemployee)))
             for nhss in sales:
                 pay = nhss.get_employee_pay(self.nhemployee)
-                relative_income = pay / nhss.all_employee_commission * nhss.net_income
+                all_pay = nhss.all_employee_commission
+                if not all_pay: continue
+                relative_income = pay / all_pay * nhss.net_income
                 amount += relative_income
                 scds.append(NHSaleCommissionDetail(nhemployeesalary=es,nhsaleside=nhss,
                                                    commission='nhcbranchincome',
@@ -620,7 +626,9 @@ class NHCBranchIncome(models.Model):
                 sales.extend(list(NHSaleSide.objects.filter(employee3=nhe)))
                 for nhss in NHSaleSide.objects.filter(employee1=nhe).exclude(employee2=self.nhemployee).exclude(employee3=self.nhemployee):
                     pay = nhss.get_employee_pay(nhe)
-                    relative_income = pay / nhss.all_employee_commission * nhss.net_income
+                    all_pay = nhss.all_employee_commission
+                    if not all_pay: continue
+                    relative_income = pay / all_pay * nhss.net_income
                     amount += relative_income
                     scds.append(NHSaleCommissionDetail(nhemployeesalary=es,nhsaleside=nhss,
                                                        commission='nhcbranchincome',
