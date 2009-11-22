@@ -2714,8 +2714,8 @@ def sale_analysis(request):
         if form.is_valid():
             project = form.cleaned_data['project']
             rooms_num, house_type = form.cleaned_data['rooms_num'], form.cleaned_data['house_type']
-            current = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
-            end = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
+            current = date(int(form.cleaned_data['from_year']), int(form.cleaned_data['from_month']), 1)
+            end = date(int(form.cleaned_data['to_year']), int(form.cleaned_data['to_month']), 1)
             while current <= end:
                 query = Sale.objects.filter(house__building__project = project, contractor_pay__year = current.year,
                                             contractor_pay__month = current.month)
