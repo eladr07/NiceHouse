@@ -275,8 +275,8 @@ class SaleAnalysisForm(forms.Form):
                              label = ugettext('to_year'), initial = datetime.now().year)
     to_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('to_month'),
                               initial = Demand.current_month().month)
-    include_clients = forms.ChoiceField(label = ugettext('include_clients'), choices = ((0,u'לא'),
-                                                                                        (1,u'כן')))
+    include_clients = forms.ChoiceField(label = ugettext('include_clients'), required = False, choices = ((0,u'לא'),
+                                                                                                          (1,u'כן')))
     house_type = forms.ModelChoiceField(queryset=HouseType.objects.all(), required = False, label = ugettext('house_type'))
     rooms_num = forms.FloatField(label = ugettext('rooms'), required = False)
             
