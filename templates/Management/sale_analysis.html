@@ -50,16 +50,16 @@
 		<tr class="{% cycle 'row1' 'row2'">
 			<td><a href="{{s.get_absolute_url}}" target="_blank"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
 			<td>{{s.sale_date|date:"j/m/y"}}</td>
-			{% if include_clients %}<th>{{s.clients}}</th>{% endif %}
+			{% if include_clients %}<td>{{s.clients}}</td>{% endif %}
 			<td><a href="{{s.house.building.get_absolute_url}}/pricelist/type1" target="_blabk">{{s.house.building.num}}</a></td>
 			<td><a href="{{s.house.get_absolute_url}}/type1" target="_blabk">{{s.house.num}}</a></td>
 			<td>{{s.house.type}}</td>
 			<td>{{s.house.rooms}}</td>
 			<td>{{s.building.pricelist.settle_date}}</td>
 			<td>{{s.house.floor}}</td>
-			<td>{{s.net_size}}</td>
-			<td>{{s.garden_size}}</td>
-			<td>{{s.perfect_size}}</td>
+			<td>{{s.house.net_size}}</td>
+			<td>{{s.house.garden_size}}</td>
+			<td>{{s.house.perfect_size}}</td>
 			<td>{{s.price_taxed|commaise}}</td>
 			<td>{{s.price_taxed_for_perfect_size|commaise}}</td>
 			<td></td>
