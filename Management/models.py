@@ -2271,7 +2271,9 @@ class Sale(models.Model):
         return self.include_tax and self.price or self.price * tax
     @property
     def price_taxed_for_perfect_size(self):
-        return float(self.price_taxed) / self.house.perfect_size
+        if not self.house.perfect_size:
+            return 0
+        return self.price_taxed / self.house.perfect_size
     def project_price(self):
         c = self.house.building.project.commissions
         if c.include_lawyer == None:
