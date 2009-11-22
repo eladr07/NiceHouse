@@ -265,6 +265,21 @@ class DemandDiffForm(forms.ModelForm):
     class Meta:
         model = DemandDiff
         
+class SaleAnalysisForm(forms.Form):
+    project = forms.ModelChoiceField(queryset = Project.objects.all(), label=ugettext('project'))
+    from_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
+                             label = ugettext('from_year'), initial = datetime.now().year)
+    from_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('from_month'),
+                              initial = Demand.current_month().month)
+    to_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
+                             label = ugettext('to_year'), initial = datetime.now().year)
+    to_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('to_month'),
+                              initial = Demand.current_month().month)
+    include_clients = forms.ChoiceField(label = ugettext('include_clients'), choices = ((0,u'לא'),
+                                                                                        (1,u'כן')))
+    house_type = forms.ModelChoiceField(queryset=HouseType.objects.all(), required = False, label = ugettext('house_type'))
+    rooms_num = forms.FloatField(label = ugettext('rooms'), required = False)
+            
 class SaleForm(forms.ModelForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label=ugettext('project'))
     building = forms.ModelChoiceField(queryset = Building.objects.all(), label=ugettext('building'))

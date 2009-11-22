@@ -290,6 +290,11 @@ class House(models.Model):
     
     is_sold = models.BooleanField(ugettext('is_sold'), default= False)
     is_deleted = models.BooleanField(default= False, editable= False)
+    
+    @property
+    def perfect_size(self):
+        balcony_size = self.garden_size or 0
+        return self.net_size + balcony_size * 0.3
     def pricelist_types(self):
         types = []
         for v in self.versions.all():
@@ -2264,6 +2269,9 @@ class Sale(models.Model):
     def price_taxed(self):
         tax = Tax.objects.filter(date__lte=date(self.contractor_pay.year, self.contractor_pay.month,1)).latest().value / 100 + 1
         return self.include_tax and self.price or self.price * tax
+    @property
+    def price_taxed_for_perfect_size(self):
+        return self.price_taxed / self.house.perfect_size
     def project_price(self):
         c = self.house.building.project.commissions
         if c.include_lawyer == None:

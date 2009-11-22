@@ -378,11 +378,13 @@ class MonthDemandWriter:
                 row = [singup.date.strftime('%d/%m/%y'), s.contractor_pay.strftime('%m/%y'), 
                        clientsPara(s.clients), '%s/%s' % (s.house.building.num, s.house.num), 
                        s.sale_date.strftime('%d/%m/%y'), commaise(s.price)]
-                scd_final = s.project_commission_details.filter(commission='final')[0]
                 s.restore_date = self.demand.get_previous_demand().finish_date
-                diff = scd_final.value - s.c_final
+                c_final_old = s.c_final
+                s.restore_date = self.demand.finish_date
+                c_final_new = s.c_final
+                diff = c_final_new - c_final_old
                 total += diff * s.price_final / 100
-                row.extend([s.c_final, scd_final.value, diff, commaise(diff * s.price_final / 100)])
+                row.extend([c_final_old, c_final_new, diff, commaise(diff * s.price_final / 100)])
                 row.reverse()
                 rows.append(row)
                 if i % 17 == 0:

@@ -252,6 +252,8 @@ urlpatterns += patterns('Management.views',
           
     (r'^demandinvoices/$', 'demand_invoice_list'),
     (r'^demandpayments/$', 'demand_payment_list'),
+    
+    (r'^saleanalysis/$', 'sale_analysis'),
 
     (r'^splitpayment/add$', 'split_payment_add'),
 
