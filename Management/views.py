@@ -1095,8 +1095,7 @@ def invoice_offset_del(request, id):
     invoice = io.invoice
     invoice.offset = None
     invoice.save()
-    io = InvoiceOffset.objects.get(pk=id)
-    io.delete()
+    InvoiceOffset.objects.get(pk=id).delete()
     return HttpResponseRedirect('/demands/%s' % demand_id)
 
 @permission_required('Management.add_payment')
