@@ -71,7 +71,7 @@
 		</tr>
 	{% endfor %}
 	<tr class="rowSum">
-		<td colspan="5">
+		<td colspan={%if include_clients%}"6"{%else%}"5"{%endif%}>
 			מס' מכירות : {{sm.sales|length}}
 		<td>ממוצע</td>
 		<td>{{sm.avg_rooms|floatformat:-2}}</td>
