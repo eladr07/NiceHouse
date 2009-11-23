@@ -2737,7 +2737,7 @@ def sale_analysis(request):
                 sales.extend(list(query))
                 current = date(current.month == 12 and current.year + 1 or current.year,
                                current.month == 12 and 1 or current.month + 1, 1)
-            include_clients = form.cleaned_data['include_clients']
+            include_clients = int(form.cleaned_data['include_clients'])
     else:
         form = SaleAnalysisForm()
     return render_to_response('Management/sale_analysis.html', 
