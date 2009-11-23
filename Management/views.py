@@ -1069,7 +1069,7 @@ def invoice_offset(request, id=None):
     if request.method == 'POST':
         form = InvoiceOffsetForm(request.POST)
         if form.is_valid():
-            invoice_num = int(form.cleaned_data['invoice_num'])
+            invoice_num = form.cleaned_data['invoice_num']
             invoice = Invoice.objects.get(num = invoice_num) 
             invoice.offset = form.save()
             invoice.save()
