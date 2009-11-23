@@ -47,7 +47,8 @@
 		<th>ממוצע<BR>מכירות<BR>לחודש</th>
 		<th>הערות</th>
 	</tr>
-    {% for s in sales %}
+    {% for sm in sale_months %}
+    {% for s in sm.sales %}
 		<tr class="{% cycle 'row1' 'row2'">
 			<td><a href="{{s.get_absolute_url}}" target="_blank"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
 			<td>{{s.actual_demand.month}}/{{s.actual_demand.year}}</td>
@@ -67,6 +68,14 @@
 			<td></td>
 			<td></td>
 			<td>{{s.remarks}}</td>
+		</tr>
+	{% endfor %}
+	<tr class="rowSum">
+		<td colspan="0">
+			מס' מכירות : 
+			{{sm.sales|length}}
+		</td>
+	</tr>
 	{% endfor %}
 </table>
 {% endblock content %}

@@ -2716,9 +2716,15 @@ def employeesalary_season_total_expenses(request):
                               { 'employees':employees, 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
                                 'filterForm':form},
                               context_instance=RequestContext(request))
-        
+
+class SalesMonth:
+    def __init__(self):
+        self.year = None
+        self.month = None
+        self.sales = []
+
 def sale_analysis(request):
-    sales = []
+    sale_months = []
     include_clients = None
     if request.method == 'POST':
         form = SaleAnalysisForm(request.POST)
@@ -2734,12 +2740,15 @@ def sale_analysis(request):
                     query = query.filter(house__rooms = rooms_num)
                 if house_type:
                     query = query.filter(house__type = house_type)
-                sales.extend(list(query))
+                sm = SaleMonth()
+                sm.year, sm.month = current.year, current.month
+                sm.sales.extend(list(query))
+                sale_months.append(sm)
                 current = date(current.month == 12 and current.year + 1 or current.year,
                                current.month == 12 and 1 or current.month + 1, 1)
             include_clients = int(form.cleaned_data['include_clients'])
     else:
         form = SaleAnalysisForm()
     return render_to_response('Management/sale_analysis.html', 
-                              { 'filterForm':form, 'sales':sales, 'include_clients':include_clients },
+                              { 'filterForm':form, 'sale_months':sale_months, 'include_clients':include_clients },
                               context_instance=RequestContext(request))
