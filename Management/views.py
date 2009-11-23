@@ -2718,6 +2718,38 @@ def employeesalary_season_total_expenses(request):
                               context_instance=RequestContext(request))
 
 class SalesMonth:
+    def avg_net_size(self):
+        if len(self.houses()) == 0: return None
+        res = 0
+        for h in self.houses():
+            res += h.net_size
+        return res / len(self.houses())
+    def avg_garden_size(self):
+        if len(self.houses()) == 0: return None
+        res = 0
+        for h in self.houses():
+            res += h.garden_size
+        return res / len(self.houses())
+    def avg_rooms(self):
+        if len(self.houses()) == 0: return None
+        res = 0
+        for h in self.houses():
+            res += h.rooms
+        return res / len(self.houses())
+    def avg_perfect_size(self):
+        if len(self.houses()) == 0: return None
+        res = 0
+        for h in self.houses():
+            res += h.perfect_size
+        return res / len(self.houses())
+    def avg_taxed_price(self):
+        if len(self.sales) == 0: return None
+        res = 0
+        for s in self.sales:
+            res += s.taxed_price
+        return res / len(self.sales)
+    def houses(self):
+        return map(lambda s: s.house, self.sales)
     def __init__(self):
         self.year = None
         self.month = None
@@ -2740,7 +2772,6 @@ def sale_analysis(request):
                     query = query.filter(house__rooms = rooms_num)
                 if house_type:
                     query = query.filter(house__type = house_type)
-                query = query.annotate(Avg('net_size'), Avg('garden_size'))
                 sm = SalesMonth()
                 sm.year, sm.month = current.year, current.month
                 sm.sales.extend(list(query))

@@ -69,15 +69,17 @@
 			<td></td>
 			<td>{{s.remarks}}</td>
 		</tr>
-		{% if forloop.last %}
-			<tr class="rowSum">
-				<td colspan="17">
-					מס' מכירות : 
-					{{forloop.counter}}
-				</td>
-			</tr>
-		{% endif %}
 	{% endfor %}
+	<tr class="rowSum">
+		<td colspan="17">
+			מס' מכירות : {{sm.sales|length}} | 
+			ממוצע חדרים : {{sm.avg_rooms|floatformat:-2}} | 
+			ממוצע שטח : {{sm.avg_net_size|floatformat:-2}} | 
+			ממוצע שטח גינה : {{sm.avg_garden_size|floatformat:-2}} | 
+			ממוצע שטח משוכלל : {{sm.avg_perfect_size|floatformat:-2}} | 
+			ממוצע מחיר חוזה : {{sm.avg_taxed_price|floatformat:-2}}
+		</td>
+	</tr>
 	{% endfor %}
 </table>
 {% endblock content %}
