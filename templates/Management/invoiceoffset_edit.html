@@ -38,6 +38,14 @@
 				<td class="helpText">{% if form.date.help_text %}{{form.date.help_text}}{% endif %}</td>
 			</tr>
 			<tr>
+				<th>{{form.add_type.label_tag}}</th>
+				<td>
+					{{form.add_type}}
+					{% if form.add_type.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.add_type.errors|join:""}}'/>{% endif %}
+				</td>
+				<td class="helpText">{% if form.add_type.help_text %}{{form.add_type.help_text}}{% endif %}</td>
+			</tr>
+			<tr>
 				<th>{{form.amount.label_tag}}</th>
 				<td>
 					{{form.amount}}
