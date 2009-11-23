@@ -325,7 +325,7 @@ urlpatterns += patterns('Management.views',
     (r'^invoices/(?P<id>\d+)/del$', 'invoice_del'),
      
     (r'^invoices/(?P<id>\d+)/offset$', 'invoice_offset'),   
-    (r'^invoices/addoffset$', 'invoice_offset'),      
+    (r'^invoices/offset$', 'invoice_offset'),      
     (r'^invoiceoffset/(?P<object_id>\d+)$', 'limited_update_object',
      {'model' : InvoiceOffset, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '%(id)s'}),
     (r'^invoiceoffset/(?P<id>\d+)/del$', 'invoice_offset_del'),
