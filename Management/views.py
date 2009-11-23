@@ -1095,6 +1095,7 @@ def invoice_offset_del(request, id):
     invoice = io.invoice
     invoice.offset = None
     invoice.save()
+    io.invoice = None
     io.delete()
     return HttpResponseRedirect('/demands/%s' % demand_id)
 
