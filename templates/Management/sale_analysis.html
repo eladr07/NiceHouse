@@ -71,13 +71,16 @@
 		</tr>
 	{% endfor %}
 	<tr class="rowSum">
-		<td colspan="17">
-			מס' מכירות : {{sm.sales|length}} | 
-			ממוצע חדרים : {{sm.avg_rooms|floatformat:-2}} | 
-			ממוצע שטח : {{sm.avg_net_size|floatformat:-2}} | 
-			ממוצע שטח גינה : {{sm.avg_garden_size|floatformat:-2}} | 
-			ממוצע שטח משוכלל : {{sm.avg_perfect_size|floatformat:-2}} | 
-			ממוצע מחיר חוזה : {{sm.avg_price_taxed|commaise}}
+		<td colspan="5">
+			מס' מכירות : {{sm.sales|length}}
+		<td>ממוצע</td>
+		<td>{{sm.avg_rooms|floatformat:-2}}</td>
+		<td></td>
+		<td></td>
+		<td>{{sm.avg_net_size|floatformat:-2}}</td>
+		<td>{{sm.avg_garden_size|floatformat:-2}}</td>
+		<td>{{sm.avg_perfect_size|floatformat:-2}}</td>
+		<td>{{sm.avg_price_taxed|commaise}}</td>
 		</td>
 	</tr>
 	{% endfor %}
