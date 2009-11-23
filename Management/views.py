@@ -2740,6 +2740,7 @@ def sale_analysis(request):
                     query = query.filter(house__rooms = rooms_num)
                 if house_type:
                     query = query.filter(house__type = house_type)
+                query = query.annotate(Avg('net_size'), Avg('garden_size'))
                 sm = SalesMonth()
                 sm.year, sm.month = current.year, current.month
                 sm.sales.extend(list(query))
