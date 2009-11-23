@@ -399,12 +399,12 @@ class InvoiceForm(forms.ModelForm):
 class InvoiceOffsetForm(forms.ModelForm):
     invoice_num = forms.IntegerField(label=ugettext('invoice_num'))    
     def clean_invoice_num(self):
-        invoice_num = int(self.cleaned_data['invoice_num'])
+        invoice_num = self.cleaned_data['invoice_num']
         invoices = Invoice.objects.filter(num = invoice_num)
         if invoices.count() == 0:
-            raise ValidationError(u"לא קיימת חשבונית שזה מספרה.")
+            raise forms.ValidationError(u"לא קיימת חשבונית שזה מספרה.")
         elif invoices.count() > 1:
-            raise ValidationError(u"קיימת יותר מחשבונית אחת עם מספר זה.")
+            raise forms.ValidationError(u"קיימת יותר מחשבונית אחת עם מספר זה.")
         return invoice_num
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
