@@ -58,7 +58,7 @@
 			<td>{{s.house.building.pricelist.settle_date|date:"j/m/y"}}</td>
 			<td>{{s.house.floor}}</td>
 			<td>{{s.house.net_size}}</td>
-			<td>{{s.house.garden_size}}</td>
+			<td>{{s.house.garden_size|default_if_none:""}}</td>
 			<td>{{s.house.perfect_size}}</td>
 			<td>{{s.price_taxed|commaise}}</td>
 			<td>{{s.price_taxed_for_perfect_size|commaise}}</td>
