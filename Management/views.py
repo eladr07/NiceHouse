@@ -1092,9 +1092,6 @@ def invoice_offset_del(request, id):
     io = InvoiceOffset.objects.get(pk=id)
     demand_id = io.invoice.demands.all()[0].id
     #unlink invoice from the offset
-    invoice = io.invoice
-    invoice.offset = None
-    invoice.save()
     io.invoice = None
     io.delete()
     return HttpResponseRedirect('/demands/%s' % demand_id)
