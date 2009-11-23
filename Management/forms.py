@@ -278,7 +278,8 @@ class SaleAnalysisForm(forms.Form):
     include_clients = forms.ChoiceField(label = ugettext('include_clients'), required = False, choices = ((0,u'לא'),
                                                                                                           (1,u'כן')))
     house_type = forms.ModelChoiceField(queryset=HouseType.objects.all(), required = False, label = ugettext('house_type'))
-    rooms_num = forms.FloatField(label = ugettext('rooms'), required = False)
+    rooms_num = forms.FloatField(label = ugettext('rooms'), required = False,
+                                 choices = ((float(i)/2,float(i)/2) for i in range(1, 21)))
             
 class SaleForm(forms.ModelForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label=ugettext('project'))
@@ -396,6 +397,15 @@ class InvoiceForm(forms.ModelForm):
         model = Invoice
         
 class InvoiceOffsetForm(forms.ModelForm):
+    invoice_num = forms.IntegerField(label=ugettext('invoice_num'))    
+    def clean_invoice_num(self):
+        invoice_num = int(self.cleaned_data['invoice_num'])
+        invoices = Invoice.objects.filter(num = invoice_num)
+        if invoices.count() == 0:
+            raise ValidationError(u"לא קיימת חשבונית שזה מספרה.")
+        elif invoices.count() > 1:
+            raise ValidationError(u"קיימת יותר מחשבונית אחת עם מספר זה.")
+        return invoice_num
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})

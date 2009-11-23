@@ -2,7 +2,7 @@
 {% load management_extras %}
 {% block content %}
 <div class="title">
-	<div class="pageTitle">ריכוז דרישות לפי תקופה</div>
+	<div class="pageTitle">דו"ח ניתוח וריכוז מכירות לפי תקופה</div>
 </div>
 <div class="clearBoth"></div>
 <div style="float:right;width:70%;">
@@ -55,7 +55,7 @@
 			<td><a href="{{s.house.get_absolute_url}}/type1" target="_blabk">{{s.house.num}}</a></td>
 			<td>{{s.house.type}}</td>
 			<td>{{s.house.rooms}}</td>
-			<td>{{s.building.pricelist.settle_date}}</td>
+			<td>{{s.house.building.pricelist.settle_date|date:"j/m/y"}}</td>
 			<td>{{s.house.floor}}</td>
 			<td>{{s.house.net_size}}</td>
 			<td>{{s.house.garden_size}}</td>

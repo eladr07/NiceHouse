@@ -1065,19 +1065,26 @@ def invoice_del(request, id):
     return HttpResponseRedirect('/demands/%s' % demand_id)
 
 @permission_required('Management.add_invoiceoffset')
-def invoice_offset(request, id):
-    i = Invoice.objects.get(pk=id)
-    offset = i.offset or InvoiceOffset()
+def invoice_offset(request, id=None):
     if request.method == 'POST':
-        form = InvoiceOffsetForm(request.POST, instance = offset)
+        form = InvoiceOffsetForm(request.POST)
         if form.is_valid():
-            i.offset = form.save()
-            i.save()
+            invoice_num = int(form.cleaned_data['invoice_num'])
+            invoice = Invoice.objects.get(num = invoice_num) 
+            invoice.offset = form.save()
+            invoice.save()
     else:
-        form = InvoiceOffsetForm(instance = offset)
+        if id:
+            i = Invoice.objects.get(pk=id)
+            invoice_num = i.num
+            offset = i.offset or InvoiceOffset()
+        else:
+            offset = InvoiceOffset()
+            invoice_num = 0
+        form = InvoiceOffsetForm(instance = offset, initial={'invoice_num':invoice_num})
     
-    return render_to_response('Management/object_edit.html', 
-                              {'form': form, 'title':u'זיכוי לחשבונית מס %s' % i.num}, 
+    return render_to_response('Management/invoiceoffset_edit.html', 
+                              {'form': form, 'title':u'זיכוי חשבונית'}, 
                               context_instance = RequestContext(request))    
 
 @permission_required('Management.delete_invoiceoffset')
