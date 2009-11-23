@@ -29,6 +29,7 @@
 <caption>מציג סה"כ {{sales|length}} מכירות</caption>
 	<tr>
 		<th></th>
+		<th>חודש<BR>דרישה</th>
 		<th>ת. חוזה</th>
 		{% if include_clients %}<th>שם הרוכשים</th>{% endif %}
 		<th>מס'<BR>בניין</th>
@@ -49,6 +50,7 @@
     {% for s in sales %}
 		<tr class="{% cycle 'row1' 'row2'">
 			<td><a href="{{s.get_absolute_url}}" target="_blank"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
+			<td>{{s.actual_demand.month}}/{{s.actual_demand.year}}</td>
 			<td>{{s.sale_date|date:"j/m/y"}}</td>
 			{% if include_clients %}<td>{{s.clients}}</td>{% endif %}
 			<td><a href="{{s.house.building.get_absolute_url}}/pricelist/type1" target="_blabk">{{s.house.building.num}}</a></td>

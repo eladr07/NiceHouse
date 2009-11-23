@@ -27,7 +27,7 @@ Boolean = (
            )
 
 RoomsChoices = [(float(i)/2,float(i)/2) for i in range(2, 21)]
-RoomsChoices.insert(0, ('',u'הכל'))
+RoomsChoices.insert(0, ('',u'----'))
 
 class Tag(models.Model):
     name = models.CharField(unique = True, max_length=20)

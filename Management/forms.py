@@ -396,7 +396,14 @@ class InvoiceForm(forms.ModelForm):
         model = Invoice
         
 class InvoiceOffsetForm(forms.ModelForm):
-    invoice_num = forms.IntegerField(label=ugettext('invoice_num'))    
+    invoice_num = forms.IntegerField(label=ugettext('invoice_num'))       
+    add_type = forms.ChoiceField(choices=((1,u'תוספת'),
+                                          (2,'קיזוז')), 
+                                          label=ugettext('add_type'))
+    def clean(self):
+        add_type, amount = self.cleaned_data['add_type'], self.cleaned_data['amount']
+        self.cleaned_data['amount'] = int(add_type) == 2 and (amount * -1) or amount 
+        return self.cleaned_data
     def clean_invoice_num(self):
         invoice_num = self.cleaned_data['invoice_num']
         invoices = Invoice.objects.filter(num = invoice_num)
@@ -409,6 +416,8 @@ class InvoiceOffsetForm(forms.ModelForm):
         forms.ModelForm.__init__(self,*args,**kw)
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
         self.fields['date'].widget.attrs = {'class':'vDateField'}
+        if self.instance.id:
+            self.fields['add_type'].initial = self.instance.amount >= 0 and 1 or 2 
     class Meta:
         model = InvoiceOffset
         
