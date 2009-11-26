@@ -36,12 +36,12 @@
 				<td>{{ d.get_total_amount|commaise }} ש"ח</td>
 				<td>
 				{% for i in d.invoices.all %}
-					<a href="/invoices/{{i.id}}">{{i.amount|commaise}}</a><br>
+					<a href="/invoices/{{i.id}}" target="_blank">{{i.amount|commaise}}</a><br>
 				{% endfor %}
 				</td>
 				<td>
 				{% for p in d.payments.all %}
-					<a href="/payments/{{p.id}}">{{p.amount|commaise}}</a><br>
+					<a href="/payments/{{p.id}}" target="_blank">{{p.amount|commaise}}</a><br>
 				{% endfor %}
 				</td>
 				<td>{{d.diff_invoice_payment|commaise}}</td>
