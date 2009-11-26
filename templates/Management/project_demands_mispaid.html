@@ -15,9 +15,10 @@
 			<th>חוזים</th>
 			<th>סכום חוזים</th>
 			<th>סכום דרישה</th>
-			<th>פרטי חשבונית</th>
-			<th>פרטי צ'ק</th>
-			<th>הפרש</th>
+			<th>פרטי<BR>חשבונית</th>
+			<th>פרטי<BR>צ'ק</th>
+			<th>הפרש צק<BR>לחשבונית</th>
+			<th>הפרש דרישה<BR>לחשבונית</th>
 			<th>תיקון</th>
 			<th>תזכורות להמשך טיפול</th>
 		</tr>
@@ -35,17 +36,16 @@
 				<td>{{ d.get_total_amount|commaise }} ש"ח</td>
 				<td>
 				{% for i in d.invoices.all %}
-					<a href="/invoices/{{i.id}}"><img src="/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a>
-					{{i}}<br>
+					<a href="/invoices/{{i.id}}">{{i.amount|commaise}}</a><br>
 				{% endfor %}
 				</td>
 				<td>
 				{% for p in d.payments.all %}
-					<a href="/payments/{{p.id}}"><img src="/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a>
-					{{p}}<br>
+					<a href="/payments/{{p.id}}">{{p.amount|commaise</a><br>
 				{% endfor %}
 				</td>
 				<td>{{d.diff_invoice_payment|commaise}}</td>
+				<td>{{d.diff_invoice|commaise}}</td>
 				<td>
 				{% if d.is_fixed %}
 				<img src="/site_media/images/update_48.png" width="20" height="20"  alt="תיקון" />
