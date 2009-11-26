@@ -1039,7 +1039,7 @@ def demand_payment_list(request):
     payments = filter(lambda p: p.demands.count(), q)
     if project_id:
         payments = filter(lambda p: p.demands.filter(project__id = project_id).count(), payments)
-    paginator = Paginator([i for i in q if i.demands__count > 0], 25) 
+    paginator = Paginator(payments, 25) 
 
     try:
         page = int(request.GET.get('page', '1'))
