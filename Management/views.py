@@ -1033,11 +1033,12 @@ def demand_payment_list(request):
     to_month = int(request.GET.get('to_month', month.month))
     from_date = date(from_year, from_month, 1)
     to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
-    q = project_id and Payment.objects.filter(demands__project__id = project_id).reverse() or Payment.objects.reverse()
-    q = q.filter(payment_date__range = (from_date, to_date)).annotate(Count('demands'))
+    q = Payment.objects.filter(payment_date__range = (from_date, to_date)).reverse().select_related()
     form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month,
                                       'project':project_id})
-
+    payments = filter(lambda p: p.demands.count(), q)
+    if project_id:
+        payments = filter(lambda p: p.demands.filter(project__id = project_id).count(), payments)
     paginator = Paginator([i for i in q if i.demands__count > 0], 25) 
 
     try:
