@@ -2735,9 +2735,7 @@ class SalesMonth:
         return res / len(self.houses())
     def avg_rooms(self):
         if len(self.houses()) == 0: return None
-        res = 0
-        for h in self.houses():
-            res += h.rooms
+        res = reduce(lambda h1, h2: h1.rooms + h2.rooms, self.houses())
         return res / len(self.houses())
     def avg_floor(self):
         if len(self.houses()) == 0: return None
