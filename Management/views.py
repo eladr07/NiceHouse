@@ -2802,8 +2802,12 @@ def sale_analysis(request):
                                current.month == 12 and 1 or current.month + 1, 1)
             if len(sale_months) > 1:
                 for i in range(1,len(sale_months)):
-                    sale_months[i].diff_avg_price_taxed_for_perfect_size = sale_months[i].avg_price_taxed_for_perfect_size() - \
-                        sale_months[i-1].avg_price_taxed_for_perfect_size()
+                    current = sale_months[i]
+                    previous = sale_months[i-1]
+                    if not len(current.sales) or not len(previous.sale):
+                        continue
+                    current.diff_avg_price_taxed_for_perfect_size = current.avg_price_taxed_for_perfect_size() - \
+                        previous.avg_price_taxed_for_perfect_size()
                 
             include_clients = int(form.cleaned_data['include_clients'])
     else:
