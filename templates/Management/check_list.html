@@ -65,7 +65,7 @@
 </div>
 <div class="clearBoth"></div>
 <table class="dataTable" border="1">
-	<th>מס"ד</th>
+	<th>מס'</th>
 	<th>הספק</th>
 	<th>ת. הוצאה</th>
 	<th>ת. תשלום</th>
@@ -80,7 +80,7 @@
 		</tr>
 		{% for c in division.list %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{c.id}}>
-				<td><a href="{{ c.get_absolute_url }}">{{ c.num }}</td>
+				<td><a class="fancybox" href="{{ c.get_absolute_url }}">{{ c.num }}</td>
 				<td>{{c.supplier}}</td>
 				<td>{{c.issue_date|date:"j/m/y"}}</td>
 				<td>{{c.pay_date|date:"j/m/y"}}</td>

@@ -122,6 +122,24 @@ def signup_details(request, house_id):
 
 @login_required
 def employeecheck_list(request, year=None, month=None):
+    month = date.today()
+    from_year = int(request.GET.get('from_year', month.year))
+    from_month = int(request.GET.get('from_month', month.month))
+    to_year = int(request.GET.get('to_year', month.year))
+    to_month = int(request.GET.get('to_month', month.month))
+    form = EmployeeCheckFilterForm(request.GET)
+    from_date = date(from_year, from_month, 1)
+    to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
+    checks = EmployeeCheck.objects.filter(issue_date__range = (from_date, to_date))
+    if form.is_valid():
+        division_type, employee = form.cleaned_data['division_type'], form.cleaned_data['employee']
+        if division_type:
+            checks = checks.filter(division_type = division_type)
+        if employee:
+            checks = checks.filter(employee = employee)
+    return render_to_response('Management/employeecheck_list.html',
+                              {'checks':checks, 'from_date':from_date, 'to_date':to_date, 'filterForm':form},
+                              context_instance=RequestContext(request))
     if year and month:
         date = datetime(int(year), int(month), 1)
     else:
