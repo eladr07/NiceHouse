@@ -2733,9 +2733,7 @@ class SalesMonth:
         for h in self.houses():
             res += h.garden_size
         return res / len(self.houses())
-    @property
     def avg_rooms(self):
-        raise TypeError
         if len(self.houses()) == 0: return None
         res = reduce(lambda h1, h2: h1.rooms + h2.rooms, self.houses())
         return res / len(self.houses())
