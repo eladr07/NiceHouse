@@ -2761,6 +2761,7 @@ class SalesMonth:
 def sale_analysis(request):
     sale_months = []
     include_clients = None
+    total_sale_count = 0
     if request.method == 'POST':
         form = SaleAnalysisForm(request.POST)
         if form.is_valid():
@@ -2778,6 +2779,7 @@ def sale_analysis(request):
                 sm = SalesMonth()
                 sm.year, sm.month = current.year, current.month
                 sm.sales.extend(list(query))
+                total_sale_count += len(sm.sales)
                 sale_months.append(sm)
                 current = date(current.month == 12 and current.year + 1 or current.year,
                                current.month == 12 and 1 or current.month + 1, 1)
@@ -2785,5 +2787,6 @@ def sale_analysis(request):
     else:
         form = SaleAnalysisForm()
     return render_to_response('Management/sale_analysis.html', 
-                              { 'filterForm':form, 'sale_months':sale_months, 'include_clients':include_clients },
+                              { 'filterForm':form, 'sale_months':sale_months, 'include_clients':include_clients,
+                               'total_sale_count':total_sale_count },
                               context_instance=RequestContext(request))

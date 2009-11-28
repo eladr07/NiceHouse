@@ -26,7 +26,7 @@
 <div class="clearBoth"></div>
 <br>
 <table id="table" class="dataTable" border="1">
-<caption>מציג סה"כ {{sales|length}} מכירות</caption>
+<caption>מציג סה"כ {{total_sale_count}} מכירות</caption>
 	<tr>
 		<th></th>
 		<th>חודש<BR>דרישה</th>
@@ -51,9 +51,9 @@
     {% for s in sm.sales %}
 		<tr class="{% cycle 'row1' 'row2'">
 			<td><a href="{{s.get_absolute_url}}" target="_blank"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
-			<td>{{s.actual_demand.month}}/{{s.actual_demand.year}}</td>
+			<td><a href="{{s.actual_demand.get_absolute_url}}" target="_blank">{{s.actual_demand.month}}/{{s.actual_demand.year}}</a></td>
 			<td>{{s.sale_date|date:"j/m/y"}}</td>
-			{% if include_clients %}<td>{{s.clients}}</td>{% endif %}
+			{% if include_clients %}<td><a href="{{s.get_absolute_url}}" target="_blank">{{s.clients}}</a></td>{% endif %}
 			<td><a href="{{s.house.building.get_absolute_url}}/pricelist/type1" target="_blabk">{{s.house.building.num}}</a></td>
 			<td><a href="{{s.house.get_absolute_url}}/type1" target="_blabk">{{s.house.num}}</a></td>
 			<td>{{s.house.type}}</td>
@@ -70,7 +70,7 @@
 			<td>{{s.remarks}}</td>
 		</tr>
 	{% endfor %}
-	<tr class="rowSum">
+	<tr class="{% cycle 'rowSum' 'rowSumGreen' 'rowSumBlue' 'rowSumRed' %}">
 		<td colspan={%if include_clients%}"6"{%else%}"5"{%endif%}>
 			מס' מכירות : {{sm.sales|length}}
 		<td>ממוצע</td>
