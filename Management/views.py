@@ -153,7 +153,7 @@ def check_list(request):
     from_month = int(request.GET.get('from_month', month.month))
     to_year = int(request.GET.get('to_year', month.year))
     to_month = int(request.GET.get('to_month', month.month))
-    division_type_id = int(request.GET.get('division_type'))
+    division_type_id = request.GET.get('division_type')
     from_date = date(from_year, from_month, 1)
     to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
     form = CheckFilterForm(request.GET)
