@@ -364,7 +364,7 @@ urlpatterns += patterns('Management.views',
     (r'^lawyers/(?P<id>\d+)/del$', 'limited_delete_object',
      {'model':Lawyer, 'post_delete_redirect':'/lawyers'}),
     
-    (r'^employeechecks(/(?P<year>\d{4})/(?P<month>\d{2}))?$', 'employeecheck_list'),
+    (r'^employeechecks/$', 'employeecheck_list'),
     (r'^employeechecks/add$', 'employeecheck_add'),
     (r'^employeechecks/(?P<id>\d+)$', 'employeecheck_edit'),
     (r'^employeechecks/(?P<id>\d+)/del$', 'limited_delete_object',

@@ -121,7 +121,7 @@ def signup_details(request, house_id):
                                   context_instance=RequestContext(request))
 
 @login_required
-def employeecheck_list(request, year=None, month=None):
+def employeecheck_list(request):
     month = date.today()
     from_year = int(request.GET.get('from_year', month.year))
     from_month = int(request.GET.get('from_month', month.month))
@@ -139,15 +139,6 @@ def employeecheck_list(request, year=None, month=None):
             checks = checks.filter(employee = employee)
     return render_to_response('Management/employeecheck_list.html',
                               {'checks':checks, 'from_date':from_date, 'to_date':to_date, 'filterForm':form},
-                              context_instance=RequestContext(request))
-    if year and month:
-        date = datetime(int(year), int(month), 1)
-    else:
-        date = datetime.now()
-    return render_to_response('Management/employeecheck_list.html',
-                              {'checks':EmployeeCheck.objects.filter(issue_date__year = date.year, 
-                                                                     issue_date__month = date.month),
-                                'date':date},
                               context_instance=RequestContext(request))
 
 @permission_required('Management.delete_advancepayment')
