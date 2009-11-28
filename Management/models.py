@@ -2346,6 +2346,8 @@ class Account(models.Model):
     branch = models.CharField(ugettext('branch'), max_length=20)
     branch_num = models.SmallIntegerField(ugettext('branch_num'))
     payee = models.CharField(ugettext('payee'), max_length=20)
+    def get_absolute_url(self):
+        return '/accounts/%s' % self.id
     class Meta:
         db_table='Account'
         
@@ -2363,7 +2365,7 @@ class EmployeeCheck(CheckBase):
     employee = models.ForeignKey('Employee', related_name='checks', verbose_name=ugettext('employee'))
     expense_type = models.ForeignKey('ExpenseType', verbose_name=ugettext('expense_type'), blank=True)
     def get_absolute_url(self):
-        return 'employeechecks/%s' % self.id 
+        return '/employeechecks/%s' % self.id 
     class Meta:
         db_table = 'EmployeeCheck'
 
@@ -2372,7 +2374,7 @@ class Check(CheckBase):
     account = models.ForeignKey('Account', null=True, editable=False)
     invoice_num = models.IntegerField(ugettext('invoice_num'), null=True, blank=True)
     def get_absolute_url(self):
-        return 'checks/%s' % self.id 
+        return '/checks/%s' % self.id 
     class Meta:
         db_table = 'Check'
 

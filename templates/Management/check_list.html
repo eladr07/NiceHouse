@@ -85,7 +85,7 @@
 				<td>{{c.issue_date|date:"j/m/y"}}</td>
 				<td>{{c.pay_date|date:"j/m/y"}}</td>
 				<td>{{c.amount|commaise}}</td>
-				<td>{{c.account}}</td>
+				<td><a href="{{c.account.get_absolute_url}}" class="fancybox">{{c.account.num}}</a></td>
 				<td>{{c.invoice_num}}</td>
 				<td>{{c.remarks}}</td>
 			</tr>

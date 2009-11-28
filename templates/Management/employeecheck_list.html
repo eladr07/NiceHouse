@@ -82,7 +82,7 @@
 				<td>{{c.issue_date}}</td>
 				<td>{{c.pay_date}}</td>
 				<td>{{c.amount}}</td>
-				<td>{{c.employee.account}}</td>
+				<td><a href="{{c.employee.account.get_absolute_url}}" class="fancybox">{{c.employee.account.num}}</a></td>
 				<td>{{c.remarks}}</td>
 			</tr>
 		{% endfor %}

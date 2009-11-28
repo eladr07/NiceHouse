@@ -131,6 +131,9 @@ urlpatterns += patterns('Management.views',
     (r'^employees/(?P<id>\d+)/account$', 'employee_account',
      {'model':EmployeeBase}),
      
+    (r'^accounts/(?P<object_id>\d+)/$', 'limited_update_object',
+     {'form_class' : Management.forms.AccountForm, 'post_save_redirect' : '%(id)s'}),
+     
      (r'^epcommission/(?P<object_id>\d+)$', 'limited_update_object',
      {'model' : EPCommission, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '%(id)s'}),
 
