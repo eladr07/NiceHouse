@@ -24,6 +24,7 @@
 		});
 		//add fancybox
 		$(".fancybox").fancybox();
+		$(".bigfancybox").fancybox({'frameWidth':800});
 	});
 </script>
 {% endblock header %}
@@ -33,11 +34,11 @@
 </div>
 <div class="someIcon">
 	<img src="/site_media/images/add_48.png" width="20" height="20"  alt="הוספה" /> 
-	<a href="/checks/add" class="fancybox" >חדש</a>
+	<a href="/checks/add" class="bigfancybox" >חדש</a>
 </div>
 <div class="someIcon">
 	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="עריכה" /> 
-	<a id="checkEdit" class="fancybox" >שינוי</a>
+	<a id="checkEdit" class="bigfancybox" >שינוי</a>
 </div>
 <div class="someIcon">
 	<img src="/site_media/images/delete_48.png" width="20" height="20"  alt="מחיקה" /> 

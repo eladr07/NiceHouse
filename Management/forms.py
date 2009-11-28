@@ -617,6 +617,7 @@ class CheckForm(forms.ModelForm):
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
     class Meta:
         model = Check
+        fields = ['num','issue_date','pay_date','division_type','new_division_type','amount','supplier','invoice_num','remarks']
 
 class EmployeeCheckForm(forms.ModelForm):
     new_division_type = forms.CharField(label = ugettext('new_division_type'), max_length = 20, required=False)
