@@ -289,15 +289,22 @@ BODY {
 	font-family: Arial;
 	padding: 4px 4px 4px 4px;
 }
-.dataTable .rowSumBlue td {
+.dataTable .rowBlue td {
 	color: #3C79FF;
 	font-size: 12px;
 	font-weight: bold;
 	font-family: Arial;
 	padding: 4px 4px 4px 4px;
 }
-.dataTable .rowSumRed td {
+.dataTable .rowRed td {
 	color: #FF3C3C;
+	font-size: 12px;
+	font-weight: bold;
+	font-family: Arial;
+	padding: 4px 4px 4px 4px;
+}
+.dataTable .rowTeal td {
+	color: #77B5BE;
 	font-size: 12px;
 	font-weight: bold;
 	font-family: Arial;

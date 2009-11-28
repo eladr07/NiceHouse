@@ -48,6 +48,7 @@
 		<th>הערות</th>
 	</tr>
     {% for sm in sale_months %}
+	<tr class="rowTeal"><td colspan="" style="text-align:center;">חודש {{sm.month}}/{{sm.month}}</td></tr>
     {% for s in sm.sales %}
 		<tr class="{% cycle 'row1' 'row2'">
 			<td><a href="{{s.get_absolute_url}}" target="_blank"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
@@ -70,7 +71,7 @@
 			<td>{{s.remarks}}</td>
 		</tr>
 	{% endfor %}
-	<tr class="{% cycle 'rowSum' 'rowSumGreen' 'rowSumBlue' 'rowSumRed' %}">
+	<tr class="{% cycle 'rowSum' 'rowSumGreen' 'rowBlue' 'rowRed' %}">
 		<td colspan={%if include_clients%}"6"{%else%}"5"{%endif%}>
 			מס' מכירות : {{sm.sales|length}}
 		<td>ממוצע</td>
