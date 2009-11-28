@@ -28,49 +28,67 @@
 </script>
 {% endblock header %}
 {% block content %}
-	<div class="title">
-		<div class="pageTitle">פירוט צ'קים אחרים מחודש {{from_date|date:"M Y"}} עד חודש {{to_date|date:"M Y"}}</div>
-	</div>
-	<div class="someIcon">
-		<img src="/site_media/images/add_48.png" width="20" height="20"  alt="הוספה" /> 
-		<a href="/checks/add" class="fancybox" >חדש</a>
-	</div>
-	<div class="someIcon">
-		<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="עריכה" /> 
-		<a id="checkEdit" class="fancybox" >שינוי</a>
-	</div>
-	<div class="someIcon">
-		<img src="/site_media/images/delete_48.png" width="20" height="20"  alt="מחיקה" /> 
-		<a id="checkDelete">מחיקה</a>
-	</div>
-	<div class="clearBoth"> </div>
-	<br /> 		
-	<table class="dataTable" border="1">
-		<th>מס"ד</th>
-		<th>הספק</th>
-		<th>ת. הוצאה</th>
-		<th>ת. תשלום</th>
-		<th>סכום לתשלום</th>
-		<th>פרטי חשבון</th>
-		<th>מס' חשבונית שהתקבלה</th>
-		<th>הערות</th>
-		{% regroup checks by division_type as division_list %}
-		{% for division in division_list %}
-			<tr>
-				<td colspan="8" style="text-align:center; background-color:#A9D0FF; font-weight:bold;">{{division.grouper}}</td>
+<div class="title">
+	<div class="pageTitle">פירוט צ'קים אחרים מחודש {{from_date|date:"M Y"}} עד חודש {{to_date|date:"M Y"}}</div>
+</div>
+<div class="someIcon">
+	<img src="/site_media/images/add_48.png" width="20" height="20"  alt="הוספה" /> 
+	<a href="/checks/add" class="fancybox" >חדש</a>
+</div>
+<div class="someIcon">
+	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="עריכה" /> 
+	<a id="checkEdit" class="fancybox" >שינוי</a>
+</div>
+<div class="someIcon">
+	<img src="/site_media/images/delete_48.png" width="20" height="20"  alt="מחיקה" /> 
+	<a id="checkDelete">מחיקה</a>
+</div>
+<div class="clearBoth"></div>
+<div style="float:right;width:70%;">
+	<form method="GET">
+		<table class="dataTable">
+			<tr class="row1">
+				<td colspan="6" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש תקופה</td>
 			</tr>
-			{% for c in division.list %}
-				<tr class="{% cycle 'row1' 'row2' %}" objid={{c.id}}>
-					<td><a href="{{ c.get_absolute_url }}">{{ c.num }}</td>
-					<td>{{c.supplier}}</td>
-					<td>{{c.issue_date|date:"j/m/y"}}</td>
-					<td>{{c.pay_date|date:"j/m/y"}}</td>
-					<td>{{c.amount|commaise}}</td>
-					<td>{{c.account}}</td>
-					<td>{{c.invoice_num}}</td>
-					<td>{{c.remarks}}</td>
-				</tr>
-			{% endfor %}
+			<tr class="row2">
+				{% for field in filterForm %}
+				<td>
+					{{ field.label_tag }} : 
+					{{ field }}
+				</td>
+				{% endfor %}
+				<td><input type="submit" value="חפש" class="button"/></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div class="clearBoth"></div>
+<table class="dataTable" border="1">
+	<th>מס"ד</th>
+	<th>הספק</th>
+	<th>ת. הוצאה</th>
+	<th>ת. תשלום</th>
+	<th>סכום לתשלום</th>
+	<th>פרטי חשבון</th>
+	<th>מס' חשבונית שהתקבלה</th>
+	<th>הערות</th>
+	{% regroup checks by division_type as division_list %}
+	{% for division in division_list %}
+		<tr>
+			<td colspan="8" style="text-align:center; background-color:#A9D0FF; font-weight:bold;">{{division.grouper}}</td>
+		</tr>
+		{% for c in division.list %}
+			<tr class="{% cycle 'row1' 'row2' %}" objid={{c.id}}>
+				<td><a href="{{ c.get_absolute_url }}">{{ c.num }}</td>
+				<td>{{c.supplier}}</td>
+				<td>{{c.issue_date|date:"j/m/y"}}</td>
+				<td>{{c.pay_date|date:"j/m/y"}}</td>
+				<td>{{c.amount|commaise}}</td>
+				<td>{{c.account}}</td>
+				<td>{{c.invoice_num}}</td>
+				<td>{{c.remarks}}</td>
+			</tr>
 		{% endfor %}
-	</table>
+	{% endfor %}
+</table>
 {% endblock content %}
