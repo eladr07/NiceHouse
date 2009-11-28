@@ -615,6 +615,8 @@ class CheckForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
+        self.fields['issue_date'].widget.attrs = {'class':'vDateField'}
+        self.fields['pay_date'].widget.attrs = {'class':'vDateField'}
     class Meta:
         model = Check
         fields = ['num','issue_date','pay_date','division_type','new_division_type','amount','supplier','invoice_num','remarks']
@@ -625,6 +627,8 @@ class EmployeeCheckForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
+        self.fields['issue_date'].widget.attrs = {'class':'vDateField'}
+        self.fields['pay_date'].widget.attrs = {'class':'vDateField'}
     class Meta:
         model = EmployeeCheck
 
