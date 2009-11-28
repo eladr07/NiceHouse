@@ -2762,6 +2762,12 @@ class SalesMonth:
         for s in self.sales:
             res += s.price_taxed
         return res / len(self.sales)
+    def avg_price_taxed_for_perfect_size(self):
+        if len(self.sales) == 0: return None
+        res = 0
+        for s in self.sales:
+            res += s.price_taxed_for_perfect_size
+        return res / len(self.sales)        
     def houses(self):
         return map(lambda s: s.house, self.sales)
     def __init__(self):
