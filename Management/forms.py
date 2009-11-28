@@ -420,6 +420,7 @@ class InvoiceOffsetForm(forms.ModelForm):
             self.fields['add_type'].initial = self.instance.amount >= 0 and 1 or 2 
     class Meta:
         model = InvoiceOffset
+        fields = ['invoice_num','date','add_type','amount','reason','remarks']
         
 class PaymentForm(forms.ModelForm):
     def __init__(self, *args, **kw):
@@ -585,25 +586,44 @@ class AccountForm(forms.ModelForm):
     class Meta:
         model = Account
 
+class CheckFilterForm(forms.Form):
+    from_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
+                             label = ugettext('from_year'), initial = datetime.now().year)
+    from_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('from_month'),
+                              initial = Demand.current_month().month)
+    to_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
+                             label = ugettext('to_year'), initial = datetime.now().year)
+    to_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('to_month'),
+                              initial = Demand.current_month().month)
+    division_type = forms.ModelChoiceField(queryset = DivisionType.objects.all(), label=ugettext('division_type'), required=False)
+
+class EmployeeCheckFilterForm(forms.Form):
+    from_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
+                             label = ugettext('from_year'), initial = datetime.now().year)
+    from_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('from_month'),
+                              initial = Demand.current_month().month)
+    to_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
+                             label = ugettext('to_year'), initial = datetime.now().year)
+    to_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('to_month'),
+                              initial = Demand.current_month().month)
+    employee = forms.ModelChoiceField(queryset = EmployeeBase.objects.all(), label=ugettext('employee'), required=False)
+    division_type = forms.ModelChoiceField(queryset = DivisionType.objects.all(), label=ugettext('division_type'), required=False)
+
 class CheckForm(forms.ModelForm):
-    remarks = forms.CharField(widget=forms.Textarea(attrs={'cols':'14', 'rows':'3'}), required = False ,
-                              label=ugettext('remarks'))
-    new_expense_type = forms.CharField(label = ugettext('new_expense_type'), max_length = 20, required=False)
-    def save(self, account=None, *args, **kw):
-        if account:
-            self.instance.account = acccount
-        expense_type = self.cleaned_data['new_expense_type']
-        if expense_type:
-            et = ExpenseType(name=expense_type)
-            et.save()
-            self.instance.expense_type = et
-        forms.ModelForm.save(self, *args, **kw)
+    new_division_type = forms.CharField(label = ugettext('new_division_type'), max_length = 20, required=False)
+
+    def __init__(self, *args, **kw):
+        forms.ModelForm.__init__(self,*args,**kw)
+        self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
     class Meta:
         model = Check
 
 class EmployeeCheckForm(forms.ModelForm):
-    remarks = forms.CharField(widget=forms.Textarea(attrs={'cols':'20', 'rows':'3'}), required = False ,
-                              label=ugettext('remarks'))
+    new_division_type = forms.CharField(label = ugettext('new_division_type'), max_length = 20, required=False)
+    
+    def __init__(self, *args, **kw):
+        forms.ModelForm.__init__(self,*args,**kw)
+        self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
     class Meta:
         model = EmployeeCheck
 

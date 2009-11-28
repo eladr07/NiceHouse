@@ -2352,14 +2352,18 @@ class Account(models.Model):
 class CheckBase(models.Model):
     num = models.IntegerField(ugettext('check_num'), unique=True)
     issue_date = models.DateField(ugettext('issue_date'))
-    amount = models.IntegerField(ugettext('amount'))
     pay_date = models.DateField(ugettext('payment_date'))
+    division_type = models.ForeignKey('DivisionType', verbose_name=ugettext('division_type'))
+    amount = models.IntegerField(ugettext('amount'))
     remarks = models.TextField(ugettext('remarks'))
     class Meta:
-        abstract=True
+        db_table = 'CheckBase'
 
 class EmployeeCheck(CheckBase):
     employee = models.ForeignKey('Employee', related_name='checks', verbose_name=ugettext('employee'))
+    expense_type = models.ForeignKey('ExpenseType', verbose_name=ugettext('expense_type'), blank=True)
+    def get_absolute_url(self):
+        return 'employeechecks/%s' % self.id 
     class Meta:
         db_table = 'EmployeeCheck'
 
@@ -2367,14 +2371,24 @@ class Check(CheckBase):
     supplier = models.CharField(ugettext('supplier'), max_length=20)
     account = models.ForeignKey('Account', null=True, editable=False)
     invoice_num = models.IntegerField(ugettext('invoice_num'), null=True, blank=True)
-    expense_type = models.ForeignKey('ExpenseType', verbose_name=ugettext('expense_type'), blank=True)
+    def get_absolute_url(self):
+        return 'checks/%s' % self.id 
     class Meta:
         db_table = 'Check'
 
 class ExpenseType(models.Model):
     name = models.CharField(ugettext('expense_type'), max_length=20, unique=True)
+    def __unicode__(self):
+        return unicode(self.name)
     class Meta:
         db_table = 'ExpenseType'
+
+class DivisionType(models.Model):
+    name = models.CharField(ugettext('expense_type'), max_length=20, unique=True)
+    def __unicode__(self):
+        return unicode(self.name)
+    class Meta:
+        db_table = 'DivisionType'
 
 class ChangeLogManager(models.Manager):
     def object_changelog(obj):

@@ -1,4 +1,5 @@
 ﻿{% extends "./base.html" %}
+{% load management_extras %}
 {% block header %}
 {{ block.super }}
 <script>
@@ -28,7 +29,7 @@
 {% endblock header %}
 {% block content %}
 	<div class="title">
-		<div class="pageTitle">פירוט צ'קים אחרים לחודש {{date|date:"M Y"}}</div>
+		<div class="pageTitle">פירוט צ'קים אחרים מחודש {{from_date|date:"M Y"}} עד חודש {{to_date|date:"M Y"}}</div>
 	</div>
 	<div class="someIcon">
 		<img src="/site_media/images/add_48.png" width="20" height="20"  alt="הוספה" /> 
@@ -47,25 +48,29 @@
 	<table class="dataTable" border="1">
 		<th>מס"ד</th>
 		<th>הספק</th>
-		<th>פירוט ההוצאה</th>
 		<th>ת. הוצאה</th>
 		<th>ת. תשלום</th>
 		<th>סכום לתשלום</th>
 		<th>פרטי חשבון</th>
 		<th>מס' חשבונית שהתקבלה</th>
 		<th>הערות</th>
-		{% for c in checks %}
-			<tr class="{% cycle 'row1' 'row2' %}" objid={{c.id}}>
-				<td><a href="/checks/{{ c.id }}">{{ c.num }}</td>
-				<td>{{c.supplier}}</td>
-				<td>{{c.expense_type}}</td>
-				<td>{{c.issue_date}}</td>
-				<td>{{c.pay_date}}</td>
-				<td>{{c.amount}}</td>
-				<td>{{c.account}}</td>
-				<td>{{c.invoice_num}}</td>
-				<td>{{c.remarks}}</td>
+		{% regroup checks by division_type as division_list %}
+		{% for division in division_list %}
+			<tr>
+				<td colspan="8" style="text-align:center; background-color:#A9D0FF; font-weight:bold;">{{division.grouper}}</td>
 			</tr>
+			{% for c in division.list %}
+				<tr class="{% cycle 'row1' 'row2' %}" objid={{c.id}}>
+					<td><a href="{{ c.get_absolute_url }}">{{ c.num }}</td>
+					<td>{{c.supplier}}</td>
+					<td>{{c.issue_date|date:"j/m/y"}}</td>
+					<td>{{c.pay_date|date:"j/m/y"}}</td>
+					<td>{{c.amount|commaise}}</td>
+					<td>{{c.account}}</td>
+					<td>{{c.invoice_num}}</td>
+					<td>{{c.remarks}}</td>
+				</tr>
+			{% endfor %}
 		{% endfor %}
 	</table>
 {% endblock content %}

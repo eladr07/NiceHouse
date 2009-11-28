@@ -146,29 +146,40 @@ def advance_payment_toloan(request, id):
     return render_to_response('Management/object_edit.html',
                               {'form':form}, context_instance=RequestContext(request))
 
-@login_required
-def check_list(request, year=None, month=None):
-    if year and month:
-        date = datetime(int(year), int(month), 1)
-    else:
-        date = datetime.now()
+@permission_required('Management.list_check')
+def check_list(request):
+    month = date.today()
+    from_year = int(request.GET.get('from_year', month.year))
+    from_month = int(request.GET.get('from_month', month.month))
+    to_year = int(request.GET.get('to_year', month.year))
+    to_month = int(request.GET.get('to_month', month.month))
+    division_type_id = int(request.GET.get('division_type', 0))
+    from_date = date(from_year, from_month, 1)
+    to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
+    
+    checks = Check.objects.filter(issue_date__range = (from_date, to_date))
+    if division_type_id:
+        checks = checks.filter(division_type__id = division_type_id)
     return render_to_response('Management/check_list.html',
-                              {'checks':Check.objects.filter(issue_date__year = date.year, 
-                                                             issue_date__month = date.month),
-                                'date':date},
+                              {'checks':checks, 'from_date':from_date, 'to_date':to_date},
                               context_instance=RequestContext(request))
 
-@login_required
+@permission_required('Management.add_check')
 def check_add(request):
-    if request.method == "POST":
+    if request.method == 'POST':
         accountForm = AccountForm(request.POST)
         form = CheckForm(request.POST)
         if accountForm.has_changed() and accountForm.is_valid():
-            a = accountForm.save()
+            form.instance.account = accountForm.save()
         else:
-            a = None
+            form.instance.account = None
         if form.is_valid():
-            form.save(a)
+            division_type = form.cleaned_data['new_division_type']
+            if division_type:
+                dt = DivisionType(name=division_type)
+                dt.save()
+                form.instance.division_type = dt
+            form.save()
     else:
         accountForm = AccountForm()
         form = CheckForm()
@@ -177,25 +188,64 @@ def check_add(request):
                               { 'accountForm':accountForm, 'form':form },
                               context_instance=RequestContext(request))
     
-@login_required
+@permission_required('Management.edit_check')
 def check_edit(request, id):
     c = Check.objects.get(pk=id)
-    if request.method == "POST":
+    if request.method == 'POST':
         accountForm = AccountForm(request.POST, instance = c.account)
         form = CheckForm(request.POST, instance = c)
-        if accountForm.has_changed():
-            if accountForm.is_valid() and form.is_valid():
-                accountForm.save()
-                form.save()
-        else:
-            if form.is_valid():
-                form.save()
+        if accountForm.has_changed() and accountForm.is_valid():
+            form.instance.account = accountForm.save()
+        if form.is_valid():
+            division_type = form.cleaned_data['new_division_type']
+            if division_type:
+                dt = DivisionType(name=division_type)
+                dt.save()
+                form.instance.division_type = dt
+            form.save()
     else:
         accountForm = AccountForm()
         form = CheckForm()
         
     return render_to_response('Management/check_edit.html', 
                               { 'accountForm':accountForm, 'form':form },
+                              context_instance=RequestContext(request))
+
+@permission_required('Management.add_employeecheck')
+def employeecheck_add(request):
+    if request.method == 'POST':
+        form = EmployeeCheckForm(request.POST)
+        if form.is_valid():
+            division_type = form.cleaned_data['new_division_type']
+            if division_type:
+                dt = DivisionType(name=division_type)
+                dt.save()
+                form.instance.division_type = dt
+            form.save()
+    else:
+        form = EmployeeCheckForm()
+        
+    return render_to_response('Management/object_edit.html', 
+                              { 'form':form },
+                              context_instance=RequestContext(request))
+    
+@permission_required('Management.edit_employeecheck')
+def employeecheck_edit(request, id):
+    ec = EmployeeCheck.objects.get(pk=id)
+    if request.method == 'POST':
+        form = EmployeeCheckForm(request.POST, instance = c)
+        if form.is_valid():
+            division_type = form.cleaned_data['new_division_type']
+            if division_type:
+                dt = DivisionType(name=division_type)
+                dt.save()
+                form.instance.division_type = dt
+            form.save()
+    else:
+        form = EmployeeCheckForm()
+        
+    return render_to_response('Management/object_edit.html', 
+                              { 'form':form },
                               context_instance=RequestContext(request))
 
 def signup_list(request, project_id):
@@ -1086,7 +1136,7 @@ def invoice_offset(request, id=None):
             invoice_num = 0
         form = InvoiceOffsetForm(instance = offset, initial={'invoice_num':invoice_num})
     
-    return render_to_response('Management/invoiceoffset_edit.html', 
+    return render_to_response('Management/object_edit.html', 
                               {'form': form, 'title':u'זיכוי חשבונית'}, 
                               context_instance = RequestContext(request))    
 
