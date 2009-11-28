@@ -2804,7 +2804,7 @@ def sale_analysis(request):
                 for i in range(1,len(sale_months)):
                     current = sale_months[i]
                     previous = sale_months[i-1]
-                    if not len(current.sales) or not len(previous.sale):
+                    if not len(current.sales) or not len(previous.sales):
                         continue
                     current.diff_avg_price_taxed_for_perfect_size = current.avg_price_taxed_for_perfect_size() - \
                         previous.avg_price_taxed_for_perfect_size()
