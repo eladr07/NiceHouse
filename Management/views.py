@@ -154,12 +154,13 @@ def check_list(request):
     to_year = int(request.GET.get('to_year', month.year))
     to_month = int(request.GET.get('to_month', month.month))
     form = CheckFilterForm(request.GET)
-    division_type = form.cleaned_data['division_type']
     from_date = date(from_year, from_month, 1)
     to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
     checks = Check.objects.filter(issue_date__range = (from_date, to_date))
-    if division_type:
-        checks = checks.filter(division_type = division_type)
+    if form.is_valid():
+        division_type = form.cleaned_data['division_type']
+        if division_type:
+            checks = checks.filter(division_type = division_type)
     return render_to_response('Management/check_list.html',
                               {'checks':checks, 'from_date':from_date, 'to_date':to_date, 'filterForm':form},
                               context_instance=RequestContext(request))
