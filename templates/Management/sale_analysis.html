@@ -48,7 +48,11 @@
 		<th>הערות</th>
 	</tr>
     {% for sm in sale_months %}
-	<tr class="rowTeal"><td colspan="17" style="text-align:center;">חודש {{sm.month}}/{{sm.year}}</td></tr>
+	<tr class="row1">
+		<td colspan="17" style="text-align:center;">
+			<a href="{{sm.sales.0.actual_demand.get_absolute_url}}">חודש {{sm.month}}/{{sm.year}}</a>
+		</td>
+	</tr>
     {% for s in sm.sales %}
 		<tr class="{% cycle 'row1' 'row2'">
 			<td><a href="{{s.get_absolute_url}}" target="_blank"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
