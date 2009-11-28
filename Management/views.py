@@ -2738,9 +2738,10 @@ class SalesMonth:
         res = reduce(lambda h1, h2: h1.rooms + h2.rooms, self.houses())
         return res / len(self.houses())
     def avg_floor(self):
-        if len(self.houses()) == 0: return None
-        res = reduce(lambda h1, h2: h1.floor + h2.floor, self.houses())
-        return res / len(self.houses())
+        houses = self.houses()
+        if len(houses) == 0: return None
+        res = reduce(lambda h1, h2: h1.floor + h2.floor, houses)
+        return res / len(houses)
     def avg_perfect_size(self):
         if len(self.houses()) == 0: return None
         res = 0
