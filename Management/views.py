@@ -2733,6 +2733,7 @@ class SalesMonth:
         for h in self.houses():
             res += h.garden_size
         return res / len(self.houses())
+    @property
     def avg_rooms(self):
         raise TypeError
         if len(self.houses()) == 0: return None
