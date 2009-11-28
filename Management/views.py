@@ -2722,33 +2722,40 @@ def employeesalary_season_total_expenses(request):
 
 class SalesMonth:
     def avg_net_size(self):
-        if len(self.houses()) == 0: return None
+        houses = self.houses()
+        if len(houses) == 0: return None
         res = 0
-        for h in self.houses():
+        for h in houses:
             res += h.net_size
-        return res / len(self.houses())
+        return res / len(houses)
     def avg_garden_size(self):
-        if len(self.houses()) == 0: return None
+        houses = self.houses()
+        if len(houses) == 0: return None
         res = 0
-        for h in self.houses():
+        for h in houses:
             res += h.garden_size
-        return res / len(self.houses())
+        return res / len(houses)
     def avg_rooms(self):
         houses = self.houses()
         if len(houses) == 0: return None
-        res = sum(map(lambda h: h.rooms, houses))
+        res = 0
+        for h in houses:
+            res += h.rooms
         return res / len(houses)
     def avg_floor(self):
         houses = self.houses()
         if len(houses) == 0: return None
-        res = sum(map(lambda h: h.floor, houses))
+        res = 0
+        for h in houses:
+            res += h.floor
         return res / len(houses)
     def avg_perfect_size(self):
-        if len(self.houses()) == 0: return None
+        houses = self.houses()
+        if len(houses) == 0: return None
         res = 0
-        for h in self.houses():
+        for h in houses:
             res += h.perfect_size
-        return res / len(self.houses())
+        return res / len(houses)
     def avg_price_taxed(self):
         if len(self.sales) == 0: return None
         res = 0
