@@ -132,9 +132,11 @@ def employeecheck_list(request):
     to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
     checks = EmployeeCheck.objects.filter(issue_date__range = (from_date, to_date))
     if form.is_valid():
-        division_type, employee = form.cleaned_data['division_type'], form.cleaned_data['employee']
+        division_type,expense_type,employee = form.cleaned_data['division_type'],form.cleaned_data['expense_type'],form.cleaned_data['employee']
         if division_type:
             checks = checks.filter(division_type = division_type)
+        if expense_type:
+            checks = checks.filter(expense_type = expense_type)
         if employee:
             checks = checks.filter(employee = employee)
     return render_to_response('Management/employeecheck_list.html',
@@ -167,9 +169,11 @@ def check_list(request):
     to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
     checks = Check.objects.filter(issue_date__range = (from_date, to_date))
     if form.is_valid():
-        division_type = form.cleaned_data['division_type']
+        division_type, expense_type = form.cleaned_data['division_type'], form.cleaned_data['expense_type']
         if division_type:
             checks = checks.filter(division_type = division_type)
+        if expense_type:
+            checks = checks.filter(expense_type = expense_type)
     return render_to_response('Management/check_list.html',
                               {'checks':checks, 'from_date':from_date, 'to_date':to_date, 'filterForm':form},
                               context_instance=RequestContext(request))
@@ -184,18 +188,22 @@ def check_add(request):
         else:
             form.instance.account = None
         if form.is_valid():
-            division_type = form.cleaned_data['new_division_type']
+            division_type, expense_type = form.cleaned_data['new_division_type'], form.cleaned_data['new_expense_type']
             if division_type:
-                dt = DivisionType(name=division_type)
+                dt = DivisionType.objects.get_or_create(name=division_type)
                 dt.save()
                 form.instance.division_type = dt
+            if expense_type:
+                et = ExpenseType.objects.get_or_create(name=expense_type)
+                et.save()
+                form.instance.expense_type = expense_type
             form.save()
     else:
         accountForm = AccountForm()
         form = CheckForm()
         
     return render_to_response('Management/check_edit.html', 
-                              { 'accountForm':accountForm, 'form':form },
+                              { 'accountForm':accountForm, 'form':form,'title':u"הזנת צ'ק אחר" },
                               context_instance=RequestContext(request))
     
 @permission_required('Management.edit_check')
@@ -207,18 +215,22 @@ def check_edit(request, id):
         if accountForm.has_changed() and accountForm.is_valid():
             form.instance.account = accountForm.save()
         if form.is_valid():
-            division_type = form.cleaned_data['new_division_type']
+            division_type, expense_type = form.cleaned_data['new_division_type'], form.cleaned_data['new_expense_type']
             if division_type:
-                dt = DivisionType(name=division_type)
+                dt = DivisionType.objects.get_or_create(name=division_type)
                 dt.save()
                 form.instance.division_type = dt
+            if expense_type:
+                et = ExpenseType.objects.get_or_create(name=expense_type)
+                et.save()
+                form.instance.expense_type = expense_type
             form.save()
     else:
         accountForm = AccountForm()
         form = CheckForm()
         
     return render_to_response('Management/check_edit.html', 
-                              { 'accountForm':accountForm, 'form':form },
+                              { 'accountForm':accountForm, 'form':form,'title':u"הזנת צ'ק אחר" },
                               context_instance=RequestContext(request))
 
 @permission_required('Management.add_employeecheck')
@@ -226,17 +238,21 @@ def employeecheck_add(request):
     if request.method == 'POST':
         form = EmployeeCheckForm(request.POST)
         if form.is_valid():
-            division_type = form.cleaned_data['new_division_type']
+            division_type, expense_type = form.cleaned_data['new_division_type'], form.cleaned_data['new_expense_type']
             if division_type:
-                dt = DivisionType(name=division_type)
+                dt = DivisionType.objects.get_or_create(name=division_type)
                 dt.save()
                 form.instance.division_type = dt
+            if expense_type:
+                et = ExpenseType.objects.get_or_create(name=expense_type)
+                et.save()
+                form.instance.expense_type = expense_type
             form.save()
     else:
         form = EmployeeCheckForm()
         
     return render_to_response('Management/object_edit.html', 
-                              { 'form':form },
+                              { 'form':form,'title':u"הזנת צ'ק לעובד" },
                               context_instance=RequestContext(request))
     
 @permission_required('Management.edit_employeecheck')
@@ -245,17 +261,21 @@ def employeecheck_edit(request, id):
     if request.method == 'POST':
         form = EmployeeCheckForm(request.POST, instance = c)
         if form.is_valid():
-            division_type = form.cleaned_data['new_division_type']
+            division_type, expense_type = form.cleaned_data['new_division_type'], form.cleaned_data['new_expense_type']
             if division_type:
-                dt = DivisionType(name=division_type)
+                dt = DivisionType.objects.get_or_create(name=division_type)
                 dt.save()
                 form.instance.division_type = dt
+            if expense_type:
+                et = ExpenseType.objects.get_or_create(name=expense_type)
+                et.save()
+                form.instance.expense_type = expense_type
             form.save()
     else:
         form = EmployeeCheckForm()
         
     return render_to_response('Management/object_edit.html', 
-                              { 'form':form },
+                              { 'form':form,'title':u"הזנת צ'ק לעובד" },
                               context_instance=RequestContext(request))
 
 def signup_list(request, project_id):

@@ -2356,6 +2356,7 @@ class CheckBase(models.Model):
     issue_date = models.DateField(ugettext('issue_date'))
     pay_date = models.DateField(ugettext('payment_date'))
     division_type = models.ForeignKey('DivisionType', verbose_name=ugettext('division_type'))
+    expense_type = models.ForeignKey('ExpenseType', verbose_name=ugettext('expense_type'))
     amount = models.IntegerField(ugettext('amount'))
     remarks = models.TextField(ugettext('remarks'))
     class Meta:
@@ -2363,7 +2364,7 @@ class CheckBase(models.Model):
 
 class EmployeeCheck(CheckBase):
     employee = models.ForeignKey('Employee', related_name='checks', verbose_name=ugettext('employee'))
-    expense_type = models.ForeignKey('ExpenseType', verbose_name=ugettext('expense_type'), blank=True)
+    purpose_type = models.ForeignKey('PurposeType', verbose_name=ugettext('purpose_type'))
     def get_absolute_url(self):
         return '/employeechecks/%s' % self.id 
     class Meta:
@@ -2379,18 +2380,32 @@ class Check(CheckBase):
         db_table = 'Check'
 
 class ExpenseType(models.Model):
-    name = models.CharField(ugettext('expense_type'), max_length=20, unique=True)
+    name = models.CharField(ugettext('name'), max_length=20, unique=True)
     def __unicode__(self):
         return unicode(self.name)
     class Meta:
         db_table = 'ExpenseType'
 
+class PurposeType(models.Model):
+    name = models.CharField(ugettext('name'), max_length=20, unique=True)
+    def __unicode__(self):
+        return unicode(self.name)
+    class Meta:
+        db_table = 'PurposeType'
+
 class DivisionType(models.Model):
-    name = models.CharField(ugettext('expense_type'), max_length=20, unique=True)
+    name = models.CharField(ugettext('name'), max_length=20, unique=True)
     def __unicode__(self):
         return unicode(self.name)
     class Meta:
         db_table = 'DivisionType'
+
+class SubDivisionType(models.Model):
+    name = models.CharField(ugettext('name'), max_length=20, unique=True)
+    def __unicode__(self):
+        return unicode(self.name)
+    class Meta:
+        db_table = 'SubDivisionType'
 
 class ChangeLogManager(models.Manager):
     def object_changelog(obj):

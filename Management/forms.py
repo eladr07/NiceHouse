@@ -595,7 +595,10 @@ class CheckFilterForm(forms.Form):
                              label = ugettext('to_year'), initial = datetime.now().year)
     to_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('to_month'),
                               initial = Demand.current_month().month)
-    division_type = forms.ModelChoiceField(queryset = DivisionType.objects.all(), label=ugettext('division_type'), required=False)
+    division_type = forms.ModelChoiceField(queryset = DivisionType.objects.all(), label=ugettext('division_type'), 
+                                           required=False)
+    expense_type = forms.ModelChoiceField(queryset = ExpenseType.objects.all(), label=ugettext('expense_type'), 
+                                          required=False)
 
 class EmployeeCheckFilterForm(forms.Form):
     from_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
@@ -607,10 +610,14 @@ class EmployeeCheckFilterForm(forms.Form):
     to_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('to_month'),
                               initial = Demand.current_month().month)
     employee = forms.ModelChoiceField(queryset = EmployeeBase.objects.all(), label=ugettext('employee'), required=False)
-    division_type = forms.ModelChoiceField(queryset = DivisionType.objects.all(), label=ugettext('division_type'), required=False)
+    division_type = forms.ModelChoiceField(queryset = DivisionType.objects.all(), label=ugettext('division_type'), 
+                                           required=False)
+    expense_type = forms.ModelChoiceField(queryset = ExpenseType.objects.all(), label=ugettext('expense_type'), 
+                                          required=False)
 
 class CheckForm(forms.ModelForm):
     new_division_type = forms.CharField(label = ugettext('new_division_type'), max_length = 20, required=False)
+    new_expense_type = forms.CharField(label = ugettext('new_expense_type'), max_length = 20, required=False)
 
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
@@ -619,10 +626,12 @@ class CheckForm(forms.ModelForm):
         self.fields['pay_date'].widget.attrs = {'class':'vDateField'}
     class Meta:
         model = Check
-        fields = ['num','issue_date','pay_date','division_type','new_division_type','amount','supplier','invoice_num','remarks']
+        fields = ['division_type','new_division_type','expense_type','new_expense_type',
+                  'supplier','invoice_num','amount','num','issue_date','pay_date','remarks']
 
 class EmployeeCheckForm(forms.ModelForm):
     new_division_type = forms.CharField(label = ugettext('new_division_type'), max_length = 20, required=False)
+    new_expense_type = forms.CharField(label = ugettext('new_expense_type'), max_length = 20, required=False)
     
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
@@ -631,6 +640,8 @@ class EmployeeCheckForm(forms.ModelForm):
         self.fields['pay_date'].widget.attrs = {'class':'vDateField'}
     class Meta:
         model = EmployeeCheck
+        fields = ['division_type','new_division_type','employee','expense_type','new_expense_type','purpose_type','amount',
+                  'num','issue_date','pay_date','remarks']
 
 class NHMonthForm(forms.ModelForm):
     def __init__(self, *args, **kw):

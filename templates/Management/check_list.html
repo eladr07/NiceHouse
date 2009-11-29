@@ -49,7 +49,7 @@
 	<form method="GET">
 		<table class="dataTable">
 			<tr class="row1">
-				<td colspan="6" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש תקופה</td>
+				<td colspan="7" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש תקופה</td>
 			</tr>
 			<tr class="row2">
 				{% for field in filterForm %}
@@ -78,17 +78,25 @@
 		<tr>
 			<td colspan="8" style="text-align:center; background-color:#A9D0FF; font-weight:bold;">{{division.grouper}}</td>
 		</tr>
-		{% for c in division.list %}
-			<tr class="{% cycle 'row1' 'row2' %}" objid={{c.id}}>
-				<td><a class="fancybox" href="{{ c.get_absolute_url }}">{{ c.num }}</td>
-				<td>{{c.supplier}}</td>
-				<td>{{c.issue_date|date:"j/m/y"}}</td>
-				<td>{{c.pay_date|date:"j/m/y"}}</td>
-				<td>{{c.amount|commaise}}</td>
-				<td><a href="{{c.account.get_absolute_url}}" class="fancybox">{{c.account.num}}</a></td>
-				<td>{{c.invoice_num}}</td>
-				<td>{{c.remarks}}</td>
-			</tr>
+		{% for checks in division.list %}
+			{% regroup checks by expense_type as expense_list %}
+			{% for expense in expense_list %}
+				<tr>
+					<td colspan="8" style="text-align:center; background-color:#A9FFAB; font-weight:bold;">{{expense.grouper}}</td>
+				</tr>
+				{% for c in expense.list %}
+					<tr class="{% cycle 'row1' 'row2' %}" objid={{c.id}}>
+						<td><a class="fancybox" href="{{ c.get_absolute_url }}">{{ c.num }}</td>
+						<td>{{c.supplier}}</td>
+						<td>{{c.issue_date|date:"j/m/y"}}</td>
+						<td>{{c.pay_date|date:"j/m/y"}}</td>
+						<td>{{c.amount|commaise}}</td>
+						<td><a href="{{c.account.get_absolute_url}}" class="fancybox">{{c.account.num}}</a></td>
+						<td>{{c.invoice_num}}</td>
+						<td>{{c.remarks}}</td>
+					</tr>
+				{% endfor %}
+			{% endfor %}
 		{% endfor %}
 	{% endfor %}
 </table>
