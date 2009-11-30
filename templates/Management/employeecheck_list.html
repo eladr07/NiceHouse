@@ -68,6 +68,7 @@
 	<th>ת. הוצאה</th>
 	<th>ת. תשלום</th>
 	<th>חודש דרישה</th>
+	<th>סוג הוצאה</th>
 	<th>חשבונית</th>
 	<th>סכום לתשלום</th>
 	<th>פרטי חשבון</th>
@@ -77,24 +78,19 @@
 		<tr>
 			<td colspan="10" style="text-align:center; background-color:#A9D0FF; font-weight:bold;">{{division.grouper}}</td>
 		</tr>
-		{% regroup division.list by expense_type as expense_list %}
-		{% for expense in expense_list %}
-			<tr>
-				<td colspan="10" style="text-align:center; background-color:#A9FFAB; font-weight:bold;">{{expense.grouper}}</td>
-			</tr>
-			{% for c in expense.list %}
-			<tr class="{% cycle 'row1' 'row2' %}" objid={{c.id}}>
-				<td><a class="fancybox" href="{{ c.get_absolute_url }}">{{ c.num }}</td>
-				<td><a href="{{c.employee.get_absolute_url}}">{{c.employee}}</a></td>
-				<td>{{c.issue_date}}</td>
-				<td>{{c.pay_date}}</td>
-				<td>{{c.month}}/{{c.year}}</td>
-				<td>{{c.type}}</td>
-				<td>{{c.amount}}</td>
-				<td><a href="{{c.employee.account.get_absolute_url}}" class="fancybox">{{c.employee.account.num}}</a></td>
-				<td>{{c.remarks}}</td>
-			</tr>
-			{% endfor %}
+		{% for c in  division.list %}
+		<tr class="{% cycle 'row1' 'row2' %}" objid={{c.id}}>
+			<td><a class="fancybox" href="{{ c.get_absolute_url }}">{{ c.num }}</td>
+			<td><a href="{{c.employee.get_absolute_url}}">{{c.employee}}</a></td>
+			<td>{{c.issue_date}}</td>
+			<td>{{c.pay_date}}</td>
+			<td>{{c.month}}/{{c.year}}</td>
+			<td>{{c.expense_type}}</td>
+			<td>{{c.type}}</td>
+			<td>{{c.amount}}</td>
+			<td><a href="{{c.employee.account.get_absolute_url}}" class="fancybox">{{c.employee.account.num}}</a></td>
+			<td>{{c.remarks}}</td>
+		</tr>
 		{% endfor %}
 	{% endfor %}
 </table>
