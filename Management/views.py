@@ -185,7 +185,7 @@ def process_check_base_form(form):
         form.instance.division_type = dt
     if expense_type:
         et, new = ExpenseType.objects.get_or_create(name=expense_type)
-        form.instance.expense_type = expense_type
+        form.instance.expense_type = et
 
 @permission_required('Management.add_check')
 def check_add(request):
