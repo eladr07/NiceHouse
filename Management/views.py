@@ -182,10 +182,10 @@ def process_check_base_form(form):
     division_type, expense_type = form.cleaned_data['new_division_type'], form.cleaned_data['new_expense_type']
     if division_type:
         dt, new = DivisionType.objects.get_or_create(name=division_type)
-        form.instance.division_type = dt
+        form.cleaned_data['division_type'] = dt
     if expense_type:
         et, new = ExpenseType.objects.get_or_create(name=expense_type)
-        form.instance.expense_type = et
+        form.cleaned_data['expense_type'] = et
 
 @permission_required('Management.add_check')
 def check_add(request):
