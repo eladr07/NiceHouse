@@ -74,7 +74,6 @@
 	<th>פרטי חשבון</th>
 	<th>מס' חשבונית שהתקבלה</th>
 	<th>הערות</th>
-	{% for c in checks %} {{c.num }} {% endfor %}
 	{% regroup checks by division_type as division_list %}
 	{% for division in division_list %}
 		<tr>
