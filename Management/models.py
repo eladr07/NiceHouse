@@ -2374,6 +2374,7 @@ class CheckBase(models.Model):
     remarks = models.TextField(ugettext('remarks'), blank=True)
     class Meta:
         db_table = 'CheckBase'
+        ordering = ['division_type','expense_type']
 
 class EmployeeCheck(CheckBase):
     employee = models.ForeignKey('EmployeeBase', related_name='checks', verbose_name=ugettext('employee'))
