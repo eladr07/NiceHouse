@@ -19,7 +19,8 @@
 			if (selectedID > 0)
 				$("#demandEdit").attr("href", "/demands/" + selectedID);
 				$("#demandAdjust").attr("href", "/demands/" + selectedID + "/adddiffadjust");
-				$("#demandCalc").attr("href", "/demands/" + selectedID + "/calc");
+				$("#demandAdjust").attr("href", "/demands/" + selectedID + "/adddiffadjust");
+				$("#demandForceFullyPaid").attr("href", "/demands/" + selectedID + "/forcefullypaid");
 			});
 		$(".fancybox").fancybox();
 		$(".bigfancybox").fancybox({'frameWidth':800});	
@@ -80,7 +81,7 @@
 </div>
 <div class="someIcon" style="width:100px;">
 	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
-	<a class="fancybox" id="demandForceFullyPaid">התאמה כפויה</a>
+	<a id="demandForceFullyPaid">התאמה כפויה</a>
 </div>
 <div class="someIcon"style="width:130px;">
 	<img src="/site_media/images/advanced-48.png" width="20" height="20"  alt="שליחה" /> 
