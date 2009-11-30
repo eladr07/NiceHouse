@@ -72,7 +72,7 @@
 	<th>סכום לתשלום</th>
 	<th>פרטי חשבון</th>
 	<th>הערות</th>
-	{% regroup checks.all by division_type as division_list %}
+	{% regroup checks by division_type.id as division_list %}
 	{% for division in division_list %}
 		<tr>
 			<td colspan="10" style="text-align:center; background-color:#A9D0FF; font-weight:bold;">{{division.grouper}}</td>
