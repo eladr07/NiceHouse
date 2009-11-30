@@ -79,8 +79,8 @@
 		<tr>
 			<td colspan="9" style="text-align:center; background-color:#A9D0FF; font-weight:bold;">{{division.grouper}}</td>
 		</tr>
-		{% for checks in division.list %}
-			{% regroup checks by expense_type as expense_list %}
+		{% for checks2 in division.list %}
+			{% regroup checks2 by expense_type as expense_list %}
 			{% for expense in expense_list %}
 				<tr>
 					<td colspan="8" style="text-align:center; background-color:#A9FFAB; font-weight:bold;">{{expense.grouper}}</td>
