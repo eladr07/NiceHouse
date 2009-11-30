@@ -74,7 +74,8 @@
 	<th>פרטי חשבון</th>
 	<th>מס' חשבונית שהתקבלה</th>
 	<th>הערות</th>
-	{% regroup checks by num as division_list %}
+	{% for c in checks %} {{c.num }} {% endfor %}
+	{% regroup checks by division_type as division_list %}
 	{% for division in division_list %}
 		<tr>
 			<td colspan="9" style="text-align:center; background-color:#A9D0FF; font-weight:bold;">{{division.grouper}}</td>
