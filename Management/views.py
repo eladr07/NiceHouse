@@ -178,6 +178,15 @@ def check_list(request):
                               {'checks':checks, 'from_date':from_date, 'to_date':to_date, 'filterForm':form},
                               context_instance=RequestContext(request))
 
+def process_check_base_form(form):
+    division_type, expense_type = form.cleaned_data['new_division_type'], form.cleaned_data['new_expense_type']
+    if division_type:
+        dt, new = DivisionType.objects.get_or_create(name=division_type)
+        form.instance.division_type = dt
+    if expense_type:
+        et, new = ExpenseType.objects.get_or_create(name=expense_type)
+        form.instance.expense_type = expense_type
+
 @permission_required('Management.add_check')
 def check_add(request):
     if request.method == 'POST':
@@ -188,15 +197,7 @@ def check_add(request):
         else:
             form.instance.account = None
         if form.is_valid():
-            division_type, expense_type = form.cleaned_data['new_division_type'], form.cleaned_data['new_expense_type']
-            if division_type:
-                dt = DivisionType.objects.get_or_create(name=division_type)
-                dt.save()
-                form.instance.division_type = dt
-            if expense_type:
-                et = ExpenseType.objects.get_or_create(name=expense_type)
-                et.save()
-                form.instance.expense_type = expense_type
+            process_check_base_form(form)
             form.save()
     else:
         accountForm = AccountForm()
@@ -215,15 +216,7 @@ def check_edit(request, id):
         if accountForm.has_changed() and accountForm.is_valid():
             form.instance.account = accountForm.save()
         if form.is_valid():
-            division_type, expense_type = form.cleaned_data['new_division_type'], form.cleaned_data['new_expense_type']
-            if division_type:
-                dt = DivisionType.objects.get_or_create(name=division_type)
-                dt.save()
-                form.instance.division_type = dt
-            if expense_type:
-                et = ExpenseType.objects.get_or_create(name=expense_type)
-                et.save()
-                form.instance.expense_type = expense_type
+            process_check_base_form(form)
             form.save()
     else:
         accountForm = AccountForm()
@@ -256,15 +249,7 @@ def employeecheck_add(request):
     if request.method == 'POST':
         form = EmployeeCheckForm(request.POST)
         if form.is_valid():
-            division_type, expense_type = form.cleaned_data['new_division_type'], form.cleaned_data['new_expense_type']
-            if division_type:
-                dt = DivisionType.objects.get_or_create(name=division_type)
-                dt.save()
-                form.instance.division_type = dt
-            if expense_type:
-                et = ExpenseType.objects.get_or_create(name=expense_type)
-                et.save()
-                form.instance.expense_type = expense_type
+            process_check_base_form(form)
             ec = form.save()
             apply_employee_check(ec)
     else:
@@ -280,15 +265,7 @@ def employeecheck_edit(request, id):
     if request.method == 'POST':
         form = EmployeeCheckForm(request.POST, instance = c)
         if form.is_valid():
-            division_type, expense_type = form.cleaned_data['new_division_type'], form.cleaned_data['new_expense_type']
-            if division_type:
-                dt = DivisionType.objects.get_or_create(name=division_type)
-                dt.save()
-                form.instance.division_type = dt
-            if expense_type:
-                et = ExpenseType.objects.get_or_create(name=expense_type)
-                et.save()
-                form.instance.expense_type = expense_type
+            process_check_base_form(form)
             ec = form.save()
             apply_employee_check(ec)
     else:
