@@ -2371,7 +2371,7 @@ class CheckBase(models.Model):
     expense_type = models.ForeignKey('ExpenseType', verbose_name=ugettext('expense_type'), blank=True)
     type = models.ForeignKey('CheckBaseType', verbose_name=ugettext('invoice'))
     amount = models.IntegerField(ugettext('amount'))
-    remarks = models.TextField(ugettext('remarks'))
+    remarks = models.TextField(ugettext('remarks'), blank=True)
     class Meta:
         db_table = 'CheckBase'
 
