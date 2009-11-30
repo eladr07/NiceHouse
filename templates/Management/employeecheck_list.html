@@ -67,13 +67,15 @@
 	<th>שם עובד</th>
 	<th>ת. הוצאה</th>
 	<th>ת. תשלום</th>
+	<th>חודש דרישה</th>
+	<th>חשבונית</th>
 	<th>סכום לתשלום</th>
 	<th>פרטי חשבון</th>
 	<th>הערות</th>
 	{% regroup checks by division_type as division_list %}
 	{% for division in division_list %}
 		<tr>
-			<td colspan="8" style="text-align:center; background-color:#A9D0FF; font-weight:bold;">{{division.grouper}}</td>
+			<td colspan="10" style="text-align:center; background-color:#A9D0FF; font-weight:bold;">{{division.grouper}}</td>
 		</tr>
 		{% for checks in division.list %}
 			{% regroup checks by expense_type as expense_list %}
@@ -87,6 +89,8 @@
 					<td><a href="{{c.employee.get_absolute_url}}">{{c.employee}}</a></td>
 					<td>{{c.issue_date}}</td>
 					<td>{{c.pay_date}}</td>
+					<td>{{c.month}}/{{c.year}}</td>
+					<td>{{c.type}}</td>
 					<td>{{c.amount}}</td>
 					<td><a href="{{c.employee.account.get_absolute_url}}" class="fancybox">{{c.employee.account.num}}</a></td>
 					<td>{{c.remarks}}</td>

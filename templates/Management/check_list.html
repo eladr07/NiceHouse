@@ -69,6 +69,7 @@
 	<th>הספק</th>
 	<th>ת. הוצאה</th>
 	<th>ת. תשלום</th>
+	<th>חשבונית</th>
 	<th>סכום לתשלום</th>
 	<th>פרטי חשבון</th>
 	<th>מס' חשבונית שהתקבלה</th>
@@ -76,7 +77,7 @@
 	{% regroup checks by division_type as division_list %}
 	{% for division in division_list %}
 		<tr>
-			<td colspan="8" style="text-align:center; background-color:#A9D0FF; font-weight:bold;">{{division.grouper}}</td>
+			<td colspan="9" style="text-align:center; background-color:#A9D0FF; font-weight:bold;">{{division.grouper}}</td>
 		</tr>
 		{% for checks in division.list %}
 			{% regroup checks by expense_type as expense_list %}
@@ -90,6 +91,7 @@
 						<td>{{c.supplier}}</td>
 						<td>{{c.issue_date|date:"j/m/y"}}</td>
 						<td>{{c.pay_date|date:"j/m/y"}}</td>
+						<td>{{c.type}}</td>
 						<td>{{c.amount|commaise}}</td>
 						<td><a href="{{c.account.get_absolute_url}}" class="fancybox">{{c.account.num}}</a></td>
 						<td>{{c.invoice_num}}</td>
