@@ -175,7 +175,7 @@ def check_list(request):
         if expense_type:
             checks = checks.filter(expense_type = expense_type)
     return render_to_response('Management/check_list.html',
-                              {'checks':checks, 'from_date':from_date, 'to_date':to_date, 'filterForm':form},
+                              {'checks':list(checks), 'from_date':from_date, 'to_date':to_date, 'filterForm':form},
                               context_instance=RequestContext(request))
 
 def process_check_base_form(form):
