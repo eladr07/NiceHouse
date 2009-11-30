@@ -720,7 +720,7 @@ class NHSaleCommissionDetail(models.Model):
         db_table = 'NHSaleCommissionDetail'
         
 class AdvancePayment(models.Model):
-    employee = models.ForeignKey('Employee', related_name = 'advance_payments', verbose_name=ugettext('employee'))
+    employee = models.ForeignKey('EmployeeBase', related_name = 'advance_payments', verbose_name=ugettext('employee'))
     month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
     year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
                                                                                              datetime.now().year + 10)))
