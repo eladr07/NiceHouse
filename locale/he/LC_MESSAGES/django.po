@@ -1036,9 +1036,8 @@ msgid "issue_date"
 msgstr "ת. הוצאה"
 
 #: .\Management\models.py:2372
-#, fuzzy
 msgid "invoice"
-msgstr "מס' חשבונית"
+msgstr "חשבונית"
 
 #: .\Management\models.py:2380
 msgid "purpose_type"
