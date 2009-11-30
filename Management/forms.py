@@ -627,7 +627,7 @@ class CheckForm(forms.ModelForm):
     class Meta:
         model = Check
         fields = ['division_type','new_division_type','expense_type','new_expense_type',
-                  'supplier','invoice_num','amount','num','issue_date','pay_date','remarks']
+                  'supplier','invoice_num','type','amount','num','issue_date','pay_date','remarks']
 
 class EmployeeCheckForm(forms.ModelForm):
     new_division_type = forms.CharField(label = ugettext('new_division_type'), max_length = 20, required=False)
@@ -640,8 +640,8 @@ class EmployeeCheckForm(forms.ModelForm):
         self.fields['pay_date'].widget.attrs = {'class':'vDateField'}
     class Meta:
         model = EmployeeCheck
-        fields = ['division_type','new_division_type','employee','expense_type','new_expense_type','purpose_type','amount',
-                  'num','issue_date','pay_date','remarks']
+        fields = ['division_type','new_division_type','employee','year','month','expense_type','new_expense_type','purpose_type',
+                  'type','amount','num','issue_date','pay_date','remarks']
 
 class NHMonthForm(forms.ModelForm):
     def __init__(self, *args, **kw):

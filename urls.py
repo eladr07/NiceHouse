@@ -219,6 +219,7 @@ urlpatterns += patterns('Management.views',
     (r'^sale/(?P<sale_id>\d+)/commission$', 'salecommissiondetail_edit'),
     
     (r'^demands/(?P<id>\d+)/zero$', 'demand_zero'),
+    (r'^demands/(?P<id>\d+)/forcefullypaid$', 'demand_force_fully_paid'),
     (r'^demands/(?P<object_id>\d+)$', 'limited_update_object',
      {'form_class' : Management.forms.DemandForm, 'template_name' : 'Management/demand_edit.html', 'post_save_redirect' : '%(id)s'}),
     (r'^demands/(?P<obj_id>\d+)/reminders$', 'obj_reminders',

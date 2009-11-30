@@ -233,6 +233,24 @@ def check_edit(request, id):
                               { 'accountForm':accountForm, 'form':form,'title':u"הזנת צ'ק אחר" },
                               context_instance=RequestContext(request))
 
+def apply_employee_check(ec):
+    if ec.purpose_type.id == PurposeType.AdvancePayment:
+        query = AdvancePayment.objects.filter(employee = ec.employee, year = ec.year, month=ec.month)
+        if query.count > 0:
+            ap = AdvancePayment(employee = ec.employee, year = ec.year, month=ec.month)
+        else:
+            ap = query[0]
+        ap.amount = ec.amount
+        ap.save()
+    elif ec.purpose_type.id == PurposeType.Loan:
+        query = Loan.objects.filter(employee = ec.employee, date__year = ec.year, date__month=ec.month)
+        if query.count > 0:
+            loan = Loan(employee = ec.employee, date = date(ec.year, ec.month, 1))
+        else:
+            loan = query[0]
+        loan.amount = ec.amount
+        loan.save()
+        
 @permission_required('Management.add_employeecheck')
 def employeecheck_add(request):
     if request.method == 'POST':
@@ -247,14 +265,15 @@ def employeecheck_add(request):
                 et = ExpenseType.objects.get_or_create(name=expense_type)
                 et.save()
                 form.instance.expense_type = expense_type
-            form.save()
+            ec = form.save()
+            apply_employee_check(ec)
     else:
         form = EmployeeCheckForm()
         
     return render_to_response('Management/object_edit.html', 
                               { 'form':form,'title':u"הזנת צ'ק לעובד" },
                               context_instance=RequestContext(request))
-    
+        
 @permission_required('Management.edit_employeecheck')
 def employeecheck_edit(request, id):
     ec = EmployeeCheck.objects.get(pk=id)
@@ -270,7 +289,8 @@ def employeecheck_edit(request, id):
                 et = ExpenseType.objects.get_or_create(name=expense_type)
                 et.save()
                 form.instance.expense_type = expense_type
-            form.save()
+            ec = form.save()
+            apply_employee_check(ec)
     else:
         form = EmployeeCheckForm()
         
@@ -1264,6 +1284,13 @@ def demand_adddiff(request, object_id, type = None):
     return render_to_response('Management/object_edit.html', 
                               { 'form':form }, context_instance=RequestContext(request))
 
+@permission_required('Management.demand_force_fully_paid')
+def demand_force_fully_paid(request, id):
+    demand = Demand.objects.get(pk=id)
+    demand.force_fully_paid = True
+    demand.save()
+    return HttpResponse('ok')
+    
 @permission_required('Management.add_demanddiff')
 def demand_adddiff_adjust(request, object_id):
     return demand_adddiff(request, object_id, u'התאמה')

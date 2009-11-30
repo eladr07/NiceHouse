@@ -721,8 +721,10 @@ class NHSaleCommissionDetail(models.Model):
         
 class AdvancePayment(models.Model):
     employee = models.ForeignKey('Employee', related_name = 'advance_payments', verbose_name=ugettext('employee'))
+    month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
+    year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
+                                                                                             datetime.now().year + 10)))
     amount = models.IntegerField(ugettext('amount'))
-    date = models.DateField(ugettext('date'))
     date_paid = models.DateField(editable=False, null=True)
     is_paid = models.NullBooleanField(editable=False)
     def pay(self):
@@ -1588,6 +1590,7 @@ class Demand(models.Model):
     remarks = models.TextField(ugettext('remarks'), null=True,blank=True)
     is_finished = models.BooleanField(default=False, editable=False)
     reminders = models.ManyToManyField('Reminder', null=True, editable=False)
+    force_fully_paid = models.BooleanField(editable=False, default=True)
 
     invoices = models.ManyToManyField('Invoice',  related_name = 'demands', 
                                       editable=False, null=True, blank=True)
@@ -1758,6 +1761,8 @@ class Demand(models.Model):
         return DemandPaid
     @property
     def is_fully_paid(self):
+        if self.force_fully_paid:
+            return True
         total = int(self.get_total_amount())
         return total == self.invoices_amount and total == self.payments_amount
     def feed(self):
@@ -1781,7 +1786,7 @@ class Demand(models.Model):
                        ('demand_season', 'Demand Season'), ('demand_followup', 'Demand Followup'), 
                        ('demand_remarks', 'Demand Remarks'), ('demand_sale_count', 'Demand Sale Count'),
                        ('demand_invoices', 'Demand Invoices'), ('demand_payments', 'Demand Payments'),
-                       ('season_income', 'Season Income'))
+                       ('season_income', 'Season Income'), ('demand_force_fully_paid', 'Demand Force Fully Paid'))
 
 class SignupCancel(models.Model):
     date = models.DateField(ugettext('cancel_date'))
@@ -2350,21 +2355,33 @@ class Account(models.Model):
         return '/accounts/%s' % self.id
     class Meta:
         db_table='Account'
-        
+
+class CheckBaseType(models.Model):
+    WithInvoice, NoInvoice = 1, 2
+    name = models.CharField(ugettext('name'), max_length=20, unique=True)
+    def __unicode__(self):
+        return unicode(self.name)
+    class Meta:
+        db_table = 'CheckBaseType'    
+
 class CheckBase(models.Model):
     num = models.IntegerField(ugettext('check_num'), unique=True)
     issue_date = models.DateField(ugettext('issue_date'))
     pay_date = models.DateField(ugettext('payment_date'))
     division_type = models.ForeignKey('DivisionType', verbose_name=ugettext('division_type'))
     expense_type = models.ForeignKey('ExpenseType', verbose_name=ugettext('expense_type'))
+    type = models.ForeignKey('CheckBaseType', verbose_name=ugettext('invoice'))
     amount = models.IntegerField(ugettext('amount'))
     remarks = models.TextField(ugettext('remarks'))
     class Meta:
         db_table = 'CheckBase'
 
 class EmployeeCheck(CheckBase):
-    employee = models.ForeignKey('Employee', related_name='checks', verbose_name=ugettext('employee'))
+    employee = models.ForeignKey('EmployeeBase', related_name='checks', verbose_name=ugettext('employee'))
     purpose_type = models.ForeignKey('PurposeType', verbose_name=ugettext('purpose_type'))
+    month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
+    year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
+                                                                                            datetime.now().year + 10)))
     def get_absolute_url(self):
         return '/employeechecks/%s' % self.id 
     class Meta:
@@ -2387,6 +2404,7 @@ class ExpenseType(models.Model):
         db_table = 'ExpenseType'
 
 class PurposeType(models.Model):
+    Salary, AdvancePayment, Loan = 1,2,3
     name = models.CharField(ugettext('name'), max_length=20, unique=True)
     def __unicode__(self):
         return unicode(self.name)
@@ -2399,13 +2417,6 @@ class DivisionType(models.Model):
         return unicode(self.name)
     class Meta:
         db_table = 'DivisionType'
-
-class SubDivisionType(models.Model):
-    name = models.CharField(ugettext('name'), max_length=20, unique=True)
-    def __unicode__(self):
-        return unicode(self.name)
-    class Meta:
-        db_table = 'SubDivisionType'
 
 class ChangeLogManager(models.Manager):
     def object_changelog(obj):

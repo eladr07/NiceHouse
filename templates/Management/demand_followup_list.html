@@ -26,7 +26,14 @@
 		$("#demandCalc").click(function(event) {
 			if (!confirm("האם אתה בטוח שברצונך לחשב את העמלות מחדש ?"))
 				event.preventDefault();
-		});
+		});		
+		$("#demandForceFullyPaid").click(function (event) {
+			event.preventDefault();
+			$.get($(this).attr("href"), function(data){
+				if (data == "ok")
+					location.reload(true);
+				});
+			});
 		//add filters
 		var filterSelect = $("#filterSelect");
 		$("#demandTable th").each(function (index, elem) {
@@ -70,6 +77,10 @@
 <div class="someIcon" style="width:100px;">
 	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
 	<a class="fancybox" id="demandAdjust">התאמת דרישה</a>
+</div>
+<div class="someIcon" style="width:100px;">
+	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
+	<a class="fancybox" id="demandForceFullyPaid">התאמה כפויה</a>
 </div>
 <div class="someIcon"style="width:130px;">
 	<img src="/site_media/images/advanced-48.png" width="20" height="20"  alt="שליחה" /> 
@@ -149,7 +160,7 @@
 				{% for i in d.invoices.all %}
 					{% if i.offset %}
 						<a href="{{i.offset.get_absolute_url}}" class="fancybox">
-						{{i.offset.amount|commaise}} - {{i.reason}}
+							{{i.offset.amount|commaise}}
 						</a>
 					{% endif %}
 				{% endfor %}
