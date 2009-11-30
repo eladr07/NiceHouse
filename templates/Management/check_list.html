@@ -82,7 +82,7 @@
 		{% regroup division.list by expense_type as expense_list %}
 		{% for expense in expense_list %}
 			<tr>
-				<td colspan="8" style="text-align:center; background-color:#A9FFAB; font-weight:bold;">{{expense.grouper}}</td>
+				<td colspan="9" style="text-align:center; background-color:#A9FFAB; font-weight:bold;">{{expense.grouper}}</td>
 			</tr>
 			{% for c in expense.list %}
 				<tr class="{% cycle 'row1' 'row2' %}" objid={{c.id}}>
