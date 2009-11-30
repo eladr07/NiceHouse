@@ -736,8 +736,7 @@ class AdvancePayment(models.Model):
         self.save()
     class Meta:
         db_table='AdvancePayment'
-        get_latest_by = 'date'
-        ordering = ['-date']
+        ordering = ['year, month']
         
 class Loan(models.Model):
     employee = models.ForeignKey('EmployeeBase', related_name = 'loans', verbose_name=ugettext('employee'))
