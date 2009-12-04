@@ -2245,7 +2245,6 @@ class Sale(models.Model):
             if q.count() == 0:
                 continue
             restore_date = self.restore_date or self.actual_demand.finish_date
-            raise TypeError
             return self.restore and restore_date and restore_object(q[0], restore_date).value or q[0].value
         return 0
     @property
