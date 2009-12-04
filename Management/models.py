@@ -1422,13 +1422,13 @@ class ProjectCommission(models.Model):
         if self.commission_by_signups and sub == 0:
             for (m, y) in demand.get_signup_months():
                 #get sales that were signed up for specific month, not including future sales.
+                max_contractor_pay = date(demand.month==12 and demand.year+1 or demand.year, demand.month==12 and 1 or demand.month+1,1) 
                 subSales = Sale.objects.filter(house__signups__date__year=y,
                                                house__signups__date__month=m,
                                                house__signups__cancel=None,
                                                house__building__project = demand.project,
-                                               commission_include=True
-                                        ).exclude(contractor_pay__gte = date(demand.month==12 and demand.year+1 or demand.year, 
-                                                                             demand.month==12 and 1 or demand.month+1,1))
+                                               commission_include=True,
+                                               contractor_pay__lt = max_contractor_pay)
                 subSales = subSales.order_by('house__signups__date')
                 self.calc(subSales, 1)#send these sales to regular processing
             if demand.bonus_diff: demand.bonus_diff.delete()
@@ -1475,6 +1475,8 @@ class ProjectCommission(models.Model):
             for s in dic:
                 if dic[s] > self.max:
                     dic[s] = self.max
+        if demand.month == 9:
+            raise TypeError
         for s in details:
             for c, v in details[s].items():
                 scd, new = s.commission_details.get_or_create(employee_salary=None, commission=c)
