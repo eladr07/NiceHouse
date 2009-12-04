@@ -1430,7 +1430,6 @@ class ProjectCommission(models.Model):
                                         ).exclude(contractor_pay__gte = date(demand.month==12 and demand.year+1 or demand.year, 
                                                                              demand.month==12 and 1 or demand.month+1,1))
                 subSales = subSales.order_by('house__signups__date')
-                if m == 9: raise TypeError
                 self.calc(subSales, 1)#send these sales to regular processing
             if demand.bonus_diff: demand.bonus_diff.delete()
             bonus = 0
