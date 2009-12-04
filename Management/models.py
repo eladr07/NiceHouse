@@ -2434,7 +2434,7 @@ class ChangeLog(models.Model):
     
     class Meta:
         db_table = 'ChangeLog'
-        ordering = ['date']
+        ordering = ['-date']
         get_latest_by = 'date'
 
 tracked_models = [BDiscountSave, BDiscountSavePrecentage, BHouseType, BSaleRate,
