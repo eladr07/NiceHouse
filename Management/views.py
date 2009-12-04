@@ -363,6 +363,7 @@ def demand_calc(request, id):
     d = Demand.objects.get(pk=id)
     c = d.project.commissions
     if c.commission_by_signups or c.c_zilber:
+        #delete all commissions and sale commission details before re-calculating
         for demand in Demand.objects.filter(project = d.project):
             for s in demand.statuses.all():
                 s.delete()

@@ -2455,7 +2455,8 @@ def restore_object(instance, date):
     model = instance.__class__
     id = getattr(instance, 'id', None)
     if not model in tracked_models or not id:
-        raise TypeError()
+        raise TypeError
+    if id == 629: raise TypeError
     for l in ChangeLog.objects.filter(object_type = model.__name__,
                                       object_id = id,
                                       date__gt = date):
