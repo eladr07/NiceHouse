@@ -1722,10 +1722,11 @@ class Demand(models.Model):
     def get_rejectedsales(self):
         return self.sales.exclude(salereject=None)
     def get_sales(self):
-        return Sale.objects.filter(salecancel=None,
-                                   contractor_pay__year = self.year,
-                                   contractor_pay__month = self.month,
-                                   house__building__project = self.project)
+        query =  Sale.objects.filter(salecancel=None, contractor_pay__year = self.year, contractor_pay__month = self.month,
+                                     house__building__project = self.project)
+        if self.project.commissions.commission_by_signups:
+            query = query.order_by(house__signups__date)
+        return query
     def get_sales_amount(self):
         amount = 0
         for s in self.get_sales():

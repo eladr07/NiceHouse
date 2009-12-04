@@ -205,10 +205,11 @@
 			</td>
 			<td>
 				{% if d.statuses.count %}
-					{{ d.statuses.latest.type }}
-				{% else %}
-					<a href="{{d.get_absolute_url}}/close" class="fancybox">אשר</a>
+					{{ d.statuses.latest.type }}<br>
 				{% endif %}
+				{% ifequal d.statuses.latest.type.id 1 %}
+					<a href="{{d.get_absolute_url}}/close" class="fancybox">אשר</a>
+				{% endifequal %}
 			</td>
 		</tr>
 	{% endfor %}
