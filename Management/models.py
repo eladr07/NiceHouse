@@ -2245,6 +2245,7 @@ class Sale(models.Model):
             if q.count() == 0:
                 continue
             restore_date = self.restore_date or self.actual_demand.finish_date
+            raise TypeError
             return self.restore and restore_date and restore_object(q[0], restore_date).value or q[0].value
         return 0
     @property
@@ -2456,7 +2457,6 @@ def restore_object(instance, date):
     id = getattr(instance, 'id', None)
     if not model in tracked_models or not id:
         raise TypeError
-    if id == 629: raise TypeError
     for l in ChangeLog.objects.filter(object_type = model.__name__,
                                       object_id = id,
                                       date__gt = date):
