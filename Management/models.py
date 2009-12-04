@@ -1296,7 +1296,7 @@ class CZilber(models.Model):
         prices_date = date(month.month == 12 and month.year+1 or month.year, month.month==12 and 1 or month.month+1, 1)
         for s in sales:
             for c in ['c_zilber_base', 'final']:
-                scd = s.commission_details.get_or_create(commission=c)[0]
+                scd = s.commission_details.get_or_create(commission=c, employee_salary=None)[0]
                 scd.value = s.commission_include and base or 0
                 scd.save()
             s.price_final = s.project_price()
@@ -1308,7 +1308,7 @@ class CZilber(models.Model):
                 doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0, date__lte = prices_date)
                 if doh0prices.count() == 0: continue
                 memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * doh0prices.latest().price
-                scd = s.commission_details.get_or_create(commission='c_zilber_discount')[0]
+                scd = s.commission_details.get_or_create(commission='c_zilber_discount', employee_salary=None)[0]
                 scd.value = (s.price - memudad) * self.b_discount
                 scd.save()
         prev_adds = 0

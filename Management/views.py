@@ -2351,6 +2351,7 @@ def sale_edit(request, id):
         #handles the case when the building changes, and the house is not
         #in the queryset of the house field
         form.fields['house'].queryset = House.objects.all()
+        form.fields['building'].queryset = House.objects.all()
         if form.is_valid():
             project = form.cleaned_data['project']
             next = None
