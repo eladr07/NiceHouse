@@ -358,21 +358,6 @@ def demand_function(request,id , function):
     function(d)
     return HttpResponse('ok')
 
-    for p_id in [21]:
-        for m in range(1,9):
-            q = Demand.objects.filter(project__id = p_id, year = 2009, month=m)
-            if q.count() == 0:
-                continue
-            d = q[0]
-            for ds in d.statuses.all():
-                ds.delete()
-            for diff in d.diffs.all():
-                diff.delete()
-            d.calc_sales_commission()
-            d = Demand.objects.get(project__id = p_id, year = 2009, month=m)
-            d.finish()
-            time.sleep(1)
-
 @permission_required('Management.list_demand')
 def demand_calc(request, id):
     d = Demand.objects.get(pk=id)
