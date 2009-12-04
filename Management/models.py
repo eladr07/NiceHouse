@@ -1433,7 +1433,8 @@ class ProjectCommission(models.Model):
             if demand.bonus_diff: demand.bonus_diff.delete()
             bonus = 0
             for subSales in demand.get_affected_sales().values():
-                sorted_sales = list(subSales).sort(lambda x,y:x.house.get_signup().date > y.house.get_signup().date) 
+                sorted_sales = list(subSales)
+                sorted_sales.sort(lambda x,y:x.house.get_signup().date > y.house.get_signup().date) 
                 for s in sorted_sales:
                     if not s.commission_include: continue
                     signup = s.house.get_signup()
