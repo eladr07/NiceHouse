@@ -2230,7 +2230,7 @@ class Sale(models.Model):
     def __init__(self, *args, **kw):
         models.Model.__init__(self, *args, **kw)
         self.restore = True
-        self.restore_date = None
+        self.restore_date = self.actual_demand.get_previous_demand().finish_date
     @property
     def actual_demand(self):
         return Demand.objects.get(month=self.contractor_pay.month, year=self.contractor_pay.year,
@@ -2244,27 +2244,23 @@ class Sale(models.Model):
             q = self.project_commission_details.filter(commission=c)
             if q.count() == 0:
                 continue
-            restore_date = self.restore_date or self.actual_demand.finish_date
-            return self.restore and restore_date and restore_object(q[0], restore_date).value or q[0].value
+            return self.restore and self.restore_date and restore_object(q[0], self.restore_date).value or q[0].value
         return 0
     @property
     def zdb(self):
         q = self.project_commission_details.filter(commission='c_zilber_discount')
         if q.count() == 0: return 0
-        restore_date = self.restore_date or self.actual_demand.finish_date
-        return self.restore and restore_date and restore_object(q[0], restore_date).value or q[0].value
+        return self.restore and self.restore_date and restore_object(q[0], self.restore_date).value or q[0].value
     @property
     def pb_dsp(self):
         q = self.project_commission_details.filter(commission='b_discount_save_precentage')
         if q.count() == 0: return 0
-        restore_date = self.restore_date or self.actual_demand.finish_date
-        return self.restore and restore_date and restore_object(q[0], restore_date).value or q[0].value
+        return self.restore and self.restore_date and restore_object(q[0], self.restore_date).value or q[0].value
     @property
     def c_final(self):
         q = self.project_commission_details.filter(commission='final')
         if q.count() == 0: return 0
-        restore_date = self.restore_date or self.actual_demand.finish_date
-        return self.restore and restore_date and restore_object(q[0], restore_date).value or q[0].value
+        return self.restore and self.restore_date and restore_object(q[0], self.restore_date).value or q[0].value
     @property
     def pc_base_worth(self):
         return self.pc_base * self.price_final / 100

@@ -375,7 +375,6 @@ def demand_calc(request, id):
         for d2 in Demand.objects.filter(project = d.project):
             d2.calc_sales_commission()
             demand = Demand.objects.get(pk=d2.id)
-            time.sleep(1)
             demand.finish()
             time.sleep(1)
     else:
