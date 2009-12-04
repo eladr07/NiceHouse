@@ -2244,7 +2244,6 @@ class Sale(models.Model):
             q = self.project_commission_details.filter(commission=c)
             if q.count() == 0:
                 continue
-            return self.restore_date
             return self.restore and self.restore_date and restore_object(q[0], self.restore_date).value or q[0].value
         return 0
     @property
@@ -2471,7 +2470,6 @@ def restore_object(instance, date):
         if type(attr) in tracked_models:
             old_attr = restore_object(attr, date)
             setattr(instance, field.name, old_attr)
-    instance.restore_date = date
     return instance
 
 def track_changes(sender, **kwargs):
