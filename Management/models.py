@@ -1475,8 +1475,6 @@ class ProjectCommission(models.Model):
             for s in dic:
                 if dic[s] > self.max:
                     dic[s] = self.max
-        if demand.month == 9:
-            raise TypeError
         for s in details:
             for c, v in details[s].items():
                 scd, new = s.commission_details.get_or_create(employee_salary=None, commission=c)
