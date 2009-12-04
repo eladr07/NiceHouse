@@ -1429,10 +1429,11 @@ class ProjectCommission(models.Model):
                                                commission_include=True
                                         ).exclude(contractor_pay__gte = date(demand.month==12 and demand.year+1 or demand.year, 
                                                                              demand.month==12 and 1 or demand.month+1,1))
-                self.calc(subSales, 1)
+                self.calc(subSales, 1)#send these sales to regular processing
             if demand.bonus_diff: demand.bonus_diff.delete()
             bonus = 0
             for subSales in demand.get_affected_sales().values():
+                subSales.sort(lambda x,y:x.house.get_signup().date > y.house.get_signup().date)
                 for s in subSales:
                     if not s.commission_include: continue
                     signup = s.house.get_signup()
