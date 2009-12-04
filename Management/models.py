@@ -1725,7 +1725,7 @@ class Demand(models.Model):
         query =  Sale.objects.filter(salecancel=None, contractor_pay__year = self.year, contractor_pay__month = self.month,
                                      house__building__project = self.project)
         if self.project.commissions.commission_by_signups:
-            query = query.order_by(house__signups__date)
+            query = query.order_by('house__signups')
         return query
     def get_sales_amount(self):
         amount = 0
@@ -1810,7 +1810,7 @@ class Signup(models.Model):
     def get_absolute_url(self):
         return '/signups/%s' % self.id
     class Meta:
-        ordering = ['-date']
+        ordering = ['date']
         db_table = 'Signup'
         verbose_name = ugettext('signup')
         get_latest_by = 'date'
