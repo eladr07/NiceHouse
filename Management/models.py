@@ -2244,6 +2244,7 @@ class Sale(models.Model):
             q = self.project_commission_details.filter(commission=c)
             if q.count() == 0:
                 continue
+            return self.restore_date
             return self.restore and self.restore_date and restore_object(q[0], self.restore_date).value or q[0].value
         return 0
     @property
