@@ -946,8 +946,9 @@ def nhemployee_remarks(request, year, month):
 @permission_required('Management.change_demand')
 def demand_close(request, id):
     d = Demand.objects.get(pk=id)
-    d.close()
-    d.save()
+    if request.method == 'POST':
+        d.close()
+        d.save()
     return render_to_response('Management/demand_close.html', 
                               { 'demand':d },
                               context_instance=RequestContext(request))
