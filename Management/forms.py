@@ -297,9 +297,7 @@ class SaleForm(forms.ModelForm):
         return house
         
     def save(self, *args, **kw):
-        house, discount, allowed_discount = (self.cleaned_data['house'],
-                                             self.cleaned_data['discount'],
-                                             self.cleaned_data['allowed_discount'])
+        house, discount, allowed_discount = self.cleaned_data['house'], self.cleaned_data['discount'], self.cleaned_data['allowed_discount']
         '''checks if entered a allowed discount but not discount -> will fill
         discount automatically'''
         if allowed_discount and not discount:
