@@ -2230,7 +2230,7 @@ class Sale(models.Model):
     def __init__(self, *args, **kw):
         models.Model.__init__(self, *args, **kw)
         self.restore = True
-        self.restore_date = self.actual_demand.finish_date
+        self.restore_date = self.id and self.actual_demand.finish_date or None
     @property
     def actual_demand(self):
         return Demand.objects.get(month=self.contractor_pay.month, year=self.contractor_pay.year,
