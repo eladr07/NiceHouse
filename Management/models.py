@@ -1568,7 +1568,7 @@ class DemandManager(models.Manager):
 
 class DemandDiff(models.Model):
     demand = models.ForeignKey('Demand', editable=False, related_name='diffs')
-    type = models.CharField(ugettext('diff_type'), max_length=30)
+    type = models.CharField(ugettext('diff_type'), max_length=30, help_text=u'קבועה, משתנה, בונוס, קיזוז או לבחירתך')
     reason = models.CharField(ugettext('diff_reason'), max_length=30, null=True, blank=True)
     amount = models.FloatField(ugettext('amount'))
     def __unicode__(self):
@@ -2305,7 +2305,7 @@ class Sale(models.Model):
         '''
         employee is used in cases where self.employee is null -> when sale is shared for all employees in the project.
         if employee is null and self.employee is null an exception is thrown.
-        '''
+    a    '''
         if not employee: employee = self.employee
         et = employee.employment_terms
         if et.include_lawyer:
