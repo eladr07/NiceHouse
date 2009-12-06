@@ -591,6 +591,8 @@ def employee_salary_list(request):
             if e.work_end and (year > e.work_end.year or (year == e.work_end.year and month > e.work_end.month)):
                 continue
             es, new = EmployeeSalary.objects.get_or_create(employee = e, month = month, year = year)
+            if es.sales_count == 0:
+                es.safety_net = terms.safety
             if new:
                 if year == e.work_start.year and month == e.work_start.month:
                     es.base = float(30 - e.work_start.day) / 30 * terms.salary_base 
