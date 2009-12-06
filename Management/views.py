@@ -375,8 +375,9 @@ def demand_calc(request, id):
         for d2 in Demand.objects.filter(project = d.project):
             d2.calc_sales_commission()
             demand = Demand.objects.get(pk=d2.id)
-            demand.finish()
-            time.sleep(1)
+            if demand.get_next_demand() != None:
+                demand.finish()
+                time.sleep(1)
     else:
         d.calc_sales_commission()
     return HttpResponseRedirect('/demandsold/?year=%s&month=%s' % (d.year,d.month))

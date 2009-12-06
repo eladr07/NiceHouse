@@ -2279,12 +2279,18 @@ class Sale(models.Model):
         if not self.house.perfect_size:
             return 0
         return self.price_taxed / self.house.perfect_size
+    @property
+    def lawyer_tax(self):
+        pricelist = self.house.building.pricelist
+        if pricelist and pricelist.lawyer_fee:
+            return pricelist.lawyer_fee
+        return LAWYER_TAX
     def project_price(self):
         c = self.house.building.project.commissions
         if c.include_lawyer == None:
             price = self.price
         elif c.include_lawyer == True:
-            price = self.price_include_lawyer and self.price or self.price * LAWYER_TAX
+            price = self.price_include_lawyer and self.price or self.price * self.lawyer_tax
         elif c.include_lawyer == False:
             price = self.price_no_lawyer
         d = date(self.contractor_pay.month == 12 and self.contractor_pay.year+ 1 or self.contractor_pay.year,
@@ -2303,7 +2309,7 @@ class Sale(models.Model):
         if not employee: employee = self.employee
         et = employee.employment_terms
         if et.include_lawyer:
-            price = self.price_include_lawyer and self.price or self.price * LAWYER_TAX
+            price = self.price_include_lawyer and self.price or self.price * self.lawyer_tax
         else:
             price = self.price_no_lawyer
         d = date(self.contractor_pay.month == 12 and self.contractor_pay.year+ 1 or self.contractor_pay.year,
