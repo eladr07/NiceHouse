@@ -385,7 +385,7 @@ class MonthDemandWriter:
                 s.restore_date = self.demand.finish_date
                 c_final_new = s.c_final
                 diff = c_final_new - c_final_old
-                total += diff * s.price_final / 100
+                total += int(diff * s.price_final / 100)
                 row.extend([c_final_old, c_final_new, diff, commaise(diff * s.price_final / 100)])
                 row.reverse()
                 rows.append(row)

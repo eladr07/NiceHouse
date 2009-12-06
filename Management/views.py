@@ -378,6 +378,8 @@ def demand_calc(request, id):
             if demand.get_next_demand() != None:
                 demand.finish()
                 time.sleep(1)
+            else:
+                demand.close()
     else:
         d.calc_sales_commission()
     return HttpResponseRedirect('/demandsold/?year=%s&month=%s' % (d.year,d.month))
