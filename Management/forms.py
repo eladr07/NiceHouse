@@ -295,7 +295,10 @@ class SaleForm(forms.ModelForm):
             if house.get_sale():
                 raise forms.ValidationError(u"כבר קיימת מכירה לדירה זו")
         return house
-        
+    def clean(self):
+        if self.cleaned_data['joined_sale']: 
+            self.cleaned_data['employee'] = None
+        return self.cleaned_data
     def save(self, *args, **kw):
         house, discount, allowed_discount = self.cleaned_data['house'], self.cleaned_data['discount'], self.cleaned_data['allowed_discount']
         '''checks if entered a allowed discount but not discount -> will fill
@@ -313,7 +316,6 @@ class SaleForm(forms.ModelForm):
             for attr in ['house','clients','clients_phone','sale_date','price','price_include_lawyer']:
                 setattr(signup, attr, self.cleaned_data[attr])
             signup.save()
-        if self.cleaned_data['joined_sale']: self.cleaned_data['employee'] = None
         return forms.ModelForm.save(self, *args, **kw)
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
