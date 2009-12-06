@@ -267,7 +267,7 @@ class MonthDemandWriter:
         headers = [log2vis(n) for n in [u'מס"ד',u'דרישה\nחודש', u'שם הרוכשים', u'ודירה\nבניין', u'חוזה\nתאריך',
                                         u'חוזה\nמחיר', u'0 דו"ח\nמחירון', u'חדש\nמדד', 
                                         u'60%\nממודד\nמחירון', u'מחיר\nהפרש', u'בהנחה\nחסכון\nשווי']]
-        colWidths  =[None,None,80,None,None,None,35,35,35,35,35]
+        colWidths  =[None,None,80,None,None,None,40,40,40,40,40]
         colWidths.reverse()
         headers.reverse()
         rows = []
