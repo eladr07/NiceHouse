@@ -658,10 +658,7 @@ class EmployeeSalariesBookKeepingWriter:
         headers = [log2vis(n) for n in [u'מס"ד',u'העובד\nשם',u'העסקה\nסוג',u'לתשלום\nשווי צק',u'הוצאות\nהחזר',
                                         u'ברוטו\nשווי',u'חשבונית\nשווי',u'ניכוי מס\nשווי',u'הלוואה\nהחזר',u'תלוש נטו\nשווי',
                                         u'הערות']]
-        groups = map(lambda h: '', headers)
-        groups[len(groups)-1] = log2vis(u'תשלום צקים לעובד')
-        groups[len(groups)-7] = log2vis(u'לשימוש הנה"ח בלבד')
-        groups.reverse()
+        groups = [log2vis(u'תשלום צקים לעובד'), None, None, None, None, None, log2vis(u'לשימוש הנה"ח בלבד')]
         headers.reverse()
         colWidths = [None for i in headers]
         colWidths.reverse()
