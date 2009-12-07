@@ -41,8 +41,8 @@ saleTableStyle = TableStyle(
 salariesTableStyle = TableStyle(
                             [('FONTNAME', (0,0), (-1,1), 'David-Bold'),
                              ('FONTNAME', (0,2), (-1,-1), 'David'),
-                             ('SPAN',(0,0),(6,0)),
-                             ('SPAN',(7,0),(-1,0)),
+                             ('SPAN',(0,0),(5,0)),
+                             ('SPAN',(6,0),(-1,0)),
                              ('FONTSIZE', (0,0), (-1,-1), 11),
                              ('ALIGN', (0,0), (-1,-1), 'CENTER'),
                              ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
