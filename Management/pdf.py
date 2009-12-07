@@ -625,9 +625,62 @@ class MultipleDemandWriter:
         doc.build(story, self.addTemplate, self.addTemplate)
         return doc.canv
 
+class EmployeeSalariesBookKeepingWriter:
+    def __init__(self, salaries, title):
+        self.salaries, self.title = salaries, title
+    @property
+    def pages_count(self):
+        return len(self.salaries) / 28 + 1
+    def addTemplate(self, canv, doc):
+        frame2 = Frame(0, 680, 650, 150)
+        frame2.addFromList([nhLogo(), datePara()], canv)
+        frame3 = Frame(50, 20, 150, 40)
+        frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
+                            ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
+        frame4 = Frame(50, 30, 500, 70)
+        frame4.addFromList([nhAddr()], canv)
+        self.current_page += 1
+    def salariesFlows(self):
+        flows = []
+        headers = [log2vis(n) for n in [u'מס"ד',u'העובד\nשם',u'העסקה\nסוג',u'לתשלום\nשווי צק',u'הוצאות\nהחזר',
+                                        u'ברוטו\nשווי',u'חשבונית\nשווי',u'ניכוי מס\nשווי',u'הלוואה\nהחזר',u'תלוש נטו\nשווי',
+                                        u'הערות']]
+        headers.reverse()
+        colWidths = [None for i in headers]
+        colWidths.reverse()
+        rows = []
+        i = 0
+        for es in self.salaries:
+            employee = es.get_employee()
+            terms = employee.employment_terms
+            row = [es.id, employee, terms and terms.hire_type, commaise(es.check_amount), commaise(es.refund),
+                   commaise(es.bruto_amount),None,None,es.loan_pay,None]
+            row.reverse()
+            rows.append(row)
+            i += 1
+            if i % 27 == 0 or i == len(self.salaries):
+                data = [headers]
+                data.extend(rows)
+                t = Table(data, colWidths)
+                t.setStyle(saleTableStyle)
+                flows.append(t)
+                if i < len(self.salaries):
+                    flows.extend([PageBreak(), Spacer(0, 50)])
+                rows = []
+
+        return flows
+    def build(self, filename):
+        self.current_page = 1
+        doc = SimpleDocTemplate(filename)
+        story = [Spacer(0,50)]
+        story.append(titlePara(self.title))
+        story.append(Spacer(0, 10))
+        story.extend(self.salariesFlows())
+        doc.build(story, self.addTemplate, self.addTemplate)
+        return doc.canv
+
 class EmployeeSalariesWriter:
-    def __init__(self, salaries, title, show_employee, show_month, bookkeeping):
-        self.bookkeeping = bookkeeping
+    def __init__(self, salaries, title, show_employee, show_month):
         self.salaries, self.title, self.show_employee, self.show_month = salaries, title, show_employee, show_month
     @property
     def pages_count(self):
@@ -649,11 +702,7 @@ class EmployeeSalariesWriter:
         if self.show_month:
             headers.append(log2vis(u'חודש'))
         headers.append(log2vis(u'העסקה\nסוג'))
-        if self.bookkeeping:
-            headers.extend([log2vis(n) for n in [u'התלוש\nסכום', u'הלוואה\nהחזר']])
         headers.append(log2vis(u'הצק\nסכום'))
-        if self.bookkeeping:
-            headers.extend([log2vis(n) for n in [u'לעובד\nהוצאות\nהחזר',u'מנה"ח\nלחישוב\nברוטו',u'לנטו\nמחושב\nברוטו',u'הערות']])
         headers.reverse()
         colWidths = [None,None,None,None,None,None,None,None]
         colWidths.reverse()
@@ -667,11 +716,7 @@ class EmployeeSalariesWriter:
             if self.show_month:
                 row.append('%s/%s' % (es.month, es.year))
             row.extend([log2vis(u'%s - %s' % (terms.hire_type.name, terms.salary_net and u'נטו' or u'ברוטו'))])
-            if self.bookkeeping:
-                row.extend([commaise(es.neto),commaise(es.loan_pay)])
             row.append(commaise(es.check_amount))
-            if self.bookkeeping: 
-                row.extend([commaise(es.refund or 0), es.bruto and commaise(es.bruto),None, log2vis(es.remarks or '')])
             row.reverse()
             rows.append(row)
             i += 1

@@ -14,7 +14,8 @@ from django.views.generic.list_detail import object_list, object_detail
 from django.views.generic.simple import direct_to_template
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
-from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, NHEmployeeSalariesWriter, PricelistWriter, BuildingClientsWriter
+from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, NHEmployeeSalariesWriter, 
+from pdf import PricelistWriter, BuildingClientsWriter, EmployeeSalariesBookKeepingWriter
 from mail import mail
 
 def generate_unique_pdf_filename():
@@ -653,9 +654,9 @@ def employee_salary_pdf(request, year, month):
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
 
-    EmployeeSalariesWriter([es for es in EmployeeSalary.objects.filter(year = year, month= month)
-                            if es.approved_date], u'שכר עבודה למנהלי פרויקטים לחודש %s\%s' % (year, month),
-                            show_month=False, show_employee=True, bookkeeping =False).build(filename)
+    EmployeeSalariesBookKeepingWriter([es for es in EmployeeSalary.objects.filter(year = year, month= month)
+                                       if es.approved_date], u'שכר עבודה למנהלי פרויקטים לחודש %s\%s' % (year, month),
+                                       ).build(filename)
     p = open(filename,'r')
     response.write(p.read())
     p.close()
@@ -2571,7 +2572,7 @@ def report_employeesalary_season(request, employee_id=None, from_year=Demand.cur
     response['Content-Disposition'] = 'attachment; filename=' + filename
 
     EmployeeSalariesWriter(salaries, u'ריכוז שכר תקופתי לעובד - %s' % Employee.objects.get(pk=employee_id),
-                           show_month=True, show_employee=False, bookkeeping =False).build(filename)
+                           show_month=True, show_employee=False).build(filename)
     p = open(filename,'r')
     response.write(p.read())
     p.close()
