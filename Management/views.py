@@ -14,7 +14,7 @@ from django.views.generic.list_detail import object_list, object_detail
 from django.views.generic.simple import direct_to_template
 from django.contrib.auth.decorators import login_required, permission_required
 from django.core.paginator import Paginator, InvalidPage, EmptyPage
-from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, NHEmployeeSalariesWriter 
+from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter 
 from pdf import PricelistWriter, BuildingClientsWriter, EmployeeSalariesBookKeepingWriter
 from mail import mail
 
@@ -518,13 +518,15 @@ def nhemployee_salary_pdf(request, nhbranch_id, year, month):
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
 
-    nhm = NHMonth.objects.get(nhbranch__id = int(nhbranch_id), year = int(year), month=int(month))
+    salaries = [nhes for nhes in NHEmployeeSalary.objects.filter(year = self.year, month = self.month, 
+                                                                 nhemployee__nhbranch__id = int(nhbranch_id))
+                                                                 if nhes.approved_date]
     title = u'שכר עבודה לסניף %s לחודש %s\%s' % (nhm.nhbranch, nhm.year, nhm.month)
-    NHEmployeeSalariesWriter(nhm, title).build(filename)
+    EmployeeSalariesBookKeepingWriter(salaries, title).build(filename)
     p = open(filename,'r')
     response.write(p.read())
     p.close()
-    return response 
+    return response
 
 @permission_required('Management.change_salaryexpenses')
 def employee_salary_expenses(request, salary_id):
