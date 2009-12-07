@@ -653,7 +653,8 @@ class EmployeeSalariesBookKeepingWriter:
         for es in self.salaries:
             employee = es.get_employee()
             terms = employee.employment_terms
-            row = [es.id, employee, terms and terms.hire_type, commaise(es.check_amount), commaise(es.refund),
+            hire_type = terms and log2vis(unicode(terms.hire_type))
+            row = [es.id, log2vis(unicode(employee)), hire_type, commaise(es.check_amount), commaise(es.refund),
                    commaise(es.bruto),None,None,commaise(es.loan_pay), commaise(es.neto),None]
             row.reverse()
             rows.append(row)
