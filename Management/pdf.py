@@ -658,7 +658,7 @@ class EmployeeSalariesBookKeepingWriter:
         headers = [log2vis(n) for n in [u'מס"ד',u'העובד\nשם',u'העסקה\nסוג',u'לתשלום\nשווי צק',u'הוצאות\nהחזר',
                                         u'ברוטו\nשווי',u'חשבונית\nשווי',u'ניכוי מס\nשווי',u'הלוואה\nהחזר',u'תלוש נטו\nשווי',
                                         u'הערות']]
-        groups = [log2vis(u'תשלום צקים לעובד'), None, None, None, None, None, log2vis(u'לשימוש הנה"ח בלבד')]
+        groups = [log2vis(u'לשימוש הנה"ח בלבד'), None, None, None, None, None, log2vis(u'תשלום צקים לעובד')]
         headers.reverse()
         colWidths = [None for i in headers]
         colWidths.reverse()
@@ -903,9 +903,8 @@ class BuildingClientsWriter:
         return doc.canv
 
 class NHEmployeeSalariesWriter:
-    def __init__(self, nhmonth, bookkeeping):
-        self.bookkeeping = bookkeeping
-        self.year, self.month, self.nhbranch = (nhmonth.year, nhmonth.month, nhmonth.nhbranch)
+    def __init__(self, nhmonth, title):
+        self.year, self.month, self.nhbranch, self.title = nhmonth.year, nhmonth.month, nhmonth.nhbranch, title
         self.salaries = [nhes for nhes in models.NHEmployeeSalary.objects.filter(year = self.year, month = self.month, 
                                                                                  nhemployee__nhbranch = self.nhbranch)
                                                                                  if nhes.approved_date]
@@ -924,11 +923,7 @@ class NHEmployeeSalariesWriter:
     def salariesFlows(self):
         flows = []
         headers = [log2vis(n) for n in [u'מס"ד', u'העובד\nשם', u'סטטוס']]
-        if self.bookkeeping:
-            headers.extend([log2vis(n) for n in [u'התלוש\nסכום', u'הלוואה\nהחזר']])
         headers.append(log2vis(u'הצק\nסכום'))
-        if self.bookkeeping:
-            headers.extend([log2vis(n) for n in [u'לעובד\nהוצאות\nהחזר',u'מנה"ח\nלחישוב\nברוטו',u'לנטו\nמחושב\nברוטו',u'הערות']])
         headers.reverse()
         colWidths = [None,None,None,None,None,None,None,None]
         colWidths.reverse()
@@ -937,11 +932,7 @@ class NHEmployeeSalariesWriter:
         for es in self.salaries:
             terms = es.nhemployee.employment_terms
             row = [i+1, log2vis(unicode(es.nhemployee)), log2vis(u'%s - %s' % (terms.hire_type.name, terms.salary_net and u'נטו' or u'ברוטו'))]
-            if self.bookkeeping:
-                row.extend([commaise(es.total_amount), commaise(es.loan_pay)])
             row.append(commaise(es.check_amount))
-            if self.bookkeeping:
-                row.extend([commaise(es.refund or 0), es.bruto_amount and commaise(es.bruto_amount), None, log2vis(es.remarks or '')])
             row.reverse()
             rows.append(row)
             i += 1
@@ -960,7 +951,6 @@ class NHEmployeeSalariesWriter:
         self.current_page = 1
         doc = SimpleDocTemplate(filename)
         story = [Spacer(0,50)]
-        title = u'שכר עבודה לסניף %s לחודש %s\%s' % (self.nhbranch, self.year, self.month)
         story.append(titlePara(title))
         story.append(Spacer(0, 10))
         story.extend(self.salariesFlows())

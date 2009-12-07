@@ -510,27 +510,7 @@ def demand_old_list(request):
                               context_instance=RequestContext(request))
 
 def nhemployee_salary_send(request, nhbranch_id, year, month):
-    nhm = NHMonth.objects.get(nhbranch__id = nhbranch_id, year = year, month = month)
-    filename = generate_unique_pdf_filename()
-
-    NHEmployeeSalariesWriter(NHMonth.objects.get(nhbranch__id = int(nhbranch_id), year = int(year), month=int(month)),
-                                                 bookkeeping=True).build(filename)
-
-    mail('adush07@gmail.com', u'שכר עובדים %s לחודש %s/%s' % (nhm.nhbranch, nhm.month, nhm.year), '', filename)
-
-    filename = generate_unique_pdf_filename()
-    
-    NHEmployeeSalariesWriter(NHMonth.objects.get(nhbranch__id = int(nhbranch_id), year = int(year), month=int(month)),
-                                                 bookkeeping=False).build(filename)
-
-    mail('adush07@gmail.com', u'שכר עובדים %s לחודש %s/%s' % (nhm.nhbranch, nhm.month, nhm.year), '', filename)
-    '''
-    for nhes in NHEmployeeSalary.objects.filter(nhemployee__nhbranch__id = nhbranch_id, year=year, month=month):
-        if nhes.approved_date != None:
-            nhes.send_to_bookkeeping()
-            nhes.send_to_checks()
-    '''
-    return HttpResponseRedirect('/nhemployeesalaries/%s/%s' % (year,month))
+    pass
     
 def nhemployee_salary_pdf(request, nhbranch_id, year, month):
     filename = generate_unique_pdf_filename()
@@ -538,8 +518,9 @@ def nhemployee_salary_pdf(request, nhbranch_id, year, month):
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
 
-    NHEmployeeSalariesWriter(NHMonth.objects.get(nhbranch__id = int(nhbranch_id), year = int(year), month=int(month)),
-                                                 bookkeeping=True).build(filename)
+    nhm = NHMonth.objects.get(nhbranch__id = int(nhbranch_id), year = int(year), month=int(month))
+    title = u'שכר עבודה לסניף %s לחודש %s\%s' % (nhm.nhbranch, nhm.year, nhm.month)
+    NHEmployeeSalariesWriter(nhm, title).build(filename)
     p = open(filename,'r')
     response.write(p.read())
     p.close()
