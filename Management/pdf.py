@@ -654,7 +654,7 @@ class EmployeeSalariesBookKeepingWriter:
             employee = es.get_employee()
             terms = employee.employment_terms
             row = [es.id, employee, terms and terms.hire_type, commaise(es.check_amount), commaise(es.refund),
-                   commaise(es.bruto_amount),None,None,es.loan_pay,None]
+                   commaise(es.bruto),None,None,commaise(es.loan_pay), commaise(es.neto),None]
             row.reverse()
             rows.append(row)
             i += 1
