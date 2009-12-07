@@ -518,8 +518,7 @@ def nhemployee_salary_pdf(request, nhbranch_id, year, month):
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
 
-    salaries = [nhes for nhes in NHEmployeeSalary.objects.filter(year = self.year, month = self.month, 
-                                                                 nhemployee__nhbranch__id = int(nhbranch_id))
+    salaries = [nhes for nhes in NHEmployeeSalary.objects.filter(year = year, month = month, nhemployee__nhbranch__id = int(nhbranch_id))
                                                                  if nhes.approved_date]
     title = u'שכר עבודה לסניף %s לחודש %s\%s' % (nhm.nhbranch, nhm.year, nhm.month)
     EmployeeSalariesBookKeepingWriter(salaries, title).build(filename)
