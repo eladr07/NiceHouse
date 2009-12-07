@@ -40,7 +40,7 @@ saleTableStyle = TableStyle(
                             )
 salariesTableStyle = TableStyle(
                             [('FONTNAME', (0,0), (-1,1), 'David-Bold'),
-                             ('FONTNAME', (0,1), (-1,-1), 'David'),
+                             ('FONTNAME', (0,2), (-1,-1), 'David'),
                              ('SPAN',(0,0),(6,0)),
                              ('SPAN',(7,0),(-1,0)),
                              ('FONTSIZE', (0,0), (-1,-1), 11),
@@ -659,6 +659,7 @@ class EmployeeSalariesBookKeepingWriter:
         headers = [log2vis(n) for n in [u'מס"ד',u'העובד\nשם',u'העסקה\nסוג',u'לתשלום\nשווי צק',u'הוצאות\nהחזר',
                                         u'ברוטו\nשווי',u'חשבונית\nשווי',u'ניכוי מס\nשווי',u'הלוואה\nהחזר',u'תלוש נטו\nשווי',
                                         u'הערות']]
+        groups.reverse()
         headers.reverse()
         colWidths = [None for i in headers]
         colWidths.reverse()
