@@ -951,7 +951,7 @@ class NHEmployeeSalariesWriter:
         self.current_page = 1
         doc = SimpleDocTemplate(filename)
         story = [Spacer(0,50)]
-        story.append(titlePara(title))
+        story.append(titlePara(self.title))
         story.append(Spacer(0, 10))
         story.extend(self.salariesFlows())
         doc.build(story, self.addTemplate, self.addTemplate)
