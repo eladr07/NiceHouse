@@ -658,7 +658,7 @@ class EmployeeSalariesBookKeepingWriter:
         headers = [log2vis(n) for n in [u'מס"ד',u'העובד\nשם',u'העסקה\nסוג',u'לתשלום\nשווי צק',u'הוצאות\nהחזר',
                                         u'ברוטו\nשווי',u'חשבונית\nשווי',u'ניכוי מס\nשווי',u'הלוואה\nהחזר',u'תלוש נטו\nשווי',
                                         u'הערות']]
-        groups = map(lambda h: '', headers)
+        groups = map(lambda h: 'a', headers)
         groups[0] = log2vis(u'תשלום צקים לעובד')
         groups[6] = log2vis(u'לשימוש הנה"ח בלבד')
         groups.reverse()
