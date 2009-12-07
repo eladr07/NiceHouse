@@ -38,6 +38,19 @@ saleTableStyle = TableStyle(
                              ('RIGHTPADDING', (0,0), (-1,-1), 8),
                              ]
                             )
+salariesTableStyle = TableStyle(
+                            [('FONTNAME', (0,0), (-1,1), 'David-Bold'),
+                             ('FONTNAME', (0,1), (-1,-1), 'David'),
+                             ('SPAN',(0,0),(6,0)),
+                             ('SPAN',(7,0),(-1,0)),
+                             ('FONTSIZE', (0,0), (-1,-1), 11),
+                             ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+                             ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
+                             ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+                             ('LEFTPADDING', (0,0), (-1,-1), 8),
+                             ('RIGHTPADDING', (0,0), (-1,-1), 8),
+                             ]
+                            )
 projectTableStyle = TableStyle(
                                [('FONTNAME', (0,0), (-1,0), 'David-Bold'),
                                 ('FONTNAME', (0,1), (-1,-1), 'David'),
@@ -642,6 +655,7 @@ class EmployeeSalariesBookKeepingWriter:
         self.current_page += 1
     def salariesFlows(self):
         flows = []
+        groups = [log2vis(n) for n in [u'תשלום צקים לעובד',u'לשימוש הנה"ח בלבד']]
         headers = [log2vis(n) for n in [u'מס"ד',u'העובד\nשם',u'העסקה\nסוג',u'לתשלום\nשווי צק',u'הוצאות\nהחזר',
                                         u'ברוטו\nשווי',u'חשבונית\nשווי',u'ניכוי מס\nשווי',u'הלוואה\nהחזר',u'תלוש נטו\nשווי',
                                         u'הערות']]
@@ -653,19 +667,19 @@ class EmployeeSalariesBookKeepingWriter:
         for es in self.salaries:
             employee = es.get_employee()
             terms = employee.employment_terms
-            hire_type = terms and log2vis(unicode(terms.hire_type))
+            hire_type = terms and unicode(terms.hire_type)
             if not terms.salary_net and terms.hire_type.id == models.HireType.Salaried:
                 hire_type += u' - ברוטו'
-            row = [es.id, log2vis(unicode(employee)), hire_type, commaise(es.check_amount), commaise(es.refund),
+            row = [es.id, log2vis(unicode(employee)), log2vis(hire_type), commaise(es.check_amount), commaise(es.refund),
                    commaise(es.bruto),None,None,commaise(es.loan_pay), commaise(es.neto),None]
             row.reverse()
             rows.append(row)
             i += 1
             if i % 27 == 0 or i == len(self.salaries):
-                data = [headers]
+                data = [groups, headers]
                 data.extend(rows)
                 t = Table(data, colWidths)
-                t.setStyle(saleTableStyle)
+                t.setStyle(salariesTableStyle)
                 flows.append(t)
                 if i < len(self.salaries):
                     flows.extend([PageBreak(), Spacer(0, 50)])
