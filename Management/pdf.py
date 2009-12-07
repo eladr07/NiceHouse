@@ -655,7 +655,7 @@ class EmployeeSalariesBookKeepingWriter:
             terms = employee.employment_terms
             hire_type = terms and log2vis(unicode(terms.hire_type))
             if not terms.salary_net and terms.hire_type.id == models.HireType.Salaried:
-                hire_type += ' - ברוטו'
+                hire_type += u' - ברוטו'
             row = [es.id, log2vis(unicode(employee)), hire_type, commaise(es.check_amount), commaise(es.refund),
                    commaise(es.bruto),None,None,commaise(es.loan_pay), commaise(es.neto),None]
             row.reverse()
