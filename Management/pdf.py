@@ -699,6 +699,9 @@ class EmployeeSalariesBookKeepingWriter:
                     if i < len(self.nhsales):
                         flows.extend([PageBreak(), Spacer(0, 50)])
                     rows = []
+        flows.append(Paragraph(log2vis(u'לתשומת לבך'), styleSubTitleBold))
+        flows.append(Paragraph(log2vis(u"יש להוציא את השכר לעובדים לאחר בדיקה שכל הצ'קים התקבלו והחשבוניות הוצאות."), styleN))
+        flows.append(Paragraph(log2vis(u"במידה ויש צ'קים דחויים\או שלא הגיעו נא לעדכן את אלי."), styleN))
         return flows
     def salariesFlows(self):
         flows = []
@@ -741,7 +744,7 @@ class EmployeeSalariesBookKeepingWriter:
         story.append(Spacer(0, 10))
         story.extend(self.salariesFlows())
         if self.nhsales:
-            story.append(PageBreak())
+            story.extend([PageBreak(), titlePara(u"אישור צ'קים וחשבוניות")])
             story.extend(self.nhsalesFlows())
         doc.build(story, self.addTemplate, self.addTemplate)
         return doc.canv
