@@ -680,7 +680,7 @@ class EmployeeSalariesBookKeepingWriter:
                 payments = side.payments.all()
                 row = [s.num, clients, commaise(side.net_income), side.voucher_num, invoice and invoice.date.strftime('%d/%m%y'),
                        side.temp_receipt_num, 
-                       '<br/>'.join(map(lambda p: log2vis(p.payment_type), payments)),
+                       '<br/>'.join(map(lambda p: log2vis(unicode(p.payment_type)), payments)),
                        '<br/>'.join(map(lambda p: unicode(p.num), payments)),
                        '<br/>'.join(map(lambda p: log2vis(p.bank), payments)),
                        '',
