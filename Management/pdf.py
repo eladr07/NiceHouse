@@ -660,6 +660,34 @@ class EmployeeSalariesBookKeepingWriter:
                                         u"זמנית\nמס' קבלה",u'תשלום\nסוג',u"מס' צ'ק",u'בנק',u'מטפל\nסוכן',u'תשלום\nתאריך',
                                         u"סניף\nמס'",u'הערות']]
         headers.reverse()
+        rows = []
+        i = 0
+        for s in self.nhsales:
+            for side in s.nhsaleside_set.all():
+                clients = log2vis(side.name1 + ' ' + side.name2)
+                invoice = side.invoices.count() > 0 and side.invoices.all()[0]
+                payments = side.payments.all()
+                row = [s.num, clients, commaise(side.net_income), side.voucher_num, invoice and invoice.date.strftime('%d/%m%y'),
+                       side.temp_receipt_num, 
+                       '<br/>'.join(map(lambda p: unicode(p.payment_type), payments)),
+                       '<br/>'.join(map(lambda p: p.num, payments)),
+                       '<br/>'.join(map(lambda p: p.bank, payments)),
+                       '',
+                       '<br/>'.join(map(lambda p: p.payment_date.strftime('%d/%m%y'), payments)),
+                       '<br/>'.join(map(lambda p: p.branch_num, payments)),
+                       side.remarks]
+                row.reverse()
+                rows.append(row)
+                i += 1
+                if i % 27 == 0 or i == len(self.salaries):
+                    data = [headers]
+                    data.extend(rows)
+                    t = Table(data)
+                    t.setStyle(saleTableStyle)
+                    flows.append(t)
+                    if i < len(self.nhsales):
+                        flows.extend([PageBreak(), Spacer(0, 50)])
+                    rows = []
         return flows
     def salariesFlows(self):
         flows = []
@@ -702,6 +730,7 @@ class EmployeeSalariesBookKeepingWriter:
         story.append(Spacer(0, 10))
         story.extend(self.salariesFlows())
         if self.nhsales:
+            story.append(PageBreak())
             story.extend(self.nhsalesFlows())
         doc.build(story, self.addTemplate, self.addTemplate)
         return doc.canv
