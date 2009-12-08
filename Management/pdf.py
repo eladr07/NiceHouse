@@ -682,13 +682,13 @@ class EmployeeSalariesBookKeepingWriter:
                 clients = log2vis(side.name1 + ' ' + side.name2)
                 invoice = side.invoices.count() > 0 and side.invoices.all()[0]
                 payments = side.payments.all()
-                row = [s.num, clients, commaise(side.net_income), side.voucher_num, invoice and invoice.date.strftime('%d/%m%y'),
+                row = [s.num, clients, commaise(side.net_income), side.voucher_num, invoice and invoice.date.strftime('%d/%m/%y'),
                        side.temp_receipt_num, 
                        '<br/>'.join(map(lambda p: log2vis(unicode(p.payment_type)), payments)),
                        '<br/>'.join(map(lambda p: unicode(p.num), payments)),
                        '<br/>'.join(map(lambda p: log2vis(p.bank), payments)),
                        '',
-                       '<br/>'.join(map(lambda p: p.payment_date.strftime('%d/%m%y'), payments)),
+                       '<br/>'.join(map(lambda p: p.payment_date.strftime('%d/%m/%y'), payments)),
                        '<br/>'.join(map(lambda p: unicode(p.branch_num), payments)),
                        side.remarks]
                 row.reverse()
@@ -748,7 +748,7 @@ class EmployeeSalariesBookKeepingWriter:
         story.append(Spacer(0, 10))
         story.extend(self.salariesFlows())
         if self.nhsales:
-            story.extend([PageBreak(),titlePara(u"אישור צ'קים וחשבוניות"),Spacer(0,50)])
+            story.extend([PageBreak(),titlePara(u"אישור צ'קים וחשבוניות"),Spacer(0,20)])
             story.extend(self.nhsalesFlows())
         doc.build(story, self.addTemplate, self.addTemplate)
         return doc.canv
