@@ -21,6 +21,7 @@ pdfmetrics.registerFont(TTFont('David-Bold', settings.MEDIA_ROOT + 'fonts/DavidC
 pdfmetrics.registerFontFamily('David', normal='David', bold='David-Bold')
 #template styles
 styleN = ParagraphStyle('normal', fontName='David',fontSize=16, leading=15, alignment=TA_RIGHT)
+styleNormal12 = ParagraphStyle('normal', fontName='David',fontSize=12, leading=15, alignment=TA_RIGHT)
 styleDate = ParagraphStyle('date', fontName='David',fontSize=14, leading=15)
 styleRow = ParagraphStyle('sumRow', fontName='David',fontSize=11, leading=15)
 styleSumRow = ParagraphStyle('Row', fontName='David-Bold',fontSize=11, leading=15)
@@ -700,8 +701,8 @@ class EmployeeSalariesBookKeepingWriter:
                         flows.extend([PageBreak(), Spacer(0, 50)])
                     rows = []
         flows.append(Paragraph(log2vis(u'לתשומת לבך'), styleSubTitleBold))
-        flows.append(Paragraph(log2vis(u"יש להוציא את השכר לעובדים לאחר בדיקה שכל הצ'קים התקבלו והחשבוניות הוצאות."), styleN))
-        flows.append(Paragraph(log2vis(u"במידה ויש צ'קים דחויים\או שלא הגיעו נא לעדכן את אלי."), styleN))
+        flows.append(Paragraph(log2vis(u"יש להוציא את השכר לעובדים לאחר בדיקה שכל הצ'קים התקבלו והחשבוניות הוצאות."), styleNormal12))
+        flows.append(Paragraph(log2vis(u"במידה ויש צ'קים דחויים\או שלא הגיעו נא לעדכן את אלי."), styleNormal12))
         return flows
     def salariesFlows(self):
         flows = []
@@ -744,7 +745,7 @@ class EmployeeSalariesBookKeepingWriter:
         story.append(Spacer(0, 10))
         story.extend(self.salariesFlows())
         if self.nhsales:
-            story.extend([PageBreak(), titlePara(u"אישור צ'קים וחשבוניות")])
+            story.extend([PageBreak(),Spacer(0,50),titlePara(u"אישור צ'קים וחשבוניות")])
             story.extend(self.nhsalesFlows())
         doc.build(story, self.addTemplate, self.addTemplate)
         return doc.canv
