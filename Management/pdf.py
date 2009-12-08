@@ -639,8 +639,8 @@ class MultipleDemandWriter:
         return doc.canv
 
 class EmployeeSalariesBookKeepingWriter:
-    def __init__(self, salaries, title):
-        self.salaries, self.title = salaries, title
+    def __init__(self, salaries, title, nhsales = None):
+        self.salaries, self.title, self.nhsales = salaries, title, nhsales
     @property
     def pages_count(self):
         return len(self.salaries) / 28 + 1
@@ -653,6 +653,13 @@ class EmployeeSalariesBookKeepingWriter:
         frame4 = Frame(50, 30, 500, 70)
         frame4.addFromList([nhAddr()], canv)
         self.current_page += 1
+    def nhsalesFlows(self):
+        flows = []
+        headers = [log2vis(n) for n in [u'מס"ד',u'הרוכשים\nשם',u'התשלום\nסכום',u"שרותי תיווך\nמס' הזמנת",u'חשבונית\nתאריך',
+                                        u"זמנית\nמס' קבלה",u'תשלום\nסוג',u"מס' צ'ק",u'בנק',u'מטפל\nסוכן',u'תשלום\nתאריך',
+                                        u"סניף\nמס'",u'הערות']]
+        headers.reverse()
+        return flows
     def salariesFlows(self):
         flows = []
         headers = [log2vis(n) for n in [u'מס"ד',u'העובד\nשם',u'העסקה\nסוג',u'לתשלום\nשווי צק',u'הוצאות\nהחזר',
@@ -693,6 +700,8 @@ class EmployeeSalariesBookKeepingWriter:
         story.append(titlePara(self.title))
         story.append(Spacer(0, 10))
         story.extend(self.salariesFlows())
+        if self.nhsales:
+            story.extend(self.nhsalesFlows())
         doc.build(story, self.addTemplate, self.addTemplate)
         return doc.canv
 
