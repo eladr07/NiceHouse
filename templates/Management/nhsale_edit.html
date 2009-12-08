@@ -207,6 +207,7 @@
 					{{i.num}} - {{i.amount|commaise}} 
 					<a href="/nhsaleside/{{side.id}}/invoice/{{i.id}}" class="fancybox">עדכן</a>
 				{% empty %}
+					לא הוזנה חשבונית<br>
 					<a href="/nhsaleside/{{side.id}}/invoice/add" class="fancybox">חשבונית חדשה</a>
 				{% endfor %}
 				</td>
