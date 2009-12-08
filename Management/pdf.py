@@ -670,11 +670,11 @@ class EmployeeSalariesBookKeepingWriter:
                 row = [s.num, clients, commaise(side.net_income), side.voucher_num, invoice and invoice.date.strftime('%d/%m%y'),
                        side.temp_receipt_num, 
                        '<br/>'.join(map(lambda p: unicode(p.payment_type), payments)),
-                       '<br/>'.join(map(lambda p: p.num, payments)),
-                       '<br/>'.join(map(lambda p: p.bank, payments)),
+                       '<br/>'.join(map(lambda p: unicode(p.num), payments)),
+                       '<br/>'.join(map(lambda p: unicode(p.bank), payments)),
                        '',
                        '<br/>'.join(map(lambda p: p.payment_date.strftime('%d/%m%y'), payments)),
-                       '<br/>'.join(map(lambda p: p.branch_num, payments)),
+                       '<br/>'.join(map(lambda p: unicode(p.branch_num), payments)),
                        side.remarks]
                 row.reverse()
                 rows.append(row)
