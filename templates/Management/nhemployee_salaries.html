@@ -90,6 +90,10 @@
 {% regroup salaries by nhemployee.nhbranch as branch_list %}
 {% for branch in branch_list %}
 	<div class="someIcon" style="width:100px;">
+		<img src="/site_media/images/agt_home-48.png" width="20" height="20"  alt="שינוי" /> 
+		<a href="/nhbranch/{{branch.grouper.id}}/sales?year={{month.year}}&month={{month.month}}" >ריכוז עסקאות</a>
+	</div>
+	<div class="someIcon" style="width:100px;">
 		<img src="/site_media/images/print-48.png" width="20" height="20"  alt="שינוי" /> 
 		<a href="{{branch.grouper.id}}/{{month.year}}/{{month.month}}/pdf" >גרסת הדפסה</a>
 	</div>
@@ -127,8 +131,8 @@
 		{% else %}
 		<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.nhemployee.id}}>
 		{% endif %}
-			<td><a href="/nhemployees/{{s.nhemployee.id}}" target="_blank"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
-			<td>{{ s.nhemployee }}</td>
+			<td><a class="fancybox" href="{{s.id}}"><img src="/site_media/images/edit_48.png" width="20" height="20" alt="שינוי מרכיבי שכר" border="0" /></a></td>
+			<td><a href="{{s.nhemployee.get_absolute_url}}" target="_blank">{{ s.nhemployee }}</a></td>
 			<td>{{s.nhemployee.employment_terms.hire_type}}</td>
 			<td><a class="fancybox" href="/nhemployee/{{s.nhemployee.id}}/sales/{{month.year}}/{{month.month}}">{{ s.sales_count }}</a></td>
 			<td style="color:#08A600;">

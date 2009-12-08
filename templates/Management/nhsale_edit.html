@@ -201,13 +201,14 @@
 				<td><a href="/nhsaleside/{{side.id}}" class="fancybox">עדכן</a></td>
 			</tr>
 			<tr>
-				<td></td>
+				<th>חשבונית</th>
 				<td>
-				{% if side.invoices.count %}
-					<a href="/invoices/{{side.invoices.all.0.id}}" class="fancybox">עדכן פרטי חשבונית</a>
-				{% else %}
+				{% for i in side.invoices.all %}
+					{{i.num}} - {{i.amount|commaise}} 
+					<a href="/nhsaleside/{{side.id}}/invoice/{{i.id}}" class="fancybox">עדכן</a>
+				{% empty %}
 					<a href="/nhsaleside/{{side.id}}/invoice/add" class="fancybox">חשבונית חדשה</a>
-				{% endif %}
+				{% endfor %}
 				</td>
 			</tr>
 			<tr>
