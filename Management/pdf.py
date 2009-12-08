@@ -38,6 +38,17 @@ saleTableStyle = TableStyle(
                              ('RIGHTPADDING', (0,0), (-1,-1), 8),
                              ]
                             )
+nhsalariesTableStyle = TableStyle(
+                            [('FONTNAME', (0,0), (-1,0), 'David-Bold'),
+                             ('FONTNAME', (0,1), (-1,-1), 'David'),
+                             ('FONTSIZE', (0,0), (-1,-1), 9),
+                             ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+                             ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
+                             ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+                             ('LEFTPADDING', (0,0), (-1,-1), 8),
+                             ('RIGHTPADDING', (0,0), (-1,-1), 8),
+                             ]
+                            )
 salariesTableStyle = TableStyle(
                             [('FONTNAME', (0,0), (-1,1), 'David-Bold'),
                              ('FONTNAME', (0,2), (-1,-1), 'David'),
@@ -683,7 +694,7 @@ class EmployeeSalariesBookKeepingWriter:
                     data = [headers]
                     data.extend(rows)
                     t = Table(data)
-                    t.setStyle(saleTableStyle)
+                    t.setStyle(nhsalariesTableStyle)
                     flows.append(t)
                     if i < len(self.nhsales):
                         flows.extend([PageBreak(), Spacer(0, 50)])
