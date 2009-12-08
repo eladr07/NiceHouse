@@ -206,10 +206,11 @@
 				{% for i in side.invoices.all %}
 					{{i.num}} - {{i.amount|commaise}} 
 					<a href="/nhsaleside/{{side.id}}/invoice/{{i.id}}" class="fancybox">עדכן</a>
+					<br>
 				{% empty %}
 					לא הוזנה חשבונית<br>
-					<a href="/nhsaleside/{{side.id}}/invoice/add" class="fancybox">חשבונית חדשה</a>
 				{% endfor %}
+				<a href="/nhsaleside/{{side.id}}/invoice/add" class="fancybox">הזנת חשבונית</a>
 				</td>
 			</tr>
 			<tr>
