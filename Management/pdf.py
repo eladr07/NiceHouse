@@ -475,7 +475,8 @@ class MonthDemandWriter:
             if self.signup_adds:
                 signup = s.house.get_signup()
                 row.append(signup and signup.date.strftime('%d/%m/%y') or '')
-            row.extend([clientsPara(s.clients), '%s/%s' % (s.house.building.num, s.house.num), s.sale_date.strftime('%d/%m/%y'), commaise(s.price)])
+            row.extend([clientsPara(s.clients), '%s/%s' % (s.house.building.num, s.house.num.strip()), 
+                        s.sale_date.strftime('%d/%m/%y'), commaise(s.price)])
             if zilber:
                 lawyer_pay = s.price_include_lawyer and (s.price - s.price_no_lawyer) or s.price * 0.015
                 row.extend([None,None,commaise(lawyer_pay), commaise(s.price_final)])
