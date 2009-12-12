@@ -3,12 +3,28 @@
 {% block header %}
 {{ block.super }}
 <script>
-	$(document).ready(function() {
-		$("#monthClose").click(function(event) {
-			if (!confirm("האם אתה בטוח שברצונך לסגור את החודש ?"))
-				event.preventDefault();
-		});		
-	});
+var selectedID = 0;
+var prev_class;
+$(document).ready(function() {
+	$("#salesTable tr").click(function() { 
+		var tr = $(this);
+		if (selectedID > 0)
+			$("#salesTable tr[objid='"+selectedID+"']").attr("class", prev_class);
+		selectedID = tr.attr("objid");
+		if (!selectedID)
+			return;
+		prev_class = tr.attr("class");
+		tr.attr("class","selectedRow");
+		//sync links
+		if (selectedID > 0)
+			$("#saleMove").attr("href", "/nhsale/" + selectedID + "/move");
+		});
+	$(".fancybox").fancybox();
+	$("#monthClose").click(function(event) {
+		if (!confirm("האם אתה בטוח שברצונך לסגור את החודש ?"))
+			event.preventDefault();
+	});		
+});
 </script>
 {% endblock header %}
 {% block content %}
@@ -38,6 +54,10 @@
 <div class="someIcon" style="width:100px;">
 	<img src="/site_media/images/add_48.png" width="20" height="20"  alt="חדש" /> 
 	<a href="/nhbranch/{{nhmonth.nhbranch.id}}/nhsale/add">הזנת עסקאות</a>
+</div>
+<div class="someIcon" style="width:100px;">
+	<img src="/site_media/images/reload-48.png" width="20" height="20"  alt="חדש" /> 
+	<a id="saleMove" class="fancybox">העבר עסקה</a>
 </div>
 <div class="someIcon" style="width:100px">
 	<img src="/site_media/images/Archive-48.png" width="20" height="20"  alt="מחיקה" /> 

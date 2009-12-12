@@ -1328,6 +1328,22 @@ def nhsale_edit(request, object_id):
                               {'nhs': nhs}, 
                               context_instance=RequestContext(request))
 
+@permission_required('Management.nhsale_move_nhmonth')
+def nhsale_move_nhmonth(request, id):
+    nhsale = NHSale.objects.get(pk=id)
+    if request.method == 'POST':
+        form = NHMonthForm(request.POST)
+        if form.is_valid():
+            q = NHMonth.objects.filter(nhbranch = monthForm.cleaned_data['nhbranch'],
+                                       year = monthForm.cleaned_data['year'],
+                                       month = monthForm.cleaned_data['month'])
+            nhsale.nhmonth = q.count() == 1 and q[0] or monthForm.save()
+    else:
+        form = NHMonthForm(instance = nhsale.nhmonth)
+    return render_to_response('Management/object_edit.html',
+                              {'form': form, title:u'העברת עסקה מס ' + str(nhsale.num)}, 
+                              context_instance=RequestContext(request))
+
 @permission_required('Management.add_nhsale')
 def nhsale_add(request, branch_id):
     if not request.user.has_perm('Management.nhbranch_' + str(branch_id)):

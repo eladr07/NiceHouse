@@ -179,23 +179,27 @@ class Project(models.Model):
                 if d.statuses.count() 
                 and not d.payments.count() 
                 and not d.invoices.count()
-                and d.get_total_amount()]
+                and d.get_total_amount()
+                and not d.force_fully_paid]
     def demands_noinvoice(self):
         return [d for d in self.demands.all() 
                 if d.statuses.count() 
                 and d.payments.count() 
                 and not d.invoices.count()
-                and d.get_total_amount()]
+                and d.get_total_amount()
+                and not d.force_fully_paid]
     def demands_nopayment(self):
         return [d for d in self.demands.all() 
                 if d.statuses.count() 
                 and not d.payments.count() 
                 and d.invoices.count()
-                and d.get_total_amount()]
+                and d.get_total_amount()
+                and not d.force_fully_paid]
     def demands_mispaid(self):
         return [d for d in self.demands.all() 
                 if d.statuses.count() 
-                and (d.diff_invoice or d.diff_invoice_payment)]
+                and (d.diff_invoice or d.diff_invoice_payment)
+                and not d.force_fully_paid]
     def current_demand(self):
         try:
             return Demand.objects.current().get(project = self)
@@ -2138,6 +2142,7 @@ class NHSale(models.Model):
         return '/nhsale/%s' % self.id
     class Meta:
         db_table='NHSale'
+        permissions = (('nhsale_move_nhmonth', 'NHSale Move Month'),)
 
 class SaleMod(models.Model):
     sale = models.OneToOneField('Sale', unique=True, editable=False, related_name='%(class)s')

@@ -687,7 +687,7 @@ class EmployeeSalariesBookKeepingWriter:
                        '<br/>'.join(map(lambda p: log2vis(unicode(p.payment_type)), payments)),
                        '<br/>'.join(map(lambda p: unicode(p.num), payments)),
                        '<br/>'.join(map(lambda p: log2vis(p.bank), payments)),
-                       '',
+                       log2vis(unicode(side.signing_advisor)),
                        '<br/>'.join(map(lambda p: p.payment_date.strftime('%d/%m/%y'), payments)),
                        '<br/>'.join(map(lambda p: unicode(p.branch_num), payments)),
                        side.remarks]
@@ -724,7 +724,7 @@ class EmployeeSalariesBookKeepingWriter:
             employee = es.get_employee()
             terms = employee.employment_terms
             hire_type = terms and unicode(terms.hire_type)
-            if not terms.salary_net and terms.hire_type.id == models.HireType.Salaried:
+            if terms and not terms.salary_net and terms.hire_type.id == models.HireType.Salaried:
                 hire_type += u' - ברוטו'
             row = [es.id, log2vis(unicode(employee)), log2vis(hire_type), commaise(es.check_amount), commaise(es.refund),
                    commaise(es.bruto),None,None,commaise(es.loan_pay), commaise(es.neto),None]

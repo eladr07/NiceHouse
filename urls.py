@@ -422,6 +422,7 @@ urlpatterns += patterns('Management.views',
       
     (r'^nhbranch/(?P<branch_id>\d+)/nhsale/add$', 'nhsale_add'),
     (r'^nhsale/(?P<object_id>\d+)/$', 'nhsale_edit'),
+    (r'^nhsale/(?P<object_id>\d+)/move$', 'nhsale_move_nhmonth'),
     (r'^nhsale/(?P<object_id>\d+)/edit$', 'limited_update_object',
      {'form_class' : Management.forms.NHSaleForm, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '../%(id)s'}),
     (r'^nhsaleside/(?P<object_id>\d+)$', 'limited_update_object',
