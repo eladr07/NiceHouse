@@ -913,6 +913,10 @@ class NHEmployeeSalary(EmployeeSalaryBase):
     def total_amount(self):
         return self.base + (self.commissions or 0) + (self.admin_commission or 0) + (self.var_pay or 0) + (self.safety_net or 0) - (self.deduction or 0)
     def calculate(self):
+        query = NHMonth.objects.filter(nhbranch = self.nhemployee.nhbranch, year = self.year, month = self.month)
+        if query.count() == 0: return
+        nhm = query[0]
+        
         terms = self.nhemployee.employment_terms
         if not terms:
             self.remarks = u'לעובד לא הוגדרו תנאי העסקה!'
@@ -921,37 +925,29 @@ class NHEmployeeSalary(EmployeeSalaryBase):
             d = date(self.month == 12 and self.year + 1 or self.year, self.month == 12 and 1 or self.month + 1, 1)
             tax = Tax.objects.filter(date__lt = d).latest().value
             self.ratio = 1 / ((tax + 100)/100)
-        raise TypeError
+
         for scd in NHSaleCommissionDetail.objects.filter(nhemployeesalary = self):
             scd.delete()
         self.admin_commission, self.commissions, self.base = 0, 0, 0
-        for nhss in NHSaleSide.objects.filter(employee1=self.nhemployee, nhsale__nhmonth__year__exact = self.year,
-                                              nhsale__nhmonth__month__exact = self.month):
+        for nhss in NHSaleSide.objects.filter(employee1=self.nhemployee, nhsale__nhmonth = nhm):
             pay = nhss.employee1_pay * self.ratio
             commission = nhss.employee1_commission * self.ratio
             self.commissions += pay
             NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss, commission='base', amount = pay,
                                                   precentage = commission, income = nhss.net_income)
-        for nhss in NHSaleSide.objects.filter(employee2=self.nhemployee, nhsale__nhmonth__year__exact = self.year,
-                                              nhsale__nhmonth__month__exact = self.month):
+        for nhss in NHSaleSide.objects.filter(employee2=self.nhemployee, nhsale__nhmonth = nhm):
             pay = (nhss.employee2_pay or 0) * self.ratio
             commission = (nhss.employee2_commission or 0) * self.ratio
             self.commissions += pay
             NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss, commission='base', amount = pay,
                                                   precentage = commission, income = nhss.net_income)
-        for nhss in NHSaleSide.objects.filter(employee3=self.nhemployee, nhsale__nhmonth__year__exact = self.year,
-                                              nhsale__nhmonth__month__exact = self.month):
+        for nhss in NHSaleSide.objects.filter(employee3=self.nhemployee, nhsale__nhmonth = nhm):
             pay = (nhss.employee3_pay or 0) * self.ratio
             commission = (nhss.employee3_commission or 0) * self.ratio
             self.commissions += pay
             NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss, commission='base', 
                                                   amount = pay, precentage = commission, income = nhss.net_income)
         if self.nhemployee.nhbranch:
-            try:
-                nhm = NHMonth.objects.get(nhbranch = self.nhemployee.nhbranch, year = self.year,
-                                          month = self.month)
-            except NHMonth.DoesNotExist:
-                return
             self.__calc__(nhm)
         elif self.nhemployee.branch_manager.count() > 0:
             for nhbranch in self.nhemployee.branch_manager.all():
