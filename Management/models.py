@@ -569,9 +569,12 @@ class NHCBase(models.Model):
                                           month = nhmonth.month)
         scds = []
         if self.filter.id == NHSaleFilter.His or self.filter.id == NHSaleFilter.All:
-            sales = set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=self.nhemployee))
-            sales.union(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=self.nhemployee))
-            sales.union(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=self.nhemployee))
+
+            sales = list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=self.nhemployee))
+            sales.extend([s for s in NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=self.nhemployee)
+                          if sales.count(s) == 0])
+            sales.extend([s for s in NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=self.nhemployee)
+                          if sales.count(s) == 0])
             raise TypeError
             for nhss in sales:
                 pay = nhss.get_employee_pay(self.nhemployee)
