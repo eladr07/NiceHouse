@@ -1329,7 +1329,7 @@ def nhsale_edit(request, object_id):
                               context_instance=RequestContext(request))
 
 @permission_required('Management.nhsale_move_nhmonth')
-def nhsale_move_nhmonth(request, id):
+def nhsale_move_nhmonth(request, object_id):
     nhsale = NHSale.objects.get(pk=id)
     if request.method == 'POST':
         form = NHMonthForm(request.POST)
