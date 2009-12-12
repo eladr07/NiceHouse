@@ -123,7 +123,9 @@
 			{% if form.instance.nhcbase %}
 			<div>
 				{{form.instance.nhcbase.precentage}}% 
-				על מכירות 
+				מהכנסה 
+				{{form.instance.nhcbase.income_type}} 
+				של מכירות 
 				{{form.instance.nhcbase.filter}}.
 				מינימום של 
 				{{form.instance.nhcbase.min|commaise}} ש"ח

@@ -562,9 +562,18 @@ class NHSaleFilter(models.Model):
     class Meta:
         db_table = 'NHSaleFilter'
 
+class NHIncomeType(models.Model):
+    Relative, Total = 1,2
+    name = models.CharField(max_length = 20, unique=True)
+    def __unicode__(self):
+        return unicode(self.name)
+    class Meta:
+        db_table = 'NHIncomeType'
+
 class NHCBase(models.Model):
     min = models.PositiveIntegerField(ugettext('min_commission'), default=0)
     precentage = models.FloatField(ugettext('precentage'))
+    income_type = models.ForeignKey('NHIncomeType', verbose_name=ugettext('income_type'))
     filter = models.ForeignKey('NHSaleFilter', verbose_name=ugettext('filter'))
     def calc(self, nhmonth, ratio = 1):
         amount = 0
@@ -576,14 +585,17 @@ class NHCBase(models.Model):
             sales.update(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=self.nhemployee))
             sales.update(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=self.nhemployee))
             for nhss in sales:
-                pay = nhss.get_employee_pay(self.nhemployee)
-                all_pay = nhss.all_employee_commission
-                if not all_pay: continue
-                relative_income = pay / all_pay * nhss.net_income
-                x = relative_income * self.precentage / 100 * ratio
+                if self.income_type == NHIncomeType.Relative:
+                    pay = nhss.get_employee_pay(self.nhemployee)
+                    all_pay = nhss.all_employee_commission
+                    if not all_pay: continue
+                    income = pay / all_pay * nhss.net_income
+                elif self.income_type == NHIncomeType.Total:
+                    income = nhss.net_income                
+                x = income * self.precentage / 100 * ratio
                 amount += x
                 scds.append(NHSaleCommissionDetail(nhemployeesalary=es, commission='nhcbase',amount=x,
-                                                   nhsaleside=nhss, income = relative_income,
+                                                   nhsaleside=nhss, income = income,
                                                    precentage = self.precentage))
         if self.filter.id == NHSaleFilter.NotHis or self.filter.id == NHSaleFilter.All:
             for nhe in nhmonth.nhbranch.nhemployees.exclude(id = self.nhemployee.id):
@@ -591,14 +603,17 @@ class NHCBase(models.Model):
                 sales.update(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=nhe)))
                 sales.update(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=nhe)))
                 for nhss in sales:
-                    pay = nhss.get_employee_pay(nhe)
-                    all_pay = nhss.all_employee_commission
-                    if not all_pay: continue
-                    relative_income = pay / all_pay * nhss.net_income
-                    x = relative_income * self.precentage / 100 * ratio
+                    if self.income_type == NHIncomeType.Relative:
+                        pay = nhss.get_employee_pay(nhe)
+                        all_pay = nhss.all_employee_commission
+                        if not all_pay: continue
+                        income = pay / all_pay * nhss.net_income
+                    elif self.income_type == NHIncomeType.Total:
+                        income = nhss.net_income
+                    x = income * self.precentage / 100 * ratio
                     amount += x
                     scds.append(NHSaleCommissionDetail(nhemployeesalary=es, commission='nhcbase',amount=x,
-                                                       nhsaleside=nhss, income = relative_income,
+                                                       nhsaleside=nhss, income = income,
                                                        precentage = self.precentage))
         if amount >= self.min:
             for scd in scds:
