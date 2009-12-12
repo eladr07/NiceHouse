@@ -352,7 +352,7 @@ class HouseType(models.Model):
         db_table = 'HouseType'
 
 class HireType(models.Model):
-    SelfEmployed, Salaried, DailySalaried, SmallEmployed = 1,2,3,4
+    SelfEmployed, Salaried, DailySalaried, SmallEmployed, ExemptEmployed = 1,2,3,4,5
     name = models.CharField(max_length=20, unique=True)
     def __unicode__(self):
         return unicode(self.name)
@@ -861,7 +861,7 @@ class EmployeeSalaryBase(models.Model):
         terms = self.get_employee().employment_terms
         if not terms: return None
         exp = self.expenses
-        if not terms.salary_net and terms.hire_type.id != HireType.SmallEmployed:
+        if not terms.salary_net and not terms.hire_type.id in (HireType.SmallEmployed, HireType.ExemptEmployed):
             if not exp: return None
             return self.derived.total_amount - exp.income_tax - exp.national_insurance - exp.health - exp.pension_insurance
         return self.derived.total_amount    

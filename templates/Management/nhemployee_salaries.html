@@ -106,24 +106,26 @@
 	<caption>{{branch.grouper}}</caption>
 		<tr>
 			<th></th>
-			<th>שם העובד</th>
-			<th>סוג העסקה</th>
-			<th>מס' עסקאות</th>
-			<th>שכר בסיס + עמלות</th>
-			<th>עמלת ניהול</th>
-			<th>רשת בטחון</th>
-			<th>תוספת משתנה</th>
-			<th>קיזוז שכר</th>
-			<th>סה"כ שווי תלוש</th>
-			<th>החזר הלוואה</th>
-			<th>שווי צ'ק</th>
-			<th>ברוטו לחישוב</th>
-			<th>החזר הוצאות (בנפרד)</th>
-			<th>חופש ומחלה</th>
+			<th>שם<br>העובד</th>
+			<th>סוג<br>העסקה</th>
+			<th>מס'<br>עסקאות</th>
+			<th>שכר<br>בסיס<br>+<br>עמלות</th>
+			<th>עמלת<br>ניהול</th>
+			<th>רשת<br>בטחון</th>
+			<th>תוספת<br>משתנה</th>
+			<th>קיזוז<br>שכר</th>
+			<th>סה"כ<br>שווי<br>תלוש</th>
+			<th>שווי<br>חשבונית</th>
+			<th>ניכוי<br>מס</th>
+			<th>החזר<br>הלוואה</th>
+			<th>שווי<br>צ'ק</th>
+			<th>ברוטו<br>לחישוב</th>
+			<th>החזר<br>הוצאות<br>(בנפרד)</th>
+			<th>חופש<br>ומחלה</th>
 			<th>הערות</th>
 			<th>ת.אישור</th>
-			<th>ת.שליחה להנה"ח</th>
-			<th>ת.שליחה לצ'קים</th>
+			<th>ת.שליחה<br>להנה"ח</th>
+			<th>ת.שליחה<br>לצ'קים</th>
 		</tr>
 		{% for s in branch.list %}
 		{% if s.approved_date %}
@@ -133,7 +135,12 @@
 		{% endif %}
 			<td><a class="fancybox" href="{{s.id}}"><img src="/site_media/images/edit_48.png" width="20" height="20" alt="שינוי מרכיבי שכר" border="0" /></a></td>
 			<td><a href="{{s.nhemployee.get_absolute_url}}" target="_blank">{{ s.nhemployee }}</a></td>
-			<td>{{s.nhemployee.employment_terms.hire_type}}</td>
+			<td>
+				{{s.nhemployee.employment_terms.hire_type}}
+				<br>
+				חושב כולל מע"מ : 
+				{{s.nhemployee.employment_terms.include_tax|yesno}}
+			</td>
 			<td><a class="fancybox" href="/nhemployee/{{s.nhemployee.id}}/sales/{{month.year}}/{{month.month}}">{{ s.sales_count }}</a></td>
 			<td style="color:#08A600;">
 				{{s.base}} + 
@@ -148,6 +155,8 @@
 			<td style="color:#08A600;">{% if s.var_pay %}{{s.var_pay}} ש"ח {% endif %}</td>
 			<td style="color:#D50808;">{% if s.deduction %}{{s.deduction}} - {{s.deduction_type}} {% endif %}</td>
 			<td><a href="{{s.id}}/totaldetails" class="fancybox">{{s.neto|default_if_none:""|commaise}}</a></td>
+			<td></td>
+			<td></td>
 			<td>
 				החזר - {{s.loan_pay|commaise}} ש"ח
 				<br>
