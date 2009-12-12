@@ -647,6 +647,7 @@ class NHCBranchIncome(models.Model):
                                                        amount = relative_income * self.then_precentage/100,
                                                        precentage = self.then_precentage, income = pay))
         if amount > self.if_income:
+            raise TypeError
             for scd in scds:
                 scd.save()
             return self.then_precentage * amount / 100
