@@ -137,9 +137,11 @@
 			<td><a href="{{s.nhemployee.get_absolute_url}}" target="_blank">{{ s.nhemployee }}</a></td>
 			<td>
 				{{s.nhemployee.employment_terms.hire_type}}
-				<br>
-				חושב כולל מע"מ : 
-				{{s.nhemployee.employment_terms.include_tax|yesno}}
+				{% ifnotequal s.nhemployee.employment_terms.include_tax None %}
+					<br>
+					מע"מ : 
+					{{s.nhemployee.employment_terms.include_tax|yesno}}
+				{% endif %}
 			</td>
 			<td><a class="fancybox" href="/nhemployee/{{s.nhemployee.id}}/sales/{{month.year}}/{{month.month}}">{{ s.sales_count }}</a></td>
 			<td style="color:#08A600;">
