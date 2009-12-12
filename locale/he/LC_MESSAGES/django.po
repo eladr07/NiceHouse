@@ -625,9 +625,8 @@ msgid "min_commission"
 msgstr "מינימום עמלה"
 
 #: .\Management\models.py:576
-#, fuzzy
 msgid "income_type"
-msgstr "מס הכנסה"
+msgstr "סוג הכנסה"
 
 #: .\Management\models.py:577 .\Management\models.py:629
 msgid "filter"
