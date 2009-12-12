@@ -572,9 +572,10 @@ class NHCBase(models.Model):
             sales = set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=self.nhemployee))
             sales.union(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=self.nhemployee)))
             sales.union(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=self.nhemployee)))
+            i=0
             for nhss in sales:
-                if nhss.id in [154]:
-                    raise TypeError
+                if nhss.id in [154,155]:
+                    i+=1
                 pay = nhss.get_employee_pay(self.nhemployee)
                 all_pay = nhss.all_employee_commission
                 if not all_pay: continue
@@ -584,6 +585,7 @@ class NHCBase(models.Model):
                 scds.append(NHSaleCommissionDetail(nhemployeesalary=es, commission='nhcbase',amount=x,
                                                    nhsaleside=nhss, income = relative_income,
                                                    precentage = self.precentage))
+        raise TypeError
         if self.filter.id == NHSaleFilter.NotHis or self.filter.id == NHSaleFilter.All:
             for nhe in nhmonth.nhbranch.nhemployees.exclude(id = self.nhemployee.id):
                 sales = set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=nhe))
