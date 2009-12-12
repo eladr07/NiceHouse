@@ -921,7 +921,7 @@ class NHEmployeeSalary(EmployeeSalaryBase):
             d = date(self.month == 12 and self.year + 1 or self.year, self.month == 12 and 1 or self.month + 1, 1)
             tax = Tax.objects.filter(date__lt = d).latest().value
             self.ratio = 1 / ((tax + 100)/100)
-            
+        raise TypeError
         for scd in NHSaleCommissionDetail.objects.filter(nhemployeesalary = self):
             scd.delete()
         self.admin_commission, self.commissions, self.base = 0, 0, 0
