@@ -618,9 +618,9 @@ class NHCBranchIncome(models.Model):
                                           month = nhmonth.month)
         scds = []
         if self.filter.id == NHSaleFilter.His or self.filter.id == NHSaleFilter.All:
-            sales = list(NHSaleSide.objects.filter(employee1=self.nhemployee))
-            sales.extend(list(NHSaleSide.objects.filter(employee2=self.nhemployee)))
-            sales.extend(list(NHSaleSide.objects.filter(employee3=self.nhemployee)))
+            sales = list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=self.nhemployee))
+            sales.extend(list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=self.nhemployee)))
+            sales.extend(list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=self.nhemployee)))
             for nhss in sales:
                 pay = nhss.get_employee_pay(self.nhemployee)
                 all_pay = nhss.all_employee_commission
@@ -633,9 +633,9 @@ class NHCBranchIncome(models.Model):
                                                    precentage = self.then_precentage, income = pay))
         if self.filter.id == NHSaleFilter.NotHis or self.filter.id == NHSaleFilter.All:
             for nhe in nhmonth.nhbranch.nhemployees.exclude(id = self.nhemployee.id):
-                sales = list(NHSaleSide.objects.filter(employee1=nhe))
-                sales.extend(list(NHSaleSide.objects.filter(employee2=nhe)))
-                sales.extend(list(NHSaleSide.objects.filter(employee3=nhe)))
+                sales = list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=nhe))
+                sales.extend(list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=nhe)))
+                sales.extend(list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=nhe)))
                 for nhss in NHSaleSide.objects.filter(employee1=nhe).exclude(employee2=self.nhemployee).exclude(employee3=self.nhemployee):
                     pay = nhss.get_employee_pay(nhe)
                     all_pay = nhss.all_employee_commission
