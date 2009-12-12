@@ -563,7 +563,7 @@ class NHCBase(models.Model):
     min = models.PositiveIntegerField(ugettext('min_commission'), default=0)
     precentage = models.FloatField(ugettext('precentage'))
     filter = models.ForeignKey('NHSaleFilter', verbose_name=ugettext('filter'))
-    def calc(self, nhmonth):
+    def calc(self, nhmonth, ratio = 1):
         amount = 0
         es = NHEmployeeSalary.objects.get(nhemployee=self.nhemployee, year= nhmonth.year,
                                           month = nhmonth.month)
@@ -577,7 +577,7 @@ class NHCBase(models.Model):
                 all_pay = nhss.all_employee_commission
                 if not all_pay: continue
                 relative_income = pay / all_pay * nhss.net_income
-                x = relative_income * self.precentage / 100
+                x = relative_income * self.precentage / 100 * ratio
                 amount += x
                 scds.append(NHSaleCommissionDetail(nhemployeesalary=es, commission='nhcbase',amount=x,
                                                    nhsaleside=nhss, income = relative_income,
@@ -592,7 +592,7 @@ class NHCBase(models.Model):
                     all_pay = nhss.all_employee_commission
                     if not all_pay: continue
                     relative_income = pay / all_pay * nhss.net_income
-                    x = relative_income * self.precentage / 100
+                    x = relative_income * self.precentage / 100 * ratio
                     amount += x
                     scds.append(NHSaleCommissionDetail(nhemployeesalary=es, commission='nhcbase',amount=x,
                                                        nhsaleside=nhss, income = relative_income,
@@ -612,7 +612,7 @@ class NHCBranchIncome(models.Model):
     if_income = models.IntegerField(ugettext('if_branch_income'))
     then_precentage = models.FloatField(ugettext('then_precentage'))
     else_amount = models.IntegerField(ugettext('else_amount'))
-    def calc(self, nhmonth):
+    def calc(self, nhmonth, ratio = 1):
         amount = 0
         es = NHEmployeeSalary.objects.get(nhemployee=self.nhemployee, year= nhmonth.year,
                                           month = nhmonth.month)
@@ -625,7 +625,7 @@ class NHCBranchIncome(models.Model):
                 pay = nhss.get_employee_pay(self.nhemployee)
                 all_pay = nhss.all_employee_commission
                 if not all_pay: continue
-                relative_income = pay / all_pay * nhss.net_income
+                relative_income = pay / all_pay * nhss.net_income * ratio
                 amount += relative_income
                 scds.append(NHSaleCommissionDetail(nhemployeesalary=es,nhsaleside=nhss,
                                                    commission='nhcbranchincome',
@@ -640,7 +640,7 @@ class NHCBranchIncome(models.Model):
                     pay = nhss.get_employee_pay(nhe)
                     all_pay = nhss.all_employee_commission
                     if not all_pay: continue
-                    relative_income = pay / all_pay * nhss.net_income
+                    relative_income = pay / all_pay * nhss.net_income * ratio
                     amount += relative_income
                     scds.append(NHSaleCommissionDetail(nhemployeesalary=es,nhsaleside=nhss,
                                                        commission='nhcbranchincome',
@@ -913,30 +913,39 @@ class NHEmployeeSalary(EmployeeSalaryBase):
     def total_amount(self):
         return self.base + (self.commissions or 0) + (self.admin_commission or 0) + (self.var_pay or 0) + (self.safety_net or 0) - (self.deduction or 0)
     def calculate(self):
+        terms = self.nhemployee.employment_terms
+        if not terms:
+            self.remarks = u'לעובד לא הוגדרו תנאי העסקה!'
+            return
+        if terms.hire_type.id == HireType.Salaried and not terms.include_tax:
+            d = date(self.month == 12 and self.year + 1 or self.year, self.month == 12 and 1 or self.month + 1, 1)
+            tax = Tax.objects.filter(date__lt = d).latest().value
+            self.ratio = 1 / ((tax + 100)/100)
+            
         for scd in NHSaleCommissionDetail.objects.filter(nhemployeesalary = self):
             scd.delete()
         self.admin_commission, self.commissions, self.base = 0, 0, 0
         for nhss in NHSaleSide.objects.filter(employee1=self.nhemployee, nhsale__nhmonth__year__exact = self.year,
                                               nhsale__nhmonth__month__exact = self.month):
-            self.commissions += nhss.employee1_pay
-            NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss,
-                                                  commission='base', amount = nhss.employee1_pay,
-                                                  precentage = nhss.employee1_commission,
-                                                  income = nhss.net_income)
+            pay = nhss.employee1_pay * self.ratio
+            commission = nhss.employee1_commission * self.ratio
+            self.commissions += pay
+            NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss, commission='base', amount = pay,
+                                                  precentage = commission, income = nhss.net_income)
         for nhss in NHSaleSide.objects.filter(employee2=self.nhemployee, nhsale__nhmonth__year__exact = self.year,
                                               nhsale__nhmonth__month__exact = self.month):
-            self.commissions += (nhss.employee2_pay or 0)
-            NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss,
-                                                  commission='base', amount = nhss.employee2_pay or 0,
-                                                  precentage = nhss.employee2_commission,
-                                                  income = nhss.net_income)
+            pay = (nhss.employee2_pay or 0) * self.ratio
+            commission = (nhss.employee2_commission or 0) * self.ratio
+            self.commissions += pay
+            NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss, commission='base', amount = pay,
+                                                  precentage = commission, income = nhss.net_income)
         for nhss in NHSaleSide.objects.filter(employee3=self.nhemployee, nhsale__nhmonth__year__exact = self.year,
                                               nhsale__nhmonth__month__exact = self.month):
-            self.commissions += (nhss.employee3_pay or 0)
-            NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss,
-                                                  commission='base', amount = nhss.employee3_pay or 0,
-                                                  precentage = nhss.employee3_commission,
-                                                  income = nhss.net_income)
+            pay = (nhss.employee3_pay or 0) * self.ratio
+            commission = (nhss.employee3_commission or 0) * self.ratio
+            self.commissions += pay
+            NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss, commission='base', 
+                                                  amount = pay, precentage = commission, income = nhss.net_income)
         if self.nhemployee.nhbranch:
             try:
                 nhm = NHMonth.objects.get(nhbranch = self.nhemployee.nhbranch, year = self.year,
@@ -952,10 +961,16 @@ class NHEmployeeSalary(EmployeeSalaryBase):
         restore_date = date(self.year, self.month, 1)
         if self.nhemployee.nhcbase:
             commission = restore_object(self.nhemployee.nhcbase, restore_date)
-            self.admin_commission += commission.calc(nhmonth)
+            self.admin_commission += commission.calc(nhmonth, self.ratio)
         if self.nhemployee.nhcbranchincome:
             commission = restore_object(self.nhemployee.nhcbranchincome, restore_date)
-            self.admin_commission += commission.calc(nhmonth)
+            self.admin_commission += commission.calc(nhmonth, self.ratio)
+    def __init__(self, *args, **kw):
+        super(NHEmployeeSalary, self).__init__(*args, **kw)
+        '''
+        defines a multiplier for all commissions. used to reduce tax for employees that get the commission w/o tax
+        '''
+        self.ratio = 1
     class Meta:
         db_table='NHEmployeeSalary'
         
