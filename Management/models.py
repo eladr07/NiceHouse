@@ -585,12 +585,12 @@ class NHCBase(models.Model):
             sales.update(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=self.nhemployee))
             sales.update(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=self.nhemployee))
             for nhss in sales:
-                if self.income_type == NHIncomeType.Relative:
+                if self.income_type.id == NHIncomeType.Relative:
                     pay = nhss.get_employee_pay(self.nhemployee)
                     all_pay = nhss.all_employee_commission
                     if not all_pay: continue
                     income = pay / all_pay * nhss.net_income
-                elif self.income_type == NHIncomeType.Total:
+                elif self.income_type.id == NHIncomeType.Total:
                     income = nhss.net_income                
                 x = income * self.precentage / 100 * ratio
                 amount += x
