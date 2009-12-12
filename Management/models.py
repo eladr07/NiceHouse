@@ -13,6 +13,7 @@ class Callable:
         self.__call__ = anycallable
 
 Salary_Types = (
+                (None, u'לא ידוע'),
                 (0, u'ברוטו'),
                 (1, u'נטו')
                 )
@@ -354,6 +355,8 @@ class HouseType(models.Model):
 class HireType(models.Model):
     SelfEmployed, Salaried, DailySalaried, SmallEmployed, ExemptEmployed = 1,2,3,4,5
     name = models.CharField(max_length=20, unique=True)
+    salary_net = models.NullBooleanField()
+    include_tax = models.BooleanField()
     def __unicode__(self):
         return unicode(self.name)
     class Meta:
@@ -473,7 +476,7 @@ class Contact(Person):
 
 class EmploymentTerms(models.Model):
     salary_base = models.PositiveIntegerField(ugettext('salary base'))
-    salary_net = models.BooleanField(ugettext('salary net'), choices= Salary_Types)
+    salary_net = models.NullBooleanField(ugettext('salary net'), choices= Salary_Types)
     safety = models.PositiveIntegerField(ugettext('safety'))
     hire_type = models.ForeignKey('HireType', verbose_name=ugettext('hire_type'))
     include_tax = models.BooleanField(ugettext('commission_include_tax'), blank=True)
@@ -839,7 +842,7 @@ class EmployeeSalaryBase(models.Model):
     @property
     def expenses(self):
         q = SalaryExpenses.objects.filter(employee = self.get_employee())
-        return q.count() == 1 and q[0] or None    
+        return q.count() == 1 and q[0] or None
     @property
     def derived(self):
         if hasattr(self, 'employeesalary'):
@@ -851,7 +854,7 @@ class EmployeeSalaryBase(models.Model):
         terms = self.get_employee().employment_terms
         if not terms: return None
         exp = self.expenses
-        if not terms.salary_net:
+        if terms.salary_net == False:
             return self.derived.total_amount
         if not exp: return None
         return self.derived.total_amount + exp.income_tax + exp.national_insurance + exp.health + exp.pension_insurance \
@@ -861,7 +864,7 @@ class EmployeeSalaryBase(models.Model):
         terms = self.get_employee().employment_terms
         if not terms: return None
         exp = self.expenses
-        if not terms.salary_net and not terms.hire_type.id in (HireType.SmallEmployed, HireType.ExemptEmployed):
+        if terms.salary_net == False:
             if not exp: return None
             return self.derived.total_amount - exp.income_tax - exp.national_insurance - exp.health - exp.pension_insurance
         return self.derived.total_amount    
@@ -921,7 +924,7 @@ class NHEmployeeSalary(EmployeeSalaryBase):
         if not terms:
             self.remarks = u'לעובד לא הוגדרו תנאי העסקה!'
             return
-        if terms.hire_type.id == HireType.Salaried and not terms.include_tax:
+        if not terms.include_tax:
             d = date(self.month == 12 and self.year + 1 or self.year, self.month == 12 and 1 or self.month + 1, 1)
             tax = Tax.objects.filter(date__lt = d).latest().value
             self.ratio = 1 / ((tax + 100)/100)
@@ -1273,7 +1276,7 @@ class CByPrice(models.Model):
     def calc(self, sales):
         dic = {}
         for s in sales:
-            dic[s] = self.get_amount(s.price)
+            dic[s] = self.get_amount(s.price_taxed)
         return dic
     def get_amount(self, price):
         amount = 0
@@ -1946,7 +1949,7 @@ class NHSaleSide(models.Model):
         if not terms: return amount
         nhmonth = self.nhsale.nhmonth
         tax = Tax.objects.filter(date__lte=date(nhmonth.year, nhmonth.month,1)).latest().value / 100 + 1
-        if not self.include_tax and terms.hire_type.id == HireType.SelfEmployed:
+        if not self.include_tax and terms.include_tax:
             amount = amount / tax
         return amount
     @property
@@ -1958,7 +1961,7 @@ class NHSaleSide(models.Model):
         if not terms: return amount
         nhmonth = self.nhsale.nhmonth
         tax = Tax.objects.filter(date__lte=date(nhmonth.year, nhmonth.month,1)).latest().value / 100 + 1
-        if not self.include_tax and terms.hire_type.id == HireType.SelfEmployed:
+        if not self.include_tax and terms.include_tax:
             amount = amount / tax
         return amount
     @property
@@ -1970,7 +1973,7 @@ class NHSaleSide(models.Model):
         if not terms: return amount
         nhmonth = self.nhsale.nhmonth
         tax = Tax.objects.filter(date__lte=date(nhmonth.year, nhmonth.month,1)).latest().value / 100 + 1
-        if not self.include_tax and terms.hire_type.id == HireType.SelfEmployed:
+        if not self.include_tax and terms.include_tax:
             amount = amount / tax
         return amount
     @property
@@ -1982,7 +1985,7 @@ class NHSaleSide(models.Model):
         if not terms: return amount
         nhmonth = self.nhsale.nhmonth
         tax = Tax.objects.filter(date__lte=date(nhmonth.year, nhmonth.month,1)).latest().value / 100 + 1
-        if not self.include_tax and terms.hire_type.id == HireType.SelfEmployed:
+        if not self.include_tax and terms.include_tax:
             amount = amount / tax
         return amount
     @property
