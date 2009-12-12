@@ -137,7 +137,7 @@
 			<td><a href="{{s.nhemployee.get_absolute_url}}" target="_blank">{{ s.nhemployee }}</a></td>
 			<td>
 				{{s.nhemployee.employment_terms.hire_type}}
-				{% ifnotequal s.nhemployee.employment_terms.include_tax None %}
+				{% ifnotequal s.nhemployee.employment_terms.hire_type.id 1 %}
 					<br>
 					מע"מ : 
 					{{s.nhemployee.employment_terms.include_tax|yesno}}
