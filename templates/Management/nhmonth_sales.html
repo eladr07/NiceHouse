@@ -91,7 +91,7 @@ $(document).ready(function() {
 			<td>{{s.sale_date|date:"j/m/y"}}</td>
 			{% for ss in s.nhsaleside_set.all %}
 				{% if not forloop.first %}
-					<tr class="{% cycle 'row1' 'row2' %}">
+					<tr class= {% if nhmonth.is_closed %} "rowLightBlue" {% else %} "{% cycle 'row1' 'row2' %}" {% endif %}>
 						<td></td>
 						<td></td>
 				{% endif %}
