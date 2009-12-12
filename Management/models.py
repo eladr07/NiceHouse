@@ -636,7 +636,7 @@ class NHCBranchIncome(models.Model):
                 sales = list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=nhe))
                 sales.extend(list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=nhe)))
                 sales.extend(list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=nhe)))
-                for nhss in NHSaleSide.objects.filter(employee1=nhe).exclude(employee2=self.nhemployee).exclude(employee3=self.nhemployee):
+                for nhss in sales:
                     pay = nhss.get_employee_pay(nhe)
                     all_pay = nhss.all_employee_commission
                     if not all_pay: continue
@@ -647,7 +647,6 @@ class NHCBranchIncome(models.Model):
                                                        amount = relative_income * self.then_precentage/100,
                                                        precentage = self.then_precentage, income = pay))
         if amount > self.if_income:
-            raise TypeError
             for scd in scds:
                 scd.save()
             return self.then_precentage * amount / 100
