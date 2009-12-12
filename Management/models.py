@@ -569,9 +569,9 @@ class NHCBase(models.Model):
                                           month = nhmonth.month)
         scds = []
         if self.filter.id == NHSaleFilter.His or self.filter.id == NHSaleFilter.All:
-            sales = list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=self.nhemployee))
-            sales.extend(list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=self.nhemployee)))
-            sales.extend(list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=self.nhemployee)))
+            sales = set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=self.nhemployee))
+            sales.extend(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=self.nhemployee)))
+            sales.extend(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=self.nhemployee)))
             for nhss in sales:
                 pay = nhss.get_employee_pay(self.nhemployee)
                 all_pay = nhss.all_employee_commission
@@ -584,9 +584,9 @@ class NHCBase(models.Model):
                                                    precentage = self.precentage))
         if self.filter.id == NHSaleFilter.NotHis or self.filter.id == NHSaleFilter.All:
             for nhe in nhmonth.nhbranch.nhemployees.exclude(id = self.nhemployee.id):
-                sales = list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=nhe))
-                sales.extend(list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=nhe)))
-                sales.extend(list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=nhe)))
+                sales = set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=nhe))
+                sales.extend(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=nhe)))
+                sales.extend(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=nhe)))
                 for nhss in sales:
                     pay = nhss.get_employee_pay(nhe)
                     all_pay = nhss.all_employee_commission
@@ -618,9 +618,9 @@ class NHCBranchIncome(models.Model):
                                           month = nhmonth.month)
         scds = []
         if self.filter.id == NHSaleFilter.His or self.filter.id == NHSaleFilter.All:
-            sales = list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=self.nhemployee))
-            sales.extend(list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=self.nhemployee)))
-            sales.extend(list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=self.nhemployee)))
+            sales = set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=self.nhemployee))
+            sales.extend(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=self.nhemployee)))
+            sales.extend(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=self.nhemployee)))
             for nhss in sales:
                 pay = nhss.get_employee_pay(self.nhemployee)
                 all_pay = nhss.all_employee_commission
@@ -633,9 +633,9 @@ class NHCBranchIncome(models.Model):
                                                    precentage = self.then_precentage, income = pay))
         if self.filter.id == NHSaleFilter.NotHis or self.filter.id == NHSaleFilter.All:
             for nhe in nhmonth.nhbranch.nhemployees.exclude(id = self.nhemployee.id):
-                sales = list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=nhe))
-                sales.extend(list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=nhe)))
-                sales.extend(list(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=nhe)))
+                sales = set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=nhe))
+                sales.extend(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=nhe)))
+                sales.extend(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=nhe)))
                 for nhss in sales:
                     pay = nhss.get_employee_pay(nhe)
                     all_pay = nhss.all_employee_commission
