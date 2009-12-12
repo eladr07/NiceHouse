@@ -141,7 +141,7 @@
 					<br>
 					מע"מ : 
 					{{s.nhemployee.employment_terms.include_tax|yesno}}
-				{% endifnotequal %}
+				{% endif %}
 			</td>
 			<td><a class="fancybox" href="/nhemployee/{{s.nhemployee.id}}/sales/{{month.year}}/{{month.month}}">{{ s.sales_count }}</a></td>
 			<td style="color:#08A600;">
