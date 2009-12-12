@@ -570,8 +570,8 @@ class NHCBase(models.Model):
         scds = []
         if self.filter.id == NHSaleFilter.His or self.filter.id == NHSaleFilter.All:
             sales = set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=self.nhemployee))
-            sales.extend(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=self.nhemployee)))
-            sales.extend(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=self.nhemployee)))
+            sales.union(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=self.nhemployee)))
+            sales.union(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=self.nhemployee)))
             for nhss in sales:
                 pay = nhss.get_employee_pay(self.nhemployee)
                 all_pay = nhss.all_employee_commission
@@ -585,8 +585,8 @@ class NHCBase(models.Model):
         if self.filter.id == NHSaleFilter.NotHis or self.filter.id == NHSaleFilter.All:
             for nhe in nhmonth.nhbranch.nhemployees.exclude(id = self.nhemployee.id):
                 sales = set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=nhe))
-                sales.extend(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=nhe)))
-                sales.extend(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=nhe)))
+                sales.union(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=nhe)))
+                sales.union(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=nhe)))
                 for nhss in sales:
                     pay = nhss.get_employee_pay(nhe)
                     all_pay = nhss.all_employee_commission
@@ -619,8 +619,8 @@ class NHCBranchIncome(models.Model):
         scds = []
         if self.filter.id == NHSaleFilter.His or self.filter.id == NHSaleFilter.All:
             sales = set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=self.nhemployee))
-            sales.extend(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=self.nhemployee)))
-            sales.extend(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=self.nhemployee)))
+            sales.union(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=self.nhemployee)))
+            sales.union(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=self.nhemployee)))
             for nhss in sales:
                 pay = nhss.get_employee_pay(self.nhemployee)
                 all_pay = nhss.all_employee_commission
@@ -634,8 +634,8 @@ class NHCBranchIncome(models.Model):
         if self.filter.id == NHSaleFilter.NotHis or self.filter.id == NHSaleFilter.All:
             for nhe in nhmonth.nhbranch.nhemployees.exclude(id = self.nhemployee.id):
                 sales = set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=nhe))
-                sales.extend(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=nhe)))
-                sales.extend(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=nhe)))
+                sales.union(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=nhe)))
+                sales.union(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=nhe)))
                 for nhss in sales:
                     pay = nhss.get_employee_pay(nhe)
                     all_pay = nhss.all_employee_commission
