@@ -983,7 +983,7 @@ def demands_send(request):
             if f.is_valid():
                 if f.cleaned_data['is_finished']:
                     d.finish()
-                if f.cleaned_data['by_mail']:
+                if f.cleaned_data['by_mail'] and d.get_sales.count() > 0:
                     demand_send_mail(d, f.cleaned_data['mail'])
                 if f.cleaned_data['by_fax']:
                     pass
