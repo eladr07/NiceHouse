@@ -24,6 +24,7 @@ styleN = ParagraphStyle('normal', fontName='David',fontSize=16, leading=15, alig
 styleNormal13 = ParagraphStyle('normal', fontName='David',fontSize=13, leading=15, alignment=TA_RIGHT)
 styleDate = ParagraphStyle('date', fontName='David',fontSize=14, leading=15)
 styleRow = ParagraphStyle('sumRow', fontName='David',fontSize=11, leading=15)
+styleRow9 = ParagraphStyle('sumRow', fontName='David',fontSize=9, leading=15)
 styleSumRow = ParagraphStyle('Row', fontName='David-Bold',fontSize=11, leading=15)
 styleSubj = ParagraphStyle('subject', fontName='David',fontSize=16, leading=15, alignment=TA_CENTER)
 styleSubTitleBold = ParagraphStyle('subtitle', fontName='David-Bold', fontSize=15, alignment=TA_CENTER)
@@ -669,8 +670,8 @@ class EmployeeSalariesBookKeepingWriter:
         self.current_page += 1
     def nhsalesFlows(self):
         flows = []
-        headers = [log2vis(n) for n in [u'מס"ד',u'הרוכשים\nשם',u'התשלום\nסכום',u"שרותי תיווך\nמס' הזמנת",u'חשבונית',
-                                        u"זמנית\nמס' קבלה",u'תשלום\nסוג',u"מס' צ'ק",u'בנק',u'מטפל\nסוכן',
+        headers = [log2vis(n) for n in [u'מס"ד',u'הרוכשים\nשם',u'התשלום\nסכום',u"תיווך\nשרותי\nהזמנת\nמס'",u'חשבונית',
+                                        u"זמנית\nקבלה\nמס'",u'תשלום\nסוג',u"מס' צ'ק",u'בנק',u'מטפל\nסוכן',
                                         u'תשלום\nתאריך',u"סניף\nמס'",u'הערות']]
         headers.reverse()
         rows = []
@@ -683,7 +684,7 @@ class EmployeeSalariesBookKeepingWriter:
                     invoice_str = '%s<br/>%s' % (invoice.date.strftime('%d/%m/%y'), invoice.num and str(invoice.num) or '')
                 else:
                     invoice_str = ''
-                invoice_para = Paragraph(invoice_str, styleRow)
+                invoice_para = Paragraph(invoice_str, styleRow9)
                 payments = side.payments.all()
                 row = [s.num, clients, commaise(side.net_income), side.voucher_num, invoice_para, side.temp_receipt_num, 
                        '<br/>'.join(map(lambda p: log2vis(unicode(p.payment_type)), payments)),
