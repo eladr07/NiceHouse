@@ -2437,13 +2437,20 @@ class EmployeeCheck(CheckBase):
         db_table = 'EmployeeCheck'
 
 class Check(CheckBase):
-    supplier = models.CharField(ugettext('supplier'), max_length=20)
+    supplier_type = models.ForeignKey('SupplierType', verbose_name=ugettext('supplier_type'))
     account = models.ForeignKey('Account', null=True, editable=False)
     invoice_num = models.IntegerField(ugettext('invoice_num'), null=True, blank=True)
     def get_absolute_url(self):
         return '/checks/%s' % self.id 
     class Meta:
         db_table = 'Check'
+
+class SupplierType(models.Model):
+    name = models.CharField(ugettext('name'), max_length=20, unique=True)
+    def __unicode__(self):
+        return unicode(self.name)
+    class Meta:
+        db_table = 'SupplierType'
 
 class ExpenseType(models.Model):
     name = models.CharField(ugettext('name'), max_length=20, unique=True)

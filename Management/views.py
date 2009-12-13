@@ -181,12 +181,16 @@ def check_list(request):
 
 def process_check_base_form(form):
     division_type, expense_type = form.cleaned_data['new_division_type'], form.cleaned_data['new_expense_type']
+    supplier_type = form.cleaned_data.has_key('new_supplier_type') and form.cleaned_data['new_supplier_type'] 
     if division_type:
         dt, new = DivisionType.objects.get_or_create(name=division_type)
         form.cleaned_data['division_type'] = dt
     if expense_type:
         et, new = ExpenseType.objects.get_or_create(name=expense_type)
         form.cleaned_data['expense_type'] = et
+    if supplier_type:
+        et, new = SupplierType.objects.get_or_create(name=supplier_type)
+        form.cleaned_data['supplier_type'] = et        
 
 @permission_required('Management.add_check')
 def check_add(request):
@@ -200,6 +204,8 @@ def check_add(request):
         if form.is_valid():
             process_check_base_form(form)
             form.save()
+            accountForm = AccountForm()
+            form = CheckForm()
     else:
         accountForm = AccountForm()
         form = CheckForm()
@@ -253,6 +259,7 @@ def employeecheck_add(request):
             process_check_base_form(form)
             ec = form.save()
             apply_employee_check(ec)
+            form = EmployeeCheckForm()
     else:
         form = EmployeeCheckForm()
         

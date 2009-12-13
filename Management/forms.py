@@ -599,6 +599,8 @@ class CheckFilterForm(forms.Form):
                                            required=False)
     expense_type = forms.ModelChoiceField(queryset = ExpenseType.objects.all(), label=ugettext('expense_type'), 
                                           required=False)
+    supplier_type = forms.ModelChoiceField(queryset = SupplierType.objects.all(), label=ugettext('supplier_type'), 
+                                           required=False)
 
 class EmployeeCheckFilterForm(forms.Form):
     from_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
@@ -618,6 +620,7 @@ class EmployeeCheckFilterForm(forms.Form):
 class CheckForm(forms.ModelForm):
     new_division_type = forms.CharField(label = ugettext('new_division_type'), max_length = 20, required=False)
     new_expense_type = forms.CharField(label = ugettext('new_expense_type'), max_length = 20, required=False)
+    new_supplier_type = forms.CharField(label = ugettext('new_supplier_type'), max_length = 20, required=False)
 
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
@@ -627,7 +630,7 @@ class CheckForm(forms.ModelForm):
     class Meta:
         model = Check
         fields = ['division_type','new_division_type','expense_type','new_expense_type',
-                  'supplier','invoice_num','type','amount','num','issue_date','pay_date','remarks']
+                  'supplier_type', 'new_supplier_type','invoice_num','type','amount','num','issue_date','pay_date','remarks']
 
 class EmployeeCheckForm(forms.ModelForm):
     new_division_type = forms.CharField(label = ugettext('new_division_type'), max_length = 20, required=False)
