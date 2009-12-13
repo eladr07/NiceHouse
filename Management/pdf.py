@@ -679,10 +679,9 @@ class EmployeeSalariesBookKeepingWriter:
             for side in s.nhsaleside_set.all():
                 clients = log2vis(side.name1 + ' ' + side.name2)
                 invoice = side.invoices.count() > 0 and side.invoices.all()[0]
+                invoice_str = invoice and (invoice.date.strftime('%d/%m/%y') + '<br/>' + (invoice.num or '')) or ''
                 payments = side.payments.all()
-                row = [s.num, clients, commaise(side.net_income), side.voucher_num, 
-                       invoice and invoice.date.strftime('%d/%m/%y') + '<br/>' + (invoice.num or ''),
-                       side.temp_receipt_num, 
+                row = [s.num, clients, commaise(side.net_income), side.voucher_num, invoice_str, side.temp_receipt_num, 
                        '<br/>'.join(map(lambda p: log2vis(unicode(p.payment_type)), payments)),
                        '<br/>'.join(map(lambda p: unicode(p.num), payments)),
                        '<br/>'.join(map(lambda p: log2vis(p.bank), payments)),
