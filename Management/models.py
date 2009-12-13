@@ -507,6 +507,13 @@ class EmployeeBase(Person):
         
     objects = EmployeeManager()
     
+    @property
+    def derived(self):
+        if isinstance(self, Employee):
+            return self.employee
+        elif isinstance(self, NHEmployee):
+            return self.nhemployee
+        return self    
     class Meta:
         db_table='EmployeeBase'
 
@@ -694,7 +701,7 @@ class NHBranch(models.Model):
     class Meta:
         db_table='NHBranch'
         permissions = (('nhbranch_1', 'NHBranch Shoham'),('nhbranch_2', 'NHBranch Modiin'),('nhbranch_3', 'NHBranch Nes Ziona'))
-    
+        
 class NHEmployee(EmployeeBase):
     nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'), related_name='nhemployees')
     nhcbase = models.OneToOneField('NHCBase', editable=False, null=True, related_name='nhemployee')
@@ -769,7 +776,7 @@ class Loan(models.Model):
     def save(self, *args, **kw):
         if not self.id:
             'link the loan to the current employee salary'
-            salary = self.employee.salaries.current()[0]
+            salary = self.employee.derived.salaries.current()[0]
             self.date = datetime(salary.year, salary.month, 1)
         models.Model.save(self, *args, **kw)
     class Meta:
@@ -867,22 +874,26 @@ class EmployeeSalaryBase(models.Model):
     @property
     def bruto(self):
         terms = self.get_employee().employment_terms
-        if not terms: return None
-        exp = self.expenses
+        if not terms or terms.salary_net == None: 
+            return None
         if terms.salary_net == False:
             return self.derived.total_amount
+        exp = self.expenses
         if not exp: return None
         return self.derived.total_amount + exp.income_tax + exp.national_insurance + exp.health + exp.pension_insurance \
             + exp.vacation + exp.convalescence_pay
     @property
     def neto(self):
         terms = self.get_employee().employment_terms
-        if not terms: return None
-        exp = self.expenses
+        if not terms: 
+            return None
+        if terms.salary_net == True or terms.salary_net == None:
+            return self.derived.total_amount
         if terms.salary_net == False:
-            if not exp: return None
+            exp = self.expenses
+            if not exp: 
+                return None
             return self.derived.total_amount - exp.income_tax - exp.national_insurance - exp.health - exp.pension_insurance
-        return self.derived.total_amount    
     @property
     def check_amount(self):
         neto = self.neto

@@ -671,9 +671,9 @@ class EmployeeSalariesBookKeepingWriter:
         self.current_page += 1
     def nhsalesFlows(self):
         flows = []
-        headers = [log2vis(n) for n in [u'מס"ד',u'הרוכשים\nשם',u'התשלום\nסכום',u"שרותי תיווך\nמס' הזמנת",u'חשבונית\nתאריך',
-                                        u"זמנית\nמס' קבלה",u'תשלום\nסוג',u"מס' צ'ק",u'בנק',u'מטפל\nסוכן',u'תשלום\nתאריך',
-                                        u"סניף\nמס'",u'הערות']]
+        headers = [log2vis(n) for n in [u'מס"ד',u'הרוכשים\nשם',u'התשלום\nסכום',u"שרותי תיווך\nמס' הזמנת",u'חשבונית',
+                                        u"זמנית\nמס' קבלה",u'תשלום\nסוג',u"מס' צ'ק",u'בנק',u'מטפל\nסוכן',
+                                        u'תשלום\nתאריך',u"סניף\nמס'",u'הערות']]
         headers.reverse()
         rows = []
         i = 0
@@ -682,7 +682,8 @@ class EmployeeSalariesBookKeepingWriter:
                 clients = log2vis(side.name1 + ' ' + side.name2)
                 invoice = side.invoices.count() > 0 and side.invoices.all()[0]
                 payments = side.payments.all()
-                row = [s.num, clients, commaise(side.net_income), side.voucher_num, invoice and invoice.date.strftime('%d/%m/%y'),
+                row = [s.num, clients, commaise(side.net_income), side.voucher_num, 
+                       invoice and invoice.date.strftime('%d/%m/%y') + '<br/>' + invoice.num,
                        side.temp_receipt_num, 
                        '<br/>'.join(map(lambda p: log2vis(unicode(p.payment_type)), payments)),
                        '<br/>'.join(map(lambda p: unicode(p.num), payments)),
@@ -723,10 +724,11 @@ class EmployeeSalariesBookKeepingWriter:
         for es in self.salaries:
             employee = es.get_employee()
             terms = employee.employment_terms
-            hire_type = terms and unicode(terms.hire_type)
+            hire_type = terms and unicode(terms.hire_type) or ''
             if terms and not terms.salary_net and terms.hire_type.id == models.HireType.Salaried:
                 hire_type += u' - ברוטו'
-            row = [es.id, log2vis(unicode(employee)), log2vis(hire_type), commaise(es.check_amount), commaise(es.refund),
+                hire_type = log2vis(hire_type)
+            row = [es.id, log2vis(unicode(employee)), hire_type, commaise(es.check_amount), commaise(es.refund),
                    commaise(es.bruto),None,None,commaise(es.loan_pay), commaise(es.neto),None]
             row.reverse()
             rows.append(row)
