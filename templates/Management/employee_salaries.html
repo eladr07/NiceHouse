@@ -138,7 +138,7 @@
 			<td><a class="fancybox" href="{{s.employee.get_absolute_url}}/sales/{{month.year}}/{{month.month}}">{{ s.sales_count }}</a></td>
 			<td style="color:#08A600;">
 				{{s.base|commaise}} + 
-				<a href="{{s.id}}/details" class="fancybox">{{s.commissions|default_if_none:""|commaise}}</a>
+				<a href="{{s.id}}/details" class="fancybox">{{s.commissions|default_if_none:"0"|commaise}}</a>
 			</td>
 			<td style="color:#08A600;">{{s.safety_net|default_if_none:""}}</td>
 			<td style="color:#08A600;">{% if s.var_pay %}{{s.var_pay|commaise}} - {{s.var_pay_type}} {% endif %}</td>
