@@ -683,8 +683,9 @@ class EmployeeSalariesBookKeepingWriter:
                     invoice_str = '%s<br/>%s' % (invoice.date.strftime('%d/%m/%y'), invoice.num and str(invoice.num) or '')
                 else:
                     invoice_str = ''
+                invoice_para = Paragraph(invoice_str, styleRow)
                 payments = side.payments.all()
-                row = [s.num, clients, commaise(side.net_income), side.voucher_num, invoice_str, side.temp_receipt_num, 
+                row = [s.num, clients, commaise(side.net_income), side.voucher_num, invoice_para, side.temp_receipt_num, 
                        '<br/>'.join(map(lambda p: log2vis(unicode(p.payment_type)), payments)),
                        '<br/>'.join(map(lambda p: unicode(p.num), payments)),
                        '<br/>'.join(map(lambda p: log2vis(p.bank), payments)),
