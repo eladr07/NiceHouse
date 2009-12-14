@@ -729,8 +729,7 @@ class EmployeeSalariesBookKeepingWriter:
             hire_type = terms and unicode(terms.hire_type) or ''
             if terms and not terms.salary_net and terms.hire_type.id == models.HireType.Salaried:
                 hire_type += u' - ברוטו'
-                hire_type = log2vis(hire_type)
-            row = [es.id, log2vis(unicode(employee)), hire_type, commaise(es.check_amount), commaise(es.refund),
+            row = [es.id, log2vis(unicode(employee)), log2vis(hire_type), commaise(es.check_amount), commaise(es.refund),
                    commaise(es.bruto),None,None,commaise(es.loan_pay), commaise(es.neto),None]
             row.reverse()
             rows.append(row)

@@ -509,9 +509,9 @@ class EmployeeBase(Person):
     
     @property
     def derived(self):
-        if isinstance(self, Employee):
+        if hasattr(self, 'employee'):
             return self.employee
-        elif isinstance(self, NHEmployee):
+        elif hasattr(self, 'nhemployee'):
             return self.nhemployee
         return self    
     class Meta:

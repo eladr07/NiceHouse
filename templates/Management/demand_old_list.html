@@ -20,6 +20,7 @@
 			if (selectedID > 0)
 				$("#demandEdit").attr("href", "/demands/" + selectedID);
 				$("#demandCalc").attr("href", "/demands/" + selectedID + "/calc");
+				$("#demandRemarks").attr("href", "/demands/" + selectedID + "/remarks");
 			});
 		$(".fancybox").fancybox();
 		$(".bigfancybox").fancybox({'frameWidth':800});	
@@ -113,6 +114,10 @@
 <div class="someIcon" style="width:100px;">
 	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
 	<a id="demandEdit">שינוי דרישה</a>
+</div>
+<div class="someIcon" style="width:100px;">
+	<img src="/site_media/images/Note_48.png" width="20" height="20"  alt="שינוי" /> 
+	<a id="demandRemarks" class="fancybox">הערות לדרישה</a>
 </div>
 <div class="someIcon"style="width:120px;">
 	<img src="/site_media/images/thumbs_up_48.png" width="20" height="20"  alt="שליחה" /> 
