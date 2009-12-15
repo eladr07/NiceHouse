@@ -758,7 +758,7 @@ def nh_season_income(request):
         e.season_branch_income_buyers_notax, e.season_branch_income_sellers_notax = 0, 0
     for nhm in nhmonth_set:
         query = NHBranchEmployee.objects.filter(start_date__lt = to_date).exclude(end_date__isnull=False, end_date__lt = from_date)
-        employees = map(lambda x: x.nhemployee, query)
+        nhm.employees = map(lambda x: x.nhemployee, query)
         tax = Tax.objects.filter(date__lte=date(nhm.year, nhm.month,1)).latest().value / 100 + 1
         for e in nhm.employees:
             e.month_total = 0
