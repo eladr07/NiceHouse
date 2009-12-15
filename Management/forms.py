@@ -646,7 +646,7 @@ class CheckForm(forms.ModelForm):
     class Meta:
         model = Check
         fields = ['division_type','new_division_type','expense_type','new_expense_type',
-                  'supplier_type', 'new_supplier_type','invoice_num','type','issue_date','pay_date','num','amount''remarks']
+                  'supplier_type', 'new_supplier_type','invoice_num','type','issue_date','pay_date','num','amount','remarks']
 
 class EmployeeCheckForm(forms.ModelForm):
     invoice_num = forms.IntegerField(label = ugettext('invoice_num'), help_text=u'החשבונית חייבת להיות מוזנת במערכת')
