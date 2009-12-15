@@ -38,7 +38,7 @@
 			{% for nhbe in form.instance.active_nhbranchemployees %}
 			<tr>
 				<td><a href="{{nhbe.nhemployee.get_absolute_url}}">{{nhbe.nhemployee}}</a></td>
-				<td><a href="{{nhbe.get_absolute_url}}/end">סיים העסקה בסניף</a></td>
+				<td><a href="{{nhbe.get_absolute_url}}">סיים העסקה בסניף</a></td>
 			</tr>
 		{% endfor %}
 		<a href="addnhemployee" class="fancybox">הוסף עובד לסניף</a>

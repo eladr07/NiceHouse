@@ -2266,12 +2266,6 @@ def nhbranch_add_nhemployee(request, nhbranch_id):
     return render_to_response('Management/object_edit.html', 
                               { 'form':form },
                               context_instance=RequestContext(request))
-
-@permission_required('Management.change_nhbranchemployee')
-def nhbranchemployee_end(request, id):
-    nhbranchemployee = NHBranchEmployee.objects.get(pk=id)
-    nhbranchemployee.end()
-    return HttpResponseRedirect(nhbranchemployee.nhbranch.get_absolute_url())
     
 @login_required
 def json_buildings(request, project_id):

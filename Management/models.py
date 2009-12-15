@@ -692,9 +692,7 @@ class NHBranchEmployee(models.Model):
     is_manager = models.BooleanField(ugettext('is_manager'))
     start_date = models.DateField(ugettext('start_date'))
     end_date = models.DateField(ugettext('end_date'), null = True, blank = True)
-    def end(self):
-        self.end_date = date.today()
-        self.save()
+
     def get_absolute_url(self):
         return '/nhbranchemployee/%s' % self.id
     class Meta:
