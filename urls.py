@@ -421,7 +421,7 @@ urlpatterns += patterns('Management.views',
      {'model' : Management.models.SaleCancel, 'template_name' : 'Management/sale_mod_edit.html', 'post_save_redirect' : '%(id)s'}),
       
     (r'^nhbranch/(?P<branch_id>\d+)/nhsale/add$', 'nhsale_add'),
-    (r'^nhbranch/(?P<branch_id>\d+)/addnhemployee$', 'nhbranch_add_nhemployee'),
+    (r'^nhbranch/(?P<id>\d+)/addnhemployee$', 'nhbranch_add_nhemployee'),
     (r'^nhbranchemployee/(?P<object_id>\d+)$', 'limited_update_object',
      {'form_class' : Management.forms.NHBranchEmployeeForm, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '../%(id)s'}),
     (r'^nhsale/(?P<object_id>\d+)/$', 'nhsale_edit'),
