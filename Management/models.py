@@ -605,7 +605,9 @@ class NHCBase(models.Model):
                                                    nhsaleside=nhss, income = income,
                                                    precentage = self.precentage))
         if self.filter.id == NHSaleFilter.NotHis or self.filter.id == NHSaleFilter.All:
-            for nhe in nhmonth.nhbranch.nhemployees.exclude(id = self.nhemployee.id):
+            for nhe in nhmonth.nhbranch.nhemployees:
+                if nhe.id == self.nhemployee.id:
+                    continue
                 sales = set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=nhe))
                 sales.update(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=nhe)))
                 sales.update(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=nhe)))
@@ -657,7 +659,9 @@ class NHCBranchIncome(models.Model):
                                                    amount = relative_income * self.then_precentage/100,
                                                    precentage = self.then_precentage, income = pay))
         if self.filter.id == NHSaleFilter.NotHis or self.filter.id == NHSaleFilter.All:
-            for nhe in nhmonth.nhbranch.nhemployees.exclude(id = self.nhemployee.id):
+            for nhe in nhmonth.nhbranch.nhemployees:
+                if nhe.id == self.nhemployee.id:
+                    continue
                 sales = set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=nhe))
                 sales.update(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=nhe)))
                 sales.update(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=nhe)))
@@ -682,16 +686,37 @@ class NHCBranchIncome(models.Model):
     class Meta:
         db_table = 'NHCBranchIncome'
 
+class NHBranchEmployee(models.Model):
+    nhbranch = models.ForeignKey('NHBranch', verbose_name = ugettext('nhbranch'))
+    nhemployee = models.ForeignKey('NHEmployee', verbose_name = ugettext('nhemployee'))
+    is_manager = models.BooleanField(ugettext('is_manager'))
+    start_date = models.DateField(ugettext('start_date'))
+    end_date = models.DateField(ugettext('end_date'), null = True, blank = True)
+    def end(self):
+        self.end_date = date.today()
+        self.save()
+    def get_absolute_url(self):
+        return '/nhbranchemployee/%s' % self.id
+    class Meta:
+        db_table = 'NHBranchEmployee'
+        get_latest_by = 'start_date'
+        ordering = ['start_date']
+
 class NHBranch(models.Model):
     name = models.CharField(ugettext('name'), max_length=30, unique=True)
-    manager = models.ForeignKey('NHEmployee', null=True, blank=True,
-                                related_name='branch_manager',
-                                verbose_name=ugettext('nhbranch_manager'))
     address = models.CharField(ugettext('address'), max_length=40, null=True, blank=True)
     phone = models.CharField(ugettext('phone'), max_length=15, null=True, blank=True)
     mail = models.EmailField(ugettext('mail'), null=True, blank=True)
     fax = models.CharField(ugettext('fax'), max_length=15, null=True, blank=True);
     url = models.URLField(ugettext('url'), null=True, blank=True)
+    @property
+    def active_nhbranchemployees(self):
+        return NHBranchEmployee.objects.filter(nhbranch= self, end_date = None)
+    @property
+    def nhemployees(self):
+        query = NHBranchEmployee.objects.filter(nhbranch = self, end_date = None)
+        for nhbe in query:
+            yield nhbe.nhemployee
     @property
     def prefix(self):
         return self.name.replace(u'נייס האוס ','') \
@@ -703,7 +728,6 @@ class NHBranch(models.Model):
         permissions = (('nhbranch_1', 'NHBranch Shoham'),('nhbranch_2', 'NHBranch Modiin'),('nhbranch_3', 'NHBranch Nes Ziona'))
         
 class NHEmployee(EmployeeBase):
-    nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'), related_name='nhemployees')
     nhcbase = models.OneToOneField('NHCBase', editable=False, null=True, related_name='nhemployee')
     nhcbranchincome = models.OneToOneField('NHCBranchIncome', editable=False, null=True, related_name='nhemployee')
     objects = EmployeeManager()

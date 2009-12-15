@@ -586,6 +586,10 @@ class AccountForm(forms.ModelForm):
     class Meta:
         model = Account
 
+class NHBranchEmployeeForm(forms.ModelForm):
+    class Meta:
+        model = NHBranchEmployee
+
 class CheckFilterForm(forms.Form):
     from_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
                              label = ugettext('from_year'), initial = datetime.now().year)

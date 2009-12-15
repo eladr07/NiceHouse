@@ -34,9 +34,14 @@
 <div id="leftSide">
 	<fieldset class="cardFieldset">
 		<legend>יועצי נדל"ן</legend>
-		{% for e in form.instance.nhemployees.active %}
-			<a href="{{e.get_absolute_url}}">{{e}}</a><br>
+		<table class="formTable">
+			{% for nhbe in form.instance.active_nhbranchemployees %}
+			<tr>
+				<td><a href="{{nhbe.nhemployee.get_absolute_url}}">{{nhbe.nhemployee}}</a></td>
+				<td><a href="{{nhbe.get_absolute_url}}/end">סיים העסקה בסניף</a></td>
+			</tr>
 		{% endfor %}
+		<a href="addnhemployee" class="fancybox">הוסף עובד לסניף</a>
 	</fieldset>
 </div>
 <div class="clearBoth"></div>

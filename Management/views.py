@@ -749,12 +749,16 @@ def nh_season_income(request):
     total_avg_signed_commission, total_avg_actual_commission = 0,0
     from_date = date(from_year, from_month, 1)
     to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
-    employees = nhbranch.nhemployees.filter(work_start__lt = to_date).exclude(work_end__isnull=False, work_end__lt = from_date)
+    
+    query = NHBranchEmployee.objects.filter(start_date__lt = to_date).exclude(end_date__isnull=False, end_date__lt = from_date)
+    employees = map(lambda x: x.nhemployee, query)
+    
     for e in employees:
         e.season_total, e.season_total_notax, e.season_branch_income_notax = 0, 0, 0
         e.season_branch_income_buyers_notax, e.season_branch_income_sellers_notax = 0, 0
     for nhm in nhmonth_set:
-        nhm.employees = nhbranch.nhemployees.filter(work_start__lt = to_date).exclude(work_end__isnull=False, work_end__lt = from_date)
+        query = NHBranchEmployee.objects.filter(start_date__lt = to_date).exclude(end_date__isnull=False, end_date__lt = from_date)
+        employees = map(lambda x: x.nhemployee, query)
         tax = Tax.objects.filter(date__lte=date(nhm.year, nhm.month,1)).latest().value / 100 + 1
         for e in nhm.employees:
             e.month_total = 0
@@ -813,7 +817,8 @@ def nhmonth_sales(request, nhbranch_id):
         q = NHMonth.objects.filter(nhbranch__id = nhbranch_id, year=year, month=month)
     nhb = NHBranch.objects.get(pk=nhbranch_id)
     nhm = q.count() > 0 and q[0] or NHMonth(nhbranch = nhb, year = year, month = month)
-    employees = nhb.nhemployees.filter(work_start__lt = d).exclude(work_end__isnull=False, work_end__lt = d)
+    query = NHBranchEmployee.objects.filter(nhbranch = nhb).exclude(end_date__isnull=False, end_date__lt = d)
+    employees = map(lambda x: x.nhemployee, query)
     for e in employees:
         e.month_total = 0
     for sale in nhm.nhsales.all():
@@ -1400,19 +1405,22 @@ def nhsale_add(request, branch_id):
                     return HttpResponseRedirect('/nhbranch/%s/sales' % nhsale.nhbranch.id)
     else:
         branch = NHBranch.objects.get(pk=branch_id)
+        employee_base_query = EmployeeBase.objects.active()
+        nhemployees_query = NHEmployee.filter(nhbranchemployee_set__nhbranch = branch, end_date = None)
+        
         saleForm = NHSaleForm(prefix='sale')
         monthForm = NHMonthForm(prefix='month')
         monthForm.fields['nhbranch'].initial = branch_id
         side1Form = NHSaleSideForm(prefix='side1')
-        side1Form.fields['employee1'].queryset = branch.nhemployees.active()
-        side1Form.fields['employee2'].queryset = branch.nhemployees.active()
-        side1Form.fields['signing_advisor'].queryset = branch.nhemployees.active()
-        side1Form.fields['director'].queryset = EmployeeBase.objects.active()
+        side1Form.fields['employee1'].queryset = nhemployees_query
+        side1Form.fields['employee2'].queryset = nhemployees_query
+        side1Form.fields['signing_advisor'].queryset = nhemployees_query
+        side1Form.fields['director'].queryset = employee_base_query
         side2Form = NHSaleSideForm(prefix='side2')
-        side2Form.fields['employee1'].queryset = branch.nhemployees.active()
-        side2Form.fields['employee2'].queryset = branch.nhemployees.active()
-        side2Form.fields['signing_advisor'].queryset = branch.nhemployees.active()
-        side2Form.fields['director'].queryset = EmployeeBase.objects.active()
+        side2Form.fields['employee1'].queryset = nhemployees_query
+        side2Form.fields['employee2'].queryset = nhemployees_query
+        side2Form.fields['signing_advisor'].queryset = nhemployees_query
+        side2Form.fields['director'].queryset = employee_base_query
         invoice1Form = InvoiceForm(prefix='invoice1')
         payment1Forms = PaymentFormset(prefix='payments1', queryset=Payment.objects.none())
         invoice2Form = InvoiceForm(prefix='invoice2')
@@ -2245,6 +2253,25 @@ def employee_bdsp(request, employee_id, project_id):
     return render_to_response('Management/object_edit.html', 
                               { 'form':form },
                               context_instance=RequestContext(request))
+
+@permission_required('Management.change_nhbranchemployee')
+def nhbranch_add_nhemployee(request, nhbranch_id):
+    if request.method == 'POST':
+        form = NHBranchEmployeeForm(request.POST)
+        if form.is_valid():
+            form.save()
+    else:
+        form = NHBranchEmployeeForm(initial = {'nhbranch':nhbranch_id})
+    
+    return render_to_response('Management/object_edit.html', 
+                              { 'form':form },
+                              context_instance=RequestContext(request))
+
+@permission_required('Management.change_nhbranchemployee')
+def nhbranchemployee_end(request, id):
+    nhbranchemployee = NHBranchEmployee.objects.get(pk=id)
+    nhbranchemployee.end()
+    return HttpResponseRedirect(nhbranchemployee.nhbranch.get_absolute_url())
     
 @login_required
 def json_buildings(request, project_id):
