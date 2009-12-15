@@ -675,6 +675,7 @@ class EmployeeSalariesBookKeepingWriter:
                                         u'תשלום\nתאריך',u"סניף\nמס'",u'הערות']]
         headers.reverse()
         rows = []
+        remarks_str = ''
         i = 0
         for s in self.nhsales:
             for side in s.nhsaleside_set.all():
@@ -693,9 +694,11 @@ class EmployeeSalariesBookKeepingWriter:
                        log2vis(unicode(side.signing_advisor)),
                        '<br/>'.join(map(lambda p: p.payment_date.strftime('%d/%m/%y'), payments)),
                        '<br/>'.join(map(lambda p: unicode(p.branch_num), payments)),
-                       side.remarks]
+                       side.remarks and '*']
                 row.reverse()
                 rows.append(row)
+                if side.remarks:
+                    remarks_str += log2vis(side.clients + ' - ' + side.remarks) + '<br/>'
                 i += 1
                 if i % 27 == 0 or i == len(self.salaries):
                     data = [headers]
@@ -706,6 +709,8 @@ class EmployeeSalariesBookKeepingWriter:
                     if i < len(self.nhsales):
                         flows.extend([PageBreak(), Spacer(0, 50)])
                     rows = []
+        flows.append(Spacer(0,10))
+        flows.append(Paragraph(remarks_str, styleNormal13))
         flows.append(Spacer(0,10))
         flows.append(Paragraph(log2vis(u'לתשומת לבך'), styleSubTitleBold))
         flows.append(Spacer(0,10))
