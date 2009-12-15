@@ -2178,6 +2178,7 @@ class NHMonth(models.Model):
         return amount
     def close(self):
         self.is_closed = True
+        self.save()
     def tax(self):
         return Tax.objects.filter(date__lte = date(self.year, self.month, 1)).latest().value
     class Meta:

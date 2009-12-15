@@ -832,11 +832,19 @@ def nhmonth_sales(request, nhbranch_id):
 
 @permission_required('Management.change_nhmonth')
 def nhmonth_close(request, id):
-    nhm = NHMonth.objects.get(pk=id)
-    if not request.user.has_perm('Management.nhbranch_' + str(nhm.nhbranch.id)):
-        return HttpResponse('No Permission. Contact Elad.') 
+    today = date.today()
+    nhbranch_id = int(request.GET.get('nhbranch_id'))
+    year = int(request.GET.get('year', today.year))
+    month = int(request.GET.get('month', today.month))
+    if not request.user.has_perm('Management.nhbranch_' + str(nhbranch_id)):
+        return HttpResponse('No Permission. Contact Elad.')
+    query = NHMonth.objects.filter(nhbranch__id = nhbranch_id, year = year, month = month)
+    if query.count() == 1:
+        nhm = query[0]
+    elif query.count() == 0:
+        nhb = NHBranch.objects.get(pk=nhbranch_id)
+        nhm = NHMonth(nhbranch=nhb, year=year, month=month)
     nhm.close()
-    nhm.save()
     form = MonthFilterForm(initial={'year':nhm.year,'month':nhm.month})
     return render_to_response('Management/nhmonth_sales.html', 
                               { 'nhmonth':nhm, 'filterForm':form },
