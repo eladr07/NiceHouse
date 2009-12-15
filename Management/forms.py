@@ -622,10 +622,22 @@ class EmployeeCheckFilterForm(forms.Form):
                                           required=False)
 
 class CheckForm(forms.ModelForm):
+    invoice_num = forms.IntegerField(label = ugettext('invoice_num'), help_text=u'החשבונית חייבת להיות מוזנת במערכת')
     new_division_type = forms.CharField(label = ugettext('new_division_type'), max_length = 20, required=False)
     new_expense_type = forms.CharField(label = ugettext('new_expense_type'), max_length = 20, required=False)
     new_supplier_type = forms.CharField(label = ugettext('new_supplier_type'), max_length = 20, required=False)
 
+    def clean_invoice_num(self):
+        invoice_num = self.cleaned_data['invoice_num']
+        query = Invoice.objects.filter(num = invoice_num)
+        if query.count()==0:
+            raise forms.ValidationError(u"אין חשבונית עם מס' זה")
+        return invoice_num
+    def save(self, *args, **kw):
+        invoice_num = self.cleaned_data['invoice_num']
+        invoice = Invoice.objects.get(num = invoice_num)
+        self.instance.invoice = invoice
+        return forms.ModelForm.save(self,*args,**kw)
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
@@ -637,9 +649,21 @@ class CheckForm(forms.ModelForm):
                   'supplier_type', 'new_supplier_type','invoice_num','type','amount','num','issue_date','pay_date','remarks']
 
 class EmployeeCheckForm(forms.ModelForm):
+    invoice_num = forms.IntegerField(label = ugettext('invoice_num'), help_text=u'החשבונית חייבת להיות מוזנת במערכת')
     new_division_type = forms.CharField(label = ugettext('new_division_type'), max_length = 20, required=False)
     new_expense_type = forms.CharField(label = ugettext('new_expense_type'), max_length = 20, required=False)
     
+    def clean_invoice_num(self):
+        invoice_num = self.cleaned_data['invoice_num']
+        query = Invoice.objects.filter(num = invoice_num)
+        if query.count()==0:
+            raise forms.ValidationError(u"אין חשבונית עם מס' זה")
+        return invoice_num
+    def save(self, *args, **kw):
+        invoice_num = self.cleaned_data['invoice_num']
+        invoice = Invoice.objects.get(num = invoice_num)
+        self.instance.invoice = invoice
+        return forms.ModelForm.save(self,*args,**kw)
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
@@ -648,7 +672,7 @@ class EmployeeCheckForm(forms.ModelForm):
     class Meta:
         model = EmployeeCheck
         fields = ['division_type','new_division_type','employee','year','month','expense_type','new_expense_type','purpose_type',
-                  'type','amount','num','issue_date','pay_date','remarks']
+                  'invoice_num','type','amount','num','issue_date','pay_date','remarks']
 
 class NHMonthForm(forms.ModelForm):
     def __init__(self, *args, **kw):

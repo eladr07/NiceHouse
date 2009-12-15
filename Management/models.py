@@ -2442,7 +2442,11 @@ class CheckBase(models.Model):
     expense_type = models.ForeignKey('ExpenseType', verbose_name=ugettext('expense_type'), blank=True)
     type = models.ForeignKey('CheckBaseType', verbose_name=ugettext('invoice'))
     amount = models.IntegerField(ugettext('amount'))
+    invoice = models.ForeignKey('Invoice', editable=False, null=True)
     remarks = models.TextField(ugettext('remarks'), blank=True)
+    def diff_amount_invoice(self):
+        if self.invoice == None: return None
+        return self.amount - self.invoice.amount
     class Meta:
         db_table = 'CheckBase'
         ordering = ['division_type','expense_type']
@@ -2453,6 +2457,19 @@ class EmployeeCheck(CheckBase):
     month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
     year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
                                                                                             datetime.now().year + 10)))
+    def salary(self):
+        if isinstance(self.employee.derived, Employee):
+            query = EmployeeSalary.objects.filter(year = year, month = month, employee = self.employee.derived)
+        elif isinstance(self.employee.derived, NHEmployee):
+            query = NHEmployeeSalary.objects.filter(year = year, month = month, nhemployee = self.employee.derived)
+        if query.count() == 0: return None
+        if query.count() > 1: raise InvalidOperation % 'more than 1 salary for employee for the month'
+        return query[0]
+    def diff_amount_salary(self):
+        salary = self.salary()
+        if salary:
+            return self.amount - salary
+        return None
     def get_absolute_url(self):
         return '/employeechecks/%s' % self.id 
     class Meta:
@@ -2461,7 +2478,7 @@ class EmployeeCheck(CheckBase):
 class Check(CheckBase):
     supplier_type = models.ForeignKey('SupplierType', verbose_name=ugettext('supplier_type'))
     account = models.ForeignKey('Account', null=True, editable=False)
-    invoice_num = models.IntegerField(ugettext('invoice_num'), null=True, blank=True)
+
     def get_absolute_url(self):
         return '/checks/%s' % self.id 
     class Meta:

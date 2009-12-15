@@ -64,14 +64,18 @@
 <div class="clearBoth"></div>
 <table class="dataTable" border="1">
 	<th>מס'</th>
-	<th>שם עובד</th>
+	<th>שם<br>עובד</th>
 	<th>ת. הוצאה</th>
 	<th>ת. תשלום</th>
-	<th>חודש דרישה</th>
-	<th>סוג הוצאה</th>
+	<th>חודש<br>דרישה</th>
+	<th>סוג<br>הוצאה</th>
 	<th>חשבונית</th>
-	<th>סכום לתשלום</th>
-	<th>פרטי חשבון</th>
+	<th>נכוי מס<br>במקור</th>
+	<th>סכום<br>לתשלום</th>
+	<th>הפרש בין<br>חשבונית לצ'ק</th>
+	<th>סכום צ'ק<br>לפי הדרישה</th>
+	<th>הפרש בין<br>צ'ק לדרישה</th>
+	<th>פרטי<br>חשבון</th>
 	<th>הערות</th>
 	{% regroup checks by division_type.id as division_list %}
 	{% for division in division_list %}
@@ -86,9 +90,18 @@
 			<td>{{c.pay_date}}</td>
 			<td>{{c.month}}/{{c.year}}</td>
 			<td>{{c.expense_type}}</td>
-			<td>{{c.type}}</td>
+			<td>
+				{{c.type}}
+				{% if c.invoice %}
+					<br>
+					{{c.invoice.num}} - {{c.invoice.amount}}
+				{% endif %}
+			</td>
+			<td></td>
 			<td>{{c.amount}}</td>
 			<td><a href="{{c.employee.account.get_absolute_url}}" class="fancybox">{{c.employee.account.num}}</a></td>
+			<td>{{c.salary_amount}}</td>
+			<td>{{c.diff_amount_salary}}</td>
 			<td>{{c.remarks}}</td>
 		</tr>
 		{% endfor %}

@@ -69,11 +69,13 @@
 	<th>הספק</th>
 	<th>ת. הוצאה</th>
 	<th>ת. תשלום</th>
-	<th>סוג הוצאה</th>
+	<th>סוג<br>הוצאה</th>
 	<th>חשבונית</th>
-	<th>סכום לתשלום</th>
-	<th>פרטי חשבון</th>
-	<th>מס' חשבונית שהתקבלה</th>
+	<th>סכום<br>לתשלום</th>
+	<th>פרטי<br>חשבון</th>
+	<th>חשבונית</th>
+	<th>נכוי מס<br>במקור</th>
+	<th>הפרש בין<br>חשבונית לצ'ק</th>
 	<th>הערות</th>
 	{% regroup checks by division_type as division_list %}
 	{% for division in division_list %}
@@ -89,8 +91,14 @@
 				<td>{{c.expense_type}}</td>
 				<td>{{c.type}}</td>
 				<td>{{c.amount|commaise}}</td>
-				<td><a href="{{c.account.get_absolute_url}}" class="fancybox">{{c.account.num}}</a></td>
-				<td>{{c.invoice_num}}</td>
+				<td><a href="{{c.account.get_absolute_url}}" class="fancybox">{{c.account.num}}</a></td>			
+				<td>
+					{% if c.invoice %}
+						{{c.invoice.num}} - {{c.invoice.amount|commaise}}
+					{% endif %}
+				</td>
+				<td></td>
+				<td>{{diff_amount_invoice|commaise}}</td>
 				<td>{{c.remarks}}</td>
 			</tr>
 		{% endfor %}
