@@ -750,14 +750,16 @@ def nh_season_income(request):
     from_date = date(from_year, from_month, 1)
     to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
     
-    query = NHBranchEmployee.objects.filter(start_date__lt = to_date).exclude(end_date__isnull=False, end_date__lt = from_date)
+    query = NHBranchEmployee.objects.filter(start_date__lt = to_date, nhbranch = nhbranch) \
+                                    .exclude(end_date__isnull=False, end_date__lt = from_date)
     employees = map(lambda x: x.nhemployee, query)
     
     for e in employees:
         e.season_total, e.season_total_notax, e.season_branch_income_notax = 0, 0, 0
         e.season_branch_income_buyers_notax, e.season_branch_income_sellers_notax = 0, 0
     for nhm in nhmonth_set:
-        query = NHBranchEmployee.objects.filter(start_date__lt = to_date).exclude(end_date__isnull=False, end_date__lt = from_date)
+        query = NHBranchEmployee.objects.filter(start_date__lt = to_date, nhbranch = nhbranch) \
+                                        .exclude(end_date__isnull=False, end_date__lt = from_date)
         nhm.employees = map(lambda x: x.nhemployee, query)
         tax = Tax.objects.filter(date__lte=date(nhm.year, nhm.month,1)).latest().value / 100 + 1
         for e in nhm.employees:
