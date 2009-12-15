@@ -35,7 +35,7 @@
 <div id="leftSide">
 	<fieldset class="cardFieldset">
 		<legend>יועצי נדל"ן</legend>
-		<table class="formTable">
+		<table class="formTable" style="width:90%;">
 			{% for nhbe in form.instance.active_nhbranchemployees %}
 			<tr>
 				<td><a href="{{nhbe.nhemployee.get_absolute_url}}">{{nhbe.nhemployee}}</a></td>
