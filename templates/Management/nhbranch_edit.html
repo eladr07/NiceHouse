@@ -30,14 +30,17 @@
 			</td>
 		</tr>
 		{% endfor %}
+		<tr>
+			<td></td>
+			<td><input name="finish" type="submit" value="אישור" class="button"/></td>
+		</tr>
 		</table>
-		<input name="finish" type="submit" value="אישור" class="button"/>
 	</form>
 </div>
 <div id="leftSide">
 	<fieldset class="cardFieldset">
 		<legend>יועצי נדל"ן</legend>
-		<table class="formTable" style="width:90%;">
+		<table style="width:90%;">
 			{% for nhbe in form.instance.active_nhbranchemployees %}
 			<tr>
 				<td><a href="{{nhbe.nhemployee.get_absolute_url}}">{{nhbe.nhemployee}}</a></td>

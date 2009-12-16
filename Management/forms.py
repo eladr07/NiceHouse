@@ -587,6 +587,10 @@ class AccountForm(forms.ModelForm):
         model = Account
 
 class NHBranchEmployeeForm(forms.ModelForm):
+    def __init__(self, *args, **kw):
+        super(NHBranchEmployeeForm, self).__init__(*args, **kw)
+        self.fields['start_date'].widget.attrs = {'class':'vDateField'}
+        self.fields['end_date'].widget.attrs = {'class':'vDateField'}
     class Meta:
         model = NHBranchEmployee
 

@@ -732,7 +732,7 @@ class NHEmployee(EmployeeBase):
     
     def nhbranch(self):
         query = NHBranchEmployee.objects.filter(nhemployee = self, end_date=None)
-        if query != 1: raise IntegrityError % 'nhemployee %s is not linked to exactly 1 nh branch' % unicode(self)
+        if query != 1: raise IntegrityError('nhemployee %s is not linked to exactly 1 nh branch' % unicode(self))
         return query[0].nhbranch
     def get_open_reminders(self):
         return [r for r in self.reminders.all() if r.statuses.latest().type.id 
