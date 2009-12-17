@@ -711,6 +711,9 @@ class NHBranch(models.Model):
     def active_nhbranchemployees(self):
         return NHBranchEmployee.objects.filter(nhbranch= self, end_date = None)
     @property
+    def nhemployees_archive(self):
+        return NHBranchEmployee.objects.filter(nhbranch= self).exclude(end_date = None)
+    @property
     def nhemployees(self):
         query = NHBranchEmployee.objects.filter(nhbranch = self, end_date = None)
         for nhbe in query:
@@ -764,7 +767,6 @@ class NHEmployee(EmployeeBase):
     class Meta:
         db_table = 'NHEmployee'
         ordering = ['-work_start']
-        order_with_respect_to = 'nhbranchemployee__nhbranch'
 
 class NHSaleCommissionDetail(models.Model):
     nhemployeesalary = models.ForeignKey('NHEmployeeSalary')

@@ -119,10 +119,9 @@
 		<th>תחילת העסקה</th>
 		<th>סוג העסקה</th>
 		<th>הערות</th>
-		{% regroup nhemployee_list by nhbranch as nhbranch_list %}
 		{% for nhbranch in nhbranch_list %}
-			<tr style="text-align:center; color:#4669D6; font-size:14px"><td colspan="10"><b>{{nhbranch.grouper}}</b></td></tr>
-			{% for e in nhbranch.list %}
+			<tr style="text-align:center; color:#4669D6; font-size:14px"><td colspan="10"><b>{{nhbranch}}</b></td></tr>
+			{% for e in nhbranch.nhemployees_archive %}
 				<tr class="{% cycle 'row1' 'row2' %}" objid={{e.id}}>
 					<td><a href="/nhemployees/{{e.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
 					<td>{{ e.id }}</td>
