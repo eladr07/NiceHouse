@@ -764,6 +764,7 @@ class NHEmployee(EmployeeBase):
     class Meta:
         db_table = 'NHEmployee'
         ordering = ['-work_start']
+        order_with_respect_to = 'nhbranchemployee__nhbranch'
 
 class NHSaleCommissionDetail(models.Model):
     nhemployeesalary = models.ForeignKey('NHEmployeeSalary')
