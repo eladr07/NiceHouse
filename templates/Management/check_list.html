@@ -102,7 +102,7 @@
 				<td>{{c.amount|commaise}}</td>
 				{% if c.invoice %}
 					<td>{{c.invoice.amount|commaise}}</td>
-					<td></td>
+					<td>{{c.tax_deduction_source|commaise}}</td>
 					<td>{{c.num}}</td>
 				{% else %}
 					<td colspan="3">{{c.type}}</td>

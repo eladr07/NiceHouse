@@ -690,6 +690,9 @@ class NHMonthForm(forms.ModelForm):
         model = NHMonth
         
 class EmploymentTermsForm(forms.ModelForm):
+    def __init__(self, *args, **kw):
+        forms.ModelForm.__init__(self, *args, **kw)
+        self.fields['tax_deduction_date'].widget.attrs = {'class':'vDateField'}
     class Meta:
         model = EmploymentTerms
 

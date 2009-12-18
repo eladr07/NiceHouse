@@ -17,6 +17,11 @@ Salary_Types = (
                 (0, u'ברוטו'),
                 (1, u'נטו')
                 )
+TaxDeductionTypes = (
+                (None, u'לא ידוע'),
+                (0, u'פטור'),
+                (1, u'יש')
+                )
 Family_State_Types = (
                       (1, u'רווק'),
                       (2, u'נשוי'),
@@ -478,9 +483,12 @@ class EmploymentTerms(models.Model):
     salary_base = models.PositiveIntegerField(ugettext('salary base'))
     salary_net = models.NullBooleanField(ugettext('salary net'), choices= Salary_Types)
     safety = models.PositiveIntegerField(ugettext('safety'))
-    hire_type = models.ForeignKey('HireType', verbose_name=ugettext('hire_type'))
+    hire_type = models.ForeignKey('HireType', verbose_name=ugettext('hire_type'), help_text = ugettext('hire_type_help'))
     include_tax = models.BooleanField(ugettext('commission_include_tax'), blank=True)
     include_lawyer = models.BooleanField(ugettext('commission_include_lawyer'), blank=True)
+    tax_deduction_source = models.NullBooleanField(ugettext('tax_deduction_source'), choices = TaxDeductionTypes)
+    tax_deduction_source_precentage = models.FloatField(ugettext('tax_deduction_source_precentage'), null=True, blank=True)
+    tax_deduction_date = models.DateField(ugettext('tax_deduction_date'), null=True, blank=True)
     class Meta:
         db_table='EmploymentTerms'
 
@@ -2487,7 +2495,7 @@ class EmployeeCheck(CheckBase):
 class Check(CheckBase):
     supplier_type = models.ForeignKey('SupplierType', verbose_name=ugettext('supplier_type'))
     account = models.ForeignKey('Account', null=True, editable=False)
-
+    tax_deduction_source = models.IntegerField(ugettext('tax_deduction_source'),null=True, blank=True)
     def get_absolute_url(self):
         return '/checks/%s' % self.id 
     class Meta:
