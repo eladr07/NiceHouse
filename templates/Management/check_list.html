@@ -107,11 +107,18 @@
 				{% else %}
 					<td colspan="3">{{c.type}}</td>
 				{% endif %}
-				<td>{{diff_amount_invoice|commaise}}</td>
+				<td>{{diff_amount_invoice|default_if_none:""|commaise}}</td>
 				<td></td>
 				<td>{{c.remarks}}</td>
 			</tr>
 		{% endfor %}
 	{% endfor %}
+	<tr class="rowSum">
+		<td colspan="6"></td>
+		<td>{{sum_check_amount|commaise}}</td>
+		<td>{{sum_invoice_amount|commaise}}</td>
+		<td colspan="2"></td>
+		<td>{{sum_diff_check_invoice_amount|commaise}}</td>
+	</tr>
 </table>
 {% endblock content %}

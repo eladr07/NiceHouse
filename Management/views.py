@@ -140,8 +140,21 @@ def employeecheck_list(request):
             checks = checks.filter(expense_type = expense_type)
         if employee:
             checks = checks.filter(employee = employee)
+    sum_check_amount, sum_invoice_amount, sum_diff_check_invoice, sum_salary_amount, sum_diff_check_salary = 0,0,0,0,0
+    for check in checks:
+        sum_check_amount += check.amount
+        if check.invoice:
+            sum_invoice_amount += check.invoice.amount
+            sum_diff_check_invoice += check.diff_amount_invoice
+        salary = check.salary
+        if salary:
+            sum_salary_amount += salary.amount
+            sum_diff_check_salary += check.diff_amount_salary
     return render_to_response('Management/employeecheck_list.html',
-                              {'checks':checks, 'from_date':from_date, 'to_date':to_date, 'filterForm':form},
+                              {'checks':checks, 'from_date':from_date, 'to_date':to_date, 'filterForm':form,
+                               'sum_check_amount':sum_check_amount, 'sum_invoice_amount':sum_invoice_amount, 
+                               'sum_diff_check_invoice':sum_diff_check_invoice, 'sum_salary_amount':sum_salary_amount, 
+                               'sum_diff_check_salary':sum_diff_check_salary},
                               context_instance=RequestContext(request))
 
 @permission_required('Management.delete_advancepayment')
@@ -175,8 +188,16 @@ def check_list(request):
             checks = checks.filter(division_type = division_type)
         if expense_type:
             checks = checks.filter(expense_type = expense_type)
+    sum_check_amount, sum_invoice_amount, sum_diff_check_invoice = 0,0,0
+    for check in checks:
+        sum_check_amount += check.amount
+        if check.invoice:
+            sum_invoice_amount += check.invoice.amount
+            sum_diff_check_invoice += check.diff_amount_invoice
     return render_to_response('Management/check_list.html',
-                              {'checks':checks, 'from_date':from_date, 'to_date':to_date, 'filterForm':form},
+                              {'checks':checks, 'from_date':from_date, 'to_date':to_date, 'filterForm':form,
+                               'sum_check_amount':sum_check_amount,'sum_invoice_amount':sum_invoice_amount,
+                               'sum_diff_check_invoice':sum_diff_check_invoice},
                               context_instance=RequestContext(request))
 
 def process_check_base_form(form):

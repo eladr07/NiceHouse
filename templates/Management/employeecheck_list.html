@@ -108,12 +108,21 @@
 			{% else %}
 				<td colspan="3">תלוש</td>
 			{% endif %}
-			<td>{{c.diff_amount_invoice|commaise}}</td>
-			<td>{{c.salary_amount|commaise}}</td>
-			<td>{{c.diff_amount_salary|commaise}}</td>
+			<td>{{c.diff_amount_invoice|default_if_none:""|commaise}}</td>
+			<td>{{c.salary.amount|default_if_none:""|commaise}}</td>
+			<td>{{c.diff_amount_salary|default_if_none:""|commaise}}</td>
 			<td>{{c.remarks}}</td>
 		</tr>
 		{% endfor %}
 	{% endfor %}
+	<tr class="rowSum">
+		<td colspan="7"></td>
+		<td>{{sum_check_amount|commaise}}</td>
+		<td>{{sum_invoice_amount|commaise}}</td>
+		<td colspan="2"></td>
+		<td>{{sum_diff_check_invoice|commaise}}</td>
+		<td>{{sum_salary_amount|commaise}}</td>
+		<td>{{sum_diff_check_salary|commaise}}</td>
+	</tr>
 </table>
 {% endblock content %}
