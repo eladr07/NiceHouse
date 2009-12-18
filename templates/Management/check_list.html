@@ -64,19 +64,28 @@
 	</form>
 </div>
 <div class="clearBoth"></div>
-<table class="dataTable" border="1">
-	<th>מס'</th>
-	<th>הספק</th>
-	<th>ת. הוצאה</th>
-	<th>ת. תשלום</th>
-	<th>סוג<br>הוצאה</th>
-	<th>חשבונית</th>
-	<th>סכום<br>לתשלום</th>
-	<th>פרטי<br>חשבון</th>
-	<th>חשבונית</th>
-	<th>נכוי מס<br>במקור</th>
-	<th>הפרש בין<br>חשבונית לצ'ק</th>
-	<th>הערות</th>
+<table class="dataTable" border="1">	
+	<tr>
+		<th colspan="4">פרטים כלליים</th>
+		<th colspan="3">צ'ק שהוצא</th>
+		<th colspan="3">אסמכתא לצ'ק</th>
+		<th colspan="4">בקרה</th>
+	</tr>
+	<tr>
+		<th>מס"ד</th>
+		<th>חטיבה</th>
+		<th>סוג<br>הוצאה</th>
+		<th>שם הספק</th>
+		<th>מס'</th>
+		<th>ת. פרעון</th>
+		<th>סכום</th>
+		<th>סכום<br>חשבונית</th>
+		<th>נכוי מס<br>במקור</th>
+		<th>מס'<br>חשבונית</th>
+		<th>הפרש בין<br>חשבונית לצ'ק</th>
+		<th>מאשר<br>ההוצאה</th>
+		<th>הערות</th>
+	</tr>
 	{% regroup checks by division_type as division_list %}
 	{% for division in division_list %}
 		<tr>
@@ -84,21 +93,22 @@
 		</tr>
 		{% for c in division.list %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{c.id}}>
-				<td><a class="fancybox" href="{{ c.get_absolute_url }}">{{ c.num }}</td>
-				<td>{{c.supplier}}</td>
-				<td>{{c.issue_date|date:"j/m/y"}}</td>
-				<td>{{c.pay_date|date:"j/m/y"}}</td>
+				<td><a class="fancybox" href="{{ c.get_absolute_url }}">{{ c.id }}</td>
+				<td>{{c.division_type}}</td>
 				<td>{{c.expense_type}}</td>
-				<td>{{c.type}}</td>
+				<td>{{c.supplier_type}}</td>
+				<td>{{c.num}}</td>
+				<td>{{c.pay_date|date:"j/m/y"}}</td>
 				<td>{{c.amount|commaise}}</td>
-				<td><a href="{{c.account.get_absolute_url}}" class="fancybox">{{c.account.num}}</a></td>			
-				<td>
-					{% if c.invoice %}
-						{{c.invoice.num}} - {{c.invoice.amount|commaise}}
-					{% endif %}
-				</td>
-				<td></td>
+				{% if c.invoice %}
+					<td>{{c.invoice.amount|commaise}}</td>
+					<td></td>
+					<td>{{c.num}}</td>
+				{% else %}
+					<td colspan="3">{{c.type}}</td>
+				{% endif %}
 				<td>{{diff_amount_invoice|commaise}}</td>
+				<td></td>
 				<td>{{c.remarks}}</td>
 			</tr>
 		{% endfor %}

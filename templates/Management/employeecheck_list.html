@@ -102,7 +102,7 @@
 			<td>{{c.pay_date|date:"j/m/y"}}</td>
 			<td>{{c.amount}}</td>
 			{% if c.invoice %}
-				<td>{{c.invoice.amount}}</td>
+				<td>{{c.invoice.amount|commaise}}</td>
 				<td></td>
 				<td>{{c.invoice.num}}</td>
 			{% else %}
