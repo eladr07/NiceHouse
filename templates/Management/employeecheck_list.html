@@ -63,20 +63,29 @@
 </div>
 <div class="clearBoth"></div>
 <table class="dataTable" border="1">
-	<th>מס'</th>
-	<th>שם<br>עובד</th>
-	<th>ת. הוצאה</th>
-	<th>ת. תשלום</th>
-	<th>חודש<br>דרישה</th>
-	<th>סוג<br>הוצאה</th>
-	<th>חשבונית</th>
-	<th>נכוי מס<br>במקור</th>
-	<th>סכום<br>לתשלום</th>
-	<th>הפרש בין<br>חשבונית לצ'ק</th>
-	<th>סכום צ'ק<br>לפי הדרישה</th>
-	<th>הפרש בין<br>צ'ק לדרישה</th>
-	<th>פרטי<br>חשבון</th>
-	<th>הערות</th>
+	<tr>
+		<th colspan="5">פרטים כלליים</th>
+		<th colspan="3">צ'ק שהוצא</th>
+		<th colspan="3">אסמכתא לצ'ק</th>
+		<th colspan="4">בקרה</th>
+	</tr>
+	<tr>
+		<th>מס"ד</th>
+		<th>חטיבה</th>
+		<th>שם<br>עובד</th>
+		<th>חודש<br>דרישה</th>
+		<th>סוג<br>הוצאה</th>
+		<th>מס'</th>
+		<th>ת. פרעון</th>
+		<th>סכום</th>
+		<th>סכום<br>חשבונית</th>
+		<th>נכוי מס<br>במקור</th>
+		<th>מס'<br>חשבונית</th>
+		<th>הפרש בין<br>חשבונית לצ'ק</th>
+		<th>סכום צ'ק<br>לפי הדרישה</th>
+		<th>הפרש בין<br>צ'ק לדרישה</th>
+		<th>הערות</th>
+	</tr>
 	{% regroup checks by division_type.id as division_list %}
 	{% for division in division_list %}
 		<tr>
@@ -84,24 +93,24 @@
 		</tr>
 		{% for c in  division.list %}
 		<tr class="{% cycle 'row1' 'row2' %}" objid={{c.id}}>
-			<td><a class="fancybox" href="{{ c.get_absolute_url }}">{{ c.num }}</td>
+			<td><a class="fancybox" href="{{ c.get_absolute_url }}">{{ c.id }}</td>
+			<td>{{c.division_type}}</td>
 			<td><a href="{{c.employee.get_absolute_url}}">{{c.employee}}</a></td>
-			<td>{{c.issue_date}}</td>
-			<td>{{c.pay_date}}</td>
 			<td>{{c.month}}/{{c.year}}</td>
 			<td>{{c.expense_type}}</td>
-			<td>
-				{{c.type}}
-				{% if c.invoice %}
-					<br>
-					{{c.invoice.num}} - {{c.invoice.amount}}
-				{% endif %}
-			</td>
-			<td></td>
+			<td>{{c.num}}</td>
+			<td>{{c.pay_date|date:"j/m/y"}}</td>
 			<td>{{c.amount}}</td>
-			<td><a href="{{c.employee.account.get_absolute_url}}" class="fancybox">{{c.employee.account.num}}</a></td>
-			<td>{{c.salary_amount}}</td>
-			<td>{{c.diff_amount_salary}}</td>
+			{% if c.invoice %}
+				<td>{{c.invoice.amount}}</td>
+				<td></td>
+				<td>{{c.invoice.num}}</td>
+			{% else %}
+				<td colspan="3">תלוש</td>
+			{% endif %}
+			<td>{{c.diff_amount_invoice|commaise}}</td>
+			<td>{{c.salary_amount|commaise}}</td>
+			<td>{{c.diff_amount_salary|commaise}}</td>
 			<td>{{c.remarks}}</td>
 		</tr>
 		{% endfor %}
