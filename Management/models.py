@@ -2496,8 +2496,8 @@ class Check(CheckBase):
     supplier_type = models.ForeignKey('SupplierType', verbose_name=ugettext('supplier_type'))
     account = models.ForeignKey('Account', null=True, editable=False)
     tax_deduction_source = models.IntegerField(ugettext('tax_deduction_source'),null=True, blank=True)
-    order_verifier = models.CharField(max_length=30)
-    payment_verifier = models.CharField(max_length=30)
+    order_verifier = models.CharField(ugettext('order_verifier'),max_length=30)
+    payment_verifier = models.CharField(ugettext('payment_verifier'),max_length=30)
     def get_absolute_url(self):
         return '/checks/%s' % self.id 
     class Meta:
