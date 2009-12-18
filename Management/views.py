@@ -227,6 +227,9 @@ def check_add(request):
             form.save()
             accountForm = AccountForm()
             form = CheckForm()
+            if request.POST.has_key('addanother'):
+                accountForm = AccountForm()
+                form = CheckForm()
     else:
         accountForm = AccountForm()
         form = CheckForm()
@@ -246,6 +249,9 @@ def check_edit(request, id):
         if form.is_valid():
             process_check_base_form(form)
             form.save()
+            if request.POST.has_key('addanother'):
+                accountForm = AccountForm()
+                form = CheckForm()
     else:
         accountForm = AccountForm()
         form = CheckForm()
@@ -280,7 +286,8 @@ def employeecheck_add(request):
             process_check_base_form(form)
             ec = form.save()
             apply_employee_check(ec)
-            form = EmployeeCheckForm()
+            if request.POST.has_key('addanother'):
+                form = EmployeeCheckForm()
     else:
         form = EmployeeCheckForm()
         
@@ -297,6 +304,8 @@ def employeecheck_edit(request, id):
             process_check_base_form(form)
             ec = form.save()
             apply_employee_check(ec)
+            if request.POST.has_key('addanother'):
+                form = EmployeeCheckForm()
     else:
         form = EmployeeCheckForm()
         
