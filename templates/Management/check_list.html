@@ -83,7 +83,8 @@
 		<th>נכוי מס<br>במקור</th>
 		<th>מס'<br>חשבונית</th>
 		<th>הפרש בין<br>חשבונית לצ'ק</th>
-		<th>מאשר<br>ההוצאה</th>
+		<th>מאשר<br>ההזמנה</th>
+		<th>מאשר<br>התשלום</th>
 		<th>הערות</th>
 	</tr>
 	{% regroup checks by division_type as division_list %}
@@ -108,7 +109,8 @@
 					<td colspan="3">{{c.type}}</td>
 				{% endif %}
 				<td>{{diff_amount_invoice|default_if_none:""|commaise}}</td>
-				<td></td>
+				<td>{{c.order_verifier}}</td>
+				<td>{{c.payment_verifier}}</td>
 				<td>{{c.remarks}}</td>
 			</tr>
 		{% endfor %}
