@@ -626,7 +626,8 @@ class EmployeeCheckFilterForm(forms.Form):
                                           required=False)
 
 class CheckForm(forms.ModelForm):
-    invoice_num = forms.IntegerField(label = ugettext('invoice_num'), help_text=u'החשבונית חייבת להיות מוזנת במערכת')
+    invoice_num = forms.IntegerField(label = ugettext('invoice_num'), help_text=u'החשבונית חייבת להיות מוזנת במערכת',
+                                     required=False)
     new_division_type = forms.CharField(label = ugettext('new_division_type'), max_length = 20, required=False)
     new_expense_type = forms.CharField(label = ugettext('new_expense_type'), max_length = 20, required=False)
     new_supplier_type = forms.CharField(label = ugettext('new_supplier_type'), max_length = 20, required=False)
@@ -654,7 +655,8 @@ class CheckForm(forms.ModelForm):
                   'tax_deduction_source','order_verifier','payment_verifier','remarks']
 
 class EmployeeCheckForm(forms.ModelForm):
-    invoice_num = forms.IntegerField(label = ugettext('invoice_num'), help_text=u'החשבונית חייבת להיות מוזנת במערכת')
+    invoice_num = forms.IntegerField(label = ugettext('invoice_num'), help_text=u'החשבונית חייבת להיות מוזנת במערכת',
+                                     required=False)
     new_division_type = forms.CharField(label = ugettext('new_division_type'), max_length = 20, required=False)
     new_expense_type = forms.CharField(label = ugettext('new_expense_type'), max_length = 20, required=False)
     
