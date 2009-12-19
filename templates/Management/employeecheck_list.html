@@ -65,7 +65,7 @@
 <div class="clearBoth"></div>
 <table class="dataTable" border="1">
 	<tr>
-		<th colspan="6">פרטים כלליים</th>
+		<th colspan="7">פרטים כלליים</th>
 		<th colspan="3">צ'ק שהוצא</th>
 		<th colspan="3">אסמכתא לצ'ק</th>
 		<th colspan="4">בקרה</th>
@@ -76,6 +76,7 @@
 		<th>שם<br>עובד</th>
 		<th>סוג<br>העסקה</th>
 		<th>חודש<br>דרישה</th>
+		<th>מטרה</th>
 		<th>סוג<br>הוצאה</th>
 		<th>מס'</th>
 		<th>ת. פרעון</th>
@@ -100,6 +101,7 @@
 			<td><a href="{{c.employee.get_absolute_url}}">{{c.employee}}</a></td>
 			<td>{{c.employee.employment_terms.hire_type}}</td>
 			<td>{{c.month}}/{{c.year}}</td>
+			<td>{{c.purpose_type}}</td>
 			<td>{{c.expense_type}}</td>
 			<td>{{c.num}}</td>
 			<td>{{c.pay_date|date:"j/m/y"}}</td>
@@ -119,7 +121,7 @@
 		{% endfor %}
 	{% endfor %}
 	<tr class="rowSum">
-		<td colspan="8"></td>
+		<td colspan="9"></td>
 		<td>{{sum_check_amount|commaise}}</td>
 		<td>{{sum_invoice_amount|commaise}}</td>
 		<td colspan="2"></td>
