@@ -863,7 +863,7 @@ def nhmonth_sales(request, nhbranch_id):
                               context_instance=RequestContext(request))
 
 @permission_required('Management.change_nhmonth')
-def nhmonth_close(request, id):
+def nhmonth_close(request):
     today = date.today()
     nhbranch_id = int(request.GET.get('nhbranch_id'))
     year = int(request.GET.get('year', today.year))

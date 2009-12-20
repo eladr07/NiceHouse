@@ -204,7 +204,7 @@ urlpatterns += patterns('Management.views',
     (r'^nhbranch/(?P<object_id>\d+)/$', 'limited_update_object',
      {'model' : Management.models.NHBranch, 'template_name' : 'Management/nhbranch_edit.html', 'post_save_redirect' : '%(id)s'}),
     (r'^nhbranch/(?P<nhbranch_id>\d+)/sales/$', 'nhmonth_sales'),
-    (r'^nhmonth/(?P<id>\d+)/close$', 'nhmonth_close'),
+    (r'^nhmonth/close$', 'nhmonth_close'),
     (r'^nhseasonincome/$', 'nh_season_income'),
     
     (r'^seasonincome/$', 'season_income'),
