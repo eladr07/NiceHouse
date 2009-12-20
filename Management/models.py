@@ -2197,6 +2197,8 @@ class NHMonth(models.Model):
         self.save()
     def tax(self):
         return Tax.objects.filter(date__lte = date(self.year, self.month, 1)).latest().value
+    def get_absolute_url(self):
+        return '/nhmonth/' + str(self.id)
     class Meta:
         db_table = 'NHMonth'
         ordering = ['-year', '-month']
