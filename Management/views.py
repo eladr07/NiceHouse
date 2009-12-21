@@ -1446,7 +1446,7 @@ def nhsale_add(request, branch_id):
     else:
         branch = NHBranch.objects.get(pk=branch_id)
         employee_base_query = EmployeeBase.objects.active()
-        nhemployees_query = NHEmployee.objects.filter(nhbranchemployee__nhbranch = branch, end_date = None)
+        nhemployees_query = NHEmployee.objects.filter(nhbranchemployee__nhbranch = branch, work_end = None)
         
         saleForm = NHSaleForm(prefix='sale')
         monthForm = NHMonthForm(prefix='month')
