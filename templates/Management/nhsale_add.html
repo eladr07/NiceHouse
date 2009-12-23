@@ -104,8 +104,12 @@ function updateValues() {
 		p = parseFloat(priceInput.val());
 	if (actualCommission1.val())
 		ac1 = parseFloat(actualCommission1.val());
+		if (!ac1)
+			ac1=0;
 	if (actualCommission2.val())
 		ac2 = parseFloat(actualCommission2.val());
+		if (!ac2)
+			ac2=0;
 }
 </script>
 {% endblock header %}
