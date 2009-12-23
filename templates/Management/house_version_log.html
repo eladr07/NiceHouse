@@ -13,7 +13,7 @@
 		<th>מחיר</th>
 		<th>סכום שינוי</th>
 		<th>אחוז שינוי</th>
-		{% for version in version %}
+		{% for version in versions %}
 			<tr class="{% cycle 'row1' 'row2' %}">
 				<td>{{version.date|date:"j/m/y"}}</td>
 				<td>{{version.price|commaise}}</td>
