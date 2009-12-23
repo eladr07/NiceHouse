@@ -2037,8 +2037,8 @@ def house_version_log(request,id , type_id):
     previous_version = None
     for version in versions:
         if previous_version:
-            version.diff_amount = version.amount - previous_version.amount
-            version.diff_precentage = version.amount / previous_version.amount - 1
+            version.diff_amount = version.price - previous_version.price
+            version.diff_precentage = version.price / previous_version.price - 1
         previous_version = version
     
     return render_to_response('Management/house_version_log.html', 
