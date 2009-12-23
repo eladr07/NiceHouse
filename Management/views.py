@@ -2028,8 +2028,8 @@ def building_addhouse(request, type_id, building_id):
     return render_to_response('Management/house_edit.html', 
                               {'form' : form, 'type':PricelistType.objects.get(pk = type_id) })
 
-@permission_required('Management.house_pricelog')
-def house_price_log(request,id , type_id):
+@permission_required('Management.house_versionlog')
+def house_version_log(request,id , type_id):
     house = House.objects.get(pk=id)
     pricelist_type = PricelistType.objects.get(pk=type_id)
     query = HouseVersion.objects.filter(house__id = id, type__id = type_id)
