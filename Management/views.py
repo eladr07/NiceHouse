@@ -1509,15 +1509,14 @@ def building_pricelist(request, object_id, type_id):
     houses = b.houses.filter(is_deleted=False)
     signup_count = 0
     sale_count = 0
-    for h in houses:
-        try:
-            if h.get_sale() or h.is_sold:
-                sale_count = sale_count+1
-            elif h.get_signup():
-                signup_count = signup_count+1
-            h.price = h.versions.filter(type__id = type_id).latest().price
-        except HouseVersion.DoesNotExist:
-            h.price = None
+    for house in houses:
+        if house.get_sale() or house.is_sold:
+            sale_count = sale_count+1
+        elif house.get_signup():
+            signup_count = signup_count+1
+        versions = house.versions.filter(type__id = type_id)
+        h.price = versions.count() == 0 and None or versions.latest().price
+        
     avaliable_count = houses.count() - signup_count - sale_count
     return render_to_response('Management/building_pricelist.html',
                               {'form': form, 'formset': formset, 'updateForm':updateForm, 

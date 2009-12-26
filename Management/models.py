@@ -374,7 +374,7 @@ class HouseVersion(models.Model):
     price = models.IntegerField(ugettext('price'))    
     class Meta:
         get_latest_by = 'date'
-        ordering = ['-date']
+        ordering = ['date']
         db_table = 'HouseVersion'
 
 class RankType(models.Model):
@@ -1368,7 +1368,7 @@ class CZilber(models.Model):
         if d.var_diff: d.var_diff.delete()
         if d.bonus_diff: d.bonus_diff.delete()
         demand = d
-        sales = list(d.get_sales().all())
+        sales = list(d.get_sales())
         while demand != None and demand.zilber_cycle_index() != 1:
             demand = demand.get_previous_demand()
             sales.extend(demand.get_sales().filter(commission_include=True))
