@@ -517,7 +517,7 @@ def demand_old_list(request):
     current = Demand.current_month()
     year = int(request.GET.get('year', current.year))
     month = int(request.GET.get('month', current.month))
-    ds = Demand.objects.filter(year = year, month = month)
+    ds = Demand.objects.select_related().filter(year = year, month = month)
     total_sales_count,total_sales_amount, total_sales_commission, total_amount, expected_sales_count = 0,0,0,0,0
     for d in ds:
         total_sales_count += d.get_sales().count()
