@@ -2850,8 +2850,6 @@ def employeesalary_season_expenses(request):
                 total_loan_pay += salary.loan_pay or 0
                 total_bruto += salary.bruto or 0
                 total_bruto_employer += salary.bruto_employer_expense or 0
-                total_refund += salary.refund or 0
-                total_sale_count += salary.sales_count
             current = date(current.month == 12 and current.year + 1 or current.year,
                            current.month == 12 and 1 or current.month + 1, 1)        
     else:
@@ -2862,8 +2860,7 @@ def employeesalary_season_expenses(request):
                               { 'salaries':salaries, 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
                                 'employee': employee_base, 'filterForm':form,
                                 'total_neto':total_neto,'total_check_amount':total_check_amount,
-                                'total_loan_pay':total_loan_pay,'total_bruto':total_bruto,'total_bruto_employer':total_bruto_employer,
-                                'total_refund':total_refund,'total_sale_count':total_sale_count},
+                                'total_loan_pay':total_loan_pay,'total_bruto':total_bruto,'total_bruto_employer':total_bruto_employer},
                               context_instance=RequestContext(request))
 
 def employeesalary_season_total_expenses(request):
