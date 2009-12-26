@@ -72,10 +72,10 @@
 	</tr>
 	<tr>
 		<th>מס"ד</th>
+		<th>חודש<br>דרישה</th>
 		<th>חטיבה</th>
 		<th>שם<br>עובד</th>
 		<th>סוג<br>העסקה</th>
-		<th>חודש<br>דרישה</th>
 		<th>מטרה</th>
 		<th>סוג<br>הוצאה</th>
 		<th>מס'</th>
@@ -97,10 +97,10 @@
 		{% for c in  division.list %}
 		<tr class="{% cycle 'row1' 'row2' %}" objid={{c.id}}>
 			<td><a class="fancybox" href="{{ c.get_absolute_url }}">{{ c.id }}</td>
+			<td>{{c.month}}/{{c.year}}</td>
 			<td>{{c.division_type}}</td>
 			<td><a href="{{c.employee.get_absolute_url}}">{{c.employee}}</a></td>
 			<td>{{c.employee.employment_terms.hire_type}}</td>
-			<td>{{c.month}}/{{c.year}}</td>
 			<td>{{c.purpose_type}}</td>
 			<td>{{c.expense_type}}</td>
 			<td>{{c.num}}</td>
