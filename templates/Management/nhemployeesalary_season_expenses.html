@@ -118,13 +118,6 @@
 				<td>{{e.employer_benefit}}</td>
 				<td>{{e.compensation_allocation}}</td>
 				<td style="background-color:#2990FF;">{{s.bruto_with_employer|commaise}}</td>
-				<td>
-					{% if e.approved_date %}
-						{{e.approved_date}}
-					{% else %}
-						<a href="{{e.id}}/approve">אשר</a>
-					{% endif %}
-				</td>
 			{% endwith %}
 		</tr>
 	{% endfor %}
