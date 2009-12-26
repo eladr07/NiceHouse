@@ -71,6 +71,7 @@
 	<tr>
 		<th></th>
 		<th>חודש</th>
+		<th>סוג<BR>העסקה</th>
 		<th>תלוש<BR>נטו</th>
 		<th>החזר<BR>הלוואה</th>
 		<th>שווי<BR>צ'ק</th>
@@ -101,9 +102,10 @@
 		{% endif %}
 			<td><a class="fancybox" href="/salary/{{s.id}}/expenses"><img src="/site_media/images/edit_48.png" width="20" height="20" alt="עדכון" border="0" /></a></td>
 			<td>{{ s.month }}/{{s.year}}</a></td>
-			<td>{{s.neto|default_if_none:""|commaise}}</td>
+			<td>{{s.nhemployee.employment_terms.hire_type}}</td>
+			<td><a href="{{s.get_absolute_url}}/totaldetails" class="fancybox">{{s.neto|default_if_none:""|commaise}}</a></td>
 			<td>{{s.loan_pay|commaise}}</td>
-			<td>{{s.check_amount|default_if_none:""|commaise}}</td>
+			<td><a href="{{s.get_absolute_url}}/checkdetails" class="fancybox">{{s.check_amount|default_if_none:""|commaise}}</a></td>
 			{% with s.expenses as e %}
 				<td>{{e.income_tax}}</td>
 				<td>{{e.national_insurance}}</td>
