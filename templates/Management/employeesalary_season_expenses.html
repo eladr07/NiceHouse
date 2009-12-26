@@ -103,6 +103,13 @@
 <table id="salaryTable" class="dataTable" border="1">
 <caption>מציג סה"כ {{salaries|length}} משכורות לעובד {{employee}}</caption>
 	<tr>
+		<th colspan="4">כללי</th>
+		<th colspan="3">תשלום נטו</th>
+		<th colspan="7">מיסי עובד לתשלום והפרשות</th>
+		<th colspan="4">הוצאות מעביד</th>
+		<th colspan="4">אסמכתאות ואישור</th>
+	</tr>
+	<tr>
 		<th>חודש</th>
 		<th>סוג <BR>העסקה</th>
 		<th>פרוייקט</th>
@@ -121,6 +128,9 @@
 		<th>גמל<BR>מעביד</th>
 		<th>הפרשה<BR>לפיצויים</th>
 		<th>ברוטו<BR>כולל<BR>מעביד</th>
+		<th>נכוי מס<br>במקור</th>
+		<th>שווי<br>חשבונית</th>
+		<th>אישור</th>
 	</tr>
 	{% for s in salaries %}
 		{% if s.approved_date %}
@@ -160,6 +170,8 @@
 				<td>{{e.employer_benefit}}</td>
 				<td>{{e.compensation_allocation}}</td>
 				<td style="background-color:#2990FF;">{{s.bruto_with_employer|commaise}}</td>
+				<td></td>
+				<td></td>
 				<td>
 					{% if e.approved_date %}
 						{{e.approved_date}}
