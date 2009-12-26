@@ -642,6 +642,32 @@ def salary_expenses_list(request):
                                context_instance=RequestContext(request))
 
 @permission_required('Management.list_salaryexpenses')
+def nh_salary_expenses_season_employee(request):
+    current = Demand.current_month()
+    from_year = int(request.GET.get('from_year', current.year))
+    from_month = int(request.GET.get('from_month', current.month))
+    to_year = int(request.GET.get('to_year', current.year))
+    to_month = int(request.GET.get('to_month', current.month))
+    nhemployee = int(request.GET.get('nhemployee', 0))
+    
+    filterForm = NHEmployeeSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,
+                                               'to_month':to_month, 'nhemployee':nhemployee})
+    
+    current = date(from_year, from_month, 1)
+    end = date(to_year, to_month, 1)
+    salaries = []
+    while current <= end:
+        query = EmployeeSalary.objects.filter(nhemployee_id = nhemployee, year = current.year, month = current.month)
+        if query.count() > 0:
+            salaries.append(query[0])
+        current = date(current.month == 12 and current.year + 1 or current.year,
+                       current.month == 12 and 1 or current.month + 1, 1)
+    
+    return render_to_response('Management/salaries_expenses_season_employee.html', 
+                              {'salaries':salaries, 'filterForm':filterForm},
+                               context_instance=RequestContext(request))
+
+@permission_required('Management.list_salaryexpenses')
 def nh_salary_expenses_list(request):
     current = Demand.current_month()
     year = int(request.GET.get('year', current.year))
