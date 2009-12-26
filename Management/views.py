@@ -664,7 +664,7 @@ def nh_salary_expenses_season_employee(request):
             current = date(current.month == 12 and current.year + 1 or current.year,
                            current.month == 12 and 1 or current.month + 1, 1)
     
-    return render_to_response('Management/salaries_expenses_season_employee.html', 
+    return render_to_response('Management/salaries_expenses_employee_season.html', 
                               {'salaries':salaries, 'filterForm':filterForm},
                                context_instance=RequestContext(request))
 
