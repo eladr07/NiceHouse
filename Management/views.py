@@ -1515,7 +1515,7 @@ def building_pricelist(request, object_id, type_id):
         elif house.get_signup():
             signup_count = signup_count+1
         versions = house.versions.filter(type__id = type_id)
-        house.price = versions.count() == 0 and None or versions.latest().price
+        house.price = versions.count() > 0 and versions.latest().price or None
         
     avaliable_count = houses.count() - signup_count - sale_count
     return render_to_response('Management/building_pricelist.html',
