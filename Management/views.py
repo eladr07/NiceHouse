@@ -657,7 +657,7 @@ def nh_salary_expenses_season_employee(request):
     end = date(to_year, to_month, 1)
     salaries = []
     while current <= end:
-        query = EmployeeSalary.objects.filter(nhemployee_id = nhemployee, year = current.year, month = current.month)
+        query = NHEmployeeSalary.objects.filter(nhemployee_id = nhemployee, year = current.year, month = current.month)
         if query.count() > 0:
             salaries.append(query[0])
         current = date(current.month == 12 and current.year + 1 or current.year,
