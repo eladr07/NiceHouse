@@ -18,7 +18,7 @@
 				<td>{{version.date|date:"j/m/y"}}</td>
 				<td>{{version.price|commaise}}</td>
 				<td>{{version.diff_amount|commaise}}</td>
-				<td>{% if version.diff_precentage|floatformat:-2 %} {{version.diff_precentage}}% {% endif %}</td>
+				<td>{% if version.diff_precentage %} {{version.diff_precentage|floatformat:-2}}% {% endif %}</td>
 			</tr>
 		{% endfor %}
 	</table>
