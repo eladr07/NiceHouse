@@ -219,6 +219,10 @@ class MonthDemandWriter:
     @property
     def pages_count(self):
         count = self.demand.get_sales().count()
+        if self.demand.diffs.count():
+            count += self.demand.diffs.count() + 1
+        if self.demand.remarks:
+            count += 1
         affected_sales_count = 0
         for subSales in self.demand.get_affected_sales().values():
             affected_sales_count += subSales.count()
