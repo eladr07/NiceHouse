@@ -2856,7 +2856,7 @@ def employeesalary_season_expenses(request):
                            current.month == 12 and 1 or current.month + 1, 1)        
     else:
         template = 'Management/employeesalary_season_expenses.html'
-        employee = None
+        employee_base = None
         
     return render_to_response(template, 
                               { 'salaries':salaries, 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
