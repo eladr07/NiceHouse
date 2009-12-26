@@ -98,25 +98,34 @@
 <table id="salaryTable" class="dataTable" border="1">
 <caption>מציג סה"כ {{salaries|length}} עובדים</caption>
 	<tr>
+		<th colspan="5">כללי</th>
+		<th colspan="7">חישוב שכר נטו</th>
+		<th colspan="3">אסמכתאות</th>
+		<th colspan="2">נלווה לשכר</th>
+		<th colspan="4">הערות ושליחה</th>
+	</tr>
+	<tr>
 		<th></th>
-		<th>שם העובד</th>
+		<th>שם<br>העובד</th>
 		<th>פרוייקט</th>
-		<th>סוג העסקה</th>
-		<th>מס' עסקאות</th>
-		<th>שכר בסיס + עמלות</th>
-		<th>רשת בטחון</th>
-		<th>תוספת משתנה</th>
-		<th>קיזוז שכר</th>
-		<th>סה"כ שווי תלוש</th>
-		<th>החזר הלוואה</th>
-		<th>שווי צ'ק</th>
-		<th>ברוטו לחישוב</th>
-		<th>החזר הוצאות (בנפרד)</th>
-		<th>חופש ומחלה</th>
+		<th>סוג<br>העסקה</th>
+		<th>מס'<br>עסקאות</th>
+		<th>שכר בסיס<br>+ עמלות</th>
+		<th>רשת<br>בטחון</th>
+		<th>תוספת<br>משתנה</th>
+		<th>קיזוז<br>שכר</th>
+		<th>סה"כ<br>שווי<br>תלוש</th>
+		<th>החזר<br>הלוואה</th>
+		<th>שווי<br>צ'ק</th>
+		<th>ברוטו<br>לחישוב</th>
+		<th>נכוי מס<br>במקור</th>
+		<th>שווי<br>חשבונית</th>
+		<th>החזר<br>הוצאות<br>(בנפרד)</th>
+		<th>חופש<br>ומחלה</th>
 		<th>הערות</th>
 		<th>ת.אישור</th>
-		<th>ת.שליחה להנה"ח</th>
-		<th>ת.שליחה לצ'קים</th>
+		<th>ת.שליחה<br>להנה"ח</th>
+		<th>ת.שליחה<br>לצ'קים</th>
 	</tr>
 	{% regroup salaries by employee.rank as rank_list %}
 	{% for rank in rank_list %}
@@ -157,6 +166,8 @@
 			</td>
 			<td><a href="{{s.id}}/checkdetails" class="fancybox">{{s.check_amount|default_if_none:""|commaise}}</a></td>
 			<td>{{s.bruto|default_if_none:""|commaise}}</td>
+			<td></td>
+			<td></td>
 			<td>{% if s.refund %}{{s.refund}} - {{s.refund_type}} {% endif %}</td>
 			<td></td>
 			<td>{{s.remarks|default_if_none:""}}</td>
