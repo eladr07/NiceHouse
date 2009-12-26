@@ -656,12 +656,13 @@ def nh_salary_expenses_season_employee(request):
     current = date(from_year, from_month, 1)
     end = date(to_year, to_month, 1)
     salaries = []
-    while current <= end:
-        query = NHEmployeeSalary.objects.filter(nhemployee_id = nhemployee, year = current.year, month = current.month)
-        if query.count() > 0:
-            salaries.append(query[0])
-        current = date(current.month == 12 and current.year + 1 or current.year,
-                       current.month == 12 and 1 or current.month + 1, 1)
+    if nhemployee:
+        while current <= end:
+            query = NHEmployeeSalary.objects.filter(nhemployee__id = nhemployee, year = current.year, month = current.month)
+            if query.count() > 0:
+                salaries.append(query[0])
+            current = date(current.month == 12 and current.year + 1 or current.year,
+                           current.month == 12 and 1 or current.month + 1, 1)
     
     return render_to_response('Management/salaries_expenses_season_employee.html', 
                               {'salaries':salaries, 'filterForm':filterForm},
