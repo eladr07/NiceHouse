@@ -140,7 +140,11 @@
 			<td><a href="{{s.employee.get_absolute_url}}">{{ s.employee }}</a></td>
 			<td>
 				{% for p in s.employee.projects.all %}
-				<a href="{{p.get_absolute_url}}" target="_blank">{{p}}</a><br>
+				<a href="{{p.get_absolute_url}}" target="_blank">{{p}}</a>
+				<a href="/reports/project_month/{{p.id}}/{{s.year}}/{{s.month}}">
+					<img src="/site_media/images/PDF-48.png" width="15" height="15"/>
+				</a>
+				<br>
 				{% endfor %}
 			</td>
 			<td>{{s.employee.employment_terms.hire_type}}</td>
