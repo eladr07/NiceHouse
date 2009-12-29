@@ -1002,7 +1002,7 @@ class NHEmployeeSalary(EmployeeSalaryBase):
     admin_commission = models.IntegerField(editable=False, null=True)
     @property
     def total_amount(self):
-        return self.base + (self.commissions or 0) + (self.admin_commission or 0) + (self.var_pay or 0) + (self.safety_net or 0) - (self.deduction or 0)
+        return (self.base or 0) + (self.commissions or 0) + (self.admin_commission or 0) + (self.var_pay or 0) + (self.safety_net or 0) - (self.deduction or 0)
     def calculate(self):
         query = NHMonth.objects.filter(nhbranch = self.nhemployee.nhbranch, year = self.year, month = self.month)
         if query.count() == 0: return
