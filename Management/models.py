@@ -732,6 +732,7 @@ class NHBranchEmployee(models.Model):
         ordering = ['start_date']
 
 class NHBranch(models.Model):
+    Shoham, Modiin, NesZiona = 1, 2, 3
     name = models.CharField(ugettext('name'), max_length=30, unique=True)
     address = models.CharField(ugettext('address'), max_length=40, null=True, blank=True)
     phone = models.CharField(ugettext('phone'), max_length=15, null=True, blank=True)
@@ -2551,6 +2552,7 @@ class PurposeType(models.Model):
         db_table = 'PurposeType'
 
 class DivisionType(models.Model):
+    Marketing, NHShoham, NHModiin, NHNesZiona = 1,2,3,4
     name = models.CharField(ugettext('name'), max_length=20, unique=True)
     def __unicode__(self):
         return unicode(self.name)

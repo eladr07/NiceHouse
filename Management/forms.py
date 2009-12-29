@@ -535,7 +535,18 @@ class DemandSendForm(forms.ModelForm):
     class Meta:
         model = Demand
         exclude = ('project','year','month','sale_count')
-        
+
+class SeasonDivisionTypeForm(forms.Form):
+    division_type = forms.ModelChoiceField(queryset = DivisionType.objects.all(), label=ugettext('division_type'))
+    from_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
+                                  label = ugettext('from_year'), initial = datetime.now().year)
+    from_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('from_month'),
+                                   initial = Demand.current_month().month)
+    to_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
+                                label = ugettext('to_year'), initial = datetime.now().year)
+    to_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('to_month'),
+                                 initial = Demand.current_month().month)
+
 class LoanPayForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         super(LoanPayForm, self).__init__(*args, **kw)

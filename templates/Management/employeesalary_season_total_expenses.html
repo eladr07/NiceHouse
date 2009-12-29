@@ -6,25 +6,7 @@
 	var selectedID = 0;
 	var prev_class;
 	$(document).ready(function() {
-		$("#salaryTable tr").click(function() { 
-			var tr = $(this);
-			if (selectedID > 0)
-				$("#salaryTable tr[employeeid='"+selectedID+"']").attr("class", prev_class);
-			selectedID = tr.attr("employeeid");
-			if (!selectedID)
-				return;
-			prev_class = tr.attr("class");
-			tr.attr("class","selectedRow");
-			//sync links
-			if (selectedID > 0)
-				$("#loanPay").attr("href", "/employees/" + selectedID + "/loanpay");
-				$("#loanAdd").attr("href", "/employees/" + selectedID + "/addloan");
-			});
 		$(".fancybox").fancybox();
-		$("#loanPay, #loanAdd, #edit").click(function (event) {
-			if (!$(this).attr("href"))
-				alert("לא נבחר עובד");
-		});
 	});
 </script>
 {% endblock header %}
@@ -51,58 +33,59 @@
 </form>
 <br>
 <div class="someIcon" style="width:100px;">
-	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="החזר הלוואה" /> 
-	<a id="loanAdd" class="fancybox">הלוואה חדשה</a>
-</div>
-<div class="someIcon" style="width:120px;">
-	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="החזר הלוואה" /> 
-	<a id="loanPay" class="fancybox">עדכון החזר הלוואה</a>
-</div>
-<div class="someIcon" style="width:100px;">
 	<img src="/site_media/images/print-48.png" width="20" height="20" /> 
-	<a href="/reports/employeesalary_season/{{employee.id}}/{{start.year}}/{{start.month}}/{{end.year}}/{{end.month}}" >גרסת הדפסה</a>
+	<a href="#" >גרסת הדפסה</a>
 </div>
 <div class="clearBoth"></div>
 <br>
 <table id="salaryTable" class="dataTable" border="1">
 <caption>מציג סה"כ {{employees|length}} עובדים</caption>
 	<tr>
-		<th>שם העובד</th>
-		<th>פרוייקט</th>
-		<th>סוג העסקה</th>
-		<th>סה"כ<BR>נטו</th>
-		<th>סה"כ<BR>ברוטו</th>
-		<th>סה"כ ברוטו<BR>+ מעביד</th>
+		<th colspan="1">כללי</th>
+		<th colspan="3">תשלום נטו</th>
+		<th colspan="7">מיסי עובד לתשלום והפרשות</th>
+		<th colspan="4">הוצאות מעביד</th>
+		<th colspan="4">אסמכתאות ואישור</th>
 	</tr>
-	{% regroup employees by rank as rank_list %}
-	{% for rank in rank_list %}
-		<tr style="text-align:center; color:#4669D6; font-size:14px"><td colspan="15"><b>{{rank.grouper|default:"-- לא הוגדר דרג --"}}</b></td></tr>
-		{% for e in rank.list %}
-			<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{s.employee.id}}>
-				<td><a href="{{e.get_absolute_url}}" target="_blank">{{ e }}</a></td>			
-				<td>
-					{% for p in e.projects.all %}
-					<a href="{{p.get_absolute_url}}" target="_blank">{{p}}</a><br>
-					{% endfor %}
-				</td>
-				<td>{{e.employment_terms.hire_type}}</td>
-				<td>
-					<a target="_blank" href="/employeesalaryseason/?employee={{e.id}};from_year={{start.year}};from_month={{start.month}};to_year={{end.year}};to_month={{end.month}}">
-					{{e.total_neto|commaise}}
-					</a>
-				</td>
-				<td>
-					<a target="_blank" href="/esseasonexpenses/?employee={{e.id}};from_year={{start.year}};from_month={{start.month}};to_year={{end.year}};to_month={{end.month}}">
-					{{e.total_bruto|commaise}}
-					</a>
-				</td>
-				<td>
-					<a target="_blank" href="/esseasontotalexpenses/?employee={{e.id}};from_year={{start.year}};from_month={{start.month}};to_year={{end.year}};to_month={{end.month}}">
-					{{e.total_bruto_with_employer|commaise}}
-					</a>
-				</td>
-			</tr>
-		{% endfor %}
+	<tr>
+		<th>שם<BR>העובד</th>
+		<th>תלוש<BR>נטו</th>
+		<th>החזר<BR>הלוואה</th>
+		<th>שווי<BR>צ'ק</th>
+		<th>מס<BR>הכנסה</th>
+		<th>ביטוח<BR>לאומי</th>
+		<th>בריאות</th>
+		<th>ביטוח<BR>פנסיה</th>
+		<th>חופשה</th>
+		<th>דמי<BR>הבראה</th>
+		<th>סה"כ<BR>ברוטו<BR>לעובד</th>
+		<th>ביטוח<BR>לאומי<BR>מעביד</th>
+		<th>גמל<BR>מעביד</th>
+		<th>הפרשה<BR>לפיצויים</th>
+		<th>ברוטו<BR>כולל<BR>מעביד</th>
+		<th>נכוי מס<br>במקור</th>
+		<th>שווי<br>חשבונית</th>
+	</tr>
+	{% for employee in employees %}
+		<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{employee.id}}>
+			<td><a href="{{employee.get_absolute_url}}" target="_blank">{{ employee }}</a></td>			
+			<td>{{ employee.total_neto|commaise }}</td>
+			<td>{{ employee.total_loan_pay|commaise }}</td>
+			<td>{{ employee.total_check_amount|commaise }}</td>
+			<td>{{ employee.total_income_tax|commaise }}</td>
+			<td>{{ employee.total_national_insurance|commaise }}</td>
+			<td>{{ employee.total_health|commaise }}</td>
+			<td>{{ employee.total_pension_insurance|commaise }}</td>
+			<td>{{ employee.total_vacation|commaise }}</td>
+			<td>{{ employee.total_convalescence_pay|commaise }}</td>
+			<td>{{ employee.total_bruto|commaise }}</td>
+			<td>{{ employee.total_employer_national_insurance|commaise }}</td>
+			<td>{{ employee.total_employer_benefit|commaise }}</td>
+			<td>{{ employee.total_compensation_allocation|commaise }}</td>
+			<td>{{ employee.total_bruto_with_employer|commaise }}</td>
+			<td></td>
+			<td></td>
+		</tr>
 	{% endfor %}
 </table>
 {% endblock content %}

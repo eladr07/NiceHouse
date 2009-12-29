@@ -2869,21 +2869,43 @@ def employeesalary_season_total_expenses(request):
     from_month = int(request.GET.get('from_month', month.month))
     to_year = int(request.GET.get('to_year', month.year))
     to_month = int(request.GET.get('to_month', month.month))
-    form = SeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
-    employees = Employee.objects.all()
-    for e in employees:
-        e.total_neto, e.total_bruto, e.total_bruto_employer_expense = 0,0,0
+    division_type_id = int(request.GET.get('division_type') or 0)
+    
+    form = SeasonDivisionTypeForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month,
+                                           'division_type':division_type_id})
     current = date(from_year, from_month, 1)
     end = date(to_year, to_month, 1)
-    while current <= end:
-        salaries = EmployeeSalary.objects.filter(year = current.year, month = current.month)
+    if division_type_id == DivisionType.Marketing:
+        employees = list(Employee.objects.exclude(work_end__isnull = False, work_end__lt = current))
+        model = EmployeeSalary
+    else:
+        if division_type_id == DivisionType.NHShoham:
+            query = NHBranchEmployee.objects.filter(nhbranch__id = NHBranch.Shoham)
+        elif division_type_id == DivisionType.NHModiion:
+            query = NHBranchEmployee.objects.filter(nhbranch__id = NHBranch.Modiin)
+        elif division_type_id == DivisionType.NHNesZiona:
+            query = NHBranchEmployee.objects.filter(nhbranch__id = NHBranch.NesZiona)
+        query = query.exclude(end_date__isnull=False, end_date__lt = current)
+        employees = map(lambda x: x.nhemployee, query)
+        model = NHEmployeeSalary
+
+    attrs = ['neto', 'loan_pay', 'check_amount', 'income_tax', 'national_insurance', 'health', 'pension_insurance', 
+             'vacation', 'convalescence_pay', 'bruto', 'employer_national_insurance', 'employer_benefit',
+             'compensation_allocation', 'bruto_with_employer']
+    for attr in attrs:
         for e in employees:
-            q = salaries.filter(employee = e)
-            if q.count() != 1: continue
-            salary = q[0]
-            e.total_neto += salary.neto or 0
-            e.total_bruto += salary.bruto or 0
-            e.total_bruto_employer_expense += salary.bruto_employer_expense or 0
+            setattr(e, 'total_' + attr, 0)
+            
+    while current <= end:
+        salaries = model.objects.filter(year = current.year, month = current.month)
+        for salary in salaries:
+            employee_index = employees.index(salary.get_employee())
+            if not employee_index: continue
+            employee = employees[employee_index]
+            for attr in attrs:
+                add = getattr(salary, attr, 0)
+                old_value = getattr(employee, 'total_' + attr)
+                setattr(employee, 'total_' + attr, old_value + add)
         current = date(current.month == 12 and current.year + 1 or current.year,
                        current.month == 12 and 1 or current.month + 1, 1)
             
