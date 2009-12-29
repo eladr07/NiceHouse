@@ -2904,7 +2904,7 @@ def employeesalary_season_total_expenses(request):
                 if not employee_index: continue
                 employee = employees[employee_index]
                 for attr in attrs:
-                    add = getattr(salary, attr, 0)
+                    add = getattr(salary, attr, 0) or 0
                     old_value = getattr(employee, 'total_' + attr)
                     setattr(employee, 'total_' + attr, old_value + add)
             current = date(current.month == 12 and current.year + 1 or current.year,
