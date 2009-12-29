@@ -2902,7 +2902,6 @@ def employeesalary_season_total_expenses(request):
             for salary in salaries:
                 if salary.get_employee() not in employees: continue
                 employee_index = employees.index(salary.get_employee())
-                if not employee_index: continue
                 employee = employees[employee_index]
                 for attr in attrs:
                     add = getattr(salary, attr, 0) or 0
