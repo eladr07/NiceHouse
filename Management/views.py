@@ -2900,6 +2900,7 @@ def employeesalary_season_total_expenses(request):
         while current <= end:
             salaries = model.objects.filter(year = current.year, month = current.month)
             for salary in salaries:
+                if salary.get_employee() not in employees: continue
                 employee_index = employees.index(salary.get_employee())
                 if not employee_index: continue
                 employee = employees[employee_index]
