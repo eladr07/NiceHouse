@@ -41,13 +41,14 @@
 <table id="salaryTable" class="dataTable" border="1">
 <caption>מציג סה"כ {{employees|length}} עובדים</caption>
 	<tr>
-		<th colspan="1">כללי</th>
+		<th colspan="2">כללי</th>
 		<th colspan="3">תשלום נטו</th>
 		<th colspan="7">מיסי עובד לתשלום והפרשות</th>
 		<th colspan="4">הוצאות מעביד</th>
 		<th colspan="4">אסמכתאות ואישור</th>
 	</tr>
 	<tr>
+		<th>דו"ח</th>
 		<th>שם<BR>העובד</th>
 		<th>תלוש<BR>נטו</th>
 		<th>החזר<BR>הלוואה</th>
@@ -68,6 +69,11 @@
 	</tr>
 	{% for employee in employees %}
 		<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}} employeeid={{employee.id}}>
+			<td>
+				<a href="/esseasonexpenses/?employee={{e.id}}&from_year={{start.year}}&from_month={{start.month}}&to_year={{end.year}}&to_month={{end.month}}">
+					<img src="/site_media/images/PDF-48.png" width="15" height="15"/>
+				</a>
+			</td>
 			<td><a href="{{employee.get_absolute_url}}" target="_blank">{{ employee }}</a></td>			
 			<td>{{ employee.total_neto|commaise }}</td>
 			<td>{{ employee.total_loan_pay|commaise }}</td>
