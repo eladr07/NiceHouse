@@ -761,7 +761,7 @@ class NHBranch(models.Model):
 class NHEmployee(EmployeeBase):
     nhcbase = models.OneToOneField('NHCBase', editable=False, null=True, related_name='nhemployee')
     nhcbranchincome = models.OneToOneField('NHCBranchIncome', editable=False, null=True, related_name='nhemployee')
-    objects = EmployeeManager()
+    objects = NHEmployeeManager()
     
     def nhbranch(self):
         query = NHBranchEmployee.objects.filter(nhemployee = self, end_date=None)
