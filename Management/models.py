@@ -1794,7 +1794,7 @@ class Demand(models.Model):
     @property
     def was_sent(self):
         for status in self.statuses.all():
-            if status.type.id == DemandSent:
+            if status.type.id in [DemandSent, DemandFinished]:
                 return True
         return False
     @property
