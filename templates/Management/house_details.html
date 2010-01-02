@@ -1,5 +1,13 @@
 ﻿<table id="house_table" class="formTable">
 	<tr>
+		<th>סטטוס</th>
+		{% if house.get_sale %}
+			<td style="color:#C20606;">נמכרה</td>
+		{% else %}
+			<td style="color:#06C233;">פנויה</td>
+		{% endif %}
+	</tr>
+	<tr>
 		<th>מס'</th>
 		<td>{{house.num}}</td>
 	</tr>
@@ -51,4 +59,10 @@
 		<th></th>
 		<td><a href="/buildings/{{house.building.id}}/house/{{house.id}}/type1">כרטיס הדירה</a></td>
 	</tr>
+	{% if house.get_sale %}
+	<tr>
+		<th></th>
+		<td><a href="{{house.get_sale.get_absolute_url}}">פרטי המכירה</a></td>
+	</tr>
+	{% endif %}
 </table>
