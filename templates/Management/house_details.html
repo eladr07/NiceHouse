@@ -2,9 +2,9 @@
 	<tr>
 		<th>סטטוס</th>
 		{% if house.get_sale %}
-			<td style="color:#C20606;">נמכרה</td>
+			<td style="color:#C20606; font-weight:bold;">נמכרה - <a href="{{house.get_sale.get_absolute_url}}">פרטי המכירה</a></td>
 		{% else %}
-			<td style="color:#06C233;">פנויה</td>
+			<td style="color:#06C233; font-weight:bold;">פנויה</td>
 		{% endif %}
 	</tr>
 	<tr>
@@ -59,10 +59,4 @@
 		<th></th>
 		<td><a href="/buildings/{{house.building.id}}/house/{{house.id}}/type1">כרטיס הדירה</a></td>
 	</tr>
-	{% if house.get_sale %}
-	<tr>
-		<th></th>
-		<td><a href="{{house.get_sale.get_absolute_url}}">פרטי המכירה</a></td>
-	</tr>
-	{% endif %}
 </table>
