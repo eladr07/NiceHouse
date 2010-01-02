@@ -124,9 +124,9 @@
 				מכירה חדשה
 			{% endif %}
 		</div>
-		{% ifequal form.instance.demand.statuses.latest.type.id 3 %}
+		{% if form.instance.demand.was_sent %}
 		<i>לתשומת לבך, הדרישה כבר נשלחה ליזם! עדכון הבניין\הדירה\מחיר המכירה יוזן כתיקון דרישה</i>
-		{% endifequal %}
+		{% endif %}
 	</div>
 	<br>
 	<div id="rightSide">
