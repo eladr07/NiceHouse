@@ -2491,7 +2491,7 @@ def sale_add(request, demand_id=None):
         form = SaleForm(request.POST)
         if form.is_valid():
             if not demand_id:
-                demand = Demand.objects.get(year = year, month = month, project = form.cleaned_data['project'])
+                demand, is_new = Demand.objects.get_or_create(year = year, month = month, project = form.cleaned_data['project'])
             form.instance.demand = demand
             form.save()
             next = None
