@@ -126,6 +126,16 @@
 				<td style="background-color:#2990FF;">{{s.bruto_with_employer|commaise}}</td>
 			{% endwith %}
 		</tr>
-	{% endfor %}
+	{% endfor %}		
+		<tr class="rowSum" height="30px">
+			<td colspan="3"></td>
+			<td>{{total_neto|commaise}}</td>
+			<td>{{total_loan_pay|commaise}}</td>
+			<td>{{total_check_amount|commaise}}</td>
+			<td colspan="6"></td>
+			<td>{{total_bruto|commaise}}</td>
+			<td colspan="3"></td>
+			<td>{{total_bruto_employer|commaise}}</td>
+		</tr>
 </table>
 {% endblock content %}
