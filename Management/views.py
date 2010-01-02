@@ -2449,7 +2449,7 @@ def sale_edit(request, id):
             #temp fix. should remove
             if sale.demand.statuses.count() == 0:
                 sale.demand.feed()
-            if sale.demand.was_sent():
+            if sale.demand.was_sent:
                 #check for mods:
                 if sale.price != form.cleaned_data['price']:
                     spm = SalePriceMod(sale = sale, old_price = sale.price, date=date.today())
@@ -2496,7 +2496,7 @@ def sale_add(request, demand_id=None):
             next = None
             if demand.statuses.count() == 0:
                 demand.feed()
-            if demand.was_sent():
+            if demand.was_sent:
                 y,m = demand.year, demand.month
                 sp = SalePre(sale = form.instance, date=date.today(),
                              employee_pay = date(m==12 and y+1 or y,m==12 and 1 or m, 1))
