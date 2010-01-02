@@ -1000,8 +1000,7 @@ def demand_close(request, id):
 @permission_required('Management.change_demand')
 def demand_zero(request, id):
     d = Demand.objects.get(pk=id)
-    if d.statuses.count() == 0:
-        d.close()
+    d.close()
     return HttpResponseRedirect('/demands')
 
 def demand_send_mail(demand, addr):
