@@ -289,7 +289,7 @@ class SaleForm(forms.ModelForm):
         house = self.cleaned_data['house']
         if self.instance.id:
             s = house.get_sale()
-            if s != self.instance:
+            if s and s != self.instance:
                 raise forms.ValidationError(u"כבר קיימת מכירה לדירה זו")
         else:
             if house.get_sale():
