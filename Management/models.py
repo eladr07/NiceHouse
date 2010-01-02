@@ -1793,7 +1793,10 @@ class Demand(models.Model):
         return s
     @property
     def was_sent(self):
-        return self.statuses.count() == 0 and self.statuses.latest().type.id == DemandSent
+        for status in self.statuses.all():
+            if status.type.id == DemandSent:
+                return True
+        return False
     @property
     def finish_date(self):
         f = self.statuses.filter(type__id = DemandFinished)
