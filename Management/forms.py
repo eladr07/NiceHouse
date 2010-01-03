@@ -480,15 +480,12 @@ class NHSaleForm(forms.ModelForm):
 class NHSaleSideForm(forms.ModelForm):
     lawyer1_pay = forms.FloatField(label=ugettext('lawyer_pay'), required=False)
     lawyer2_pay = forms.FloatField(label=ugettext('lawyer_pay'), required=False)
-    def clean(self):
-        cleaned_data = self.cleaned_data
-        nhsale = self.instance.nhsale
-        income = cleaned_data['income']
-        cleaned_data['actual_commission'] = income / nhsale.price * 100
-        return cleaned_data
     def save(self, *args, **kw):
         nhs = forms.ModelForm.save(self, *args,**kw)
-        year, month = nhs.nhsale.nhmonth.year, nhs.nhsale.nhmonth.month
+        nhsale = nhs.nhsale
+        year, month = nhsale.nhmonth.year, nhsale.nhmonth.month
+        income = cleaned_data['income']
+        cleaned_data['actual_commission'] = income / nhsale.price * 100
         l1, l2 = self.cleaned_data['lawyer1'], self.cleaned_data['lawyer2']
         lp1, lp2 = self.cleaned_data['lawyer1_pay'], self.cleaned_data['lawyer2_pay']
         if l1 and lp1:
