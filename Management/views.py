@@ -2789,12 +2789,17 @@ def employeesalary_season_list(request):
     form = EmployeeSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month,
                                        'employee':employee_id})
     salaries = []
-    total_neto, total_check_amount, total_loan_pay, total_bruto, total_refund, total_sale_count = 0,0,0,0,0,0
+    total_neto, total_check_amount, total_loan_pay, total_bruto, total_refund = 0,0,0,0,0
     if employee_id:
         current = date(from_year, from_month, 1)
         end = date(to_year, to_month, 1)
+        employee_base = EmployeeBase.objects.get(pk=employee_id)
+        if isinstance(employee_base.derived, Employee):
+            base_query = EmployeeSalary.objects.filter(employee__id = employee_id)
+        elif isinstance(employee_base.derived, NHEmployee):
+            base_query = NHEmployeeSalary.objects.filter(nhemployee__id = employee_id)
         while current <= end:
-            q = EmployeeSalary.objects.filter(employee__id = employee_id, year = current.year, month = current.month)
+            q = isinstance.objects.filter(year = current.year, month = current.month)
             if q.count() == 1:
                 salary = q[0]
                 salaries.append(salary)
@@ -2803,16 +2808,15 @@ def employeesalary_season_list(request):
                 total_loan_pay += salary.loan_pay or 0
                 total_bruto += salary.bruto or 0
                 total_refund += salary.refund or 0
-                total_sale_count += salary.sales_count
             current = date(current.month == 12 and current.year + 1 or current.year,
                            current.month == 12 and 1 or current.month + 1, 1)
         
     return render_to_response('Management/employeesalary_season_list.html', 
                               { 'salaries':salaries, 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
-                                'employee':employee_id and Employee.objects.get(pk=employee_id), 'filterForm':form,
+                                'employee':employee_base, 'filterForm':form,
                                 'total_neto':total_neto,'total_check_amount':total_check_amount,
                                 'total_loan_pay':total_loan_pay,'total_bruto':total_bruto,
-                                'total_refund':total_refund,'total_sale_count':total_sale_count},
+                                'total_refund':total_refund},
                               context_instance=RequestContext(request))
 
 def employeesalary_season_expenses(request):
