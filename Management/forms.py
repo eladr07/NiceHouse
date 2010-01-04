@@ -484,8 +484,8 @@ class NHSaleSideForm(forms.ModelForm):
         nhs = forms.ModelForm.save(self, *args,**kw)
         nhsale = nhs.nhsale
         year, month = nhsale.nhmonth.year, nhsale.nhmonth.month
-        income = cleaned_data['income']
-        cleaned_data['actual_commission'] = income / nhsale.price * 100
+        income = self.cleaned_data['income']
+        self.cleaned_data['actual_commission'] = income / nhsale.price * 100
         l1, l2 = self.cleaned_data['lawyer1'], self.cleaned_data['lawyer2']
         lp1, lp2 = self.cleaned_data['lawyer1_pay'], self.cleaned_data['lawyer2_pay']
         if l1 and lp1:
