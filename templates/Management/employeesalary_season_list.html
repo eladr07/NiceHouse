@@ -2,7 +2,7 @@
 {% load management_extras %}
 {% block content %}
 <div class="title">
-	<div class="pageTitle">ריכוז שכ"ע לפי תקופה<br><a href="{{employee.get_absolute_url}}" target="_blank">{{employee}}</a></div>
+	<div class="pageTitle">ריכוז שכ"ע לפי תקופה<br><a href="{{employee.derived.get_absolute_url}}" target="_blank">{{employee}}</a></div>
 </div>
 <div class="clearBoth"></div>
 <form method="GET">
