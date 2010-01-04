@@ -2810,6 +2810,8 @@ def employeesalary_season_list(request):
                 total_refund += salary.refund or 0
             current = date(current.month == 12 and current.year + 1 or current.year,
                            current.month == 12 and 1 or current.month + 1, 1)
+    else:
+        employee_base = None
         
     return render_to_response('Management/employeesalary_season_list.html', 
                               { 'salaries':salaries, 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
