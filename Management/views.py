@@ -1441,7 +1441,7 @@ def nhsale_add(request, branch_id):
                 if request.POST.has_key('addanother'):
                     return HttpResponseRedirect('add')
                 elif request.POST.has_key('tomonth'):
-                    return HttpResponseRedirect('/nhbranch/%s/sales' % nhsale.nhbranch.id)
+                    return HttpResponseRedirect('/nhbranch/%s/sales' % nhsale.nhmonth.nhbranch.id)
     else:
         branch = NHBranch.objects.get(pk=branch_id)
         employee_base_query = EmployeeBase.objects.active()
