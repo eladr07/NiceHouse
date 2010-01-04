@@ -865,7 +865,7 @@ def nhmonth_sales(request, nhbranch_id):
 @permission_required('Management.change_nhmonth')
 def nhmonth_close(request):
     today = date.today()
-    nhbranch_id = int(request.GET.get('nhbranch_id'))
+    nhbranch_id = int(request.GET.get('nhbranch'))
     year = int(request.GET.get('year', today.year))
     month = int(request.GET.get('month', today.month))
     if not request.user.has_perm('Management.nhbranch_' + str(nhbranch_id)):
