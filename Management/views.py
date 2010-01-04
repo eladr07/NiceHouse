@@ -2799,7 +2799,7 @@ def employeesalary_season_list(request):
         elif isinstance(employee_base.derived, NHEmployee):
             base_query = NHEmployeeSalary.objects.filter(nhemployee__id = employee_id)
         while current <= end:
-            q = base_query.objects.filter(year = current.year, month = current.month)
+            q = base_query.filter(year = current.year, month = current.month)
             if q.count() == 1:
                 salary = q[0]
                 salaries.append(salary)
