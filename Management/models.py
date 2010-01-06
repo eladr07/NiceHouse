@@ -848,6 +848,8 @@ class LoanPay(models.Model):
     employee = models.ForeignKey('EmployeeBase', related_name='loan_pays', verbose_name=ugettext('employee'))
     date = models.DateField(ugettext('date'), default=date.today(), help_text=u'החודש שממנו תקוזז ההלוואה')
     amount = models.FloatField(ugettext('amount'))
+    deduct_from_salary = models.BooleanField(ugettext('deduct_from_salary'), choices = Boolean, blank = True,
+                                             help_text = ugettext('deduct_from_salary_help'))
     remarks = models.TextField(ugettext('remarks'), blank=True, null=True)
     class Meta:
         db_table = 'LoanPay'
@@ -986,7 +988,8 @@ class EmployeeSalaryBase(models.Model):
     @property
     def loan_pay(self):
         amount = 0
-        for lp in self.get_employee().loan_pays.filter(date__year = self.year, date__month = self.month):
+        for lp in self.get_employee().loan_pays.filter(date__year = self.year, date__month = self.month, 
+                                                       deduct_from_salary = True):
             amount += lp.amount
         return amount
     def get_employee(self):
