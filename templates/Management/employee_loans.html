@@ -9,6 +9,7 @@
 	<br>
 	<form method="POST">
 		<table class="dataTable" border="1">
+			<th></th>
 			<th>תאריך</th>
 			<th>פעולה</th>
 			<th>סך הלוואה</th>
@@ -18,6 +19,7 @@
 			<th>הערות</th>
 		{% for o in employee.loans_and_pays %}
 			<tr class={% if o.pay_num %}"row1"{% else %}"row2"{% endif %}>
+				<td><a href="{{o.get_absolute_url}}"><img src="/site_media/images/documentinfo-48.png" width="15" height="15" alt="פרטים" border="0" /></a></td>
 				<td>{{o.date|date:"j/m/y"}}</td>
 				{% if o.pay_num %}
 					<td>הלוואה</td>

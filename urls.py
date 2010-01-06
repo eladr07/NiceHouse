@@ -359,6 +359,9 @@ urlpatterns += patterns('Management.views',
      {'form_class' : Management.forms.LoanForm, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '%(id)s'}),
     (r'^loans/(?P<id>\d+)/del$', 'limited_delete_object',
      {'model':Loan, 'post_delete_redirect':'/loans'}),
+     
+    (r'^loanpays/(?P<object_id>\d+)$', 'limited_update_object',
+     {'form_class' : Management.forms.LoanPayForm, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '%(id)s'}),
     
     (r'^lawyers/$', 'limited_object_list',
      {'queryset': Lawyer.objects.all()}),

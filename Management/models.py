@@ -835,12 +835,8 @@ class Loan(models.Model):
     date = models.DateField(ugettext('date'), default=date.today(), help_text=u'החודש שממנו תילקח ההלוואה')
     pay_num = models.PositiveSmallIntegerField(ugettext('pay_num'))
     remarks = models.TextField(ugettext('remarks'), blank=True, null=True)
-    def save(self, *args, **kw):
-        if not self.id:
-            'link the loan to the current employee salary'
-            salary = self.employee.derived.salaries.current()[0]
-            self.date = datetime(salary.year, salary.month, 1)
-        models.Model.save(self, *args, **kw)
+    def get_absolute_url(self):
+        return '/loans/%s' % self.id
     class Meta:
         db_table = 'Loan'
 
@@ -851,6 +847,8 @@ class LoanPay(models.Model):
     deduct_from_salary = models.BooleanField(ugettext('deduct_from_salary'), choices = Boolean, blank = True,
                                              help_text = ugettext('deduct_from_salary_help'))
     remarks = models.TextField(ugettext('remarks'), blank=True, null=True)
+    def get_absolute_url(self):
+        return '/loanpays/%s' % self.id
     class Meta:
         db_table = 'LoanPay'
 
