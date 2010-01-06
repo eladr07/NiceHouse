@@ -29,7 +29,7 @@
 					<td>{{o.amount|commaise}}</td>
 				{% endif %}
 				<td>{{o.left|commaise}} ש"ח</td>
-				<td>{{o.deduct_from_salary|default_if_none:""|yesno}}</td>
+				<td>{% if o.deduct_from_salary %} {{o.deduct_from_salary|yesno}} {% endif %}</td>
 				<td>{{o.remarks|default_if_none:""}}</td>
 			</tr>
 		{% empty %}
