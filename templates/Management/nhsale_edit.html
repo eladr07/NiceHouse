@@ -205,7 +205,7 @@
 				<td>
 				{% for i in side.invoices.all %}
 					{{i.num}} - {{i.amount|commaise}} 
-					<a href="/nhsaleside/{{side.id}}/invoice/{{i.id}}" class="fancybox">עדכן</a>
+					<a href="/invoice/{{i.id}}" class="fancybox">עדכן</a>
 					<br>
 				{% empty %}
 					לא הוזנה חשבונית<br>
@@ -223,7 +223,7 @@
 			{% for p in side.payments.all %}
 				<tr>
 					<td>{{p}}</td>
-					<td><a href="/payments/{{p.id}}" class="fancybox">עדכן תשלום</a></td>
+					<td><a href="/payments/{{p.id}}">עדכן תשלום</a></td>
 				</tr>
 			{% endfor %}
 			<tr>

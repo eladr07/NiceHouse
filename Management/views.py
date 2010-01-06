@@ -877,10 +877,7 @@ def nhmonth_close(request):
         nhb = NHBranch.objects.get(pk=nhbranch_id)
         nhm = NHMonth(nhbranch=nhb, year=year, month=month)
     nhm.close()
-    form = MonthFilterForm(initial={'year':nhm.year,'month':nhm.month})
-    return render_to_response('Management/nhmonth_sales.html', 
-                              { 'nhmonth':nhm, 'filterForm':form },
-                              context_instance=RequestContext(request))
+    return HttpResponseRedirect('/nhbranch/%s/sales?year=%s&month=%s' % (nhb.id, nhm.year, nhm.month))
 
 @permission_required('Management.add_demand')
 def demand_list(request):
