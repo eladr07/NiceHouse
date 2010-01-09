@@ -655,7 +655,6 @@ class NHCBase(models.Model):
                     scds.append(NHSaleCommissionDetail(nhemployeesalary=es, commission='nhcbase',amount=x,
                                                        nhsaleside=nhss, income = income,
                                                        precentage = self.precentage))
-        min = self.min
         if amount >= self.min:
             for scd in scds:
                 scd.save()
