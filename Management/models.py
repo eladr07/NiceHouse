@@ -609,7 +609,7 @@ class NHIncomeType(models.Model):
         db_table = 'NHIncomeType'
 
 class NHCBase(models.Model):
-    min = models.PositiveIntegerField(ugettext('min_commission'), default=0)
+    min = models.PositiveIntegerField(ugettext('min_commission'))
     precentage = models.FloatField(ugettext('precentage'))
     income_type = models.ForeignKey('NHIncomeType', verbose_name=ugettext('income_type'))
     filter = models.ForeignKey('NHSaleFilter', verbose_name=ugettext('filter'))
