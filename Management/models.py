@@ -609,7 +609,7 @@ class NHIncomeType(models.Model):
         db_table = 'NHIncomeType'
 
 class NHCBase(models.Model):
-    min = models.PositiveIntegerField(ugettext('min_commission'))
+    min_amount = models.PositiveIntegerField(ugettext('min_commission'), default=0)
     precentage = models.FloatField(ugettext('precentage'))
     income_type = models.ForeignKey('NHIncomeType', verbose_name=ugettext('income_type'))
     filter = models.ForeignKey('NHSaleFilter', verbose_name=ugettext('filter'))
@@ -655,13 +655,13 @@ class NHCBase(models.Model):
                     scds.append(NHSaleCommissionDetail(nhemployeesalary=es, commission='nhcbase',amount=x,
                                                        nhsaleside=nhss, income = income,
                                                        precentage = self.precentage))
-        if amount >= self.min:
+        if amount >= self.min_amount:
             for scd in scds:
                 scd.save()
             return amount
         else:
-            NHSaleCommissionDetail.objects.create(nhemployeesalary=es,commission='nhcbase_min', amount=self.min)
-            return self.min
+            NHSaleCommissionDetail.objects.create(nhemployeesalary=es,commission='nhcbase_min', amount=self.min_amount)
+            return self.min_amount
     class Meta:
         db_table = 'NHCBase'
 
