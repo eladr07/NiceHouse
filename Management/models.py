@@ -1934,7 +1934,7 @@ class Tax(models.Model):
     class Meta:
         db_table = 'Tax'
         get_latest_by = 'date'
-        ordering = ['-date']
+        ordering = ['date']
         verbose_name = ugettext('tax')
                 
 #Building Input

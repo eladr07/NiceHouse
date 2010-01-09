@@ -580,6 +580,13 @@ class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
 
+class TaxForm(forms.ModelForm):
+    def __init__(self, *args, **kw):
+        super(TaxForm, self).__init__(*args, **kw)
+        self.fields['date'].widget.attrs = {'class':'vDateField'}
+    class Meta:
+        model = Tax
+
 class AttachmentForm(forms.ModelForm):
     tag_new = forms.CharField(max_length=20, required=False, label=ugettext('tag_new'))
     
