@@ -50,7 +50,7 @@
 		<th>מדד</th>
 		{% for t in object_list %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{t.id}}>
-				<td>{{ t.date }}</td>
+				<td>{{ t.date|date:"j/m/y" }}</td>
 				<td><a class="fancybox" href="{{t.id}}">{{ t.value }}</a></td>
 			</tr>
 		{% endfor %}
