@@ -782,29 +782,28 @@ def nh_season_profit(request):
     while current <= to_date:
         query = NHMonth.objects.filter(nhbranch__id = nhbranch_id, year = current.year, month = current.month)
         nhm = query.count() == 1 and query[0]
-        if not nhm:
-            continue
-        nhm.include_tax = False
-        salary_expenses = 0
-        #collect all employee expenses for this month
-        for nhemployee in nhm.nhbranch.nhemployees:
-            query = NHEmployeeSalary.objects.filter(nhemployee = nhemployee, year = current.year, month = current.month)
-            if query.count() == 0:
-                continue
-            salary = query[0]
-            salary_expenses += (salary.bruto or salary.neto)
-        #calculate commulative sales prices for this month
-        sales_worth = 0
-        for nhsale in nhm.nhsales.all():
-            sales_worth += nhsale.price
-        profit = nhm.total_net_income - salary_expenses
-        month_total = {'nhmonth':nhm, 'sales_count':nhm.nhsales.count(),'sales_worth_no_tax':sales_worth,
-                       'income_no_tax':nhm.total_income, 'lawyers_pay':nhm.total_lawyer_pay,
-                       'net_income_no_tax':nhm.total_net_income, 'salary_expenses':salary_expenses,
-                       'profit':profit}
-        months.append(month_total)
-        total_profit += profit
-        total_net_income += nhm.total_net_income
+        if nhm:
+            nhm.include_tax = False
+            salary_expenses = 0
+            #collect all employee expenses for this month
+            for nhemployee in nhm.nhbranch.nhemployees:
+                query = NHEmployeeSalary.objects.filter(nhemployee = nhemployee, year = current.year, month = current.month)
+                if query.count() == 0:
+                    continue
+                salary = query[0]
+                salary_expenses += (salary.bruto or salary.neto)
+            #calculate commulative sales prices for this month
+            sales_worth = 0
+            for nhsale in nhm.nhsales.all():
+                sales_worth += nhsale.price
+            profit = nhm.total_net_income - salary_expenses
+            month_total = {'nhmonth':nhm, 'sales_count':nhm.nhsales.count(),'sales_worth_no_tax':sales_worth,
+                           'income_no_tax':nhm.total_income, 'lawyers_pay':nhm.total_lawyer_pay,
+                           'net_income_no_tax':nhm.total_net_income, 'salary_expenses':salary_expenses,
+                           'profit':profit}
+            months.append(month_total)
+            total_profit += profit
+            total_net_income += nhm.total_net_income
         current = date(current.month == 12 and current.year + 1 or current.year, current.month == 12 and 1 or current.month + 1, 1)
     totals = {}
     #calculate relative fields, and totals
