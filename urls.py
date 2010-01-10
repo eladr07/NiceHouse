@@ -207,6 +207,7 @@ urlpatterns += patterns('Management.views',
     (r'^nhbranch/(?P<nhbranch_id>\d+)/sales/$', 'nhmonth_sales'),
     (r'^nhmonth/close$', 'nhmonth_close'),
     (r'^nhseasonincome/$', 'nh_season_income'),
+    (r'^nhseasonprofit/$', 'nh_season_profit'),
     
     (r'^seasonincome/$', 'season_income'),
     

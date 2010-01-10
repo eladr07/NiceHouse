@@ -556,8 +556,16 @@ def nhemployee_salary_pdf(request, nhbranch_id, year, month):
     response['Content-Disposition'] = 'attachment; filename=' + filename
     
     nhb = NHBranch.objects.get(pk = nhbranch_id)
-    salaries = [nhes for nhes in NHEmployeeSalary.objects.filter(year = year, month = month, nhemployee__nhbranch = nhb)
-                                                                 if nhes.approved_date]
+    salaries = []
+    for e in NHEmployee.objects.active():
+        query = NHEmployeeSalary.objects.filter(nhemployee = e, month = month, year = year)
+        if query.count() == 0:
+            continue
+        salary = query[0]
+        if salary.nhemployee.nhbranch != nhb:
+            continue
+        salaries.append(es)
+
     nhsales = NHSale.objects.filter(nhmonth__year__exact = year, nhmonth__month__exact = month, nhmonth__nhbranch = nhb)
     title = u'שכר עבודה לסניף %s לחודש %s\%s' % (nhb, year, month)
     EmployeeSalariesBookKeepingWriter(salaries, title, nhsales).build(filename)
@@ -755,6 +763,61 @@ def employee_list_pdf(request):
     response.write(p.read())
     p.close()
     return response
+
+def nh_season_profit(request):
+    month = date.today()
+    nhbranch_id = int(request.GET.get('nhbranch', 0))
+    from_year = int(request.GET.get('from_year', month.year))
+    from_month = int(request.GET.get('from_month', month.month))
+    to_year = int(request.GET.get('to_year', month.year))
+    to_month = int(request.GET.get('to_month', month.month))
+    from_date = date(year, month, 1)
+    to_date = date(year, month, 1)
+    form = NHBranchSeasonForm(initial={'nhbranch':nhbranch_id,'from_year':from_year, 'from_month':from_month,
+                                       'to_year':to_year, 'to_month':to_month})
+    nhbranch = NHBranch.objects.get(pk = nhbranch_id)
+    months = []
+    current = from_date
+    total_profit, total_net_income = 0,0
+    while current <= to_date:
+        query = NHMonth.objects.filter(nhbranch__id = nhbranch_id, year = current.year, month = current.month)
+        nhm = query.count() == 1 and query[0]
+        if not nhm:
+            continue
+        nhm.include_tax = False
+        salary_expenses = 0
+        #collect all employee expenses for this month
+        for nhemployee in nhm.nhbranch.nhemployees:
+            query = NHEmployeeSalary.objects.filter(nhemployee = nhemployee, year = current.year, month = current.month)
+            if query.count() == 0:
+                continue
+            salary = query[0]
+            salary_expenses += (salary.bruto or salary.neto)
+        #calculate commulative sales prices for this month
+        sales_worth = 0
+        for nhsale in nhm.nhsales.all():
+            sales_worth += nhsale.price
+        profit = nhm.total_net_income - salary_expenses
+        month_total = {'nhmonth':nhm, 'sales_count':nhm.nhsales.count(),'sales_worth_no_tax':sales_worth,
+                       'income_no_tax':nhm.total_income, 'lawyers_pay':nhm.total_lawyer_pay,
+                       'net_income_no_tax':nhm.total_net_income, 'salary_expenses':salary_expenses,
+                       'profit':profit}
+        months.append(month_total)
+        total_profit += profit
+        total_net_income += nhm.total_net_income
+        current = date(current.month == 12 and current.year + 1 or current.year, current.month == 12 and 1 or current.month + 1, 1)
+    totals = {}
+    #calculate relative fields, and totals
+    for month in months:
+        month['relative_profit'] = month['profit'] / total_profit * 100
+        month['relative_net_income'] = month['net_income_no_tax'] / total_net_income * 100
+        for key in ['sales_worth_no_tax','income_no_tax','lawyers_pay','net_income_no_tax','salary_expenses','profit']:
+            if not totals.has_key(key):
+                totals[key] = 0
+            totals[key] += month[key]
+    return render_to_response('Management/nh_season_income.html', 
+                              { 'months':months,'totals':totals, 'filterForm':form },
+                              context_instance=RequestContext(request))
 
 @permission_required('Management.nhmonth_season')
 def nh_season_income(request):

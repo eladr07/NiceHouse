@@ -2231,6 +2231,7 @@ class NHMonth(models.Model):
         db_table = 'NHMonth'
         ordering = ['-year', '-month']
         permissions = (('nhmonth_season', 'NHMonth Season'),)
+        unique_together = ('nhbranch','year','month')
 
 class NHSale(models.Model):
     nhmonth = models.ForeignKey('NHMonth', editable=False, related_name='nhsales')
