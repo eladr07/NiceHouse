@@ -771,8 +771,8 @@ def nh_season_profit(request):
     from_month = int(request.GET.get('from_month', month.month))
     to_year = int(request.GET.get('to_year', month.year))
     to_month = int(request.GET.get('to_month', month.month))
-    from_date = date(year, month, 1)
-    to_date = date(year, month, 1)
+    from_date = date(from_year, from_month, 1)
+    to_date = date(to_year, to_month, 1)
     form = NHBranchSeasonForm(initial={'nhbranch':nhbranch_id,'from_year':from_year, 'from_month':from_month,
                                        'to_year':to_year, 'to_month':to_month})
     nhbranch = NHBranch.objects.get(pk = nhbranch_id)
