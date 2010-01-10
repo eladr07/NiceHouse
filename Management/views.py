@@ -814,7 +814,7 @@ def nh_season_profit(request):
             if not totals.has_key(key):
                 totals[key] = 0
             totals[key] += month[key]
-    return render_to_response('Management/nh_season_income.html', 
+    return render_to_response('Management/nh_season_profit.html', 
                               { 'months':months,'totals':totals, 'filterForm':form },
                               context_instance=RequestContext(request))
 
