@@ -815,7 +815,7 @@ def nh_season_profit(request):
                 totals[key] = 0
             totals[key] += month[key]
     return render_to_response('Management/nh_season_profit.html', 
-                              { 'months':months,'totals':totals, 'filterForm':form },
+                              { 'months':months,'totals':totals, 'filterForm':form, 'from_date':from_date, 'to_date':to_date },
                               context_instance=RequestContext(request))
 
 @permission_required('Management.nhmonth_season')
