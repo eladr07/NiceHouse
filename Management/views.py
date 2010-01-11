@@ -567,6 +567,7 @@ def nhemployee_salary_pdf(request, nhbranch_id, year, month):
         salaries.append(salary)
 
     nhsales = NHSale.objects.filter(nhmonth__year__exact = year, nhmonth__month__exact = month, nhmonth__nhbranch = nhb)
+    raise TypeError
     title = u'שכר עבודה לסניף %s לחודש %s\%s' % (nhb, year, month)
     EmployeeSalariesBookKeepingWriter(salaries, title, nhsales).build(filename)
     p = open(filename,'r')
