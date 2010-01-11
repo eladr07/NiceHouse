@@ -61,13 +61,13 @@
 		<tr class="{% cycle 'row1' 'row2' %}">
 			<td>{{month.nhmonth.month}}/{{month.nhmonth.year}}</a></td>
 			<td>{{month.nhmonth.nhbranch}}</td>
-			<td>{{month.sales_count}}</td>
+			<td><a target="_blank" href="/nhbranch/{{month.nhmonth.nhbranch.id}}/sales/?year={{month.nhmonth.year}}&month={{month.nhmonth.month}}">{{month.sales_count}}</a></td>
 			<td>{{month.sales_worth_no_tax|commaise}}</td>
 			<td>{{month.income_no_tax|commaise}}</td>
 			<td>{{month.lawyers_pay|commaise}}</td>
 			<td>{{month.net_income_no_tax|commaise}}</td>
 			<td>{{month.relative_net_income|floatformat:-2}}</td>
-			<td>{{month.salary_expenses|commaise}}</td>
+			<td><a target="_blank" href="/nhemployeesalaries/?year={{month.nhmonth.year}}&month={{month.nhmonth.month}}">{{month.salary_expenses|commaise}}</a></td>
 			<td></td>
 			<td>{{month.profit|commaise}}</td>
 			<td>{{month.relative_profit|floatformat:-2}}</td>
