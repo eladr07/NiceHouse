@@ -145,8 +145,8 @@
 			</td>
 			<td><a class="fancybox" href="/nhemployee/{{s.nhemployee.id}}/sales/{{month.year}}/{{month.month}}">{{ s.sales_count }}</a></td>
 			<td style="color:#08A600;">
-				{{s.base}} + 
-				<a href="{{s.id}}/details" class="fancybox">{{s.commissions|commaise}}</a>
+				{{s.base|default_if_none:""}} + 
+				<a href="{{s.id}}/details" class="fancybox">{{s.commissions|default_if_none:""|commaise}}</a>
 			</td>
 			<td style="color:#08A600;">
 				{% if s.admin_commission %}
