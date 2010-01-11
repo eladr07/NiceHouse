@@ -718,7 +718,7 @@ class EmployeeSalariesBookKeepingWriter:
         flows.append(Spacer(0,10))
         flows.append(Paragraph(log2vis(u'לתשומת לבך'), styleSubTitleBold))
         flows.append(Spacer(0,10))
-        flows.append(Paragraph(log2vis(u"יש להוציא את השכר לעובדים לאחר בדיקה שכל הצ'קים התקבלו והחשבוניות הוצאות."), styleNormal13))
+        flows.append(Paragraph(log2vis(u"יש להוציא את השכר לעובדים לאחר בדיקה שכל הצ'קים התקבלו והחשבוניות הוצאו."), styleNormal13))
         flows.append(Paragraph(log2vis(u"במידה ויש צ'קים דחויים\או שלא הגיעו נא לעדכן את אלי."), styleNormal13))
         return flows
     def salariesFlows(self):
