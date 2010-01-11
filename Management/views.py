@@ -558,13 +558,13 @@ def nhemployee_salary_pdf(request, nhbranch_id, year, month):
     nhb = NHBranch.objects.get(pk = nhbranch_id)
     salaries = []
     for e in NHEmployee.objects.active():
+        if e.nhbranch != nhb:
+            continue
         query = NHEmployeeSalary.objects.filter(nhemployee = e, month = month, year = year)
         if query.count() == 0:
             continue
         salary = query[0]
-        if salary.nhemployee.nhbranch != nhb:
-            continue
-        salaries.append(es)
+        salaries.append(salary)
 
     nhsales = NHSale.objects.filter(nhmonth__year__exact = year, nhmonth__month__exact = month, nhmonth__nhbranch = nhb)
     title = u'שכר עבודה לסניף %s לחודש %s\%s' % (nhb, year, month)
