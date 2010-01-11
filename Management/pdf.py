@@ -704,7 +704,7 @@ class EmployeeSalariesBookKeepingWriter:
                 if side.remarks:
                     remarks_str += log2vis(side.clients + ' - ' + side.remarks) + '<br/>'
                 i += 1
-                if i % 27 == 0 or i == len(self.salaries):
+                if i % 27 == 0 or i == len(self.nhsales):
                     data = [headers]
                     data.extend(rows)
                     t = Table(data)
