@@ -775,7 +775,6 @@ def nh_season_profit(request):
     to_date = date(to_year, to_month, 1)
     form = NHBranchSeasonForm(initial={'nhbranch':nhbranch_id,'from_year':from_year, 'from_month':from_month,
                                        'to_year':to_year, 'to_month':to_month})
-    nhbranch = NHBranch.objects.get(pk = nhbranch_id)
     months = []
     current = from_date
     total_profit, total_net_income = 0,0
