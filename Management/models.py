@@ -2348,8 +2348,9 @@ class Sale(models.Model):
         self.restore_date = self.id and self.actual_demand.finish_date or None
     @property
     def actual_demand(self):
-        return Demand.objects.get(month=self.contractor_pay.month, year=self.contractor_pay.year,
-                                  project=self.demand.project)
+        query = Demand.objects.filter(month=self.contractor_pay.month, year=self.contractor_pay.year,
+                                      project=self.demand.project)
+        return query.count() == 1 and query[0] or None
     @property
     def project_commission_details(self):
         return self.commission_details.filter(employee_salary=None)
