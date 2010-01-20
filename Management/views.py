@@ -767,7 +767,7 @@ def employee_list_pdf(request):
 
 def nh_season_profit(request):
     month = date.today()
-    nhbranch_id = int(request.GET.get('nhbranch', 0))
+    nhbranch_id = int(request.GET.get('nhbranch') or 0)
     from_year = int(request.GET.get('from_year', month.year))
     from_month = int(request.GET.get('from_month', month.month))
     to_year = int(request.GET.get('to_year', month.year))
@@ -1460,20 +1460,20 @@ def nhsale_add(request, branch_id):
         return HttpResponse('No Permission. Contact Elad.') 
     PaymentFormset = modelformset_factory(Payment, PaymentForm, extra=5)
     if request.method=='POST':
-        saleForm = NHSaleForm(request.POST, prefix='sale')
         monthForm = NHMonthForm(request.POST, prefix='month')
-        if monthForm.is_valid():
-            q = NHMonth.objects.filter(nhbranch = monthForm.cleaned_data['nhbranch'],
-                                       year = monthForm.cleaned_data['year'],
-                                       month = monthForm.cleaned_data['month'])
-            saleForm.instance.nhmonth = q.count() == 1 and q[0] or monthForm.save()
+        saleForm = NHSaleForm(request.POST, prefix='sale')
         side1Form = NHSaleSideForm(request.POST, prefix='side1')
         side2Form = NHSaleSideForm(request.POST, prefix='side2')
         invoice1Form = InvoiceForm(request.POST, prefix='invoice1')
         payment1Forms = PaymentFormset(request.POST, prefix='payments1')
         invoice2Form = InvoiceForm(request.POST, prefix='invoice2')
         payment2Forms = PaymentFormset(request.POST, prefix='payments2')
-        if saleForm.is_valid() and side1Form.is_valid() and side2Form.is_valid():
+        
+        if monthForm.is_valid() and saleForm.is_valid() and side1Form.is_valid() and side2Form.is_valid():
+            q = NHMonth.objects.filter(nhbranch = monthForm.cleaned_data['nhbranch'],
+                                       year = monthForm.cleaned_data['year'],
+                                       month = monthForm.cleaned_data['month'])
+            saleForm.instance.nhmonth = q.count() == 1 and q[0] or monthForm.save()
             nhsale = saleForm.save()
             side1Form.instance.nhsale = side2Form.instance.nhsale = nhsale
             side1, side2 = side1Form.save(), side2Form.save()
