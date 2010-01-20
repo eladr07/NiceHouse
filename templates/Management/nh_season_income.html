@@ -74,22 +74,31 @@
 	{% endfor %}
 	<tr class="rowSumGreen">
 		<td colspan="3">סה"כ כולל מע"מ</td>
-		<td>{{total_avg_signed_commission|floatformat:-2}}</td>
-		<td>{{total_avg_actual_commission|floatformat:-2}}</td>
-		<td>{{season_income|commaise}}</td>
+		<td>{{avg.signed_commission|floatformat:-2}}</td>
+		<td>{{avg.actual_commission|floatformat:-2}}</td>
+		<td>{{totals.income|commaise}}</td>
 		<td></td>
-		<td>{{season_net_income|commaise}}</td>
+		<td>{{totals.net_income|commaise}}</td>
 		{% for nhe in employees %}
 		<td>{{nhe.season_total|commaise}}</td>
 		{% endfor %}		
 	</tr>
 	<tr class="rowSum">
 		<td colspan="5">סה"כ ללא מע"מ</td>
-		<td>{{season_income_notax|commaise}}</td>
+		<td>{{totals_notax.income|commaise}}</td>
 		<td></td>
-		<td>{{season_net_income_notax|commaise}}</td>
+		<td>{{totals_notax.net_income|commaise}}</td>
 		{% for nhe in employees %}
 		<td>{{nhe.season_total_notax|commaise}}</td>
+		{% endfor %}		
+	</tr>
+	<tr class="rowSum">
+		<td colspan="5">סה"כ ללא מע"מ (ממוצע)</td>
+		<td>{{avg_notax.income|commaise}}</td>
+		<td></td>
+		<td>{{avg_notax.net_income|commaise}}</td>
+		{% for nhe in employees %}
+		<td>{{nhe.season_avg_notax|commaise}}</td>
 		{% endfor %}		
 	</tr>
 	<tr class="rowSumGreen">
