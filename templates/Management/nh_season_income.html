@@ -94,11 +94,11 @@
 	</tr>
 	<tr class="rowSum">
 		<td colspan="5">סה"כ ללא מע"מ (ממוצע)</td>
-		<td>{{avg_notax.income|floatformat:-2}}</td>
+		<td>{{avg_notax.income|commaise}}</td>
 		<td></td>
-		<td>{{avg_notax.net_income|floatformat:-2}}</td>
+		<td>{{avg_notax.net_income|commaise}}</td>
 		{% for nhe in employees %}
-		<td>{{nhe.season_avg_notax|floatformat:-2}}</td>
+		<td>{{nhe.season_avg_notax|commaise}}</td>
 		{% endfor %}		
 	</tr>
 	<tr class="rowSumGreen">
