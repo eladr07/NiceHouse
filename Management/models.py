@@ -1524,8 +1524,11 @@ class ProjectCommission(models.Model):
     agreement = models.FileField(ugettext('agreement'), upload_to='files', null=True, blank=True)
     remarks = models.TextField(ugettext('commission_remarks'), null=True, blank=True)
     def calc(self, sales, sub=0, restore_date = date.today()):
-        if sales.count() == 0: return
+        if sales.count() == 0: 
+            return
         demand = sales[0].actual_demand
+        if not demand:
+            return
         if self.commission_by_signups and sub == 0:
             for (m, y) in demand.get_signup_months():
                 #get sales that were signed up for specific month, not including future sales.
@@ -1542,13 +1545,16 @@ class ProjectCommission(models.Model):
             bonus = 0
             for subSales in demand.get_affected_sales().values():
                 for s in subSales:
-                    if not s.commission_include: continue
+                    if not s.commission_include: 
+                        continue
                     signup = s.house.get_signup()
-                    if not signup: continue
+                    if not signup: 
+                        continue
                     #get the finish date when the demand for the month the signup 
                     #were made we use it to find out what was the commission at
                     #that time
-                    if not s.actual_demand.finish_date : continue
+                    if not s.actual_demand or not s.actual_demand.finish_date:
+                        continue
                     q = s.project_commission_details.filter(commission='final')
                     if q.count()==0: continue
                     s.restore_date = demand.get_previous_demand().finish_date
@@ -2345,7 +2351,8 @@ class Sale(models.Model):
     def __init__(self, *args, **kw):
         models.Model.__init__(self, *args, **kw)
         self.restore = True
-        self.restore_date = self.id and self.actual_demand.finish_date or None
+        actual_demand = self.actual_demand
+        self.restore_date = self.id and actual_demand and actual_demand.finish_date or None
     @property
     def actual_demand(self):
         query = Demand.objects.filter(month=self.contractor_pay.month, year=self.contractor_pay.year,

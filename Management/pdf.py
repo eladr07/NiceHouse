@@ -307,8 +307,13 @@ class MonthDemandWriter:
         while demand != None:
             for s in demand.get_sales().filter(commission_include=True):
                 i += 1
-                row = ['%s-%s' % (s.actual_demand.id, i),'%s/%s' % (s.actual_demand.month, s.actual_demand.year), log2vis(s.clients),
-                       '%s/%s' % (s.house.building.num, s.house.num), s.sale_date.strftime('%d/%m/%y'), commaise(s.price)]
+                actual_demand = s.actual_demand
+                if actual_demand:
+                    row = ['%s-%s' % (actual_demand.id, i),'%s/%s' % (actual_demand.month, actual_demand.year)]
+                else:
+                    row = [None, None]
+                row.extend([log2vis(s.clients), '%s/%s' % (s.house.building.num, s.house.num), 
+                            s.sale_date.strftime('%d/%m/%y'), commaise(s.price)])
                 doh0prices = s.house.versions.filter(type__id = models.PricelistType.Doh0)
                 if doh0prices.count() > 0:
                     doh0price = doh0prices.latest().price
