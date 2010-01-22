@@ -2842,34 +2842,35 @@ def report_employeesalary_season(request, employee_id=None, from_year=Demand.cur
 
 @permission_required('Management.demand_season')
 def demand_season_list(request):
-    month=Demand.current_month()
-    project_id = int(request.GET.get('project') or 0)
-    from_year = int(request.GET.get('from_year', month.year))
-    from_month = int(request.GET.get('from_month', month.month))
-    to_year = int(request.GET.get('to_year', month.year))
-    to_month = int(request.GET.get('to_month', month.month))
-    form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month,
-                                      'project':project_id})
     ds = []
     total_sales_count,total_sales_amount, total_sales_commission, total_amount = 0,0,0,0
-    if project_id:
-        current = date(from_year, from_month, 1)
-        end = date(to_year, to_month, 1)
-        while current <= end:
-            q = Demand.objects.filter(project__id = project_id, year = current.year, month = current.month)
-            if q.count() > 0:
-                ds.append(q[0])
-            current = date(current.month == 12 and current.year + 1 or current.year,
-                           current.month == 12 and 1 or current.month + 1, 1)
-        for d in ds:
-            total_sales_count += d.get_sales().count()
-            total_sales_amount += d.get_final_sales_amount()
-            total_sales_commission += d.get_sales_commission()
-            total_amount += d.get_total_amount()
+    from_date, to_date, project = None, None, None
+    
+    if len(request.GET):
+        form = ProjectSeasonForm(request.GET)
+        if form.is_valid():
+            project = form.cleaned_data['project']
+            from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
+            to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
+            current = from_date
+            
+            while current <= to_date:
+                q = Demand.objects.filter(project__id = project_id, year = current.year, month = current.month)
+                if q.count() > 0:
+                    ds.append(q[0])
+                current = date(current.month == 12 and current.year + 1 or current.year,
+                               current.month == 12 and 1 or current.month + 1, 1)
+            for d in ds:
+                total_sales_count += d.get_sales().count()
+                total_sales_amount += d.get_final_sales_amount()
+                total_sales_commission += d.get_sales_commission()
+                total_amount += d.get_total_amount()
+    else:
+        form = ProjectSeasonForm()
         
     return render_to_response('Management/demand_season_list.html', 
-                              { 'demands':ds, 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
-                                'project':project_id and Project.objects.get(pk=project_id), 'filterForm':form,
+                              { 'demands':ds, 'start':from_date, 'end':to_date,
+                                'project':project, 'filterForm':form,
                                 'total_sales_count':total_sales_count,
                                 'total_sales_amount':total_sales_amount,
                                 'total_sales_commission':total_sales_commission,
@@ -2878,84 +2879,89 @@ def demand_season_list(request):
 
 @permission_required('Management.season_income')
 def season_income(request):
-    month=Demand.current_month()
-    from_year = int(request.GET.get('from_year', month.year))
-    from_month = int(request.GET.get('from_month', month.month))
-    to_year = int(request.GET.get('to_year', month.year))
-    to_month = int(request.GET.get('to_month', month.month))
-    start = date(from_year, from_month, 1)
-    current = date(from_year, from_month, 1)
-    end = date(to_year, to_month, 1)
-    form = SeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month})
-    ds = []
-    while current <= end:
-        q = Demand.objects.filter(year = current.year, month = current.month)
-        ds.extend(q)
-        current = date(current.month == 12 and current.year + 1 or current.year, current.month == 12 and 1 or current.month + 1, 1)
-    projects = []
     total_sale_count, total_amount, total_amount_notax = 0,0,0
-    for d in ds:
-        tax = Tax.objects.filter(date__lte=date(d.year, d.month,1)).latest().value / 100 + 1
-        if not d.project in projects:
-            projects.append(d.project)
-        p = projects[projects.index(d.project)]
-        if not hasattr(p,'total_amount'): p.total_amount = 0
-        if not hasattr(p,'total_amount_notax'): p.total_amount_notax = 0
-        if not hasattr(p,'total_sale_count'): p.total_sale_count = 0
-        amount = d.get_total_amount()
-        p.total_amount += amount
-        p.total_amount_notax += amount / tax
-        p.total_sale_count += d.get_sales().count()
-        total_sale_count += d.get_sales().count()
-        total_amount += amount
-        total_amount_notax += amount / tax
-    for p in projects:
-        if p.end_date:
-            end_date = min(end, p.end_date)
-        else:
-            end_date = end
-        start_date = max(p.start_date, start)
-        active_months = round((end_date - start_date).days/30) + 1
-        p.avg_sale_count = p.total_sale_count / active_months
+    projects = []
+    start, end = None, None
+    if len(request.GET):
+        form = SeasonForm(request.GET)
+        if form.is_valid():
+            project = form.cleaned_data['project']
+            from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
+            to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
+            current = from_date    
+            ds = []
+            while current <= end:
+                q = Demand.objects.filter(year = current.year, month = current.month)
+                ds.extend(q)
+                current = date(current.month == 12 and current.year + 1 or current.year, 
+                               current.month == 12 and 1 or current.month + 1, 1)
+                
+            for d in ds:
+                tax = Tax.objects.filter(date__lte=date(d.year, d.month,1)).latest().value / 100 + 1
+                if not d.project in projects:
+                    projects.append(d.project)
+                p = projects[projects.index(d.project)]
+                if not hasattr(p,'total_amount'): p.total_amount = 0
+                if not hasattr(p,'total_amount_notax'): p.total_amount_notax = 0
+                if not hasattr(p,'total_sale_count'): p.total_sale_count = 0
+                amount = d.get_total_amount()
+                p.total_amount += amount
+                p.total_amount_notax += amount / tax
+                p.total_sale_count += d.get_sales().count()
+                total_sale_count += d.get_sales().count()
+                total_amount += amount
+                total_amount_notax += amount / tax
+            for p in projects:
+                if p.end_date:
+                    end_date = min(end, p.end_date)
+                else:
+                    end_date = end
+                start_date = max(p.start_date, start)
+                active_months = round((end_date - start_date).days/30) + 1
+                p.avg_sale_count = p.total_sale_count / active_months
         
+    else:
+        form = SeasonForm()
+
     month_count = round((end-start).days/30) + 1
     return render_to_response('Management/season_income.html', 
-                              { 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
+                              { 'start':start, 'end':end,
                                 'projects':projects, 'filterForm':form,'total_amount':total_amount,'total_sale_count':total_sale_count,
                                 'total_amount_notax':total_amount_notax,'avg_amount':total_amount/month_count,
                                 'avg_amount_notax':total_amount_notax/month_count,'avg_sale_count':total_sale_count/month_count},
                               context_instance=RequestContext(request))
 
 def demand_followup_list(request):
-    month=Demand.current_month()
-    project_id = int(request.GET.get('project') or 0)
-    from_year = int(request.GET.get('from_year', month.year))
-    from_month = int(request.GET.get('from_month', month.month))
-    to_year = int(request.GET.get('to_year', month.year))
-    to_month = int(request.GET.get('to_month', month.month))
-    form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month,
-                                      'project':project_id})
     ds = []
     total_amount, total_invoices, total_payments, total_diff_invoice, total_diff_invoice_payment = 0,0,0,0,0
-    if project_id:
-        current = date(int(from_year), int(from_month), 1)
-        end = date(int(to_year), int(to_month), 1)
-        while current <= end:
-            q = Demand.objects.filter(project__id = project_id, year = current.year, month = current.month)
-            if q.count() > 0:
-                ds.append(q[0])
-            current = date(current.month == 12 and current.year + 1 or current.year,
-                           current.month == 12 and 1 or current.month + 1, 1)
-        for d in ds:
-            total_amount += d.get_total_amount()
-            total_invoices += d.invoices_amount
-            total_payments += d.payments_amount
-            total_diff_invoice += d.diff_invoice
-            total_diff_invoice_payment += d.diff_invoice_payment
-        
+    from_date, to_date, project = None, None, None
+    
+    if len(request.GET):
+        form = ProjectSeasonForm(request.GET)
+        if form.is_valid():
+            project = form.cleaned_data['project']
+            from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
+            to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
+            current = from_date
+            
+            while current <= to_date:
+                q = Demand.objects.filter(project__id = project_id, year = current.year, month = current.month)
+                if q.count() > 0:
+                    ds.append(q[0])
+                current = date(current.month == 12 and current.year + 1 or current.year,
+                               current.month == 12 and 1 or current.month + 1, 1)
+            for d in ds:
+                total_amount += d.get_total_amount()
+                total_invoices += d.invoices_amount
+                total_payments += d.payments_amount
+                total_diff_invoice += d.diff_invoice
+                total_diff_invoice_payment += d.diff_invoice_payment
+    else:
+        form = ProjectSeasonForm()
+            
     return render_to_response('Management/demand_followup_list.html', 
-                              { 'demands':ds, 'start':date(int(from_year), int(from_month), 1), 'end':date(int(to_year), int(to_month), 1),
-                                'project':project_id and Project.objects.get(pk=project_id), 'filterForm':form,
+                              { 'demands':ds, 'start':from_date, 'end':to_date,
+                                'project':project, 'filterForm':form,
                                 'total_amount':total_amount, 'total_invoices':total_invoices, 'total_payments':total_payments,
                                 'total_diff_invoice':total_diff_invoice, 'total_diff_invoice_payment':total_diff_invoice_payment},
                               context_instance=RequestContext(request))
