@@ -20,6 +20,7 @@
 	<form method="POST">
 	<div id="rightSide">
 		<fieldset class="cardFieldset">
+			{{incomeForm.errors}}
 			<table class="formTable">
 				<legend>פרטי הכנסה</legend>
 				{% for field in incomeForm %}
@@ -69,6 +70,7 @@
 	</div>
 	<div id="leftSide">
 		<fieldset class="cardFieldset">
+			{{dealForm.errors}}
 			<table class="formTable">
 				<legend>פרטי עסקה</legend>
 				{% for field in dealForm %}
