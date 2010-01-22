@@ -1279,6 +1279,100 @@ def invoice_offset_del(request, id):
     InvoiceOffset.objects.get(pk=id).delete()
     return HttpResponseRedirect('/demands/%s' % demand_id)
 
+def process_deal_form(form):
+    pass
+
+def process_income_form(form):
+    new_division_type, new_income_type, new_income_producer_type, new_client_type = (form.cleaned_data['new_client_status_type'],
+                                                                                     form.cleaned_data['new_income_type'],
+                                                                                     form.cleaned_data['new_income_producer_type'],
+                                                                                     form.cleaned_data['new_client_type'])
+    if new_division_type:
+        division_type, new = DivisionType.objects.get_or_create(name=new_division_type)
+        form.cleaned_data['division_type'] = division_type
+    if new_income_type:
+        income_type, new = DivisionType.objects.get_or_create(name=new_income_type)
+        form.cleaned_data['income_type'] = income_type
+    if new_income_producer_type:
+        income_producer_type, new = DivisionType.objects.get_or_create(name=new_income_producer_type)
+        form.cleaned_data['income_producer_type'] = income_producer_type
+    if new_client_type:
+        client_type, new = DivisionType.objects.get_or_create(name=new_client_type)
+        form.cleaned_data['client_type'] = client_type
+
+@permission_required('Management.add_income')
+def income_add(request):
+    if request.method=='POST':
+        incomeForm, dealForm, invoiceForm, paymentForm = (IncomeForm(request.POST), DealForm(request.POST), 
+                                                          InvoiceForm(request.POST), PaymentForm(request.POST))
+        if (incomeForm.is_valid() and dealForm.is_valid() 
+            and (invoiceForm.has_changed() == False or invoiceForm.is_valid())
+            and (paymentForm.has_changed() == False or paymentForm.is_valid())):
+            process_deal_form(dealForm)
+            process_income_form(incomeForm)
+            income = incomeForm.instance
+            income.deal, income.invoice, income.payment = dealForm.save(), invoiceForm.save(), paymentForm.save()
+            incomeForm.save()
+    else:
+        incomeForm, dealForm, invoiceForm, paymentForm = IncomeForm(), DealForm(), InvoiceForm(), PaymentForm()
+    
+    return render_to_response('Management/income_edit.html', 
+                              {'incomeForm':incomeForm, 'dealForm':dealForm, 'invoiceForm':invoiceForm,
+                               'paymentForm':paymentForm }, 
+                              context_instance = RequestContext(request))  
+
+@permission_required('Management.edit_income')
+def income_edit(request, id):
+    income = Income.objects.get(pk=id)
+    if request.method=='POST':
+        incomeForm, dealForm, invoiceForm, paymentForm = (IncomeForm(request.POST, instance = income), 
+                                                          DealForm(request.POST, instance = income.deal), 
+                                                          InvoiceForm(request.POST, instance = income.invoice), 
+                                                          PaymentForm(request.POST, instance = income.payment))
+        if (incomeForm.is_valid() and dealForm.is_valid() 
+            and (invoiceForm.has_changed() == False or invoiceForm.is_valid())
+            and (paymentForm.has_changed() == False or paymentForm.is_valid())):
+            process_deal_form(dealForm)
+            process_income_form(incomeForm)
+            income.deal, income.invoice, income.payment = dealForm.save(), invoiceForm.save(), paymentForm.save()
+            incomeForm.save()
+    else:
+        incomeForm, dealForm, invoiceForm, paymentForm = (IncomeForm(instance = income), 
+                                                          DealForm(instance = income.deal), 
+                                                          InvoiceForm(instance = income.invoice), 
+                                                          PaymentForm(instance = income.payment))
+    
+    return render_to_response('Management/income_edit.html', 
+                              {'incomeForm':incomeForm, 'dealForm':dealForm, 'invoiceForm':invoiceForm,
+                               'paymentForm':paymentForm }, 
+                              context_instance = RequestContext(request)) 
+
+@permission_required('Management.list_income')
+def income_list(request):
+    form = IncomeFilterForm(request.GET)
+    incomes = Income.objects.all()
+    if form.is_valid():
+        if form.cleaned_data['division_type']:
+            incomes = incomes.filter(division_type = form.cleaned_data['division_type'])
+        if form.cleaned_data['income_type']:
+            incomes = incomes.filter(income_type = form.cleaned_data['income_type'])
+        if form.cleaned_data['income_producer_type']:
+            incomes = incomes.filter(income_producer_type = form.cleaned_data['income_producer_type'])
+        if form.cleaned_data['client_type']:
+            incomes = incomes.filter(client_type = form.cleaned_data['client_type'])
+        from_date = date(self.cleaned_data['from_year'], self.cleaned_data['from_month'], 1)
+        to_date = date(self.cleaned_data['to_year'], self.cleaned_data['to_month'], 1)
+    else:
+        from_date = date.today()
+        to_date = date.today()
+        
+    incomes = filter(lambda income: date(income.year, income.month, 1) <= to_date and
+                     date(income.year, income.month, 1) >= from_date, incomes)
+    
+    return render_to_response('Management/income_list.html', 
+                              {'filterForm':form, 'incomes':incomes, 'from_date':from_date, 'to_date':to_date }, 
+                              context_instance = RequestContext(request)) 
+
 @permission_required('Management.add_payment')
 def split_payment_add(request):
     DemandFormset = formset_factory(SplitPaymentDemandForm, extra=5)

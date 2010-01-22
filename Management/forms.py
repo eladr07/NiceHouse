@@ -615,6 +615,24 @@ class NHBranchEmployeeForm(forms.ModelForm):
     class Meta:
         model = NHBranchEmployee
 
+class IncomeFilterForm(forms.Form):
+    from_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
+                             label = ugettext('from_year'), initial = datetime.now().year)
+    from_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('from_month'),
+                              initial = Demand.current_month().month)
+    to_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
+                             label = ugettext('to_year'), initial = datetime.now().year)
+    to_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('to_month'),
+                              initial = Demand.current_month().month)
+    division_type = forms.ModelChoiceField(queryset = DivisionType.objects.all(), label=ugettext('division_type'), 
+                                           required=False)
+    income_type = forms.ModelChoiceField(queryset = IncomeType.objects.all(), label=ugettext('income_type'), 
+                                         required=False)
+    client_type = forms.ModelChoiceField(queryset = ClientType.objects.all(), label=ugettext('client_type'), 
+                                         required=False)
+    income_producer_type = forms.ModelChoiceField(queryset = IncomeProducerType.objects.all(), label=ugettext('income_producer_type'), 
+                                                  required=False)
+    
 class CheckFilterForm(forms.Form):
     from_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
                              label = ugettext('from_year'), initial = datetime.now().year)
@@ -701,6 +719,40 @@ class EmployeeCheckForm(forms.ModelForm):
         model = EmployeeCheck
         fields = ['division_type','new_division_type','employee','year','month','expense_type','new_expense_type','purpose_type',
                   'invoice_num','type','amount','num','issue_date','pay_date','remarks']
+
+class IncomeForm(forms.ModelForm):
+    new_division_type = forms.CharField(label = ugettext('new_division_type'), max_length = 20, required=False)
+    new_income_type = forms.CharField(label = ugettext('new_income_type'), max_length = 20, required=False)
+    new_income_producer_type = forms.CharField(label = ugettext('new_income_producer_type'), max_length = 20, required=False)
+    new_client_type = forms.CharField(label=ugettext('new_client_type'), max_length = 30, required = False)
+
+    def clean(self):
+        if not self.cleaned_data['division_type'] and not self.cleaned_data['new_division_type']:
+            raise forms.ValidationError(ugettext('missing_division_type'))
+        if not self.cleaned_data['income_type'] and not self.cleaned_data['new_income_type']:
+            raise forms.ValidationError(ugettext('missing_income_type'))
+        if not self.cleaned_data['income_producer_type'] and not self.cleaned_data['new_income_producer_type']:
+            raise forms.ValidationError(ugettext('missing_income_producer_type'))
+        if not self.cleaned_data['client_type'] and not self.cleaned_data['new_client_type']:
+            raise forms.ValidationError(ugettext('missing_client_type'))
+        return self.cleaned_data
+    
+    class Meta:
+        model = Income
+        fields = ['year','month','division_type','new_division_type','ncome_type','new_income_type',
+                  'income_producer_type','new_income_producer_type','client_type','new_client_type']
+
+class DealForm(forms.ModelForm):
+    new_client_status_type = forms.CharField(label=ugettext('new_client_status_type'), max_length = 30, required = False)
+    
+    def clean(self):
+        if not self.cleaned_data['client_status_type'] and not self.cleaned_data['new_client_status_type']:
+            raise forms.ValidationError(ugettext('missing_client_status_type'))
+        return self.cleaned_data
+    
+    class Meta:
+        model = Deal
+        fields = ['client_type','new_client_type','address','rooms','floor','price','commission_precentage','commission','remarks']
 
 class NHMonthForm(forms.ModelForm):
     def __init__(self, *args, **kw):

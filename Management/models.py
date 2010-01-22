@@ -2351,13 +2351,16 @@ class Sale(models.Model):
     def __init__(self, *args, **kw):
         models.Model.__init__(self, *args, **kw)
         self.restore = True
-        actual_demand = self.actual_demand
-        self.restore_date = self.id and actual_demand and actual_demand.finish_date or None
+        if self.id:
+            actual_demand = self.actual_demand
+            self.restore_date = actual_demand and actual_demand.finish_date or None
+        else:
+            self.restore_date = None
     @property
     def actual_demand(self):
-        query = Demand.objects.filter(month=self.contractor_pay.month, year=self.contractor_pay.year,
-                                      project=self.demand.project)
-        return query.count() == 1 and query[0] or None
+        demand = Demand.objects.get_or_create(month=self.contractor_pay.month, year=self.contractor_pay.year,
+                                              project=self.demand.project)
+        return demand
     @property
     def project_commission_details(self):
         return self.commission_details.filter(employee_salary=None)
@@ -2572,6 +2575,73 @@ class DivisionType(models.Model):
     class Meta:
         db_table = 'DivisionType'
 
+class IncomeType(models.Model):
+    name = models.CharField(ugettext('name'), max_length=20, unique=True)
+    def __unicode__(self):
+        return unicode(self.name)
+    class Meta:
+        db_table = 'IncomeType'
+        
+class IncomeProducerType(models.Model):
+    name = models.CharField(ugettext('name'), max_length=20, unique=True)
+    def __unicode__(self):
+        return unicode(self.name)
+    class Meta:
+        db_table = 'IncomeProducerType'
+
+class ClientType(models.Model):
+    name = models.CharField(ugettext('name'), max_length=20, unique=True)
+    def __unicode__(self):
+        return unicode(self.name)
+    class Meta:
+        db_table = 'ClientType'
+
+class ClientStatusType(models.Model):
+    name = models.CharField(ugettext('name'), max_length=20, unique=True)
+    def __unicode__(self):
+        return unicode(self.name)
+    class Meta:
+        db_table = 'ClientStatusType'
+
+class Income(models.Model):
+    year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
+                                                                                             datetime.now().year + 10)))
+    month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
+    
+    division_type = models.ForeignKey('DivisionType', verbose_name=ugettext('division_type'), blank=True)
+    income_type = models.ForeignKey('IncomeType', verbose_name=ugettext('income_type'), blank=True)
+    income_producer_type = models.ForeignKey('IncomeProducerType', verbose_name=ugettext('income_producer_type'), blank=True)
+    client_type = models.ForeignKey('ClientType', verbose_name=ugettext('client_type'), blank=True)
+    
+    invoice = models.OneToOneField('Invoice',editable=False,null=True)
+    payment = models.OneToOneField('Payment',editable=False,null=True)
+    deal = models.OneToOneField('Deal', editable=False)
+    
+    @property
+    def diff_payment_invoice(self):
+        invoice_amount = self.invoice and self.invoice.amount or 0
+        payment_amount = self.payment and self.payment.amount or 0
+        return payment_amount - invoice_amount        
+    
+    def get_absolute_url(self):
+        return '/incomes/%s' % self.id
+    
+    class Meta:
+        db_table = 'Income'
+
+class Deal(models.Model):
+    client_status_type = models.ForeignKey('ClientStatusType', null=True, blank=True)
+    address = models.CharField(ugettext('address'), max_length=30, null=True, blank=True)
+    rooms = models.FloatField(ugettext('rooms'), null=True, blank=True)
+    floor = models.IntegerField(ugettext('floor'), null=True, blank=True)
+    price = models.IntegerField(ugettext('price'), null=True, blank=True)
+    commission_precentage = models.FloatField(ugettext('commission_precentage'), null=True, blank=True)
+    commission = models.FloatField(ugettext('commission'), null=True, blank=True)
+    remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
+    
+    class Meta:
+        db_table = 'Deal'
+    
 class ChangeLogManager(models.Manager):
     def object_changelog(obj):
         return self.filter(object_type = obj.__class__.name,
