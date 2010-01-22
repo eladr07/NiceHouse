@@ -2855,7 +2855,7 @@ def demand_season_list(request):
             current = from_date
             
             while current <= to_date:
-                q = Demand.objects.filter(project__id = project_id, year = current.year, month = current.month)
+                q = Demand.objects.filter(project = project, year = current.year, month = current.month)
                 if q.count() > 0:
                     ds.append(q[0])
                 current = date(current.month == 12 and current.year + 1 or current.year,
@@ -2945,7 +2945,7 @@ def demand_followup_list(request):
             current = from_date
             
             while current <= to_date:
-                q = Demand.objects.filter(project__id = project_id, year = current.year, month = current.month)
+                q = Demand.objects.filter(project = project, year = current.year, month = current.month)
                 if q.count() > 0:
                     ds.append(q[0])
                 current = date(current.month == 12 and current.year + 1 or current.year,
