@@ -752,7 +752,7 @@ class DealForm(forms.ModelForm):
     
     class Meta:
         model = Deal
-        fields = ['client_type','new_client_type','address','rooms','floor','price','commission_precentage','commission','remarks']
+        fields = ['client_status_type','new_client_status_type','address','rooms','floor','price','commission_precentage','commission','remarks']
 
 class NHMonthForm(forms.ModelForm):
     def __init__(self, *args, **kw):
