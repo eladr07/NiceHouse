@@ -3129,13 +3129,13 @@ def sale_analysis(request):
                     for house in houses:
                         attr_value = getattr(house, attr)
                         sum += (attr_value or 0)
-                    row['avg_' + attr] = sum / item_count
+                    row['avg_' + attr] = item_count and (sum / item_count) or 0
                 for attr in sale_attrs:
                     sum = 0
                     for sale in sales:
                         attr_value = getattr(sale, attr)
                         sum += (attr_value or 0)
-                    row['avg_' + attr] = sum / item_count
+                    row['avg_' + attr] = item_count and (sum / item_count) or 0
 
                 data.append(row)
                 current = date(current.month == 12 and current.year + 1 or current.year,
