@@ -745,6 +745,10 @@ class IncomeForm(forms.ModelForm):
 class DealForm(forms.ModelForm):
     new_client_status_type = forms.CharField(label=ugettext('new_client_status_type'), max_length = 30, required = False)
     
+    def __init__(self, *args, **kw):
+        super(DealForm, self).__init__(self,*args,**kw)
+        self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
+        
     def clean(self):
         if not self.cleaned_data['client_status_type'] and not self.cleaned_data['new_client_status_type']:
             raise forms.ValidationError(ugettext('missing_client_status_type'))
