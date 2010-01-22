@@ -1371,6 +1371,8 @@ def income_list(request):
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
             incomes = filter(lambda income: date(income.year, income.month, 1) <= to_date and
                                             date(income.year, income.month, 1) >= from_date, incomes)
+    else:
+        form = IncomeFilterForm()
     
     return render_to_response('Management/income_list.html', 
                               {'filterForm':form, 'incomes':incomes, 'from_date':from_date, 'to_date':to_date }, 
