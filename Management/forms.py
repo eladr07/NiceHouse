@@ -615,15 +615,7 @@ class NHBranchEmployeeForm(forms.ModelForm):
     class Meta:
         model = NHBranchEmployee
 
-class IncomeFilterForm(forms.Form):
-    from_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                             label = ugettext('from_year'), initial = datetime.now().year)
-    from_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('from_month'),
-                              initial = Demand.current_month().month)
-    to_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                             label = ugettext('to_year'), initial = datetime.now().year)
-    to_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('to_month'),
-                              initial = Demand.current_month().month)
+class IncomeFilterForm(SeasonForm):
     division_type = forms.ModelChoiceField(queryset = DivisionType.objects.all(), label=ugettext('division_type'), 
                                            required=False)
     income_type = forms.ModelChoiceField(queryset = IncomeType.objects.all(), label=ugettext('income_type'), 
@@ -632,14 +624,6 @@ class IncomeFilterForm(forms.Form):
                                          required=False)
     income_producer_type = forms.ModelChoiceField(queryset = IncomeProducerType.objects.all(), label=ugettext('income_producer_type'), 
                                                   required=False)
-    def clean_from_year(self):
-        return int(self.cleaned_data['from_year'])
-    def clean_from_month(self):
-        return int(self.cleaned_data['from_month'])
-    def clean_to_year(self):
-        return int(self.cleaned_data['to_year'])
-    def clean_to_month(self):
-        return int(self.cleaned_data['to_month'])
     
 class CheckFilterForm(forms.Form):
     from_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
@@ -854,13 +838,21 @@ class ProjectSeasonForm(forms.Form):
 
 class SeasonForm(forms.Form):
     from_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                             label = ugettext('from_year'), initial = datetime.now().year)
+                             label = ugettext('from_year'), initial = Demand.current_month().year)
     from_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('from_month'),
                               initial = Demand.current_month().month)
     to_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                             label = ugettext('to_year'), initial = datetime.now().year)
+                             label = ugettext('to_year'), initial = Demand.current_month().year)
     to_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('to_month'),
                               initial = Demand.current_month().month)
+    def clean_from_year(self):
+        return int(self.cleaned_data['from_year'])
+    def clean_from_month(self):
+        return int(self.cleaned_data['from_month'])
+    def clean_to_year(self):
+        return int(self.cleaned_data['to_year'])
+    def clean_to_month(self):
+        return int(self.cleaned_data['to_month'])
 
 class NHBranchSeasonForm(forms.Form):
     nhbranch = forms.ModelChoiceField(queryset = NHBranch.objects.all(), label=ugettext('nhbranch'))
