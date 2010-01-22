@@ -632,6 +632,14 @@ class IncomeFilterForm(forms.Form):
                                          required=False)
     income_producer_type = forms.ModelChoiceField(queryset = IncomeProducerType.objects.all(), label=ugettext('income_producer_type'), 
                                                   required=False)
+    def clean_from_year(self):
+        return int(self.cleaned_data['from_year'])
+    def clean_from_month(self):
+        return int(self.cleaned_data['from_month'])
+    def clean_to_year(self):
+        return int(self.cleaned_data['to_year'])
+    def clean_to_month(self):
+        return int(self.cleaned_data['to_month'])
     
 class CheckFilterForm(forms.Form):
     from_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
@@ -648,6 +656,14 @@ class CheckFilterForm(forms.Form):
                                           required=False)
     supplier_type = forms.ModelChoiceField(queryset = SupplierType.objects.all(), label=ugettext('supplier_type'), 
                                            required=False)
+    def clean_from_year(self):
+        return int(self.cleaned_data['from_year'])
+    def clean_from_month(self):
+        return int(self.cleaned_data['from_month'])
+    def clean_to_year(self):
+        return int(self.cleaned_data['to_year'])
+    def clean_to_month(self):
+        return int(self.cleaned_data['to_month'])
 
 class EmployeeCheckFilterForm(forms.Form):
     from_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
@@ -663,6 +679,14 @@ class EmployeeCheckFilterForm(forms.Form):
                                            required=False)
     expense_type = forms.ModelChoiceField(queryset = ExpenseType.objects.all(), label=ugettext('expense_type'), 
                                           required=False)
+    def clean_from_year(self):
+        return int(self.cleaned_data['from_year'])
+    def clean_from_month(self):
+        return int(self.cleaned_data['from_month'])
+    def clean_to_year(self):
+        return int(self.cleaned_data['to_year'])
+    def clean_to_month(self):
+        return int(self.cleaned_data['to_month'])
 
 class CheckForm(forms.ModelForm):
     invoice_num = forms.IntegerField(label = ugettext('invoice_num'), help_text=u'החשבונית חייבת להיות מוזנת במערכת',
