@@ -2967,41 +2967,39 @@ def demand_followup_list(request):
                               context_instance=RequestContext(request))
 
 def employeesalary_season_list(request):
-    month=Demand.current_month()
-    employee_id = int(request.GET.get('employee', 0))
-    from_year = int(request.GET.get('from_year', month.year))
-    from_month = int(request.GET.get('from_month', month.month))
-    to_year = int(request.GET.get('to_year', month.year))
-    to_month = int(request.GET.get('to_month', month.month))
-    form = EmployeeSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month,
-                                       'employee':employee_id})
     salaries = []
+    from_date, to_date, employee_base = None,None,None
     total_neto, total_check_amount, total_loan_pay, total_bruto, total_refund = 0,0,0,0,0
-    if employee_id:
-        current = date(from_year, from_month, 1)
-        end = date(to_year, to_month, 1)
-        employee_base = EmployeeBase.objects.get(pk=employee_id)
-        if isinstance(employee_base.derived, Employee):
-            base_query = EmployeeSalary.objects.filter(employee__id = employee_id)
-        elif isinstance(employee_base.derived, NHEmployee):
-            base_query = NHEmployeeSalary.objects.filter(nhemployee__id = employee_id)
-        while current <= end:
-            q = base_query.filter(year = current.year, month = current.month)
-            if q.count() == 1:
-                salary = q[0]
-                salaries.append(salary)
-                total_neto += salary.neto or 0
-                total_check_amount += salary.check_amount or 0
-                total_loan_pay += salary.loan_pay or 0
-                total_bruto += salary.bruto or 0
-                total_refund += salary.refund or 0
-            current = date(current.month == 12 and current.year + 1 or current.year,
-                           current.month == 12 and 1 or current.month + 1, 1)
+    
+    if len(request.GET):
+        form = EmployeeSeasonForm(request.GET)
+        if form.is_valid():
+            employee_base = form.cleaned_data['employee']
+            from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
+            to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
+            current = from_date
+
+            if isinstance(employee_base.derived, Employee):
+                base_query = EmployeeSalary.objects.filter(employee__id = employee_id)
+            elif isinstance(employee_base.derived, NHEmployee):
+                base_query = NHEmployeeSalary.objects.filter(nhemployee__id = employee_id)
+            while current <= to_date:
+                q = base_query.filter(year = current.year, month = current.month)
+                if q.count() == 1:
+                    salary = q[0]
+                    salaries.append(salary)
+                    total_neto += salary.neto or 0
+                    total_check_amount += salary.check_amount or 0
+                    total_loan_pay += salary.loan_pay or 0
+                    total_bruto += salary.bruto or 0
+                    total_refund += salary.refund or 0
+                current = date(current.month == 12 and current.year + 1 or current.year,
+                               current.month == 12 and 1 or current.month + 1, 1)
     else:
-        employee_base = None
+        form = EmployeeSeasonForm()
         
     return render_to_response('Management/employeesalary_season_list.html', 
-                              { 'salaries':salaries, 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
+                              { 'salaries':salaries, 'start':from_date, 'end':to_date,
                                 'employee':employee_base, 'filterForm':form,
                                 'total_neto':total_neto,'total_check_amount':total_check_amount,
                                 'total_loan_pay':total_loan_pay,'total_bruto':total_bruto,
@@ -3009,45 +3007,43 @@ def employeesalary_season_list(request):
                               context_instance=RequestContext(request))
 
 def employeesalary_season_expenses(request):
-    month=Demand.current_month()
-    employee_id = int(request.GET.get('employee', 0))
-    from_year = int(request.GET.get('from_year', month.year))
-    from_month = int(request.GET.get('from_month', month.month))
-    to_year = int(request.GET.get('to_year', month.year))
-    to_month = int(request.GET.get('to_month', month.month))
-    form = EmployeeSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month,
-                                       'employee':employee_id})
     salaries = []
     total_neto, total_check_amount, total_loan_pay, total_bruto, total_bruto_employer, total_refund = 0,0,0,0,0,0
     total_sale_count = 0
-    if employee_id:
-        current = date(from_year, from_month, 1)
-        end = date(to_year, to_month, 1)
-        employee_base = EmployeeBase.objects.get(pk=employee_id)
-        if isinstance(employee_base.derived, Employee):
-            base_query = EmployeeSalary.objects.filter(employee__id = employee_id)
-            template = 'Management/employeesalary_season_expenses.html'
-        elif isinstance(employee_base.derived, NHEmployee):
-            base_query = NHEmployeeSalary.objects.filter(nhemployee__id = employee_id)
-            template = 'Management/nhemployeesalary_season_expenses.html'
-        while current <= end:
-            query = base_query.filter(year = current.year, month = current.month)
-            if query.count() == 1:
-                salary = query[0]
-                salaries.append(salary)
-                total_neto += salary.neto or 0
-                total_check_amount += salary.check_amount or 0
-                total_loan_pay += salary.loan_pay or 0
-                total_bruto += salary.bruto or 0
-                total_bruto_employer += salary.bruto_employer_expense or 0
-            current = date(current.month == 12 and current.year + 1 or current.year,
-                           current.month == 12 and 1 or current.month + 1, 1)        
+    from_date, to_date, employee_base = None,None,None
+    
+    if len(request.GET):
+        form = EmployeeSeasonForm(request.GET)
+        if form.is_valid():
+            employee_base = form.cleaned_data['employee']
+            from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
+            to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
+            current = from_date
+
+            if isinstance(employee_base.derived, Employee):
+                base_query = EmployeeSalary.objects.filter(employee__id = employee_id)
+                template = 'Management/employeesalary_season_expenses.html'
+            elif isinstance(employee_base.derived, NHEmployee):
+                base_query = NHEmployeeSalary.objects.filter(nhemployee__id = employee_id)
+                template = 'Management/nhemployeesalary_season_expenses.html'
+            while current <= end:
+                query = base_query.filter(year = current.year, month = current.month)
+                if query.count() == 1:
+                    salary = query[0]
+                    salaries.append(salary)
+                    total_neto += salary.neto or 0
+                    total_check_amount += salary.check_amount or 0
+                    total_loan_pay += salary.loan_pay or 0
+                    total_bruto += salary.bruto or 0
+                    total_bruto_employer += salary.bruto_employer_expense or 0
+                current = date(current.month == 12 and current.year + 1 or current.year,
+                               current.month == 12 and 1 or current.month + 1, 1)        
     else:
         template = 'Management/employeesalary_season_expenses.html'
-        employee_base = None
+        form = EmployeeSeasonForm()
         
     return render_to_response(template, 
-                              { 'salaries':salaries, 'start':date(from_year, from_month, 1), 'end':date(to_year, to_month, 1),
+                              { 'salaries':salaries, 'start':from_date, 'end':to_date,
                                 'employee': employee_base, 'filterForm':form,
                                 'total_neto':total_neto,'total_check_amount':total_check_amount,
                                 'total_loan_pay':total_loan_pay,'total_bruto':total_bruto,'total_bruto_employer':total_bruto_employer},
