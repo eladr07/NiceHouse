@@ -124,32 +124,41 @@ def signup_details(request, house_id):
 @login_required
 def employeecheck_list(request):
     month = date.today()
-    from_year = int(request.GET.get('from_year', month.year))
-    from_month = int(request.GET.get('from_month', month.month))
-    to_year = int(request.GET.get('to_year', month.year))
-    to_month = int(request.GET.get('to_month', month.month))
-    form = EmployeeCheckFilterForm(request.GET)
-    from_date = date(from_year, from_month, 1)
-    to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
-    checks = EmployeeCheck.objects.filter(issue_date__range = (from_date, to_date))
-    if form.is_valid():
-        division_type,expense_type,employee = form.cleaned_data['division_type'],form.cleaned_data['expense_type'],form.cleaned_data['employee']
-        if division_type:
-            checks = checks.filter(division_type = division_type)
-        if expense_type:
-            checks = checks.filter(expense_type = expense_type)
-        if employee:
-            checks = checks.filter(employee = employee)
     sum_check_amount, sum_invoice_amount, sum_diff_check_invoice, sum_salary_amount, sum_diff_check_salary = 0,0,0,0,0
-    for check in checks:
-        sum_check_amount += check.amount
-        if check.invoice:
-            sum_invoice_amount += check.invoice.amount
-            sum_diff_check_invoice += check.diff_amount_invoice
-        salary = check.salary
-        if salary:
-            sum_salary_amount += salary.amount
-            sum_diff_check_salary += check.diff_amount_salary
+    from_date, to_date = None,None
+    checks = []
+    if len(request.GET):
+        form = EmployeeCheckFilterForm(request.GET)
+        if form.is_valid():
+            from_year = form.cleaned_data['from_year']
+            from_month = form.cleaned_data['from_month']
+            to_year = form.cleaned_data['to_year']
+            to_month = form.cleaned_data['to_month']
+            division_type, expense_type, employee = form.cleaned_data['division_type'],form.cleaned_data['expense_type'],form.cleaned_data['employee']
+            
+            from_date = date(from_year, from_month, 1)
+            to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
+            checks = EmployeeCheck.objects.filter(issue_date__range = (from_date, to_date))
+        
+            if division_type:
+                checks = checks.filter(division_type = division_type)
+            if expense_type:
+                checks = checks.filter(expense_type = expense_type)
+            if employee:
+                checks = checks.filter(employee = employee)
+                
+            for check in checks:
+                sum_check_amount += check.amount
+                if check.invoice:
+                    sum_invoice_amount += check.invoice.amount
+                    sum_diff_check_invoice += check.diff_amount_invoice
+                salary = check.salary
+                if salary:
+                    sum_salary_amount += salary.amount
+                    sum_diff_check_salary += check.diff_amount_salary
+    else:
+        form = EmployeeCheckFilterForm()
+        
     return render_to_response('Management/employeecheck_list.html',
                               {'checks':checks, 'from_date':from_date, 'to_date':to_date, 'filterForm':form,
                                'sum_check_amount':sum_check_amount, 'sum_invoice_amount':sum_invoice_amount, 
@@ -174,31 +183,34 @@ def advance_payment_toloan(request, id):
 @permission_required('Management.list_check')
 def check_list(request):
     month = date.today()
-    form = CheckFilterForm(request.GET)
+    checks = []
+    from_date, to_date = None, None
     sum_check_amount, sum_invoice_amount, sum_diff_check_invoice = 0,0,0
-    if form.is_valid():
-        from_year = form.cleaned_data['from_year']
-        from_month = form.cleaned_data['from_month']
-        to_year = form.cleaned_data['to_year']
-        to_month = form.cleaned_data['to_month']
-        division_type, expense_type = form.cleaned_data['division_type'], form.cleaned_data['expense_type']
-        
-        from_date = date(from_year, from_month, 1)
-        to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
-        checks = Check.objects.filter(issue_date__range = (from_date, to_date))
-        if division_type:
-            checks = checks.filter(division_type = division_type)
-        if expense_type:
-            checks = checks.filter(expense_type = expense_type)
+    if len(request.GET):
+        form = CheckFilterForm(request.GET)
+        if form.is_valid():
+            from_year = form.cleaned_data['from_year']
+            from_month = form.cleaned_data['from_month']
+            to_year = form.cleaned_data['to_year']
+            to_month = form.cleaned_data['to_month']
+            division_type, expense_type = form.cleaned_data['division_type'], form.cleaned_data['expense_type']
             
-        for check in checks:
-            sum_check_amount += check.amount
-            if check.invoice:
-                sum_invoice_amount += check.invoice.amount
-                sum_diff_check_invoice += check.diff_amount_invoice
+            from_date = date(from_year, from_month, 1)
+            to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
+            checks = Check.objects.filter(issue_date__range = (from_date, to_date))
+            if division_type:
+                checks = checks.filter(division_type = division_type)
+            if expense_type:
+                checks = checks.filter(expense_type = expense_type)
+                
+            for check in checks:
+                sum_check_amount += check.amount
+                if check.invoice:
+                    sum_invoice_amount += check.invoice.amount
+                    sum_diff_check_invoice += check.diff_amount_invoice
     else:
-        checks = []
-        from_date, to_date = None, None
+        form = CheckFilterForm()
+
     return render_to_response('Management/check_list.html',
                               {'checks':checks, 'from_date':from_date, 'to_date':to_date, 'filterForm':form,
                                'sum_check_amount':sum_check_amount,'sum_invoice_amount':sum_invoice_amount,
