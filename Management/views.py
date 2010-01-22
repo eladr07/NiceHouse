@@ -1354,25 +1354,23 @@ def income_edit(request, id):
 
 @permission_required('Management.list_income')
 def income_list(request):
-    form = IncomeFilterForm(request.GET)
-    incomes = Income.objects.all()
-    if form.is_valid():
-        if form.cleaned_data['division_type']:
-            incomes = incomes.filter(division_type = form.cleaned_data['division_type'])
-        if form.cleaned_data['income_type']:
-            incomes = incomes.filter(income_type = form.cleaned_data['income_type'])
-        if form.cleaned_data['income_producer_type']:
-            incomes = incomes.filter(income_producer_type = form.cleaned_data['income_producer_type'])
-        if form.cleaned_data['client_type']:
-            incomes = incomes.filter(client_type = form.cleaned_data['client_type'])
-        from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
-        to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
-    else:
-        from_date = date.today()
-        to_date = date.today()
-        
-    incomes = filter(lambda income: date(income.year, income.month, 1) <= to_date and
-                     date(income.year, income.month, 1) >= from_date, incomes)
+    incomes, from_date, to_date = [], date.today(), date.today()
+    if len(request.GET):
+        form = IncomeFilterForm(request.GET)
+        incomes = Income.objects.all()
+        if form.is_valid():
+            if form.cleaned_data['division_type']:
+                incomes = incomes.filter(division_type = form.cleaned_data['division_type'])
+            if form.cleaned_data['income_type']:
+                incomes = incomes.filter(income_type = form.cleaned_data['income_type'])
+            if form.cleaned_data['income_producer_type']:
+                incomes = incomes.filter(income_producer_type = form.cleaned_data['income_producer_type'])
+            if form.cleaned_data['client_type']:
+                incomes = incomes.filter(client_type = form.cleaned_data['client_type'])
+            from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
+            to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
+            incomes = filter(lambda income: date(income.year, income.month, 1) <= to_date and
+                                            date(income.year, income.month, 1) >= from_date, incomes)
     
     return render_to_response('Management/income_list.html', 
                               {'filterForm':form, 'incomes':incomes, 'from_date':from_date, 'to_date':to_date }, 
