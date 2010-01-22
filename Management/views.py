@@ -174,26 +174,31 @@ def advance_payment_toloan(request, id):
 @permission_required('Management.list_check')
 def check_list(request):
     month = date.today()
-    from_year = int(request.GET.get('from_year', month.year))
-    from_month = int(request.GET.get('from_month', month.month))
-    to_year = int(request.GET.get('to_year', month.year))
-    to_month = int(request.GET.get('to_month', month.month))
     form = CheckFilterForm(request.GET)
-    from_date = date(from_year, from_month, 1)
-    to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
-    checks = Check.objects.filter(issue_date__range = (from_date, to_date))
+    sum_check_amount, sum_invoice_amount, sum_diff_check_invoice = 0,0,0
     if form.is_valid():
+        from_year = form.cleaned_data['from_year']
+        from_month = form.cleaned_data['from_month']
+        to_year = form.cleaned_data['to_year']
+        to_month = form.cleaned_data['to_month']
         division_type, expense_type = form.cleaned_data['division_type'], form.cleaned_data['expense_type']
+        
+        from_date = date(from_year, from_month, 1)
+        to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
+        checks = Check.objects.filter(issue_date__range = (from_date, to_date))
         if division_type:
             checks = checks.filter(division_type = division_type)
         if expense_type:
             checks = checks.filter(expense_type = expense_type)
-    sum_check_amount, sum_invoice_amount, sum_diff_check_invoice = 0,0,0
-    for check in checks:
-        sum_check_amount += check.amount
-        if check.invoice:
-            sum_invoice_amount += check.invoice.amount
-            sum_diff_check_invoice += check.diff_amount_invoice
+            
+        for check in checks:
+            sum_check_amount += check.amount
+            if check.invoice:
+                sum_invoice_amount += check.invoice.amount
+                sum_diff_check_invoice += check.diff_amount_invoice
+    else:
+        checks = []
+        from_date, to_date = None, None
     return render_to_response('Management/check_list.html',
                               {'checks':checks, 'from_date':from_date, 'to_date':to_date, 'filterForm':form,
                                'sum_check_amount':sum_check_amount,'sum_invoice_amount':sum_invoice_amount,
@@ -1360,8 +1365,8 @@ def income_list(request):
             incomes = incomes.filter(income_producer_type = form.cleaned_data['income_producer_type'])
         if form.cleaned_data['client_type']:
             incomes = incomes.filter(client_type = form.cleaned_data['client_type'])
-        from_date = date(self.cleaned_data['from_year'], self.cleaned_data['from_month'], 1)
-        to_date = date(self.cleaned_data['to_year'], self.cleaned_data['to_month'], 1)
+        from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
+        to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
     else:
         from_date = date.today()
         to_date = date.today()
