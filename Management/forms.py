@@ -283,16 +283,8 @@ class DemandDiffForm(forms.ModelForm):
     class Meta:
         model = DemandDiff
         
-class SaleAnalysisForm(forms.Form):
+class SaleAnalysisForm(SeasonForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label=ugettext('project'))
-    from_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                             label = ugettext('from_year'), initial = datetime.now().year)
-    from_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('from_month'),
-                              initial = Demand.current_month().month)
-    to_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                             label = ugettext('to_year'), initial = datetime.now().year)
-    to_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('to_month'),
-                              initial = Demand.current_month().month)
     include_clients = forms.ChoiceField(label = ugettext('include_clients'), required = False, choices = ((0,u'לא'),
                                                                                                           (1,u'כן')))
     house_type = forms.ModelChoiceField(queryset=HouseType.objects.all(), required = False, label = ugettext('house_type'))
@@ -557,16 +549,8 @@ class DemandSendForm(forms.ModelForm):
         model = Demand
         exclude = ('project','year','month','sale_count')
 
-class SeasonDivisionTypeForm(forms.Form):
+class SeasonDivisionTypeForm(SeasonForm):
     division_type = forms.ModelChoiceField(queryset = DivisionType.objects.all(), label=ugettext('division_type'))
-    from_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                                  label = ugettext('from_year'), initial = datetime.now().year)
-    from_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('from_month'),
-                                   initial = Demand.current_month().month)
-    to_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                                label = ugettext('to_year'), initial = datetime.now().year)
-    to_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('to_month'),
-                                 initial = Demand.current_month().month)
 
 class LoanPayForm(forms.ModelForm):
     def __init__(self, *args, **kw):
@@ -643,52 +627,20 @@ class IncomeFilterForm(SeasonForm):
     income_producer_type = forms.ModelChoiceField(queryset = IncomeProducerType.objects.all(), label=ugettext('income_producer_type'), 
                                                   required=False)
     
-class CheckFilterForm(forms.Form):
-    from_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                             label = ugettext('from_year'), initial = datetime.now().year)
-    from_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('from_month'),
-                              initial = Demand.current_month().month)
-    to_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                             label = ugettext('to_year'), initial = datetime.now().year)
-    to_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('to_month'),
-                              initial = Demand.current_month().month)
+class CheckFilterForm(SeasonForm):
     division_type = forms.ModelChoiceField(queryset = DivisionType.objects.all(), label=ugettext('division_type'), 
                                            required=False)
     expense_type = forms.ModelChoiceField(queryset = ExpenseType.objects.all(), label=ugettext('expense_type'), 
                                           required=False)
     supplier_type = forms.ModelChoiceField(queryset = SupplierType.objects.all(), label=ugettext('supplier_type'), 
                                            required=False)
-    def clean_from_year(self):
-        return int(self.cleaned_data['from_year'])
-    def clean_from_month(self):
-        return int(self.cleaned_data['from_month'])
-    def clean_to_year(self):
-        return int(self.cleaned_data['to_year'])
-    def clean_to_month(self):
-        return int(self.cleaned_data['to_month'])
 
-class EmployeeCheckFilterForm(forms.Form):
-    from_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                             label = ugettext('from_year'), initial = datetime.now().year)
-    from_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('from_month'),
-                              initial = Demand.current_month().month)
-    to_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                             label = ugettext('to_year'), initial = datetime.now().year)
-    to_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('to_month'),
-                              initial = Demand.current_month().month)
+class EmployeeCheckFilterForm(SeasonForm):
     employee = forms.ModelChoiceField(queryset = EmployeeBase.objects.all(), label=ugettext('employee'), required=False)
     division_type = forms.ModelChoiceField(queryset = DivisionType.objects.all(), label=ugettext('division_type'), 
                                            required=False)
     expense_type = forms.ModelChoiceField(queryset = ExpenseType.objects.all(), label=ugettext('expense_type'), 
                                           required=False)
-    def clean_from_year(self):
-        return int(self.cleaned_data['from_year'])
-    def clean_from_month(self):
-        return int(self.cleaned_data['from_month'])
-    def clean_to_year(self):
-        return int(self.cleaned_data['to_year'])
-    def clean_to_month(self):
-        return int(self.cleaned_data['to_month'])
 
 class CheckForm(forms.ModelForm):
     invoice_num = forms.IntegerField(label = ugettext('invoice_num'), help_text=u'החשבונית חייבת להיות מוזנת במערכת',
@@ -843,38 +795,14 @@ class DemandReportForm(forms.Form):
     month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('month'),
                               initial = Demand.current_month().month)
 
-class ProjectSeasonForm(forms.Form):
+class ProjectSeasonForm(SeasonForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label=ugettext('project'))
-    from_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                             label = ugettext('from_year'), initial = datetime.now().year)
-    from_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('from_month'),
-                              initial = Demand.current_month().month)
-    to_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                             label = ugettext('to_year'), initial = datetime.now().year)
-    to_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('to_month'),
-                              initial = Demand.current_month().month)
 
-class NHBranchSeasonForm(forms.Form):
+class NHBranchSeasonForm(SeasonForm):
     nhbranch = forms.ModelChoiceField(queryset = NHBranch.objects.all(), label=ugettext('nhbranch'))
-    from_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                             label = ugettext('from_year'), initial = datetime.now().year)
-    from_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('from_month'),
-                              initial = Demand.current_month().month)
-    to_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                             label = ugettext('to_year'), initial = datetime.now().year)
-    to_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('to_month'),
-                              initial = Demand.current_month().month)
 
-class EmployeeSeasonForm(forms.Form):
+class EmployeeSeasonForm(SeasonForm):
     employee = forms.ModelChoiceField(queryset = EmployeeBase.objects.all(), label=ugettext('employee'))
-    from_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                             label = ugettext('from_year'), initial = datetime.now().year)
-    from_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('from_month'),
-                              initial = Demand.current_month().month)
-    to_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                             label = ugettext('to_year'), initial = datetime.now().year)
-    to_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('to_month'),
-                              initial = Demand.current_month().month)
     
 class MonthFilterForm(forms.Form):    
     year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
