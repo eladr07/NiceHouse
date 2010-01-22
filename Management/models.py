@@ -2358,7 +2358,7 @@ class Sale(models.Model):
             self.restore_date = None
     @property
     def actual_demand(self):
-        demand = Demand.objects.get_or_create(month=self.contractor_pay.month, year=self.contractor_pay.year,
+        demand, new = Demand.objects.get_or_create(month=self.contractor_pay.month, year=self.contractor_pay.year,
                                               project=self.demand.project)
         return demand
     @property
