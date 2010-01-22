@@ -2630,7 +2630,7 @@ class Income(models.Model):
         db_table = 'Income'
 
 class Deal(models.Model):
-    client_status_type = models.ForeignKey('ClientStatusType', null=True, blank=True)
+    client_status_type = models.ForeignKey('ClientStatusType', verbose_name=ugettext('client_status_type'), null=True, blank=True)
     address = models.CharField(ugettext('address'), max_length=30, null=True, blank=True)
     rooms = models.FloatField(ugettext('rooms'), null=True, blank=True)
     floor = models.IntegerField(ugettext('floor'), null=True, blank=True)
