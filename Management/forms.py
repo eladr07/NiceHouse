@@ -739,7 +739,7 @@ class IncomeForm(forms.ModelForm):
     
     class Meta:
         model = Income
-        fields = ['year','month','division_type','new_division_type','ncome_type','new_income_type',
+        fields = ['year','month','division_type','new_division_type','income_type','new_income_type',
                   'income_producer_type','new_income_producer_type','client_type','new_client_type']
 
 class DealForm(forms.ModelForm):
