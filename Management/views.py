@@ -3101,99 +3101,59 @@ def employeesalary_season_total_expenses(request):
                                 'filterForm':form},
                               context_instance=RequestContext(request))
 
-class SalesMonth:
-    def avg_net_size(self):
-        houses = self.houses()
-        if len(houses) == 0: return None
-        res = 0
-        for h in houses:
-            res += h.net_size
-        return res / len(houses)
-    def avg_garden_size(self):
-        houses = self.houses()
-        if len(houses) == 0: return None
-        res = 0
-        for h in houses:
-            res += h.garden_size
-        return res / len(houses)
-    def avg_rooms(self):
-        houses = self.houses()
-        if len(houses) == 0: return None
-        res = 0
-        for h in houses:
-            res += h.rooms
-        return res / len(houses)
-    def avg_floor(self):
-        houses = self.houses()
-        if len(houses) == 0: return None
-        res = 0
-        for h in houses:
-            res += h.floor
-        return res / len(houses)
-    def avg_perfect_size(self):
-        houses = self.houses()
-        if len(houses) == 0: return None
-        res = 0
-        for h in houses:
-            res += h.perfect_size
-        return res / len(houses)
-    def avg_price_taxed(self):
-        if len(self.sales) == 0: return None
-        res = 0
-        for s in self.sales:
-            res += s.price_taxed
-        return res / len(self.sales)
-    def avg_price_taxed_for_perfect_size(self):
-        if len(self.sales) == 0: return None
-        res = 0
-        for s in self.sales:
-            res += s.price_taxed_for_perfect_size
-        return res / len(self.sales)        
-    def houses(self):
-        return map(lambda s: s.house, self.sales)
-    def __init__(self):
-        self.year = None
-        self.month = None
-        self.sales = []
-
 def sale_analysis(request):
-    sale_months = []
+    data = []
     include_clients = None
     total_sale_count = 0
-    if request.method == 'POST':
-        form = SaleAnalysisForm(request.POST)
+    if len(request.GET):
+        form = SaleAnalysisForm(request.GET)
         if form.is_valid():
             project = form.cleaned_data['project']
             rooms_num, house_type = form.cleaned_data['rooms_num'], form.cleaned_data['house_type']
             current = date(int(form.cleaned_data['from_year']), int(form.cleaned_data['from_month']), 1)
             end = date(int(form.cleaned_data['to_year']), int(form.cleaned_data['to_month']), 1)
+            house_attrs = ['net_size', 'garden_size', 'rooms', 'floor', 'perfect_size']
+            sale_attrs = ['price_taxed', 'price_taxed_for_perfect_size']
             while current <= end:
-                query = Sale.objects.filter(house__building__project = project, contractor_pay__year = current.year,
+                sales = Sale.objects.filter(house__building__project = project, contractor_pay__year = current.year,
                                             contractor_pay__month = current.month)
                 if rooms_num:
-                    query = query.filter(house__rooms = rooms_num)
+                    sales = sales.filter(house__rooms = rooms_num)
                 if house_type:
-                    query = query.filter(house__type = house_type)
-                sm = SalesMonth()
-                sm.year, sm.month = current.year, current.month
-                sm.sales.extend(list(query))
-                total_sale_count += len(sm.sales)
-                sale_months.append(sm)
+                    sales = sales.filter(house__type = house_type)
+                houses = map(lambda sale: sale.house, sales)
+                item_count = sales.count()
+                row = {'sales':sales,'houses':houses,'year':current.year,'month':current.month}
+                for attr in house_attrs:
+                    sum = 0
+                    for house in houses:
+                        attr_value = getattr(house, attr)
+                        sum += attr_value
+                    row['avg_' + attr] = sum / item_count
+                for attr in sale_attrs:
+                    sum = 0
+                    for sale in sales:
+                        attr_value = getattr(sale, attr)
+                        sum += attr_value
+                    row['avg_' + attr] = sum / item_count
+
+                data.append(row)
                 current = date(current.month == 12 and current.year + 1 or current.year,
                                current.month == 12 and 1 or current.month + 1, 1)
-            if len(sale_months) > 1:
-                for i in range(1,len(sale_months)):
-                    current = sale_months[i]
-                    previous = sale_months[i-1]
-                    if not len(current.sales) or not len(previous.sales):
-                        continue
-                    current.diff_avg_price_taxed_for_perfect_size = current.avg_price_taxed_for_perfect_size() - \
-                        previous.avg_price_taxed_for_perfect_size()
+
+            for i in range(1,len(data)):
+                curr_row = data[i]
+                prev_row = data[i-1]
+                if not len(curr_row['sales']) or not len(prev_row['sales']):
+                    continue
+                curr_row['diff_avg_price_taxed_for_perfect_size'] = curr_row['avg_price_taxed_for_perfect_size'] - \
+                    prev_row['avg_price_taxed_for_perfect_size']
                 
             include_clients = int(form.cleaned_data['include_clients'])
     else:
         form = SaleAnalysisForm()
+        
     return render_to_response('Management/sale_analysis.html', 
-                              { 'filterForm':form, 'sale_months':sale_months, 'include_clients':include_clients,
+                              { 'filterForm':form, 'sale_months':data, 'include_clients':include_clients,
                                'total_sale_count':total_sale_count },
                               context_instance=RequestContext(request))
