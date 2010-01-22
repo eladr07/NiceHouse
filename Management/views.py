@@ -2980,9 +2980,9 @@ def employeesalary_season_list(request):
             current = from_date
 
             if isinstance(employee_base.derived, Employee):
-                base_query = EmployeeSalary.objects.filter(employee__id = employee_id)
+                base_query = EmployeeSalary.objects.filter(employee__id = employee_base.id)
             elif isinstance(employee_base.derived, NHEmployee):
-                base_query = NHEmployeeSalary.objects.filter(nhemployee__id = employee_id)
+                base_query = NHEmployeeSalary.objects.filter(nhemployee__id = employee_base.id)
             while current <= to_date:
                 q = base_query.filter(year = current.year, month = current.month)
                 if q.count() == 1:
@@ -3021,10 +3021,10 @@ def employeesalary_season_expenses(request):
             current = from_date
 
             if isinstance(employee_base.derived, Employee):
-                base_query = EmployeeSalary.objects.filter(employee__id = employee_id)
+                base_query = EmployeeSalary.objects.filter(employee__id = employee_base.id)
                 template = 'Management/employeesalary_season_expenses.html'
             elif isinstance(employee_base.derived, NHEmployee):
-                base_query = NHEmployeeSalary.objects.filter(nhemployee__id = employee_id)
+                base_query = NHEmployeeSalary.objects.filter(nhemployee__id = employee_base.id)
                 template = 'Management/nhemployeesalary_season_expenses.html'
             while current <= end:
                 query = base_query.filter(year = current.year, month = current.month)
