@@ -989,9 +989,9 @@ def demand_list(request):
             demand, new = Demand.objects.get_or_create(project = project, year = year, month = month)
             ds.append(demand)
             if new and project.commissions.add_amount:
-                demand.diffs.create(type=u'קבועה', amount = p.commissions.add_amount, reason = p.commissions.add_type)
+                demand.diffs.create(type=u'קבועה', amount = project.commissions.add_amount, reason = project.commissions.add_type)
             if demand.statuses.count() == 0 or demand.statuses.latest().type.id == DemandFeed:
-                unhandled_projects.append(p)
+                unhandled_projects.append(project)
         for d in ds:
             sales_count += d.get_sales().count()
             sales_amount += d.get_final_sales_amount()
