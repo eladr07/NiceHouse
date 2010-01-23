@@ -1190,31 +1190,30 @@ def demand_invoice_add(request, id):
 
 @permission_required('Management.demand_invoices')
 def demand_invoice_list(request):
-    month = Demand.current_month()
-    project_id = int(request.GET.get('project') or 0)
-    from_year = int(request.GET.get('from_year', month.year))
-    from_month = int(request.GET.get('from_month', month.month))
-    to_year = int(request.GET.get('to_year', month.year))
-    to_month = int(request.GET.get('to_month', month.month))
-    from_date = date(from_year, from_month, 1)
-    to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
-    q = Invoice.objects.filter(date__range = (from_date, to_date)).reverse().select_related()
-    form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month,
-                                      'project':project_id})
-    invoices = filter(lambda i: i.demands.count(), q)
-    if project_id:
-        invoices = filter(lambda i: i.demands.filter(project__id = project_id).count(), invoices)
-    paginator = Paginator(invoices, 25) 
+    invoices = None
+    if len(request.GET):
+        form = ProjectSeasonForm(request.GET)
+        if form.is_valid():
+            project = form.cleaned_data['project']
+            from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
+            to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
 
-    try:
-        page = int(request.GET.get('page', '1'))
-    except ValueError:
-        page = 1
-
-    try:
-        invoices = paginator.page(page)
-    except (EmptyPage, InvalidPage):
-        invoices = paginator.page(paginator.num_pages)
+            invoices = filter(lambda i: i.demands.count(), query)
+            if project:
+                invoices = filter(lambda i: i.demands.filter(project = project).count(), invoices)
+            paginator = Paginator(invoices, 25) 
+        
+            try:
+                page = int(request.GET.get('page', '1'))
+            except ValueError:
+                page = 1
+        
+            try:
+                invoices = paginator.page(page)
+            except (EmptyPage, InvalidPage):
+                invoices = paginator.page(paginator.num_pages)
+    else:
+        form = ProjectSeasonForm()
 
     return render_to_response('Management/demand_invoice_list.html', {'page': invoices,'filterForm':form},
                               context_instance = RequestContext(request))    
@@ -1222,31 +1221,31 @@ def demand_invoice_list(request):
  
 @permission_required('Management.demand_payments')
 def demand_payment_list(request):
-    month = Demand.current_month()
-    project_id = int(request.GET.get('project') or 0)
-    from_year = int(request.GET.get('from_year', month.year))
-    from_month = int(request.GET.get('from_month', month.month))
-    to_year = int(request.GET.get('to_year', month.year))
-    to_month = int(request.GET.get('to_month', month.month))
-    from_date = date(from_year, from_month, 1)
-    to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
-    q = Payment.objects.filter(payment_date__range = (from_date, to_date)).reverse().select_related()
-    form = ProjectSeasonForm(initial={'from_year':from_year,'from_month':from_month,'to_year':to_year,'to_month':to_month,
-                                      'project':project_id})
-    payments = filter(lambda p: p.demands.count(), q)
-    if project_id:
-        payments = filter(lambda p: p.demands.filter(project__id = project_id).count(), payments)
-    paginator = Paginator(payments, 25) 
+    payments = None
+    if len(request.GET):
+        form = ProjectSeasonForm(request.GET)
+        if form.is_valid():
+            project = form.cleaned_data['project']
+            from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
+            to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
 
-    try:
-        page = int(request.GET.get('page', '1'))
-    except ValueError:
-        page = 1
-
-    try:
-        payments = paginator.page(page)
-    except (EmptyPage, InvalidPage):
-        payments = paginator.page(paginator.num_pages)
+            query = Payment.objects.filter(payment_date__range = (from_date, to_date)).reverse().select_related()
+            payments = filter(lambda p: p.demands.count(), query)
+            if project:
+                payments = filter(lambda p: p.demands.filter(project = project).count(), payments)
+            paginator = Paginator(payments, 25) 
+        
+            try:
+                page = int(request.GET.get('page', '1'))
+            except ValueError:
+                page = 1
+        
+            try:
+                payments = paginator.page(page)
+            except (EmptyPage, InvalidPage):
+                payments = paginator.page(paginator.num_pages)
+    else:
+        form = ProjectSeasonForm()
 
     return render_to_response('Management/demand_payment_list.html', {'page': payments,'filterForm':form},
                               context_instance = RequestContext(request))    
@@ -3110,8 +3109,8 @@ def sale_analysis(request):
         if form.is_valid():
             project = form.cleaned_data['project']
             rooms_num, house_type = form.cleaned_data['rooms_num'], form.cleaned_data['house_type']
-            current = date(int(form.cleaned_data['from_year']), int(form.cleaned_data['from_month']), 1)
-            end = date(int(form.cleaned_data['to_year']), int(form.cleaned_data['to_month']), 1)
+            current = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
+            end = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
             house_attrs = ['net_size', 'garden_size', 'rooms', 'floor', 'perfect_size']
             sale_attrs = ['price_taxed', 'price_taxed_for_perfect_size']
             while current <= end:
