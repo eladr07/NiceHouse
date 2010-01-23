@@ -531,30 +531,39 @@ def projects_profit(request):
 
 @permission_required('Management.list_demand')
 def demand_old_list(request):
-    current = Demand.current_month()
-    year = int(request.GET.get('year', current.year))
-    month = int(request.GET.get('month', current.month))
-    ds = Demand.objects.filter(year = year, month = month)
+    year, month = None, None
+    ds, unhandled_projects = [], []
     total_sales_count,total_sales_amount, total_sales_commission, total_amount, expected_sales_count = 0,0,0,0,0
-    for d in ds:
-        total_sales_count += d.get_sales().count()
-        total_sales_amount += d.get_final_sales_amount()
-        total_sales_commission += d.get_sales_commission()
-        total_amount += d.get_total_amount()
-        expected_sales_count += d.sale_count
-    unhandled_projects = []
-    for p in Project.objects.active():
-        try:
-            d = ds.get(project=p)
-        except Demand.DoesNotExist:
-            unhandled_projects.append(p)
-            continue
-        if d.statuses.count()==0 or d.statuses.latest().type.id != DemandSent:
-            unhandled_projects.append(p)
+        
+    if len(request.GET):
+        form = MonthFilterForm(request.GET)
+        if form.is_valid():
+            year, month = form.cleaned_data['year'], form.cleaned_data['month']
+    else:
+        current = Demand.current_month()
+        year, month = current.year, current.month
+        form = MonthFilterForm(initial={'year':year,'month':month})
+        
+    if year and month:
+        ds = Demand.objects.filter(year = year, month = month)
+        for d in ds:
+            total_sales_count += d.get_sales().count()
+            total_sales_amount += d.get_final_sales_amount()
+            total_sales_commission += d.get_sales_commission()
+            total_amount += d.get_total_amount()
+            expected_sales_count += d.sale_count
+        for p in Project.objects.active():
+            query = ds.filter(project=p)
+            if query.count() == 0:
+                unhandled_projects.append(p)
+                continue
+            d = query[0]
+            if d.statuses.count() == 0 or d.statuses.latest().type.id != DemandSent:
+                unhandled_projects.append(p)
         
     return render_to_response('Management/demand_old_list.html', 
-                              { 'demands':ds.all(), 'month':date(int(year), int(month), 1),
-                                'filterForm':MonthFilterForm(initial={'year':year,'month':month}),
+                              { 'demands':ds, 'month':date(year, month, 1),
+                                'filterForm':form,
                                 'total_sales_count':total_sales_count,
                                 'total_sales_amount':total_sales_amount,
                                 'total_sales_commission':total_sales_commission,
