@@ -978,23 +978,24 @@ def demand_list(request):
     
     if len(request.GET):
         form = MonthFilterForm(request.GET)
-        if form.is_vaild():
-            year, month = form.cleaned_data['year'], form.cleaned_data['month']
-            '''loop through all active projects and create demands for them if havent
-            alredy created. if project has status other than Feed, it is handled''' 
-            for project in Project.objects.active():
-                demand, new = Demand.objects.get_or_create(project = project, year = year, month = month)
-                ds.append(demand)
-                if new and project.commissions.add_amount:
-                    demand.diffs.create(type=u'קבועה', amount = p.commissions.add_amount, reason = p.commissions.add_type)
-                if demand.statuses.count() == 0 or demand.statuses.latest().type.id == DemandFeed:
-                    unhandled_projects.append(p)
-            for d in ds:
-                sales_count += d.get_sales().count()
-                sales_amount += d.get_final_sales_amount()
-                expected_sales_count += d.sale_count
     else:
-        form = MonthFilterForm()
+        form = MonthFilterForm(initial={'year':year,'month':month})
+        
+    if form.is_vaild():
+        year, month = form.cleaned_data['year'], form.cleaned_data['month']
+        '''loop through all active projects and create demands for them if havent
+        alredy created. if project has status other than Feed, it is handled''' 
+        for project in Project.objects.active():
+            demand, new = Demand.objects.get_or_create(project = project, year = year, month = month)
+            ds.append(demand)
+            if new and project.commissions.add_amount:
+                demand.diffs.create(type=u'קבועה', amount = p.commissions.add_amount, reason = p.commissions.add_type)
+            if demand.statuses.count() == 0 or demand.statuses.latest().type.id == DemandFeed:
+                unhandled_projects.append(p)
+        for d in ds:
+            sales_count += d.get_sales().count()
+            sales_amount += d.get_final_sales_amount()
+            expected_sales_count += d.sale_count
         
     return render_to_response('Management/demand_list.html', 
                               { 'demands':ds, 'unhandled_projects':unhandled_projects, 
