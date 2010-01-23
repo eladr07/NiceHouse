@@ -971,18 +971,18 @@ def nhmonth_close(request):
 
 @permission_required('Management.add_demand')
 def demand_list(request):
+    current = Demand.current_month()
+    year, month = current.year, current.month
     ds, unhandled_projects = [], []
     sales_count, expected_sales_count, sales_amount = 0,0,0
     
     if len(request.GET):
         form = MonthFilterForm(request.GET)
-        year, month = form.cleaned_data['year'], form.cleaned_data['month']
     else:
-        current = Demand.current_month()
-        year, month = current.year, current.month
         form = MonthFilterForm(initial={'year':year,'month':month})
         
     if form.is_valid():
+        year, month = form.cleaned_data['year'], form.cleaned_data['month']
         '''loop through all active projects and create demands for them if havent
         alredy created. if project has status other than Feed, it is handled''' 
         for project in Project.objects.active():
