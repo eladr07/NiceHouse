@@ -981,7 +981,7 @@ def demand_list(request):
     else:
         form = MonthFilterForm(initial={'year':year,'month':month})
         
-    if form.is_vaild():
+    if form.is_valid():
         year, month = form.cleaned_data['year'], form.cleaned_data['month']
         '''loop through all active projects and create demands for them if havent
         alredy created. if project has status other than Feed, it is handled''' 
