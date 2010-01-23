@@ -808,7 +808,11 @@ class MonthFilterForm(forms.Form):
     year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
                              label = ugettext('year'), initial = datetime.now().year)
     month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('month'),
-                              initial = Demand.current_month().month)
+                              initial = Demand.current_month().month)    
+    def clean_year(self):
+        return int(self.cleaned_data['year'])
+    def clean_month(self):
+        return int(self.cleaned_data['month'])
 
 class MadadBIForm(forms.ModelForm):
     def __init__(self, *args, **kw):
