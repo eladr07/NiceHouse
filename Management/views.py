@@ -971,6 +971,8 @@ def nhmonth_close(request):
 
 @permission_required('Management.add_demand')
 def demand_list(request):
+    current = Demand.current_month()
+    year, month = current.year, current.month
     ds, unhandled_projects = [], []
     sales_count, expected_sales_count, sales_amount = 0,0,0
     
