@@ -877,7 +877,7 @@ def nh_season_income(request):
     
     query = NHBranchEmployee.objects.filter(start_date__lt = to_date, nhbranch = nhbranch) \
                                     .exclude(end_date__isnull=False, end_date__lt = from_date)
-    employees = map(lambda x: x.nhemployee, query)
+    employees = [x.nhemployee for x in query]
     
     for e in employees:
         e.season_total, e.season_total_notax, e.season_branch_income_notax = 0, 0, 0
@@ -885,7 +885,7 @@ def nh_season_income(request):
     for nhm in nhmonth_set:
         query = NHBranchEmployee.objects.filter(start_date__lt = to_date, nhbranch = nhbranch) \
                                         .exclude(end_date__isnull=False, end_date__lt = from_date)
-        nhm.employees = map(lambda x: x.nhemployee, query)
+        nhm.employees = [x.nhemployee for x in query]
         tax = Tax.objects.filter(date__lte=date(nhm.year, nhm.month,1)).latest().value / 100 + 1
         for e in nhm.employees:
             e.month_total = 0
@@ -949,7 +949,7 @@ def nhmonth_sales(request, nhbranch_id):
     nhb = NHBranch.objects.get(pk=nhbranch_id)
     nhm = q.count() > 0 and q[0] or NHMonth(nhbranch = nhb, year = year, month = month)
     query = NHBranchEmployee.objects.filter(nhbranch = nhb).exclude(end_date__isnull=False, end_date__lt = d)
-    employees = map(lambda x: x.nhemployee, query)
+    employees = [x.nhemployee for x in query]
     for e in employees:
         e.month_total = 0
     for sale in nhm.nhsales.all():
@@ -1212,9 +1212,10 @@ def demand_invoice_list(request):
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
 
-            invoices = filter(lambda i: i.demands.count(), query)
+            query = Invoice.objects.filter(date__range = (from_date, to_date)).reverse().select_related()
+            invoices = [invoice.demands.count() for invoice in query]
             if project:
-                invoices = filter(lambda i: i.demands.filter(project = project).count(), invoices)
+                invoices = [invoice.demands.filter(project = project).count() for invoice in invoices]
             paginator = Paginator(invoices, 25) 
         
             try:
@@ -1244,9 +1245,9 @@ def demand_payment_list(request):
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
 
             query = Payment.objects.filter(payment_date__range = (from_date, to_date)).reverse().select_related()
-            payments = filter(lambda p: p.demands.count(), query)
+            payments = [p.demands.count() for p in query]
             if project:
-                payments = filter(lambda p: p.demands.filter(project = project).count(), payments)
+                payments = [p.demands.filter(project = project).count() for p in payments]
             paginator = Paginator(payments, 25) 
         
             try:
@@ -1394,8 +1395,9 @@ def income_list(request):
                 incomes = incomes.filter(client_type = form.cleaned_data['client_type'])
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
-            incomes = filter(lambda income: date(income.year, income.month, 1) <= to_date and
-                                            date(income.year, income.month, 1) >= from_date, incomes)
+            incomes = [income for income in incomes if (date(income.year, income.month, 1) <= to_date and 
+                                                        date(income.year, income.month, 1) >= from_date)]
+
     else:
         form = IncomeFilterForm()
     
@@ -3084,7 +3086,7 @@ def employeesalary_season_total_expenses(request):
                 elif division_type.id == DivisionType.NHNesZiona:
                     query = NHBranchEmployee.objects.filter(nhbranch__id = NHBranch.NesZiona)
                 query = query.exclude(end_date__isnull=False, end_date__lt = current)
-                employees = map(lambda x: x.nhemployee, query)
+                employees = [x.nhemployee for x in query]
                 model = NHEmployeeSalary
 
             attrs = ['neto', 'loan_pay', 'check_amount', 'income_tax', 'national_insurance', 'health', 'pension_insurance', 
@@ -3134,7 +3136,7 @@ def sale_analysis(request):
                     sales = sales.filter(house__rooms = rooms_num)
                 if house_type:
                     sales = sales.filter(house__type = house_type)
-                houses = map(lambda sale: sale.house, sales)
+                houses = [sale.house for sale in sales]
                 item_count = sales.count()
                 row = {'sales':sales,'houses':houses,'year':current.year,'month':current.month}
                 for attr in house_attrs:
