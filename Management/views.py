@@ -1619,7 +1619,7 @@ def nhsale_add(request, branch_id):
                 side1.invoices.add(invoice1Form.save())
             else:
                 error = invoice1Form.has_changed()
-            if payment1Forms.is_valid():
+            if payment1Forms.has_changed() and payment1Forms.is_valid():
                 for p in payment1Forms.save():
                     side1.payments.add(p)
             else:
@@ -1628,7 +1628,7 @@ def nhsale_add(request, branch_id):
                 side2.invoices.add(invoice2Form.save())
             else:
                 error = invoice2Form.has_changed()
-            if payment2Forms.is_valid():
+            if payment2Forms.has_changed() and payment2Forms.is_valid():
                 for p in payment2Forms.save():
                     side2.payments.add(p)
             else:
