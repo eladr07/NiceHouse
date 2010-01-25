@@ -736,17 +736,13 @@ class DealForm(forms.ModelForm):
         model = Deal
         fields = ['client_status_type','new_client_status_type','address','rooms','floor','price','commission_precentage','commission','remarks']
 
-class NHMonthForm(forms.ModelForm):
-    def __init__(self, *args, **kw):
-        forms.ModelForm.__init__(self, *args, **kw)
-        q = NHMonth.objects.filter(is_closed=False)
-        if self.instance.id or q.count() == 0:
-            return
-        self.fields['year'].initial = q[0].year
-        self.fields['month'].initial = q[0].month
-    class Meta:
-        model = NHMonth
-        
+class NHMonthForm(forms.Form):
+    nhbranch = forms.ModelChoiceField(queryset = NHBranch.objects.all(), label=ugettext('nhbranch'))
+    year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
+                             label = ugettext('year'), initial = datetime.now().year)
+    month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('month'),
+                              initial = Demand.current_month().month)  
+    
 class EmploymentTermsForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self, *args, **kw)
