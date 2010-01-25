@@ -1607,9 +1607,9 @@ def nhsale_add(request, branch_id):
         payment2Forms = PaymentFormset(request.POST, prefix='payments2')
         
         if monthForm.is_valid() and saleForm.is_valid() and side1Form.is_valid() and side2Form.is_valid():
-            nhmonth = NHMonth.objects.get_or_create(nhbranch = monthForm.cleaned_data['nhbranch'],
-                                                    year = monthForm.cleaned_data['year'],
-                                                    month = monthForm.cleaned_data['month'])
+            nhmonth, new = NHMonth.objects.get_or_create(nhbranch = monthForm.cleaned_data['nhbranch'],
+                                                         year = monthForm.cleaned_data['year'],
+                                                         month = monthForm.cleaned_data['month'])
             saleForm.instance.nhmonth = nhmonth
             nhsale = saleForm.save()
             side1Form.instance.nhsale = side2Form.instance.nhsale = nhsale
