@@ -1213,9 +1213,9 @@ def demand_invoice_list(request):
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
 
             query = Invoice.objects.filter(date__range = (from_date, to_date)).reverse().select_related()
-            invoices = [invoice.demands.count() for invoice in query]
+            invoices = [invoice for invoice in query if invoice.demands.count()]
             if project:
-                invoices = [invoice.demands.filter(project = project).count() for invoice in invoices]
+                invoices = [invoice for invoice in invoices if invoice.demands.filter(project = project).count()]
             paginator = Paginator(invoices, 25) 
         
             try:
@@ -1245,9 +1245,9 @@ def demand_payment_list(request):
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
 
             query = Payment.objects.filter(payment_date__range = (from_date, to_date)).reverse().select_related()
-            payments = [p.demands.count() for p in query]
+            payments = [p for p in query if p.demands.count()]
             if project:
-                payments = [p.demands.filter(project = project).count() for p in payments]
+                payments = [p for p in payments if p.demands.filter(project = project).count()]
             paginator = Paginator(payments, 25) 
         
             try:
