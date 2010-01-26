@@ -755,13 +755,8 @@ def demands_all(request):
     amount_mispaid, amount_unpaid, amount_nopayment, amount_noinvoice = 0,0,0,0
     from time import time
     start = time()
-    demands = Demand.objects.all()
-    for demand in demands:
-        amount = demand.get_sales_commission()
-        demand.sales_commission = int(amount)
-        demand.save()
-        continue
-    return HttpResponse('')
+#    demands = Demand.objects.all()
+#    for demand in demands:
 #        state = demand.state
 #        if state in [DemandPaidPlus, DemandPaidMinus]:
 #            amount_mispaid += demand.get_total_amount()
@@ -771,20 +766,20 @@ def demands_all(request):
 #            amount_nopayment += demand.get_total_amount()
 #        if state == DemandUnpaid:
 #            amount_unpaid += demand.get_total_amount()
-#    projects = Project.objects.all()
-#    for p in projects:
-#        for d in p.demands_mispaid():
-#            amount_mispaid += d.get_total_amount()
-#            total_mispaid += 1
-#        for d in p.demands_unpaid():
-#            amount_unpaid += d.get_total_amount()
-#            total_unpaid += 1
-#        for d in p.demands_nopayment():
-#            amount_nopayment += d.get_total_amount()
-#            total_nopayment += 1
-#        for d in p.demands_noinvoice():
-#            amount_noinvoice += d.get_total_amount()
-#            total_noinvoice += 1
+    projects = Project.objects.all()
+    for p in projects:
+        for d in p.demands_mispaid():
+            amount_mispaid += d.get_total_amount()
+            total_mispaid += 1
+        for d in p.demands_unpaid():
+            amount_unpaid += d.get_total_amount()
+            total_unpaid += 1
+        for d in p.demands_nopayment():
+            amount_nopayment += d.get_total_amount()
+            total_nopayment += 1
+        for d in p.demands_noinvoice():
+            amount_noinvoice += d.get_total_amount()
+            total_noinvoice += 1
     delta = time() - start
     raise Type
     return render_to_response('Management/demands_all.html', 
