@@ -1857,7 +1857,7 @@ class Demand(models.Model):
             return DemandNoInvoice
         if not self.payments.count():
             return DemandNoPayment
-        diff = self.diff_invoice_payment + self.adjust_diff
+        diff = self.diff_invoice_payment
         if diff == 0:
             return DemandPaid
         if diff > 0:
