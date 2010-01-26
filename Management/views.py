@@ -335,7 +335,7 @@ def signup_list(request, project_id):
     y = int(request.GET.get('year', month.year))
     m = int(request.GET.get('month', month.month))
     month = datetime(y,m,1)
-    form = MonthFilterForm(initial={'year':y,'month':m})
+    form = MonthForm(initial={'year':y,'month':m})
     p = Project.objects.get(pk = project_id)
     signups = p.signups(y, m)
     return render_to_response('Management/signup_list.html', 
@@ -536,13 +536,13 @@ def demand_old_list(request):
     total_sales_count,total_sales_amount, total_sales_commission, total_amount, expected_sales_count = 0,0,0,0,0
         
     if len(request.GET):
-        form = MonthFilterForm(request.GET)
+        form = MonthForm(request.GET)
         if form.is_valid():
             year, month = form.cleaned_data['year'], form.cleaned_data['month']
     else:
         current = Demand.current_month()
         year, month = current.year, current.month
-        form = MonthFilterForm(initial={'year':year,'month':month})
+        form = MonthForm(initial={'year':year,'month':month})
         
     if year and month:
         ds = Demand.objects.filter(year = year, month = month)
@@ -662,7 +662,7 @@ def employee_salary_list(request):
             salaries.append(es)
     return render_to_response('Management/employee_salaries.html', 
                               {'salaries':salaries, 'month': date(int(year), int(month), 1),
-                               'filterForm':MonthFilterForm(initial={'year':year,'month':month})},
+                               'filterForm':MonthForm(initial={'year':year,'month':month})},
                                context_instance=RequestContext(request))
 
 @permission_required('Management.list_salaryexpenses')
@@ -673,7 +673,7 @@ def salary_expenses_list(request):
     salaries = list(EmployeeSalary.objects.filter(year = year, month= month))
     return render_to_response('Management/salaries_expenses.html', 
                               {'salaries':salaries, 'month': date(int(year), int(month), 1),
-                               'filterForm':MonthFilterForm(initial={'year':year,'month':month})},
+                               'filterForm':MonthForm(initial={'year':year,'month':month})},
                                context_instance=RequestContext(request))
 
 @permission_required('Management.list_salaryexpenses')
@@ -684,7 +684,7 @@ def nh_salary_expenses_list(request):
     salaries = list(NHEmployeeSalary.objects.filter(year = year, month= month))
     return render_to_response('Management/nh_salaries_expenses.html', 
                               {'salaries':salaries, 'month': date(int(year), int(month), 1),
-                               'filterForm':MonthFilterForm(initial={'year':year,'month':month})},
+                               'filterForm':MonthForm(initial={'year':year,'month':month})},
                                context_instance=RequestContext(request))
 
 @permission_required('Management.list_nhemployeesalary')
@@ -701,7 +701,7 @@ def nhemployee_salary_list(request):
         salaries.append(es)
     return render_to_response('Management/nhemployee_salaries.html', 
                               {'salaries':salaries, 'month': date(int(year), int(month), 1),
-                               'filterForm':MonthFilterForm(initial={'year':year,'month':month})},
+                               'filterForm':MonthForm(initial={'year':year,'month':month})},
                                context_instance=RequestContext(request))
 
 def employee_salary_pdf(request, year, month):
@@ -956,7 +956,7 @@ def nhmonth_sales(request, nhbranch_id):
         for nhss in sale.nhsaleside_set.all():
             for e in employees:
                 e.month_total += nhss.get_employee_pay(e)
-    form = MonthFilterForm(initial={'year':nhm.year,'month':nhm.month})
+    form = MonthForm(initial={'year':nhm.year,'month':nhm.month})
     return render_to_response('Management/nhmonth_sales.html', 
                               { 'nhmonth':nhm, 'filterForm':form, 'employees':employees },
                               context_instance=RequestContext(request))
@@ -986,9 +986,9 @@ def demand_list(request):
     sales_count, expected_sales_count, sales_amount = 0,0,0
     
     if len(request.GET):
-        form = MonthFilterForm(request.GET)
+        form = MonthForm(request.GET)
     else:
-        form = MonthFilterForm(initial={'year':year,'month':month})
+        form = MonthForm(initial={'year':year,'month':month})
         
     if form.is_valid():
         year, month = form.cleaned_data['year'], form.cleaned_data['month']
@@ -1117,7 +1117,7 @@ def demands_send(request):
     current = Demand.current_month()
     y = int(request.GET.get('year', current.year))
     m = int(request.GET.get('month', current.month))
-    form = MonthFilterForm(initial={'year':y,'month':m})
+    form = MonthForm(initial={'year':y,'month':m})
     month = datetime(y,m,1)
     ds = Demand.objects.filter(year = y, month = m)
     forms=[]

@@ -22,6 +22,16 @@ class SeasonForm(forms.Form):
         return int(self.cleaned_data['to_year'])
     def clean_to_month(self):
         return int(self.cleaned_data['to_month'])
+
+class MonthForm(forms.Form):
+    year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
+                             label = ugettext('year'), initial = datetime.now().year)
+    month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('month'),
+                              initial = Demand.current_month().month)  
+    def clean_year(self):
+        return int(self.cleaned_data['year'])
+    def clean_month(self):
+        return int(self.cleaned_data['month'])
     
 class ContactForm(forms.ModelForm):
     def __init__(self, *args, **kw):
@@ -451,12 +461,8 @@ class SplitPaymentForm(forms.ModelForm):
         model = Payment
         exclude = ('amount')
 
-class SplitPaymentDemandForm(forms.Form):
+class SplitPaymentDemandForm(MonthForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label = ugettext('project'))
-    year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                             label = ugettext('year'), initial = datetime.now().year)
-    month = forms.ChoiceField(choices=((i+1,i+1) for i in range(12)), label = ugettext('month'),
-                              initial = datetime.now().month)
     amount = forms.IntegerField(label=ugettext('amount'))
     
 class DemandPaymentForm(forms.ModelForm):
@@ -736,12 +742,8 @@ class DealForm(forms.ModelForm):
         model = Deal
         fields = ['client_status_type','new_client_status_type','address','rooms','floor','price','commission_precentage','commission','remarks']
 
-class NHMonthForm(forms.Form):
-    nhbranch = forms.ModelChoiceField(queryset = NHBranch.objects.all(), label=ugettext('nhbranch'))
-    year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                             label = ugettext('year'), initial = datetime.now().year)
-    month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('month'),
-                              initial = Demand.current_month().month)  
+class NHMonthForm(MonthForm):
+    nhbranch = forms.ModelChoiceField(queryset = NHBranch.objects.all(), label=ugettext('nhbranch'))  
     
 class EmploymentTermsForm(forms.ModelForm):
     def __init__(self, *args, **kw):
@@ -784,12 +786,8 @@ class TaskFilterForm(forms.Form):
     status = forms.ChoiceField(choices = [('done', 'בוצעו'), ('undone','לא בוצעו'), ('all','הכל')])
     sender = forms.ChoiceField(choices = [('me', 'אני שלחתי'), ('others','נשלחו אלי')])
 
-class DemandReportForm(forms.Form):
+class DemandReportForm(MonthForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label=ugettext('project'))
-    year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                             label = ugettext('year'), initial = datetime.now().year)
-    month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('month'),
-                              initial = Demand.current_month().month)
 
 class ProjectSeasonForm(SeasonForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label=ugettext('project'))
@@ -800,16 +798,6 @@ class NHBranchSeasonForm(SeasonForm):
 class EmployeeSeasonForm(SeasonForm):
     employee = forms.ModelChoiceField(queryset = EmployeeBase.objects.all(), label=ugettext('employee'))
     
-class MonthFilterForm(forms.Form):    
-    year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                             label = ugettext('year'), initial = datetime.now().year)
-    month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('month'),
-                              initial = Demand.current_month().month)    
-    def clean_year(self):
-        return int(self.cleaned_data['year'])
-    def clean_month(self):
-        return int(self.cleaned_data['month'])
-
 class MadadBIForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self, *args, **kw)
@@ -830,12 +818,8 @@ class ContactFilterForm(forms.Form):
     role = forms.CharField(label=ugettext('role'), required=False)
     company = forms.CharField(label=ugettext('company'), required=False)
 
-class LocateDemandForm(forms.Form):
+class LocateDemandForm(MonthForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label=ugettext('project'))
-    year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                             label = ugettext('year'), initial = datetime.now().year)
-    month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('month'),
-                              initial = datetime.now().month)
     
 class LocateHouseForm(forms.Form):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label=ugettext('project'))
