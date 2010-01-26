@@ -755,21 +755,22 @@ def demands_all(request):
     amount_mispaid, amount_unpaid, amount_nopayment, amount_noinvoice = 0,0,0,0
     from time import time
     start = time()
-    demands = list(Demand.objects.all())
+    demands = Demand.objects.all()
     for demand in demands:
         amount = demand.get_sales_commission()
         demand.sales_commission = int(amount)
         demand.save()
         continue
-        state = demand.state
-        if state in [DemandPaidPlus, DemandPaidMinus]:
-            amount_mispaid += demand.get_total_amount()
-        if state == DemandNoInvoice:
-            amount_noinvoice += demand.get_total_amount()
-        if state == DemandNoPayment:
-            amount_nopayment += demand.get_total_amount()
-        if state == DemandUnpaid:
-            amount_unpaid += demand.get_total_amount()
+    return HttpResponse('')
+#        state = demand.state
+#        if state in [DemandPaidPlus, DemandPaidMinus]:
+#            amount_mispaid += demand.get_total_amount()
+#        if state == DemandNoInvoice:
+#            amount_noinvoice += demand.get_total_amount()
+#        if state == DemandNoPayment:
+#            amount_nopayment += demand.get_total_amount()
+#        if state == DemandUnpaid:
+#            amount_unpaid += demand.get_total_amount()
 #    projects = Project.objects.all()
 #    for p in projects:
 #        for d in p.demands_mispaid():
