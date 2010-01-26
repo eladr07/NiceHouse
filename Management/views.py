@@ -755,6 +755,9 @@ def demands_all(request):
     amount_mispaid, amount_unpaid, amount_nopayment, amount_noinvoice = 0,0,0,0
     projects = Project.objects.select_related('demands__diffs','demands__invoices','demands__payments')
     for p in projects:
+        for attr in ['demands_mispaid','demands_unpaid','demands_nopayment','demands_noinvoice']:
+            length = getattr(p, attr)()
+            setattr(p, attr + '_length', length)
         for d in p.demands_mispaid():
             amount_mispaid += d.get_total_amount()
             total_mispaid += 1
@@ -767,6 +770,7 @@ def demands_all(request):
         for d in p.demands_noinvoice():
             amount_noinvoice += d.get_total_amount()
             total_noinvoice += 1
+
     return render_to_response('Management/demands_all.html', 
                               { 'projects':projects, 'total_mispaid':total_mispaid, 'total_unpaid':total_unpaid,
                                'total_nopayment':total_nopayment, 'total_noinvoice':total_noinvoice,
