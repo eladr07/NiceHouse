@@ -32,6 +32,8 @@ Boolean = (
            (1, u'כן')
            )
 
+DemandNoInvoice, DemandNoPayment, DemandPaidPlus, DemandPaidMinus, DemandPaid, DemandUnpaid = range(1, 7)
+
 RoomsChoices = [(float(i)/2,float(i)/2) for i in range(2, 21)]
 RoomsChoices.insert(0, ('',u'----'))
 
@@ -192,31 +194,13 @@ class Project(models.Model):
     def is_zilber(self):
         return self.commissions.c_zilber != None
     def demands_unpaid(self):
-        return [d for d in self.demands.all() 
-                if d.statuses.count() 
-                and not d.payments.count() 
-                and not d.invoices.count()
-                and d.get_total_amount()
-                and not d.force_fully_paid]
+        return [d for d in self.demands.all() if d.state == DemandUnpaid]
     def demands_noinvoice(self):
-        return [d for d in self.demands.all() 
-                if d.statuses.count() 
-                and d.payments.count() 
-                and not d.invoices.count()
-                and d.get_total_amount()
-                and not d.force_fully_paid]
+        return [d for d in self.demands.all() if d.state == DemandNoInvoice]
     def demands_nopayment(self):
-        return [d for d in self.demands.all() 
-                if d.statuses.count() 
-                and not d.payments.count() 
-                and d.invoices.count()
-                and d.get_total_amount()
-                and not d.force_fully_paid]
+        return [d for d in self.demands.all() if d.state == DemandNoPayment]
     def demands_mispaid(self):
-        return [d for d in self.demands.all() 
-                if d.statuses.count() 
-                and (d.diff_invoice or d.diff_invoice_payment)
-                and not d.force_fully_paid]
+        return [d for d in self.demands.all() if d.state in [DemandPaidPlus, DemandPaidMinus]]
     def current_demand(self):
         try:
             return Demand.objects.current().get(project = self)
@@ -1691,8 +1675,6 @@ class DemandDiff(models.Model):
     class Meta:
         db_table = 'DemandDiff'
         unique_together = ('demand','type')
-
-DemandNoInvoice, DemandNoPayment, DemandPaidPlus, DemandPaidMinus, DemandPaid = range(1, 6)
       
 class Demand(models.Model):
     project = models.ForeignKey('Project', related_name='demands', verbose_name = ugettext('project'))
@@ -1865,17 +1847,23 @@ class Demand(models.Model):
         return self.get_sales_commission() + diffs
     def get_deleted_sales(self):
         return [s for s in self.sales.filter(is_deleted=True)]
+    @property
     def state(self):
-        if self.invoices.count()==0:
+        if self.is_fully_paid:
+            return DemandPaid
+        if not self.invoices.count() and not self.payments.count():
+            return DemandUnpaid
+        if not self.invoices.count():
             return DemandNoInvoice
-        if self.payments.count()==0:
+        if not self.payments.count():
             return DemandNoPayment
         diff = self.diff_invoice_payment + self.adjust_diff
+        if diff == 0:
+            return DemandPaid
         if diff > 0:
             return DemandPaidPlus
         if diff < 0:
             return DemandPaidMinus
-        return DemandPaid
     @property
     def is_fully_paid(self):
         if self.force_fully_paid:
