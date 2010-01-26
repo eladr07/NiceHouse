@@ -1800,7 +1800,7 @@ class Demand(models.Model):
         return self.invoices_amount - int(self.get_total_amount())
     @property
     def payments_amount(self):
-        return self.payments.all().aggregate(Sum('amount'))['amount__sum'] or 0
+        return self.payments.aggregate(Sum('amount'))['amount__sum'] or 0
     @property
     def invoices_amount(self):
         amount = 0
@@ -1843,7 +1843,7 @@ class Demand(models.Model):
         self.save()
         return self.sales_commission
     def get_total_amount(self):
-        diffs = self.diffs.all().aggregate(Sum('amount'))['amount__sum'] or 0
+        diffs = self.diffs.aggregate(Sum('amount'))['amount__sum'] or 0
         return self.sales_commission + diffs
     def get_deleted_sales(self):
         return [s for s in self.sales.filter(is_deleted=True)]

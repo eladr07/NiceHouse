@@ -545,7 +545,7 @@ def demand_old_list(request):
         form = MonthForm(initial={'year':year,'month':month})
         
     if year and month:
-        ds = Demand.objects.filter(year = year, month = month).select_related('diffs')
+        ds = Demand.objects.filter(year = year, month = month)
         for d in ds:
             total_sales_count += d.get_sales().count()
             total_sales_amount += d.get_final_sales_amount()
@@ -753,13 +753,8 @@ def demands_all(request):
     
     total_mispaid, total_unpaid, total_nopayment, total_noinvoice = 0,0,0,0
     amount_mispaid, amount_unpaid, amount_nopayment, amount_noinvoice = 0,0,0,0
-    from time import time
-    start = time()
-    projects = Project.objects.select_related('demands__diffs','demands__invoices','demands__payments')
+    projects = Project.objects.all()
     for p in projects:
-        for attr in ['demands_mispaid','demands_unpaid','demands_nopayment','demands_noinvoice']:
-            length = len(getattr(p, attr)())
-            setattr(p, attr + '_length', length)
         for d in p.demands_mispaid():
             amount_mispaid += d.get_total_amount()
             total_mispaid += 1
@@ -772,9 +767,6 @@ def demands_all(request):
         for d in p.demands_noinvoice():
             amount_noinvoice += d.get_total_amount()
             total_noinvoice += 1
-    delta = time() - start
-    from django.db import connection
-    return HttpResponse(str(connection.queries))
     return render_to_response('Management/demands_all.html', 
                               { 'projects':projects, 'total_mispaid':total_mispaid, 'total_unpaid':total_unpaid,
                                'total_nopayment':total_nopayment, 'total_noinvoice':total_noinvoice,
