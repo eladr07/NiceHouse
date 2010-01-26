@@ -766,7 +766,7 @@ def demands_all(request):
 #            amount_nopayment += demand.get_total_amount()
 #        if state == DemandUnpaid:
 #            amount_unpaid += demand.get_total_amount()
-    projects = Project.objects.all()
+    projects = Project.objects.select_related('demands__diffs')
     for p in projects:
         for d in p.demands_mispaid():
             amount_mispaid += d.get_total_amount()
