@@ -545,7 +545,7 @@ def demand_old_list(request):
         form = MonthForm(initial={'year':year,'month':month})
         
     if year and month:
-        ds = Demand.objects.filter(year = year, month = month)
+        ds = Demand.objects.filter(year = year, month = month).select_related('diffs')
         for d in ds:
             total_sales_count += d.get_sales().count()
             total_sales_amount += d.get_final_sales_amount()
@@ -753,19 +753,6 @@ def demands_all(request):
     
     total_mispaid, total_unpaid, total_nopayment, total_noinvoice = 0,0,0,0
     amount_mispaid, amount_unpaid, amount_nopayment, amount_noinvoice = 0,0,0,0
-    from time import time
-    start = time()
-#    demands = Demand.objects.all()
-#    for demand in demands:
-#        state = demand.state
-#        if state in [DemandPaidPlus, DemandPaidMinus]:
-#            amount_mispaid += demand.get_total_amount()
-#        if state == DemandNoInvoice:
-#            amount_noinvoice += demand.get_total_amount()
-#        if state == DemandNoPayment:
-#            amount_nopayment += demand.get_total_amount()
-#        if state == DemandUnpaid:
-#            amount_unpaid += demand.get_total_amount()
     projects = Project.objects.select_related('demands__diffs')
     for p in projects:
         for d in p.demands_mispaid():
@@ -780,8 +767,6 @@ def demands_all(request):
         for d in p.demands_noinvoice():
             amount_noinvoice += d.get_total_amount()
             total_noinvoice += 1
-    delta = time() - start
-    raise Type
     return render_to_response('Management/demands_all.html', 
                               { 'projects':projects, 'total_mispaid':total_mispaid, 'total_unpaid':total_unpaid,
                                'total_nopayment':total_nopayment, 'total_noinvoice':total_noinvoice,
