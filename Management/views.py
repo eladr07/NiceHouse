@@ -755,7 +755,7 @@ def demands_all(request):
     amount_mispaid, amount_unpaid, amount_nopayment, amount_noinvoice = 0,0,0,0
     from time import time
     start = time()
-    demands = Demand.objects.all()
+    demands = list(Demand.objects.all())
     for demand in demands:
         amount = demand.get_sales_commission()
         demand.sales_commission = int(amount)
