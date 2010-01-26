@@ -772,7 +772,7 @@ def demands_all(request):
         for d in p.demands_noinvoice():
             amount_noinvoice += d.get_total_amount()
             total_noinvoice += 1
-    delta = time() - start()
+    delta = time() - start
     
     return render_to_response('Management/demands_all.html', 
                               { 'projects':projects, 'total_mispaid':total_mispaid, 'total_unpaid':total_unpaid,
