@@ -549,7 +549,7 @@ def demand_old_list(request):
         for d in ds:
             total_sales_count += d.get_sales().count()
             total_sales_amount += d.get_final_sales_amount()
-            total_sales_commission += d.get_sales_commission()
+            total_sales_commission += d.sales_commission
             total_amount += d.get_total_amount()
             expected_sales_count += d.sale_count
         for p in Project.objects.active():
@@ -757,6 +757,9 @@ def demands_all(request):
     start = time()
     demands = Demand.objects.select_related('diffs')
     for demand in demands:
+        demand.sales_commission = demand.get_sales_commission()
+        demand.save()
+        continue
         state = demand.state
         if state in [DemandPaidPlus, DemandPaidMinus]:
             amount_mispaid += demand.get_total_amount()
@@ -2892,7 +2895,7 @@ def demand_season_list(request):
             for d in ds:
                 total_sales_count += d.get_sales().count()
                 total_sales_amount += d.get_final_sales_amount()
-                total_sales_commission += d.get_sales_commission()
+                total_sales_commission += d.sales_commission
                 total_amount += d.get_total_amount()
     else:
         form = ProjectSeasonForm()

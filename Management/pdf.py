@@ -525,9 +525,9 @@ class MonthDemandWriter:
                     if discount:
                         row.extend([None,None])
                     if final:
-                        row.extend([None,None,None,None,None,Paragraph(commaise(self.demand.get_sales_commission()), styleSumRow)])
+                        row.extend([None,None,None,None,None,Paragraph(commaise(self.demand.sales_commission), styleSumRow)])
                     else:
-                        row.extend([None,Paragraph(commaise(self.demand.get_sales_commission()), styleSumRow)])
+                        row.extend([None,Paragraph(commaise(self.demand.sales_commission), styleSumRow)])
                     row.reverse()
                     rows.append(row)
                 data = [headers]

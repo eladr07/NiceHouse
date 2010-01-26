@@ -106,7 +106,7 @@
 	<table class="formTable">
 		<tr>
 			<th>עמלה בגין מכירות</th>
-			<td>{{form.instance.get_sales_commission|commaise}} ש"ח</td>
+			<td>{{form.instance.sales_commission|commaise}} ש"ח</td>
 		</tr>
 		<tr>
 			<th>סה"כ תשלום לחברה</th>
@@ -357,7 +357,7 @@
 				<td><b><u>{{form.instance.get_sales_amount|commaise}} ש"ח</u></b></td>
 				<td colspan={% if form.instance.get_sales.0.discount %}"6"{%else%}"3"{%endif%}></td>
 				<td colspan={% if form.instance.project.commissions.b_discount_save_precentage %}"3"{%else%}"1"{%endif%}></td>
-				<td colspan="2"><b><u style="color:#1A339C;">{{form.instance.get_sales_commission|commaise}} ש"ח</u></b></td>
+				<td colspan="2"><b><u style="color:#1A339C;">{{form.instance.sales_commission|commaise}} ש"ח</u></b></td>
 			</tr>
 		</table>
 	</fieldset>

@@ -1686,6 +1686,7 @@ class Demand(models.Model):
     is_finished = models.BooleanField(default=False, editable=False)
     reminders = models.ManyToManyField('Reminder', null=True, editable=False)
     force_fully_paid = models.BooleanField(editable=False, default=True)
+    sales_commission = models.IntegerField(editable=False, null=True)
 
     invoices = models.ManyToManyField('Invoice',  related_name = 'demands', 
                                       editable=False, null=True, blank=True)
@@ -1821,22 +1822,26 @@ class Demand(models.Model):
     def get_rejectedsales(self):
         return self.sales.exclude(salereject=None)
     def get_sales(self):
-        query =  Sale.objects.filter(salecancel=None, contractor_pay__year = self.year, contractor_pay__month = self.month,
+        query = Sale.objects.filter(salecancel=None, contractor_pay__year = self.year, contractor_pay__month = self.month,
                                      house__building__project = self.project)
         if self.project.commissions.commission_by_signups:
             query = query.order_by('house__signups__date')
         return query
     def get_sales_amount(self):
-        amount = 0
-        for s in self.get_sales():
-            amount = amount + s.price
-        return amount
+        return self.get_sales().aggregate(Sum('price'))['price__sum'] or 0
     def get_final_sales_amount(self):
         return self.get_sales().aggregate(Sum('price_final'))['price_final__sum'] or 0
     def calc_sales_commission(self):
-        if self.get_sales().count() == 0: return
-        c = self.project.commissions
-        c.calc(self.get_sales())
+        if self.get_sales().count() == 0: 
+            return
+        try:
+            c = self.project.commissions
+            c.calc(self.get_sales())
+            self.sales_commission = self.get_sales().aggregate(Sum('c_final_worth'))['c_final_worth__sum'] or 0
+        except:
+            self.sales_commission = -1
+        self.save()
+        return self.sales_commission
     def get_sales_commission(self):
         i=0
         for s in self.get_sales():
@@ -1844,7 +1849,7 @@ class Demand(models.Model):
         return i
     def get_total_amount(self):
         diffs = self.diffs.all().aggregate(Sum('amount'))['amount__sum'] or 0
-        return self.get_sales_commission() + diffs
+        return self.sales_commission + diffs
     def get_deleted_sales(self):
         return [s for s in self.sales.filter(is_deleted=True)]
     @property
