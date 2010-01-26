@@ -753,6 +753,8 @@ def demands_all(request):
     
     total_mispaid, total_unpaid, total_nopayment, total_noinvoice = 0,0,0,0
     amount_mispaid, amount_unpaid, amount_nopayment, amount_noinvoice = 0,0,0,0
+    from time import time
+    start = time()
     projects = Project.objects.all()
     for p in projects:
         for d in p.demands_mispaid():
@@ -767,7 +769,8 @@ def demands_all(request):
         for d in p.demands_noinvoice():
             amount_noinvoice += d.get_total_amount()
             total_noinvoice += 1
-    
+    delta = time() - start
+    raise TypeError
     return render_to_response('Management/demands_all.html', 
                               { 'projects':projects, 'total_mispaid':total_mispaid, 'total_unpaid':total_unpaid,
                                'total_nopayment':total_nopayment, 'total_noinvoice':total_noinvoice,
