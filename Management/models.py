@@ -1837,7 +1837,7 @@ class Demand(models.Model):
         try:
             c = self.project.commissions
             c.calc(self.get_sales())
-            self.sales_commission = self.get_sales().aggregate(Sum('c_final_worth'))['c_final_worth__sum'] or 0
+            self.sales_commission = int(self.get_sales().aggregate(Sum('c_final_worth'))['c_final_worth__sum']) or 0
         except:
             self.sales_commission = -1
         self.save()

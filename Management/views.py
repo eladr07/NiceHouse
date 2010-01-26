@@ -758,9 +758,7 @@ def demands_all(request):
     demands = Demand.objects.all()
     for demand in demands:
         amount = demand.get_sales_commission()
-        if amount > 0:
-            raise TypeError
-        demand.sales_commission = amount
+        demand.sales_commission = int(amount)
         demand.save()
         continue
         state = demand.state
