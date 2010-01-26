@@ -773,7 +773,8 @@ def demands_all(request):
             amount_noinvoice += d.get_total_amount()
             total_noinvoice += 1
     delta = time() - start
-    
+    from django.db import connection
+    return HttpResponse(str(connection.queries))
     return render_to_response('Management/demands_all.html', 
                               { 'projects':projects, 'total_mispaid':total_mispaid, 'total_unpaid':total_unpaid,
                                'total_nopayment':total_nopayment, 'total_noinvoice':total_noinvoice,
