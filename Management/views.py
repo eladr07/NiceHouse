@@ -755,9 +755,12 @@ def demands_all(request):
     amount_mispaid, amount_unpaid, amount_nopayment, amount_noinvoice = 0,0,0,0
     from time import time
     start = time()
-    demands = Demand.objects.select_related('diffs')
+    demands = Demand.objects.all()
     for demand in demands:
-        demand.sales_commission = demand.get_sales_commission()
+        amount = demand.get_sales_commission()
+        if amount > 0:
+            raise TypeError
+        demand.sales_commission = amount
         demand.save()
         continue
         state = demand.state
