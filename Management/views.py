@@ -753,7 +753,7 @@ def demands_all(request):
     
     total_mispaid, total_unpaid, total_nopayment, total_noinvoice = 0,0,0,0
     amount_mispaid, amount_unpaid, amount_nopayment, amount_noinvoice = 0,0,0,0
-    projects = Project.objects.select_related('demands__diffs','invoices','payments')
+    projects = Project.objects.select_related('demands__diffs','demands__invoices','demands__payments')
     for p in projects:
         for d in p.demands_mispaid():
             amount_mispaid += d.get_total_amount()
