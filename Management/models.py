@@ -1826,7 +1826,7 @@ class Demand(models.Model):
     def get_rejectedsales(self):
         return self.sales.exclude(salereject=None)
     def get_sales(self):
-        if not self.cached_sales:
+        if not self.is_sales_cached:
             query = Sale.objects.filter(salecancel=None, contractor_pay__year = self.year, contractor_pay__month = self.month,
                                         house__building__project = self.project)
             if self.project.commissions.commission_by_signups:
