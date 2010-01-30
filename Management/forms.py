@@ -628,7 +628,7 @@ class IncomeFilterForm(SeasonForm):
                                            required=False)
     income_type = forms.ModelChoiceField(queryset = IncomeType.objects.all(), label=ugettext('income_type'), 
                                          required=False)
-    client_type = forms.ModelChoiceField(queryset = ClientType.objects.all(), label=ugettext('client_type'), 
+    client_type = forms.ModelChoiceField(queryset = ClientType.objects.all(), label=ugettext('client_name'), 
                                          required=False)
     income_producer_type = forms.ModelChoiceField(queryset = IncomeProducerType.objects.all(), label=ugettext('income_producer_type'), 
                                                   required=False)

@@ -1855,8 +1855,6 @@ class Demand(models.Model):
     def get_total_amount(self):
         diffs = self.diffs.aggregate(Sum('amount'))['amount__sum'] or 0
         return self.sales_commission + diffs
-    def get_deleted_sales(self):
-        return [s for s in self.sales.filter(is_deleted=True)]
     @property
     def state(self):
         if self.is_fully_paid:
@@ -2574,7 +2572,7 @@ class DivisionType(models.Model):
         db_table = 'DivisionType'
 
 class IncomeType(models.Model):
-    name = models.CharField(ugettext('name'), max_length=20, unique=True)
+    name = models.CharField(ugettext('name'), max_length=40, unique=True)
     def __unicode__(self):
         return unicode(self.name)
     class Meta:
