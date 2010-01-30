@@ -1,22 +1,12 @@
 ﻿from django.conf.urls.defaults import *
 from Management.models import *
-from django.db import models
 from django.template import RequestContext
-from django.contrib.auth.decorators import login_required
-from django.contrib import databrowse
 import Management.forms
-from inspect import isclass
 import settings
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
-
-from django.contrib import databrowse
-databrowse.site.register(Demand)
-#for model in dir(Management.models):
-#    if isclass(model) and issubclass(model, models.Model):
-#        databrowse.site.register(model)
 
 urlpatterns = patterns('',
     # Example:
@@ -26,7 +16,6 @@ urlpatterns = patterns('',
     # to INSTALLED_APPS to enable admin documentation:
     # (r'^admin/doc/', include('django.contrib.admindocs.urls')),
     # Uncomment the next line to enable the admin:
-    (r'^databrowse/(.*)', login_required(databrowse.site.root)),
     (r'^admin/', include(admin.site.urls)),
     (r'^accounts/login/$', 'django.contrib.auth.views.login'),
     (r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
