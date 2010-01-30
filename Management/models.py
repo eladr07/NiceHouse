@@ -1686,7 +1686,6 @@ class Demand(models.Model):
     is_finished = models.BooleanField(default=False, editable=False)
     reminders = models.ManyToManyField('Reminder', null=True, editable=False)
     force_fully_paid = models.BooleanField(editable=False, default=False)
-    sales_commission = models.IntegerField(editable=False, null=True)
 
     invoices = models.ManyToManyField('Invoice',  related_name = 'demands', 
                                       editable=False, null=True, blank=True)
@@ -1842,14 +1841,13 @@ class Demand(models.Model):
     def calc_sales_commission(self):
         if self.get_sales().count() == 0: 
             return
-        try:
-            c = self.project.commissions
-            c.calc(self.get_sales())
-            self.sales_commission = int(self.get_sales().aggregate(Sum('c_final_worth'))['c_final_worth__sum']) or 0
-        except:
-            self.sales_commission = -1
-        self.save()
-        return self.sales_commission
+        c = self.project.commissions
+        c.calc(self.get_sales())
+    def sales_commission(self):
+        amount = 0
+        for sale in self.get_sales():
+            amount += sale.c_final_worth
+        return amount
     def get_total_amount(self):
         diffs = self.diffs.aggregate(Sum('amount'))['amount__sum'] or 0
         return self.sales_commission + diffs
