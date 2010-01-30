@@ -1703,6 +1703,7 @@ class Demand(models.Model):
     current_month = Callable(current_month)
     
     def __init__(self, *args, **kw):
+        super(Demand, self).__init__(*args, **kw)
         self.is_sales_cached = False
         self.sales_query = None
     @property
