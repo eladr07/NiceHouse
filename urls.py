@@ -5,6 +5,7 @@ from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib import databrowse
 import Management.forms
+from inspect import isclass
 import settings
 
 # Uncomment the next two lines to enable the admin:
@@ -13,7 +14,7 @@ admin.autodiscover()
 
 from django.contrib import databrowse
 for model in dir(Management.models):
-    if issubclass(model, models.Model):
+    if isclass(model) and issubclass(model, models.Model):
         databrowse.site.register(model)
 
 urlpatterns = patterns('',
