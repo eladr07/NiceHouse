@@ -1,6 +1,6 @@
 ﻿from django.conf.urls.defaults import *
 from Management.models import *
-from django.db.models import Model 
+#from django.db.models import Model 
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib import databrowse
