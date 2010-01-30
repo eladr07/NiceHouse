@@ -14,9 +14,9 @@ admin.autodiscover()
 
 from django.contrib import databrowse
 databrowse.site.register(Demand)
-for model in dir(Management.models):
-    if isclass(model) and issubclass(model, models.Model):
-        databrowse.site.register(model)
+#for model in dir(Management.models):
+#    if isclass(model) and issubclass(model, models.Model):
+#        databrowse.site.register(model)
 
 urlpatterns = patterns('',
     # Example:
