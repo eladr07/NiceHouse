@@ -1843,6 +1843,7 @@ class Demand(models.Model):
             return
         c = self.project.commissions
         c.calc(self.get_sales())
+    @property
     def sales_commission(self):
         amount = 0
         for sale in self.get_sales():
