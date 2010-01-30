@@ -1685,7 +1685,7 @@ class Demand(models.Model):
     remarks = models.TextField(ugettext('remarks'), null=True,blank=True)
     is_finished = models.BooleanField(default=False, editable=False)
     reminders = models.ManyToManyField('Reminder', null=True, editable=False)
-    force_fully_paid = models.BooleanField(editable=False, default=True)
+    force_fully_paid = models.BooleanField(editable=False, default=False)
     sales_commission = models.IntegerField(editable=False, null=True)
 
     invoices = models.ManyToManyField('Invoice',  related_name = 'demands', 
