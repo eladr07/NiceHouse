@@ -1,6 +1,6 @@
 ﻿from django.conf.urls.defaults import *
 from Management.models import *
-#from django.db.models import Model 
+from django.db import models
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
 from django.contrib import databrowse
@@ -12,10 +12,9 @@ from django.contrib import admin
 admin.autodiscover()
 
 from django.contrib import databrowse
-databrowse.site.register(Demand)
-#for model in dir(Management.models):
-#    if issubclass(model, models.Model):
-#        databrowse.site.register(model)
+for model in dir(Management.models):
+    if issubclass(model, models.Model):
+        databrowse.site.register(model)
 
 urlpatterns = patterns('',
     # Example:
