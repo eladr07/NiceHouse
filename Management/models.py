@@ -2352,6 +2352,10 @@ class Sale(models.Model):
             self.restore_date = actual_demand and actual_demand.finish_date or None
         else:
             self.restore_date = None
+            
+        tax_date = date(self.contractor_pay.month == 12 and self.contractor_pay.year+ 1 or self.contractor_pay.year,
+                        self.contractor_pay.month == 12 and 1 or self.contractor_pay.month + 1, 1)
+        self.tax = Tax.objects.filter(date__lte = tax_date).latest().value / 100 + 1
     @property
     def actual_demand(self):
         demand, new = Demand.objects.get_or_create(month=self.contractor_pay.month, year=self.contractor_pay.year,
@@ -2394,8 +2398,7 @@ class Sale(models.Model):
         return (self.c_final or 0) * (self.price_final or 0) / 100
     @property
     def price_taxed(self):
-        tax = Tax.objects.filter(date__lte=date(self.contractor_pay.year, self.contractor_pay.month,1)).latest().value / 100 + 1
-        return self.include_tax and self.price or self.price * tax
+        return self.include_tax and self.price or (self.price * self.tax)
     @property
     def price_taxed_for_perfect_size(self):
         if not self.house.perfect_size:
@@ -2415,13 +2418,11 @@ class Sale(models.Model):
             price = self.price_include_lawyer and self.price or self.price * self.lawyer_tax
         elif c.include_lawyer == False:
             price = self.price_no_lawyer
-        d = date(self.contractor_pay.month == 12 and self.contractor_pay.year+ 1 or self.contractor_pay.year,
-                self.contractor_pay.month == 12 and 1 or self.contractor_pay.month + 1, 1)
-        TAX = Tax.objects.filter(date__lte=d).latest().value / 100 + 1
+
         if c.include_tax:
-            price = self.include_tax and price or price * TAX
+            price = self.include_tax and price or price * self.tax
         else:
-            price = self.include_tax and price / TAX or price
+            price = self.include_tax and price / self.tax or price
         return price
     def employee_price(self, employee=None):
         '''
@@ -2434,13 +2435,11 @@ class Sale(models.Model):
             price = self.price_include_lawyer and self.price or self.price * self.lawyer_tax
         else:
             price = self.price_no_lawyer
-        d = date(self.contractor_pay.month == 12 and self.contractor_pay.year+ 1 or self.contractor_pay.year,
-                self.contractor_pay.month == 12 and 1 or self.contractor_pay.month + 1, 1)
-        TAX = Tax.objects.filter(date__lte=d).latest().value / 100 + 1        
+      
         if et.include_tax:
-            price = self.include_tax and price or price * TAX
+            price = self.include_tax and price or price * self.tax
         else:
-            price = self.include_tax and price / TAX or price
+            price = self.include_tax and price / self.tax or price
         return price
     def save(self, *args, **kw):
         d = date(self.demand.year, self.demand.month, 1)
