@@ -12,9 +12,10 @@ from django.contrib import admin
 admin.autodiscover()
 
 from django.contrib import databrowse
-for model in dir(Management.models):
-    if issubclass(model, models.Model):
-        databrowse.site.register(model)
+databrowse.site.register(Demand)
+#for model in dir(Management.models):
+#    if issubclass(model, models.Model):
+#        databrowse.site.register(model)
 
 urlpatterns = patterns('',
     # Example:
