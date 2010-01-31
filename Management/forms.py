@@ -405,6 +405,10 @@ class DemandInvoiceForm(forms.ModelForm):
         forms.ModelForm.__init__(self,*args,**kw)
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
         self.fields['date'].widget.attrs = {'class':'vDateField'}
+        if self.instance.id and self.instance.demands.count() == 1:
+            demand = self.instance.demands.all()[0]
+            for attr in ['project','year','month']:
+                self.fields['attr'].initial = getattr(demand, attr)
     class Meta:
         model = Invoice
 
@@ -484,6 +488,10 @@ class DemandPaymentForm(forms.ModelForm):
         forms.ModelForm.__init__(self,*args,**kw)
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
         self.fields['payment_date'].widget.attrs = {'class':'vDateField'}
+        if self.instance.id and self.instance.demands.count() == 1:
+            demand = self.instance.demands.all()[0]
+            for attr in ['project','year','month']:
+                self.fields['attr'].initial = getattr(demand, attr)
     class Meta:
         model = Payment
 
