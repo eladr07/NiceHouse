@@ -2354,6 +2354,7 @@ class Sale(models.Model):
     commission_include = models.BooleanField(ugettext('commission include'), default=True, blank=True)
     def __init__(self, *args, **kw):
         models.Model.__init__(self, *args, **kw)
+        self.custom_cache = {}
         self.restore = True
         if self.id:
             actual_demand = self.actual_demand
@@ -2361,9 +2362,13 @@ class Sale(models.Model):
         else:
             self.restore_date = None
             
-        tax_date = date(self.contractor_pay.month == 12 and self.contractor_pay.year+ 1 or self.contractor_pay.year,
-                        self.contractor_pay.month == 12 and 1 or self.contractor_pay.month + 1, 1)
-        self.tax = Tax.objects.filter(date__lte = tax_date).latest().value / 100 + 1
+    @property
+    def tax(self):
+        if not self.custom_cache.has_key('tax'):
+            tax_date = date(self.contractor_pay.month == 12 and self.contractor_pay.year+ 1 or self.contractor_pay.year,
+                            self.contractor_pay.month == 12 and 1 or self.contractor_pay.month + 1, 1)
+            self.custom_cache['tax'] = Tax.objects.filter(date__lte = tax_date).latest().value / 100 + 1
+        return self.custom_cache['tax']
     @property
     def actual_demand(self):
         demand, new = Demand.objects.get_or_create(month=self.contractor_pay.month, year=self.contractor_pay.year,

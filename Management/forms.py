@@ -408,7 +408,7 @@ class DemandInvoiceForm(forms.ModelForm):
         if self.instance.id and self.instance.demands.count() == 1:
             demand = self.instance.demands.all()[0]
             for attr in ['project','year','month']:
-                self.fields['attr'].initial = getattr(demand, attr)
+                self.fields[attr].initial = getattr(demand, attr)
     class Meta:
         model = Invoice
 
@@ -491,7 +491,7 @@ class DemandPaymentForm(forms.ModelForm):
         if self.instance.id and self.instance.demands.count() == 1:
             demand = self.instance.demands.all()[0]
             for attr in ['project','year','month']:
-                self.fields['attr'].initial = getattr(demand, attr)
+                self.fields[attr].initial = getattr(demand, attr)
     class Meta:
         model = Payment
 
