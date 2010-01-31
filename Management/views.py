@@ -1449,7 +1449,39 @@ def payment_add(request, initial=None):
         form = DemandPaymentForm(initial=initial)
     return render_to_response('Management/payment_edit.html', 
                               { 'form':form }, context_instance=RequestContext(request))
-    
+
+@permission_required('Management.change_payment')
+def demand_payment_edit(request, id):
+    payment = Payment.objects.get(pk = id)
+    if request.method == 'POST':
+        form = DemandPaymentForm(request.POST, instance = payment)
+        if form.is_valid():
+            form.save()
+            if request.POST.has_key('addanother'):
+                return HttpResponseRedirect('/demands/%s/payment/add' % payment.demand_id)
+            if request.POST.has_key('addinvoice'):
+                return HttpResponseRedirect('/invoices/add')
+    else:
+        form = DemandPaymentForm(instance = payment)
+    return render_to_response('Management/payment_edit.html', 
+                              { 'form':form }, context_instance=RequestContext(request))
+
+@permission_required('Management.change_invoice')
+def demand_invoice_edit(request, id):
+    invoice = Invoice.objects.get(pk = id)
+    if request.method == 'POST':
+        form = DemandInvoiceForm(request.POST, instance = invoice)
+        if form.is_valid():
+            form.save()
+            if request.POST.has_key('addanother'):
+                return HttpResponseRedirect('/demands/%s/invoice/add' % invoice.demand_id)
+            if request.POST.has_key('addpayment'):
+                return HttpResponseRedirect('/payments/add')
+    else:
+        form = DemandInvoiceForm(instance = invoice)
+    return render_to_response('Management/invoice_edit.html', 
+                              { 'form':form }, context_instance=RequestContext(request))
+
 def payment_details(request, project, year, month):
     try:
         d = Demand.objects.get(project = project, year = year, month = month)

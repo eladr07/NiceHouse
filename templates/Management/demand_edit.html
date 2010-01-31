@@ -178,7 +178,7 @@
 			<b>{{i.date|date:"j/m/y"}}</b>
 			על סך
 			<b>{{i.amount|commaise}} ש"ח</b>  				
-			<a href="/invoices/{{i.id}}" ><img src="/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
+			<a href="/demandinvoice/{{i.id}}" ><img src="/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
 			<a href="/invoices/{{i.id}}/del"><img src="/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
 			{% if i.offset %}
 				בתאריך 
@@ -204,7 +204,7 @@
 			<b>{{p.payment_date|date:"j/m/y"}}</b>
 			על סך
 			<b>{{p.amount|commaise}} ש"ח</b>  				
-			<a href="/payments/{{p.id}}" ><img src="/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
+			<a href="/demandpayment/{{p.id}}" ><img src="/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
 			<a href="/payments/{{p.id}}/del"><img src="/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
 			<br>
 		{% endfor %}

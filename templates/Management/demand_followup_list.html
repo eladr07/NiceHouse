@@ -137,7 +137,7 @@
 			</td>
 			<td>
 				{% for i in d.invoices.all %}
-					<a href="/invoices/{{i.id}}">{{i.amount|commaise}}</a><br>
+					<a href="/demandinvoice/{{i.id}}">{{i.amount|commaise}}</a><br>
 				{% endfor %}
 			</td>
 			<td>
@@ -147,7 +147,7 @@
 			</td>
 			<td>
 				{% for p in d.payments.all %}
-					<a href="/payments/{{p.id}}">{{p.amount|commaise}}</a><br>
+					<a href="/demandpayment/{{p.id}}">{{p.amount|commaise}}</a><br>
 				{% endfor %}
 			</td>
 			<td>
