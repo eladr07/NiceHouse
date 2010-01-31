@@ -407,9 +407,9 @@ class DemandInvoiceForm(forms.ModelForm):
         self.fields['date'].widget.attrs = {'class':'vDateField'}
         if self.instance.id and self.instance.demands.count() == 1:
             demand = self.instance.demands.all()[0]
-            self.fields['project'] = demand.project_id
-            self.fields['year'] = demand.year
-            self.fields['month'] = demand.month
+            self.fields['project'].initial = demand.project_id
+            self.fields['year'].initial = demand.year
+            self.fields['month'].initial = demand.month
     class Meta:
         model = Invoice
 
@@ -491,9 +491,9 @@ class DemandPaymentForm(forms.ModelForm):
         self.fields['payment_date'].widget.attrs = {'class':'vDateField'}
         if self.instance.id and self.instance.demands.count() == 1:
             demand = self.instance.demands.all()[0]
-            self.fields['project'] = demand.project_id
-            self.fields['year'] = demand.year
-            self.fields['month'] = demand.month
+            self.fields['project'].initial = demand.project_id
+            self.fields['year'].initial = demand.year
+            self.fields['month'].initial = demand.month
     class Meta:
         model = Payment
 
