@@ -1793,8 +1793,10 @@ class Demand(models.Model):
         return False
     @property
     def finish_date(self):
-        f = self.statuses.filter(type__id = DemandFinished)
-        return f.count() > 0 and f.latest().date or None
+        if not self.custom_cache.has_key('finish_date'):
+            query = self.statuses.filter(type__id = DemandFinished)
+            self.custom_cache['finish_date'] = query.count() > 0 and query.latest().date or None
+        return self.custom_cache['finish_date']
     @property
     def is_fixed(self):
         return self.sales.exclude(salehousemod=None, salepricemod=None, salepre=None, salereject=None).count() > 0
@@ -1803,14 +1805,23 @@ class Demand(models.Model):
         if self.invoices.count() == 0: return 0
         return self.invoices_amount - int(self.get_total_amount())
     @property
+    def diffs_amount(self):
+        if not self.custom_cache.has_key('diffs_amount'):
+            self.custom_cache['diffs_amount'] = self.diffs.aggregate(Sum('amount'))['amount__sum'] or 0
+        return self.custom_cache['diffs_amount']
+    @property
     def payments_amount(self):
-        return self.payments.aggregate(Sum('amount'))['amount__sum'] or 0
+        if not self.custom_cache.has_key('payments_amount'):
+            self.custom_cache['payments_amount'] = self.payments.aggregate(Sum('amount'))['amount__sum'] or 0
+        return self.custom_cache['payments_amount']
     @property
     def invoices_amount(self):
-        amount = 0
-        for i in self.invoices.all():
-            amount += i.amount_offset
-        return amount
+        if not self.custom_cache.has_key('invoices_amount'):
+            amount = 0
+            for i in self.invoices.all():
+                amount += i.amount_offset
+            self.custom_cache['invoices_amount'] = amount
+        return self.custom_cache['invoices_amount']
     @property
     def diff_invoice_payment(self):
         return self.payments_amount - self.invoices_amount
@@ -1851,8 +1862,7 @@ class Demand(models.Model):
         self.save()
         return self.sales_commission
     def get_total_amount(self):
-        diffs = self.diffs.aggregate(Sum('amount'))['amount__sum'] or 0
-        return self.sales_commission + diffs
+        return self.sales_commission + self.diffs_amount
     @property
     def state(self):
         if self.is_fully_paid:
