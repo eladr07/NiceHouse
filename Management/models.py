@@ -1704,8 +1704,7 @@ class Demand(models.Model):
     
     def __init__(self, *args, **kw):
         super(Demand, self).__init__(*args, **kw)
-        self.is_sales_cached = False
-        self.sales_query = None
+        self.custom_cache = {}
     @property
     def fixed_diff(self):
         q = self.diffs.filter(type=u'קבועה')
@@ -1827,14 +1826,13 @@ class Demand(models.Model):
     def get_rejectedsales(self):
         return self.sales.exclude(salereject=None)
     def get_sales(self):
-        if not self.is_sales_cached:
+        if not self.custom_cache.has_key('get_sales'):
             query = Sale.objects.filter(salecancel=None, contractor_pay__year = self.year, contractor_pay__month = self.month,
                                         house__building__project = self.project)
             if self.project.commissions.commission_by_signups:
                 query = query.order_by('house__signups__date')
-            self.sales_query = query
-            self.is_sales_cached = True
-        return self.sales_query
+            self.custom_cache['get_sales'] = query
+        return self.custom_cache['get_sales']
     def get_sales_amount(self):
         return self.get_sales().aggregate(Sum('price'))['price__sum'] or 0
     def get_final_sales_amount(self):
