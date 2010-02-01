@@ -15,7 +15,7 @@ class cachemethod:
         self._cached = False
     def __call__(self, *args, **kw):
         if not self._cached:
-            self._value = self._function(self, *args, **kw)
+            self._value = self._function(*args, **kw)
             self._cached = True
         return self._value
 
