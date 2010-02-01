@@ -12,10 +12,11 @@ class cachemethod:
     def __init__(self, function):
         self._function = function
         self._value = None
-        self._cached = True
+        self._cached = False
     def __call__(self):
         if not self._cached:
             self._value = self._function()
+            _cached = True
         return self._value
 
 Salary_Types = (
