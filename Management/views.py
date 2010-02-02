@@ -979,31 +979,32 @@ def nhmonth_close(request):
 
 @permission_required('Management.add_demand')
 def demand_list(request):
-    current = Demand.current_month()
-    year, month = current.year, current.month
     ds, unhandled_projects = [], []
     sales_count, expected_sales_count, sales_amount = 0,0,0
     
+    current = Demand.current_month()
+    year, month = current.year, current.month
+    
     if len(request.GET):
         form = MonthForm(request.GET)
+        if form.is_valid():
+            year, month = form.cleaned_data['year'], form.cleaned_data['month']
     else:
         form = MonthForm(initial={'year':year,'month':month})
         
-    if form.is_valid():
-        year, month = form.cleaned_data['year'], form.cleaned_data['month']
-        '''loop through all active projects and create demands for them if havent
-        alredy created. if project has status other than Feed, it is handled''' 
-        for project in Project.objects.active():
-            demand, new = Demand.objects.get_or_create(project = project, year = year, month = month)
-            ds.append(demand)
-            if new and project.commissions.add_amount:
-                demand.diffs.create(type=u'קבועה', amount = project.commissions.add_amount, reason = project.commissions.add_type)
-            if demand.statuses.count() == 0 or demand.statuses.latest().type.id == DemandFeed:
-                unhandled_projects.append(project)
-        for d in ds:
-            sales_count += d.get_sales().count()
-            sales_amount += d.get_final_sales_amount()
-            expected_sales_count += d.sale_count
+    '''loop through all active projects and create demands for them if havent
+    alredy created. if project has status other than Feed, it is handled''' 
+    for project in Project.objects.active():
+        demand, new = Demand.objects.get_or_create(project = project, year = year, month = month)
+        ds.append(demand)
+        if new and project.commissions.add_amount:
+            demand.diffs.create(type=u'קבועה', amount = project.commissions.add_amount, reason = project.commissions.add_type)
+        if demand.statuses.count() == 0 or demand.statuses.latest().type.id == DemandFeed:
+            unhandled_projects.append(project)
+    for d in ds:
+        sales_count += d.get_sales().count()
+        sales_amount += d.get_final_sales_amount()
+        expected_sales_count += d.sale_count
         
     return render_to_response('Management/demand_list.html', 
                               { 'demands':ds, 'unhandled_projects':unhandled_projects, 
@@ -1179,6 +1180,11 @@ def demand_sale_reject(request, id):
     sr.date = date.today()
     sr.to_month = date(m==12 and y+1 or y, m==12 and 1 or m+1,1)
     sr.save()
+    
+    #re-calculate the entire destination demand
+    demand, new = Demand.objects.get_or_create(project = sale.demand.project, year = sr.to_month.year, month = sr.to_month.month)
+    demand.calc_sales_commission()
+    
     return HttpResponseRedirect('/salereject/%s' % sr.id)
 
 @permission_required('Management.add_invoice')
@@ -2677,12 +2683,20 @@ def sale_edit(request, id):
             if sale.demand.was_sent:
                 #check for mods:
                 if sale.price != form.cleaned_data['price']:
-                    spm = SalePriceMod(sale = sale, old_price = sale.price, date=date.today())
+                    try:
+                        spm = sale.salepricemod
+                    except SalePriceMod.DoesNotExist:
+                        spm = SalePriceMod(sale = sale, old_price = sale.price) 
+                    spm.date = date.today()
                     spm.save()
                     next = '/salepricemod/%s' % spm.id
                     sale.price = sale.project_price()
                 if sale.house != form.cleaned_data['house']:
-                    shm = SaleHouseMod(sale = sale, old_house = sale.house, date=date.today())
+                    try:
+                        shm = sale.salehousemod
+                    except SaleHouseMod.DoesNotExist:
+                        shm = SaleHouseMod(sale = sale, old_house = sale.house)
+                    shm.date = date.today()
                     shm.save()
                     next = '/salehousemod/%s' % shm.id
             form.save()
