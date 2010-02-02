@@ -88,10 +88,9 @@ class cachemethod:
             return ret
 
         # Save wrapped function reference
-        self.f = f
-        wrapper.__name__ = f.__name__
-        wrapper.__dict__.update(f.__dict__)
-        wrapper.__doc__ = f.__doc__
+        wrapper.__name__ = self.function.__name__
+        wrapper.__dict__.update(self.function.__dict__)
+        wrapper.__doc__ = self.function.__doc__
         return wrapper
     
 def nhemployee_sort(nhemployee1, nhemployee2):
