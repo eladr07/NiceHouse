@@ -45,9 +45,6 @@ class cachemethod:
         '''The decorator arguments are passed here.  Save them for runtime.'''
         self.dec_args = dec_args
         self.dec_kw = dec_kw
-
-        self.label = dec_kw.get('label', 'T')
-        self.fid = dec_kw.get('stream', stderr)
         
         self.cached = False
         self.value = None
