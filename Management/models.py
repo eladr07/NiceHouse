@@ -49,7 +49,7 @@ class cachemethod:
         self.cached = False
         self.value = None
         
-    def __call__(self, f):
+    def __call__(self):
         def wrapper(*fargs, **kw):
             '''
               Combine decorator arguments and function arguments and pass to wrapped
