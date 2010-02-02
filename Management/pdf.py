@@ -683,7 +683,7 @@ class EmployeeSalariesBookKeepingWriter:
                                         u"זמנית\nקבלה\nמס'",u'תשלום\nסוג',u"מס' צ'ק",u'בנק',u'מטפל\nסוכן',
                                         u'תשלום\nתאריך',u"סניף\nמס'",u'הערות']]
         headers.reverse()
-        colWidths = [None, 70, None, None, 40, None, None, 40, None, 70, None, None, None]
+        colWidths = [None, 70, None, None, 40, None, None, 40, None, 70, None, None, 20]
         colWidths.reverse()
         rows = []
         remarks_str = ''
@@ -710,7 +710,7 @@ class EmployeeSalariesBookKeepingWriter:
                 row.reverse()
                 rows.append(row)
                 if side.remarks:
-                    remarks_str += clients + log2vis(' - ' + side.remarks) + '<br/>'
+                    remarks_str += log2vis(side.name1 + ' ' + side.name2 or '' + ' - ' + side.remarks) + '<br/>'
             i += 1
             if i % 27 == 0 or i == len(self.nhsales):
                 data = [headers]
