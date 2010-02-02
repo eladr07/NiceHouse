@@ -204,7 +204,7 @@
 				<th>חשבונית</th>
 				<td>
 				{% for i in side.invoices.all %}
-					{{i.num}} - {{i.amount|commaise}} 
+					{{i.num}} - {{i.amount|commaise}} ש"ח
 					<a href="/invoices/{{i.id}}">עדכן</a>
 					<br>
 				{% empty %}
@@ -222,7 +222,7 @@
 			</tr>
 			{% for p in side.payments.all %}
 				<tr>
-					<td>{{p}}</td>
+					<td>{{p.payment_date|date:"j/m/y"}} - {{p.amount|commaise}} ש"ח</td>
 					<td><a href="/payments/{{p.id}}">עדכן תשלום</a></td>
 				</tr>
 			{% endfor %}
