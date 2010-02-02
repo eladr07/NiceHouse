@@ -34,15 +34,15 @@ RoomsChoices = [(float(i)/2,float(i)/2) for i in range(2, 21)]
 RoomsChoices.insert(0, ('',u'----'))
 
 class cachemethod:
-    def __init__(self, function, *args):
+    def __init__(self, function):
         self._function = function
-        self._args = args
         self._cached = False
-        self._value = None
+        self._value = Nonedef
+    def __get__(self, instance, owner):
+        return self.decorator(self._function.__get__(instance, owner))
     def __call__(self, *args):
         if not self._cached:
-            args = self._args + args
-            self._value = self._function(args)
+            self._value = self._function(*args)
         return self._value
         
 def nhemployee_sort(nhemployee1, nhemployee2):
