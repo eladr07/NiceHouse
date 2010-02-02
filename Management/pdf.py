@@ -688,7 +688,7 @@ class EmployeeSalariesBookKeepingWriter:
         i = 0
         for s in self.nhsales:
             for side in s.nhsaleside_set.all():
-                clients = log2vis(side.name1 + ' ' + side.name2)
+                clients = u'%s ו%s' % (side.name1, side.name2 or '')
                 invoice = side.invoices.count() > 0 and side.invoices.all()[0]
                 if invoice:
                     invoice_str = '%s<br/>%s' % (invoice.date.strftime('%d/%m/%y'), invoice.num and str(invoice.num) or '')
@@ -707,7 +707,6 @@ class EmployeeSalariesBookKeepingWriter:
                 row.reverse()
                 rows.append(row)
                 if side.remarks:
-                    clients = '%s - %s' % (side.name1, side.name2 or '')
                     remarks_str += log2vis(clients + ' - ' + side.remarks) + '<br/>'
                 i += 1
                 if i % 27 == 0 or i == len(self.nhsales):
