@@ -39,6 +39,7 @@ class cachemethod:
         self._cached = False
         self._value = None
     def __get__(self, instance, owner):
+        raise TypeError
         return self.decorator(self._function.__get__(instance, owner))
     def __call__(self, *args):
         if not self._cached:
