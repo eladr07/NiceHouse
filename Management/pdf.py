@@ -56,7 +56,7 @@ salariesTableStyle = TableStyle(
                              ('FONTNAME', (0,2), (-1,-1), 'David'),
                              ('SPAN',(0,0),(5,0)),
                              ('SPAN',(6,0),(-1,0)),
-                             ('FONTSIZE', (0,0), (-1,-1), 11),
+                             ('FONTSIZE', (0,0), (-1,-1), 10),
                              ('ALIGN', (0,0), (-1,-1), 'CENTER'),
                              ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
                              ('BOX', (0,0), (-1,-1), 0.25, colors.black),
