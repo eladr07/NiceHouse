@@ -38,8 +38,11 @@ class cachemethod:
         self.function = function
         self.cached = False
         self.value = None
-    def __call__(self, *args):
-        raise TypeError
+    def __call__(self):
+        if not self.cached:
+            instance = self.function.im_self
+            self.value = self.function(instance)
+        return self.value        
     
 def nhemployee_sort(nhemployee1, nhemployee2):
     query1 = nhemployee1.nhbranchemployee_set.all()
