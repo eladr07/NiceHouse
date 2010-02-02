@@ -33,17 +33,12 @@ DemandNoInvoice, DemandNoPayment, DemandPaidPlus, DemandPaidMinus, DemandPaid, D
 RoomsChoices = [(float(i)/2,float(i)/2) for i in range(2, 21)]
 RoomsChoices.insert(0, ('',u'----'))
 
-class cachemethod:
-    def __init__(self, function, args):
-        self._function = function
-        self._cached = False
-        self._value = None
-        raise TypeError
-    def __call__(self, *args):
-        if not self._cached:
-            self._value = self._function(*args)
-        return self._value
-        
+def cachemethod(f):
+  def wrapper(self, name, value, attrs):
+    self.attrs = attrs
+    return f(self, name, value, attrs)
+  return wrapper
+
 def nhemployee_sort(nhemployee1, nhemployee2):
     query1 = nhemployee1.nhbranchemployee_set.all()
     query2 = nhemployee2.nhbranchemployee_set.all()
