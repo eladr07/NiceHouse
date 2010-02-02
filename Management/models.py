@@ -37,7 +37,7 @@ class cachemethod:
     def __init__(self, function, *args):
         self._function = function
         self._args = args
-        self._cachced = False
+        self._cached = False
         self._value = None
     def __call__(self, *args):
         if not self._cached:
