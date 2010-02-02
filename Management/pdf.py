@@ -698,7 +698,7 @@ class EmployeeSalariesBookKeepingWriter:
                     invoice_str = ''
                 invoice_para = Paragraph(invoice_str, styleRow9)
                 payments = side.payments.all()
-                row = [s.num, Paragraph(log2vis(clients, styleRow9)), commaise(side.net_income), side.voucher_num, 
+                row = [s.num, Paragraph(log2vis(clients), styleRow9), commaise(side.net_income), side.voucher_num, 
                        invoice_para, side.temp_receipt_num, 
                        Paragraph('<br/>'.join([log2vis(unicode(p.payment_type)) for p in payments]), styleRow9),
                        Paragraph('<br/>'.join([unicode(p.num) for p in payments]), styleRow9),
