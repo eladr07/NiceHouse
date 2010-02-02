@@ -34,64 +34,12 @@ RoomsChoices = [(float(i)/2,float(i)/2) for i in range(2, 21)]
 RoomsChoices.insert(0, ('',u'----'))
 
 class cachemethod:
-    '''decorator class with ARGUMENTS
-
-       This can be used for unbounded functions and methods.  If this wraps a
-       class instance, then extract it and pass to the wrapped method as the
-       first arg.
-    '''
-    
-    def __init__(self, function, *dec_args, **dec_kw):
-        '''The decorator arguments are passed here.  Save them for runtime.'''
-        self.dec_args = dec_args
-        self.dec_kw = dec_kw
-        
+    def __init__(self, function):        
         self.function = function
         self.cached = False
         self.value = None
-        
-    def __call__(self):
-        def wrapper(*fargs, **kw):
-            '''
-              Combine decorator arguments and function arguments and pass to wrapped
-              class instance-aware function/method.
-
-              Note: the first argument cannot be "self" because we get a parse error
-              "takes at least 1 argument" unless the instance is actually included in
-              the argument list, which is redundant.  If this wraps a class instance,
-              the "self" will be the first argument.
-            '''
-            if self.cached:
-                return self.value
-            
-            self._showargs(*fargs, **kw)
-
-            # merge decorator keywords into the kw argument list
-            kw.update(self.dec_kw)
-
-            # Does this wrap a class instance?
-            if fargs and getattr(fargs[0], '__class__', None):
-
-                # pull out the instance and combine function and
-                # decorator args
-                instance, fargs = fargs[0], fargs[1:]+self.dec_args
-                self._showinstance(instance)
-
-                # call the method
-                ret=self.function(instance, *fargs, **kw)
-            else:
-                # just send in the give args and kw
-                ret=self.function(*(fargs + self.dec_args), **kw)
-            
-            self.cached = True
-            self.value = ret
-            return ret
-
-        # Save wrapped function reference
-        wrapper.__name__ = self.function.__name__
-        wrapper.__dict__.update(self.function.__dict__)
-        wrapper.__doc__ = self.function.__doc__
-        return wrapper
+    def __call__(self, *args):
+        raise TypeError
     
 def nhemployee_sort(nhemployee1, nhemployee2):
     query1 = nhemployee1.nhbranchemployee_set.all()
