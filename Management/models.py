@@ -33,12 +33,6 @@ DemandNoInvoice, DemandNoPayment, DemandPaidPlus, DemandPaidMinus, DemandPaid, D
 RoomsChoices = [(float(i)/2,float(i)/2) for i in range(2, 21)]
 RoomsChoices.insert(0, ('',u'----'))
 
-def cachemethod(f):
-  def wrapper(self, name, value, attrs):
-    self.attrs = attrs
-    return f(self, name, value, attrs)
-  return wrapper
-
 def nhemployee_sort(nhemployee1, nhemployee2):
     query1 = nhemployee1.nhbranchemployee_set.all()
     query2 = nhemployee2.nhbranchemployee_set.all()
@@ -1792,11 +1786,12 @@ class Demand(models.Model):
             if status.type.id in [DemandSent, DemandFinished]:
                 return True
         return False
-    @cachemethod
     @property
     def finish_date(self):
-        query = self.statuses.filter(type__id = DemandFinished)
-        return query.count() > 0 and query.latest().date or None
+        if not self.custom_cache.has_key('finish_date'):
+            query = self.statuses.filter(type__id = DemandFinished)
+            self.custom_cache['finish_date'] = query.count() > 0 and query.latest().date or None
+        return self.custom_cache['finish_date']
     @property
     def is_fixed(self):
         return self.sales.exclude(salehousemod=None, salepricemod=None, salepre=None, salereject=None).count() > 0
@@ -1836,13 +1831,14 @@ class Demand(models.Model):
         return self.sales.exclude(salepre=None)
     def get_rejectedsales(self):
         return self.sales.exclude(salereject=None)
-    @cachemethod
     def get_sales(self):
-        query = Sale.objects.filter(salecancel=None, contractor_pay__year = self.year, contractor_pay__month = self.month,
-                                    house__building__project = self.project)
-        if self.project.commissions.commission_by_signups:
-            query = query.order_by('house__signups__date')
-        return query
+        if not self.custom_cache.has_key('get_sales'):
+            query = Sale.objects.filter(salecancel=None, contractor_pay__year = self.year, contractor_pay__month = self.month,
+                                        house__building__project = self.project)
+            if self.project.commissions.commission_by_signups:
+                query = query.order_by('house__signups__date')
+            self.custom_cache['get_sales'] = query
+        return self.custom_cache['get_sales']
     def get_sales_amount(self):
         return self.get_sales().aggregate(Sum('price'))['price__sum'] or 0
     def get_final_sales_amount(self):
