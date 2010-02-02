@@ -697,12 +697,12 @@ class EmployeeSalariesBookKeepingWriter:
                 invoice_para = Paragraph(invoice_str, styleRow9)
                 payments = side.payments.all()
                 row = [s.num, clients, commaise(side.net_income), side.voucher_num, invoice_para, side.temp_receipt_num, 
-                       '<br/>'.join([log2vis(unicode(p.payment_type)) for p in payments]),
-                       '<br/>'.join([unicode(p.num) for p in payments]),
-                       '<br/>'.join([log2vis(p.bank) for p in payments]),
+                       Paragraph('<br/>'.join([log2vis(unicode(p.payment_type)) for p in payments]), styleRow9),
+                       Paragraph('<br/>'.join([unicode(p.num) for p in payments]), styleRow9),
+                       Paragraph('<br/>'.join([log2vis(p.bank) for p in payments]), styleRow9),
                        log2vis(unicode(side.signing_advisor)),
-                       '<br/>'.join([p.payment_date.strftime('%d/%m/%y') for p in payments]),
-                       '<br/>'.join([unicode(p.branch_num) for p in payments]),
+                       Paragraph('<br/>'.join([p.payment_date.strftime('%d/%m/%y') for p in payments]), styleRow9),
+                       Paragraph('<br/>'.join([unicode(p.branch_num) for p in payments]), styleRow9),
                        side.remarks and '*']
                 row.reverse()
                 rows.append(row)
