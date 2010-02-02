@@ -41,11 +41,12 @@ class cachemethod:
        first arg.
     '''
     
-    def __init__(self, *dec_args, **dec_kw):
+    def __init__(self, function, *dec_args, **dec_kw):
         '''The decorator arguments are passed here.  Save them for runtime.'''
         self.dec_args = dec_args
         self.dec_kw = dec_kw
         
+        self.function = function
         self.cached = False
         self.value = None
         
@@ -77,10 +78,10 @@ class cachemethod:
                 self._showinstance(instance)
 
                 # call the method
-                ret=f(instance, *fargs, **kw)
+                ret=self.function(instance, *fargs, **kw)
             else:
                 # just send in the give args and kw
-                ret=f(*(fargs + self.dec_args), **kw)
+                ret=self.function(*(fargs + self.dec_args), **kw)
             
             self.cached = True
             self.value = ret
