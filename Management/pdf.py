@@ -683,6 +683,8 @@ class EmployeeSalariesBookKeepingWriter:
                                         u"זמנית\nקבלה\nמס'",u'תשלום\nסוג',u"מס' צ'ק",u'בנק',u'מטפל\nסוכן',
                                         u'תשלום\nתאריך',u"סניף\nמס'",u'הערות']]
         headers.reverse()
+        colWidths = [None, 70, None, None, 40, None, None, 40, None, 70, None, None, None]
+        colWidths.reverse()
         rows = []
         remarks_str = ''
         i = 0
@@ -713,7 +715,7 @@ class EmployeeSalariesBookKeepingWriter:
             if i % 27 == 0 or i == len(self.nhsales):
                 data = [headers]
                 data.extend(rows)
-                t = Table(data)
+                t = Table(data, colWidths)
                 t.setStyle(nhsalariesTableStyle)
                 flows.append(t)
                 if i < len(self.nhsales):
