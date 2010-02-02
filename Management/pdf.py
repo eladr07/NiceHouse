@@ -688,7 +688,7 @@ class EmployeeSalariesBookKeepingWriter:
         i = 0
         for s in self.nhsales:
             for side in s.nhsaleside_set.all():
-                clients = u'%s ו%s' % (side.name1, side.name2 or '')
+                clients = log2vis(u'%s ו%s' % (side.name1, side.name2 or ''))
                 invoice = side.invoices.count() > 0 and side.invoices.all()[0]
                 if invoice:
                     invoice_str = '%s<br/>%s' % (invoice.date.strftime('%d/%m/%y'), invoice.num and str(invoice.num) or '')
