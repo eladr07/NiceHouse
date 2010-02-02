@@ -33,6 +33,69 @@ DemandNoInvoice, DemandNoPayment, DemandPaidPlus, DemandPaidMinus, DemandPaid, D
 RoomsChoices = [(float(i)/2,float(i)/2) for i in range(2, 21)]
 RoomsChoices.insert(0, ('',u'----'))
 
+class cachemethod:
+    '''decorator class with ARGUMENTS
+
+       This can be used for unbounded functions and methods.  If this wraps a
+       class instance, then extract it and pass to the wrapped method as the
+       first arg.
+    '''
+    
+    def __init__(self, *dec_args, **dec_kw):
+        '''The decorator arguments are passed here.  Save them for runtime.'''
+        self.dec_args = dec_args
+        self.dec_kw = dec_kw
+
+        self.label = dec_kw.get('label', 'T')
+        self.fid = dec_kw.get('stream', stderr)
+        
+        self.cached = False
+        self.value = None
+        
+    def __call__(self, f):
+        def wrapper(*fargs, **kw):
+            '''
+              Combine decorator arguments and function arguments and pass to wrapped
+              class instance-aware function/method.
+
+              Note: the first argument cannot be "self" because we get a parse error
+              "takes at least 1 argument" unless the instance is actually included in
+              the argument list, which is redundant.  If this wraps a class instance,
+              the "self" will be the first argument.
+            '''
+            if self.cached:
+                return self.value
+            
+            self._showargs(*fargs, **kw)
+
+            # merge decorator keywords into the kw argument list
+            kw.update(self.dec_kw)
+
+            # Does this wrap a class instance?
+            if fargs and getattr(fargs[0], '__class__', None):
+
+                # pull out the instance and combine function and
+                # decorator args
+                instance, fargs = fargs[0], fargs[1:]+self.dec_args
+                self._showinstance(instance)
+
+                # call the method
+                ret=f(instance, *fargs, **kw)
+            else:
+                # just send in the give args and kw
+                ret=f(*(fargs + self.dec_args), **kw)
+            
+            self.cached = True
+            self.value = ret
+            return ret
+
+        # Save wrapped function reference
+        self.f = f
+        wrapper.__name__ = f.__name__
+        wrapper.__dict__.update(f.__dict__)
+        wrapper.__doc__ = f.__doc__
+        return wrapper
+    
 def nhemployee_sort(nhemployee1, nhemployee2):
     query1 = nhemployee1.nhbranchemployee_set.all()
     query2 = nhemployee2.nhbranchemployee_set.all()
@@ -1831,14 +1894,13 @@ class Demand(models.Model):
         return self.sales.exclude(salepre=None)
     def get_rejectedsales(self):
         return self.sales.exclude(salereject=None)
+    @cachemethod
     def get_sales(self):
-        if not self.custom_cache.has_key('get_sales'):
-            query = Sale.objects.filter(salecancel=None, contractor_pay__year = self.year, contractor_pay__month = self.month,
-                                        house__building__project = self.project)
-            if self.project.commissions.commission_by_signups:
-                query = query.order_by('house__signups__date')
-            self.custom_cache['get_sales'] = query
-        return self.custom_cache['get_sales']
+        query = Sale.objects.filter(salecancel=None, contractor_pay__year = self.year, contractor_pay__month = self.month,
+                                    house__building__project = self.project)
+        if self.project.commissions.commission_by_signups:
+            query = query.order_by('house__signups__date')
+        return query
     def get_sales_amount(self):
         return self.get_sales().aggregate(Sum('price'))['price__sum'] or 0
     def get_final_sales_amount(self):
