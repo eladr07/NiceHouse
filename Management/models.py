@@ -37,7 +37,7 @@ class cachemethod:
     def __init__(self, function):
         self._function = function
         self._cached = False
-        self._value = Nonedef
+        self._value = None
     def __get__(self, instance, owner):
         return self.decorator(self._function.__get__(instance, owner))
     def __call__(self, *args):
