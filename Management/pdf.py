@@ -688,9 +688,9 @@ class EmployeeSalariesBookKeepingWriter:
         i = 0
         for s in self.nhsales:
             for side in s.nhsaleside_set.all():
-                clients = log2vis(side.name1)
+                clients = side.name1
                 if side.name2:
-                    clients += log2vis(u' ו' + side.name2)
+                    clients += u' ו' + side.name2
                 invoice = side.invoices.count() > 0 and side.invoices.all()[0]
                 if invoice:
                     invoice_str = '%s<br/>%s' % (invoice.date.strftime('%d/%m/%y'), invoice.num and str(invoice.num) or '')
@@ -698,7 +698,7 @@ class EmployeeSalariesBookKeepingWriter:
                     invoice_str = ''
                 invoice_para = Paragraph(invoice_str, styleRow9)
                 payments = side.payments.all()
-                row = [s.num, clients, commaise(side.net_income), side.voucher_num, 
+                row = [s.num, log2vis(clients), commaise(side.net_income), side.voucher_num, 
                        invoice_para, side.temp_receipt_num, 
                        Paragraph('<br/>'.join([log2vis(unicode(p.payment_type)) for p in payments]), styleRow9),
                        Paragraph('<br/>'.join([unicode(p.num) for p in payments]), styleRow9),
@@ -710,17 +710,17 @@ class EmployeeSalariesBookKeepingWriter:
                 row.reverse()
                 rows.append(row)
                 if side.remarks:
-                    remarks_str += clients + log2vis(' - ' + side.remarks) + '<br/>'
-                i += 1
-                if i % 27 == 0 or i == len(self.nhsales):
-                    data = [headers]
-                    data.extend(rows)
-                    t = Table(data)
-                    t.setStyle(nhsalariesTableStyle)
-                    flows.append(t)
-                    if i < len(self.nhsales):
-                        flows.extend([PageBreak(), Spacer(0, 50)])
-                    rows = []
+                    remarks_str += log2vis(clients + ' - ' + side.remarks) + '<br/>'
+            i += 1
+            if i % 27 == 0 or i == len(self.nhsales):
+                data = [headers]
+                data.extend(rows)
+                t = Table(data)
+                t.setStyle(nhsalariesTableStyle)
+                flows.append(t)
+                if i < len(self.nhsales):
+                    flows.extend([PageBreak(), Spacer(0, 50)])
+                rows = []
         flows.append(Spacer(0,10))
         flows.append(Paragraph(remarks_str, styleNormal13))
         flows.append(Spacer(0,10))
