@@ -710,7 +710,7 @@ class EmployeeSalariesBookKeepingWriter:
                 row.reverse()
                 rows.append(row)
                 if side.remarks:
-                    remarks_str += log2vis(side.name1 + ' ' + side.name2 or '' + ' - ' + side.remarks) + '<br/>'
+                    remarks_str += log2vis(side.name1 + ' ' + (side.name2 or '') + ' - ' + side.remarks) + '<br/>'
             i += 1
             if i % 27 == 0 or i == len(self.nhsales):
                 data = [headers]
