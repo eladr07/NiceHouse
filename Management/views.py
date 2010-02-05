@@ -1,4 +1,5 @@
 ﻿from django.forms.formsets import formset_factory
+from django.db.backends.dummy.base import IntegrityError
 import settings, inspect
 import time
 from django.shortcuts import render_to_response
@@ -2191,6 +2192,8 @@ def project_buildings(request, project_id):
         total_houses = total_houses + b.house_count
         total_signed_houses = total_signed_houses + len(b.signed_houses())
         total_avalible_houses = total_avalible_houses + len(b.avalible_houses())
+        d = dir(b)
+        raise TypeError
     return render_to_response('Management/building_list.html', 
                               { 'buildings' : buildings,'total_houses':total_houses,'project':p,
                                'total_signed_houses':total_signed_houses, 'total_avalible_houses':total_avalible_houses},
