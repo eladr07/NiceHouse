@@ -921,6 +921,7 @@ class EmployeeSalaryBase(models.Model):
         if hasattr(self, 'nhemployeesalary'):
             return self.nhemployeesalary
     @property
+    @cache_method
     def bruto(self):
         terms = self.get_employee().employment_terms
         if not terms or terms.salary_net == None: 
@@ -932,6 +933,7 @@ class EmployeeSalaryBase(models.Model):
         return self.derived.total_amount + exp.income_tax + exp.national_insurance + exp.health + exp.pension_insurance \
             + exp.vacation + exp.convalescence_pay
     @property
+    @cache_method
     def neto(self):
         terms = self.get_employee().employment_terms
         if not terms: 
@@ -944,10 +946,12 @@ class EmployeeSalaryBase(models.Model):
                 return None
             return self.derived.total_amount - exp.income_tax - exp.national_insurance - exp.health - exp.pension_insurance
     @property
+    @cache_method
     def check_amount(self):
         neto = self.neto
         return neto != None and (neto - self.loan_pay) or None
     @property
+    @cache_method
     def bruto_employer_expense(self):
         exp = self.expenses
         if not exp: return None
@@ -959,18 +963,22 @@ class EmployeeSalaryBase(models.Model):
     def send_to_bookkeeping(self):
         self.statuses.create(type = EmployeeSalaryBaseStatusType.objects.get(pk = EmployeeSalaryBaseStatusType.SentBookkeeping)).save()
     @property
+    @cache_method
     def approved_date(self):
         q = self.statuses.filter(type__id = EmployeeSalaryBaseStatusType.Approved)
         return q.count() > 0 and q.latest().date or None
     @property
+    @cache_method
     def sent_to_bookkeeping_date(self):
         q = self.statuses.filter(type__id = EmployeeSalaryBaseStatusType.SentBookkeeping)
         return q.count() > 0 and q.latest().date or None
     @property
+    @cache_method
     def sent_to_checks_date(self):
         q = self.statuses.filter(type__id = EmployeeSalaryBaseStatusType.SentChecks)
         return q.count() > 0 and q.latest().date or None
     @property
+    @cache_method
     def loan_pay(self):
         amount = 0
         for lp in self.get_employee().loan_pays.filter(date__year = self.year, date__month = self.month, 
@@ -989,6 +997,7 @@ class NHEmployeeSalary(EmployeeSalaryBase):
     nhemployee = models.ForeignKey('NHEmployee', verbose_name=ugettext('nhemployee'), related_name='salaries')
     admin_commission = models.IntegerField(editable=False, null=True)
     @property
+    @cache_method
     def total_amount(self):
         return (self.base or 0) + (self.commissions or 0) + (self.admin_commission or 0) + (self.var_pay or 0) + (self.safety_net or 0) - (self.deduction or 0)
     def calculate(self):
@@ -1055,6 +1064,7 @@ class EmployeeSalary(EmployeeSalaryBase):
         super(EmployeeSalary, self).__init__(*args, **kw)
         self.project_commission = {}
     @property
+    @cache_method
     def sales(self):
         sales = {}
         if self.employee.rank.id != RankType.RegionalSaleManager:
@@ -1072,6 +1082,7 @@ class EmployeeSalary(EmployeeSalaryBase):
                                                     employee_pay__year = self.year))
         return sales
     @property
+    @cache_method
     def sales_count(self):
         i=0
         for v in self.sales.values():
@@ -1079,8 +1090,10 @@ class EmployeeSalary(EmployeeSalaryBase):
                 i += len(v)
         return i
     @property
+    @cache_method
     def total_amount(self):
         return self.base + (self.commissions or 0) + (self.var_pay or 0) + (self.safety_net or 0) - (self.deduction or 0)
+    @cache_method
     def project_salary(self):
         res = {}
         if not len(self.project_commission): return res
