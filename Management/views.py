@@ -2192,7 +2192,7 @@ def project_buildings(request, project_id):
         total_houses = total_houses + b.house_count
         total_signed_houses = total_signed_houses + len(b.signed_houses())
         total_avalible_houses = total_avalible_houses + len(b.avalible_houses())
-        d = dir(b)
+        d = b._method_cache
         raise TypeError
     return render_to_response('Management/building_list.html', 
                               { 'buildings' : buildings,'total_houses':total_houses,'project':p,
