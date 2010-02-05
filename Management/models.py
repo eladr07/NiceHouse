@@ -1701,10 +1701,7 @@ class Demand(models.Model):
         now = datetime.now()
         if now.day <= 22:
             now = datetime(now.month == 1 and now.year - 1 or now.year, now.month == 1 and 12 or now.month - 1, now.day)
-        return now    
-    def __init__(self, *args, **kw):
-        super(Demand, self).__init__(*args, **kw)
-        self.custom_cache = {}
+        return now
     @property
     def fixed_diff(self):
         q = self.diffs.filter(type=u'קבועה')
@@ -1792,11 +1789,10 @@ class Demand(models.Model):
                 return True
         return False
     @property
+    @cache_method
     def finish_date(self):
-        if not self.custom_cache.has_key('finish_date'):
-            query = self.statuses.filter(type__id = DemandFinished)
-            self.custom_cache['finish_date'] = query.count() > 0 and query.latest().date or None
-        return self.custom_cache['finish_date']
+        query = self.statuses.filter(type__id = DemandFinished)
+        return query.count() > 0 and query.latest().date or None
     @property
     def is_fixed(self):
         return self.sales.exclude(salehousemod=None, salepricemod=None, salepre=None, salereject=None).count() > 0
@@ -1805,23 +1801,20 @@ class Demand(models.Model):
         if self.invoices.count() == 0: return 0
         return self.invoices_amount - int(self.get_total_amount())
     @property
+    @cache_method
     def diffs_amount(self):
-        if not self.custom_cache.has_key('diffs_amount'):
-            self.custom_cache['diffs_amount'] = self.diffs.aggregate(Sum('amount'))['amount__sum'] or 0
-        return self.custom_cache['diffs_amount']
+        return self.diffs.aggregate(Sum('amount'))['amount__sum'] or 0
     @property
+    @cache_method
     def payments_amount(self):
-        if not self.custom_cache.has_key('payments_amount'):
-            self.custom_cache['payments_amount'] = self.payments.aggregate(Sum('amount'))['amount__sum'] or 0
-        return self.custom_cache['payments_amount']
+        return self.payments.aggregate(Sum('amount'))['amount__sum'] or 0
     @property
+    @cache_method
     def invoices_amount(self):
-        if not self.custom_cache.has_key('invoices_amount'):
-            amount = 0
-            for i in self.invoices.all():
-                amount += i.amount_offset
-            self.custom_cache['invoices_amount'] = amount
-        return self.custom_cache['invoices_amount']
+        amount = 0
+        for i in self.invoices.all():
+            amount += i.amount_offset
+        return amount
     @property
     def diff_invoice_payment(self):
         return self.payments_amount - self.invoices_amount
@@ -1838,14 +1831,13 @@ class Demand(models.Model):
         return self.sales.exclude(salereject=None)
     def get_canceledsales(self):
         return self.sales.exclude(salecancel=None)
+    @cache_method
     def get_sales(self):
-        if not self.custom_cache.has_key('get_sales'):
-            query = Sale.objects.filter(contractor_pay__year = self.year, contractor_pay__month = self.month,
-                                        house__building__project = self.project)
-            if self.project.commissions.commission_by_signups:
-                query = query.order_by('house__signups__date')
-            self.custom_cache['get_sales'] = query
-        return self.custom_cache['get_sales']
+        query = Sale.objects.filter(contractor_pay__year = self.year, contractor_pay__month = self.month,
+                                    house__building__project = self.project)
+        if self.project.commissions.commission_by_signups:
+            query = query.order_by('house__signups__date')
+        return query
     def get_sales_amount(self):
         return self.get_sales().aggregate(Sum('price'))['price__sum'] or 0
     def get_final_sales_amount(self):
