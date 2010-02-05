@@ -2311,12 +2311,13 @@ class SaleReject(SaleMod):
         db_table = 'SaleReject'
         
 class SaleCancel(SaleMod):
-    fee = models.PositiveIntegerField(ugettext('fee'))
+    fee = models.PositiveIntegerField(ugettext('fee'), null=True)
     def save(self, *args, **kw):
         models.Model.save(self, *args, **kw)
-        d = self.sale.demand
-        d.fee_diff.delete()
-        d.diffs.create(type=u'קיזוז', reason = u"ביטול מכירה מס' %s" % self.sale.id, amount = self.fee * -1)
+        if self.fee > 0:
+            d = self.sale.demand
+            d.fee_diff.delete()
+            d.diffs.create(type=u'קיזוז', reason = u"ביטול מכירה מס' %s" % self.sale.id, amount = self.fee * -1)
     class Meta:
         db_table = 'SaleCancel'
         
