@@ -218,7 +218,7 @@ class Project(models.Model):
     def houses(self):
         houses = []
         for building in self.non_deleted_buildings():
-            houses.extend(building.houses.filter(is_deleted=False))
+            houses.extend(building.houses.all())
         return houses
     def non_deleted_buildings(self):
         return self.buildings.filter(is_deleted= False)
@@ -293,7 +293,6 @@ class House(models.Model):
     parking_size = models.FloatField(ugettext('parking_size'), null=True, blank=True)
     
     is_sold = models.BooleanField(ugettext('is_sold'), default= False)
-    is_deleted = models.BooleanField(default= False, editable= False)
     
     @property
     def perfect_size(self):
@@ -416,18 +415,18 @@ class Building(models.Model):
     remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
     is_deleted = models.BooleanField(default= False, editable= False)
     def sold_houses(self):
-        return [h for h in self.houses.filter(is_deleted=False) if h.get_sale() != None or h.is_sold]
+        return [h for h in self.houses.all() if h.get_sale() != None or h.is_sold]
     def signed_houses(self):
-        return [h for h in self.houses.filter(is_deleted=False) if h.get_signup() != None]
+        return [h for h in self.houses.all() if h.get_signup() != None]
     def avalible_houses(self):
-        return [h for h in self.houses.filter(is_deleted=False) if h.get_signup() == None and h.get_sale() == None and not h.is_sold]
+        return [h for h in self.houses.all() if h.get_signup() == None and h.get_sale() == None and not h.is_sold]
     def is_cottage(self):
         return self.type.id == BuildingType.Cottage
     def pricelist_types(self):
         types = []
-        for h in self.houses.filter(is_deleted=False):
+        for h in self.houses.all():
             for t in h.pricelist_types():
-                if types.count(t) == 0:
+                if not t in types:
                     types.append(t)
         return types
     def save(self, *args, **kw):

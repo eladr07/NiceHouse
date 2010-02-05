@@ -362,7 +362,7 @@ def signup_edit(request, id=None, house_id=None, project_id=None):
             form.fields['house'].initial = h.id
             form.fields['building'].initial = h.building.id
             form.fields['project'].initial = h.building.project.id
-            form.fields['house'].queryset = h.building.houses.filter(is_deleted=False)
+            form.fields['house'].queryset = h.building.houses.all()
             form.fields['building'].queryset = h.building.project.non_deleted_buildings()
         elif project_id:
             form = SignupForm(initial = {'project':project_id})
@@ -1757,7 +1757,7 @@ def building_pricelist(request, object_id, type_id):
         form = PricelistForm(instance = b.pricelist)
         formset = InlineFormSet(instance = b.pricelist)
         updateForm = PricelistUpdateForm(prefix='upd')
-    houses = b.houses.filter(is_deleted=False)
+    houses = b.houses.all()
     signup_count = 0
     sale_count = 0
     for house in houses:
@@ -1782,7 +1782,7 @@ def building_pricelist_pdf(request, object_id, type_id):
     type = request.GET.get('type', '')
     b = Building.objects.get(pk = object_id)
     pricelist_type = PricelistType.objects.get(pk = type_id)
-    houses = b.houses.filter(is_deleted=False)
+    houses = b.houses.all()
     if type == 'avaliable':
         houses = [h for h in houses.filter(is_sold=False) if h.get_sale() == None]
     for h in houses:
@@ -1823,7 +1823,7 @@ def building_clients(request, object_id):
 @permission_required('Management.building_clients_pdf')
 def building_clients_pdf(request, object_id):
     b = Building.objects.get(pk = object_id)
-    houses = [h for h in b.houses.filter(is_deleted=False) if h.get_sale() != None or h.is_sold == True]
+    houses = b.sold_houses()
     for h in houses:
         try:
             h.price = h.versions.filter(type__id = PricelistType.Company).latest().price
@@ -2223,7 +2223,7 @@ def building_addparking(request, building_id = None):
         if building_id:
             b = Building.objects.get(pk=building_id)
             form.initial = {'building':b.id}
-            form.fields['house'].queryset = b.houses.filter(is_deleted=False)
+            form.fields['house'].queryset = b.houses.all()
     return render_to_response('Management/object_edit.html', 
                               {'form' : form},
                               context_instance=RequestContext(request))
@@ -2239,7 +2239,7 @@ def building_addstorage(request, building_id = None):
         if building_id:
             b = Building.objects.get(pk=building_id)
             form.initial = {'building':b.id}
-            form.fields['house'].queryset = b.houses.filter(is_deleted=False)
+            form.fields['house'].queryset = b.houses.all()
     return render_to_response('Management/object_edit.html', 
                               {'form' : form},
                               context_instance=RequestContext(request))
@@ -2590,7 +2590,7 @@ def json_employees(request, project_id):
 @login_required
 def json_houses(request, building_id):
     building = Building.objects.get(pk= building_id)
-    houses = [house for house in building.houses.filter(is_deleted=False)]
+    houses = building.houses.all()
     data = serializers.serialize('json', houses, fields=('id','num'))
     return HttpResponse(data)
 
