@@ -5,5 +5,7 @@ def cache_method(func):
             self._method_cache = {}
         if cache_key in self._method_cache:
             return self._method_cache[cache_key]
-        self._method_cache = func(self, *args)
+        ret_val = func(self, *args)
+        self._method_cache = ret_val
+        return ret_val
     return wrapper 
