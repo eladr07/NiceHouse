@@ -2462,7 +2462,7 @@ class Sale(models.Model):
         models.Model.save(self, args, kw)
     @property
     def is_fixed(self):
-        for attr in ['salehousemod', 'salepricemod', 'salepre', 'salereject']:
+        for attr in ['salehousemod', 'salepricemod', 'salepre', 'salereject','salecancel']:
             if getattr(self, attr):
                 return True
     @property
