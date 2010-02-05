@@ -1198,6 +1198,9 @@ def demand_sale_cancel(request, id):
     sc.date = date.today()
     sc.save()
     
+    sale.commission_include = False
+    sale.save()
+    
     #re-calculate the entire demand
     sale.demand.calc_sales_commission()
     

@@ -348,6 +348,9 @@
 					{% if s.salereject %}
 						<a href="/salereject/{{s.salereject.id}}"><img src="/site_media/images/agt_back-48.png" width="20" height="20" /></a>
 					{% endif %}
+					{% if s.salecancel %}
+						<a href="/salecancel/{{s.salecancel.id}}"><img src="/site_media/images/delete_48.png" width="20" height="20" /></a>
+					{% endif %}
 				</td>
 				<td>{{s.remarks}}</td>
 			</tr>
