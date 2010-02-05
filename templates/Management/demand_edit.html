@@ -168,6 +168,14 @@
 				<a href="{{ s.salereject.get_absolute_url }}">פרטים</a>
 				</li>			
 			{% endfor %}
+			{% for s in form.instance.get_canceledsales %}
+				<li>מכירה מס' 
+				<a href="/sale/{{s.id}}">{{s.id}}</a> - ({{s}})
+				בוטלה. הקיזוז מהדרישה - 
+				<b>{{s.cancel.fee|commsaise}}</b>
+				<a href="{{ s.salecancel.get_absolute_url }}">פרטים</a>
+				</li>			
+			{% endfor %}
 		</ul>
 	</fieldset>
 	<fieldset class="cardFieldset" >

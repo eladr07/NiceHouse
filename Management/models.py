@@ -1831,6 +1831,8 @@ class Demand(models.Model):
         return self.sales.exclude(salepre=None)
     def get_rejectedsales(self):
         return self.sales.exclude(salereject=None)
+    def get_canceledsales(self):
+        return self.sales.exclude(salecancel=None)
     def get_sales(self):
         if not self.custom_cache.has_key('get_sales'):
             query = Sale.objects.filter(contractor_pay__year = self.year, contractor_pay__month = self.month,
@@ -2318,6 +2320,8 @@ class SaleCancel(SaleMod):
             d = self.sale.demand
             d.fee_diff.delete()
             d.diffs.create(type=u'קיזוז', reason = u"ביטול מכירה מס' %s" % self.sale.id, amount = self.fee * -1)
+    def get_absolute_url(self):
+        return '/salecancel/%s' % self.id
     class Meta:
         db_table = 'SaleCancel'
         
