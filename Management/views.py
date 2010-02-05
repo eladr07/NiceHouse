@@ -1169,7 +1169,7 @@ def demand_sale_del(request, id):
         sc.save()
         return HttpResponseRedirect('/salecancel/%s' % sc.id)
         
-@permission_required('Management.delete_sale')
+@permission_required('Management.reject_sale')
 def demand_sale_reject(request, id):
     sale = Sale.objects.get(pk=id)
     y,m = sale.demand.year, sale.demand.month
@@ -1186,6 +1186,22 @@ def demand_sale_reject(request, id):
     demand.calc_sales_commission()
     
     return HttpResponseRedirect('/salereject/%s' % sr.id)
+
+@permission_required('Management.cancel_sale')
+def demand_sale_cancel(request, id):
+    sale = Sale.objects.get(pk=id)
+    y,m = sale.demand.year, sale.demand.month
+    try:
+        sc = sale.salecancel
+    except SaleCancel.DoesNotExist:
+        sc = SaleCancel(sale = sale)
+    sc.date = date.today()
+    sc.save()
+    
+    #re-calculate the entire demand
+    sale.demand.calc_sales_commission()
+    
+    return HttpResponseRedirect('/salecancel/%s' % sc.id)
 
 @permission_required('Management.add_invoice')
 def invoice_add(request, initial=None):

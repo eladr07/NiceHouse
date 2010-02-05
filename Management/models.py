@@ -1682,7 +1682,7 @@ class Demand(models.Model):
     is_finished = models.BooleanField(default=False, editable=False)
     reminders = models.ManyToManyField('Reminder', null=True, editable=False)
     force_fully_paid = models.BooleanField(editable=False, default=False)
-    sales_commission = models.IntegerField(editable=False, null=True)
+    sales_commission = models.IntegerField(editable=False, default=0)
 
     invoices = models.ManyToManyField('Invoice',  related_name = 'demands', 
                                       editable=False, null=True, blank=True)
@@ -2476,6 +2476,7 @@ class Sale(models.Model):
     class Meta:
         ordering = ['sale_date']
         db_table = 'Sale'
+        permissions = (('reject_sale', 'Can reject sales'),('cancel_sale', 'Can cancel sales'),)
         
 class Account(models.Model):
     num = models.IntegerField(ugettext('account_num'), unique=True)
