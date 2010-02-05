@@ -309,11 +309,13 @@ class House(models.Model):
         return types
     def get_cottage_num(self):
         return self.num[:-1]
+    @cache_method
     def get_signup(self):
         s = self.signups.filter(cancel=None)
         if s.count() > 1:
             raise IntegrityError('More than 1 active signup for house %s' % self.id)
-        return s.count() > 0 and s[0] or None 
+        return s.count() > 0 and s[0] or None
+    @cache_method 
     def get_sale(self):
         s = self.sales.filter(salecancel=None)
         if s.count() > 1:
