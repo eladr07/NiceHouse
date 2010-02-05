@@ -1,6 +1,6 @@
 def cache_method(func):
     def wrapper(self, *args):
-        cache_key = args
+        cache_key = (func.__name__, args)
         if not hasattr(self, '_method_cache'):
             self._method_cache = {}
         if cache_key in self._method_cache:
