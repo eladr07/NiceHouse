@@ -306,6 +306,8 @@
 		</form>
 	</div>
 	<div id="leftSide">
+	{% if form.instance.id %}
+		{% with form.instance as s %}
 		<fieldset class="cardFieldset">
 		<legend>תיקונים למכירה</legend>
 			<ul>
@@ -352,6 +354,8 @@
 			</ul>
 		</fieldset>
 		<br>
+		{% endwith %}
+	{% endif %}
 		<fieldset class="cardFieldset">
 		<legend>פרטי דירה</legend>
 			<div id="houseDetails"></div>
