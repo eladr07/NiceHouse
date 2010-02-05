@@ -205,12 +205,14 @@ class Project(models.Model):
     def get_open_reminders(self):
         return [r for r in self.reminders.all() if r.statuses.latest().type.id 
                 not in (ReminderStatusType.Deleted,ReminderStatusType.Done)]
-    def sales(self, year = Demand.current_month().year, month = Demand.current_month().month):
+    def sales(self):
+        current = Demand.current_month()
         return Sale.objects.filter(house__building__project = self,
-                                   contractor_pay__month = month,
-                                   contractor_pay__year = year)
-    def signups(self, year = Demand.current_month().year, month = Demand.current_month().month):
-        return Signup.objects.filter(house__building__project = self, date__year = year, date__month= month)
+                                   contractor_pay__month = current.month,
+                                   contractor_pay__year = current.year)
+    def signups(self):
+        current = Demand.current_month()
+        return Signup.objects.filter(house__building__project = self, date__year = current.year, date__month= current.month)
     def end(self):
         self.end_date = datetime.now()
     def __unicode__(self):
