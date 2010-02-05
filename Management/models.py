@@ -7,6 +7,7 @@ from django.db.models.signals import pre_save
 from decimal import InvalidOperation
 from django.db.backends.dummy.base import IntegrityError
 from django.db.models import Avg, Max, Min, Count, Sum
+from decorators import cache_method
 
 Salary_Types = (
                 (None, u'לא ידוע'),
@@ -416,10 +417,13 @@ class Building(models.Model):
     stage = models.CharField(ugettext('stage'), max_length = 1, null=True, blank=True)
     remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
     is_deleted = models.BooleanField(default= False, editable= False)
+    @cache_method
     def sold_houses(self):
         return [h for h in self.houses.all() if h.get_sale() != None or h.is_sold]
+    @cache_method
     def signed_houses(self):
         return [h for h in self.houses.all() if h.get_signup() != None]
+    @cache_method
     def avalible_houses(self):
         return [h for h in self.houses.all() if h.get_signup() == None and h.get_sale() == None and not h.is_sold]
     def is_cottage(self):
