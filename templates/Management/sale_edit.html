@@ -307,6 +307,52 @@
 	</div>
 	<div id="leftSide">
 		<fieldset class="cardFieldset">
+		<legend>תיקונים למכירה</legend>
+			<ul>
+				{% if s.salepricemod %}
+					<li>המחיר שונה מ- 
+					{{s.salepricemod.old_price|commaise}} 
+					ל - 
+					<b>{{s.price|commaise}}</b>. 
+					<a href="{{ s.salepricemod.get_absolute_url }}">פרטים</a>
+					</li>
+				{% endif %}
+				{% if s.salehousemod %}
+					<li>הדירה  שונתה מבניין
+					<a href="/buildings/{{s.salehousemod.old_house.building.id}}/pricelist/type1">{{s.salehousemod.old_house.building.num}}</a>
+					 דירה 
+					<a href="/buildings/{{s.salehousemod.old_house.building.id}}/house/{{s.salehousemod.old_house.id}}/type1">{{s.salehousemod.old_house.num}}</a>			
+					 לבניין 
+					<a href="/buildings/{{s.house.building.id}}/pricelist/type1"><b>{{s.house.building.num}}</b></a>
+					 דירה 
+					<a href="/buildings/{{s.house.building.id}}/house/{{s.house.id}}/type1"><b>{{s.house.num}}</b></a>. 
+					<a href="{{ s.salehousemod.get_absolute_url }}">פרטים</a>
+					</li>
+				{% endif %}
+				{% if s.salepre %}
+					<li>המכירה הוקדמה לחודש זה. העובד יקבל תשלום בחודש
+					<b>{{s.salepre.employee_pay.month}}/{{s.salepre.employee_pay.year}}</b>. 
+					<a href="{{ s.salepre.get_absolute_url }}">פרטים</a>
+					</li>
+				{% endif %}
+				{% if s.salereject %}
+					<li>המכירה נדחתה לחודש
+					<b>{{s.salereject.to_month.month}}/{{s.salereject.to_month.year}}</b>
+					העובד יקבל תשלום בחודש
+					<b>{{s.salereject.employee_pay.month}}/{{s.salereject.employee_pay.year}}</b>. 
+					<a href="{{ s.salereject.get_absolute_url }}">פרטים</a>
+					</li>			
+				{% endif %}
+				{% if s.salecancel %}
+					<li>המכירה בוטלה. הקיזוז מהדרישה - 
+					<b>{{s.cancel.fee|commaise}}</b>
+					<a href="{{ s.salecancel.get_absolute_url }}">פרטים</a>
+					</li>			
+				{% endif %}
+			</ul>
+		</fieldset>
+		<br>
+		<fieldset class="cardFieldset">
 		<legend>פרטי דירה</legend>
 			<div id="houseDetails"></div>
 		</fieldset>
