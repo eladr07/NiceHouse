@@ -1543,7 +1543,7 @@ def demand_adddiff(request, object_id, type = None):
             form.instance.demand = demand
             diff = form.save()
             if request.POST.has_key('addanother'):
-                return HttpResponseRedirect(reverse(demand_adddiff, args=[object_id, type]))
+                return HttpResponseRedirect(reverse(demand_adddiff, args=[object_id]))
             return HttpResponseRedirect(diff.get_absolute_url())
     else:
         form = DemandDiffForm(initial={'type':type})
