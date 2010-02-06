@@ -139,11 +139,15 @@
 			<td><a class="fancybox" href="{{s.id}}"><img src="/site_media/images/edit_48.png" width="20" height="20" alt="שינוי מרכיבי שכר" border="0" /></a></td>
 			<td><a href="{{s.employee.get_absolute_url}}">{{ s.employee }}</a></td>
 			<td>
-				{% for p in s.employee.projects.all %}
-				<a href="/reports/project_month/{{p.id}}/{{s.year}}/{{s.month}}">
+				{% for demand in s.demands %}
+				<a href="{{demand.project.get_absolute_url}}" target="_blank">{{demand.project}}</a>
+				<br>
+				<a href="/reports/project_month/{{demand.project_id}}/{{demand.year}}/{{demand.month}}">
 					<img src="/site_media/images/PDF-48.png" width="15" height="15"/>
 				</a>
-				<a href="{{p.get_absolute_url}}" target="_blank">{{p}}</a>
+				<a href="{{demand.get_absolute_url}}">
+					<img src="/site_media/images/month-48.png" width="15" height="15"/>
+				</a>
 				<br>
 				{% endfor %}
 			</td>

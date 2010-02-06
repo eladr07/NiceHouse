@@ -1065,6 +1065,12 @@ class EmployeeSalary(EmployeeSalaryBase):
         self.project_commission = {}
     @property
     @cache_method
+    def get_demands(self):
+        queries = [Demand.objects.filter(project = project, year = self.year, month = self.month) 
+                   for project in employee.projects.all()]
+        return [query[0] for query in queries if query.count() == 1]
+    @property
+    @cache_method
     def sales(self):
         sales = {}
         if self.employee.rank.id != RankType.RegionalSaleManager:
