@@ -1847,18 +1847,20 @@ class Demand(models.Model):
     def get_canceledsales(self):
         return self.sales.exclude(salecancel=None)
     @cache_method
-    def get_sales(self):
+    def get_sales(self, exclude_non_commissioned=False):
         query = Sale.objects.filter(contractor_pay__year = self.year, contractor_pay__month = self.month,
                                     house__building__project = self.project)
+        if exclude_non_commissioned:
+            query = query.exclude(commission_include=False)
         if self.project.commissions.commission_by_signups:
             query = query.order_by('house__signups__date')
         return query
     @cache_method
-    def get_sales_amount(self):
-        return self.get_sales().aggregate(Sum('price'))['price__sum'] or 0
+    def get_sales_amount(self, exclude_non_commissioned=False):
+        return self.get_sales(exclude_non_commissioned).aggregate(Sum('price'))['price__sum'] or 0
     @cache_method
-    def get_final_sales_amount(self):
-        return self.get_sales().aggregate(Sum('price_final'))['price_final__sum'] or 0
+    def get_final_sales_amount(self, exclude_non_commissioned=False):
+        return self.get_sales(exclude_non_commissioned).aggregate(Sum('price_final'))['price_final__sum'] or 0
     def calc_sales_commission(self):
         if self.get_sales().count() == 0: 
             return

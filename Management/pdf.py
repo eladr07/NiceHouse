@@ -448,7 +448,7 @@ class MonthDemandWriter:
         s += log2vis(u' + %s מחודשים קודמים' % count)
         return Paragraph(s, ParagraphStyle('signup_months', fontName='David', fontSize=10, alignment=TA_CENTER))
     def saleFlows(self):
-        sales = self.demand.get_sales().filter(commission_include=True)
+        sales = self.demand.get_sales(True)
         names = [u'מס"ד']
         colWidths = [35]
         contract_num, discount, final, zilber = (False, False, False, False)
@@ -518,8 +518,8 @@ class MonthDemandWriter:
                         row.append(None)
                     if self.signup_adds:
                         row.append(None)
-                    row.extend([None,Paragraph(log2vis('%s' % self.demand.get_sales().count()), styleSumRow),None])
-                    row.append(Paragraph(commaise(self.demand.get_sales_amount()), styleSumRow))
+                    row.extend([None,Paragraph(log2vis('%s' % self.demand.get_sales(True).count()), styleSumRow),None])
+                    row.append(Paragraph(commaise(self.demand.get_sales_amount(True)), styleSumRow))
                     if zilber:
                         row.extend([None,None,None,None,None])
                     if discount:
