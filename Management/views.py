@@ -1539,7 +1539,8 @@ def demand_adddiff(request, object_id, type = None):
         form = DemandDiffForm(request.POST)
         if form.is_valid():
             form.instance.demand = demand
-            form.save()
+            diff = form.save()
+            return HttpResponseRedirect(diff.get_absolute_url())
     else:
         form = DemandDiffForm(initial={'type':type})
     return render_to_response('Management/object_edit.html', 
