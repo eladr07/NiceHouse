@@ -2775,7 +2775,7 @@ def sale_add(request, demand_id=None):
                 es[0].calculate()
                 es[0].save()
             if request.POST.has_key('addanother'):
-                return HttpResponseRedirect(next or (demand_id and '/demands/%s/sale/add' % demand_id or '/sale'))
+                return HttpResponseRedirect(next or reverse(sale_add, args=[demand_id]))
             elif request.POST.has_key('todemand'):
                 return HttpResponseRedirect(next or '/demands/%s' % demand.id)
     else:
