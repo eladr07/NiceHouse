@@ -1,6 +1,6 @@
 ﻿from django.forms.formsets import formset_factory
 from django.db.backends.dummy.base import IntegrityError
-import settings, inspect
+import settings
 import time
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
@@ -18,6 +18,7 @@ from django.core.paginator import Paginator, InvalidPage, EmptyPage
 from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter 
 from pdf import PricelistWriter, BuildingClientsWriter, EmployeeSalariesBookKeepingWriter
 from mail import mail
+from django.core.urlresolvers import reverse
 
 def generate_unique_pdf_filename():
     return settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
@@ -1540,6 +1541,8 @@ def demand_adddiff(request, object_id, type = None):
         if form.is_valid():
             form.instance.demand = demand
             diff = form.save()
+            if request.POST.has_key('addanother'):
+                return HttpResponseRedirect(reverse(demand_adddiff, args=[object_id, type]))
             return HttpResponseRedirect(diff.get_absolute_url())
     else:
         form = DemandDiffForm(initial={'type':type})
@@ -1921,7 +1924,7 @@ def project_commission_del(request, project_id, commission):
 
 @login_required
 def project_commission_add(request, project_id, commission):
-    return getattr(inspect.getmodule(project_commission_add), 'project_' + commission)(request, project_id)
+    return getattr(project_commission_add.__module__, 'project_' + commission)(request, project_id)
 
 @login_required
 def employee_commission_del(request, employee_id, project_id, commission):
@@ -1946,7 +1949,7 @@ def abbrevate(s):
 
 @login_required
 def employee_commission_add(request, employee_id, project_id, commission):
-    return getattr(inspect.getmodule(employee_commission_add), 'employee_' + commission)(request, employee_id, project_id)
+    return getattr(employee_commission_add.__module__, 'employee_' + commission)(request, employee_id, project_id)
         
 @permission_required('Management.add_cvarprecentage')
 def project_cvp(request, project_id):
