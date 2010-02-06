@@ -2771,9 +2771,9 @@ def sale_add(request, demand_id=None):
             for employee in demand.project.employees.all():
                 if employee.work_end and employee.work_end < date(year, month, 1):
                     continue
-                es = employee.salaries.get_or_create(year = year, month = month)
-                es[0].calculate()
-                es[0].save()
+                es, new = employee.salaries.get_or_create(year = year, month = month)
+                es.calculate()
+                es.save()
             if request.POST.has_key('addanother'):
                 return HttpResponseRedirect(next or reverse(sale_add, args=[demand_id]))
             elif request.POST.has_key('todemand'):
