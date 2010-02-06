@@ -1071,7 +1071,7 @@ class EmployeeSalary(EmployeeSalaryBase):
         is hired in, for the salary's month
         '''
         queries = [Demand.objects.filter(project = project, year = self.year, month = self.month) 
-                   for project in employee.projects.all()]
+                   for project in self.employee.projects.all()]
         return [query[0] for query in queries if query.count() == 1]
     @property
     @cache_method
