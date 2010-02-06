@@ -32,6 +32,7 @@ def index(request):
   
 @login_required  
 def locate_house(request):
+    error = None
     if request.method == 'POST':
         form = LocateHouseForm(request.POST)
         if form.is_valid():
