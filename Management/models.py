@@ -843,6 +843,17 @@ class LoanPay(models.Model):
     class Meta:
         db_table = 'LoanPay'
 
+for loan in Loan.objects.all():
+    tmp = loan.year
+    loan.year = loan.month
+    loan.month = tmp
+    loan.save()
+for loan_pay in LoanPay.objects.all():
+    tmp = loan_pay.year
+    loan_pay.year = loan_pay.month
+    loan_pay.month = tmp
+    loan_pay.save()
+    
 class SaleCommissionDetail(models.Model):
     employee_salary = models.ForeignKey('EmployeeSalary', related_name='commission_details',
                                         null=True)
