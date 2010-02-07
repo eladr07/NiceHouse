@@ -819,6 +819,9 @@ class AdvancePayment(models.Model):
 class Loan(models.Model):
     employee = models.ForeignKey('EmployeeBase', related_name = 'loans', verbose_name=ugettext('employee'))
     amount = models.IntegerField(ugettext('amount'))
+    month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
+    year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
+                                                                                             datetime.now().year + 10)))
     date = models.DateField(ugettext('date'), default=date.today(), help_text=u'החודש שממנו תילקח ההלוואה')
     pay_num = models.PositiveSmallIntegerField(ugettext('pay_num'))
     remarks = models.TextField(ugettext('remarks'), blank=True, null=True)
@@ -829,6 +832,9 @@ class Loan(models.Model):
 
 class LoanPay(models.Model):
     employee = models.ForeignKey('EmployeeBase', related_name='loan_pays', verbose_name=ugettext('employee'))
+    month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
+    year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
+                                                                                             datetime.now().year + 10)))
     date = models.DateField(ugettext('date'), default=date.today(), help_text=u'החודש שממנו תקוזז ההלוואה')
     amount = models.FloatField(ugettext('amount'))
     deduct_from_salary = models.BooleanField(ugettext('deduct_from_salary'), choices = Boolean, blank = True,
@@ -838,6 +844,13 @@ class LoanPay(models.Model):
         return '/loanpays/%s' % self.id
     class Meta:
         db_table = 'LoanPay'
+
+for loan in Loan.objects.all():
+    loan.month, loan.year = loan.date.year, loan.date.month
+    loan.save()
+for loan_pay in LoanPay.objects.all():
+    loan_pay.month, loan_pay.year = loan_pay.date.year, loan_pay.date.month
+    loan_pay.save()
 
 class SaleCommissionDetail(models.Model):
     employee_salary = models.ForeignKey('EmployeeSalary', related_name='commission_details',
