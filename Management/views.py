@@ -2353,6 +2353,29 @@ def employee_loanpay(request, employee_id):
     return render_to_response('Management/object_edit.html',
                               {'form' : form}, context_instance=RequestContext(request))
     
+@permission_required('Management.change_employee')
+def employee_end(request, object_id):
+    employee = EmployeeBase.objects.get(pk=object_id)
+    if request.method == 'POST':
+        form = EmployeeEndForm(request.POST, instance = employee)
+        if form.is_valid():
+            form.save()
+            if isinstance(employee.derived, Employee):
+                for epcommission in employee.derived.commissions.all():
+                    if not epcommission.end_date:
+                        epcommission.end_date = employee.work_end
+                        epcommission.save()
+            elif isinstance(employee.derived, NHEmployee):
+                for nhbranchemployee in employee.derived.nhbranchemployee_set.all():
+                    if not nhbranchemployee.end_date:
+                        nhbranchemployee.end_date = employee.work_end
+                        nhbranchemployee.save()
+    else:
+        form = EmployeeEndForm(instance = employee)
+        
+    return render_to_response('Management/object_edit.html',
+                              {'form' : form}, context_instance=RequestContext(request))
+    
 @permission_required('Management.change_nhcbase')
 def nhemployee_nhcb(request, employee_id):
     employee = NHEmployee.objects.get(pk = employee_id)
