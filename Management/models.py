@@ -731,12 +731,12 @@ class NHBranch(models.Model):
         return NHBranchEmployee.objects.filter(nhbranch= self, end_date = None)
     @property
     def nhemployees_archive(self):
-        return NHBranchEmployee.objects.filter(nhbranch= self).exclude(end_date = None)
+        query = NHBranchEmployee.objects.filter(nhbranch= self).exclude(end_date = None)
+        return [nhbe.nhemployee for nhbe in query]
     @property
     def nhemployees(self):
         query = NHBranchEmployee.objects.filter(nhbranch = self, end_date = None)
-        for nhbe in query:
-            yield nhbe.nhemployee
+        return [nhbe.nhemployee for nhbe in query]
     @property
     def prefix(self):
         return self.name.replace(u'נייס האוס ','') \
