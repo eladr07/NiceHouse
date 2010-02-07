@@ -552,7 +552,6 @@ class AdvancePaymentForm(forms.ModelForm):
 class LoanForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         super(LoanForm, self).__init__(*args, **kw)
-        self.fields['date'].widget.attrs = {'class':'vDateField'}
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'30', 'rows':'6'})
     class Meta:
         model= Loan
@@ -571,9 +570,6 @@ class SeasonDivisionTypeForm(SeasonForm):
     division_type = forms.ModelChoiceField(queryset = DivisionType.objects.all(), label=ugettext('division_type'))
 
 class LoanPayForm(forms.ModelForm):
-    def __init__(self, *args, **kw):
-        super(LoanPayForm, self).__init__(*args, **kw)
-        self.fields['date'].widget.attrs = {'class':'vDateField'}
     class Meta:
         model = LoanPay
         

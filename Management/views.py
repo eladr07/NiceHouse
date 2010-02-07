@@ -178,7 +178,7 @@ def advance_payment_toloan(request, id):
             form.save()
             ap.to_loan()
     else:
-        form = LoanForm(initial={'employee':ap.employee.id, 'amount':ap.amount, 'date':ap.date})
+        form = LoanForm(initial={'employee':ap.employee.id, 'amount':ap.amount, 'year':ap.date.year, 'month':ap.date.month})
    
     return render_to_response('Management/object_edit.html',
                               {'form':form}, context_instance=RequestContext(request))
@@ -290,9 +290,9 @@ def apply_employee_check(ec):
         ap.amount = ec.amount
         ap.save()
     elif ec.purpose_type.id == PurposeType.Loan:
-        query = Loan.objects.filter(employee = ec.employee, date__year = ec.year, date__month=ec.month)
+        query = Loan.objects.filter(employee = ec.employee, year = ec.year, month = ec.month)
         if query.count > 0:
-            loan = Loan(employee = ec.employee, date = date(ec.year, ec.month, 1))
+            loan = Loan(employee = ec.employee, year = ec.year, month = ec.month)
         else:
             loan = query[0]
         loan.amount = ec.amount
