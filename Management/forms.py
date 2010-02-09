@@ -787,7 +787,7 @@ class NHEmployeeSalaryForm(forms.ModelForm):
         self.fields['pdf_remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
     class Meta:
         model = NHEmployeeSalary
-        fields = ('מיemployee', 'base', 'commissions', 'admin_commission', 'safety_net', 'var_pay', 'var_pay_type', 'refund', 'refund_type', 
+        fields = ('nhemployee', 'base', 'commissions', 'admin_commission', 'safety_net', 'var_pay', 'var_pay_type', 'refund', 'refund_type', 
                   'deduction', 'deduction_type', 'remarks', 'pdf_remarks')
             
 class EmployeeSalaryRemarksForm(forms.ModelForm):
