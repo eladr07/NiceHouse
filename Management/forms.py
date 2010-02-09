@@ -118,6 +118,8 @@ class PricelistUpdateForm(forms.Form):
                                                                     (Precentage, ugettext('precentage'))
                                                                     ))
     value = forms.FloatField(label=ugettext('value'), required=False)
+    def clean_action(self):
+        return int(self.cleaned_data['action'])
     def __init__(self, *args, **kw):
         forms.Form.__init__(self, *args, **kw)
         self.fields['date'].widget = forms.TextInput({'class':'vDateField'})
