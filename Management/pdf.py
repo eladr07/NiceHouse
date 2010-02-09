@@ -739,6 +739,7 @@ class EmployeeSalariesBookKeepingWriter:
         colWidths = [None for i in headers]
         colWidths.reverse()
         rows = []
+        remarks_str = ''
         i = 0
         for es in self.salaries:
             employee = es.get_employee()
@@ -747,9 +748,13 @@ class EmployeeSalariesBookKeepingWriter:
             if terms and not terms.salary_net and terms.hire_type.id == models.HireType.Salaried:
                 hire_type += u' - ברוטו'
             row = [es.id, log2vis(unicode(employee)), log2vis(hire_type), commaise(es.check_amount), commaise(es.refund),
-                   commaise(es.bruto),None,None,commaise(es.loan_pay), commaise(es.neto),None]
+                   commaise(es.bruto),None,None,commaise(es.loan_pay), commaise(es.neto), es.pdf_remarks and '*' or '']
             row.reverse()
             rows.append(row)
+            
+            if es.pdf_remarks:
+                remarks_str += log2vis(unicode(employee) + ' ' + (es.pdf_remarks)) + '<br/>'
+            
             i += 1
             if i % 27 == 0 or i == len(self.salaries):
                 data = [groups, headers]
@@ -760,7 +765,11 @@ class EmployeeSalariesBookKeepingWriter:
                 if i < len(self.salaries):
                     flows.extend([PageBreak(), Spacer(0, 50)])
                 rows = []
-
+                
+        if remarks_str:
+            flows.append(Spacer(0,10))
+            flows.append(Paragraph(remarks_str, styleNormal13))
+        
         return flows
     def build(self, filename):
         self.current_page = 1

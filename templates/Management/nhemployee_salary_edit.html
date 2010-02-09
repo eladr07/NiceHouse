@@ -22,11 +22,15 @@
 		<table class="formTable">
 			<tr>
 				<th>שנה</th>
-				<td>{{year}}
+				<td>{{form.instance.year}}
 			</tr>
 			<tr>
 				<th>חודש</th>
-				<td>{{month}}
+				<td>{{form.instance.month}}
+			</tr>
+			<tr>
+				<th>עמלת ניהול</th>
+				<td>{{form.instance.admin_commission}}
 			</tr>
 			{% for field in form %}
 			<tr>

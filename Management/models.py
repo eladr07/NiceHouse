@@ -914,6 +914,8 @@ class EmployeeSalaryBase(models.Model):
     deduction = models.FloatField(ugettext('deduction'), null=True, blank=True)
     deduction_type = models.CharField(ugettext('deduction_type'), max_length=20, null=True, blank=True)
     remarks = models.TextField(ugettext('remarks'),null=True, blank=True)
+    pdf_remarks = models.TextField(ugettext('pdf_remarks'),null=True, blank=True)
+    
     @property
     def expenses(self):
         q = SalaryExpenses.objects.filter(employee = self.get_employee())
