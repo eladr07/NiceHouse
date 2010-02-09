@@ -778,17 +778,17 @@ class EmployeeSalaryForm(forms.ModelForm):
     class Meta:
         model = EmployeeSalary
         fields = ('employee', 'base', 'commissions', 'safety_net', 'var_pay', 'var_pay_type', 'refund', 'refund_type', 
-                  'deduction', 'deduction_type', 'pdf_remarks')
+                  'deduction', 'deduction_type', 'remarks', 'pdf_remarks')
         
 class NHEmployeeSalaryForm(forms.ModelForm):
     def __init__(self, *args, **kw):
-        super(EmployeeSalaryForm, self).__init__(*args, **kw)
+        super(NHEmployeeSalaryForm, self).__init__(*args, **kw)
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
         self.fields['pdf_remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
     class Meta:
         model = NHEmployeeSalary
         fields = ('מיemployee', 'base', 'commissions', 'admin_commission', 'safety_net', 'var_pay', 'var_pay_type', 'refund', 'refund_type', 
-                  'deduction', 'deduction_type', 'pdf_remarks')
+                  'deduction', 'deduction_type', 'remarks', 'pdf_remarks')
             
 class EmployeeSalaryRemarksForm(forms.ModelForm):
     class Meta:
