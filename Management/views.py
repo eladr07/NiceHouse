@@ -1742,8 +1742,8 @@ def building_pricelist(request, object_id, type_id):
             if formset.is_valid():
                 formset.save()
         if updateForm.is_valid():
-            amount, precentage, date = (updateForm.cleaned_data['amount'], updateForm.cleaned_data['precentage'],
-                                        updateForm.cleaned_data['date'])
+            action, value, date = (updateForm.cleaned_data['action'], updateForm.cleaned_data['value'],
+                                   updateForm.cleaned_data['date'])
             pricelist_types = updateForm.cleaned_data['all_pricelists'] and Pricelist.objects.all() or [updateForm.cleaned_data['pricelisttype']]
             houses = [k.replace('house-','') for k in request.POST if k.startswith('house-')]
             for id in houses:
@@ -1753,10 +1753,12 @@ def building_pricelist(request, object_id, type_id):
                     if f.count() == 0: continue
                     price = f.latest().price
                     new = HouseVersion(house=h, type=type, date = date)
-                    if amount:
-                        new.price = price + amount
-                    elif precentage:
-                        new.price = price * (100 + precentage) / 100
+                    if action == PricelistUpdateForm.Add:
+                        new.price = price + value
+                    elif action == PricelistUpdateForm.Precentage:
+                        new.price = price * (100 + value) / 100
+                    elif action == PricelistUpdateForm.Multiply:
+                        new.price = price * value
                     new.save()
     else:
         form = PricelistForm(instance = b.pricelist)

@@ -106,12 +106,18 @@ class PricelistForm(forms.ModelForm):
         model = Pricelist
 
 class PricelistUpdateForm(forms.Form):
+    Add, Multiply, Precentage = 1,2,3
+    
     pricelisttype = forms.ModelChoiceField(queryset = PricelistType.objects.all(), 
                                            required=False, label = ugettext('pricelisttype'))
     all_pricelists = forms.BooleanField(required=False, label=ugettext('all_pricelists'))
     date = forms.DateField(label=ugettext('date'))
-    amount = forms.FloatField(label=ugettext('amount'), required=False)
-    precentage = forms.FloatField(label=ugettext('precentage'), required=False)
+    action = forms.ChoiceField(label=ugettext('action'), choices = (
+                                                                    (Add, ugettext('add')),
+                                                                    (Multiply, ugettext('multiply')),
+                                                                    (Precentage, ugettext('precentage'))
+                                                                    ))
+    value = forms.FloatField(label=ugettext('value'), required=False)
     def __init__(self, *args, **kw):
         forms.Form.__init__(self, *args, **kw)
         self.fields['date'].widget = forms.TextInput({'class':'vDateField'})
