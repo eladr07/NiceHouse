@@ -933,7 +933,7 @@ class EmployeeSalaryBase(models.Model):
         if not terms or terms.salary_net == None: 
             return None
         if terms.salary_net == False:
-            return self.derived.total_amount
+            return self.derived.total_amount - self.loan_pay
         exp = self.expenses
         if not exp: return None
         return self.derived.total_amount + exp.income_tax + exp.national_insurance + exp.health + exp.pension_insurance \
@@ -944,7 +944,7 @@ class EmployeeSalaryBase(models.Model):
         terms = self.get_employee().employment_terms
         if not terms: 
             return None
-        if terms.salary_net == True or terms.salary_net == None:
+        if terms.salary_net == True:
             return self.derived.total_amount
         if terms.salary_net == False:
             exp = self.expenses
@@ -954,8 +954,18 @@ class EmployeeSalaryBase(models.Model):
     @property
     @cache_method
     def check_amount(self):
+        terms = self.get_employee().employment_terms
+        if terms.salary_net == None:
+            return self.derived.total_amount
         neto = self.neto
         return neto != None and (neto - self.loan_pay) or None
+    @property
+    @cache_method
+    def invoice_amount(self):
+        terms = self.get_employee().employment_terms
+        if terms.salary_net != None:
+            return None
+        return self.derived.total_amount
     @property
     @cache_method
     def bruto_employer_expense(self):
@@ -987,8 +997,7 @@ class EmployeeSalaryBase(models.Model):
     @cache_method
     def loan_pay(self):
         amount = 0
-        for lp in self.get_employee().loan_pays.filter(year = self.year, month = self.month, 
-                                                       deduct_from_salary = True):
+        for lp in self.get_employee().loan_pays.filter(year = self.year, month = self.month, deduct_from_salary = True):
             amount += lp.amount
         return amount
     def get_employee(self):
@@ -1015,6 +1024,8 @@ class NHEmployeeSalary(EmployeeSalaryBase):
         if not terms:
             self.remarks = u'לעובד לא הוגדרו תנאי העסקה!'
             return
+        if terms.salary_net == False:
+            self.pdf_remarks = u'ברוטו, כמה נטו בעדכון הוצאות'
         if not terms.include_tax:
             d = date(self.month == 12 and self.year + 1 or self.year, self.month == 12 and 1 or self.month + 1, 1)
             tax = Tax.objects.filter(date__lt = d).latest().value
@@ -1128,7 +1139,10 @@ class EmployeeSalary(EmployeeSalaryBase):
         #clean any sale commission details associated with this salary
         for scd in SaleCommissionDetail.objects.filter(employee_salary=self):
             scd.delete()
-        terms = self.employee.employment_terms
+        terms = self.employee.employment_terms        
+        if not terms:
+            self.remarks = u'לעובד לא הוגדרו תנאי העסקה!'
+            return
         self.commissions = 0
         for project, sales in self.sales.items():
             q = self.employee.commissions.filter(project__id = project.id)
@@ -1139,6 +1153,8 @@ class EmployeeSalary(EmployeeSalaryBase):
                 continue
             self.project_commission[epc.project] = epc.calc(sales, self)
             self.commissions += self.project_commission[epc.project]
+            if terms.salary_net == False:
+                self.pdf_remarks = u'ברוטו, כמה נטו בעדכון הוצאות'
             for s in sales:
                 s.employee_paid = True
                 s.save() 
