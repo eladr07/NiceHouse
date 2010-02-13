@@ -956,7 +956,7 @@ class EmployeeSalaryBase(models.Model):
     def check_amount(self):
         terms = self.get_employee().employment_terms
         if terms.salary_net == None:
-            return self.derived.total_amount
+            return self.derived.total_amount + self.loan - self.loan_pay
         if not self.neto:
             return None
         else:
