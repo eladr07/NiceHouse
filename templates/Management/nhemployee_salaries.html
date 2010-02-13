@@ -160,6 +160,10 @@
 			<td></td>
 			<td></td>
 			<td>
+				{% if s.loan %}
+				הלוואה - {{s.loan|commaise}} ש"ח
+				<br>
+				{% endif %}
 				החזר - {{s.loan_pay|commaise}} ש"ח
 				<br>
 				{% if s.nhemployee.loan_left %}
@@ -177,13 +181,13 @@
 			<td>{{s.remarks|default_if_none:""}}</td>			
 			<td>
 			{% if s.approved_date %}
-				{{s.approved_date}}
+				{{s.approved_date|date:"j/m/y"}}
 			{% else %}
 				<a href="{{s.id}}/approve">אשר</a>
 			{% endif %}
 			</td>
-			<td>{{s.sent_to_bookkeeping_date|default_if_none:""}}</td>
-			<td>{{s.sent_to_checks_date|default_if_none:""}}</td>
+			<td>{{s.sent_to_bookkeeping_date|default_if_none:""|date:"j/m/y"}}</td>
+			<td>{{s.sent_to_checks_date|default_if_none:""|date:"j/m/y"}}</td>
 		</tr>
 		{% endfor %}
 	</table>
