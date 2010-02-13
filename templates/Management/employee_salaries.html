@@ -163,10 +163,10 @@
 			<td><a href="{{s.id}}/totaldetails" class="fancybox">{{s.neto|default_if_none:""|commaise}}</a></td>
 			<td>
 				{% if s.loan %}
-				הלוואה - {{s.loan|commaise}} ש"ח
+				<span style="color:#008C4D;">{{s.loan|commaise}}</span>
 				<br>
 				{% endif %}
-				החזר - {{s.loan_pay|commaise}} ש"ח
+				<span style="color:#BF0000;">{{s.loan_pay|commaise}}</span>
 				<br>
 				{% if s.employee.loan_left %}
 				יתרה - {{s.employee.loan_left|commaise}} ש"ח
