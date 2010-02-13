@@ -933,7 +933,7 @@ class EmployeeSalaryBase(models.Model):
         if not terms or terms.salary_net == None: 
             return None
         if terms.salary_net == False:
-            return self.derived.total_amount - self.loan_pay
+            return self.derived.total_amount + self.loan - self.loan_pay
         exp = self.expenses
         if not exp: return None
         return self.derived.total_amount + exp.income_tax + exp.national_insurance + exp.health + exp.pension_insurance \
@@ -957,8 +957,10 @@ class EmployeeSalaryBase(models.Model):
         terms = self.get_employee().employment_terms
         if terms.salary_net == None:
             return self.derived.total_amount
-        neto = self.neto
-        return neto != None and (neto - self.loan_pay) or None
+        if not self.neto:
+            return None
+        else:
+            return self.neto + self.loan - self.loan_pay
     @property
     @cache_method
     def invoice_amount(self):
@@ -998,6 +1000,13 @@ class EmployeeSalaryBase(models.Model):
     def loan_pay(self):
         amount = 0
         for lp in self.get_employee().loan_pays.filter(year = self.year, month = self.month, deduct_from_salary = True):
+            amount += lp.amount
+        return amount
+    @property
+    @cache_method
+    def loan(self):
+        amount = 0
+        for lp in self.get_employee().loans.filter(year = self.year, month = self.month):
             amount += lp.amount
         return amount
     def get_employee(self):
