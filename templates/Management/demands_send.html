@@ -61,14 +61,14 @@
 			{% endif %}
 		{% endwith %}
 				<td>
-					<a href="{{f.instance.get_absolute_url}}">{{f.instance.id}}</a>
+					<a href="{{f.instance.get_absolute_url}}" target="_blank">{{f.instance.id}}</a>
 				</td>
 				<td>
 					<a href="/reports/project_month/{{f.instance.project.id}}/{{f.instance.year}}/{{f.instance.month}}">
 					<img src="/site_media/images/PDF.png" width="15" height="15"/>
 					</a>
 				</td>
-				<td><a href="{{f.instance.project.get_absolute_url}}">{{ f.instance.project }}</a></td>
+				<td><a href="{{f.instance.project.get_absolute_url}}" target="_blank">{{ f.instance.project }}</a></td>
 				<td>{{ f.instance.month }}/{{f.instance.year}}</a></td>
 				<td><a href="/demands/{{f.instance.id}}/sales" class="fancybox">{{ f.instance.get_sales.count|default:"אין מכירות" }}</a></td>
 				<td>{{f.is_finished}}</td>
