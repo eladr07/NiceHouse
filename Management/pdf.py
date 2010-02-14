@@ -756,7 +756,7 @@ class EmployeeSalariesBookKeepingWriter:
             rows.append(row)
             
             if es.pdf_remarks:
-                remarks_str += log2vis(unicode(employee) + ' ' + (es.pdf_remarks)) + '<br/>'
+                remarks_str += '<u><b>' + log2vis(unicode(employee) + '</b></u>' + ' ' + (es.pdf_remarks)) + '<br/>'
             
             i += 1
             if i % 27 == 0 or i == len(self.salaries):
