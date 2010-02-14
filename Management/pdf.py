@@ -351,7 +351,7 @@ class MonthDemandWriter:
                  Spacer(0,30)]
         headers = [log2vis(n) for n in [u'דרישה\nחודש', u'שם הרוכשים', u'ודירה\nבניין',u'מכירה\nתאריך', u'חוזה\nמחיר',
                                         u'בדרישה\nעמלה',u'חדשה\nעמלה', u'הפרש\nאחוז', u'בש"ח\nהפרש']]
-        colWidths  =[None,80,None,None,None,None,None,None,None]
+        colWidths = [None,80,None,None,None,None,None,None,None]
         colWidths.reverse()
         headers.reverse()
         rows = []
@@ -403,6 +403,8 @@ class MonthDemandWriter:
                                         u'חוזה\nתאריך',u'חוזה\nמחיר', u'ששולמה\nעמלה', 
                                         u'חדשה\nעמלה', u'עמלה\nהפרש', u'בש"ח\nהפרש']]
         headers.reverse()
+        colWidths = [None,None,80,None,None,None,None,None,None,None]
+        colWidths.reverse()
         rows = []
         total = 0
         i = 1
@@ -425,7 +427,7 @@ class MonthDemandWriter:
                 if i % 17 == 0:
                     data = [headers]
                     data.extend(rows)
-                    t = Table(data)
+                    t = Table(data, colWidths)
                     t.setStyle(saleTableStyle)
                     flows.extend([t, PageBreak(), Spacer(0,70)])
                     rows = []
@@ -434,7 +436,7 @@ class MonthDemandWriter:
         rows.append(sum_row)      
         data = [headers]
         data.extend(rows)
-        t = Table(data)
+        t = Table(data, colWidths)
         t.setStyle(saleTableStyle)
         flows.append(t)
         return flows
