@@ -403,7 +403,7 @@ class MonthDemandWriter:
                                         u'חוזה\nתאריך',u'חוזה\nמחיר', u'ששולמה\nעמלה', 
                                         u'חדשה\nעמלה', u'עמלה\nהפרש', u'בש"ח\nהפרש']]
         headers.reverse()
-        colWidths = [None,None,80,None,None,None,None,None,None,None]
+        colWidths = [None,None,80,None,None,None,None,30,30,None]
         colWidths.reverse()
         rows = []
         total = 0
