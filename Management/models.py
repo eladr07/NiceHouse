@@ -328,7 +328,7 @@ class House(models.Model):
             self.num = self.num.ljust(5, ' ')
         models.Model.save(self, *args, **kw)
     def __unicode__(self):
-        return unicode(self.num)
+        return unicode(self.num).strip()
     def get_absolute_url(self):
         return self.building.get_absolute_url() + '/house/%s' % self.id
     class Meta:
@@ -446,7 +446,7 @@ class Building(models.Model):
             self.pricelist = pl
         models.Model.save(self, *args, **kw)
     def __unicode__(self):
-        return self.num
+        return unicode(self.num)
     def get_absolute_url(self):
         return '/buildings/%s' % self.id
     class Meta:

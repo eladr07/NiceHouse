@@ -312,7 +312,7 @@ class MonthDemandWriter:
                     row = ['%s-%s' % (actual_demand.id, i),'%s/%s' % (actual_demand.month, actual_demand.year)]
                 else:
                     row = [None, None]
-                row.extend([log2vis(s.clients), '%s/%s' % (s.house.building.num, s.house.num), 
+                row.extend([log2vis(s.clients), '%s/%s' % (unicode(s.house.building), unicode(s.house)), 
                             s.sale_date.strftime('%d/%m/%y'), commaise(s.price)])
                 doh0prices = s.house.versions.filter(type__id = models.PricelistType.Doh0)
                 if doh0prices.count() > 0:
@@ -363,7 +363,7 @@ class MonthDemandWriter:
             demand = demand.get_previous_demand()
             for s in demand.get_sales().filter(commission_include=True):
                 row = [log2vis('%s/%s' % (demand.month, demand.year)), clientsPara(s.clients), 
-                               '%s/%s' % (s.house.building.num, s.house.num), s.sale_date.strftime('%d/%m/%y'), 
+                               '%s/%s' % (unicode(s.house.building), unicode(s.house)), s.sale_date.strftime('%d/%m/%y'), 
                                commaise(s.price)]
                 s.restore = False
                 new_commission = s.c_final
@@ -413,7 +413,7 @@ class MonthDemandWriter:
                 i += 1
                 singup = s.house.get_signup() 
                 row = [singup.date.strftime('%d/%m/%y'), s.contractor_pay.strftime('%m/%y'), 
-                       clientsPara(s.clients), '%s/%s' % (s.house.building.num, s.house.num), 
+                       clientsPara(s.clients), '%s/%s' % (unicode(s.house.building), unicode(s.house)), 
                        s.sale_date.strftime('%d/%m/%y'), commaise(s.price)]
                 s.restore_date = self.demand.get_previous_demand().finish_date
                 c_final_old = s.c_final
@@ -497,7 +497,7 @@ class MonthDemandWriter:
             if self.signup_adds:
                 signup = s.house.get_signup()
                 row.append(signup and signup.date.strftime('%d/%m/%y') or '')
-            row.extend([clientsPara(s.clients), '%s/%s' % (s.house.building.num, s.house.num.strip()), 
+            row.extend([clientsPara(s.clients), '%s/%s' % (unicode(s.house.building), unicode(s.house)), 
                         s.sale_date.strftime('%d/%m/%y'), commaise(s.price)])
             if zilber:
                 lawyer_pay = s.price_include_lawyer and (s.price - s.price_no_lawyer) or s.price * 0.015
