@@ -509,7 +509,7 @@ class DemandPaymentForm(PaymentBaseForm):
         d.payments.add(p)
         return p
     def __init__(self, *args, **kw):
-        super(PaymentForm, self).__init__(*args, **kw)
+        super(DemandPaymentForm, self).__init__(*args, **kw)
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
         self.fields['payment_date'].widget.attrs = {'class':'vDateField'}
         if self.instance.id and self.instance.demands.count() == 1:
