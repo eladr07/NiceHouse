@@ -2998,7 +2998,7 @@ def season_income(request):
     projects = []
     start, end = None, None
     if len(request.GET):
-        form = SeasonForm(request.GET)
+        form = ProjectSeasonForm(request.GET)
         if form.is_valid():
             project = form.cleaned_data['project']
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
@@ -3036,7 +3036,7 @@ def season_income(request):
                 p.avg_sale_count = p.total_sale_count / active_months
             month_count = round((end-start).days/30) + 1
     else:
-        form = SeasonForm()
+        form = ProjectSeasonForm()
         month_count = 1
 
     return render_to_response('Management/season_income.html', 
