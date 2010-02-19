@@ -2,6 +2,7 @@
 from django.db.backends.dummy.base import IntegrityError
 import settings
 import time
+import inspect
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.forms.models import inlineformset_factory, modelformset_factory
@@ -1926,7 +1927,9 @@ def project_commission_del(request, project_id, commission):
 
 @login_required
 def project_commission_add(request, project_id, commission):
-    return getattr(project_commission_add.__module__, 'project_' + commission)(request, project_id)
+    module = inspect.getmodule(project_commission_add)
+    view_func = getattr(module, 'project_' + commission)
+    return view_func(request, project_id)
 
 @login_required
 def employee_commission_del(request, employee_id, project_id, commission):
@@ -1951,7 +1954,9 @@ def abbrevate(s):
 
 @login_required
 def employee_commission_add(request, employee_id, project_id, commission):
-    return getattr(employee_commission_add.__module__, 'employee_' + commission)(request, employee_id, project_id)
+    module = inspect.getmodule(employee_commission_add)
+    view_func = getattr(module, 'employee_' + commission)
+    return view_func(request, employee_id, project_id)
         
 @permission_required('Management.add_cvarprecentage')
 def project_cvp(request, project_id):
