@@ -455,10 +455,25 @@ class InvoiceOffsetForm(forms.ModelForm):
     class Meta:
         model = InvoiceOffset
         fields = ['invoice_num','date','add_type','amount','reason','remarks']
+
+class PaymentBaseForm(forms.ModelForm):
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        payment_type = cleaned_data['payment_type']
+        if payment_type.id != PaymentType.Cash:
+            if not cleaned_data['bank']:
+                self._errors['bank'] = ugettext('mandatory_field')
+                del cleaned_data['bank']
+            if not cleaned_data['branch_num']:
+                self._errors['branch_num'] = ugettext('mandatory_field')
+                del cleaned_data['branch_num']
+        return cleaned_data
+    class Meta:
+        model = Payment
         
-class PaymentForm(forms.ModelForm):
+class PaymentForm(PaymentBaseForm):
     def __init__(self, *args, **kw):
-        forms.ModelForm.__init__(self,*args,**kw)
+        super(PaymentForm, self).__init__(*args, **kw)
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'1'})
         self.fields['payment_date'].widget.attrs = {'class':'vDateField', 'size':10}
         for field in ['num','support_num','bank','branch_num','amount']:
@@ -479,7 +494,7 @@ class SplitPaymentDemandForm(MonthForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label = ugettext('project'))
     amount = forms.IntegerField(label=ugettext('amount'))
     
-class DemandPaymentForm(forms.ModelForm):
+class DemandPaymentForm(PaymentBaseForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label = ugettext('project'))
     year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
                              label = ugettext('year'), initial = datetime.now().year)
@@ -494,7 +509,7 @@ class DemandPaymentForm(forms.ModelForm):
         d.payments.add(p)
         return p
     def __init__(self, *args, **kw):
-        forms.ModelForm.__init__(self,*args,**kw)
+        super(PaymentForm, self).__init__(*args, **kw)
         self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
         self.fields['payment_date'].widget.attrs = {'class':'vDateField'}
         if self.instance.id and self.instance.demands.count() == 1:
