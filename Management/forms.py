@@ -587,7 +587,7 @@ class DemandSendForm(forms.ModelForm):
         model = Demand
         exclude = ('project','year','month','sale_count')
 
-class SeasonDivisionTypeForm(SeasonForm):
+class DivisionTypeSeasonForm(SeasonForm):
     division_type = forms.ModelChoiceField(queryset = DivisionType.objects.all(), label=ugettext('division_type'))
 
 class LoanPayForm(forms.ModelForm):

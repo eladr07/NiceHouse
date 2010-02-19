@@ -3169,7 +3169,7 @@ def employeesalary_season_total_expenses(request):
     to_date, from_date = None, None
     
     if len(request.GET):
-        form = SeasonDivisionTypeForm(request.GET)
+        form = DivisionTypeSeasonForm(request.GET)
         if form.is_valid():
             division_type = form.cleaned_data['division_type']
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
@@ -3209,7 +3209,7 @@ def employeesalary_season_total_expenses(request):
                 current = date(current.month == 12 and current.year + 1 or current.year,
                                current.month == 12 and 1 or current.month + 1, 1)
     else:
-        form = SeasonDivisionTypeForm()
+        form = DivisionTypeSeasonForm()
             
     return render_to_response('Management/employeesalary_season_total_expenses.html', 
                               { 'employees':employees, 'start':from_date, 'end':to_date,
