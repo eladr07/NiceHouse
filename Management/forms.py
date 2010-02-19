@@ -459,12 +459,12 @@ class InvoiceOffsetForm(forms.ModelForm):
 class PaymentBaseForm(forms.ModelForm):
     def clean(self):
         cleaned_data = self.cleaned_data
-        payment_type = cleaned_data['payment_type']
+        payment_type = cleaned_data.get('payment_type')
         if payment_type.id != PaymentType.Cash:
-            if not cleaned_data['bank']:
+            if not cleaned_data.get('bank'):
                 self._errors['bank'] = ugettext('mandatory_field')
                 del cleaned_data['bank']
-            if not cleaned_data['branch_num']:
+            if not cleaned_data.get('branch_num'):
                 self._errors['branch_num'] = ugettext('mandatory_field')
                 del cleaned_data['branch_num']
         return cleaned_data
