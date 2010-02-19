@@ -460,7 +460,7 @@ class PaymentBaseForm(forms.ModelForm):
     def clean(self):
         cleaned_data = self.cleaned_data
         payment_type = cleaned_data.get('payment_type')
-        if payment_type.id != PaymentType.Cash:
+        if payment_type and payment_type.id != PaymentType.Cash:
             if not cleaned_data.get('bank'):
                 self._errors['bank'] = ugettext('mandatory_field')
                 del cleaned_data['bank']
