@@ -3274,13 +3274,13 @@ def sale_analysis(request):
     
 def global_profit_lost(request):
     data = []
+    global_profit, global_loss = 0,0
     if request.method == 'GET':
         form = GloablProfitLossForm(request.GET)
         if form.is_valid():
             divisions = form.cleaned_data['divisions']
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
-            global_profit, global_loss = 0,0
             for division in divisions:
                 if division.id == DivisionType.Marketing:
                     demands, salaries = [], []
