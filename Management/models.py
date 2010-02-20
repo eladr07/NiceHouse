@@ -963,6 +963,8 @@ class EmployeeSalaryBase(models.Model):
     @cache_method
     def check_amount(self):
         terms = self.get_employee().employment_terms
+        if not terms:
+            return None
         if terms.salary_net == None:
             return self.derived.total_amount + self.loan - self.loan_pay
         if not self.neto:
