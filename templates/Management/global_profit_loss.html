@@ -41,6 +41,7 @@
 					<tr class="{% cycle 'row1' 'row2' %}">
 						<td>{{ profitRow.name }}</td>
 						<td>{{ profitRow.amount|commaise }}</td>
+						<td>{{ profitRow.relative|floatformat:-2 }}</td>
 					</tr>
 				{% endfor %}
 			</table>
@@ -50,15 +51,26 @@
 				<caption>הוצאות</caption>
 				<th>סוג הוצאה</th>
 				<th>סכום</th>
-				<th>% מההכנסות</th>
+				<th>% מההוצאות</th>
 				{% for lossRow in row.losses %}
 					<tr class="{% cycle 'row1' 'row2' %}">
 						<td>{{ lossRow.name }}</td>
 						<td>{{ lossRow.amount|commaise }}</td>
+						<td>{{ lossRow.relative|floatformat:-2 }}</td>
 					</tr>
 				{% endfor %}
 			</table>
 		</div>
 		<div class="clearBoth"></div>
 	{% endfor %}
+	<table class="formTable">
+		<tr>
+			<th>סה"כ רווח</th>
+			<td>{{global_profit|commaise}}</td>
+		</tr>
+		<tr>
+			<th>סה"כ הוצאות</th>
+			<td>{{global_loss|commaise}}</td>
+		</tr>
+	</table>
 {% endblock content %}

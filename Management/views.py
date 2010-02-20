@@ -3280,6 +3280,7 @@ def global_profit_lost(request):
             divisions = form.cleaned_data['divisions']
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
+            global_profit, global_loss = 0,0
             for division in divisions:
                 if division.id == DivisionType.Marketing:
                     demands, salaries = [], []
@@ -3305,12 +3306,16 @@ def global_profit_lost(request):
                     checks = Check.objects.filter(issue_date__range = (from_date,to_date), division_type = division)
                     
                     profits = []
+                    
                     for project, project_demands in itertools.groupby(demands, lambda d: d.project):
                         profit_amount = 0
                         for demand in project_demands:
                             profit_amount += demand.get_total_amount()
                         profits.append({'name':project,'amount':profit_amount})
+                        global_profit += profit_amount
+                        
                     salaries_amount, expenses_amount = 0,0
+                    
                     for salary in salaries:
                         salaries_amount += salary.check_amount or 0
                     for check in checks:
@@ -3318,6 +3323,9 @@ def global_profit_lost(request):
                     losses = [{'name':u'הוצאות שכר', 'amount':salaries_amount},
                                 {'name':u'הוצאות אחרות', 'amount':expenses_amount},
                                 {'name':u'סה"כ', 'amount':salaries_amount + expenses_amount}]
+                    
+                    global_loss += salaries_amount + expenses_amount
+                    
                     data.append({'division':division, 'profits':profits,'losses':losses})
                 elif division.is_nicehouse:
                     # get nhbranch object from the division type
@@ -3357,7 +3365,11 @@ def global_profit_lost(request):
                         salary_amount += salary.check_amount or 0
                     
                     profits = [{'name':nhbranch, 'amount':profit_amount}]
+                    
+                    global_profit += profit_amount
+                    
                     losses = [{'name':u'הוצאות שכר', 'amount':salary_amount}]
+                    
                     total_losses = salary_amount
                     for expense_type, checks in itertools.groupby(checks, lambda check: check.expense_type):
                         checks_amount = 0
@@ -3366,10 +3378,22 @@ def global_profit_lost(request):
                         total_losses += checks_amount
                         losses.append({'name':expense_type, 'amount':checks_amount})
                     losses.append({'name':u'סה"כ','amount':total_losses})
+                    
+                    global_loss += total_losses
+                    
                     data.append({'division':division, 'profits':profits,'losses':losses})
+                #calculate relative profits and losses for all divisions items (i.e. projects/nhbranches)
+                for row in data:
+                    for division, profits, losses in row.items():
+                        for profitRow in profits:
+                            amount = profitRow['amount']
+                            profitRow['relative'] = amount / global_profit * 100
+                        for lossRow in losses:
+                            amount = lossRow['amount']
+                            lossRow['relative'] = amount / global_loss * 100
     else:
         form = GloablProfitLossForm()
         
     return render_to_response('Management/global_profit_loss.html', 
-                              { 'filterForm':form, 'data':data },
+                              { 'filterForm':form, 'data':data, 'global_profit':global_profit, 'global_loss':global_loss },
                               context_instance = RequestContext(request))
