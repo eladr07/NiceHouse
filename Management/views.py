@@ -3360,7 +3360,7 @@ def global_profit_lost(request):
                     
                     profit_amount, salary_amount, expenses_amount = 0,0,0
                     for nhmonth in nhmonths:
-                        profit_amount += nhmonth.net_income
+                        profit_amount += nhmonth.total_net_income
                     for salary in salaries:
                         salary_amount += salary.check_amount or 0
                     
