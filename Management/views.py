@@ -3281,7 +3281,7 @@ def global_profit_lost(request):
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
             for division in divisions:
-                if divisions.id == DivisionType.Marketing:
+                if division.id == DivisionType.Marketing:
                     demands, salaries = [], []
                     #get all projects started before the end of the season, and exlude ones that ended before the season start
                     for project in Project.objects.filter(start_date__lte = to_date).exclude(end_date__lt = from_date):
