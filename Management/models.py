@@ -727,15 +727,23 @@ class NHBranch(models.Model):
     fax = models.CharField(ugettext('fax'), max_length=15, null=True, blank=True);
     url = models.URLField(ugettext('url'), null=True, blank=True)
     @property
+    @cache_method
     def active_nhbranchemployees(self):
         return NHBranchEmployee.objects.filter(nhbranch= self, end_date = None)
     @property
+    @cache_method
     def nhemployees_archive(self):
         query = NHBranchEmployee.objects.filter(nhbranch= self).exclude(end_date = None)
         return [nhbe.nhemployee for nhbe in query]
     @property
+    @cache_method
     def nhemployees(self):
         query = NHBranchEmployee.objects.filter(nhbranch = self, end_date = None)
+        return [nhbe.nhemployee for nhbe in query]
+    @property
+    @cache_method
+    def all_nhemployees(self):
+        query = NHBranchEmployee.objects.filter(nhbranch = self)
         return [nhbe.nhemployee for nhbe in query]
     @property
     def prefix(self):
@@ -2637,6 +2645,9 @@ class PurposeType(models.Model):
 class DivisionType(models.Model):
     Marketing, NHShoham, NHModiin, NHNesZiona = 1,2,3,4
     name = models.CharField(ugettext('name'), max_length=20, unique=True)
+    @property
+    def is_nicehouse(self):
+        return self.id in (2,3,4)
     def __unicode__(self):
         return unicode(self.name)
     class Meta:

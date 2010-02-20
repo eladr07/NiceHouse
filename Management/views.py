@@ -1,8 +1,7 @@
 ﻿from django.forms.formsets import formset_factory
 from django.db.backends.dummy.base import IntegrityError
 import settings
-import time
-import inspect
+import inspect, itertools, time
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.forms.models import inlineformset_factory, modelformset_factory
@@ -2996,7 +2995,6 @@ def demand_season_list(request):
 def season_income(request):
     total_sale_count, total_amount, total_amount_notax = 0,0,0
     projects = []
-    start, end = None, None
     if len(request.GET):
         form = ProjectSeasonForm(request.GET)
         if form.is_valid():
@@ -3028,19 +3026,20 @@ def season_income(request):
                 total_amount_notax += amount / tax
             for p in projects:
                 if p.end_date:
-                    end_date = min(end, p.end_date)
+                    end_date = min(to_date, p.end_date)
                 else:
-                    end_date = end
-                start_date = max(p.start_date, start)
-                active_months = round((end_date - start_date).days/30) + 1
+                    end_date = to_date
+                start_date = max(p.start_date, from_date)
+                active_months = round((to_date - start_date).days/30) + 1
                 p.avg_sale_count = p.total_sale_count / active_months
             month_count = round((end-start).days/30) + 1
     else:
         form = ProjectSeasonForm()
+        from_date, to_date = None, None
         month_count = 1
 
     return render_to_response('Management/season_income.html', 
-                              { 'start':start, 'end':end,
+                              { 'start':from_date, 'end':to_date,
                                 'projects':projects, 'filterForm':form,'total_amount':total_amount,'total_sale_count':total_sale_count,
                                 'total_amount_notax':total_amount_notax,'avg_amount':total_amount/month_count,
                                 'avg_amount_notax':total_amount_notax/month_count,'avg_sale_count':total_sale_count/month_count},
@@ -3272,3 +3271,105 @@ def sale_analysis(request):
                               { 'filterForm':form, 'sale_months':data, 'include_clients':include_clients,
                                'total_sale_count':total_sale_count },
                               context_instance=RequestContext(request))
+    
+def global_profit_lost(request):
+    data = []
+    if request.method == 'GET':
+        form = GloablProfitLossForm(request.GET)
+        if form.is_valid():
+            divisions = form.cleaned_data['divisions']
+            from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
+            to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
+            for division in divisions:
+                if divisions.id == DivisionType.Marketing:
+                    demands, salaries = [], []
+                    #get all projects started before the end of the season, and exlude ones that ended before the season start
+                    for project in Project.objects.filter(start_date__lte = to_date).exclude(end_date__lt = from_date):
+                        current_date = from_date
+                        #get all the demands for this project in this season
+                        while current_date <= to_date:
+                            query = Demand.objects.filter(project = project, year = current_date.year, month = current_date.month)
+                            if query.count() > 0:
+                                demands.append(query[0])
+                            current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
+                                                current_date.month == 12 and 1 or current_date.month + 1, 1)
+                    #get all employee salaries for this project in this season
+                    current_date = from_date
+                    while current_date <= to_date:
+                        query = EmployeeSalary.objects.filter(year = current_date.year, month = current_date.month)
+                        if query.count() > 0:
+                            salaries.extend(query)
+                        current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
+                                            current_date.month == 12 and 1 or current_date.month + 1, 1)
+                    #get all expenses for this division and season
+                    checks = Check.objects.filter(issue_date__range = (from_date,to_date), division_type = division)
+                    
+                    profits = []
+                    for project, project_demands in itertools.groupby(demands, lambda d: d.project):
+                        profit_amount = 0
+                        for demand in project_demands:
+                            profit_amount += d.get_total_amount()
+                        profits.append({'name':project,'amount':profit_amount})
+                    salaries_amount, expenses_amount = 0,0
+                    for salary in salaries:
+                        salaries_amount += salary.check_amount
+                    for check in checks:
+                        expenses_amount += check.amount
+                    losses = [{'name':u'הוצאות שכר', 'amount':salaries_amount},
+                                {'name':u'הוצאות אחרות', 'amount':expenses_amount},
+                                {'name':u'סה"כ', 'amount':salaries_amount + expenses_amount}]
+                    data.append({'division':division, 'profits':profits,'losses':losses})
+                elif division.is_nicehouse:
+                    # get nhbranch object from the division type
+                    if division.id == DivisionType.NHShoham:
+                        nhbranch = NHBranch.objects.get(pk = NHBranch.Shoham)
+                    elif division.id == DivisionType.NHModiin:
+                        nhbranch = NHBranch.objects.get(pk = NHBranch.Modiin)
+                    elif division.id == DivisionType.NHNesZiona:
+                        nhbranch = NHBranch.objects.get(pk = NHBranch.NesZiona)
+                    
+                    nhmonths, salaries, expenses = [], [], []
+                    
+                    # get all nhmonths for this branch and season
+                    current_date = from_date
+                    while current_date <= to_date:
+                        query = NHMonth.objects.filter(nhbranch = nhbranch, year = current_date.year, month = current_date.month)
+                        if query.count() > 0:
+                            nhmonths.append(query[0])
+                        current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
+                                            current_date.month == 12 and 1 or current_date.month + 1, 1)
+                    #get all salaries for this season and nhbranch
+                    current_date = from_date
+                    while current_date <= to_date:
+                        for nhemployee in nhbranch.all_nhemployees:
+                            query = NHEmployeeSalary.objects.filter(nhemployee = nhemployee, year = current_date.year, month = current_date.month)
+                            if query.count() > 0:
+                                salaries.append(query[0])
+                        current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
+                                            current_date.month == 12 and 1 or current_date.month + 1, 1)
+                    #get all expenses for this division and season
+                    checks = Check.objects.filter(issue_date__range = (from_date,to_date), division_type = division)
+                    
+                    profit_amount, salary_amount, expenses_amount = 0,0,0
+                    for nhmonth in nhmonths:
+                        profit_amount += nhmonth.net_income
+                    for salary in salaries:
+                        salary_amount += salary.amount
+                    
+                    profits = [{'name':nhbranch, 'amount':profit_amount}]
+                    losses = [{'name':u'הוצאות שכר', 'amount':salary_amount}]
+                    total_losses = salary_amount
+                    for expense_type, checks in itertools.groupby(checks, lambda check: check.expense_type):
+                        checks_amount = 0
+                        for check in checks:
+                            checks_amount += check.amount
+                        total_losses += checks_amount
+                        losses.append({'name':expense_type, 'amount':checks_amount})
+                    losses.append({'name':u'סה"כ','amount':total_losses})
+                    data.append({'division':division, 'profits':profits,'losses':losses})
+    else:
+        form = GloablProfitLossForm()
+        
+    return render_to_response('Management/global_profit_loss.html', 
+                              { 'filterForm':form, 'data':data },
+                              context_instance = RequestContext(request))

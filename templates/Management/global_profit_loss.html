@@ -1,0 +1,64 @@
+﻿{% extends "./base.html" %}
+{% load management_extras %}
+{% block content %}
+<div class="title">
+	<div class="pageTitle">דוח רווח והפסד לחטיבה</div>
+</div>
+<div class="clearBoth"></div>
+<div style="float:right;width:70%;">
+	<form method="GET">
+		<table class="dataTable">
+			<tr class="row1">
+				<td colspan="5" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש תקופה</td>
+			</tr>
+			<tr class="row2">
+				{% for field in filterForm %}
+				<td>
+					{{ field.label_tag }} : 
+					{{ field }}
+				</td>
+				{% endfor %}
+				<td><input type="submit" value="חפש" class="button"/></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div class="clearBoth"></div>
+<div class="someIcon" style="width:100px;">
+	<img src="/site_media/images/print-48.png" width="20" height="20"  alt="הדפסה" /> 
+	<a href="#">גרסה להדפסה</a>
+</div>
+<div class="clearBoth"></div>
+<br>
+	{% for row in data %}
+		<div style="float:right; width:45%;">
+			<table class="dataTable" border="1">
+				<caption>הכנסות</caption>
+				<th>פרוייקט</th>
+				<th>סכום</th>
+				<th>% מההכנסות</th>
+				{% for profitRow in row.profits %}
+					<tr class="{% cycle 'row1' 'row2' %}">
+						<td>{{ profitRow.name }}</td>
+						<td>{{ profitRow.amount|commaise }}</td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+		<div style="float:left; width:45%;">
+			<table class="dataTable" border="1">
+				<caption>הוצאות</caption>
+				<th>סוג הוצאה</th>
+				<th>סכום</th>
+				<th>% מההכנסות</th>
+				{% for lossRow in row.losses %}
+					<tr class="{% cycle 'row1' 'row2' %}">
+						<td>{{ lossRow.name }}</td>
+						<td>{{ lossRow.amount|commaise }}</td>
+					</tr>
+				{% endfor %}
+			</table>
+		</div>
+		<div class="clearBoth"></div>
+	{% endfor %}
+{% endblock content %}

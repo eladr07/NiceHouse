@@ -590,6 +590,29 @@ class DemandSendForm(forms.ModelForm):
 class DivisionTypeSeasonForm(SeasonForm):
     division_type = forms.ModelChoiceField(queryset = DivisionType.objects.all(), label=ugettext('division_type'))
 
+class GloablProfitLossForm(SeasonForm):
+    division = forms.ChoiceField(label = ugettext('division_type'), choices = ( 
+                                                                               (1, ugettext('marketing')),
+                                                                               (2, ugettext('nh_shoham')),
+                                                                               (3, ugettext('nh_modiin')),
+                                                                               (4, ugettext('nh_nes_ziona')),
+                                                                               (5, ugettext('all')),
+                                                                               (6, ugettext('all_nh')),
+                                                                               )
+                                                                               )    
+    def clean_division(self):
+        division = self.cleaned_data['division']
+        divisions = []
+        if division in ['1','5']:
+            divisions.append(DivisionType.objects.get(pk = DivisionType.Marketing))
+        if division in ['2','5','6']:
+            divisions.append(DivisionType.objects.get(pk = DivisionType.NHShoham))
+        if division in ['3','5','6']:
+            divisions.append(DivisionType.objects.get(pk = DivisionType.NHModiin))
+        if division in ['4','5','6']:
+            divisions.append(DivisionType.objects.get(pk = DivisionType.NHNesZiona))
+        return divisions
+
 class LoanPayForm(forms.ModelForm):
     class Meta:
         model = LoanPay
