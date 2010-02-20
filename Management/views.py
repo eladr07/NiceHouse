@@ -3308,7 +3308,7 @@ def global_profit_lost(request):
                     for project, project_demands in itertools.groupby(demands, lambda d: d.project):
                         profit_amount = 0
                         for demand in project_demands:
-                            profit_amount += d.get_total_amount()
+                            profit_amount += demand.get_total_amount()
                         profits.append({'name':project,'amount':profit_amount})
                     salaries_amount, expenses_amount = 0,0
                     for salary in salaries:
