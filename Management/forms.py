@@ -601,7 +601,7 @@ class GloablProfitLossForm(SeasonForm):
                                                                                )
                                                                                )    
     def clean_divisions(self):
-        division = self.cleaned_data['division']
+        division = self.cleaned_data['divisions']
         divisions = []
         if division in ['1','5']:
             divisions.append(DivisionType.objects.get(pk = DivisionType.Marketing))
