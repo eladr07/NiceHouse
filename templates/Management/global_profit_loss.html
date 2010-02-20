@@ -9,7 +9,7 @@
 	<form method="GET">
 		<table class="dataTable">
 			<tr class="row1">
-				<td colspan="5" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש תקופה</td>
+				<td colspan="6" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש תקופה</td>
 			</tr>
 			<tr class="row2">
 				{% for field in filterForm %}
@@ -31,6 +31,7 @@
 <div class="clearBoth"></div>
 <br>
 	{% for row in data %}
+		<h3>{{division}}</h3>
 		<div style="float:right; width:45%;">
 			<table class="dataTable" border="1">
 				<caption>הכנסות</caption>
@@ -62,6 +63,7 @@
 			</table>
 		</div>
 		<div class="clearBoth"></div>
+		<br>
 	{% endfor %}
 	<table class="formTable">
 		<tr>
