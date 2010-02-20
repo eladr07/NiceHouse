@@ -3312,7 +3312,7 @@ def global_profit_lost(request):
                         profits.append({'name':project,'amount':profit_amount})
                     salaries_amount, expenses_amount = 0,0
                     for salary in salaries:
-                        salaries_amount += salary.check_amount
+                        salaries_amount += salary.check_amount or 0
                     for check in checks:
                         expenses_amount += check.amount
                     losses = [{'name':u'הוצאות שכר', 'amount':salaries_amount},
@@ -3354,7 +3354,7 @@ def global_profit_lost(request):
                     for nhmonth in nhmonths:
                         profit_amount += nhmonth.net_income
                     for salary in salaries:
-                        salary_amount += salary.amount
+                        salary_amount += salary.check_amount or 0
                     
                     profits = [{'name':nhbranch, 'amount':profit_amount}]
                     losses = [{'name':u'הוצאות שכר', 'amount':salary_amount}]
