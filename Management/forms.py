@@ -591,7 +591,7 @@ class DivisionTypeSeasonForm(SeasonForm):
     division_type = forms.ModelChoiceField(queryset = DivisionType.objects.all(), label=ugettext('division_type'))
 
 class GloablProfitLossForm(SeasonForm):
-    division = forms.ChoiceField(label = ugettext('division_type'), choices = ( 
+    divisions = forms.ChoiceField(label = ugettext('division_type'), choices = ( 
                                                                                (1, ugettext('marketing')),
                                                                                (2, ugettext('nh_shoham')),
                                                                                (3, ugettext('nh_modiin')),
@@ -600,7 +600,7 @@ class GloablProfitLossForm(SeasonForm):
                                                                                (6, ugettext('all_nh')),
                                                                                )
                                                                                )    
-    def clean_division(self):
+    def clean_divisions(self):
         division = self.cleaned_data['division']
         divisions = []
         if division in ['1','5']:
