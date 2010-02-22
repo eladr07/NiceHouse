@@ -3391,7 +3391,7 @@ def global_profit_lost(request):
                                    {'name':u'הכנסות אחרות', 'amount':incomes_amount},
                                    {'name':u'סה"כ', 'amount':nhmonths_amount + incomes_amount}]
                     
-                    global_income += profit_amount
+                    global_income += incomes_amount + nhmonths_amount
                     
                     loss_rows = [{'name':u'הוצאות שכר', 'amount':salary_amount}]
                     
