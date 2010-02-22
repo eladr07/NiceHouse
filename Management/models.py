@@ -1138,7 +1138,7 @@ class EmployeeSalary(EmployeeSalaryBase):
     @property
     @cache_method
     def total_amount(self):
-        return self.base + (self.commissions or 0) + (self.var_pay or 0) + (self.safety_net or 0) - (self.deduction or 0)
+        return (self.base or 0) + (self.commissions or 0) + (self.var_pay or 0) + (self.safety_net or 0) - (self.deduction or 0)
     @cache_method
     def project_salary(self):
         res = {}
