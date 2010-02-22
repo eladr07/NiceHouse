@@ -3274,7 +3274,7 @@ def sale_analysis(request):
     
 def global_profit_lost(request):
     data = []
-    global_profit, global_loss = 0,0
+    global_income, global_loss = 0,0
     if request.method == 'GET':
         form = GloablProfitLossForm(request.GET)
         if form.is_valid():
@@ -3283,7 +3283,7 @@ def global_profit_lost(request):
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
             for division in divisions:
                 if division.id == DivisionType.Marketing:
-                    demands, salaries = [], []
+                    demands, incomes, salaries = [], [], []
                     #get all projects started before the end of the season, and exlude ones that ended before the season start
                     for project in Project.objects.filter(start_date__lte = to_date).exclude(end_date__lt = from_date):
                         current_date = from_date
@@ -3294,6 +3294,14 @@ def global_profit_lost(request):
                                 demands.append(query[0])
                             current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
                                                 current_date.month == 12 and 1 or current_date.month + 1, 1)
+                    #get other incomes for this division
+                    current_date = from_date
+                    while current_date <= to_date:
+                        query = Income.objects.filter(division_type = division, year = current_date.year, month = current_date.month)
+                        if query.count() > 0:
+                            incomes.extend(query)
+                        current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
+                                            current_date.month == 12 and 1 or current_date.month + 1, 1)
                     #get all employee salaries for this project in this season
                     current_date = from_date
                     while current_date <= to_date:
@@ -3305,13 +3313,19 @@ def global_profit_lost(request):
                     #get all expenses for this division and season
                     checks = Check.objects.filter(issue_date__range = (from_date,to_date), division_type = division)
                     
-                    profits = []
                     
-                    profit_amount = 0
+                    incomes_amount, demands_amount = 0,0
                     for demand in demands:
-                        profit_amount += demand.get_total_amount()
-                    profits.append({'name':division,'amount':profit_amount})
-                    global_profit += profit_amount
+                        tax_val = Tax.objects.filter(date__lte=date(d.year, d.month,1)).latest().value / 100 + 1
+                        demands_amount += demand.get_total_amount() / tax_val
+                    for income in income:
+                        incomes_amount += income.amount or 0
+                    
+                    income_rows = [{'name':division,'amount':demands_amount},
+                                   {'name':u'הכנסות אחרות','amount':incomes_amount},
+                                   {'name':u'סה"כ','amount':incomes_amount + demands_amount}]
+                    
+                    global_income += demands_amount + incomes_amount
                         
                     salaries_amount, expenses_amount = 0,0
                     
@@ -3319,13 +3333,13 @@ def global_profit_lost(request):
                         salaries_amount += salary.check_amount or 0
                     for check in checks:
                         expenses_amount += check.amount
-                    losses = [{'name':u'הוצאות שכר', 'amount':salaries_amount},
+                    loss_rows = [{'name':u'הוצאות שכר', 'amount':salaries_amount},
                                 {'name':u'הוצאות אחרות', 'amount':expenses_amount},
                                 {'name':u'סה"כ', 'amount':salaries_amount + expenses_amount}]
                     
                     global_loss += salaries_amount + expenses_amount
                     
-                    data.append({'division':division, 'profits':profits,'losses':losses})
+                    data.append({'division':division, 'incomes':income_rows,'losses':loss_rows})
                 elif division.is_nicehouse:
                     # get nhbranch object from the division type
                     if division.id == DivisionType.NHShoham:
@@ -3335,7 +3349,7 @@ def global_profit_lost(request):
                     elif division.id == DivisionType.NHNesZiona:
                         nhbranch = NHBranch.objects.get(pk = NHBranch.NesZiona)
                     
-                    nhmonths, salaries, expenses = [], [], []
+                    nhmonths, incomes, salaries, expenses = [], [], [], []
                     
                     # get all nhmonths for this branch and season
                     current_date = from_date
@@ -3343,6 +3357,14 @@ def global_profit_lost(request):
                         query = NHMonth.objects.filter(nhbranch = nhbranch, year = current_date.year, month = current_date.month)
                         if query.count() > 0:
                             nhmonths.append(query[0])
+                        current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
+                                            current_date.month == 12 and 1 or current_date.month + 1, 1)
+                    #get other incomes for this division
+                    current_date = from_date
+                    while current_date <= to_date:
+                        query = Income.objects.filter(division_type = division, year = current_date.year, month = current_date.month)
+                        if query.count() > 0:
+                            incomes.extend(query)
                         current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
                                             current_date.month == 12 and 1 or current_date.month + 1, 1)
                     #get all salaries for this season and nhbranch
@@ -3357,17 +3379,21 @@ def global_profit_lost(request):
                     #get all expenses for this division and season
                     checks = Check.objects.filter(issue_date__range = (from_date,to_date), division_type = division)
                     
-                    profit_amount, salary_amount, expenses_amount = 0,0,0
+                    incomes_amount, nhmonths_amount, salary_amount, expenses_amount = 0,0,0,0
                     for nhmonth in nhmonths:
-                        profit_amount += nhmonth.total_net_income
+                        nhmonths_amount += nhmonth.total_net_income
+                    for income in income:
+                        incomes_amount += income.amount or 0
                     for salary in salaries:
                         salary_amount += salary.check_amount or 0
                     
-                    profits = [{'name':nhbranch, 'amount':profit_amount}]
+                    income_rows = [{'name':nhbranch, 'amount':nhmonths_amount},
+                                   {'name':u'הכנסות אחרות', 'amount':incomes_amount},
+                                   {'name':u'סה"כ', 'amount':nhmonths_amount + incomes_amount}]
                     
-                    global_profit += profit_amount
+                    global_income += profit_amount
                     
-                    losses = [{'name':u'הוצאות שכר', 'amount':salary_amount}]
+                    loss_rows = [{'name':u'הוצאות שכר', 'amount':salary_amount}]
                     
                     total_losses = salary_amount
                     for expense_type, checks in itertools.groupby(checks, lambda check: check.expense_type):
@@ -3375,18 +3401,18 @@ def global_profit_lost(request):
                         for check in checks:
                             checks_amount += check.amount
                         total_losses += checks_amount
-                        losses.append({'name':expense_type, 'amount':checks_amount})
-                    losses.append({'name':u'סה"כ','amount':total_losses})
+                        loss_rows.append({'name':expense_type, 'amount':checks_amount})
+                    loss_rows.append({'name':u'סה"כ','amount':total_losses})
                     
                     global_loss += total_losses
                     
-                    data.append({'division':division, 'profits':profits,'losses':losses})
+                    data.append({'division':division, 'incomes':income_rows,'losses':loss_rows})
                 #calculate relative profits and losses for all divisions items (i.e. projects/nhbranches)
                 for row in data:
                     division, profits, losses = row['division'] ,row['profits'], row['losses']
                     for profitRow in profits:
                         amount = profitRow['amount']
-                        profitRow['relative'] = amount / global_profit * 100
+                        profitRow['relative'] = amount / global_income * 100
                     for lossRow in losses:
                         amount = lossRow['amount']
                         lossRow['relative'] = amount / global_loss * 100
@@ -3394,5 +3420,5 @@ def global_profit_lost(request):
         form = GloablProfitLossForm()
         
     return render_to_response('Management/global_profit_loss.html', 
-                              { 'filterForm':form, 'data':data, 'global_profit':global_profit, 'global_loss':global_loss },
+                              { 'filterForm':form, 'data':data, 'global_income':global_income, 'global_loss':global_loss },
                               context_instance = RequestContext(request))
