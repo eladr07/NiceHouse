@@ -3318,8 +3318,8 @@ def global_profit_lost(request):
                     for demand in demands:
                         tax_val = Tax.objects.filter(date__lte=date(demand.year, demand.month,1)).latest().value / 100 + 1
                         demands_amount += demand.get_total_amount() / tax_val
-                    for income in income:
-                        incomes_amount += income.amount or 0
+                    for income in incomes:
+                        incomes_amount += income.invoice and income.invoice.amount or 0
                     
                     income_rows = [{'name':division,'amount':demands_amount},
                                    {'name':u'הכנסות אחרות','amount':incomes_amount},
@@ -3382,8 +3382,8 @@ def global_profit_lost(request):
                     incomes_amount, nhmonths_amount, salary_amount, expenses_amount = 0,0,0,0
                     for nhmonth in nhmonths:
                         nhmonths_amount += nhmonth.total_net_income
-                    for income in income:
-                        incomes_amount += income.amount or 0
+                    for income in incomes:
+                        incomes_amount += income.invoice and income.invoice.amount or 0
                     for salary in salaries:
                         salary_amount += salary.check_amount or 0
                     
