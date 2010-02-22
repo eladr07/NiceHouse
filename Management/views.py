@@ -3409,10 +3409,10 @@ def global_profit_lost(request):
                     data.append({'division':division, 'incomes':income_rows,'losses':loss_rows})
                 #calculate relative profits and losses for all divisions items (i.e. projects/nhbranches)
                 for row in data:
-                    division, profits, losses = row['division'] ,row['profits'], row['losses']
+                    division, incomes, losses = row['division'] ,row['incomes'], row['losses']
                     for profitRow in profits:
                         amount = profitRow['amount']
-                        profitRow['relative'] = amount / global_income * 100
+                        incomeRow['relative'] = amount / global_income * 100
                     for lossRow in losses:
                         amount = lossRow['amount']
                         lossRow['relative'] = amount / global_loss * 100
