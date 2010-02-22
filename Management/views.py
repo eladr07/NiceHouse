@@ -3316,7 +3316,7 @@ def global_profit_lost(request):
                     
                     incomes_amount, demands_amount = 0,0
                     for demand in demands:
-                        tax_val = Tax.objects.filter(date__lte=date(d.year, d.month,1)).latest().value / 100 + 1
+                        tax_val = Tax.objects.filter(date__lte=date(demand.year, demand.month,1)).latest().value / 100 + 1
                         demands_amount += demand.get_total_amount() / tax_val
                     for income in income:
                         incomes_amount += income.amount or 0
