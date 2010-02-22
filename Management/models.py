@@ -830,6 +830,7 @@ class Loan(models.Model):
     month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
     year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
                                                                                              datetime.now().year + 10)))
+    date = models.DateField(ugettext('date'), help_text = ugettext('loan_date_help'), null=True)
     pay_num = models.PositiveSmallIntegerField(ugettext('pay_num'))
     remarks = models.TextField(ugettext('remarks'), blank=True, null=True)
     def get_absolute_url(self):
