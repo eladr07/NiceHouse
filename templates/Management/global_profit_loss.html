@@ -38,11 +38,11 @@
 				<th>פרוייקט</th>
 				<th>סכום</th>
 				<th>% מההכנסות</th>
-				{% for profitRow in row.profits %}
+				{% for incomeRow in row.incomes %}
 					<tr class="{% cycle 'row1' 'row2' %}">
-						<td>{{ profitRow.name }}</td>
-						<td>{{ profitRow.amount|commaise }}</td>
-						<td>{{ profitRow.relative|floatformat:-2 }}</td>
+						<td>{{ incomeRow.name }}</td>
+						<td>{{ incomeRow.amount|commaise }}</td>
+						<td>{{ incomeRow.relative|floatformat:-2 }}</td>
 					</tr>
 				{% endfor %}
 			</table>
