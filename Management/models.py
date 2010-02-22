@@ -2009,7 +2009,7 @@ class Tax(models.Model):
     class Meta:
         db_table = 'Tax'
         get_latest_by = 'date'
-        ordering = ['date']
+        ordering = ['-date']
         verbose_name = ugettext('tax')
                 
 #Building Input
@@ -2025,7 +2025,7 @@ class MadadBI(models.Model):
     class Meta:
         db_table = 'MadadBI'
         get_latest_by = 'publish_date'
-        ordering = ['publish_date']
+        ordering = ['-publish_date']
         unique_together = ('year', 'month')
 
 #Consumer Prices
@@ -2041,7 +2041,7 @@ class MadadCP(models.Model):
     class Meta:
         db_table = 'MadadCP'
         get_latest_by = 'publish_date'
-        ordering = ['publish_date']
+        ordering = ['-publish_date']
         unique_together = ('year', 'month')
 
 class NHPay(models.Model):
