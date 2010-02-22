@@ -3411,7 +3411,7 @@ def global_profit_lost(request):
                 for row in data:
                     division, incomes, losses = row['division'] ,row['incomes'], row['losses']
                     for incomeRow in incomes:
-                        amount = profitRow['amount']
+                        amount = incomeRow['amount']
                         incomeRow['relative'] = amount / global_income * 100
                     for lossRow in losses:
                         amount = lossRow['amount']
