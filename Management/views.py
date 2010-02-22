@@ -3420,5 +3420,6 @@ def global_profit_lost(request):
         form = GloablProfitLossForm()
         
     return render_to_response('Management/global_profit_loss.html', 
-                              { 'filterForm':form, 'data':data, 'global_income':global_income, 'global_loss':global_loss },
+                              { 'filterForm':form, 'data':data, 'global_income':global_income, 'global_loss':global_loss,
+                               'global_profit':global_income - global_loss },
                               context_instance = RequestContext(request))
