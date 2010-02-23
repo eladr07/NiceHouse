@@ -3467,7 +3467,7 @@ def employee_salaries_season(request):
         from_date, to_date = None, None
         
     return render_to_response('Management/employee_salaries_season.html', 
-                              { 'filterForm':form, 'data':data, 'start':from_date, 'end':to_date },
+                              { 'filterForm':form, 'data':data, 'from_date':from_date, 'to_date':to_date },
                               context_instance = RequestContext(request))
 
 @permission_required('Management.nhemployee_salaries_season')
@@ -3503,7 +3503,7 @@ def nhemployee_salaries_season(request):
         from_date, to_date = None, None
         
     return render_to_response('Management/nhemployee_salaries_season.html', 
-                              { 'filterForm':form, 'data':data, 'start':from_date, 'end':to_date },
+                              { 'filterForm':form, 'data':data, 'from_date':from_date, 'to_date':to_date },
                               context_instance = RequestContext(request))
 
 @permission_required('Management.demands_season')
@@ -3534,6 +3534,6 @@ def demands_season(request):
         from_date, to_date = None, None
         
     return render_to_response('Management/demands_season.html', 
-                              { 'filterForm':form, 'data':data, 'start':from_date, 'end':to_date },
+                              { 'filterForm':form, 'data':data, 'from_date':from_date, 'to_date':to_date },
                               context_instance = RequestContext(request))
         
