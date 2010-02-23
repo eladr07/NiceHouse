@@ -1043,6 +1043,7 @@ class EmployeeSalaryBase(models.Model):
             return self.nhemployeesalary.nhemployee
     class Meta:
         db_table = 'EmployeeSalaryBase'
+        ordering = ['year','month']
 
 class NHEmployeeSalary(EmployeeSalaryBase):
     nhemployee = models.ForeignKey('NHEmployee', verbose_name=ugettext('nhemployee'), related_name='salaries')
@@ -2268,6 +2269,9 @@ class NHMonth(models.Model):
                                             choices=((i,i) for i in range(datetime.now().year - 10,
                                                                           datetime.now().year + 10)))
     is_closed = models.BooleanField(editable=False, default=False)
+    
+    objects = RangeManager()
+    
     def __init__(self, *args, **kw):
         models.Model.__init__(self, *args, **kw)
         self.include_tax = True

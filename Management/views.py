@@ -3288,7 +3288,7 @@ def global_profit_lost(request):
                     demands = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(project__start_date__lte = to_date).exclude(project__end_date__lt = from_date)
 
                     #get other incomes for this division
-                    incomes = Income.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
+                    incomes = Income.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(division_type = division)
 
                     #get all employee salaries for this project in this season
                     salaries = EmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
@@ -3342,21 +3342,11 @@ def global_profit_lost(request):
                     nhmonths, incomes, salaries, expenses = [], [], [], []
                     
                     # get all nhmonths for this branch and season
-                    current_date = from_date
-                    while current_date <= to_date:
-                        query = NHMonth.objects.filter(nhbranch = nhbranch, year = current_date.year, month = current_date.month)
-                        if query.count() > 0:
-                            nhmonths.append(query[0])
-                        current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
-                                            current_date.month == 12 and 1 or current_date.month + 1, 1)
+                    nhmonths = NHMonth.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhbranch = nhbranch)
+
                     #get other incomes for this division
-                    current_date = from_date
-                    while current_date <= to_date:
-                        query = Income.objects.filter(division_type = division, year = current_date.year, month = current_date.month)
-                        if query.count() > 0:
-                            incomes.extend(query)
-                        current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
-                                            current_date.month == 12 and 1 or current_date.month + 1, 1)
+                    incomes = Income.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(division_type = division)
+                    
                     #get all salaries for this season and nhbranch
                     current_date = from_date
                     while current_date <= to_date:
