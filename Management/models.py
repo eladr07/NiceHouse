@@ -1732,7 +1732,7 @@ class DemandManager(models.Manager):
         now = Demand.current_month()
         return self.filter(year = now.year, month = now.month)
     def range(self, from_year, from_month, to_year, to_month):
-        q = models.Q()
+        q = ~models.Q()
         year, month = from_year, from_month
         while year <= to_year or month <= to_month:
             q = q | models.Q(year = year, month = month)
