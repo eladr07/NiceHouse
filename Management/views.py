@@ -3012,7 +3012,7 @@ def season_income(request):
                 start_date = max(p.start_date, from_date)
                 active_months = round((to_date - start_date).days/30) + 1
                 p.avg_sale_count = p.total_sale_count / active_months
-            month_count = round((end-start).days/30) + 1
+            month_count = round((to_date-from_date).days/30) + 1
     else:
         form = ProjectSeasonForm()
         from_date, to_date = None, None
