@@ -1984,7 +1984,7 @@ class Demand(models.Model):
         return u'דרישה לתשלום לפרוייקט %s בגיו חודש %s' % (self.project, '%s-%s' % (self.month, self.year))
     class Meta:
         db_table='Demand'
-        ordering = ['project','year','month']
+        ordering = ['year','month','project']
         get_latest_by = 'month'
         unique_together = ('project', 'month', 'year')
         permissions = (('list_demand', 'Can list demands'),('demand_pdf', 'Demand PDF'), ('demands_pdf', 'Demands PDF'),
