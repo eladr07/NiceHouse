@@ -1047,6 +1047,9 @@ class EmployeeSalaryBase(models.Model):
 class NHEmployeeSalary(EmployeeSalaryBase):
     nhemployee = models.ForeignKey('NHEmployee', verbose_name=ugettext('nhemployee'), related_name='salaries')
     admin_commission = models.IntegerField(editable=False, null=True)
+    
+    objects = RangeManager()
+    
     @property
     @cache_method
     def total_amount(self):
@@ -1113,6 +1116,9 @@ class NHEmployeeSalary(EmployeeSalaryBase):
         
 class EmployeeSalary(EmployeeSalaryBase):
     employee = models.ForeignKey('Employee', verbose_name=ugettext('employee'), related_name='salaries')
+    
+    objects = RangeManager()
+    
     def __init__(self, *args, **kw):
         super(EmployeeSalary, self).__init__(*args, **kw)
         self.project_commission = {}
