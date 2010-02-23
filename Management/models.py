@@ -1740,7 +1740,7 @@ class DemandManager(models.Manager):
             if month == 13:
                 month = 1
                 year += 1
-            if year == to_year and month == to_month:
+            if year >= to_year and month >= to_month:
                 break
         return self.filter(q)
 
