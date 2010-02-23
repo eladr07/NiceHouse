@@ -3479,7 +3479,7 @@ def nhemployee_salaries_season(request):
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
             nhbranch = form.cleaned_data['nhbranch']
-            nhemployees = [nhbe.nhemployee for nhbe in NHBranchEmployee.objects.filter(start_date__lte = to_date).exclude(end_date__lte = start_date)]
+            nhemployees = [nhbe.nhemployee for nhbe in NHBranchEmployee.objects.filter(start_date__lte = to_date).exclude(end_date__lte = from_date)]
             current_date = from_date
             while current_date <= to_date:
                 salaries = []
