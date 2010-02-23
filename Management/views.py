@@ -3275,7 +3275,7 @@ def sale_analysis(request):
 def global_profit_lost(request):
     data = []
     global_income, global_loss = 0,0
-    if request.method == 'GET':
+    if len(request.GET):
         form = GloablProfitLossForm(request.GET)
         if form.is_valid():
             divisions = form.cleaned_data['divisions']
@@ -3442,7 +3442,7 @@ def global_profit_lost(request):
 @permission_required('Management.employee_salaries_season')
 def employee_salaries_season(request):
     data = []
-    if request.method == 'GET':
+    if len(request.GET):
         form = SeasonForm(request.GET)
         if form.is_valid():
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
@@ -3472,7 +3472,7 @@ def employee_salaries_season(request):
 @permission_required('Management.nhemployee_salaries_season')
 def nhemployee_salaries_season(request):
     data = []
-    if request.method == 'GET':
+    if len(request.GET):
         form = NHBranchSeasonForm(request.GET)
         if form.is_valid():
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
@@ -3507,7 +3507,7 @@ def nhemployee_salaries_season(request):
 @permission_required('Management.demands_season')
 def demands_season(request):
     data = []
-    if request.method == 'GET':
+    if len(request.GET):
         form = SeasonForm(request.GET)
         if form.is_valid():
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
