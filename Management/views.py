@@ -3514,21 +3514,15 @@ def demands_season(request):
         if form.is_valid():
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
-            current_date = from_date
-            while current_date <= to_date:
-                demands = Demand.objects.filter(year = current_date.year, month = current_date.month)
-                if demands.count() > 0:
-                    total_amount = 0
-                    for demand in demands:
-                        total_amount += demand.get_total_amount() or 0
-                        
-                    row = {'date':'%s/%s' % (current_date.month, current_date.year),
-                           'total_amount':total_amount,
-                           'detail_link':'/demandsold/?year=%s;month=%s;' % (current_date.year, current_date.month)}
-                    
-                    data.append(row)
-                current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
-                                    current_date.month == 12 and 1 or current_date.month + 1, 1)
+            all_demands = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
+            for (month, year), demands in itertools.groupby(all_demands, lambda demand: (demand.month, demand.year)):
+                total_amount = 0
+                for demand in demands:
+                    total_amount += demand.get_total_amount() or 0
+                row = {'date':'%s/%s' % (month, year),
+                       'total_amount':total_amount,
+                       'detail_link':'/demandsold/?year=%s;month=%s;' % (year, month)}
+                data.append(row)
     else:
         form = SeasonForm(request.GET)
         from_date, to_date = None, None

@@ -1731,6 +1731,15 @@ class DemandManager(models.Manager):
     def current(self):
         now = Demand.current_month()
         return self.filter(year = now.year, month = now.month)
+    def range(self, from_year, from_month, to_year, to_month):
+        q = models.Q()
+        from_date = date(from_year, from_month, 1)
+        to_date = date(to_year, to_month, 1)
+        current = from_date
+        while current <= to_date:
+            q = q | models.Q(year = current.year, month = current.month)
+            current = date(current.month == 12 and current.year + 1 or current.year, current.month == 12 and 1 or current.month + 1, 1)
+        return self.filter(q)
 
 class DemandDiff(models.Model):
     demand = models.ForeignKey('Demand', editable=False, related_name='diffs')
