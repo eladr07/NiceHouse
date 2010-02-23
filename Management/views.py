@@ -3421,7 +3421,7 @@ def employee_salaries_season(request):
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
             all_salaries = EmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
             for (year, month), salaries in itertools.groupby(all_salaries, lambda salary: (salary.year, salary.month)):
-                total_amount = 0
+                total_check_amount = 0
                 for salary in salaries:
                     total_check_amount += salary.check_amount or 0
                 row = {'date':'%s/%s' % (month, year),
