@@ -3250,9 +3250,7 @@ def global_profit_lost(request):
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
             for division in divisions:
                 if division.id == DivisionType.Marketing:
-                    demands, incomes, salaries = [], [], []
-                    #get all projects started before the end of the season, and exlude ones that ended before the season start
-                    demands = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(project__start_date__lte = to_date).exclude(project__end_date__lt = from_date)
+                    demands = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
 
                     #get other incomes for this division
                     incomes = Income.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(division_type = division)
@@ -3306,7 +3304,7 @@ def global_profit_lost(request):
                     elif division.id == DivisionType.NHNesZiona:
                         nhbranch = NHBranch.objects.get(pk = NHBranch.NesZiona)
                     
-                    nhmonths, incomes, salaries, expenses = [], [], [], []
+                    salaries = []
                     
                     # get all nhmonths for this branch and season
                     nhmonths = NHMonth.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhbranch = nhbranch)
