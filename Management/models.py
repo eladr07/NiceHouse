@@ -1927,6 +1927,12 @@ class Demand(models.Model):
             self.sales_commission = -1
         self.save()
         return self.sales_commission
+    def calc_cancel_fee(self):
+        for diff in self.diffs.filter(type=u'קיזוז מכירה'):
+            diff.delete()
+        for sale in self.get_canceledsales():
+            salecancel = self.salecancel
+            self.diffs.create(type=u'קיזוז מכירה', reason = u"ביטול מכירה מס' %s" % sale.id, amount = salecancel.fee * -1)
     def get_total_amount(self):
         return self.sales_commission + self.diffs_amount
     @property
@@ -2382,14 +2388,12 @@ class SaleReject(SaleMod):
         db_table = 'SaleReject'
         
 class SaleCancel(SaleMod):
-    fee = models.PositiveIntegerField(ugettext('fee'), null=True)
+    fee = models.PositiveIntegerField(ugettext('fee'), null=True, help_text = ugettext(u'salecancel_fee_help'))
     def save(self, *args, **kw):
         models.Model.save(self, *args, **kw)
         if self.fee > 0:
             d = self.sale.demand
-            if d.fee_diff:
-                d.fee_diff.delete()
-            d.diffs.create(type=u'קיזוז', reason = u"ביטול מכירה מס' %s" % self.sale.id, amount = self.fee * -1)
+            d.calc_cancel_fee()
     def get_absolute_url(self):
         return '/salecancel/%s' % self.id
     class Meta:
