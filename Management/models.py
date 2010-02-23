@@ -1773,23 +1773,23 @@ class Demand(models.Model):
     @property
     def fixed_diff(self):
         q = self.diffs.filter(type=u'קבועה')
-        return q.count() == 1 and q[0] or 0
+        return q.count() == 1 and q[0] or None
     @property    
     def var_diff(self):
         q = self.diffs.filter(type=u'משתנה')
-        return q.count() == 1 and q[0] or 0
+        return q.count() == 1 and q[0] or None
     @property    
     def bonus_diff(self):
         q = self.diffs.filter(type=u'בונוס')
-        return q.count() == 1 and q[0] or 0
+        return q.count() == 1 and q[0] or None
     @property   
     def fee_diff(self):
         q = self.diffs.filter(type=u'קיזוז')
-        return q.count() == 1 and q[0] or 0
+        return q.count() == 1 and q[0] or None
     @property   
     def adjust_diff(self):
         q = self.diffs.filter(type=u'התאמה')
-        return q.count() == 1 and q[0] or 0
+        return q.count() == 1 and q[0] or None
     def get_madad(self):
         q = MadadBI.objects.filter(year = self.year, month=self.month)
         return q.count() > 0 and q[0].value or MadadBI.objects.latest().value
@@ -2387,7 +2387,8 @@ class SaleCancel(SaleMod):
         models.Model.save(self, *args, **kw)
         if self.fee > 0:
             d = self.sale.demand
-            d.fee_diff.delete()
+            if d.fee_diff:
+                d.fee_diff.delete()
             d.diffs.create(type=u'קיזוז', reason = u"ביטול מכירה מס' %s" % self.sale.id, amount = self.fee * -1)
     def get_absolute_url(self):
         return '/salecancel/%s' % self.id
