@@ -3322,7 +3322,9 @@ def global_profit_lost(request):
                         incomes_amount += income.invoice and income.invoice.amount or 0
                     
                     income_rows = [{'name':division,'amount':demands_amount},
-                                   {'name':u'הכנסות אחרות','amount':incomes_amount},
+                                   {'name':u'הכנסות אחרות','amount':incomes_amount,
+                                    'details_link':'/incomes/?division_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
+                                    % (division.id, from_date.year, from_date.month, to_date.year, to_date.month)},
                                    {'name':u'סה"כ','amount':incomes_amount + demands_amount}]
                     
                     global_income += demands_amount + incomes_amount
@@ -3334,7 +3336,9 @@ def global_profit_lost(request):
                     for check in checks:
                         expenses_amount += check.amount
                     loss_rows = [{'name':u'הוצאות שכר', 'amount':salaries_amount},
-                                {'name':u'הוצאות אחרות', 'amount':expenses_amount},
+                                {'name':u'הוצאות אחרות', 'amount':expenses_amount,
+                                 'details_link':'/checks/?division_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
+                                 % (division.id, from_date.year, from_date.month, to_date.year, to_date.month)},
                                 {'name':u'סה"כ', 'amount':salaries_amount + expenses_amount}]
                     
                     global_loss += salaries_amount + expenses_amount
@@ -3388,7 +3392,9 @@ def global_profit_lost(request):
                         salary_amount += salary.check_amount or 0
                     
                     income_rows = [{'name':nhbranch, 'amount':nhmonths_amount},
-                                   {'name':u'הכנסות אחרות', 'amount':incomes_amount},
+                                   {'name':u'הכנסות אחרות', 'amount':incomes_amount,
+                                    'details_link':'/incomes/?division_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
+                                    % (division.id, from_date.year, from_date.month, to_date.year, to_date.month)},
                                    {'name':u'סה"כ', 'amount':nhmonths_amount + incomes_amount}]
                     
                     global_income += incomes_amount + nhmonths_amount
@@ -3401,7 +3407,9 @@ def global_profit_lost(request):
                         for check in checks:
                             checks_amount += check.amount
                         total_losses += checks_amount
-                        loss_rows.append({'name':expense_type, 'amount':checks_amount})
+                        loss_rows.append({'name':expense_type, 'amount':checks_amount,
+                                          'details_link':'/checks/?division_type=%s;expense_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
+                                          % (division.id,expense_type.id, from_date.year, from_date.month, to_date.year, to_date.month)})
                     loss_rows.append({'name':u'סה"כ','amount':total_losses})
                     
                     global_loss += total_losses
@@ -3418,8 +3426,9 @@ def global_profit_lost(request):
                         lossRow['relative'] = amount / global_loss * 100
     else:
         form = GloablProfitLossForm()
+        from_date, to_date = None, None
         
     return render_to_response('Management/global_profit_loss.html', 
                               { 'filterForm':form, 'data':data, 'global_income':global_income, 'global_loss':global_loss,
-                               'global_profit':global_income - global_loss },
+                               'global_profit':global_income - global_loss, 'start':from_date, 'end':to_date },
                               context_instance = RequestContext(request))
