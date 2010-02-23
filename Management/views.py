@@ -3285,15 +3285,8 @@ def global_profit_lost(request):
                 if division.id == DivisionType.Marketing:
                     demands, incomes, salaries = [], [], []
                     #get all projects started before the end of the season, and exlude ones that ended before the season start
-                    for project in Project.objects.filter(start_date__lte = to_date).exclude(end_date__lt = from_date):
-                        current_date = from_date
-                        #get all the demands for this project in this season
-                        while current_date <= to_date:
-                            query = Demand.objects.filter(project = project, year = current_date.year, month = current_date.month)
-                            if query.count() > 0:
-                                demands.append(query[0])
-                            current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
-                                                current_date.month == 12 and 1 or current_date.month + 1, 1)
+                    demands = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(project__start_date__lte = to_date).exclude(project__end_date__lt = from_date)
+
                     #get other incomes for this division
                     current_date = from_date
                     while current_date <= to_date:
@@ -3515,7 +3508,6 @@ def demands_season(request):
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
             all_demands = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
-            
             for (year, month), demands in itertools.groupby(all_demands, lambda demand: (demand.year, demand.month)):
                 total_amount = 0
                 for demand in demands:
