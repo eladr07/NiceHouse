@@ -2907,14 +2907,10 @@ def report_projects_month(request, year, month):
 def report_project_season(request, project_id=None, from_year=Demand.current_month().year, from_month=Demand.current_month().month, 
                           to_year=Demand.current_month().year, to_month=Demand.current_month().month):
     ds = []
-    current = date(int(from_year), int(from_month), 1)
-    end = date(int(to_year), int(to_month), 1)
-    while current <= end:
-        q = Demand.objects.filter(project__id = project_id, year = current.year, month = current.month)
-        if q.count() > 0:
-            ds.append(q[0])
-        current = date(current.month == 12 and current.year + 1 or current.year,
-                       current.month == 12 and 1 or current.month + 1, 1)
+    from_date = date(int(from_year), int(from_month), 1)
+    to_date = date(int(to_year), int(to_month), 1)
+    
+    demands = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(project__id = project_id)
     
     filename = generate_unique_pdf_filename()
     
@@ -2931,15 +2927,10 @@ def report_project_season(request, project_id=None, from_year=Demand.current_mon
 @login_required
 def report_employeesalary_season(request, employee_id=None, from_year=Demand.current_month().year, from_month=Demand.current_month().month, 
                           to_year=Demand.current_month().year, to_month=Demand.current_month().month):
-    salaries = []
-    current = date(int(from_year), int(from_month), 1)
-    end = date(int(to_year), int(to_month), 1)
-    while current <= end:
-        q = EmployeeSalary.objects.filter(employee__id = employee_id, year = current.year, month = current.month)
-        if q.count() > 0:
-            salaries.append(q[0])
-        current = date(current.month == 12 and current.year + 1 or current.year,
-                       current.month == 12 and 1 or current.month + 1, 1)
+    from_date = date(int(from_year), int(from_month), 1)
+    to_date = date(int(to_year), int(to_month), 1)  
+    
+    salaries = EmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(employee__id = employee_id)
     
     filename = generate_unique_pdf_filename()
     
