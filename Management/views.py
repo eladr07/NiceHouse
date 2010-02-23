@@ -2835,13 +2835,12 @@ def demand_sale_list(request):
         sales = []
         sales_amount = 0
         project = Project.objects.get(pk=project_id)
-        while current <= end:
-            q = Demand.objects.filter(project__id = project_id, year = current.year, month = current.month)
-            if q.count() > 0:
-                sales.extend(list(q[0].get_sales()))
-                sales_amount += q[0].get_sales_amount()
-            current = date(current.month == 12 and current.year + 1 or current.year, 
-                           current.month == 12 and 1 or current.month + 1, 1)
+        
+        demands = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(project = project)
+        for demand in demands:
+            sales.extend(demand.get_sales())
+            sales_amount += demand.get_sales_amount()
+
         title = u'ריכוז מכירות לפרוייקט %s מחודש %s/%s עד חודש %s/%s' % (unicode(project), from_month, from_year,
                                                                          to_month, to_year)
     else:
@@ -2966,14 +2965,9 @@ def demand_season_list(request):
             project = form.cleaned_data['project']
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
-            current = from_date
             
-            while current <= to_date:
-                q = Demand.objects.filter(project = project, year = current.year, month = current.month)
-                if q.count() > 0:
-                    ds.append(q[0])
-                current = date(current.month == 12 and current.year + 1 or current.year,
-                               current.month == 12 and 1 or current.month + 1, 1)
+            ds = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(project = project)
+
             for d in ds:
                 total_sales_count += d.get_sales().count()
                 total_sales_amount += d.get_final_sales_amount()
@@ -3001,13 +2995,8 @@ def season_income(request):
             project = form.cleaned_data['project']
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
-            current = from_date    
-            ds = []
-            while current <= end:
-                q = Demand.objects.filter(year = current.year, month = current.month)
-                ds.extend(q)
-                current = date(current.month == 12 and current.year + 1 or current.year, 
-                               current.month == 12 and 1 or current.month + 1, 1)
+                        
+            ds = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(project = project)
                 
             for d in ds:
                 tax = Tax.objects.filter(date__lte=date(d.year, d.month,1)).latest().value / 100 + 1
@@ -3056,14 +3045,9 @@ def demand_followup_list(request):
             project = form.cleaned_data['project']
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
-            current = from_date
             
-            while current <= to_date:
-                q = Demand.objects.filter(project = project, year = current.year, month = current.month)
-                if q.count() > 0:
-                    ds.append(q[0])
-                current = date(current.month == 12 and current.year + 1 or current.year,
-                               current.month == 12 and 1 or current.month + 1, 1)
+            ds = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(project = project)
+
             for d in ds:
                 total_amount += d.get_total_amount()
                 total_invoices += d.invoices_amount
