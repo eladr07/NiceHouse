@@ -3288,24 +3288,13 @@ def global_profit_lost(request):
                     demands = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(project__start_date__lte = to_date).exclude(project__end_date__lt = from_date)
 
                     #get other incomes for this division
-                    current_date = from_date
-                    while current_date <= to_date:
-                        query = Income.objects.filter(division_type = division, year = current_date.year, month = current_date.month)
-                        if query.count() > 0:
-                            incomes.extend(query)
-                        current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
-                                            current_date.month == 12 and 1 or current_date.month + 1, 1)
+                    incomes = Income.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
+
                     #get all employee salaries for this project in this season
-                    current_date = from_date
-                    while current_date <= to_date:
-                        query = EmployeeSalary.objects.filter(year = current_date.year, month = current_date.month)
-                        if query.count() > 0:
-                            salaries.extend(query)
-                        current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
-                                            current_date.month == 12 and 1 or current_date.month + 1, 1)
+                    salaries = EmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
+
                     #get all expenses for this division and season
                     checks = Check.objects.filter(issue_date__range = (from_date,to_date), division_type = division)
-                    
                     
                     incomes_amount, demands_amount = 0,0
                     for demand in demands:

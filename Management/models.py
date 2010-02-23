@@ -45,6 +45,20 @@ def nhemployee_sort(nhemployee1, nhemployee2):
         return -1
     return cmp(query1.latest().nhbranch.id, query2.latest().nhbranch.id)
 
+class RangeManager(models.Manager):
+    def range(self, from_year, from_month, to_year, to_month):
+        q = ~models.Q()
+        year, month = from_year, from_month
+        while True:
+            q = q | models.Q(year = year, month = month)
+            month += 1
+            if month == 13:
+                month = 1
+                year += 1
+            if year >= to_year and month >= to_month:
+                break
+        return self.filter(q)
+    
 class Tag(models.Model):
     name = models.CharField(unique = True, max_length=20)
     is_deleted = models.BooleanField(editable=False, default=False)
@@ -925,6 +939,8 @@ class EmployeeSalaryBase(models.Model):
     remarks = models.TextField(ugettext('remarks'),null=True, blank=True)
     pdf_remarks = models.TextField(ugettext('pdf_remarks'),null=True, blank=True)
     
+    objects = RangeManager()
+    
     @property
     def expenses(self):
         q = SalaryExpenses.objects.filter(employee = self.get_employee())
@@ -1726,23 +1742,10 @@ class DemandStatus(models.Model):
         db_table = 'DemandStatus'
         get_latest_by = 'date'
 
-      
-class DemandManager(models.Manager):
+class DemandManager(RangeManager):
     def current(self):
         now = Demand.current_month()
         return self.filter(year = now.year, month = now.month)
-    def range(self, from_year, from_month, to_year, to_month):
-        q = ~models.Q()
-        year, month = from_year, from_month
-        while True:
-            q = q | models.Q(year = year, month = month)
-            month += 1
-            if month == 13:
-                month = 1
-                year += 1
-            if year >= to_year and month >= to_month:
-                break
-        return self.filter(q)
 
 class DemandDiff(models.Model):
     demand = models.ForeignKey('Demand', editable=False, related_name='diffs')
@@ -2714,6 +2717,8 @@ class Income(models.Model):
     invoice = models.OneToOneField('Invoice',editable=False,null=True)
     payment = models.OneToOneField('Payment',editable=False,null=True)
     deal = models.OneToOneField('Deal', editable=False)
+    
+    objects = RangeManager()
     
     @property
     def diff_payment_invoice(self):
