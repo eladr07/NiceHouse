@@ -3321,7 +3321,9 @@ def global_profit_lost(request):
                     for income in incomes:
                         incomes_amount += income.invoice and income.invoice.amount or 0
                     
-                    income_rows = [{'name':division,'amount':demands_amount},
+                    income_rows = [{'name':division,'amount':demands_amount,
+                                    'details_link':'/demandsseason/?from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
+                                    % (from_date.year, from_date.month, to_date.year, to_date.month)},
                                    {'name':u'הכנסות אחרות','amount':incomes_amount,
                                     'details_link':'/incomes/?division_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
                                     % (division.id, from_date.year, from_date.month, to_date.year, to_date.month)},
@@ -3335,7 +3337,9 @@ def global_profit_lost(request):
                         salaries_amount += salary.check_amount or 0
                     for check in checks:
                         expenses_amount += check.amount
-                    loss_rows = [{'name':u'הוצאות שכר', 'amount':salaries_amount},
+                    loss_rows = [{'name':u'הוצאות שכר', 'amount':salaries_amount,
+                                  'details_link':'/employeesalariesseason/?from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
+                                  % (from_date.year, from_date.month, to_date.year, to_date.month)},
                                 {'name':u'הוצאות אחרות', 'amount':expenses_amount,
                                  'details_link':'/checks/?division_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
                                  % (division.id, from_date.year, from_date.month, to_date.year, to_date.month)},
@@ -3391,7 +3395,9 @@ def global_profit_lost(request):
                     for salary in salaries:
                         salary_amount += salary.check_amount or 0
                     
-                    income_rows = [{'name':nhbranch, 'amount':nhmonths_amount},
+                    income_rows = [{'name':nhbranch, 'amount':nhmonths_amount,
+                                    'details_link':'/employeesalariesseason/?nhbranch=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
+                                    % (nhbranch.id, from_date.year, from_date.month, to_date.year, to_date.month)},
                                    {'name':u'הכנסות אחרות', 'amount':incomes_amount,
                                     'details_link':'/incomes/?division_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
                                     % (division.id, from_date.year, from_date.month, to_date.year, to_date.month)},
@@ -3432,3 +3438,99 @@ def global_profit_lost(request):
                               { 'filterForm':form, 'data':data, 'global_income':global_income, 'global_loss':global_loss,
                                'global_profit':global_income - global_loss, 'start':from_date, 'end':to_date },
                               context_instance = RequestContext(request))
+
+@permission_required('Management.employee_salaries_season')
+def employee_salaries_season(request):
+    data = []
+    if request.method == 'GET':
+        form = SeasonForm(request.GET)
+        if form.is_valid():
+            from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
+            to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
+            current = from_date
+            while current_date <= to_date:
+                salaries = EmployeeSalary.objects.filter(year = current_date.year, month = current_date.month)
+                total_check_amount = 0
+                for salary in salaries:
+                    total_check_amount += salary.check_amount or 0
+                    
+                row = {'date':'%s/%s' % (current_date.month, current_date.year),
+                       'total_check_amount':total_check_amount,
+                       'detail_link':'/employeesalaries/?year=%s;month=%s' % (current_date.month, current_date.year)}
+                
+                data.append(row)
+                current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
+                                    current_date.month == 12 and 1 or current_date.month + 1, 1)
+    else:
+        form = SeasonForm(request.GET)
+        from_date, to_date = None, None
+        
+    return render_to_response('Management/employee_salaries_season.html', 
+                              { 'filterForm':form, 'data':data, 'start':from_date, 'end':to_date },
+                              context_instance = RequestContext(request))
+
+@permission_required('Management.nhemployee_salaries_season')
+def nhemployee_salaries_season(request):
+    data = []
+    if request.method == 'GET':
+        form = NHBranchSeasonForm(request.GET)
+        if form.is_valid():
+            from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
+            to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
+            nhbranch = form.cleaned_data['nhbranch']
+            nhemployees = [nhbe.nhemployee for nhbe in NHBranchEmployee.objects.filter(start_date__lte = to_date).exclude(end_date__lte = start_date)]
+            current = from_date
+            while current_date <= to_date:
+                salaries = []
+                for nhemployee in nhemployees:
+                    query = NHEmployeeSalary.objects.filter(year = current_date.year, month = current_date.month, nhemployee=nhemployee)
+                    salaries.extend(query)
+                total_check_amount = 0
+                for salary in salaries:
+                    total_check_amount += salary.check_amount or 0
+                    
+                row = {'date':'%s/%s' % (current_date.month, current_date.year),
+                       'total_check_amount':total_check_amount,
+                       'detail_link':'/nhemployeesalaries/?year=%s;month=%s' % (current_date.month, current_date.year)}
+                
+                data.append(row)
+                current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
+                                    current_date.month == 12 and 1 or current_date.month + 1, 1)
+    else:
+        form = NHBranchSeasonForm(request.GET)
+        from_date, to_date = None, None
+        
+    return render_to_response('Management/nhemployee_salaries_season.html', 
+                              { 'filterForm':form, 'data':data, 'start':from_date, 'end':to_date },
+                              context_instance = RequestContext(request))
+
+@permission_required('Management.demands_season')
+def demands_season(request):
+    data = []
+    if request.method == 'GET':
+        form = SeasonForm(request.GET)
+        if form.is_valid():
+            from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
+            to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
+            current = from_date
+            while current_date <= to_date:
+                demands = Demand.objects.filter(year = current_date.year, month = current_date.month)
+                total_amount = 0
+                for demand in demands:
+                    total_amount += demand.get_total_amount() or 0
+                    
+                row = {'date':'%s/%s' % (current_date.month, current_date.year),
+                       'total_amount':total_amount,
+                       'detail_link':'/demandsold/?year=%s;month=%s' % (current_date.month, current_date.year)}
+                
+                data.append(row)
+                current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
+                                    current_date.month == 12 and 1 or current_date.month + 1, 1)
+    else:
+        form = SeasonForm(request.GET)
+        from_date, to_date = None, None
+        
+    return render_to_response('Management/demands_season.html', 
+                              { 'filterForm':form, 'data':data, 'start':from_date, 'end':to_date },
+                              context_instance = RequestContext(request))
+        

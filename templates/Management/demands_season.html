@@ -1,0 +1,43 @@
+﻿{% extends "./base.html" %}
+{% load management_extras %}
+{% block content %}
+<div class="title">
+	<div class="pageTitle">
+	ריכוז דרישות לכל הפרוייקטים תקופתי
+	<br>
+	{{from_date|date:"M Y"}} - {{to_date|date:"M Y"}}
+	</div>
+</div>
+<div class="clearBoth"> </div>
+<div style="float:right;width:70%;">
+	<form method="GET">
+		<table class="dataTable">
+			<tr class="row1">
+				<td colspan="6" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש תקופה</td>
+			</tr>
+			<tr class="row2">
+				{% for field in filterForm %}
+				<td>
+					{{ field.label_tag }} : 
+					{{ field }}
+				</td>
+				{% endfor %}
+				<td><input type="submit" value="חפש" class="button"/></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div class="clearBoth"></div>
+<table class="dataTable" border="1">
+	<th></th>
+	<th>חודש</th>
+	<th>סה"כ סכום דרישות</th>
+	{% for row in data %}
+		<tr class="{% cycle 'row1' 'row2' %}" objid={{t.id}}>
+			<td><a target="_blank" href={{row.detail_link}}>פירוט</a></td>
+			<td>{{ row.date }}</td>
+			<td>{{ row.total_check_amount|commaise }}</td>
+		</tr>
+	{% endfor %}
+</table>
+{% endblock content %}
