@@ -3419,21 +3419,15 @@ def employee_salaries_season(request):
         if form.is_valid():
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
-            current_date = from_date
-            while current_date <= to_date:
-                salaries = EmployeeSalary.objects.filter(year = current_date.year, month = current_date.month)
-                if len(salaries) > 0:
-                    total_check_amount = 0
-                    for salary in salaries:
-                        total_check_amount += salary.check_amount or 0
-                        
-                    row = {'date':'%s/%s' % (current_date.month, current_date.year),
-                           'total_check_amount':total_check_amount,
-                           'detail_link':'/employeesalaries/?year=%s;month=%s;' % (current_date.year, current_date.month)}
-                    
-                    data.append(row)
-                current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
-                                    current_date.month == 12 and 1 or current_date.month + 1, 1)
+            all_salaries = EmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
+            for (year, month), salaries in itertools.groupby(all_salaries, lambda salary: (salary.year, salary.month)):
+                total_amount = 0
+                for salary in salaries:
+                    total_check_amount += salary.check_amount or 0
+                row = {'date':'%s/%s' % (month, year),
+                       'total_check_amount':total_check_amount,
+                       'detail_link':'/employeesalaries/?year=%s;month=%s;' % (year, month)}
+                data.append(row)
     else:
         form = SeasonForm(request.GET)
         from_date, to_date = None, None
