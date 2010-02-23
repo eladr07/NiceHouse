@@ -3457,7 +3457,7 @@ def employee_salaries_season(request):
                         
                     row = {'date':'%s/%s' % (current_date.month, current_date.year),
                            'total_check_amount':total_check_amount,
-                           'detail_link':'/employeesalaries/?year=%s;month=%s' % (current_date.month, current_date.year)}
+                           'detail_link':'/employeesalaries/?year=%s;month=%s' % (current_date.year, current_date.month)}
                     
                     data.append(row)
                 current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
@@ -3493,7 +3493,7 @@ def nhemployee_salaries_season(request):
                         
                     row = {'date':'%s/%s' % (current_date.month, current_date.year),
                            'total_check_amount':total_check_amount,
-                           'detail_link':'/nhemployeesalaries/?year=%s;month=%s' % (current_date.month, current_date.year)}
+                           'detail_link':'/nhemployeesalaries/?year=%s;month=%s' % (current_date.year, current_date.month)}
                     
                     data.append(row)
                 current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
@@ -3524,7 +3524,7 @@ def demands_season(request):
                         
                     row = {'date':'%s/%s' % (current_date.month, current_date.year),
                            'total_amount':total_amount,
-                           'detail_link':'/demandsold/?year=%s;month=%s' % (current_date.month, current_date.year)}
+                           'detail_link':'/demandsold/?year=%s;month=%s' % (current_date.year, current_date.month)}
                     
                     data.append(row)
                 current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
