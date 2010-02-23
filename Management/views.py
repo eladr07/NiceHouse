@@ -861,14 +861,10 @@ def nh_season_income(request):
         return HttpResponse('No Permission. Contact Elad.') 
     form = NHBranchSeasonForm(initial={'nhbranch':nhbranch_id,'from_year':from_year, 'from_month':from_month,
                                        'to_year':to_year, 'to_month':to_month})
-    current = from_date
-    while current <= to_date:
-        q = NHMonth.objects.filter(nhbranch__id = nhbranch_id, year = current.year, month = current.month)
-        if q.count() > 0:
-            nhmonth_set.append(q[0])
-        current = date(current.month == 12 and current.year + 1 or current.year, 
-                       current.month == 12 and 1 or current.month + 1, 1)
-
+    
+    
+    nhmonth_set = NHMonth.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhbranch__id = nhbranch_id)
+    
     nhbranch = NHBranch.objects.get(pk=nhbranch_id)
     
     totals_notax = {'income':0, 'net_income':0}
@@ -2979,6 +2975,8 @@ def demand_season_list(request):
 @permission_required('Management.season_income')
 def season_income(request):
     total_sale_count, total_amount, total_amount_notax = 0,0,0
+    from_date, to_date = None, None
+    month_count = 1
     projects = []
     if len(request.GET):
         form = ProjectSeasonForm(request.GET)
@@ -3015,8 +3013,6 @@ def season_income(request):
             month_count = round((to_date-from_date).days/30) + 1
     else:
         form = ProjectSeasonForm()
-        from_date, to_date = None, None
-        month_count = 1
 
     return render_to_response('Management/season_income.html', 
                               { 'start':from_date, 'end':to_date,
