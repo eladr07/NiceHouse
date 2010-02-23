@@ -3450,15 +3450,16 @@ def employee_salaries_season(request):
             current_date = from_date
             while current_date <= to_date:
                 salaries = EmployeeSalary.objects.filter(year = current_date.year, month = current_date.month)
-                total_check_amount = 0
-                for salary in salaries:
-                    total_check_amount += salary.check_amount or 0
+                if len(salaries) > 0:
+                    total_check_amount = 0
+                    for salary in salaries:
+                        total_check_amount += salary.check_amount or 0
+                        
+                    row = {'date':'%s/%s' % (current_date.month, current_date.year),
+                           'total_check_amount':total_check_amount,
+                           'detail_link':'/employeesalaries/?year=%s;month=%s' % (current_date.month, current_date.year)}
                     
-                row = {'date':'%s/%s' % (current_date.month, current_date.year),
-                       'total_check_amount':total_check_amount,
-                       'detail_link':'/employeesalaries/?year=%s;month=%s' % (current_date.month, current_date.year)}
-                
-                data.append(row)
+                    data.append(row)
                 current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
                                     current_date.month == 12 and 1 or current_date.month + 1, 1)
     else:
@@ -3485,15 +3486,16 @@ def nhemployee_salaries_season(request):
                 for nhemployee in nhemployees:
                     query = NHEmployeeSalary.objects.filter(year = current_date.year, month = current_date.month, nhemployee=nhemployee)
                     salaries.extend(query)
-                total_check_amount = 0
-                for salary in salaries:
-                    total_check_amount += salary.check_amount or 0
+                if len(salaries) > 0:
+                    total_check_amount = 0
+                    for salary in salaries:
+                        total_check_amount += salary.check_amount or 0
+                        
+                    row = {'date':'%s/%s' % (current_date.month, current_date.year),
+                           'total_check_amount':total_check_amount,
+                           'detail_link':'/nhemployeesalaries/?year=%s;month=%s' % (current_date.month, current_date.year)}
                     
-                row = {'date':'%s/%s' % (current_date.month, current_date.year),
-                       'total_check_amount':total_check_amount,
-                       'detail_link':'/nhemployeesalaries/?year=%s;month=%s' % (current_date.month, current_date.year)}
-                
-                data.append(row)
+                    data.append(row)
                 current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
                                     current_date.month == 12 and 1 or current_date.month + 1, 1)
     else:
@@ -3515,15 +3517,16 @@ def demands_season(request):
             current_date = from_date
             while current_date <= to_date:
                 demands = Demand.objects.filter(year = current_date.year, month = current_date.month)
-                total_amount = 0
-                for demand in demands:
-                    total_amount += demand.get_total_amount() or 0
+                if demands.count() > 0:
+                    total_amount = 0
+                    for demand in demands:
+                        total_amount += demand.get_total_amount() or 0
+                        
+                    row = {'date':'%s/%s' % (current_date.month, current_date.year),
+                           'total_amount':total_amount,
+                           'detail_link':'/demandsold/?year=%s;month=%s' % (current_date.month, current_date.year)}
                     
-                row = {'date':'%s/%s' % (current_date.month, current_date.year),
-                       'total_amount':total_amount,
-                       'detail_link':'/demandsold/?year=%s;month=%s' % (current_date.month, current_date.year)}
-                
-                data.append(row)
+                    data.append(row)
                 current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
                                     current_date.month == 12 and 1 or current_date.month + 1, 1)
     else:

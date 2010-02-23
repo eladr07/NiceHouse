@@ -36,7 +36,7 @@
 		<tr class="{% cycle 'row1' 'row2' %}" objid={{t.id}}>
 			<td><a target="_blank" href={{row.detail_link}}>פירוט</a></td>
 			<td>{{ row.date }}</td>
-			<td>{{ row.total_check_amount|commaise }}</td>
+			<td>{{ row.total_amount|commaise }}</td>
 		</tr>
 	{% endfor %}
 </table>
