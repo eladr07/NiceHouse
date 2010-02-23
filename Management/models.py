@@ -1733,12 +1733,13 @@ class DemandManager(models.Manager):
         return self.filter(year = now.year, month = now.month)
     def range(self, from_year, from_month, to_year, to_month):
         q = models.Q()
-        from_date = date(from_year, from_month, 1)
-        to_date = date(to_year, to_month, 1)
-        current = from_date
-        while current <= to_date:
-            q = q | models.Q(year = current.year, month = current.month)
-            current = date(current.month == 12 and current.year + 1 or current.year, current.month == 12 and 1 or current.month + 1, 1)
+        year, month = from_year, from_month
+        while year <= to_year or month <= to_month:
+            q = q | models.Q(year = year, month = month)
+            month += 1
+            if month == 13:
+                month = 1
+                year += 1
         return self.filter(q)
 
 class DemandDiff(models.Model):

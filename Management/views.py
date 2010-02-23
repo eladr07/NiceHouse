@@ -3515,7 +3515,8 @@ def demands_season(request):
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
             all_demands = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
-            for (month, year), demands in itertools.groupby(all_demands, lambda demand: (demand.month, demand.year)):
+            for key, demands in itertools.groupby(all_demands, lambda demand: (demand.month, demand.year)):
+                year, month = key[0], key[1]
                 total_amount = 0
                 for demand in demands:
                     total_amount += demand.get_total_amount() or 0
