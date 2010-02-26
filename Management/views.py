@@ -3349,10 +3349,10 @@ def global_profit_lost(request):
                     division, incomes, losses = row['division'] ,row['incomes'], row['losses']
                     for incomeRow in incomes:
                         amount = incomeRow['amount']
-                        incomeRow['relative'] = amount / global_income * 100
+                        incomeRow['relative'] = global_income and (amount / global_income * 100) or 0
                     for lossRow in losses:
                         amount = lossRow['amount']
-                        lossRow['relative'] = amount / global_loss * 100
+                        lossRow['relative'] = global_loss and (amount / global_loss * 100) or 0
     else:
         form = GloablProfitLossForm()
         from_date, to_date = None, None
