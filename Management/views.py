@@ -845,6 +845,7 @@ def nh_season_income(request):
     totals = {'income':0, 'net_income':0}
     avg = {'signed_commission':0, 'actual_commission':0}
     avg_notax = {'income':0, 'net_income':0}
+    nhbranch = None
     
     if len(request.GET):
         form = NHBranchSeasonForm(request.GET)
