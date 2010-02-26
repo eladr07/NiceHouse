@@ -3304,14 +3304,12 @@ def global_profit_lost(request):
                     incomes = Income.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(division_type = division)
                     
                     #get all salaries for this season and nhbranch
-                    current_date = from_date
-                    while current_date <= to_date:
-                        for nhemployee in nhbranch.all_nhemployees:
-                            query = NHEmployeeSalary.objects.filter(nhemployee = nhemployee, year = current_date.year, month = current_date.month)
-                            if query.count() > 0:
-                                salaries.append(query[0])
-                        current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
-                                            current_date.month == 12 and 1 or current_date.month + 1, 1)
+                    base_nhemployee_query = NHEmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
+
+                    for nhemployee in nhbranch.all_nhemployees:
+                        query = base_nhemployee_query.filter(nhemployee = nhemployee)
+                        salaries.extend(query)
+
                     #get all expenses for this division and season
                     checks = Check.objects.filter(issue_date__range = (from_date,to_date), division_type = division)
                     
