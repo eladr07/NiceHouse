@@ -3229,14 +3229,8 @@ def global_profit_lost(request):
             for division in divisions:
                 if division.id == DivisionType.Marketing:
                     demands = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
-
-                    #get other incomes for this division
                     incomes = Income.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(division_type = division)
-
-                    #get all employee salaries for this project in this season
                     salaries = EmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
-
-                    #get all expenses for this division and season
                     checks = Check.objects.filter(issue_date__range = (from_date,to_date), division_type = division)
                     
                     incomes_amount, demands_amount = 0,0
@@ -3283,22 +3277,14 @@ def global_profit_lost(request):
                         nhbranch = NHBranch.objects.get(pk = NHBranch.NesZiona)
                     
                     salaries = []
-                    
-                    # get all nhmonths for this branch and season
                     nhmonths = NHMonth.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhbranch = nhbranch)
-
-                    #get other incomes for this division
                     incomes = Income.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(division_type = division)
-                    
-                    #get all salaries for this season and nhbranch
+                    checks = Check.objects.filter(issue_date__range = (from_date,to_date), division_type = division)
                     base_nhemployee_query = NHEmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
 
                     for nhemployee in nhbranch.all_nhemployees:
                         query = base_nhemployee_query.filter(nhemployee = nhemployee)
                         salaries.extend(query)
-
-                    #get all expenses for this division and season
-                    checks = Check.objects.filter(issue_date__range = (from_date,to_date), division_type = division)
                     
                     incomes_amount, nhmonths_amount, salary_amount, expenses_amount = 0,0,0,0
                     for nhmonth in nhmonths:
