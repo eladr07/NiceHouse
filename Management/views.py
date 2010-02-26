@@ -3098,26 +3098,20 @@ def employeesalary_season_expenses(request):
             employee_base = form.cleaned_data['employee']
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
-            current = from_date
 
             if isinstance(employee_base.derived, Employee):
-                base_query = EmployeeSalary.objects.filter(employee__id = employee_base.id)
+                salaries = EmployeeSalary.objects.range(from_year, from_month, to_year, to_month).filter(employee__id = employee_base.id)
                 template = 'Management/employeesalary_season_expenses.html'
             elif isinstance(employee_base.derived, NHEmployee):
-                base_query = NHEmployeeSalary.objects.filter(nhemployee__id = employee_base.id)
+                salaries = NHEmployeeSalary.objects.range(from_year, from_month, to_year, to_month).filter(nhemployee__id = employee_base.id)
                 template = 'Management/nhemployeesalary_season_expenses.html'
-            while current <= end:
-                query = base_query.filter(year = current.year, month = current.month)
-                if query.count() == 1:
-                    salary = query[0]
-                    salaries.append(salary)
-                    total_neto += salary.neto or 0
-                    total_check_amount += salary.check_amount or 0
-                    total_loan_pay += salary.loan_pay or 0
-                    total_bruto += salary.bruto or 0
-                    total_bruto_employer += salary.bruto_employer_expense or 0
-                current = date(current.month == 12 and current.year + 1 or current.year,
-                               current.month == 12 and 1 or current.month + 1, 1)        
+                
+            for salary in salaries:
+                total_neto += salary.neto or 0
+                total_check_amount += salary.check_amount or 0
+                total_loan_pay += salary.loan_pay or 0
+                total_bruto += salary.bruto or 0
+                total_bruto_employer += salary.bruto_employer_expense or 0
     else:
         template = 'Management/employeesalary_season_expenses.html'
         form = EmployeeSeasonForm()
