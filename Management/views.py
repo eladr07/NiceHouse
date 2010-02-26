@@ -911,7 +911,7 @@ def nh_season_income(request):
                 avg_notax['net_income'] /= month_count
                
             for e in employees:
-                e.season_avg_notax = month_count and e.season_total / month_count or 0
+                e.season_avg_notax = month_count and e.season_total_notax / month_count or 0
                 total_net_income_notax = totals_notax['net_income']
                 if total_net_income_notax:
                     e.season_branch_income_ratio_notax = e.season_branch_income_notax / total_net_income_notax * 100
