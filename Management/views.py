@@ -3050,24 +3050,18 @@ def employeesalary_season_list(request):
             employee_base = form.cleaned_data['employee']
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
-            current = from_date
 
             if isinstance(employee_base.derived, Employee):
-                base_query = EmployeeSalary.objects.filter(employee__id = employee_base.id)
+                salaries = EmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(employee__id = employee_base.id)
             elif isinstance(employee_base.derived, NHEmployee):
-                base_query = NHEmployeeSalary.objects.filter(nhemployee__id = employee_base.id)
-            while current <= to_date:
-                q = base_query.filter(year = current.year, month = current.month)
-                if q.count() == 1:
-                    salary = q[0]
-                    salaries.append(salary)
-                    total_neto += salary.neto or 0
-                    total_check_amount += salary.check_amount or 0
-                    total_loan_pay += salary.loan_pay or 0
-                    total_bruto += salary.bruto or 0
-                    total_refund += salary.refund or 0
-                current = date(current.month == 12 and current.year + 1 or current.year,
-                               current.month == 12 and 1 or current.month + 1, 1)
+                salaries = EmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhemployee__id = employee_base.id)
+                
+            for salary in salaries:
+                total_neto += salary.neto or 0
+                total_check_amount += salary.check_amount or 0
+                total_loan_pay += salary.loan_pay or 0
+                total_bruto += salary.bruto or 0
+                total_refund += salary.refund or 0
     else:
         form = EmployeeSeasonForm()
         
