@@ -3180,10 +3180,10 @@ def sale_analysis(request):
                 all_sales = all_sales.filter(house__rooms = rooms_num)
             if house_type:
                 all_sales = all_sales.filter(house__type = house_type)
-                
+            return HttpResponse(str(all_sales.count()))
             for (month, year), sales in itertools.groupby(all_sales, lambda sale: (sale.contractor_pay.month, sale.contractor_pay.year)):
-                houses = [sale.house for sale in sales]
                 sales_list = list(sales)
+                houses = [sale.house for sale in sales_list]
                 item_count = len(sales_list)
                 row = {'sales':sales_list,'houses':houses,'year':year,'month':month}
                 for attr in house_attrs:
