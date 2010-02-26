@@ -3183,8 +3183,9 @@ def sale_analysis(request):
                 
             for (month, year), sales in itertools.groupby(all_sales, lambda sale: (sale.contractor_pay.month, sale.contractor_pay.year)):
                 houses = [sale.house for sale in sales]
-                item_count = len(list(sales))
-                row = {'sales':sales,'houses':houses,'year':year,'month':month}
+                sales_list = list(sales)
+                item_count = len(sales_list)
+                row = {'sales':sales_list,'houses':houses,'year':year,'month':month}
                 for attr in house_attrs:
                     sum = 0
                     for house in houses:
