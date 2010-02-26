@@ -843,87 +843,81 @@ def nh_season_profit(request):
 
 @permission_required('Management.nhmonth_season')
 def nh_season_income(request):
-    month, nhmonth_set, y, m = date.today(), [], 0, 0
-    nhbranch_id = int(request.GET.get('nhbranch', 0))
-    from_year = int(request.GET.get('from_year', month.year))
-    from_month = int(request.GET.get('from_month', month.month))
-    to_year = int(request.GET.get('to_year', month.year))
-    to_month = int(request.GET.get('to_month', month.month))
+    month, nhmonth_set, employees, y, m = date.today(), [], [], 0, 0
     
-    from_date = date(from_year, from_month, 1)
-    to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
+    if len(request.GET):
+        form = NHBranchSeasonForm(request.GET)
+        nhbranch = form.cleaned_data['nhbranch']
+        if not request.user.has_perm('Management.nhbranch_' + str(nhbranch.id)):
+            return HttpResponse('No Permission. Contact Elad.') 
+        from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
+        to_year, to_month = form.cleaned_data['to_year'], form.cleaned_data['to_month']
+        to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
     
-    if not request.user.has_perm('Management.nhbranch_' + str(nhbranch_id)):
-        return HttpResponse('No Permission. Contact Elad.') 
-    form = NHBranchSeasonForm(initial={'nhbranch':nhbranch_id,'from_year':from_year, 'from_month':from_month,
-                                       'to_year':to_year, 'to_month':to_month})
-    
-    
-    nhmonth_set = NHMonth.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhbranch__id = nhbranch_id)
-    
-    nhbranch = NHBranch.objects.get(pk=nhbranch_id)
-    
-    totals_notax = {'income':0, 'net_income':0}
-    totals = {'income':0, 'net_income':0}
-    avg = {'signed_commission':0, 'actual_commission':0}
-    avg_notax = {'income':0, 'net_income':0}
-    
-    query = NHBranchEmployee.objects.filter(start_date__lt = to_date, nhbranch = nhbranch) \
-                                    .exclude(end_date__isnull=False, end_date__lt = from_date)
-    employees = [x.nhemployee for x in query]
-    
-    for e in employees:
-        e.season_total, e.season_total_notax, e.season_branch_income_notax = 0, 0, 0
-        e.season_branch_income_buyers_notax, e.season_branch_income_sellers_notax = 0, 0
-    for nhm in nhmonth_set:
+        nhmonth_set = NHMonth.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhbranch__id = nhbranch_id)
+            
+        totals_notax = {'income':0, 'net_income':0}
+        totals = {'income':0, 'net_income':0}
+        avg = {'signed_commission':0, 'actual_commission':0}
+        avg_notax = {'income':0, 'net_income':0}
+        
         query = NHBranchEmployee.objects.filter(start_date__lt = to_date, nhbranch = nhbranch) \
                                         .exclude(end_date__isnull=False, end_date__lt = from_date)
-        nhm.employees = [x.nhemployee for x in query]
-        tax = Tax.objects.filter(date__lte=date(nhm.year, nhm.month,1)).latest().value / 100 + 1
-        for e in nhm.employees:
-            e.month_total = 0
-        for nhs in nhm.nhsales.all():
-            for nhss in nhs.nhsaleside_set.all():
-                for e in employees:
-                    nhss.include_tax = True
-                    e.season_total += nhss.get_employee_pay(e)
-                    nhss.include_tax = False
-                    e.season_total_notax += nhss.get_employee_pay(e)
-                    if nhss.signing_advisor == e:
-                        income_notax = nhss.income / tax
-                        e.season_branch_income_notax += income_notax
-                        if nhss.sale_type.id in [SaleType.SaleSeller, SaleType.RentRenter]:
-                            e.season_branch_income_sellers_notax += income_notax
-                        elif nhss.sale_type.id in [SaleType.SaleBuyer, SaleType.RentRentee]:
-                            e.season_branch_income_buyers_notax += income_notax
-                for e in nhm.employees:
-                    nhss.include_tax = True
-                    e.month_total += nhss.get_employee_pay(e)
-        nhm.include_tax = False
-        totals_notax['income'] += nhm.total_income
-        totals_notax['net_income'] += nhm.total_net_income
-        avg_notax['income'] += nhm.total_income
-        avg_notax['net_income'] += nhm.total_net_income
-        nhm.include_tax = True
-        totals['income'] += nhm.total_income
-        totals['net_income'] += nhm.total_net_income
-        avg['signed_commission'] += nhm.avg_signed_commission
-        avg['actual_commission'] += nhm.avg_actual_commission
-    month_count = len(nhmonth_set)
-    if month_count > 0:
-        avg['signed_commission'] /= month_count
-        avg['actual_commission'] /= month_count
-        avg_notax['income'] /= month_count
-        avg_notax['net_income'] /= month_count
-       
-    for e in employees:
-        e.season_avg_notax = month_count and e.season_total / month_count or 0
-        total_net_income_notax = totals_notax['net_income']
-        if total_net_income_notax:
-            e.season_branch_income_ratio_notax = e.season_branch_income_notax / total_net_income_notax * 100
-            e.season_branch_income_buyers_ratio_notax = e.season_branch_income_buyers_notax / total_net_income_notax * 100
-            e.season_branch_income_sellers_ratio_notax = e.season_branch_income_sellers_notax / total_net_income_notax * 100
-    
+        employees = [x.nhemployee for x in query]
+        
+        for e in employees:
+            e.season_total, e.season_total_notax, e.season_branch_income_notax = 0, 0, 0
+            e.season_branch_income_buyers_notax, e.season_branch_income_sellers_notax = 0, 0
+        for nhm in nhmonth_set:
+            query = NHBranchEmployee.objects.filter(start_date__lt = to_date, nhbranch = nhbranch) \
+                                            .exclude(end_date__isnull=False, end_date__lt = from_date)
+            nhm.employees = [x.nhemployee for x in query]
+            tax = Tax.objects.filter(date__lte=date(nhm.year, nhm.month,1)).latest().value / 100 + 1
+            for e in nhm.employees:
+                e.month_total = 0
+            for nhs in nhm.nhsales.all():
+                for nhss in nhs.nhsaleside_set.all():
+                    for e in employees:
+                        nhss.include_tax = True
+                        e.season_total += nhss.get_employee_pay(e)
+                        nhss.include_tax = False
+                        e.season_total_notax += nhss.get_employee_pay(e)
+                        if nhss.signing_advisor == e:
+                            income_notax = nhss.income / tax
+                            e.season_branch_income_notax += income_notax
+                            if nhss.sale_type.id in [SaleType.SaleSeller, SaleType.RentRenter]:
+                                e.season_branch_income_sellers_notax += income_notax
+                            elif nhss.sale_type.id in [SaleType.SaleBuyer, SaleType.RentRentee]:
+                                e.season_branch_income_buyers_notax += income_notax
+                    for e in nhm.employees:
+                        nhss.include_tax = True
+                        e.month_total += nhss.get_employee_pay(e)
+            nhm.include_tax = False
+            totals_notax['income'] += nhm.total_income
+            totals_notax['net_income'] += nhm.total_net_income
+            avg_notax['income'] += nhm.total_income
+            avg_notax['net_income'] += nhm.total_net_income
+            nhm.include_tax = True
+            totals['income'] += nhm.total_income
+            totals['net_income'] += nhm.total_net_income
+            avg['signed_commission'] += nhm.avg_signed_commission
+            avg['actual_commission'] += nhm.avg_actual_commission
+        month_count = len(nhmonth_set)
+        if month_count > 0:
+            avg['signed_commission'] /= month_count
+            avg['actual_commission'] /= month_count
+            avg_notax['income'] /= month_count
+            avg_notax['net_income'] /= month_count
+           
+        for e in employees:
+            e.season_avg_notax = month_count and e.season_total / month_count or 0
+            total_net_income_notax = totals_notax['net_income']
+            if total_net_income_notax:
+                e.season_branch_income_ratio_notax = e.season_branch_income_notax / total_net_income_notax * 100
+                e.season_branch_income_buyers_ratio_notax = e.season_branch_income_buyers_notax / total_net_income_notax * 100
+                e.season_branch_income_sellers_ratio_notax = e.season_branch_income_sellers_notax / total_net_income_notax * 100
+    else:
+        form = NHBranchSeasonForm()
     return render_to_response('Management/nh_season_income.html', 
                               { 'nhmonths':nhmonth_set, 'filterForm':form, 'employees':employees,
                                'totals':totals,'totals_notax':totals_notax,
