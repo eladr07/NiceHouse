@@ -3181,7 +3181,7 @@ def sale_analysis(request):
             if house_type:
                 all_sales = all_sales.filter(house__type = house_type)
                 
-            for month, year, sales in itertools.groupby(all_sales, lambda sale: (sale.contractor_pay.month, sale.contractor_pay.year)):
+            for (month, year), sales in itertools.groupby(all_sales, lambda sale: (sale.contractor_pay.month, sale.contractor_pay.year)):
                 houses = [sale.house for sale in sales]
                 item_count = sales.count()
                 row = {'sales':sales,'houses':houses,'year':current.year,'month':current.month}
@@ -3197,7 +3197,6 @@ def sale_analysis(request):
                         attr_value = getattr(sale, attr)
                         sum += (attr_value or 0)
                     row['avg_' + attr] = item_count and (sum / item_count) or 0
-
                 data.append(row)
 
             for i in range(1,len(data)):
