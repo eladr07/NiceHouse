@@ -2327,7 +2327,7 @@ class NHMonth(models.Model):
         return '/nhmonth/' + str(self.id)
     class Meta:
         db_table = 'NHMonth'
-        ordering = ['-year', '-month']
+        ordering = ['year', 'month']
         permissions = (('nhmonth_season', 'NHMonth Season'),)
         unique_together = ('nhbranch','year','month')
 

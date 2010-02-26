@@ -3316,7 +3316,9 @@ def global_profit_lost(request):
                     for salary in salaries:
                         salary_amount += salary.check_amount or 0
                     
-                    income_rows = [{'name':nhbranch, 'amount':nhmonths_amount},
+                    income_rows = [{'name':nhbranch, 'amount':nhmonths_amount,
+                                    'details_link':'/nhseasonincome/?nhbranch=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
+                                    % (nhbranch.id, from_date.year, from_date.month, to_date.year, to_date.month)},
                                    {'name':u'הכנסות אחרות', 'amount':incomes_amount,
                                     'details_link':'/incomes/?division_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
                                     % (division.id, from_date.year, from_date.month, to_date.year, to_date.month)},
