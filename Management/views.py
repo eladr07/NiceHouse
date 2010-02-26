@@ -2975,13 +2975,12 @@ def season_income(request):
     month_count = 1
     projects = []
     if len(request.GET):
-        form = ProjectSeasonForm(request.GET)
+        form = SeasonForm(request.GET)
         if form.is_valid():
-            project = form.cleaned_data['project']
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
                         
-            ds = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(project = project)
+            ds = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
                 
             for d in ds:
                 tax = Tax.objects.filter(date__lte=date(d.year, d.month,1)).latest().value / 100 + 1
@@ -3008,7 +3007,7 @@ def season_income(request):
                 p.avg_sale_count = p.total_sale_count / active_months
             month_count = round((to_date-from_date).days/30) + 1
     else:
-        form = ProjectSeasonForm()
+        form = SeasonForm()
 
     return render_to_response('Management/season_income.html', 
                               { 'start':from_date, 'end':to_date,
@@ -3267,7 +3266,7 @@ def global_profit_lost(request):
                         incomes_amount += income.invoice and income.invoice.amount or 0
                     
                     income_rows = [{'name':division,'amount':demands_amount,
-                                    'details_link':'/demandsseason/?from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
+                                    'details_link':'/seasonincome/?from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
                                     % (from_date.year, from_date.month, to_date.year, to_date.month)},
                                    {'name':u'הכנסות אחרות','amount':incomes_amount,
                                     'details_link':'/incomes/?division_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
