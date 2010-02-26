@@ -796,6 +796,7 @@ def nh_season_profit(request):
     if len(request.GET):
         form = NHBranchSeasonForm(request.GET)
         if form.is_valid():
+            nhbranch = form.cleaned_data['nhbranch']
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
             total_profit, total_net_income = 0,0
