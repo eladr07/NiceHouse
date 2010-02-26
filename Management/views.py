@@ -3169,17 +3169,19 @@ def sale_analysis(request):
         if form.is_valid():
             project = form.cleaned_data['project']
             rooms_num, house_type = form.cleaned_data['rooms_num'], form.cleaned_data['house_type']
-            current = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
+            start = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
             end = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
+            end = date(end.month == 12 and end.year + 1 or end.year, end.month == 12 and 1 or end.month + 1, 1)
             house_attrs = ['net_size', 'garden_size', 'rooms', 'floor', 'perfect_size']
             sale_attrs = ['price_taxed', 'price_taxed_for_perfect_size']
-            while current <= end:
-                sales = Sale.objects.filter(house__building__project = project, contractor_pay__year = current.year,
-                                            contractor_pay__month = current.month)
-                if rooms_num:
-                    sales = sales.filter(house__rooms = rooms_num)
-                if house_type:
-                    sales = sales.filter(house__type = house_type)
+            
+            all_sales = Sale.objects.filter(house__building__project = project, contractor_pay__gte = start, contractor_pay__lt = end).order_by('contractor_pay')
+            if rooms_num:
+                all_sales = all_sales.filter(house__rooms = rooms_num)
+            if house_type:
+                all_sales = all_sales.filter(house__type = house_type)
+                
+            for month, year, sales in itertools.groupby(all_sales, lambda sale: (sale.contractor_pay.month, sale.contractor_pay.year)):
                 houses = [sale.house for sale in sales]
                 item_count = sales.count()
                 row = {'sales':sales,'houses':houses,'year':current.year,'month':current.month}
@@ -3197,8 +3199,6 @@ def sale_analysis(request):
                     row['avg_' + attr] = item_count and (sum / item_count) or 0
 
                 data.append(row)
-                current = date(current.month == 12 and current.year + 1 or current.year,
-                               current.month == 12 and 1 or current.month + 1, 1)
 
             for i in range(1,len(data)):
                 curr_row = data[i]
