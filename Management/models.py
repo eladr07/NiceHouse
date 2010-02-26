@@ -45,7 +45,7 @@ def nhemployee_sort(nhemployee1, nhemployee2):
         return -1
     return cmp(query1.latest().nhbranch.id, query2.latest().nhbranch.id)
 
-class RangeManager(models.Manager):
+class SeasonManager(models.Manager):
     def range(self, from_year, from_month, to_year, to_month):
         q = ~models.Q()
         year, month = from_year, from_month
@@ -939,7 +939,7 @@ class EmployeeSalaryBase(models.Model):
     remarks = models.TextField(ugettext('remarks'),null=True, blank=True)
     pdf_remarks = models.TextField(ugettext('pdf_remarks'),null=True, blank=True)
     
-    objects = RangeManager()
+    objects = SeasonManager()
     
     @property
     def expenses(self):
@@ -1049,7 +1049,7 @@ class NHEmployeeSalary(EmployeeSalaryBase):
     nhemployee = models.ForeignKey('NHEmployee', verbose_name=ugettext('nhemployee'), related_name='salaries')
     admin_commission = models.IntegerField(editable=False, null=True)
     
-    objects = RangeManager()
+    objects = SeasonManager()
     
     @property
     @cache_method
@@ -1118,7 +1118,7 @@ class NHEmployeeSalary(EmployeeSalaryBase):
 class EmployeeSalary(EmployeeSalaryBase):
     employee = models.ForeignKey('Employee', verbose_name=ugettext('employee'), related_name='salaries')
     
-    objects = RangeManager()
+    objects = SeasonManager()
     
     def __init__(self, *args, **kw):
         super(EmployeeSalary, self).__init__(*args, **kw)
@@ -1749,7 +1749,7 @@ class DemandStatus(models.Model):
         db_table = 'DemandStatus'
         get_latest_by = 'date'
 
-class DemandManager(RangeManager):
+class DemandManager(SeasonManager):
     def current(self):
         now = Demand.current_month()
         return self.filter(year = now.year, month = now.month)
@@ -2270,7 +2270,7 @@ class NHMonth(models.Model):
                                                                           datetime.now().year + 10)))
     is_closed = models.BooleanField(editable=False, default=False)
     
-    objects = RangeManager()
+    objects = SeasonManager()
     
     def __init__(self, *args, **kw):
         models.Model.__init__(self, *args, **kw)
@@ -2728,7 +2728,7 @@ class Income(models.Model):
     payment = models.OneToOneField('Payment',editable=False,null=True)
     deal = models.OneToOneField('Deal', editable=False)
     
-    objects = RangeManager()
+    objects = SeasonManager()
     
     @property
     def diff_payment_invoice(self):
