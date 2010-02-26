@@ -3372,29 +3372,3 @@ def global_profit_lost(request):
                               { 'filterForm':form, 'data':data, 'global_income':global_income, 'global_loss':global_loss,
                                'global_profit':global_income - global_loss, 'start':from_date, 'end':to_date },
                               context_instance = RequestContext(request))
-
-@permission_required('Management.demands_season')
-def demands_season(request):
-    data = []
-    if len(request.GET):
-        form = SeasonForm(request.GET)
-        if form.is_valid():
-            from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
-            to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
-            all_demands = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
-            for (year, month), demands in itertools.groupby(all_demands, lambda demand: (demand.year, demand.month)):
-                total_amount = 0
-                for demand in demands:
-                    total_amount += demand.get_total_amount() or 0
-                row = {'date':'%s/%s' % (month, year),
-                       'total_amount':total_amount,
-                       'detail_link':'/demandsold/?year=%s;month=%s;' % (year, month)}
-                data.append(row)
-    else:
-        form = SeasonForm(request.GET)
-        from_date, to_date = None, None
-        
-    return render_to_response('Management/demands_season.html', 
-                              { 'filterForm':form, 'data':data, 'from_date':from_date, 'to_date':to_date },
-                              context_instance = RequestContext(request))
-        
