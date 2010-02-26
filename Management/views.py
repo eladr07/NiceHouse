@@ -3285,8 +3285,8 @@ def global_profit_lost(request):
                     for check in checks:
                         expenses_amount += check.amount
                     loss_rows = [{'name':u'הוצאות שכר', 'amount':salaries_amount,
-                                  'details_link':'/employeesalariesseason/?from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
-                                  % (from_date.year, from_date.month, to_date.year, to_date.month)},
+                                  'details_link':'/esseasontotalexpenses/?division_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
+                                  % (division.id, from_date.year, from_date.month, to_date.year, to_date.month)},
                                 {'name':u'הוצאות אחרות', 'amount':expenses_amount,
                                  'details_link':'/checks/?division_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
                                  % (division.id, from_date.year, from_date.month, to_date.year, to_date.month)},
@@ -3341,8 +3341,8 @@ def global_profit_lost(request):
                     global_income += incomes_amount + nhmonths_amount
                     
                     loss_rows = [{'name':u'הוצאות שכר', 'amount':salary_amount,
-                                  'details_link':'/nhemployeesalariesseason/?nhbranch=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
-                                  % (nhbranch.id, from_date.year, from_date.month, to_date.year, to_date.month)}]
+                                  'details_link':'/esseasontotalexpenses/?division_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
+                                  % (division.id, from_date.year, from_date.month, to_date.year, to_date.month)}]
                     
                     total_losses = salary_amount
                     for expense_type, checks in itertools.groupby(checks, lambda check: check.expense_type):
@@ -3374,67 +3374,6 @@ def global_profit_lost(request):
     return render_to_response('Management/global_profit_loss.html', 
                               { 'filterForm':form, 'data':data, 'global_income':global_income, 'global_loss':global_loss,
                                'global_profit':global_income - global_loss, 'start':from_date, 'end':to_date },
-                              context_instance = RequestContext(request))
-
-@permission_required('Management.employee_salaries_season')
-def employee_salaries_season(request):
-    data = []
-    if len(request.GET):
-        form = SeasonForm(request.GET)
-        if form.is_valid():
-            from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
-            to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
-            all_salaries = EmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
-            for (year, month), salaries in itertools.groupby(all_salaries, lambda salary: (salary.year, salary.month)):
-                total_check_amount = 0
-                for salary in salaries:
-                    total_check_amount += salary.check_amount or 0
-                row = {'date':'%s/%s' % (month, year),
-                       'total_check_amount':total_check_amount,
-                       'detail_link':'/employeesalaries/?year=%s;month=%s;' % (year, month)}
-                data.append(row)
-    else:
-        form = SeasonForm(request.GET)
-        from_date, to_date = None, None
-        
-    return render_to_response('Management/employee_salaries_season.html', 
-                              { 'filterForm':form, 'data':data, 'from_date':from_date, 'to_date':to_date },
-                              context_instance = RequestContext(request))
-
-@permission_required('Management.nhemployee_salaries_season')
-def nhemployee_salaries_season(request):
-    data = []
-    if len(request.GET):
-        form = NHBranchSeasonForm(request.GET)
-        if form.is_valid():
-            from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
-            to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
-            nhbranch = form.cleaned_data['nhbranch']
-            nhemployees = [nhbe.nhemployee for nhbe in NHBranchEmployee.objects.filter(start_date__lte = to_date).exclude(end_date__lte = from_date)]
-            current_date = from_date
-            while current_date <= to_date:
-                salaries = []
-                for nhemployee in nhemployees:
-                    query = NHEmployeeSalary.objects.filter(year = current_date.year, month = current_date.month, nhemployee=nhemployee)
-                    salaries.extend(query)
-                if len(salaries) > 0:
-                    total_check_amount = 0
-                    for salary in salaries:
-                        total_check_amount += salary.check_amount or 0
-                        
-                    row = {'date':'%s/%s' % (current_date.month, current_date.year),
-                           'total_check_amount':total_check_amount,
-                           'detail_link':'/nhemployeesalaries/?year=%s;month=%s;' % (current_date.year, current_date.month)}
-                    
-                    data.append(row)
-                current_date = date(current_date.month == 12 and current_date.year + 1 or current_date.year,
-                                    current_date.month == 12 and 1 or current_date.month + 1, 1)
-    else:
-        form = NHBranchSeasonForm(request.GET)
-        from_date, to_date = None, None
-        
-    return render_to_response('Management/nhemployee_salaries_season.html', 
-                              { 'filterForm':form, 'data':data, 'from_date':from_date, 'to_date':to_date },
                               context_instance = RequestContext(request))
 
 @permission_required('Management.demands_season')

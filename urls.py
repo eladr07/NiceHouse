@@ -460,7 +460,5 @@ urlpatterns += patterns('Management.views',
     (r'^signup_details/(?P<house_id>\d+)$', 'signup_details'),
     (r'^demand_sales/(?P<project_id>\d+)/(?P<year>\d+)/(?P<month>\d+)$', 'demand_sales'),
     (r'^profitloss$', 'global_profit_lost'),
-    (r'^employeesalariesseason/$', 'employee_salaries_season'),
-    (r'^nhemployeesalariesseason/$', 'nhemployee_salaries_season'),
     (r'^demandsseason/$', 'demands_season'),
 )
