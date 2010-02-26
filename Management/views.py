@@ -3140,9 +3140,8 @@ def employeesalary_season_total_expenses(request):
             division_type = form.cleaned_data['division_type']
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
-            current = from_date
             if division_type.id == DivisionType.Marketing:
-                employees = list(Employee.objects.exclude(work_end__isnull = False, work_end__lt = current))
+                employees = list(Employee.objects.exclude(work_end__isnull = False, work_end__lt = from_date))
                 model = EmployeeSalary
             else:
                 if division_type.id == DivisionType.NHShoham:
@@ -3151,7 +3150,7 @@ def employeesalary_season_total_expenses(request):
                     query = NHBranchEmployee.objects.filter(nhbranch__id = NHBranch.Modiin)
                 elif division_type.id == DivisionType.NHNesZiona:
                     query = NHBranchEmployee.objects.filter(nhbranch__id = NHBranch.NesZiona)
-                query = query.exclude(end_date__isnull=False, end_date__lt = current)
+                query = query.exclude(end_date__isnull=False, end_date__lt = from_date)
                 employees = [x.nhemployee for x in query]
                 model = NHEmployeeSalary
 
@@ -3161,19 +3160,18 @@ def employeesalary_season_total_expenses(request):
             for attr in attrs:
                 for e in employees:
                     setattr(e, 'total_' + attr, 0)
-                
-            while current <= to_date:
-                salaries = model.objects.filter(year = current.year, month = current.month)
-                for salary in salaries:
-                    if salary.get_employee() not in employees: continue
-                    employee_index = employees.index(salary.get_employee())
-                    employee = employees[employee_index]
-                    for attr in attrs:
-                        add = getattr(salary, attr, 0) or 0
-                        old_value = getattr(employee, 'total_' + attr)
-                        setattr(employee, 'total_' + attr, old_value + add)
-                current = date(current.month == 12 and current.year + 1 or current.year,
-                               current.month == 12 and 1 or current.month + 1, 1)
+            
+            salaries = model.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
+            
+            for salary in salaries:
+                if salary.get_employee() not in employees: 
+                    continue
+                employee_index = employees.index(salary.get_employee())
+                employee = employees[employee_index]
+                for attr in attrs:
+                    add = getattr(salary, attr, 0) or 0
+                    old_value = getattr(employee, 'total_' + attr)
+                    setattr(employee, 'total_' + attr, old_value + add)
     else:
         form = DivisionTypeSeasonForm()
             
