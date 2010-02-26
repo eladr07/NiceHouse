@@ -855,7 +855,7 @@ def nh_season_income(request):
             to_year, to_month = form.cleaned_data['to_year'], form.cleaned_data['to_month']
             to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
         
-            nhmonth_set = NHMonth.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhbranch__id = nhbranch_id)
+            nhmonth_set = NHMonth.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhbranch = nhbranch)
                 
             totals_notax = {'income':0, 'net_income':0}
             totals = {'income':0, 'net_income':0}
