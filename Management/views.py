@@ -841,6 +841,10 @@ def nh_season_profit(request):
 @permission_required('Management.nhmonth_season')
 def nh_season_income(request):
     month, nhmonth_set, employees, y, m = date.today(), [], [], 0, 0
+    totals_notax = {'income':0, 'net_income':0}
+    totals = {'income':0, 'net_income':0}
+    avg = {'signed_commission':0, 'actual_commission':0}
+    avg_notax = {'income':0, 'net_income':0}
     
     if len(request.GET):
         form = NHBranchSeasonForm(request.GET)
@@ -854,11 +858,6 @@ def nh_season_income(request):
         
             nhmonth_set = NHMonth.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhbranch = nhbranch)
                 
-            totals_notax = {'income':0, 'net_income':0}
-            totals = {'income':0, 'net_income':0}
-            avg = {'signed_commission':0, 'actual_commission':0}
-            avg_notax = {'income':0, 'net_income':0}
-            
             query = NHBranchEmployee.objects.filter(start_date__lt = to_date, nhbranch = nhbranch) \
                                             .exclude(end_date__isnull=False, end_date__lt = from_date)
             employees = [x.nhemployee for x in query]
