@@ -3100,10 +3100,10 @@ def employeesalary_season_expenses(request):
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
 
             if isinstance(employee_base.derived, Employee):
-                salaries = EmployeeSalary.objects.range(from_year, from_month, to_year, to_month).filter(employee__id = employee_base.id)
+                salaries = EmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(employee__id = employee_base.id)
                 template = 'Management/employeesalary_season_expenses.html'
             elif isinstance(employee_base.derived, NHEmployee):
-                salaries = NHEmployeeSalary.objects.range(from_year, from_month, to_year, to_month).filter(nhemployee__id = employee_base.id)
+                salaries = NHEmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhemployee__id = employee_base.id)
                 template = 'Management/nhemployeesalary_season_expenses.html'
                 
             for salary in salaries:
