@@ -810,7 +810,7 @@ def nh_season_profit(request):
                     if query.count() == 0:
                         continue
                     salary = query[0]
-                    salary_expenses += (salary.bruto or salary.neto or 0)
+                    salary_expenses += salary.check_amount or 0
                 #calculate commulative sales prices for this month
                 sales_worth = 0
                 for nhsale in nhm.nhsales.all():
