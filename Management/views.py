@@ -3310,6 +3310,7 @@ def global_profit_lost(request):
                     
                     incomes_amount, nhmonths_amount, salary_amount, expenses_amount = 0,0,0,0
                     for nhmonth in nhmonths:
+                        nhmonth.include_tax = False
                         nhmonths_amount += nhmonth.total_net_income
                     for income in incomes:
                         incomes_amount += income.invoice and income.invoice.amount or 0
