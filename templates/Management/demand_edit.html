@@ -301,7 +301,7 @@
 			<th>שווי עמלה <br>סופי</th>
 			<th>תיקונים</th>
 			<th>הערות</th>
-			{% for s in form.instance.get_sales %}
+			{% for s in form.instance.get_excluded_sales %}
 			{% if not s.is_cp_ok %}
 				<tr class="row3" objid={{s.id}}>
 			{% else %}
