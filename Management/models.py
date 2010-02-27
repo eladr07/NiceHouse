@@ -1921,8 +1921,8 @@ class Demand(models.Model):
         return query
     @cache_method
     def get_excluded_sales(self):
-        #q = models.Q(commission_include=False) | models.Q(salecancel__isnull=False)
-        query = Sale.objects.filter(contractor_pay__year = self.year, contractor_pay__month = self.month,
+        q = models.Q(salecancel__isnull=False)
+        query = Sale.objects.filter(salecancel__isnull=False, contractor_pay__year = self.year, contractor_pay__month = self.month,
                                     house__building__project = self.project)
         if self.project.commissions.commission_by_signups:
             query = query.order_by('house__signups__date')
