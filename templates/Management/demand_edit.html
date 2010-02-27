@@ -364,7 +364,7 @@
 			{% endfor %}
 			{% if form.instance.get_excluded_sales %}
 				<tr>
-					<td colspan="20" style="font-weight:bold; text-align:left;">מכירות שלא נכללות בדרישה</td>
+					<td colspan="20" style="font-weight:bold;text-align:center;">מכירות שלא נכללות בדרישה</td>
 				</tr>
 				{% for s in form.instance.get_excluded_sales %}
 				<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}}>
