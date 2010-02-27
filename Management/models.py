@@ -1915,14 +1915,14 @@ class Demand(models.Model):
     @cache_method
     def get_sales(self):
         query = Sale.objects.filter(contractor_pay__year = self.year, contractor_pay__month = self.month,
-                                    house__building__project = self.project, commission_include=True, salecancel=None)
+                                    house__building__project = self.project, commission_include=True, salecancel__isnull=True)
         if self.project.commissions.commission_by_signups:
             query = query.order_by('house__signups__date')
         return query
     @cache_method
     def get_excluded_sales(self):
         query = Sale.objects.filter(contractor_pay__year = self.year, contractor_pay__month = self.month,
-                                    house__building__project = self.project).exclude(commission_include=True, salecancel=None)
+                                    house__building__project = self.project).exclude(commission_include=True, salecancel__isnull=True)
         if self.project.commissions.commission_by_signups:
             query = query.order_by('house__signups__date')
         return query
@@ -1945,12 +1945,6 @@ class Demand(models.Model):
             self.sales_commission = -1
         self.save()
         return self.sales_commission
-    def calc_cancel_fee(self):
-        for diff in self.diffs.filter(type=u'קיזוז מכירה'):
-            diff.delete()
-        for sale in self.get_canceledsales():
-            salecancel = self.salecancel
-            self.diffs.create(type=u'קיזוז מכירה', reason = u"ביטול מכירה מס' %s" % sale.id, amount = salecancel.fee * -1)
     def get_total_amount(self):
         return self.sales_commission + self.diffs_amount
     @property
@@ -2409,12 +2403,14 @@ class SaleReject(SaleMod):
         db_table = 'SaleReject'
         
 class SaleCancel(SaleMod):
-    fee = models.PositiveIntegerField(ugettext('fee'), null=True, help_text = ugettext(u'salecancel_fee_help'))
+    deduct_from_demand = models.BooleanField(ugettext('deduct_from_demand'), blank=True)
     def save(self, *args, **kw):
         models.Model.save(self, *args, **kw)
-        demand = self.sale.demand
-        if self.fee > 0:
-            demand.calc_cancel_fee()
+        sale = self.sale
+        demand = sale.demand
+        sale.commission_include = not self.deduct_from_demand
+        sale.save()
+        demand.calc_sales_commission()
     def get_absolute_url(self):
         return '/salecancel/%s' % self.id
     class Meta:

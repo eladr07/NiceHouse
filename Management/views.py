@@ -1152,7 +1152,7 @@ def demand_sale_del(request, id):
         sale.delete()
         return HttpResponseRedirect('../../../')
     else:
-        sc = SaleCancel(sale = sale, date = date.today(), fee = 0)
+        sc = SaleCancel(sale = sale, date = date.today(), deduct_from_demand=True)
         sc.save()
         return HttpResponseRedirect('/salecancel/%s' % sc.id)
         
