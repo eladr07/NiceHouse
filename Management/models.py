@@ -1902,16 +1902,22 @@ class Demand(models.Model):
     def get_open_reminders(self):
         return [r for r in self.reminders.all() if r.statuses.latest().type.id 
                 not in (ReminderStatusType.Deleted,ReminderStatusType.Done)]
+    @cache_method
     def get_pricemodsales(self):
-        return self.sales.exclude(salepricemod=None)
+        return Sale.objects.filter(contractor_pay__year = self.year, contractor_pay__month = self.month,
+                                   house__building__project = self.project).exclude(salepricemod=None)
+    @cache_method
     def get_housemodsales(self):
-        return self.sales.exclude(salehousemod=None)
+        return Sale.objects.filter(contractor_pay__year = self.year, contractor_pay__month = self.month,
+                                   house__building__project = self.project).exclude(salehousemod=None)
     def get_presales(self):
         return self.sales.exclude(salepre=None)
     def get_rejectedsales(self):
         return self.sales.exclude(salereject=None)
+    @cache_method
     def get_canceledsales(self):
-        return self.sales.exclude(salecancel=None)
+        return Sale.objects.filter(contractor_pay__year = self.year, contractor_pay__month = self.month,
+                                   house__building__project = self.project).exclude(salecancel=None)
     @cache_method
     def get_sales(self):
         query = Sale.objects.filter(contractor_pay__year = self.year, contractor_pay__month = self.month,
