@@ -1926,6 +1926,7 @@ class Demand(models.Model):
                                     house__building__project = self.project)
         if self.project.commissions.commission_by_signups:
             query = query.order_by('house__signups__date')
+        raise TypeError
         return query
     @cache_method
     def get_sales_amount(self):
