@@ -363,7 +363,7 @@
 				<td>{{s.remarks}}</td>
 			</tr>
 			{% endfor %}
-			{% if form.instance.get_excluded_sales %}
+			{% if form.instance.get_excluded_sales.count %}
 				<tr>
 					<td colspan="20">מכירות שלא נכללות בדרישה</td>
 				</tr>
