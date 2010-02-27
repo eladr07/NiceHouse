@@ -363,58 +363,60 @@
 				<td>{{s.remarks}}</td>
 			</tr>
 			{% endfor %}
-			<tr>
-				<td colspan="20">מכירות שלא נכללות בדרישה</td>
-			</tr>
-			{% for s in form.instance.get_excluded_sales %}
-			<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}}>
-				<td><a href="/sale/{{s.id}}">{{form.instance.id}}-{{forloop.counter}}</a></td>
-				{% if s.contract_num %}
-				<td>{{s.contract_num}}</td>
-				{% endif %}
-				<td>{{s.clients}}</td>
-				<td>
-					<a href="/buildings/{{s.house.building.id}}/pricelist/type1">
-						{{s.house.building}}
-					</a>
-				</td>
-				<td>
-					<a href="/buildings/{{s.house.building.id}}/house/{{s.house.id}}/type1">
-						{{s.house}}
-					</a>
-				</td>
-				<td>{{s.house.get_signup.date|date:"j/m/Y"}}</td>
-				<td>{{s.sale_date|date:"j/m/Y"}}</td>
-				<td>{{s.price|commaise}} ש"ח</td>
-				<td>{{s.price_final|commaise}} ש"ח</td>
-				{% if s.discount %}
-				<td colspan="3"></td>
-				{% endif %}
-				<td colspan="2"></td>
-				{% if form.instance.project.commissions.b_discount_save_precentage %}
-				<td colspan="2"></td>
-				{% endif %}
-				<td colspan="2"></td>
-				<td>
-					{% if s.salepricemod %}
-						<a href="/salepricemod/{{s.salepricemod.id}}"><img src="/site_media/images/money-48.png" width="20" height="20" /></a>
+			{% if form.instance.get_excluded_sales %}
+				<tr>
+					<td colspan="20">מכירות שלא נכללות בדרישה</td>
+				</tr>
+				{% for s in form.instance.get_excluded_sales %}
+				<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}}>
+					<td><a href="/sale/{{s.id}}">{{form.instance.id}}-{{forloop.counter}}</a></td>
+					{% if s.contract_num %}
+					<td>{{s.contract_num}}</td>
 					{% endif %}
-					{% if s.salehousemod %}
-						<a href="/salehousemod/{{s.salehousemod.id}}"><img src="/site_media/images/home-48.png" width="20" height="20" /></a>
+					<td>{{s.clients}}</td>
+					<td>
+						<a href="/buildings/{{s.house.building.id}}/pricelist/type1">
+							{{s.house.building}}
+						</a>
+					</td>
+					<td>
+						<a href="/buildings/{{s.house.building.id}}/house/{{s.house.id}}/type1">
+							{{s.house}}
+						</a>
+					</td>
+					<td>{{s.house.get_signup.date|date:"j/m/Y"}}</td>
+					<td>{{s.sale_date|date:"j/m/Y"}}</td>
+					<td>{{s.price|commaise}} ש"ח</td>
+					<td>{{s.price_final|commaise}} ש"ח</td>
+					{% if s.discount %}
+					<td colspan="3"></td>
 					{% endif %}
-					{% if s.salepre %}
-						<a href="/salepre/{{s.salepre.id}}"><img src="/site_media/images/agt_forward-48.png" width="20" height="20" /></a>
+					<td colspan="2"></td>
+					{% if form.instance.project.commissions.b_discount_save_precentage %}
+					<td colspan="2"></td>
 					{% endif %}
-					{% if s.salereject %}
-						<a href="/salereject/{{s.salereject.id}}"><img src="/site_media/images/agt_back-48.png" width="20" height="20" /></a>
-					{% endif %}
-					{% if s.salecancel %}
-						<a href="/salecancel/{{s.salecancel.id}}"><img src="/site_media/images/delete_48.png" width="20" height="20" /></a>
-					{% endif %}
-				</td>
-				<td>{{s.remarks}}</td>
-			</tr>
-			{% endfor %}
+					<td colspan="2"></td>
+					<td>
+						{% if s.salepricemod %}
+							<a href="/salepricemod/{{s.salepricemod.id}}"><img src="/site_media/images/money-48.png" width="20" height="20" /></a>
+						{% endif %}
+						{% if s.salehousemod %}
+							<a href="/salehousemod/{{s.salehousemod.id}}"><img src="/site_media/images/home-48.png" width="20" height="20" /></a>
+						{% endif %}
+						{% if s.salepre %}
+							<a href="/salepre/{{s.salepre.id}}"><img src="/site_media/images/agt_forward-48.png" width="20" height="20" /></a>
+						{% endif %}
+						{% if s.salereject %}
+							<a href="/salereject/{{s.salereject.id}}"><img src="/site_media/images/agt_back-48.png" width="20" height="20" /></a>
+						{% endif %}
+						{% if s.salecancel %}
+							<a href="/salecancel/{{s.salecancel.id}}"><img src="/site_media/images/delete_48.png" width="20" height="20" /></a>
+						{% endif %}
+					</td>
+					<td>{{s.remarks}}</td>
+				</tr>
+				{% endfor %}
+			{% endif %}
 			<tr height="40px">
 				<td colspan={% if form.instance.get_sales.0.discount %}"7"{%else%}"6"{%endif%}></td>
 				<td><b><u>{{form.instance.get_sales_amount|commaise}} ש"ח</u></b></td>
