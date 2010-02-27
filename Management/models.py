@@ -1913,20 +1913,26 @@ class Demand(models.Model):
     def get_canceledsales(self):
         return self.sales.exclude(salecancel=None)
     @cache_method
-    def get_sales(self, exclude_non_commissioned=True):
+    def get_sales(self):
         query = Sale.objects.filter(contractor_pay__year = self.year, contractor_pay__month = self.month,
-                                    house__building__project = self.project)
-        if exclude_non_commissioned:
-            query = query.exclude(commission_include=False)
+                                    house__building__project = self.project, commission_include=True, salecancel=None)
         if self.project.commissions.commission_by_signups:
             query = query.order_by('house__signups__date')
         return query
     @cache_method
-    def get_sales_amount(self, exclude_non_commissioned=True):
-        return self.get_sales(exclude_non_commissioned).aggregate(Sum('price'))['price__sum'] or 0
+    def get_excluded_sales(self):
+        q = models.Q(commission_include=False) | models.Q(salecancel__isnull=False)
+        query = Sale.objects.filter(q, contractor_pay__year = self.year, contractor_pay__month = self.month,
+                                    house__building__project = self.project)
+        if self.project.commissions.commission_by_signups:
+            query = query.order_by('house__signups__date')
+        return query
     @cache_method
-    def get_final_sales_amount(self, exclude_non_commissioned=True):
-        return self.get_sales(exclude_non_commissioned).aggregate(Sum('price_final'))['price_final__sum'] or 0
+    def get_sales_amount(self):
+        return self.get_sales().aggregate(Sum('price'))['price__sum'] or 0
+    @cache_method
+    def get_final_sales_amount(self):
+        return self.get_sales().aggregate(Sum('price_final'))['price_final__sum'] or 0
     def calc_sales_commission(self):
         if self.get_sales().count() == 0: 
             return
@@ -2407,9 +2413,9 @@ class SaleCancel(SaleMod):
     fee = models.PositiveIntegerField(ugettext('fee'), null=True, help_text = ugettext(u'salecancel_fee_help'))
     def save(self, *args, **kw):
         models.Model.save(self, *args, **kw)
+        demand = self.sale.demand
         if self.fee > 0:
-            d = self.sale.demand
-            d.calc_cancel_fee()
+            demand.calc_cancel_fee()
     def get_absolute_url(self):
         return '/salecancel/%s' % self.id
     class Meta:
