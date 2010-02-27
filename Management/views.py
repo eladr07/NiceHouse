@@ -3326,12 +3326,16 @@ def global_profit_lost(request):
                 #calculate relative profits and losses for all divisions items (i.e. projects/nhbranches)
                 for row in data:
                     division, incomes, losses = row['division'] ,row['incomes'], row['losses']
+                    total_income, total_loss = 0,0
                     for incomeRow in incomes:
                         amount = incomeRow['amount']
+                        total_income += amount
                         incomeRow['relative'] = global_income and (amount / global_income * 100) or 0
                     for lossRow in losses:
                         amount = lossRow['amount']
+                        total_loss += amount
                         lossRow['relative'] = global_loss and (amount / global_loss * 100) or 0
+                    row['profit'] = total_income - total_loss
     else:
         form = GloablProfitLossForm()
         from_date, to_date = None, None
