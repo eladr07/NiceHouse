@@ -39,7 +39,7 @@ def clone(from_object, save):
     if save:
         return from_object.__class__.objects.create(**args)
     else:
-        new_object = from_object.__class__(args)
+        new_object = from_object.__class__(**args)
         return new_object
     
 def nhemployee_sort(nhemployee1, nhemployee2):
