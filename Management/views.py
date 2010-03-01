@@ -2237,9 +2237,7 @@ def building_addstorage(request, building_id = None):
             b = Building.objects.get(pk=building_id)
             form.initial = {'building':b.id}
             form.fields['house'].queryset = b.houses.all()
-    return render_to_response('Management/object_edit.html', 
-                              {'form' : form},
-                              context_instance=RequestContext(request))
+    return render_to_response('Management/object_edit.html', {'form' : form}, context_instance=RequestContext(request))
         
 @permission_required('Management.delete_building')
 def building_delete(request, building_id):
@@ -2247,6 +2245,67 @@ def building_delete(request, building_id):
     building.is_deleted = True
     building.save()
     return HttpResponse('ok')
+        
+@permission_required('Management.copy_building')
+def building_copy(request, building_id):
+    building = Building.objects.get(pk = building_id)
+    if request.method == 'POST':
+        form = CopyBuildingForm(request.POST)
+        if form.is_valid():
+            include_houses, include_house_prices, include_parkings, include_storages = (form.cleaned_data['include_houses'],
+                                                                                        form.cleaned_data['include_house_prices'],
+                                                                                        form.cleaned_data['include_parkings'],
+                                                                                        form.cleaned_data['include_storages'])
+            
+            new_building = clone(building, False)
+            new_building.num = form.cleaned_data['num']
+            new_building.save()
+            
+            if include_parkings:
+                for parking in building.parkings.filter(house__isnull=True):
+                    new_parking = clone(storage)
+                    new_parking.building = new_building
+                    new_parking.save()
+                    
+            if include_storages:
+                for storage in building.storages.filter(house__isnull=True):
+                    new_storage = clone(storage)
+                    new_storage.building = new_building
+                    new_storage.save()
+                                
+            if include_houses:
+                for house in building.houses.all():
+                    new_house = clone(house, False)
+                    new_house.building = new_building
+                    new_house.save()
+                    
+                    if include_house_prices:
+                        for house_version in house.versions.all():
+                            new_house_version = clone(house_version)
+                            new_house_version.house = new_house
+                            new_house_version.save()
+                            
+                    if include_parkings:
+                        for parking in house.parkings.all():
+                            new_parking = clone(storage)
+                            new_parking.house = new_house
+                            new_parking.building = new_building
+                            new_parking.save()
+                            
+                    if include_storages:
+                        for storage in house.storages.all():
+                            new_storage = clone(storage)
+                            new_storage.house = new_house
+                            new_storage.building = new_building
+                            new_storage.save()
+                    
+            return reverse(project_buildings, args=[building.project_id])
+    else:
+        form = CopyBuildingForm()
+        form.fields['building'].queryset = building.project.buildings.all()
+        form.fields['building'].initial = building
+        
+    return render_to_response('Management/object_edit.html', {'form' : form}, context_instance=RequestContext(request))
     
 @permission_required('Management.add_house')
 def building_addhouse(request, type_id, building_id):

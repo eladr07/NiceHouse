@@ -896,3 +896,11 @@ class LocateHouseForm(forms.Form):
                                       min_value=1, label=ugettext('building_num'))
     house_num = forms.IntegerField(widget=forms.TextInput(attrs={'size':'3'}),
                                    min_value=1, label=ugettext('house_num'))
+    
+class CopyBuildingForm(forms.Form):
+    building = forms.ModelChoiceField(ugettext('building'))
+    new_building_num = forms.CharField(ugettext('new_building_num'))
+    include_houses = forms.BooleanField(ugettext('include_prices'), initial=True)
+    include_house_prices = forms.BooleanField(ugettext('include_prices'), initial=True)
+    include_parkings = forms.BooleanField(ugettext('include_prices'), initial=True)
+    include_storages = forms.BooleanField(ugettext('include_prices'), initial=True)

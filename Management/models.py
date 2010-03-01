@@ -34,6 +34,14 @@ DemandNoInvoice, DemandNoPayment, DemandPaidPlus, DemandPaidMinus, DemandPaid, D
 RoomsChoices = [(float(i)/2,float(i)/2) for i in range(2, 21)]
 RoomsChoices.insert(0, ('',u'----'))
 
+def clone(from_object, save):
+    args = dict([(fld.name, getattr(from_object, fld.name)) for fld in from_object._meta.fields if fld is not from_object._meta.pk])
+    if save:
+        return from_object.__class__.objects.create(**args)
+    else:
+        new_object = from_object.__class__(args)
+        return new_object
+    
 def nhemployee_sort(nhemployee1, nhemployee2):
     query1 = nhemployee1.nhbranchemployee_set.all()
     query2 = nhemployee2.nhbranchemployee_set.all()
@@ -457,7 +465,8 @@ class Building(models.Model):
     class Meta:
         unique_together = ('project', 'num')
         db_table = 'Building'
-        permissions = (('building_clients', 'Building Clients'), ('building_clients_pdf', 'Building Clients PDF'))
+        permissions = (('building_clients', 'Building Clients'), ('building_clients_pdf', 'Building Clients PDF'),
+                       ('copy_building', 'Can copy building'),)
         
 class Person(models.Model):
     first_name = models.CharField(ugettext('first_name'), max_length=20)
