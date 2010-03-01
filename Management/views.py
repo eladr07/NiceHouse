@@ -2257,8 +2257,15 @@ def building_copy(request, building_id):
                                                                                         form.cleaned_data['include_parkings'],
                                                                                         form.cleaned_data['include_storages'])
             
+            if building.pricelist:
+                new_pricelist = clone(building.pricelist, False)
+                new_pricelist.save()
+            else:
+                new_pricelist = None
+            
             new_building = clone(building, False)
             new_building.num = form.cleaned_data['num']
+            new_building.pricelist = new_pricelist
             new_building.save()
             
             if include_parkings:
