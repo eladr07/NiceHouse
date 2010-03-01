@@ -2264,7 +2264,7 @@ def building_copy(request, building_id):
                 new_pricelist = None
             
             new_building = clone(building, False)
-            new_building.num = form.cleaned_data['num']
+            new_building.num = form.cleaned_data['new_building_num']
             new_building.pricelist = new_pricelist
             new_building.save()
             
