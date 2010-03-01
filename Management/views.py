@@ -2270,13 +2270,13 @@ def building_copy(request, building_id):
             
             if include_parkings:
                 for parking in building.parkings.filter(house__isnull=True):
-                    new_parking = clone(storage)
+                    new_parking = clone(parking, False)
                     new_parking.building = new_building
                     new_parking.save()
                     
             if include_storages:
                 for storage in building.storages.filter(house__isnull=True):
-                    new_storage = clone(storage)
+                    new_storage = clone(storage, False)
                     new_storage.building = new_building
                     new_storage.save()
                                 
@@ -2288,20 +2288,20 @@ def building_copy(request, building_id):
                     
                     if include_house_prices:
                         for house_version in house.versions.all():
-                            new_house_version = clone(house_version)
+                            new_house_version = clone(house_version, False)
                             new_house_version.house = new_house
                             new_house_version.save()
                             
                     if include_parkings:
                         for parking in house.parkings.all():
-                            new_parking = clone(storage)
+                            new_parking = clone(parking, False)
                             new_parking.house = new_house
                             new_parking.building = new_building
                             new_parking.save()
                             
                     if include_storages:
                         for storage in house.storages.all():
-                            new_storage = clone(storage)
+                            new_storage = clone(storage, False)
                             new_storage.house = new_house
                             new_storage.building = new_building
                             new_storage.save()
