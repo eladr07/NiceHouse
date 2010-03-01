@@ -2306,7 +2306,7 @@ def building_copy(request, building_id):
                             new_storage.building = new_building
                             new_storage.save()
                     
-            return reverse(project_buildings, args=[building.project_id])
+            return HttpResponseRedirect(reverse(project_buildings, args=[building.project_id]))
     else:
         form = CopyBuildingForm()
         form.fields['building'].queryset = building.project.buildings.all()
