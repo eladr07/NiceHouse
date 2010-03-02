@@ -603,7 +603,7 @@ class GloablProfitLossForm(SeasonForm):
             return DivisionType.objects.all()
         elif division == '-2':
             return DivisionType.objects.nh_divisions()
-        return [DivisionType.objects.get(pk = int(divison))]
+        return [DivisionType.objects.get(pk = int(division))]
 
 class LoanPayForm(forms.ModelForm):
     class Meta:
