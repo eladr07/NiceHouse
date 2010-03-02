@@ -3293,46 +3293,30 @@ def global_profit_lost(request):
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
             for division in divisions:
+                total_income, total_loss = 0,0
+                income_rows, loss_rows = [], []
+                
                 if division.id == DivisionType.Marketing:
                     demands = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
-                    incomes = Income.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(division_type = division)
                     salaries = EmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
-                    checks = Check.objects.filter(issue_date__range = (from_date,to_date), division_type = division)
                     
-                    incomes_amount, demands_amount = 0,0
+                    demands_amount, salaries_amount = 0,0
                     for demand in demands:
                         tax_val = Tax.objects.filter(date__lte=date(demand.year, demand.month,1)).latest().value / 100 + 1
                         demands_amount += demand.get_total_amount() / tax_val
-                    for income in incomes:
-                        incomes_amount += income.invoice and income.invoice.amount or 0
-                    total_income = demands_amount + incomes_amount
-                    
-                    income_rows = [{'name':division,'amount':demands_amount,
-                                    'details_link':'/seasonincome/?from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
-                                    % (from_date.year, from_date.month, to_date.year, to_date.month)},
-                                   {'name':u'הכנסות אחרות','amount':incomes_amount,
-                                    'details_link':'/incomes/?division_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
-                                    % (division.id, from_date.year, from_date.month, to_date.year, to_date.month)},
-                                   {'name':u'סה"כ','amount':total_income}]
-                    global_income += total_income
-                        
-                    salaries_amount, expenses_amount = 0,0
-                    
                     for salary in salaries:
                         salaries_amount += salary.bruto or salary.check_amount or 0
-                    for check in checks:
-                        expenses_amount += check.amount
-                    total_loss = salaries_amount + expenses_amount
-                    loss_rows = [{'name':u'הוצאות שכר', 'amount':salaries_amount,
-                                  'details_link':'/esseasontotalexpenses/?division_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
-                                  % (division.id, from_date.year, from_date.month, to_date.year, to_date.month)},
-                                {'name':u'הוצאות אחרות', 'amount':expenses_amount,
-                                 'details_link':'/checks/?division_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
-                                 % (division.id, from_date.year, from_date.month, to_date.year, to_date.month)},
-                                {'name':u'סה"כ', 'amount':total_loss}]
-                    global_loss += total_loss
+
+                    income_rows.append({'name':division,'amount':demands_amount,
+                                        'details_link':'/seasonincome/?from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
+                                        % (from_date.year, from_date.month, to_date.year, to_date.month)})
+                    loss_rows.append({'name':u'הוצאות שכר', 'amount':salaries_amount,
+                                      'details_link':'/esseasontotalexpenses/?division_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
+                                      % (division.id, from_date.year, from_date.month, to_date.year, to_date.month)})
+                        
+                    total_income += demands_amount
+                    total_loss += salaries_amount
                     
-                    data.append({'division':division, 'incomes':income_rows,'losses':loss_rows,'profit':total_income-total_loss})
                 elif division.is_nicehouse:
                     # get nhbranch object from the division type
                     if division.id == DivisionType.NHShoham:
@@ -3344,50 +3328,59 @@ def global_profit_lost(request):
                     
                     salaries = []
                     nhmonths = NHMonth.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhbranch = nhbranch)
-                    incomes = Income.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(division_type = division)
-                    checks = Check.objects.filter(issue_date__range = (from_date,to_date), division_type = division)
                     base_nhemployee_query = NHEmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
 
                     for nhemployee in nhbranch.all_nhemployees:
                         query = base_nhemployee_query.filter(nhemployee = nhemployee)
                         salaries.extend(query)
                     
-                    incomes_amount, nhmonths_amount, salary_amount, expenses_amount, checks_amount = 0,0,0,0,0
+                    nhmonths_amount, salary_amount = 0,0
                     for nhmonth in nhmonths:
                         nhmonth.include_tax = False
                         nhmonths_amount += nhmonth.total_net_income
-                    for income in incomes:
-                        incomes_amount += income.invoice and income.invoice.amount or 0
                     for salary in salaries:
                         salary_amount += salary.bruto or salary.check_amount or 0
-                    for check in checks:
-                        checks_amount += check.amount
                         
-                    total_income = incomes_amount + nhmonths_amount
+                    income_rows.append({'name':nhbranch, 'amount':nhmonths_amount,
+                                        'details_link':'/nhseasonincome/?nhbranch=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
+                                        % (nhbranch.id, from_date.year, from_date.month, to_date.year, to_date.month)})
+                    loss_rows.append({'name':u'הוצאות שכר', 'amount':salary_amount,
+                                      'details_link':'/esseasontotalexpenses/?division_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
+                                    % (division.id, from_date.year, from_date.month, to_date.year, to_date.month)})
                     
-                    income_rows = [{'name':nhbranch, 'amount':nhmonths_amount,
-                                    'details_link':'/nhseasonincome/?nhbranch=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
-                                    % (nhbranch.id, from_date.year, from_date.month, to_date.year, to_date.month)},
-                                   {'name':u'הכנסות אחרות', 'amount':incomes_amount,
-                                    'details_link':'/incomes/?division_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
-                                    % (division.id, from_date.year, from_date.month, to_date.year, to_date.month)},
-                                   {'name':u'סה"כ', 'amount':total_income}]
+                    total_income += nhmonths_amount
+                    total_loss += salary_amount
                     
-                    global_income += total_income
+                #general information required by all divisions    
+                incomes = Income.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(division_type = division)
+                checks = Check.objects.filter(issue_date__range = (from_date,to_date), division_type = division)
+                
+                incomes_amount = 0
+                for income in incomes:
+                    incomes_amount += income.invoice and income.invoice.amount or 0
                     
-                    loss_rows = [{'name':u'הוצאות שכר', 'amount':salary_amount,
-                                  'details_link':'/esseasontotalexpenses/?division_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
-                                  % (division.id, from_date.year, from_date.month, to_date.year, to_date.month)},
-                                  {'name':u'הוצאות אחרות', 'amount':checks_amount,
+                total_income += incomes_amount
+                
+                income_rows.extend([{'name':u'הכנסות אחרות','amount':incomes_amount,
+                                     'details_link':'/incomes/?division_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
+                                     % (division.id, from_date.year, from_date.month, to_date.year, to_date.month)},
+                                     {'name':u'סה"כ','amount':total_income}])
+                
+                global_income += total_income
+                
+                expenses_amount = 0
+                for check in checks:
+                    expenses_amount += check.amount
+                    
+                total_loss += expenses_amount
+                
+                loss_rows.extend([{'name':u'הוצאות אחרות', 'amount':expenses_amount,
                                    'details_link':'/checks/?division_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
                                    % (division.id, from_date.year, from_date.month, to_date.year, to_date.month)},
-                                   {'name':u'סה"כ', 'amount':total_loss}]
+                                   {'name':u'סה"כ', 'amount':total_loss}])
+                global_loss += total_loss
                     
-                    total_loss = salary_amount + checks_amount
-                   
-                    global_loss += total_loss
-                    
-                    data.append({'division':division, 'incomes':income_rows,'losses':loss_rows,'profit':total_income-total_loss})
+                data.append({'division':division, 'incomes':income_rows,'losses':loss_rows,'profit':total_income-total_loss})
                 #calculate relative profits and losses for all divisions items (i.e. projects/nhbranches)
                 for row in data:
                     division, incomes, losses = row['division'] ,row['incomes'], row['losses']
