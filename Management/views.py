@@ -3319,7 +3319,7 @@ def global_profit_lost(request):
                     salaries_amount, expenses_amount = 0,0
                     
                     for salary in salaries:
-                        salaries_amount += salary.check_amount or 0
+                        salaries_amount += salary.bruto or salary.check_amount or 0
                     for check in checks:
                         expenses_amount += check.amount
                     total_loss = salaries_amount + expenses_amount
@@ -3359,7 +3359,7 @@ def global_profit_lost(request):
                     for income in incomes:
                         incomes_amount += income.invoice and income.invoice.amount or 0
                     for salary in salaries:
-                        salary_amount += salary.check_amount or 0
+                        salary_amount += salary.bruto or salary.check_amount or 0
                     for check in checks:
                         checks_amount += check.amount
                         
