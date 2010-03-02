@@ -162,10 +162,6 @@
 			<td style="color:#D50808;">{% if s.deduction %}{{s.deduction|commaise}} - {{s.deduction_type}} {% endif %}</td>
 			<td><a href="{{s.id}}/totaldetails" class="fancybox">{{s.neto|default_if_none:""|commaise}}</a></td>
 			<td>
-				{% if s.loan %}
-				<span style="color:#008C4D;">{{s.loan|commaise}}</span>
-				<br>
-				{% endif %}
 				<span style="color:#BF0000;">{{s.loan_pay|commaise}}</span>
 				<br>
 				{% if s.employee.loan_left %}
