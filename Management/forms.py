@@ -592,27 +592,18 @@ class DivisionTypeSeasonForm(SeasonForm):
     division_type = forms.ModelChoiceField(queryset = DivisionType.objects.all(), label=ugettext('division_type'))
 
 class GloablProfitLossForm(SeasonForm):
-    divisions = forms.ChoiceField(label = ugettext('division_type'), choices = ( 
-                                                                               (1, ugettext('marketing')),
-                                                                               (2, ugettext('nh_shoham')),
-                                                                               (3, ugettext('nh_modiin')),
-                                                                               (4, ugettext('nh_nes_ziona')),
-                                                                               (5, ugettext('all')),
-                                                                               (6, ugettext('all_nh')),
-                                                                               )
-                                                                               )    
+    division_choices = [(division.id, unicode(division)) for division in DivisionType.objects.all()]
+    division_choices.extend([(-1, ugettext('all')),
+                             (-2, ugettext('all_nh'))])
+    divisions = forms.ChoiceField(label = ugettext('division_type'), choices = division_choices)
+        
     def clean_divisions(self):
         division = self.cleaned_data['divisions']
-        divisions = []
-        if division in ['1','5']:
-            divisions.append(DivisionType.objects.get(pk = DivisionType.Marketing))
-        if division in ['2','5','6']:
-            divisions.append(DivisionType.objects.get(pk = DivisionType.NHShoham))
-        if division in ['3','5','6']:
-            divisions.append(DivisionType.objects.get(pk = DivisionType.NHModiin))
-        if division in ['4','5','6']:
-            divisions.append(DivisionType.objects.get(pk = DivisionType.NHNesZiona))
-        return divisions
+        if division == '-1':
+            return DivisionType.objects.all()
+        elif division == '-2':
+            return DivisionType.objects.nh_divisions()
+        return [DivisionType.objects.get(pk = int(divison))]
 
 class LoanPayForm(forms.ModelForm):
     class Meta:

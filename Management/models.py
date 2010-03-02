@@ -2683,9 +2683,17 @@ class PurposeType(models.Model):
     class Meta:
         db_table = 'PurposeType'
 
+class DivisionTypeManager(models.Manager):
+    def nh_divisions(self):
+        q = models.Q(pk = DivisionType.NHShoham) | models.Q(pk = DivisionType.NHModiin) | models.Q(pk = DivisionType.NHNesZiona)
+        return self.filter(q)
+
 class DivisionType(models.Model):
     Marketing, NHShoham, NHModiin, NHNesZiona = 1,2,3,4
     name = models.CharField(ugettext('name'), max_length=20, unique=True)
+    
+    objects = DivisionTypeManager()
+    
     @property
     def is_nicehouse(self):
         return self.id in (2,3,4)
