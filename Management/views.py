@@ -3352,7 +3352,7 @@ def global_profit_lost(request):
                         query = base_nhemployee_query.filter(nhemployee = nhemployee)
                         salaries.extend(query)
                     
-                    incomes_amount, nhmonths_amount, salary_amount, expenses_amount = 0,0,0,0
+                    incomes_amount, nhmonths_amount, salary_amount, expenses_amount, checks_amount = 0,0,0,0,0
                     for nhmonth in nhmonths:
                         nhmonth.include_tax = False
                         nhmonths_amount += nhmonth.total_net_income
@@ -3360,6 +3360,9 @@ def global_profit_lost(request):
                         incomes_amount += income.invoice and income.invoice.amount or 0
                     for salary in salaries:
                         salary_amount += salary.check_amount or 0
+                    for check in checks:
+                        checks_amount += check.amount
+                        
                     total_income = incomes_amount + nhmonths_amount
                     
                     income_rows = [{'name':nhbranch, 'amount':nhmonths_amount,
@@ -3374,19 +3377,14 @@ def global_profit_lost(request):
                     
                     loss_rows = [{'name':u'הוצאות שכר', 'amount':salary_amount,
                                   'details_link':'/esseasontotalexpenses/?division_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
-                                  % (division.id, from_date.year, from_date.month, to_date.year, to_date.month)}]
+                                  % (division.id, from_date.year, from_date.month, to_date.year, to_date.month)},
+                                  {'name':u'הוצאות אחרות', 'amount':checks_amount,
+                                   'details_link':'/checks/?division_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
+                                   % (division.id, from_date.year, from_date.month, to_date.year, to_date.month)},
+                                   {'name':u'סה"כ', 'amount':total_loss}]
                     
-                    total_loss = salary_amount
-                    for expense_type, checks in itertools.groupby(checks, lambda check: check.expense_type):
-                        checks_amount = 0
-                        for check in checks:
-                            checks_amount += check.amount
-                        total_loss += checks_amount
-                        loss_rows.append({'name':expense_type, 'amount':checks_amount,
-                                          'details_link':'/checks/?division_type=%s;expense_type=%s;from_year=%s;from_month=%s;to_year=%s;to_month=%s' 
-                                          % (division.id,expense_type.id, from_date.year, from_date.month, to_date.year, to_date.month)})
-                    loss_rows.append({'name':u'סה"כ','amount':total_loss})
-                    
+                    total_loss = salary_amount + checks_amount
+                   
                     global_loss += total_loss
                     
                     data.append({'division':division, 'incomes':income_rows,'losses':loss_rows,'profit':total_income-total_loss})
