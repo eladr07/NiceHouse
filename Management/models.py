@@ -2056,7 +2056,10 @@ class MadadBI(models.Model):
     def diff(self):
         q = MadadBI.objects.filter(year = self.month == 1 and self.year - 1 or self.year,
                                    month = self.month == 1 and 12 or self.month - 1)
-        return q.count() == 1 and self.value - q[0].value or 0
+        if q.count() == 0:
+            return 0
+        prev_madad = q[0]
+        return (self.value - prev_madad.value) / (prev_madad.value / 100)
     class Meta:
         db_table = 'MadadBI'
         get_latest_by = 'publish_date'
@@ -2072,7 +2075,10 @@ class MadadCP(models.Model):
     def diff(self):
         q = MadadCP.objects.filter(year = self.month == 1 and self.year - 1 or self.year,
                                    month = self.month == 1 and 12 or self.month - 1)
-        return q.count() == 1 and (self.value - q[0].value) / (q[0].value / 100) or 0
+        if q.count() == 0:
+            return 0
+        prev_madad = q[0]
+        return (self.value - prev_madad.value) / (prev_madad.value / 100)
     class Meta:
         db_table = 'MadadCP'
         get_latest_by = 'publish_date'
