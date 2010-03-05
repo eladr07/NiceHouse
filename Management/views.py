@@ -2326,6 +2326,7 @@ def building_addhouse(request, type_id, building_id):
                 return HttpResponseRedirect('type%s' % type_id)
             elif request.POST.has_key('finish'):
                 return HttpResponseRedirect('../pricelist/type%s' % type_id)
+            return HttpResponseRedirect(reverse(house_edit, args=[form.instance.id, type_id]))
     else:
         form = HouseForm(type_id)
         form.instance.building = b
