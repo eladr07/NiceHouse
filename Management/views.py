@@ -959,10 +959,9 @@ def nhmonth_close(request):
     if query.count() == 1:
         nhm = query[0]
     elif query.count() == 0:
-        nhb = NHBranch.objects.get(pk=nhbranch_id)
-        nhm = NHMonth(nhbranch=nhb, year=year, month=month)
+        nhm = NHMonth(nhbranch__id = nhbranch_id, year=year, month=month)
     nhm.close()
-    return HttpResponseRedirect('/nhbranch/%s/sales?year=%s&month=%s' % (nhb.id, nhm.year, nhm.month))
+    return HttpResponseRedirect('/nhbranch/%s/sales?year=%s&month=%s' % (nhbranch_id, nhm.year, nhm.month))
 
 @permission_required('Management.add_demand')
 def demand_list(request):
