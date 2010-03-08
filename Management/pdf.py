@@ -76,18 +76,13 @@ projectTableStyle = TableStyle(
                                 ]
                                )
 
-def multilinePara(str):
-    reversed_str, temp_str = '',''
-    parts = str.split()
+def clientsPara(str):
+    str2=''
+    parts = str.strip().split('\r\n')
     parts.reverse()
-    for part in parts:
-        temp_str += part + ' '
-        if len(temp_str) > 10:
-            reversed_str = temp_str + reversed_str
-            temp_str = ''
-    if temp_str:
-        reversed_str = temp_str + reversed_str
-    return Paragraph(reversed_str, ParagraphStyle('clients', fontName='David', fontSize=10, alignment=TA_CENTER))
+    for s in parts:
+        str2 += log2vis(s)
+    return Paragraph(str2, ParagraphStyle('clients', fontName='David', fontSize=10, alignment=TA_CENTER))
 def titlePara(str):
     '''
     returns a paragraph containing str with the subject style
@@ -148,7 +143,7 @@ class EmployeeListWriter:
         flows=[Paragraph(log2vis(u'נווה העיר - %s עובדים' % len(self.employees)), styleSubTitleBold),
                Spacer(0,10)]
         headers=[]
-        for header in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'סלולרי',u'מייל',u'כתובת',u'העסקה\nתחילת',u'העסקה\nסוג',u'פרוייקטים']:
+        for header in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'כתובת',u'העסקה\nתחילת',u'העסקה\nסוג',u'פרוייקטים']:
             headers.append(log2vis(header))
         headers.reverse()
         rows=[]
@@ -162,7 +157,7 @@ class EmployeeListWriter:
                 rank_count+=1
                 i+=1
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name),
-                 log2vis(e.phone), log2vis(e.cell_phone), log2vis(e.mail), multilinePara(log2vis(e.address)), log2vis(e.work_start.strftime('%d/%m/%Y')),
+                 log2vis(e.phone), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
                  log2vis(unicode(e.employment_terms and e.employment_terms.hire_type or '---'))]
             projects = '\n'.join([log2vis(p.name) for p in e.projects.all()])
             row.append(projects)
@@ -365,7 +360,7 @@ class MonthDemandWriter:
         while demand != None and demand.zilber_cycle_index() != 1:
             demand = demand.get_previous_demand()
             for s in demand.get_sales().filter(commission_include=True):
-                row = [log2vis('%s/%s' % (demand.month, demand.year)), multilinePara(s.clients), 
+                row = [log2vis('%s/%s' % (demand.month, demand.year)), clientsPara(s.clients), 
                                '%s/%s' % (unicode(s.house.building), unicode(s.house)), s.sale_date.strftime('%d/%m/%y'), 
                                commaise(s.price)]
                 s.restore = False
@@ -416,7 +411,7 @@ class MonthDemandWriter:
                 i += 1
                 singup = s.house.get_signup() 
                 row = [singup.date.strftime('%d/%m/%y'), s.contractor_pay.strftime('%m/%y'), 
-                       multilinePara(s.clients), '%s/%s' % (unicode(s.house.building), unicode(s.house)), 
+                       clientsPara(s.clients), '%s/%s' % (unicode(s.house.building), unicode(s.house)), 
                        s.sale_date.strftime('%d/%m/%y'), commaise(s.price)]
                 s.restore_date = self.demand.get_previous_demand().finish_date
                 c_final_old = s.c_final
@@ -500,7 +495,7 @@ class MonthDemandWriter:
             if self.signup_adds:
                 signup = s.house.get_signup()
                 row.append(signup and signup.date.strftime('%d/%m/%y') or '')
-            row.extend([multilinePara(s.clients), '%s/%s' % (unicode(s.house.building), unicode(s.house)), 
+            row.extend([clientsPara(s.clients), '%s/%s' % (unicode(s.house.building), unicode(s.house)), 
                         s.sale_date.strftime('%d/%m/%y'), commaise(s.price)])
             if zilber:
                 lawyer_pay = s.price_include_lawyer and (s.price - s.price_no_lawyer) or s.price * 0.015
@@ -959,7 +954,7 @@ class BuildingClientsWriter:
             sale = h.get_sale()
             signup = h.get_signup()
             if sale:
-                clients_name, clients_address, clients_phone = multilinePara(sale.clients), '', multilinePara(sale.clients_phone)
+                clients_name, clients_address, clients_phone = clientsPara(sale.clients), '', clientsPara(sale.clients_phone)
             else:
                 clients_name, clients_address, clients_phone = '','',''
             row = [h.num, log2vis(unicode(h.type)), h.net_size, h.floor, clients_name, '', clients_address, clients_phone, 
