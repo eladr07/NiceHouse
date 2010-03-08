@@ -2890,7 +2890,7 @@ def demand_sale_list(request):
         sales_amount = 0
         project = Project.objects.get(pk=project_id)
         
-        demands = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(project = project)
+        demands = Demand.objects.range(from_year, from_month, to_year, to_month).filter(project = project)
         for demand in demands:
             sales.extend(demand.get_sales())
             sales_amount += demand.get_sales_amount()
