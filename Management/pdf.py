@@ -83,10 +83,10 @@ def multilinePara(str):
     for part in parts:
         temp_str += part + ' '
         if len(temp_str) > 10:
-            reversed_str = temp_str.strip() + reversed_str
+            reversed_str = temp_str + reversed_str
             temp_str = ''
     if temp_str:
-        reversed_str = temp_str.strip() + reversed_str
+        reversed_str = temp_str + reversed_str
     return Paragraph(reversed_str, ParagraphStyle('clients', fontName='David', fontSize=10, alignment=TA_CENTER))
 def titlePara(str):
     '''
