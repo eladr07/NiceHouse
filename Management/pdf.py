@@ -81,12 +81,12 @@ def multilinePara(str):
     parts = str.split()
     parts.reverse()
     for part in parts:
-        temp_str += part
+        temp_str += part + ' '
         if len(temp_str) > 10:
-            reversed_str = temp_str + reversed_str
+            reversed_str = temp_str.strip() + reversed_str
             temp_str = ''
     if temp_str:
-        reversed_str = temp_str + reversed_str
+        reversed_str = temp_str.strip() + reversed_str
     return Paragraph(reversed_str, ParagraphStyle('clients', fontName='David', fontSize=10, alignment=TA_CENTER))
 def titlePara(str):
     '''
@@ -148,7 +148,7 @@ class EmployeeListWriter:
         flows=[Paragraph(log2vis(u'נווה העיר - %s עובדים' % len(self.employees)), styleSubTitleBold),
                Spacer(0,10)]
         headers=[]
-        for header in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'כתובת',u'העסקה\nתחילת',u'העסקה\nסוג',u'פרוייקטים']:
+        for header in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'סלולרי',u'מייל',u'כתובת',u'העסקה\nתחילת',u'העסקה\nסוג',u'פרוייקטים']:
             headers.append(log2vis(header))
         headers.reverse()
         rows=[]
@@ -162,7 +162,7 @@ class EmployeeListWriter:
                 rank_count+=1
                 i+=1
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name),
-                 log2vis(e.phone), multilinePara(log2vis(e.address)), log2vis(e.work_start.strftime('%d/%m/%Y')),
+                 log2vis(e.phone), log2vis(e.cell_phone), log2vis(e.mail), multilinePara(log2vis(e.address)), log2vis(e.work_start.strftime('%d/%m/%Y')),
                  log2vis(unicode(e.employment_terms and e.employment_terms.hire_type or '---'))]
             projects = '\n'.join([log2vis(p.name) for p in e.projects.all()])
             row.append(projects)
