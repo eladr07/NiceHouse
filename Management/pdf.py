@@ -77,13 +77,17 @@ projectTableStyle = TableStyle(
                                )
 
 def multilinePara(str):
-    str2=''
+    reversed_str, temp_str = '',''
     parts = str.split()
     parts.reverse()
-    for i in range(len(parts) / 2):
-        index = i * -2
-        str2 += parts[index] + ' ' + parts[index-1]
-    return Paragraph(str2, ParagraphStyle('clients', fontName='David', fontSize=10, alignment=TA_CENTER))
+    for part in parts:
+        temp_str += part
+        if len(temp_str) > 10:
+            reversed_str = temp_str + reversed_str
+            temp_str = ''
+    if temp_str:
+        reversed_str = temp_str + reversed_str
+    return Paragraph(reversed_str, ParagraphStyle('clients', fontName='David', fontSize=10, alignment=TA_CENTER))
 def titlePara(str):
     '''
     returns a paragraph containing str with the subject style
