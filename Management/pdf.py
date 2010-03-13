@@ -272,12 +272,18 @@ class MonthDemandWriter:
             frame5 = Frame(50, 40, 100, 100)
             frame5.addFromList([sigPara()], canv)
     def introPara(self):
+        project_commissions = self.demand.project.commissions
+        if project_commissions.include_lawyer == None:
+            lawyer_str = ''
+        elif project_commissions.include_lawyer == False:
+            lawyer_str = ', לא כולל שכ"ט עו"ד'
+        else:
+            lawyer_str = ', כולל שכ"ט עו"ד'
+        tax_str = project_commissions.include_tax and u'כולל מע"מ' or u'לא כולל מע"מ'
         s = log2vis(u'א. רצ"ב פירוט דרישתנו לתשלום בגין %i עסקאות שנחתמו החודש.' %
                     self.demand.get_sales().count()) + '<br/>'
-        s += log2vis(u'ב. סה"כ מכירות (%s, %s) - %s ש"ח.' %
-                     (self.demand.project.commissions.include_tax and u'כולל מע"מ' or u'לא כולל מע"מ',
-                      self.demand.project.commissions.include_lawyer and u'כולל שכ"ט עו"ד' or u'לא כולל שכ"ט עו"ד',
-                      commaise(self.demand.get_final_sales_amount()))) + '<br/>'
+        s += log2vis(u'ב. סה"כ מכירות (%s%s) - %s ש"ח.' %
+                     (tax_str, lawyer_str, commaise(self.demand.get_final_sales_amount()))) + '<br/>'
         s += log2vis(u'ג. עמלתנו (כולל מע"מ) - %s ש"ח (ראה פירוט רצ"ב).' % 
                     commaise(self.demand.get_total_amount())) + '<br/>'
         s += log2vis(u'ד. נא בדיקתכם ואישורכם לתשלום לתאריך %s אודה.' % datetime.now().strftime('31/%m/%Y')) + '<br/>'
