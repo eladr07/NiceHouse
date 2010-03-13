@@ -274,11 +274,11 @@ class MonthDemandWriter:
     def introPara(self):
         project_commissions = self.demand.project.commissions
         if project_commissions.include_lawyer == None:
-            lawyer_str = ''
+            lawyer_str = u''
         elif project_commissions.include_lawyer == False:
-            lawyer_str = ', לא כולל שכ"ט עו"ד'
+            lawyer_str = u', לא כולל שכ"ט עו"ד'
         else:
-            lawyer_str = ', כולל שכ"ט עו"ד'
+            lawyer_str = u', כולל שכ"ט עו"ד'
         tax_str = project_commissions.include_tax and u'כולל מע"מ' or u'לא כולל מע"מ'
         s = log2vis(u'א. רצ"ב פירוט דרישתנו לתשלום בגין %i עסקאות שנחתמו החודש.' %
                     self.demand.get_sales().count()) + '<br/>'
