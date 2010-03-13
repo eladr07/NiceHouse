@@ -3122,7 +3122,7 @@ def employeesalary_season_list(request):
             if isinstance(employee_base.derived, Employee):
                 salaries = EmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(employee__id = employee_base.id)
             elif isinstance(employee_base.derived, NHEmployee):
-                salaries = EmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhemployee__id = employee_base.id)
+                salaries = NHEmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhemployee__id = employee_base.id)
                 
             for salary in salaries:
                 total_neto += salary.neto or 0
