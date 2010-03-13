@@ -231,7 +231,9 @@ class MonthDemandWriter:
             return base + 2
         if count <= 40:
             return base + 3
-        return base + 4
+        if count <= 55:
+            return base + 4
+        return base + 5
     def __init__(self, demand, to_mail=False):
         self.demand = demand
         self.signup_adds = self.demand.project.commissions.commission_by_signups
