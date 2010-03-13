@@ -375,7 +375,7 @@ class MonthDemandWriter:
                 row.reverse()
                 rows.append(row)
                 total_prices += s.price
-                total_adds += diff_amount
+                total_adds += int(diff_amount)
                 if i % 17 == 0:
                     data = [headers]
                     data.extend(rows)
