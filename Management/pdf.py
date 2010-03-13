@@ -334,7 +334,7 @@ class MonthDemandWriter:
                 break
             demand = demand.get_previous_demand()
         sum_row = [None, None, None, None, None, Paragraph(commaise(total_prices), styleSumRow), None, None, None, None, 
-                   Paragraph(commaise(total_adds), styleSumRow)]
+                   Paragraph(commaise(round(total_adds)), styleSumRow)]
         sum_row.reverse()
         rows.append(sum_row)
         data = [headers]
@@ -375,7 +375,7 @@ class MonthDemandWriter:
                 row.reverse()
                 rows.append(row)
                 total_prices += s.price
-                total_adds += int(diff_amount)
+                total_adds += round(diff_amount)
                 if i % 17 == 0:
                     data = [headers]
                     data.extend(rows)
