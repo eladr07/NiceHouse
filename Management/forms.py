@@ -341,7 +341,7 @@ class SaleForm(forms.ModelForm):
         if self.cleaned_data['signup_date'] != None:
             signup = house.get_signup() or Signup()
             signup.date = self.cleaned_data['signup_date']
-            for attr in ['house','clients','clients_phone','sale_date','price','price_include_lawyer']:
+            for attr in ['house','employee','clients','clients_phone','sale_date','price','price_include_lawyer']:
                 setattr(signup, attr, self.cleaned_data[attr])
             signup.save()
         return forms.ModelForm.save(self, *args, **kw)

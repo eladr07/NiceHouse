@@ -672,7 +672,7 @@ class NHCBranchIncome(models.Model):
     then_precentage = models.FloatField(ugettext('then_precentage'))
     else_amount = models.IntegerField(ugettext('else_amount'))
     def calc(self, nhmonth, ratio = 1):
-        amount = 0
+        total_income = 0
         es = NHEmployeeSalary.objects.get(nhemployee=self.nhemployee, year= nhmonth.year,
                                           month = nhmonth.month)
         scds = []
@@ -685,7 +685,7 @@ class NHCBranchIncome(models.Model):
                 all_pay = nhss.all_employee_commission
                 if not all_pay: continue
                 relative_income = pay / all_pay * nhss.net_income * ratio
-                amount += relative_income
+                total_income += nhss.net_income
                 scds.append(NHSaleCommissionDetail(nhemployeesalary=es,nhsaleside=nhss,
                                                    commission='nhcbranchincome',
                                                    amount = relative_income * self.then_precentage/100,
@@ -702,15 +702,15 @@ class NHCBranchIncome(models.Model):
                     all_pay = nhss.all_employee_commission
                     if not all_pay: continue
                     relative_income = pay / all_pay * nhss.net_income * ratio
-                    amount += relative_income
+                    total_income += nhss.net_income
                     scds.append(NHSaleCommissionDetail(nhemployeesalary=es,nhsaleside=nhss,
                                                        commission='nhcbranchincome',
                                                        amount = relative_income * self.then_precentage/100,
                                                        precentage = self.then_precentage, income = pay))
-        if amount > self.if_income:
+        if total_income > self.if_income:
             for scd in scds:
                 scd.save()
-            return self.then_precentage * amount / 100
+            return self.then_precentage * total_income / 100
         else:
             NHSaleCommissionDetail.objects.create(nhemployeesalary=es, commission='nhcbranchincome_min',
                                                   amount=self.else_amount)
@@ -1505,7 +1505,7 @@ class CZilber(models.Model):
                 pc_base = s.pc_base
             prev_adds += (base - pc_base) * s.price_final / 100
         if prev_adds:
-            d.diffs.create(type=u'משתנה', reason=u'הפרשי קצב מכירות (נספח א)', amount=prev_adds)
+            d.diffs.create(type=u'משתנה', reason=u'הפרשי קצב מכירות (נספח א)', amount=round(prev_adds))
         if d.include_zilber_bonus():
             demand, bonus = d, 0
             while demand != None:
@@ -1515,7 +1515,7 @@ class CZilber(models.Model):
                     break
                 demand = demand.get_previous_demand()
             if bonus != 0:
-                d.diffs.create(type=u'בונוס', reason=u'בונוס חסכון בהנחה (נספח ב)', amount=bonus)
+                d.diffs.create(type=u'בונוס', reason=u'בונוס חסכון בהנחה (נספח ב)', amount=round(bonus))
     class Meta:
         db_table = 'CZilber'
 
@@ -2018,6 +2018,8 @@ class SignupCancel(models.Model):
         db_table='SignupCancel'
         
 class Signup(models.Model):
+    employee = models.ForeignKey('Employee', related_name = 'signups', verbose_name=ugettext('employee'),
+                                 null=True, blank=True)
     house = models.ForeignKey('House', related_name = 'signups', verbose_name=ugettext('house'))
     date = models.DateField(ugettext('signup_date'))
     clients = models.TextField(ugettext('clients'))
@@ -2776,7 +2778,8 @@ class Deal(models.Model):
     
     class Meta:
         db_table = 'Deal'
-    
+
+
 class ChangeLogManager(models.Manager):
     def object_changelog(obj):
         return self.filter(object_type = obj.__class__.name,
