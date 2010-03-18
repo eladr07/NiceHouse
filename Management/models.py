@@ -790,12 +790,7 @@ class NHEmployee(EmployeeBase):
     nhcbase = models.OneToOneField('NHCBase', editable=False, null=True, related_name='nhemployee')
     nhcbranchincome = models.OneToOneField('NHCBranchIncome', editable=False, null=True, related_name='nhemployee')
     objects = NHEmployeeManager()
-    @property
-    def nhbranch(self):
-        query = NHBranchEmployee.objects.filter(nhemployee = self, end_date=None)
-        if query.count() == 0: return None
-        if query.count() > 1: raise IntegrityError('nhemployee %s is not linked to exactly 1 nh branch' % unicode(self))
-        return query[0].nhbranch
+
     def get_nhbranches(self, year, month):
         start_date = date(year, month, 1)
         end_date = date(month == 12 and year + 1 or year, month == 12 and 1 or month + 1, 1)
