@@ -2798,7 +2798,135 @@ class Deal(models.Model):
     
     class Meta:
         db_table = 'Deal'
+'''
+# activity models
 
+class Media(models.Model):
+    name = models.CharField(ugettext('name'), max_length=20, unique=True)
+    def __unicode__(self):
+        return unicode(self.name)
+    class Meta:
+        db_table = 'Media'
+        
+class City(models.Model):
+    name = models.CharField(ugettext('name'), max_length=20, unique=True)
+    def __unicode__(self):
+        return unicode(self.name)
+    class Meta:
+        db_table = 'City'
+        
+class CityCallers(models.Model):
+    activity_base = models.ForeignKey('Event', editable=False)
+    
+    city = models.ForeignKey('City', verbose_name = ugettext('city'))
+    callers_num = models.PositiveSmallIntegerField(ugettext('callers_num'))
+    
+    class Meta:
+        db_table = 'CityCallers'
+
+class MediaReferrals(models.Model):
+    activity_base = models.ForeignKey('Event', editable=False)
+    
+    media = models.ForeignKey('Media', verbose_name = ugettext('media'))
+    referrals_num = models.PositiveSmallIntegerField(ugettext('referrals_num'))
+    
+    class Meta:
+        db_table = 'MediaReferrals'
+
+class PriceOffer(models.Model):
+    nhactivity = models.ForeignKey('NHActivity', editable=False)
+    
+    nhemployee = models.ForeignKey('NHEmployee', verbose_name = ugettext('nhemployee'))
+    
+    address = models.CharField(ugettext('address'), max_length=50)
+    rooms = models.FloatField(ugettext('rooms'))
+    
+    clients = models.CharField(ugettext('clients'), max_length=50)
+    
+    price_wanted = models.IntegerField(ugettext('price_wanted'))
+    price_offered = models.IntegerField(ugettext('price_offered'))
+    
+    commission_seller = models.FloatField(ugettext('commission_seller'))
+    commission_buyer = models.FloatField(ugettext('commission_buyer'))
+    
+    remarks = models.TextField(ugettext('remarks'), max_length=200, null=True, blank=True)
+    
+    class Meta:
+        db_table = 'PriceOffer'
+    
+
+class SaleProcess(models.Model):
+    activity_base = models.ForeignKey('Event', editable=False)
+    
+    project = models.ForeignKey('Project', verbose_name=ugettext('project'))
+    building = models.ForeignKey('Building', verbose_name=ugettext('building'))
+    house = models.ForeignKey('House', verbose_name=ugettext('house'))
+    
+    price = models.IntegerField(ugettext('price'))
+    rejection = models.TextField(ugettext('rejection'), max_length=200, null=True, blank=True)
+    remarks = models.TextField(ugettext('remarks'), max_length=200, null=True, blank=True)
+    
+    class Meta:
+        db_table = 'SaleProcess'
+
+class Event(models.Model):
+    activity_base = models.ForeignKey('Event', editable=False)
+    
+    date = models.DateTimeField(ugettext('date'))
+    initiator = models.CharField(ugettext('event_initiator'), max_length=50)
+    subject = models.CharField(ugettext('event_subject'), max_length=50)
+    attendees = models.TextField(ugettext('event_attendees'), max_length=200, null=True, blank=True)
+    summary = models.TextField(ugettext('event_summary'), max_length=200, null=True, blank=True)
+    issues = models.TextField(ugettext('issues'), max_length=200, null=True, blank=True)
+    remarks = models.TextField(ugettext('remarks'), max_length=200, null=True, blank=True)
+    
+    class Meta:
+        db_table = 'Event'
+        ordering = ['date']
+    
+class ActivityBase(models.Model):
+    from_date = models.DateField(ugettext('from_date'))
+    to_date = models.DateField(ugettext('to_date'))
+    office_meetings_num = models.PositiveSmallIntegerField(ugettext('office_meetings_num'))
+    recurring_meetings_num = models.PositiveSmallIntegerField(ugettext('recurring_meetings_num'))
+    new_meetings_from_phone_num = models.PositiveSmallIntegerField(ugettext('new_meetings_from_phone_num'))
+    
+    class Meta:
+        db_table = 'ActivityBase'
+
+class Activity(ActivityBase):
+    project = models.ForeignKey('Project', verbose_name=ugettext('project'))
+    employee = models.ForeignKey('Employee', verbose_name = ugettext('employee'))
+    
+    @property
+    def sales(self):
+        return Sale.objects.filter(house__building__project = self.project, employee = self.employee,
+                                   sale_date__range = (self.from_date, self.to_date))
+    @property
+    def all_signups(self):
+        return Signup.objects.filter(house__building__project = self.project, employee = self.employee,
+                                     date__range = (self.from_date, self.to_date))
+    @property
+    def canceled_signups(self):
+        return self.all_signups.filter(cancel__isnull = False)
+    @property
+    def active_signups(self):
+        return self.all_signups.filter(cancel__isnull = True)
+    
+    class Meta:
+        db_table = 'Activity'
+        
+class NHActivity(ActivityBase):
+    nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'))
+    nhemployee = models.ForeignKey('NHEmployee', verbose_name = ugettext('nhemployee'))
+    
+    @property
+    def nhsales(self):
+        return NHSale.objects.filter(nhsaleside_set__signing_advisor = self.nhemploee)
+    
+    class Meta:
+        db_table = 'NHActivity'
+'''
 class ChangeLogManager(models.Manager):
     def object_changelog(obj):
         return self.filter(object_type = obj.__class__.name, object_id = obj.id)
@@ -2873,10 +3001,3 @@ def track_changes(sender, **kwargs):
         cl.save()
 
 pre_save.connect(track_changes)
-
-for nhcb in NHCBase.objects.all():
-    nhcb.nhbranch = nhcb.nhemployee.nhbranch
-    nhcb.save()
-for nhcbi in NHCBranchIncome.objects.all():
-    nhcbi.nhbranch = nhcbi.nhemployee.nhbranch
-    nhcb.save()
