@@ -87,23 +87,22 @@
 	<a id="approve" >תיק עובד</a>
 </div>
 <div class="clearBoth"></div>
-{% regroup salaries by nhemployee.nhbranch as branch_list %}
-{% for branch in branch_list %}
+{% for branch, salaries in branch_list.items %}
 	<div class="someIcon" style="width:100px;">
 		<img src="/site_media/images/agt_home-48.png" width="20" height="20"  alt="שינוי" /> 
-		<a href="/nhbranch/{{branch.grouper.id}}/sales?year={{month.year}}&month={{month.month}}" >ריכוז עסקאות</a>
+		<a href="/nhbranch/{{branch.id}}/sales?year={{month.year}}&month={{month.month}}" >ריכוז עסקאות</a>
 	</div>
 	<div class="someIcon" style="width:100px;">
 		<img src="/site_media/images/print-48.png" width="20" height="20"  alt="שינוי" /> 
-		<a href="{{branch.grouper.id}}/{{month.year}}/{{month.month}}/pdf" >גרסת הדפסה</a>
+		<a href="{{branch.id}}/{{month.year}}/{{month.month}}/pdf" >גרסת הדפסה</a>
 	</div>
 	<div class="someIcon" style="width:100px;">
 		<img src="/site_media/images/print-48.png" width="20" height="20"  alt="שינוי" /> 
-		<a href="{{branch.grouper.id}}/{{month.year}}/{{month.month}}/send">שלח להנה"ח</a>
+		<a href="{{branch.id}}/{{month.year}}/{{month.month}}/send">שלח להנה"ח</a>
 	</div>
 	<div class="clearBoth"></div>
 	<table class="dataTable" border="1">
-	<caption>{{branch.grouper}}</caption>
+	<caption>{{branch}}</caption>
 		<tr>
 			<th></th>
 			<th>שם<br>העובד</th>
@@ -127,7 +126,7 @@
 			<th>ת.שליחה<br>להנה"ח</th>
 			<th>ת.שליחה<br>לצ'קים</th>
 		</tr>
-		{% for s in branch.list %}
+		{% for s in salaries %}
 		{% if s.approved_date %}
 		<tr class="row5" objid={{s.id}} employeeid={{s.nhemployee.id}}>
 		{% else %}

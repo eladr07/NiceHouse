@@ -610,24 +610,30 @@ class NHIncomeType(models.Model):
         db_table = 'NHIncomeType'
 
 class NHCBase(models.Model):
+    nhbranch = models.ForeignKey('NHBranch', verbose_name = ugettext('nhbranch'))
     min_amount = models.PositiveIntegerField(ugettext('min_commission'), default=0)
     precentage = models.FloatField(ugettext('precentage'))
     income_type = models.ForeignKey('NHIncomeType', verbose_name=ugettext('income_type'))
     filter = models.ForeignKey('NHSaleFilter', verbose_name=ugettext('filter'))
-    def calc(self, nhmonth, ratio = 1):
+    def calc(self, year, month, ratio = 1):
+        es = NHEmployeeSalary.objects.get(nhemployee=self.nhemployee, year= year, month = month)
         amount = 0
-        es = NHEmployeeSalary.objects.get(nhemployee=self.nhemployee, year= nhmonth.year,
-                                          month = nhmonth.month)
         scds = []
+        branch_sales_query = NHSaleSide.objects.filter(nhsale__nhmonth__year__exact = year, 
+                                                       nhsale__nhmonth__month__exact = month,
+                                                       nhsale__nhmonth__nhbranch = self.nhbranch)
+
         if self.filter.id == NHSaleFilter.His or self.filter.id == NHSaleFilter.All:
-            sales = set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=self.nhemployee))
-            sales.update(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=self.nhemployee))
-            sales.update(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=self.nhemployee))
+            # filter : either employee1, employee2, employee3 is self.nhemployee
+            q = models.Q(employee1 = self.nhemployee) | models.Q(employee2 = self.nhemployee) | models.Q(employee3 = self.nhemployee)
+            sales = branch_sales_query.filter(q)
+            
             for nhss in sales:
                 if self.income_type.id == NHIncomeType.Relative:
                     pay = nhss.get_employee_pay(self.nhemployee)
                     all_pay = nhss.all_employee_commission
-                    if not all_pay: continue
+                    if not all_pay: 
+                        continue
                     income = pay / all_pay * nhss.net_income
                 elif self.income_type.id == NHIncomeType.Total:
                     income = nhss.net_income                
@@ -637,17 +643,20 @@ class NHCBase(models.Model):
                                                    nhsaleside=nhss, income = income,
                                                    precentage = self.precentage))
         if self.filter.id == NHSaleFilter.NotHis or self.filter.id == NHSaleFilter.All:
-            for nhe in nhmonth.nhbranch.nhemployees:
-                if nhe.id == self.nhemployee.id:
-                    continue
-                sales = set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=nhe))
-                sales.update(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=nhe)))
-                sales.update(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=nhe)))
-                for nhss in sales:
+            # filter : neither employee1, employee2, employee3 is self.nhemployee
+            q = ~(models.Q(employee1 = self.nhemployee) | models.Q(employee2 = self.nhemployee) | models.Q(employee3 = self.nhemployee))
+            sales = branch_sales_query.filter(q)
+            
+            for nhss in sales:
+                for attr in ['employee1','employee2','employee3']:
+                    nhe = getattr(nhss, attr)
+                    if not nhe:
+                        continue
                     if self.income_type.id == NHIncomeType.Relative:
                         pay = nhss.get_employee_pay(nhe)
                         all_pay = nhss.all_employee_commission
-                        if not all_pay: continue
+                        if not all_pay: 
+                            continue
                         income = pay / all_pay * nhss.net_income
                     elif self.income_type.id == NHIncomeType.Total:
                         income = nhss.net_income
@@ -667,50 +676,58 @@ class NHCBase(models.Model):
         db_table = 'NHCBase'
 
 class NHCBranchIncome(models.Model):
+    nhbranch = models.ForeignKey('NHBranch', verbose_name = ugettext('nhbranch'))
     filter = models.ForeignKey('NHSaleFilter', verbose_name=ugettext('filter'))
     if_income = models.IntegerField(ugettext('if_branch_income'))
     then_precentage = models.FloatField(ugettext('then_precentage'))
     else_amount = models.IntegerField(ugettext('else_amount'))
-    def calc(self, nhmonth, ratio = 1):
-        total_income = 0
-        es = NHEmployeeSalary.objects.get(nhemployee=self.nhemployee, year= nhmonth.year,
-                                          month = nhmonth.month)
+
+    def calc(self, year, month, ratio = 1):
+        es = NHEmployeeSalary.objects.get(nhemployee = self.nhemployee, year = year, month = month)
         scds = []
+        income = 0        
+        branch_sales_query = NHSaleSide.objects.filter(nhsale__nhmonth__year__exact = year, 
+                                                       nhsale__nhmonth__month__exact = month,
+                                                       nhsale__nhmonth__nhbranch = self.nhbranch)
+            
         if self.filter.id == NHSaleFilter.His or self.filter.id == NHSaleFilter.All:
-            sales = set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=self.nhemployee))
-            sales.update(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=self.nhemployee)))
-            sales.update(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=self.nhemployee)))
+            # filter : either employee1, employee2, employee3 is self.nhemployee
+            q = models.Q(employee1 = self.nhemployee) | models.Q(employee2 = self.nhemployee) | models.Q(employee3 = self.nhemployee)
+            sales = branch_sales_query.filter(q)
             for nhss in sales:
                 pay = nhss.get_employee_pay(self.nhemployee)
                 all_pay = nhss.all_employee_commission
-                if not all_pay: continue
+                if not all_pay: 
+                    continue
                 relative_income = pay / all_pay * nhss.net_income * ratio
-                total_income += nhss.net_income
+                income += nhss.net_income
                 scds.append(NHSaleCommissionDetail(nhemployeesalary=es,nhsaleside=nhss,
                                                    commission='nhcbranchincome',
                                                    amount = relative_income * self.then_precentage/100,
                                                    precentage = self.then_precentage, income = pay))
+            
         if self.filter.id == NHSaleFilter.NotHis or self.filter.id == NHSaleFilter.All:
-            for nhe in nhmonth.nhbranch.nhemployees:
-                if nhe.id == self.nhemployee.id:
-                    continue
-                sales = set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee1=nhe))
-                sales.update(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee2=nhe)))
-                sales.update(set(NHSaleSide.objects.filter(nhsale__nhmonth = nhmonth, employee3=nhe)))
-                for nhss in sales:
+            # filter : neither employee1, employee2, employee3 is self.nhemployee
+            q = ~(models.Q(employee1 = self.nhemployee) | models.Q(employee2 = self.nhemployee) | models.Q(employee3 = self.nhemployee))
+            sales = branch_sales_query.filter(q)
+            for nhss in sales:                    
+                for attr in ['employee1','employee2','employee3']:
+                    nhe = getattr(nhss, attr)
+                    if not nhe:
+                        continue
                     pay = nhss.get_employee_pay(nhe)
                     all_pay = nhss.all_employee_commission
                     if not all_pay: continue
                     relative_income = pay / all_pay * nhss.net_income * ratio
-                    total_income += nhss.net_income
+                    income += nhss.net_income
                     scds.append(NHSaleCommissionDetail(nhemployeesalary=es,nhsaleside=nhss,
                                                        commission='nhcbranchincome',
                                                        amount = relative_income * self.then_precentage/100,
                                                        precentage = self.then_precentage, income = pay))
-        if total_income > self.if_income:
+        if income > self.if_income:
             for scd in scds:
                 scd.save()
-            return self.then_precentage * total_income / 100
+            return self.then_precentage * income / 100
         else:
             NHSaleCommissionDetail.objects.create(nhemployeesalary=es, commission='nhcbranchincome_min',
                                                   amount=self.else_amount)
@@ -779,6 +796,11 @@ class NHEmployee(EmployeeBase):
         if query.count() == 0: return None
         if query.count() > 1: raise IntegrityError('nhemployee %s is not linked to exactly 1 nh branch' % unicode(self))
         return query[0].nhbranch
+    def get_nhbranches(self, year, month):
+        start_date = date(year, month, 1)
+        end_date = date(month == 12 and year + 1 or year, month == 12 and 1 or month + 1, 1)
+        q = models.Q(start_date__lt = start_date) & (models.Q(end_date__isnull = True) | models.Q(end_date__gte = end_date))
+        return self.nhbranchemployee_set.filter(q)
     def get_open_reminders(self):
         return [r for r in self.reminders.all() if r.statuses.latest().type.id 
                 not in (ReminderStatusType.Deleted,ReminderStatusType.Done)]
@@ -1056,10 +1078,6 @@ class NHEmployeeSalary(EmployeeSalaryBase):
     def total_amount(self):
         return (self.base or 0) + (self.commissions or 0) + (self.admin_commission or 0) + (self.var_pay or 0) + (self.safety_net or 0) - (self.deduction or 0)
     def calculate(self):
-        query = NHMonth.objects.filter(nhbranch = self.nhemployee.nhbranch, year = self.year, month = self.month)
-        if query.count() == 0: return
-        nhm = query[0]
-        
         terms = self.nhemployee.employment_terms
         if not terms:
             self.remarks = u'לעובד לא הוגדרו תנאי העסקה!'
@@ -1074,38 +1092,40 @@ class NHEmployeeSalary(EmployeeSalaryBase):
         for scd in NHSaleCommissionDetail.objects.filter(nhemployeesalary = self):
             scd.delete()
         self.admin_commission, self.commissions, self.base = 0, 0, 0
-        for nhss in NHSaleSide.objects.filter(employee1=self.nhemployee, nhsale__nhmonth = nhm):
+        
+        #base query for the sale side objects. later on we filter by different criteria
+        month_salesides = NHSaleSide.objects.filter(nhsale__nhmonth__year__exact = self.year,
+                                                    nhsale__nhmonth__month__exact = self.month)
+        
+        for nhss in month_salesides.filter(employee1=self.nhemployee):
             pay = nhss.employee1_pay * self.ratio
             commission = nhss.employee1_commission * self.ratio
             self.commissions += pay
             NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss, commission='base', amount = pay,
                                                   precentage = commission, income = nhss.net_income)
-        for nhss in NHSaleSide.objects.filter(employee2=self.nhemployee, nhsale__nhmonth = nhm):
+        for nhss in month_salesides.filter(employee2=self.nhemployee):
             pay = (nhss.employee2_pay or 0) * self.ratio
             commission = (nhss.employee2_commission or 0) * self.ratio
             self.commissions += pay
             NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss, commission='base', amount = pay,
                                                   precentage = commission, income = nhss.net_income)
-        for nhss in NHSaleSide.objects.filter(employee3=self.nhemployee, nhsale__nhmonth = nhm):
+        for nhss in month_salesides.filter(employee3=self.nhemployee):
             pay = (nhss.employee3_pay or 0) * self.ratio
             commission = (nhss.employee3_commission or 0) * self.ratio
             self.commissions += pay
             NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss, commission='base', 
                                                   amount = pay, precentage = commission, income = nhss.net_income)
-        if self.nhemployee.nhbranch:
-            self.__calc__(nhm)
-        elif self.nhemployee.branch_manager.count() > 0:
-            for nhbranch in self.nhemployee.branch_manager.all():
-                nhm = NHMonth.objects.get(nhbrnach = nhbranch, year = self.year, month = self.month)
-                self.__calc__(nhm)
-    def __calc__(self, nhmonth):
+
+        self.__calc__()
+        
+    def __calc__(self):
         restore_date = date(self.year, self.month, 1)
         if self.nhemployee.nhcbase:
             commission = restore_object(self.nhemployee.nhcbase, restore_date)
-            self.admin_commission += commission.calc(nhmonth, self.ratio)
+            self.admin_commission += commission.calc(self.year, self.month, self.ratio)
         if self.nhemployee.nhcbranchincome:
             commission = restore_object(self.nhemployee.nhcbranchincome, restore_date)
-            self.admin_commission += commission.calc(nhmonth, self.ratio)
+            self.admin_commission += commission.calc(self.year, self.month, self.ratio)
     def __init__(self, *args, **kw):
         super(NHEmployeeSalary, self).__init__(*args, **kw)
         '''
@@ -2779,11 +2799,9 @@ class Deal(models.Model):
     class Meta:
         db_table = 'Deal'
 
-
 class ChangeLogManager(models.Manager):
     def object_changelog(obj):
-        return self.filter(object_type = obj.__class__.name,
-                           object_id = obj.id)
+        return self.filter(object_type = obj.__class__.name, object_id = obj.id)
 
 class ChangeLog(models.Model):
     date = models.DateTimeField(auto_now_add=True)
@@ -2855,3 +2873,8 @@ def track_changes(sender, **kwargs):
         cl.save()
 
 pre_save.connect(track_changes)
+
+for nhcb in NHCBase.objects.all():
+    nhcb.nhbranch = nhcb.nhemployee.nhbranch
+for nhcbi in NHCBranchIncome.objects.all():
+    nhcbi.nhbranch = nhcbi.nhemployee.nhbranch
