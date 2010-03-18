@@ -2876,5 +2876,7 @@ pre_save.connect(track_changes)
 
 for nhcb in NHCBase.objects.all():
     nhcb.nhbranch = nhcb.nhemployee.nhbranch
+    nhcb.save()
 for nhcbi in NHCBranchIncome.objects.all():
     nhcbi.nhbranch = nhcbi.nhemployee.nhbranch
+    nhcb.save()
