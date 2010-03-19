@@ -633,7 +633,8 @@ class NHCommission(models.Model):
     nhemployee = models.ForeignKey('NHEmployee', verbose_name = ugettext('nhemployee'))
     name = models.CharField(max_length=30)
     
-    left_filter = models.ForeignKey('NHSaleFilter', verbose_name=ugettext('filter'), related_name='left_nhcommission_set')
+    left_filter = models.ForeignKey('NHSaleFilter', verbose_name=ugettext('filter'), related_name='left_nhcommission_set', 
+                                    null=True, blank=True)
     left_income_type = models.ForeignKey('IncomeType', null=True, blank=True, related_name='left_nhcommission_set')
     operator = models.ForeignKey('Operator', null=True, blank=True)
     left_amount = models.FloatField(null=True, blank=True)
@@ -655,19 +656,19 @@ class NHCommission(models.Model):
         # filter : either employee1, employee2, employee3 is self.nhemployee
         q = models.Q(employee1 = self.nhemployee) | models.Q(employee2 = self.nhemployee) | models.Q(employee3 = self.nhemployee)
         
-#        def get_income(self, nhss):
-#            if self.left_income_type_id == NHIncomeType.Total:
-#                income = nhss.net_income
-#            elif self.left_income_type_id == NHIncomeType.Relative:
-#                self_pay = nhss.get_employee_pay(self.nhemployee)
-#                all_pay = nhss.all_employee_commission
-#                if self.left_filter_id == NHSaleFilter.His:
-#                    income = self_pay / all_pay * nhss.net_income
-#                elif self.left_filter_id == NHSaleFilter.NotHis:
-#                    income = (all_pay-self_pay) / all_pay * nhss.net_income
-#                elif self.left_filter_id == NHSaleFilter.All:
-#                    income = nhss.net_income
-#            return income
+        def get_income(self, nhss):
+            if self.left_income_type_id == NHIncomeType.Total:
+                income = nhss.net_income
+            elif self.left_income_type_id == NHIncomeType.Relative:
+                self_pay = nhss.get_employee_pay(self.nhemployee)
+                all_pay = nhss.all_employee_commission
+                if self.left_filter_id == NHSaleFilter.His:
+                    income = self_pay / all_pay * nhss.net_income
+                elif self.left_filter_id == NHSaleFilter.NotHis:
+                    income = (all_pay-self_pay) / all_pay * nhss.net_income
+                elif self.left_filter_id == NHSaleFilter.All:
+                    income = nhss.net_income
+            return income
         
         if self.left_filter:
             if self.left_filter_id == NHSaleFilter.His:
