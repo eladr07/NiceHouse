@@ -248,14 +248,6 @@ class CZilberForm(forms.ModelForm):
     class Meta:
         model = CZilber
 
-class NHCBaseForm(forms.ModelForm):
-    class Meta:
-        model = NHCBase
-        
-class NHCBranchIncomeForm(forms.ModelForm):
-    class Meta:
-        model = NHCBranchIncome
-
 class CByPriceForm(forms.ModelForm):
     def save(self, *args, **kw):
         if self.instance.price == 0:

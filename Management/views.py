@@ -2440,22 +2440,7 @@ def employee_end(request, object_id):
         
     return render_to_response('Management/object_edit.html',
                               {'form' : form}, context_instance=RequestContext(request))
-    
-@permission_required('Management.change_nhcbase')
-def nhemployee_nhcb(request, employee_id):
-    employee = NHEmployee.objects.get(pk = employee_id)
-    nhcb = employee.nhcbase or NHCBase()
-    if request.method=='POST':
-        form = NHCBaseForm(request.POST, instance = nhcb)
-        if form.is_valid():
-            employee.nhcbase = form.save()
-            employee.save() 
-    else:
-        form = NHCBaseForm(instance = nhcb)
-    
-    return render_to_response('Management/object_edit.html',
-                              {'form' : form}, context_instance=RequestContext(request))
-    
+
 @permission_required('Management.change_nhcbranchincome')
 def nhemployee_nhcbi(request, employee_id):
     employee = NHEmployee.objects.get(pk = employee_id)

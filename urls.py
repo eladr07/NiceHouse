@@ -161,10 +161,15 @@ urlpatterns += patterns('Management.views',
      {'model':EmployeeBase}),
     (r'^nhemployees/(?P<id>\d+)/account$', 'employee_account',
      {'model':EmployeeBase}),
-    (r'^nhemployees/(?P<employee_id>\d+)/nhcb$', 'nhemployee_nhcb'),
+     
+    (r'^nhcbi/add$', 'limited_create_object',
+     {'model' : Management.models.NHCommission, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '%(id)s'}),
+    (r'^nhcbi/(?P<object_id>\d+)$', 'limited_update_object',
+     {'model' : Management.models.NHCommission, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '%(id)s'}),
+    (r'^nhcbi/(?P<object_id>\d+)/del$', 'limited_delete_object',
+     {'model' : Management.models.NHCommission, 'post_delete_redirect':'/nhemployee/%(nhemployee_id)'}),
+     
     (r'^nhemployees/(?P<employee_id>\d+)/nhcbi$', 'nhemployee_nhcbi'),
-    (r'^nhemployees/(?P<employee_id>\d+)/nhcb/del$', 'nhemployee_commission_del',
-     {'attr':'nhcbase'}),
     (r'^nhemployees/(?P<employee_id>\d+)/nhcbi/del$', 'nhemployee_commission_del',
      {'attr':'nhcbranchincome'}),
      

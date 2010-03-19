@@ -120,45 +120,11 @@
 		</fieldset>
 		<fieldset class="cardFieldset">
 			<legend>עמלות</legend>
-			{% if form.instance.nhcbase %}
-			<div>
-				{{form.instance.nhcbase.precentage}}% 
-				מהכנסה 
-				{{form.instance.nhcbase.income_type}} 
-				של מכירות 
-				{{form.instance.nhcbase.filter}}.
-				מינימום של 
-				{{form.instance.nhcbase.min|commaise}} ש"ח
-				<a href="nhcb" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
-				<a href="nhcb/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
-			</div>
-			{% endif %}
-			{% if form.instance.nhcbranchincome %}
-			<div>
-				אם ההכנסות מהמכירות 
-				{{form.instance.nhcbranchincome.filter}} 
-				עוברות 
-				{{form.instance.nhcbranchincome.if_income}}, 
-				אז 
-				{{form.instance.nhcbranchincome.then_precentage}}%.
-				אחרת 
-				{{form.instance.nhcbranchincome.else_amount|commaise}} ש"ח.				
-				<a href="nhcbi" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
-				<a href="nhcbi/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
-			</div>
-			{% endif %}
-			{% if not form.instance.nhcbase %}
-			<div>
-				עמלה בסיסית
-				<a href="nhcb" class="fancybox"><img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" /></a> 
-			</div>
-			{% endif %}
-			{% if not form.instance.nhcbranchincome %}
-			<div>
-				עמלה למכירות סניף
-				<a href="nhcbi" class="fancybox"><img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" /></a> 
-			</div>
-			{% endif %}
+			{% for nhc in form.instance.nhcommission_set.all %}
+				<a href="/nhcbi/add" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+				<a href="{{nhc.get_absolute_url}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+			{% endfor %}
+			<a href="/nhcbi/add" class="fancybox"><img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" /></a>
 		</fieldset>
 		<fieldset class="cardFieldset">
 			<legend>הלוואות</legend>
