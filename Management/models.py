@@ -656,7 +656,7 @@ class NHCommission(models.Model):
         # filter : either employee1, employee2, employee3 is self.nhemployee
         q = models.Q(employee1 = self.nhemployee) | models.Q(employee2 = self.nhemployee) | models.Q(employee3 = self.nhemployee)
         
-        def get_income(self, nhss):
+        def get_income(nhss):
             if self.left_income_type_id == NHIncomeType.Total:
                 income = nhss.net_income
             elif self.left_income_type_id == NHIncomeType.Relative:
