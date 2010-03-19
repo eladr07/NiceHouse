@@ -656,17 +656,17 @@ class NHCommission(models.Model):
         # filter : either employee1, employee2, employee3 is self.nhemployee
         q = models.Q(employee1 = self.nhemployee) | models.Q(employee2 = self.nhemployee) | models.Q(employee3 = self.nhemployee)
         
-        def get_income(nhss):
-            if self.left_income_type_id == NHIncomeType.Total:
+        def get_income(nhss, income_type_id, filter_id):
+            if income_type_id == NHIncomeType.Total:
                 income = nhss.net_income
-            elif self.left_income_type_id == NHIncomeType.Relative:
+            elif income_type_id == NHIncomeType.Relative:
                 self_pay = nhss.get_employee_pay(self.nhemployee)
                 all_pay = nhss.all_employee_commission
-                if self.left_filter_id == NHSaleFilter.His:
+                if filter_id == NHSaleFilter.His:
                     income = self_pay / all_pay * nhss.net_income
-                elif self.left_filter_id == NHSaleFilter.NotHis:
+                elif filter_id == NHSaleFilter.NotHis:
                     income = (all_pay-self_pay) / all_pay * nhss.net_income
-                elif self.left_filter_id == NHSaleFilter.All:
+                elif filter_id == NHSaleFilter.All:
                     income = nhss.net_income
             return income
         
@@ -681,7 +681,7 @@ class NHCommission(models.Model):
             if self.left_amount and self.left_income_type:
                 sales_income = 0
                 for nhss in sales_query:
-                    income = get_income(nhss)
+                    income = get_income(nhss, left_income_type_id, left_filter_id)
                     sales_income += income * ratio
                 if self.operator_id == Operator.gt and sales_income < self.left_amount:
                     return 0
@@ -701,7 +701,7 @@ class NHCommission(models.Model):
             sales_query = branch_sales_query
 
         for nhss in sales_query:
-            income = get_income(nhss)
+            income = get_income(nhss, right_income_type_id, right_filter_id)
             scds.append(NHSaleCommissionDetail(nhemployeesalary = es,nhsaleside = nhss, commission = self.name,
                                                amount = income * self.right_amount / 100 * ratio,
                                                precentage = self.right_amount, income = income))
