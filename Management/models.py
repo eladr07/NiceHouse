@@ -681,7 +681,7 @@ class NHCommission(models.Model):
             if self.left_amount and self.left_income_type:
                 sales_income = 0
                 for nhss in sales_query:
-                    income = get_income(nhss, left_income_type_id, left_filter_id)
+                    income = get_income(nhss, self.left_income_type_id, self.left_filter_id)
                     sales_income += income * ratio
                 if self.operator_id == Operator.gt and sales_income < self.left_amount:
                     return 0
@@ -701,7 +701,7 @@ class NHCommission(models.Model):
             sales_query = branch_sales_query
 
         for nhss in sales_query:
-            income = get_income(nhss, right_income_type_id, right_filter_id)
+            income = get_income(nhss, self.right_income_type_id, self.right_filter_id)
             scds.append(NHSaleCommissionDetail(nhemployeesalary = es,nhsaleside = nhss, commission = self.name,
                                                amount = income * self.right_amount / 100 * ratio,
                                                precentage = self.right_amount, income = income))
