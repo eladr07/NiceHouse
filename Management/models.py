@@ -633,13 +633,13 @@ class NHCommission(models.Model):
     nhemployee = models.ForeignKey('NHEmployee', verbose_name = ugettext('nhemployee'))
     name = models.CharField(max_length=30)
     
-    left_filter = models.ForeignKey('NHSaleFilter', verbose_name=ugettext('filter'))
-    left_income_type = models.ForeignKey('IncomeType', null=True, blank=True)
+    left_filter = models.ForeignKey('NHSaleFilter', verbose_name=ugettext('filter'), related_name='left_nhcommission_set')
+    left_income_type = models.ForeignKey('IncomeType', null=True, blank=True, related_name='left_nhcommission_set')
     operator = models.ForeignKey('Operator', null=True, blank=True)
     left_amount = models.FloatField(null=True, blank=True)
     
-    right_filter = models.ForeignKey('NHSaleFilter', verbose_name=ugettext('filter'))
-    right_income_type = models.ForeignKey('IncomeType')
+    right_filter = models.ForeignKey('NHSaleFilter', verbose_name=ugettext('filter'), related_name='right_nhcommission_set')
+    right_income_type = models.ForeignKey('IncomeType', related_name='right_nhcommission_set')
     right_amount = models.FloatField()
     right_amount_type = models.ForeignKey('AmountType')
     
