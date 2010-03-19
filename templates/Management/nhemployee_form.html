@@ -121,7 +121,7 @@
 		<fieldset class="cardFieldset">
 			<legend>עמלות</legend>
 			{% for nhc in form.instance.nhcommission_set.all %}
-				<a href="/nhcbi/add" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+				<a href="{{nhc.get_absolute_url}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
 				<a href="{{nhc.get_absolute_url}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
 			{% endfor %}
 			<a href="/nhcbi/add" class="fancybox"><img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" /></a>
