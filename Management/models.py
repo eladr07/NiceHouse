@@ -655,19 +655,19 @@ class NHCommission(models.Model):
         # filter : either employee1, employee2, employee3 is self.nhemployee
         q = models.Q(employee1 = self.nhemployee) | models.Q(employee2 = self.nhemployee) | models.Q(employee3 = self.nhemployee)
         
-        def get_income(self, nhss):
-            if self.left_income_type_id == NHIncomeType.Total:
-                income = nhss.net_income
-            elif self.left_income_type_id == NHIncomeType.Relative:
-                self_pay = nhss.get_employee_pay(self.nhemployee)
-                all_pay = nhss.all_employee_commission
-                if self.left_filter_id == NHSaleFilter.His:
-                    income = self_pay / all_pay * nhss.net_income
-                elif self.left_filter_id == NHSaleFilter.NotHis:
-                    income = (all_pay-self_pay) / all_pay * nhss.net_income
-                elif self.left_filter_id == NHSaleFilter.All:
-                    income = nhss.net_income
-            return income
+#        def get_income(self, nhss):
+#            if self.left_income_type_id == NHIncomeType.Total:
+#                income = nhss.net_income
+#            elif self.left_income_type_id == NHIncomeType.Relative:
+#                self_pay = nhss.get_employee_pay(self.nhemployee)
+#                all_pay = nhss.all_employee_commission
+#                if self.left_filter_id == NHSaleFilter.His:
+#                    income = self_pay / all_pay * nhss.net_income
+#                elif self.left_filter_id == NHSaleFilter.NotHis:
+#                    income = (all_pay-self_pay) / all_pay * nhss.net_income
+#                elif self.left_filter_id == NHSaleFilter.All:
+#                    income = nhss.net_income
+#            return income
         
         if self.left_filter:
             if self.left_filter_id == NHSaleFilter.His:
