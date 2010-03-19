@@ -1090,7 +1090,7 @@ class NHEmployeeSalary(EmployeeSalaryBase):
         for nhcbi in self.nhemployee.nhcommission_set.all():
             commission = restore_object(nhcbi, restore_date)
             commission_res = commission.calc(self.year, self.month, self.ratio)
-            scds.append(commission_res)
+            scds.extend(commission_res)
         
         total_scds_amount = 0
         for scd in scds:
