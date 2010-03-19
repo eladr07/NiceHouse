@@ -618,7 +618,7 @@ class Operator(models.Model):
         db_table = 'Operator'
 
 class AmountType(models.Model):
-    amount, precentage = 1,2
+    Amount, Precentage = 1,2
     name = models.CharField(max_length = 20, unique=True)
     def __unicode__(self):
         return unicode(self.name)
@@ -682,14 +682,14 @@ class NHCommission(models.Model):
                 for nhss in sales_query:
                     income = get_income(nhss)
                     sales_income += income * ratio
-                if self.operator == 'gte' and sales_income < self.left_amount:
+                if self.operator_id == Operator.gt and sales_income < self.left_amount:
                     return 0
-                if self.operator == 'lte' and sales_income > self.left_amount:
+                if self.operator_id == Operator.lt and sales_income > self.left_amount:
                     return 0
             else:
                 raise CommissionError('missing one of (left_amount, left_income_type)')
         
-        if self.right_amount_type == 1:
+        if self.right_amount_type_id == AmountType.Amount:
             return [NHSaleCommissionDetail(nhemployeesalary = es, commission = self.name, amount = self.right_amount)]
         
         if self.right_filter_id == NHSaleFilter.His:
