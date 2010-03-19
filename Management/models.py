@@ -625,7 +625,7 @@ class AmountType(models.Model):
     class Meta:
         db_table = 'AmountType'
 
-class CommissionError(Error):
+class CommissionException(Exception):
     pass
 
 class NHCommission(models.Model):
