@@ -631,17 +631,19 @@ class CommissionException(Exception):
 class NHCommission(models.Model):
     nhbranch = models.ForeignKey('NHBranch', verbose_name = ugettext('nhbranch'))
     nhemployee = models.ForeignKey('NHEmployee', verbose_name = ugettext('nhemployee'))
-    name = models.CharField(max_length=30)
+    name = models.CharField(ugettext('name'), max_length=30)
     
     left_filter = models.ForeignKey('NHSaleFilter', verbose_name=ugettext('filter'), related_name='left_nhcommission_set', 
                                     null=True, blank=True)
-    left_income_type = models.ForeignKey('NHIncomeType', null=True, blank=True, related_name='left_nhcommission_set')
-    operator = models.ForeignKey('Operator', null=True, blank=True)
-    left_amount = models.FloatField(null=True, blank=True)
+    left_income_type = models.ForeignKey('NHIncomeType', verbose_name=ugettext('income_type') , null=True, blank=True, 
+                                         related_name='left_nhcommission_set')
+    operator = models.ForeignKey('Operator', verbose_name=ugettext('operator'), null=True, blank=True)
+    left_amount = models.FloatField(ugettext('value'), null=True, blank=True)
     
     right_filter = models.ForeignKey('NHSaleFilter', verbose_name=ugettext('filter'), related_name='right_nhcommission_set', null=True, blank=True)
-    right_income_type = models.ForeignKey('NHIncomeType', related_name='right_nhcommission_set', null=True, blank=True)
-    right_amount = models.FloatField()
+    right_income_type = models.ForeignKey('NHIncomeType', verbose_name=ugettext('income_type'), 
+                                          related_name='right_nhcommission_set', null=True, blank=True)
+    right_amount = models.FloatField(ugettext('value'))
     right_amount_type = models.ForeignKey('AmountType')
     
     def calc(self, year, month, ratio = 1):
