@@ -121,8 +121,25 @@
 		<fieldset class="cardFieldset">
 			<legend>עמלות</legend>
 			{% for nhc in form.instance.nhcommission_set.all %}
+				<b><u>{{nhc.name}}</b></u>
+				{% if nhc.left_filter %}
+					אם ההכנסה ה
+					{{nhc.income_type}} 
+					ממכירות 
+					{{nhc.left_filter}} 
+					{{nhc.operator}} {{nhc.left_amount}} 
+					אז
+				{% endif %}
+				{{nhc.right_amount}} {{nhc.right_amount_type}} 
+				{% if nhc.right_filter %}
+					מההכנסה ה 
+					{{nhc.right_income_type}}
+					ממכירות 
+					{{nhc.right_filter}}
+				{% endif %}
 				<a href="{{nhc.get_absolute_url}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
 				<a href="{{nhc.get_absolute_url}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+				<br>
 			{% endfor %}
 			<a href="/nhcbi/add" class="fancybox"><img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" /></a>
 		</fieldset>

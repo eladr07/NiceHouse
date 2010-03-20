@@ -644,7 +644,7 @@ class NHCommission(models.Model):
     right_income_type = models.ForeignKey('NHIncomeType', verbose_name=ugettext('income_type'), 
                                           related_name='right_nhcommission_set', null=True, blank=True)
     right_amount = models.FloatField(ugettext('value'))
-    right_amount_type = models.ForeignKey('AmountType')
+    right_amount_type = models.ForeignKey(ugettext('value'), 'AmountType')
     
     def calc(self, year, month, ratio = 1):
         es = NHEmployeeSalary.objects.get(nhemployee = self.nhemployee, year = year, month = month)
