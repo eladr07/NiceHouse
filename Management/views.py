@@ -581,16 +581,7 @@ def nhemployee_salary_pdf(request, nhbranch_id, year, month):
     response['Content-Disposition'] = 'attachment; filename=' + filename
     
     nhb = NHBranch.objects.get(pk = nhbranch_id)
-    salaries = []
-    for e in NHEmployee.objects.active():
-        if e.nhbranch != nhb:
-            continue
-        query = NHEmployeeSalary.objects.filter(nhemployee = e, month = month, year = year)
-        if query.count() == 0:
-            continue
-        salary = query[0]
-        if salary.approved_date:
-            salaries.append(salary)
+    salaries = [salary for salary in NHEmployeeSalary.objects.filter(nhbranch = nhb, month = month, year = year) if salary.approved_date]
 
     nhsales = NHSale.objects.filter(nhmonth__year__exact = year, nhmonth__month__exact = month, nhmonth__nhbranch = nhb)
     title = u'שכר עבודה לסניף %s לחודש %s\%s' % (nhb, year, month)
@@ -810,11 +801,7 @@ def nh_season_profit(request):
                 nhm.include_tax = False
                 salary_expenses = 0
                 #collect all employee expenses for this month
-                for nhemployee in nhm.nhbranch.nhemployees:
-                    query = NHEmployeeSalary.objects.filter(nhemployee = nhemployee, year = nhm.year, month = nhm.month)
-                    if query.count() == 0:
-                        continue
-                    salary = query[0]
+                for salary in NHEmployeeSalary.objects.filter(nhbranch = nhm.nhbranch, year = nhm.year, month = nhm.month):
                     salary_expenses += salary.check_amount or 0
                 #calculate commulative sales prices for this month
                 sales_worth = 0
