@@ -685,12 +685,6 @@ def nh_salary_expenses_list(request):
                                'filterForm':MonthForm(initial={'year':year,'month':month})},
                                context_instance=RequestContext(request))
 
-for es in NHEmployeeSalary.objects.all():
-    q = NHBranchEmployee.objects.month(es.year, es.month).filter(nhemployee = es.nhemployee)
-    if q:
-        es.nhbranch = q[0].nhbranch
-        es.save()
-
 @permission_required('Management.list_nhemployeesalary')
 def nhemployee_salary_list(request):
     current = Demand.current_month()
