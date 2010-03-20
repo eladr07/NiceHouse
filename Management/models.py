@@ -713,6 +713,13 @@ class NHCommission(models.Model):
     class Meta:
         db_table = 'NHCommission'
 
+class NHBranchEmployeeManager(models.Manager):
+    def month(self, year, month):
+        start_date = date(year, month, 1)
+        end_date = date(month == 12 and year + 1 or year, month == 12 and 1 or month + 1, 1)
+        q = models.Q(start_date__lt = start_date) & (models.Q(end_date__isnull = True) | models.Q(end_date__gte = end_date))
+        return self.filter(q)
+
 class NHBranchEmployee(models.Model):
     nhbranch = models.ForeignKey('NHBranch', verbose_name = ugettext('nhbranch'))
     nhemployee = models.ForeignKey('NHEmployee', verbose_name = ugettext('nhemployee'))
@@ -720,12 +727,14 @@ class NHBranchEmployee(models.Model):
     start_date = models.DateField(ugettext('start_date'))
     end_date = models.DateField(ugettext('end_date'), null = True, blank = True)
 
+    objects = NHBranchEmployeeManager()
+
     def get_absolute_url(self):
         return '/nhbranchemployee/%s' % self.id
     class Meta:
         db_table = 'NHBranchEmployee'
         get_latest_by = 'start_date'
-        ordering = ['start_date']
+        ordering = ['nhbranch','start_date']
 
 class NHBranch(models.Model):
     Shoham, Modiin, NesZiona = 1, 2, 3
@@ -767,11 +776,6 @@ class NHBranch(models.Model):
 class NHEmployee(EmployeeBase):
     objects = NHEmployeeManager()
 
-    def get_nhbranches(self, year, month):
-        start_date = date(year, month, 1)
-        end_date = date(month == 12 and year + 1 or year, month == 12 and 1 or month + 1, 1)
-        q = models.Q(start_date__lt = start_date) & (models.Q(end_date__isnull = True) | models.Q(end_date__gte = end_date))
-        return self.nhbranchemployee_set.filter(q)
     def get_open_reminders(self):
         return [r for r in self.reminders.all() if r.statuses.latest().type.id 
                 not in (ReminderStatusType.Deleted,ReminderStatusType.Done)]
@@ -1040,6 +1044,7 @@ class EmployeeSalaryBase(models.Model):
 
 class NHEmployeeSalary(EmployeeSalaryBase):
     nhemployee = models.ForeignKey('NHEmployee', verbose_name=ugettext('nhemployee'), related_name='salaries')
+    nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'), null=True)
     admin_commission = models.IntegerField(editable=False, null=True)
     
     objects = SeasonManager()
@@ -1064,13 +1069,14 @@ class NHEmployeeSalary(EmployeeSalaryBase):
             scd.delete()
         self.admin_commission, self.commissions, self.base = 0, 0, 0
         
-        #base query for the sale side objects. later on we filter by different criteria
-        month_salesides = NHSaleSide.objects.filter(nhsale__nhmonth__year__exact = self.year,
-                                                    nhsale__nhmonth__month__exact = self.month)
         # get all sales where either employee1, employee2, employee3, director is self.nhemployee
         q = models.Q(employee1 = self.nhemployee) | models.Q(employee2 = self.nhemployee) | models.Q(employee3 = self.nhemployee) | models.Q(director = self.nhemployee)
         
-        for nhss in month_salesides.filter(q):
+        sales_query = NHSaleSide.objects.filter(q, nhsale__nhmonth__year__exact = self.year,
+                                                nhsale__nhmonth__month__exact = self.month,
+                                                nhsale__nhmonth__nhbranch = self.nhbranch)
+        
+        for nhss in sales_query:
             pay = nhss.get_employee_pay(self.nhemployee) * self.ratio
             commission = nhss.get_employee_commission(self.nhemployee) * self.ratio
             self.commissions += pay
@@ -1079,7 +1085,7 @@ class NHEmployeeSalary(EmployeeSalaryBase):
 
         scds = []
         restore_date = date(self.year, self.month, 1)
-        for nhcbi in self.nhemployee.nhcommission_set.all():
+        for nhcbi in self.nhemployee.nhcommission_set.filter(nhbranch = self.nhbranch):
             commission = restore_object(nhcbi, restore_date)
             commission_res = commission.calc(self.year, self.month, self.ratio)
             if commission_res:

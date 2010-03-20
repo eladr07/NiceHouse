@@ -685,6 +685,12 @@ def nh_salary_expenses_list(request):
                                'filterForm':MonthForm(initial={'year':year,'month':month})},
                                context_instance=RequestContext(request))
 
+for es in NHEmployeeSalary.objects.all():
+    q = NHBranchEmployee.objects.month(es.year, es.month).filter(nhemployee = es.nhemployee)
+    if q:
+        es.nhbranch = q[0].nhbranch
+        es.save()
+
 @permission_required('Management.list_nhemployeesalary')
 def nhemployee_salary_list(request):
     current = Demand.current_month()
@@ -693,15 +699,14 @@ def nhemployee_salary_list(request):
     
     branch_list = {}
     
-    for nhbranch in NHBranch.objects.all():
-        salaries = []
-        for e in nhbranch.nhemployees:
-            es, new = NHEmployeeSalary.objects.get_or_create(nhemployee = e, month = month, year = year)
-            if new or not es.commissions or not es.base or not es.admin_commission: 
-                es.calculate()
-                es.save()
-            salaries.append(es)
-        branch_list[nhbranch] = salaries
+    for nhbe in NHBranchEmployee.objects.month(year, month):
+        es, new = NHEmployeeSalary.objects.get_or_create(nhemployee = nhbe.nhemployee, nhbranch = nhbe.nhbranch,
+                                                         month = month, year = year)
+        if new or not es.commissions or not es.base or not es.admin_commission: 
+            es.calculate()
+            es.save()
+        branch_sales = branch_list.setdefault(nhbe.nhbranch, [])
+        branch_sales.append(es)
 
     return render_to_response('Management/nhemployee_salaries.html', 
                               {'branch_list':branch_list, 'month': date(int(year), int(month), 1),
@@ -2440,31 +2445,6 @@ def employee_end(request, object_id):
         
     return render_to_response('Management/object_edit.html',
                               {'form' : form}, context_instance=RequestContext(request))
-
-@permission_required('Management.change_nhcbranchincome')
-def nhemployee_nhcbi(request, employee_id):
-    employee = NHEmployee.objects.get(pk = employee_id)
-    nhcb = employee.nhcbranchincome or NHCBranchIncome()
-    if request.method=='POST':
-        form = NHCBranchIncomeForm(request.POST, instance = nhcb)
-        if form.is_valid():
-            employee.nhcbranchincome = form.save() 
-            employee.save()
-    else:
-        form = NHCBranchIncomeForm(instance = nhcb)
-    
-    return render_to_response('Management/object_edit.html',
-                              {'form' : form}, context_instance=RequestContext(request))
-
-def nhemployee_commission_del(request, employee_id, attr):
-    employee = NHEmployee.objects.get(pk = employee_id)
-    obj = getattr(employee, attr)
-    #unlink commission from employee
-    setattr(c, attr, None)
-    c.save()
-    #delete commission
-    obj.delete()
-    return HttpResponseRedirect('/nhemployees/%s' % employee.id)
 
 @permission_required('Management.add_loan')
 def nhemployee_addloan(request, employee_id):
