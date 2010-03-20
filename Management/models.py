@@ -648,7 +648,6 @@ class NHCommission(models.Model):
         es = NHEmployeeSalary.objects.get(nhemployee = self.nhemployee, year = year, month = month)
         scds = []
         income = 0
-        
         # get all branch sales for this month        
         branch_sales_query = NHSaleSide.objects.filter(nhsale__nhmonth__year__exact = year, 
                                                        nhsale__nhmonth__month__exact = month,
@@ -684,27 +683,28 @@ class NHCommission(models.Model):
                     income = get_income(nhss, self.left_income_type_id, self.left_filter_id)
                     sales_income += income * ratio
                 if self.operator_id == Operator.gt and sales_income < self.left_amount:
-                    return 0
+                    return scds
                 if self.operator_id == Operator.lt and sales_income > self.left_amount:
-                    return 0
+                    return scds
             else:
                 raise CommissionError('missing one of (left_amount, left_income_type)')
         
         if self.right_amount_type_id == AmountType.Amount:
-            return [NHSaleCommissionDetail(nhemployeesalary = es, commission = self.name, amount = self.right_amount)]
-        
-        if self.right_filter_id == NHSaleFilter.His:
-            sales_query = branch_sales_query.filter(q)
-        elif self.right_filter_id == NHSaleFilter.NotHis:
-            sales_query = branch_sales_query.filter(~q)
-        elif self.right_filter_id == NHSaleFilter.All:
-            sales_query = branch_sales_query
-
-        for nhss in sales_query:
-            income = get_income(nhss, self.right_income_type_id, self.right_filter_id)
-            scds.append(NHSaleCommissionDetail(nhemployeesalary = es,nhsaleside = nhss, commission = self.name,
-                                               amount = income * self.right_amount / 100 * ratio,
-                                               precentage = self.right_amount, income = income))
+            scds.append(NHSaleCommissionDetail(nhemployeesalary = es, commission = self.name, amount = self.right_amount))
+        else:        
+            if self.right_filter_id == NHSaleFilter.His:
+                sales_query = branch_sales_query.filter(q)
+            elif self.right_filter_id == NHSaleFilter.NotHis:
+                sales_query = branch_sales_query.filter(~q)
+            elif self.right_filter_id == NHSaleFilter.All:
+                sales_query = branch_sales_query
+    
+            for nhss in sales_query:
+                income = get_income(nhss, self.right_income_type_id, self.right_filter_id)
+                income *= ratio
+                scds.append(NHSaleCommissionDetail(nhemployeesalary = es,nhsaleside = nhss, commission = self.name,
+                                                   amount = income * self.right_amount / 100,
+                                                   precentage = self.right_amount, income = income))
         return scds
     def get_absolute_url(self):
         return '/nhcbi/%s' % self.id
