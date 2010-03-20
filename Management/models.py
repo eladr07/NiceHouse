@@ -647,7 +647,6 @@ class NHCommission(models.Model):
     right_amount_type = models.ForeignKey('AmountType', verbose_name=ugettext('value_type'))
     
     def calc(self, year, month, ratio = 1):
-        es = NHEmployeeSalary.objects.get(nhemployee = self.nhemployee, year = year, month = month)
         scds = []
         income = 0
         # get all branch sales for this month        
@@ -692,7 +691,7 @@ class NHCommission(models.Model):
                 raise CommissionError('missing one of (left_amount, left_income_type)')
         
         if self.right_amount_type_id == AmountType.Amount:
-            scds.append(NHSaleCommissionDetail(nhemployeesalary = es, commission = self.name, amount = self.right_amount))
+            scds.append(NHSaleCommissionDetail(commission = self.name, amount = self.right_amount))
         else:        
             if self.right_filter_id == NHSaleFilter.His:
                 sales_query = branch_sales_query.filter(q)
@@ -704,7 +703,7 @@ class NHCommission(models.Model):
             for nhss in sales_query:
                 income = get_income(nhss, self.right_income_type_id, self.right_filter_id)
                 income *= ratio
-                scds.append(NHSaleCommissionDetail(nhemployeesalary = es,nhsaleside = nhss, commission = self.name,
+                scds.append(NHSaleCommissionDetail(nhsaleside = nhss, commission = self.name,
                                                    amount = income * self.right_amount / 100,
                                                    precentage = self.right_amount, income = income))
         return scds
@@ -1101,6 +1100,7 @@ class NHEmployeeSalary(EmployeeSalaryBase):
             self.admin_commission = self.safety_net
         else:
             for scd in scds:
+                scd.nhemployeesalary = self
                 scd.save()
             self.admin_commission = total_scds_amount
 
