@@ -3293,13 +3293,8 @@ def global_profit_lost(request):
                     elif division.id == DivisionType.NHNesZiona:
                         nhbranch = NHBranch.objects.get(pk = NHBranch.NesZiona)
                     
-                    salaries = []
+                    salaries = NHEmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhbranch = nhbranch)
                     nhmonths = NHMonth.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhbranch = nhbranch)
-                    base_nhemployee_query = NHEmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
-
-                    for nhemployee in nhbranch.all_nhemployees:
-                        query = base_nhemployee_query.filter(nhemployee = nhemployee)
-                        salaries.extend(query)
                     
                     nhmonths_amount, salary_amount = 0,0
                     for nhmonth in nhmonths:
