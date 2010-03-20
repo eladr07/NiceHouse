@@ -1067,25 +1067,15 @@ class NHEmployeeSalary(EmployeeSalaryBase):
         #base query for the sale side objects. later on we filter by different criteria
         month_salesides = NHSaleSide.objects.filter(nhsale__nhmonth__year__exact = self.year,
                                                     nhsale__nhmonth__month__exact = self.month)
+        # get all sales where either employee1, employee2, employee3, director is self.nhemployee
+        q = models.Q(employee1 = self.nhemployee) | models.Q(employee2 = self.nhemployee) | models.Q(employee3 = self.nhemployee) | models.Q(director = self.nhemployee)
         
-        for nhss in month_salesides.filter(employee1=self.nhemployee):
-            pay = nhss.employee1_pay * self.ratio
-            commission = nhss.employee1_commission * self.ratio
+        for nhss in month_salesides.filter(q):
+            pay = nhss.get_employee_pay(self.nhemployee) * self.ratio
+            commission = nhss.get_employee_commission(self.nhemployee) * self.ratio
             self.commissions += pay
             NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss, commission='base', amount = pay,
                                                   precentage = commission, income = nhss.net_income)
-        for nhss in month_salesides.filter(employee2=self.nhemployee):
-            pay = (nhss.employee2_pay or 0) * self.ratio
-            commission = (nhss.employee2_commission or 0) * self.ratio
-            self.commissions += pay
-            NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss, commission='base', amount = pay,
-                                                  precentage = commission, income = nhss.net_income)
-        for nhss in month_salesides.filter(employee3=self.nhemployee):
-            pay = (nhss.employee3_pay or 0) * self.ratio
-            commission = (nhss.employee3_commission or 0) * self.ratio
-            self.commissions += pay
-            NHSaleCommissionDetail.objects.create(nhemployeesalary=self, nhsaleside=nhss, commission='base', 
-                                                  amount = pay, precentage = commission, income = nhss.net_income)
 
         scds = []
         restore_date = date(self.year, self.month, 1)
@@ -2243,6 +2233,15 @@ class NHSaleSide(models.Model):
                 if e_pay: 
                     pay += e_pay
         return pay
+    def get_employee_commission(self, employee):
+        commission = 0
+        for attr in ['employee1','employee2', 'employee3', 'director']:
+            e = getattr(self, attr)
+            if e == employee:
+                e_commission = getattr(self, attr + '_commission')
+                if e_commission: 
+                    commission += e_commission
+        return commission
     def save(self,*args, **kw):
         if not self.income and self.actual_commission:
             self.income = self.nhsale.price * self.actual_commission / 100
