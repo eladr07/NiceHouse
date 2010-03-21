@@ -683,6 +683,7 @@ class NHCommission(models.Model):
                 for nhss in sales_query:
                     income = get_income(nhss, self.left_income_type_id, self.left_filter_id)
                     sales_income += income * ratio
+                raise TypeError
                 if self.operator_id == Operator.gt and sales_income < self.left_amount:
                     return scds
                 if self.operator_id == Operator.lt and sales_income > self.left_amount:
