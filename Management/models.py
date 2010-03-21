@@ -1093,10 +1093,9 @@ class NHEmployeeSalary(EmployeeSalaryBase):
         total_scds_amount = 0
         for scd in scds:
             total_scds_amount += scd.amount
-        raise TypeError
-        if total_scds_amount < self.safety_net:
-            NHSaleCommissionDetail.objects.create(nhemployeesalary = self, commission = 'safety_net', amount = self.safety_net)
-            self.admin_commission = self.safety_net
+        
+        if total_scds_amount < terms.safety:
+            self.safety_net = terms.safety
         else:
             for scd in scds:
                 scd.nhemployeesalary = self
