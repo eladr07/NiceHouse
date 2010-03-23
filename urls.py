@@ -168,11 +168,7 @@ urlpatterns += patterns('Management.views',
      {'model' : Management.models.NHCommission, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '%(id)s'}),
     (r'^nhcbi/(?P<object_id>\d+)/del$', 'limited_delete_object',
      {'model' : Management.models.NHCommission, 'post_delete_redirect':'/nhemployee/%(nhemployee_id)'}),
-     
-    (r'^nhemployees/(?P<employee_id>\d+)/nhcbi$', 'nhemployee_nhcbi'),
-    (r'^nhemployees/(?P<employee_id>\d+)/nhcbi/del$', 'nhemployee_commission_del',
-     {'attr':'nhcbranchincome'}),
-     
+          
     (r'^reminder/(?P<object_id>\d+)$', 'limited_update_object',
      {'form_class' : Management.forms.ReminderForm, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '%(id)s'}),
     (r'^reminder/(?P<id>\d+)/del$', 'reminder_del'),
