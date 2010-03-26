@@ -2314,7 +2314,7 @@ def building_addhouse(request, type_id, building_id):
         if form.is_valid():
             form.save(type_id)
             if request.POST.has_key('addanother'):
-                next_url = reverse(building_addhouse, args=[type_id, building_id])
+                next_url = reverse(building_addhouse, args=[building_id, type_id])
             elif request.POST.has_key('finish'):
                 next_url = reverse(building_pricelist, args=[type_id])
             else:
