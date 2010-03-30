@@ -1183,6 +1183,12 @@ class EmployeeSalary(EmployeeSalaryBase):
             self.remarks = u'לעובד לא הוגדרו תנאי העסקה!'
             return
         self.commissions = 0
+        self.safety_net = self.sales_count == 0 and terms.safety or None
+        if self.year == self.employee.work_start.year and self.month == self.employee.work_start.month:
+            self.base = float(30 - self.employee.work_start.day) / 30 * terms.salary_base 
+        else:
+            self.base = terms.salary_base
+
         for project, sales in self.sales.items():
             q = self.employee.commissions.filter(project__id = project.id)
             if q.count() == 0: continue

@@ -632,7 +632,7 @@ def employee_salary_list(request):
     salaries = []
     today = date.today()
     if date(year, month, 1) <= today:
-        for e in Employee.objects.active():
+        for e in Employee.objects.all():
             terms = e.employment_terms
             if not terms:
                 continue
@@ -641,13 +641,6 @@ def employee_salary_list(request):
             if e.work_end and (year > e.work_end.year or (year == e.work_end.year and month > e.work_end.month)):
                 continue
             es, new = EmployeeSalary.objects.get_or_create(employee = e, month = month, year = year)
-            es.safety_net = es.sales_count == 0 and terms.safety or None
-            if new:
-                if year == e.work_start.year and month == e.work_start.month:
-                    es.base = float(30 - e.work_start.day) / 30 * terms.salary_base 
-                else:
-                    es.base = terms.salary_base
-                es.save()
             salaries.append(es)
     return render_to_response('Management/employee_salaries.html', 
                               {'salaries':salaries, 'month': date(int(year), int(month), 1),
