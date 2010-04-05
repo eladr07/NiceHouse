@@ -435,12 +435,12 @@ class Building(models.Model):
     @cache_method
     def sold_houses(self):
         q = models.Q(is_sold = True) | models.Q(sales__salecancel__isnull = False)
-        query = self.houses.filter(q).annotate(Count('sales')).filter(sales__count = 1)
+        query = self.houses.filter(q).annotate(sales_num = Count('sales')).filter(sales_num = 1)
         return query.all()
         return [h for h in self.houses.all() if h.get_sale() != None or h.is_sold]
     @cache_method
     def signed_houses(self):
-        query = self.houses.filter(signups__cancel__isnull = False).annotate(Count('signups')).filter(signups__count = 1)
+        query = self.houses.filter(signups__cancel__isnull = False).annotate(signups_num = Count('signups')).filter(signups_num = 1)
         return query.all()
         return [h for h in self.houses.all() if h.get_signup() != None]
     @cache_method
