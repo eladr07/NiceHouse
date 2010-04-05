@@ -203,14 +203,17 @@ class Project(models.Model):
     
     def is_zilber(self):
         return self.commissions.c_zilber != None
+    @cachemethod
+    def annotated_demands(self):
+        return self.demands.annotate(invoices_num = Count('invoices'), payments_num = Count('payments'))
     def demands_unpaid(self):
-        return [d for d in self.demands.all() if d.state == DemandUnpaid]
+        return [d for d in self.annotated_demands() if d.invoices_num == 0 and d.payments_num == 0]
     def demands_noinvoice(self):
-        return [d for d in self.demands.all() if d.state == DemandNoInvoice]
+        return [d for d in self.annotated_demands() if d.invoices_num == 0 and d.payments_num > 0]
     def demands_nopayment(self):
-        return [d for d in self.demands.all() if d.state == DemandNoPayment]
+        return [d for d in self.annotated_demands() if d.invoices_num > 0 and d.payments_num == 0]
     def demands_mispaid(self):
-        return [d for d in self.demands.all() if d.state in [DemandPaidPlus, DemandPaidMinus]]
+        return [d for d in self.annotated_demands() if d.invoices_num > 0 and d.payments_num > 0 and d.diff_invoice_payment != 0]
     def current_demand(self):
         try:
             return Demand.objects.current().get(project = self)
@@ -1970,23 +1973,6 @@ class Demand(models.Model):
         return self.sales_commission
     def get_total_amount(self):
         return self.sales_commission + self.diffs_amount
-    @property
-    def state(self):
-        if self.is_fully_paid:
-            return DemandPaid
-        if not self.invoices.count() and not self.payments.count():
-            return DemandUnpaid
-        if not self.invoices.count():
-            return DemandNoInvoice
-        if not self.payments.count():
-            return DemandNoPayment
-        diff = self.diff_invoice_payment
-        if diff == 0:
-            return DemandPaid
-        if diff > 0:
-            return DemandPaidPlus
-        if diff < 0:
-            return DemandPaidMinus
     @property
     def is_fully_paid(self):
         if self.force_fully_paid:
