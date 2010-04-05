@@ -437,15 +437,15 @@ class Building(models.Model):
         q = models.Q(is_sold = True) | models.Q(sales__salecancel__isnull = False)
         query = self.houses.filter(q).annotate(sales_num = Count('sales')).filter(sales_num = 1)
         return query.all()
-        return [h for h in self.houses.all() if h.get_sale() != None or h.is_sold]
     @cache_method
     def signed_houses(self):
         query = self.houses.filter(signups__cancel__isnull = False).annotate(signups_num = Count('signups')).filter(signups_num = 1)
         return query.all()
-        return [h for h in self.houses.all() if h.get_signup() != None]
     @cache_method
     def avalible_houses(self):
-        return [h for h in self.houses.all() if h.get_signup() == None and h.get_sale() == None and not h.is_sold]
+        q = models.Q(is_sold = False) & models.Q(sales__salecancel__isnull = True) & models.Q(signups__cancel__isnull = True)
+        query = self.houses.filter(q).annotate(sales_num = Count('sales'), signups_num = Count('signups')).filter(sales_num = 0, signups_num = 0)
+        return query.all()
     def is_cottage(self):
         return self.type.id == BuildingType.Cottage
     def pricelist_types(self):
