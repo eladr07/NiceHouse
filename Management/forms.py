@@ -905,6 +905,10 @@ class PriceOfferForm(forms.ModelForm):
         model = PriceOffer
 
 class ActivityForm(forms.ModelForm):
+    def __init__(self, *args, **kw):
+        super(ActivityForm, self).__init__(*args, **kw)
+        self.fields['to_date'].widget.attrs = {'class':'vDateField'}
+        self.fields['from_date'].widget.attrs = {'class':'vDateField'}
     class Meta:
         model = Activity
         fields = ['project','employee','from_date','to_date','office_meetings_num','recurring_meetings_num','new_meetings_from_phone_num']
