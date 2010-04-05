@@ -3382,3 +3382,61 @@ def mediareferrals_core(request, instance):
     return render_to_response('Management/object_edit.html', 
                               {'form':form }, 
                               context_instance = RequestContext(request))
+    
+@permission_required('Management.add_event')
+def activitybase_event_add(request, activitybase_id):
+    activity_base = ActivityBase.objects.get(pk = activitybase_id)
+    return event_core(request, Event(activity_base = activity_base))
+    
+@permission_required('Management.change_event')
+def event_edit(request, object_id):
+    obj = Event.objects.get(pk = object_id)
+    return event_core(request, obj)
+
+@permission_required('Management.add_saleprocess')
+def activitybase_saleprocess_add(request, activitybase_id):
+    activity_base = ActivityBase.objects.get(pk = activitybase_id)
+    return saleprocess_core(request, SaleProcess(activity_base = activity_base))
+    
+@permission_required('Management.change_saleprocess')
+def saleprocess_edit(request, object_id):
+    obj = SaleProcess.objects.get(pk = object_id)
+    return saleprocess_core(request, obj)
+
+@permission_required('Management.add_priceoffer')
+def activitybase_priceoffer_add(request, activitybase_id):
+    activity_base = ActivityBase.objects.get(pk = activitybase_id)
+    return priceoffer_core(request, PriceOffer(activity_base = activity_base))
+
+@permission_required('Management.change_priceoffer')
+def priceoffer_edit(request, object_id):
+    obj = PriceOffer.objects.get(pk = object_id)
+    return priceoffer_core(request, obj)
+
+def event_core(request, instance):
+    return object_edit_core(request, EventForm, instance)
+    
+def saleprocess_core(request, instance):
+    return object_edit_core(request, SaleProcessForm, instance)
+    
+def priceoffer_core(request, instance):
+    return object_edit_core(request, PriceOfferForm, instance)
+    
+def object_edit_core(request, form_class, instance,
+                     template_name = 'Management/object_edit.html', 
+                     context_class = RequestContext, 
+                     before_save = None, 
+                     after_save = None):
+    
+    if request.method == 'POST':
+        form = form_class(request.POST, instance = instance)
+        if form.is_valid():
+            if before_save:
+                before_save(form, instance)
+            form.save()
+            if after_save:
+                after_save(form, instance)
+    else:
+        form = form_class(instance = instance)
+        
+    return render_to_response(template_name, {'form':form }, context_instance = context_class(request))
