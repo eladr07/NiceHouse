@@ -207,13 +207,13 @@ class Project(models.Model):
     def annotated_demands(self):
         return self.demands.annotate(invoices_num = Count('invoices'), payments_num = Count('payments'))
     def demands_unpaid(self):
-        return [d for d in self.annotated_demands() if d.invoices_num == 0 and d.payments_num == 0]
+        return [d for d in self.annotated_demands() if d.invoices_num == 0 and d.payments_num == 0 and d.force_fully_paid == False]
     def demands_noinvoice(self):
-        return [d for d in self.annotated_demands() if d.invoices_num == 0 and d.payments_num > 0]
+        return [d for d in self.annotated_demands() if d.invoices_num == 0 and d.payments_num > 0 and d.force_fully_paid == False]
     def demands_nopayment(self):
-        return [d for d in self.annotated_demands() if d.invoices_num > 0 and d.payments_num == 0]
+        return [d for d in self.annotated_demands() if d.invoices_num > 0 and d.payments_num == 0 and d.force_fully_paid == False]
     def demands_mispaid(self):
-        return [d for d in self.annotated_demands() if d.invoices_num > 0 and d.payments_num > 0 and d.diff_invoice_payment != 0]
+        return [d for d in self.annotated_demands() if d.invoices_num > 0 and d.payments_num > 0 and d.diff_invoice_payment != 0 and d.force_fully_paid == False]
     def current_demand(self):
         try:
             return Demand.objects.current().get(project = self)
