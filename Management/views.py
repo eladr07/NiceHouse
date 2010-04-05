@@ -1347,7 +1347,7 @@ def process_income_form(form):
 
 @permission_required('Management.add_income')
 def income_add(request):
-    return income_core(request, Income())
+    return income_core(request, Income(deal = Deal(), invoice = Invoice(), payment = Payment()))
 
 @permission_required('Management.edit_income')
 def income_edit(request, id):
