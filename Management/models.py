@@ -2780,7 +2780,7 @@ class Deal(models.Model):
     
     class Meta:
         db_table = 'Deal'
-'''
+
 # activity models
 
 class Media(models.Model):
@@ -2885,15 +2885,15 @@ class Activity(ActivityBase):
         return Sale.objects.filter(house__building__project = self.project, employee = self.employee,
                                    sale_date__range = (self.from_date, self.to_date))
     @property
-    def all_signups(self):
+    def signups(self):
         return Signup.objects.filter(house__building__project = self.project, employee = self.employee,
                                      date__range = (self.from_date, self.to_date))
     @property
     def canceled_signups(self):
-        return self.all_signups.filter(cancel__isnull = False)
+        return self.signups.filter(cancel__isnull = False)
     @property
     def active_signups(self):
-        return self.all_signups.filter(cancel__isnull = True)
+        return self.signups.filter(cancel__isnull = True)
     
     class Meta:
         db_table = 'Activity'
@@ -2908,7 +2908,7 @@ class NHActivity(ActivityBase):
     
     class Meta:
         db_table = 'NHActivity'
-'''
+
 class ChangeLogManager(models.Manager):
     def object_changelog(obj):
         return self.filter(object_type = obj.__class__.name, object_id = obj.id)
