@@ -865,11 +865,17 @@ class MadadCPForm(forms.ModelForm):
         model = MadadCP
 
 class CityCallersForm(forms.ModelForm):
+        
+    new_city = forms.CharField(label = ugettext('new_city'), max_length = 20, required=False)
+    
     class Meta:
         model = CityCallers
         fields = ['city','new_city','callers_num']
         
 class MediaReferralsForm(forms.ModelForm):
+    
+    new_media = forms.CharField(label = ugettext('new_media'), max_length = 20, required=False)
+    
     class Meta:
         model = MediaReferrals
         fields = ['media','new_media','referrals_num']
