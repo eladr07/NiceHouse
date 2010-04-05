@@ -2800,7 +2800,7 @@ class City(models.Model):
 class CityCallers(models.Model):
     activity_base = models.ForeignKey('ActivityBase', editable=False)
     
-    city = models.ForeignKey('City', verbose_name = ugettext('city'))
+    city = models.ForeignKey('City', verbose_name = ugettext('city'), blank=True)
     callers_num = models.PositiveSmallIntegerField(ugettext('callers_num'))
     
     def get_absolute_url(self):
@@ -2812,7 +2812,7 @@ class CityCallers(models.Model):
 class MediaReferrals(models.Model):
     activity_base = models.ForeignKey('ActivityBase', editable=False)
     
-    media = models.ForeignKey('Media', verbose_name = ugettext('media'))
+    media = models.ForeignKey('Media', verbose_name = ugettext('media'), blank=True)
     referrals_num = models.PositiveSmallIntegerField(ugettext('referrals_num'))
     
     def get_absolute_url(self):
