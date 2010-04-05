@@ -2798,7 +2798,7 @@ class City(models.Model):
         db_table = 'City'
         
 class CityCallers(models.Model):
-    activity_base = models.ForeignKey('Event', editable=False)
+    activity_base = models.ForeignKey('ActivityBase', editable=False)
     
     city = models.ForeignKey('City', verbose_name = ugettext('city'))
     callers_num = models.PositiveSmallIntegerField(ugettext('callers_num'))
@@ -2810,7 +2810,7 @@ class CityCallers(models.Model):
         db_table = 'CityCallers'
 
 class MediaReferrals(models.Model):
-    activity_base = models.ForeignKey('Event', editable=False)
+    activity_base = models.ForeignKey('ActivityBase', editable=False)
     
     media = models.ForeignKey('Media', verbose_name = ugettext('media'))
     referrals_num = models.PositiveSmallIntegerField(ugettext('referrals_num'))
@@ -2844,7 +2844,7 @@ class PriceOffer(models.Model):
     
 
 class SaleProcess(models.Model):
-    activity_base = models.ForeignKey('Event', editable=False)
+    activity_base = models.ForeignKey('ActivityBase', editable=False)
     
     project = models.ForeignKey('Project', verbose_name=ugettext('project'))
     building = models.ForeignKey('Building', verbose_name=ugettext('building'))
@@ -2858,7 +2858,7 @@ class SaleProcess(models.Model):
         db_table = 'SaleProcess'
 
 class Event(models.Model):
-    activity_base = models.ForeignKey('Event', editable=False)
+    activity_base = models.ForeignKey('ActivityBase', editable=False)
     
     date = models.DateTimeField(ugettext('date'))
     initiator = models.CharField(ugettext('event_initiator'), max_length=50)
