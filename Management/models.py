@@ -338,7 +338,7 @@ class House(models.Model):
         return None
     def save(self, *args, **kw):
         if len(self.num) < 5:#patch to make house ordering work. because it is char field, '2' > '19'
-            self.num = self.num.rjust(5, ' ')
+            self.num = self.num.ljust(5, ' ')
         models.Model.save(self, *args, **kw)
     def __unicode__(self):
         return unicode(self.num).strip()
@@ -2420,7 +2420,7 @@ class SaleHouseMod(SaleMod):
 class SalePre(SaleMod):
     employee_pay = models.DateField(ugettext('employee_pay'), null=True)
     def save(self, *args, **kw):
-        SaleMod.save(self, *args, **kw)
+        super(SalePre, self).save(*args, **kw)
         self.sale.employee_pay = self.employee_pay
         self.sale.save()
     class Meta:
@@ -2430,7 +2430,7 @@ class SaleReject(SaleMod):
     to_month = models.DateField(ugettext('reject_month'), null=True)
     employee_pay = models.DateField(ugettext('employee_pay'), null=True)
     def save(self, *args, **kw):
-        SaleMod.save(self, args, kw)
+        super(SaleReject, self).save(*args, **kw)
         self.sale.employee_pay = self.employee_pay
         self.sale.contractor_pay = self.to_month
         self.sale.save()
@@ -2440,7 +2440,7 @@ class SaleReject(SaleMod):
 class SaleCancel(SaleMod):
     deduct_from_demand = models.BooleanField(ugettext('deduct_from_demand'), blank=True)
     def save(self, *args, **kw):
-        models.Model.save(self, *args, **kw)
+        super(SaleCancel, self).save(*args, **kw)
         sale = self.sale
         demand = sale.demand
         sale.commission_include = not self.deduct_from_demand
