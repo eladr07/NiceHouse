@@ -203,7 +203,7 @@ class Project(models.Model):
     
     def is_zilber(self):
         return self.commissions.c_zilber != None
-    @cachemethod
+    @cache_method
     def annotated_demands(self):
         return self.demands.annotate(invoices_num = Count('invoices'), payments_num = Count('payments'))
     def demands_unpaid(self):
