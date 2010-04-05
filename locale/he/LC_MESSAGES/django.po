@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2010-04-05 19:39+0300\n"
+"POT-Creation-Date: 2010-04-05 22:48+0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -118,7 +118,7 @@ msgstr "עובד"
 #: .\Management\forms.py:304 .\Management\forms.py:391
 #: .\Management\forms.py:484 .\Management\forms.py:488
 #: .\Management\forms.py:842 .\Management\forms.py:845
-#: .\Management\forms.py:890 .\Management\forms.py:893
+#: .\Management\forms.py:914 .\Management\forms.py:917
 #: .\Management\models.py:254 .\Management\models.py:429
 #: .\Management\models.py:1781 .\Management\models.py:2843
 #: .\Management\models.py:2880
@@ -135,7 +135,7 @@ msgid "end_date"
 msgstr "תאריך סיום"
 
 #: .\Management\forms.py:261 .\Management\forms.py:305
-#: .\Management\forms.py:900 .\Management\models.py:275
+#: .\Management\forms.py:924 .\Management\models.py:275
 #: .\Management\models.py:288 .\Management\models.py:301
 #: .\Management\models.py:2844
 msgid "building"
@@ -309,55 +309,55 @@ msgstr "סטטוס לקוח חסר"
 msgid "nhbranch"
 msgstr "סניף"
 
-#: .\Management\forms.py:869
+#: .\Management\forms.py:868
 msgid "new_city"
 msgstr "עיר חדשה"
 
-#: .\Management\forms.py:877
+#: .\Management\forms.py:875
 msgid "new_media"
 msgstr "מדיה חדשה"
 
-#: .\Management\forms.py:884 .\Management\models.py:480
+#: .\Management\forms.py:908 .\Management\models.py:480
 msgid "first_name"
 msgstr "שם פרטי"
 
-#: .\Management\forms.py:885 .\Management\models.py:481
+#: .\Management\forms.py:909 .\Management\models.py:481
 msgid "last_name"
 msgstr "שם משפחה"
 
-#: .\Management\forms.py:886 .\Management\models.py:486
+#: .\Management\forms.py:910 .\Management\models.py:486
 msgid "role"
 msgstr "תפקיד"
 
-#: .\Management\forms.py:887 .\Management\models.py:496
+#: .\Management\forms.py:911 .\Management\models.py:496
 msgid "company"
 msgstr "חברה"
 
-#: .\Management\forms.py:895 .\Management\models.py:430
+#: .\Management\forms.py:919 .\Management\models.py:430
 msgid "building_num"
 msgstr "מס' בניין"
 
-#: .\Management\forms.py:897 .\Management\models.py:303
+#: .\Management\forms.py:921 .\Management\models.py:303
 msgid "house_num"
 msgstr "מספר דירה"
 
-#: .\Management\forms.py:901
+#: .\Management\forms.py:925
 msgid "new_building_num"
 msgstr "מס' בניין חדש"
 
-#: .\Management\forms.py:902
+#: .\Management\forms.py:926
 msgid "include_houses"
 msgstr "כולל דירות"
 
-#: .\Management\forms.py:903
+#: .\Management\forms.py:927
 msgid "include_house_prices"
 msgstr "כולל מחירים"
 
-#: .\Management\forms.py:904
+#: .\Management\forms.py:928
 msgid "include_parkings"
 msgstr "כולל חניות"
 
-#: .\Management\forms.py:905
+#: .\Management\forms.py:929
 msgid "include_storages"
 msgstr "כולל מחסנים"
 
@@ -1241,7 +1241,7 @@ msgid "commission_buyer"
 msgstr "עמלת קונה"
 
 #: .\Management\models.py:2848
-msgid "rejection"
+msgid "objection"
 msgstr "התנגדויות"
 
 #: .\Management\models.py:2858

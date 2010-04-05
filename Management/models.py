@@ -2845,7 +2845,7 @@ class SaleProcess(models.Model):
     house = models.ForeignKey('House', verbose_name=ugettext('house'))
     
     price = models.IntegerField(ugettext('price'))
-    rejection = models.TextField(ugettext('rejection'), max_length=200, null=True, blank=True)
+    objection = models.TextField(ugettext('objection'), max_length=200, null=True, blank=True)
     remarks = models.TextField(ugettext('remarks'), max_length=200, null=True, blank=True)
     
     class Meta:

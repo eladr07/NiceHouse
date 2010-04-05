@@ -465,8 +465,8 @@ urlpatterns += patterns('Management.views',
 )
 
 urlpatterns += patterns('Management.views',
-    (r'^citycallers/add$', 'citycallers_add'),
+    (r'^activitybase/(?P<activitybase_id>\d+)/citycallers/add$', 'activitybase_citycallers_add'),
     (r'^citycallers/(?P<object_id>\d+)$', 'citycallers_edit'),
-    (r'^mediareferrals/add$', 'mediareferrals_add'),
+    (r'^activitybase/(?P<activitybase_id>\d+)/mediareferrals/add$', 'activitybase_mediareferrals_add'),
     (r'^mediareferrals/(?P<object_id>\d+)$', 'mediareferrals_edit'),
 )

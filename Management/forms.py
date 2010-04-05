@@ -865,7 +865,6 @@ class MadadCPForm(forms.ModelForm):
         model = MadadCP
 
 class CityCallersForm(forms.ModelForm):
-        
     new_city = forms.CharField(label = ugettext('new_city'), max_length = 20, required=False)
     
     class Meta:
@@ -873,12 +872,37 @@ class CityCallersForm(forms.ModelForm):
         fields = ['city','new_city','callers_num']
         
 class MediaReferralsForm(forms.ModelForm):
-    
     new_media = forms.CharField(label = ugettext('new_media'), max_length = 20, required=False)
     
     class Meta:
         model = MediaReferrals
         fields = ['media','new_media','referrals_num']
+
+class EventForm(forms.ModelForm):
+    def __init__(self, *args, **kw):
+        super(EventForm, self).__init__(*args, **kw)
+        self.fields['date'].widget.attrs = {'class':'vDateField'}
+        self.fields['attendees'].widget.attrs = {'cols':'30', 'rows':'3'}
+        self.fields['issues'].widget.attrs = {'cols':'30', 'rows':'3'}
+        self.fields['summary'].widget.attrs = {'cols':'30', 'rows':'3'}
+        self.fields['remarks'].widget.attrs = {'cols':'30', 'rows':'3'}
+    class Meta:
+        model = Event
+        
+class SaleProcessForm(forms.ModelForm):
+    def __init__(self, *args, **kw):
+        super(EventForm, self).__init__(*args, **kw)
+        self.fields['objection'].widget.attrs = {'cols':'30', 'rows':'3'}
+        self.fields['remarks'].widget.attrs = {'cols':'30', 'rows':'3'}
+    class Meta:
+        model = SaleProcess
+        
+class PriceOfferForm(forms.ModelForm):
+    def __init__(self, *args, **kw):
+        super(EventForm, self).__init__(*args, **kw)
+        self.fields['remarks'].widget.attrs = {'cols':'30', 'rows':'3'}
+    class Meta:
+        model = PriceOffer
 
 class ContactFilterForm(forms.Form):
     first_name = forms.CharField(label=ugettext('first_name'), required=False)

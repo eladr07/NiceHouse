@@ -3328,8 +3328,9 @@ def global_profit_lost(request):
                               context_instance = RequestContext(request))
     
 @permission_required('Management.add_citycallers')
-def citycallers_add(request):
-    return citycallers_core(request, CityCallers())
+def activitybase_citycallers_add(request, activitybase_id):
+    activity_base = ActivityBase.objects.get(pk = activitybase_id)
+    return citycallers_core(request, CityCallers(activity_base = activity_base))
 
 @permission_required('Management.change_citycallers')
 def citycallers_edit(request, object_id):
@@ -3355,8 +3356,9 @@ def citycallers_core(request, instance):
                               context_instance = RequestContext(request))
     
 @permission_required('Management.add_mediareferrals')
-def mediareferrals_add(request):
-    return mediareferrals_core(request, CityCallers())
+def activitybase_mediareferrals_add(request, activitybase_id):
+    activity_base = ActivityBase.objects.get(pk = activitybase_id)
+    return mediareferrals_core(request, CityCallers(activity_base = activity_base))
 
 @permission_required('Management.change_mediareferrals')
 def mediareferrals_edit(request, object_id):
