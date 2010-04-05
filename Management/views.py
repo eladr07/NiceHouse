@@ -3350,7 +3350,7 @@ def citycallers_edit(request, object_id):
     obj = CityCallers.objects.get(pk = object_id)
     return citycallers_core(request, obj)
 
-def citycallers_core(request):
+def citycallers_core(request, instance):
     if request.method == 'POST':
         form = CityCallersForm(request.POST, instance = instance)
         if form.is_valid():
@@ -3377,7 +3377,7 @@ def mediareferrals_edit(request, object_id):
     obj = MediaReferrals.objects.get(pk = object_id)
     return mediareferrals_core(request, obj)
 
-def mediareferrals_core(request):
+def mediareferrals_core(request, instance):
     if request.method == 'POST':
         form = MediaReferralsForm(request.POST, instance = instance)
         if form.is_valid():
