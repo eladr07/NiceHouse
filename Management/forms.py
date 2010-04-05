@@ -863,7 +863,17 @@ class MadadCPForm(forms.ModelForm):
         self.fields['publish_date'].widget.attrs = {'class':'vDateField'}
     class Meta:
         model = MadadCP
+
+class CityCallersForm(forms.ModelForm):
+    class Meta:
+        model = CityCallers
+        fields = ['city','new_city','callers_num']
         
+class MediaReferralsForm(forms.ModelForm):
+    class Meta:
+        model = MediaReferrals
+        fields = ['media','new_media','referrals_num']
+
 class ContactFilterForm(forms.Form):
     first_name = forms.CharField(label=ugettext('first_name'), required=False)
     last_name = forms.CharField(label=ugettext('last_name'), required=False)

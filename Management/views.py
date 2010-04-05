@@ -3340,3 +3340,57 @@ def global_profit_lost(request):
                               { 'filterForm':form, 'data':data, 'global_income':global_income, 'global_loss':global_loss,
                                'global_profit':global_income - global_loss, 'start':from_date, 'end':to_date },
                               context_instance = RequestContext(request))
+    
+@permission_required('Management.add_citycallers')
+def citycallers_add(request):
+    return citycallers_core(request, CityCallers())
+
+@permission_required('Management.change_citycallers')
+def citycallers_edit(request, object_id):
+    obj = CityCallers.objects.get(pk = object_id)
+    return citycallers_core(request, obj)
+
+def citycallers_core(request):
+    if request.method == 'POST':
+        form = CityCallersForm(request.POST, instance = instance)
+        if form.is_valid():
+            new_city = form.cleaned_data['new_city']
+            if new_city:
+                new_city.save()
+                form.cleaned_data['city'] = new_city
+            form.save()
+            if request.POST.has_key('addanother'):
+                return HttpResponseRedirect(reverse(citycallers_add))
+    else:
+        form = CityCallersForm(instance = instance)
+    
+    return render_to_response('Management/object_edit.html', 
+                              {'form':form }, 
+                              context_instance = RequestContext(request))
+    
+@permission_required('Management.add_mediareferrals')
+def mediareferrals_add(request):
+    return mediareferrals_core(request, CityCallers())
+
+@permission_required('Management.change_mediareferrals')
+def mediareferrals_edit(request, object_id):
+    obj = MediaReferrals.objects.get(pk = object_id)
+    return mediareferrals_core(request, obj)
+
+def mediareferrals_core(request):
+    if request.method == 'POST':
+        form = MediaReferralsForm(request.POST, instance = instance)
+        if form.is_valid():
+            new_media = form.cleaned_data['new_media']
+            if new_media:
+                new_media.save()
+                form.cleaned_data['media'] = new_media
+            form.save()
+            if request.POST.has_key('addanother'):
+                return HttpResponseRedirect(reverse(mediareferrals_add))
+    else:
+        form = MediaReferralsForm(instance = instance)
+    
+    return render_to_response('Management/object_edit.html', 
+                              {'form':form }, 
+                              context_instance = RequestContext(request))

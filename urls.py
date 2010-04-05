@@ -463,3 +463,10 @@ urlpatterns += patterns('Management.views',
     (r'^demand_sales/(?P<project_id>\d+)/(?P<year>\d+)/(?P<month>\d+)$', 'demand_sales'),
     (r'^profitloss$', 'global_profit_lost'),
 )
+
+urlpatterns += patterns('Management.views',
+    (r'^citycallers/add$', 'citycallers_add'),
+    (r'^citycallers/(?P<object_id>\d+)$', 'citycallers_edit'),
+    (r'^mediareferrals/add$', 'mediareferrals_add'),
+    (r'^mediareferrals/(?P<object_id>\d+)$', 'mediareferrals_edit'),
+)
