@@ -475,4 +475,11 @@ urlpatterns += patterns('Management.views',
     (r'^priceoffer/(?P<object_id>\d+)$', 'priceoffer_edit'),
     (r'^activitybase/(?P<activitybase_id>\d+)/saleprocess/add$', 'activitybase_saleprocess_add'),
     (r'^saleprocess/(?P<object_id>\d+)$', 'saleprocess_edit'),
+    
+    (r'^activity/add$', 'activity_add'),
+    (r'^activity/(?P<object_id>\d+)/$', 'limited_object_detail',
+     {'queryset':Activity.objects.all(), 'template_name':'Management/activity_detail.html', 
+      'context_processors':[RequestContext]}),
+    (r'^activity/(?P<object_id>\d+)/edit$', 'limited_update_object',
+     {'form_class' : Management.forms.ActivityForm, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : 'edit'}),    
 )

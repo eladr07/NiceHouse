@@ -1,0 +1,31 @@
+﻿{% extends "./base.html" %}
+{% load management_extras %}
+{% block header %}	
+{{ block.super }}
+<script>
+	$(document).ready(function() {
+		$("input[type!='submit']").attr("class", "inputText");
+
+		$(".fancybox").fancybox();
+		$(".bigfancybox").fancybox({'frameWidth':800});
+	});
+</script>
+{% endblock header %}
+{% block content %}	
+<div class="title">
+	<div class="pageTitle">דו"ח פעילות לאתר</div>	
+</div>
+<form method="POST">
+	<table cellspacing="2" cellpadding="2" class="formTable">
+	{% for field in form %}
+		<tr>
+			<th>{{ field.label_tag }}</th>
+			<td>
+				{{field}}
+				{% if field.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{field.errors|join:""}}'/>{% endif %}
+			</td>
+		</tr>
+	{% endfor %}
+</table>
+</form>
+{% endblock content %}

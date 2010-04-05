@@ -3346,6 +3346,13 @@ def global_profit_lost(request):
                                'global_profit':global_income - global_loss, 'start':from_date, 'end':to_date },
                               context_instance = RequestContext(request))
     
+#################################################### ACTIVITY VIEWS ##########################################
+    
+@permission_required('Management.add_activity')
+def activity_add(request):
+    activity = Activity()
+    return object_edit_core(request, ActivityForm, activity, 'Management/activity_add.html')
+    
 @permission_required('Management.add_citycallers')
 def activitybase_citycallers_add(request, activitybase_id):
     activity_base = ActivityBase.objects.get(pk = activitybase_id)

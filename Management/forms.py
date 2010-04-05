@@ -904,6 +904,11 @@ class PriceOfferForm(forms.ModelForm):
     class Meta:
         model = PriceOffer
 
+class ActivityForm(forms.ModelForm):
+    class Meta:
+        model = Activity
+        fields = ['project','employee','from_date','to_date','office_meetings_num','recurring_meetings_num','new_meetings_from_phone_num']
+
 class ContactFilterForm(forms.Form):
     first_name = forms.CharField(label=ugettext('first_name'), required=False)
     last_name = forms.CharField(label=ugettext('last_name'), required=False)
