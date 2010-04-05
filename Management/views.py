@@ -3367,8 +3367,9 @@ def citycallers_core(request, instance):
     if request.method == 'POST':
         form = CityCallersForm(request.POST, instance = instance)
         if form.is_valid():
-            new_city = form.cleaned_data['new_city']
-            if new_city:
+            new_city_name = form.cleaned_data['new_city']
+            if new_city_name:
+                new_city = City(name = new_city_name)
                 new_city.save()
                 form.cleaned_data['city'] = new_city
             form.save()
@@ -3395,8 +3396,9 @@ def mediareferrals_core(request, instance):
     if request.method == 'POST':
         form = MediaReferralsForm(request.POST, instance = instance)
         if form.is_valid():
-            new_media = form.cleaned_data['new_media']
-            if new_media:
+            new_media_name = form.cleaned_data['new_media']
+            if new_media_name:
+                new_media = Media(name = new_media_name)
                 new_media.save()
                 form.cleaned_data['media'] = new_media
             form.save()
