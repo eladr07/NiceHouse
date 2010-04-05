@@ -434,6 +434,9 @@ class Building(models.Model):
     is_deleted = models.BooleanField(default= False, editable= False)
     @cache_method
     def sold_houses(self):
+        q = models.Q(is_sold = True) | models.Q(sales__salecancel__isnull = False)
+        query = self.houses.filter(q).annotate(Count('sales')).filter(sales_count = 1)
+        return query.all()
         return [h for h in self.houses.all() if h.get_sale() != None or h.is_sold]
     @cache_method
     def signed_houses(self):
