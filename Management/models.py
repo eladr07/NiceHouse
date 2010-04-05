@@ -440,6 +440,8 @@ class Building(models.Model):
         return [h for h in self.houses.all() if h.get_sale() != None or h.is_sold]
     @cache_method
     def signed_houses(self):
+        query = self.houses.filter(signups__cancel__isnull = False).annotate(Count('signups')).filter(signups_count = 1)
+        return query.all()
         return [h for h in self.houses.all() if h.get_signup() != None]
     @cache_method
     def avalible_houses(self):
