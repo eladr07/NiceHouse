@@ -66,6 +66,23 @@
 				<a href="/activitybase/{{object.id}}/citycallers/add" class="fancybox"> 
 					<img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" />
 				</a>
+			<legend>מדיה מפנה</legend>
+				<table class="formTable">
+				{% for mediareferrals in object.mediareferrals_set.all %}
+					<tr>
+						<th>{{mediareferrals.media}}</th>
+						<td>{{mediareferrals.referrals_num}}</td>
+						<td>
+							<a href="{{mediareferrals.get_absolute_url}}" class="fancybox">
+								<img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="שינוי" />
+							</a>
+						</td>
+					</tr>
+				{% endfor %}
+				</table>
+				<a href="/activitybase/{{object.id}}/mediareferrals/add" class="fancybox"> 
+					<img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" />
+				</a>
 		</fieldset>
 	</div>
 	<div id="leftSide"> 
