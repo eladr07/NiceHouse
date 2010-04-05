@@ -1328,33 +1328,19 @@ def process_income_form(form):
 
 @permission_required('Management.add_income')
 def income_add(request):
-    if request.method=='POST':
-        incomeForm, dealForm, invoiceForm, paymentForm = (IncomeForm(request.POST), DealForm(request.POST), 
-                                                          InvoiceForm(request.POST), PaymentForm(request.POST))
-        if (incomeForm.is_valid() and dealForm.is_valid() 
-            and (invoiceForm.has_changed() == False or invoiceForm.is_valid())
-            and (paymentForm.has_changed() == False or paymentForm.is_valid())):
-            process_deal_form(dealForm)
-            process_income_form(incomeForm)
-            income = incomeForm.instance
-            income.deal, income.invoice, income.payment = dealForm.save(), invoiceForm.save(), paymentForm.save()
-            incomeForm.save()
-    else:
-        incomeForm, dealForm, invoiceForm, paymentForm = IncomeForm(), DealForm(), InvoiceForm(), PaymentForm()
-    
-    return render_to_response('Management/income_edit.html', 
-                              {'incomeForm':incomeForm, 'dealForm':dealForm, 'invoiceForm':invoiceForm,
-                               'paymentForm':paymentForm }, 
-                              context_instance = RequestContext(request))  
+    return income_core(request, Income())
 
 @permission_required('Management.edit_income')
 def income_edit(request, id):
     income = Income.objects.get(pk=id)
+    return income_core(request, income)
+
+def income_core(request, instance):
     if request.method=='POST':
-        incomeForm, dealForm, invoiceForm, paymentForm = (IncomeForm(request.POST, instance = income), 
-                                                          DealForm(request.POST, instance = income.deal), 
-                                                          InvoiceForm(request.POST, instance = income.invoice), 
-                                                          PaymentForm(request.POST, instance = income.payment))
+        incomeForm, dealForm, invoiceForm, paymentForm = (IncomeForm(request.POST, instance = instance), 
+                                                          DealForm(request.POST, instance = instance.deal), 
+                                                          InvoiceForm(request.POST, instance = instance.invoice), 
+                                                          PaymentForm(request.POST, instance = instance.payment))
         if (incomeForm.is_valid() and dealForm.is_valid() 
             and (invoiceForm.has_changed() == False or invoiceForm.is_valid())
             and (paymentForm.has_changed() == False or paymentForm.is_valid())):
@@ -1363,10 +1349,10 @@ def income_edit(request, id):
             income.deal, income.invoice, income.payment = dealForm.save(), invoiceForm.save(), paymentForm.save()
             incomeForm.save()
     else:
-        incomeForm, dealForm, invoiceForm, paymentForm = (IncomeForm(instance = income), 
-                                                          DealForm(instance = income.deal), 
-                                                          InvoiceForm(instance = income.invoice), 
-                                                          PaymentForm(instance = income.payment))
+        incomeForm, dealForm, invoiceForm, paymentForm = (IncomeForm(instance = instance), 
+                                                          DealForm(instance = instance.deal), 
+                                                          InvoiceForm(instance = instance.invoice), 
+                                                          PaymentForm(instance = instance.payment))
     
     return render_to_response('Management/income_edit.html', 
                               {'incomeForm':incomeForm, 'dealForm':dealForm, 'invoiceForm':invoiceForm,
