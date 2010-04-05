@@ -20,6 +20,25 @@ from pdf import PricelistWriter, BuildingClientsWriter, EmployeeSalariesBookKeep
 from mail import mail
 from django.core.urlresolvers import reverse
 
+def object_edit_core(request, form_class, instance,
+                     template_name = 'Management/object_edit.html', 
+                     context_class = RequestContext, 
+                     before_save = None, 
+                     after_save = None):
+    
+    if request.method == 'POST':
+        form = form_class(request.POST, instance = instance)
+        if form.is_valid():
+            if before_save:
+                before_save(form, instance)
+            form.save()
+            if after_save:
+                after_save(form, instance)
+    else:
+        form = form_class(instance = instance)
+        
+    return render_to_response(template_name, {'form':form }, context_instance = context_class(request))
+
 def generate_unique_pdf_filename():
     return settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
 
@@ -3421,22 +3440,3 @@ def saleprocess_core(request, instance):
     
 def priceoffer_core(request, instance):
     return object_edit_core(request, PriceOfferForm, instance)
-    
-def object_edit_core(request, form_class, instance,
-                     template_name = 'Management/object_edit.html', 
-                     context_class = RequestContext, 
-                     before_save = None, 
-                     after_save = None):
-    
-    if request.method == 'POST':
-        form = form_class(request.POST, instance = instance)
-        if form.is_valid():
-            if before_save:
-                before_save(form, instance)
-            form.save()
-            if after_save:
-                after_save(form, instance)
-    else:
-        form = form_class(instance = instance)
-        
-    return render_to_response(template_name, {'form':form }, context_instance = context_class(request))
