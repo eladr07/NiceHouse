@@ -103,7 +103,7 @@
 			{% for signup in object.active_signups.all %}
 				<tr>
 					<th>
-						<a href="{{signup.get_absolute_url}}" class="fancybox">
+						<a href="{{signup.get_absolute_url}}">
 							<img src="/site_media/images/documentinfo-48.png" width="15" height="15" border="0" alt="פרטים" />
 						</a>
 					</th>
@@ -116,7 +116,7 @@
 				</tr>
 			{% endfor %}
 			</table>
-			<a href="{{object.project.get_absolute_url}}/signups/add" class="fancybox"> 
+			<a href="{{object.project.get_absolute_url}}/signups/add" > 
 				<img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" />
 			</a>
 		</fieldset>
@@ -159,7 +159,7 @@
 			{% for sale in object.sales.all %}
 				<tr>
 					<th>
-						<a href="{{sale.get_absolute_url}}" class="fancybox">
+						<a href="{{sale.get_absolute_url}}">
 							<img src="/site_media/images/documentinfo-48.png" width="15" height="15" border="0" alt="פרטים" />
 						</a>
 					</th>
@@ -170,7 +170,7 @@
 				</tr>
 			{% endfor %}
 			</table>
-			<a href="/sale" class="fancybox"> 
+			<a href="/sale"> 
 				<img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" />
 			</a>
 		</fieldset>
