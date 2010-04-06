@@ -235,10 +235,7 @@ class Project(models.Model):
     def __unicode__(self):
         return u"%s - %s" % (self.initiator, self.name)
     def houses(self):
-        houses = []
-        for building in self.non_deleted_buildings():
-            houses.extend(building.houses.all())
-        return houses
+        return House.objects.filter(building__project = self, building__is_deleted = False)
     def non_deleted_buildings(self):
         return self.buildings.filter(is_deleted= False)
     def save(self, *args, **kw):
