@@ -21,17 +21,20 @@
 		$("option", employeeSelect).remove();
 		var selectedProject = projectSelect.val();
 
-		$.getJSON("/xml/employees/" + selectedProject, function(data){
-			for (i in data)
-			{
-				obj = data[i];
-				text = obj.fields['pid'] + " : " + obj.fields['first_name'] + " " + obj.fields['last_name'];
-				employeeSelect.append(
-					"<option value='" + obj.pk + "'>" + text + "</option>");
-			}
-			if (data.length == 1)
-				employeeSelect.attr("value", data[0].pk);
-		});
+		$.getJSON("/xml/employees/" + selectedProject, onEmployeeDataArrived);
+	}
+	
+	function onEmployeeDataArrived(data)
+	{
+		for (i in data)
+		{
+			obj = data[i];
+			text = obj.fields['pid'] + " : " + obj.fields['first_name'] + " " + obj.fields['last_name'];
+			employeeSelect.append(
+				"<option value='" + obj.pk + "'>" + text + "</option>");
+		}
+		if (data.length == 1)
+			employeeSelect.attr("value", data[0].pk);
 	}
 </script>
 {% endblock header %}
