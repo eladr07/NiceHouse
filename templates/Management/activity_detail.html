@@ -88,7 +88,148 @@
 		</fieldset>
 	</div>
 	<div id="leftSide"> 
-
+		<fieldset class="cardFieldset" style="float:right; width:45%">
+			<legend>הרשמות</legend>
+			<table class="formTable">
+				<tr>
+					<th></th>
+					<th>שם הלקוח</th>
+					<th>בניין ודירה</th>
+					<th>מחיר</th>
+					<th>ת. הרשמה</th>
+					<th>ת. חוזה צפוי</th>
+					<th></th>
+				</tr>
+			{% for signup in object.active_signups.all %}
+				<tr>
+					<th>
+						<a href="{{signup.get_absolute_url}}" class="fancybox">
+							<img src="/site_media/images/documentinfo-48.png" width="15" height="15" border="0" alt="פרטים" />
+						</a>
+					</th>
+					<th>{{signup.clients}}</th>
+					<td>{{signup.house}}/{{signup.house.building}}</td>
+					<td>{{signup.price|commaise}}</td>
+					<td>{{signup.date|date:"j/m/y"}}</td>
+					<td>{{signup.sale_date|date:"j/m/y"}}</td>
+					<td><a href="{{signup.get_absolute_url}}/cancel" class="fancybox">בטל</a></td>
+				</tr>
+			{% endfor %}
+			</table>
+			<a href="{{object.project.get_absolute_url}}/signups/add" class="fancybox"> 
+				<img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" />
+			</a>
+		</fieldset>
+		<fieldset class="cardFieldset" style="float:right; width:45%">
+			<legend>הרשמות שבוטלו</legend>
+			<table class="formTable">
+				<tr>
+					<th></th>
+					<th>שם הלקוח</th>
+					<th>בניין ודירה</th>
+					<th>ת. ביטול</th>
+					<th>סיבה</th>
+				</tr>
+			{% for signup in object.canceled_signups.all %}
+				<tr>
+					<th>
+						<a href="{{signup.cancel.get_absolute_url}}" class="fancybox">
+							<img src="/site_media/images/documentinfo-48.png" width="15" height="15" border="0" alt="פרטים" />
+						</a>
+					</th>
+					<th>{{signup.clients}}</th>
+					<td>{{signup.house}}/{{signup.house.building}}</td>
+					<td>{{signup.price|commaise}}</td>
+					<td>{{signup.cancel.date|date:"j/m/y"}}</td>
+					<td>{{signup.cancel.reason}}</td>
+				</tr>
+			{% endfor %}
+			</table>
+		</fieldset>
+		<fieldset class="cardFieldset" style="float:right; width:45%">
+			<legend>חוזים</legend>
+			<table class="formTable">
+				<tr>
+					<th></th>
+					<th>שם הלקוח</th>
+					<th>בניין ודירה</th>
+					<th>מחיר</th>
+					<th>ת. חוזה</th>
+				</tr>
+			{% for sale in object.sales.all %}
+				<tr>
+					<th>
+						<a href="{{sale.get_absolute_url}}" class="fancybox">
+							<img src="/site_media/images/documentinfo-48.png" width="15" height="15" border="0" alt="פרטים" />
+						</a>
+					</th>
+					<th>{{sale.clients}}</th>
+					<td>{{sale.house}}/{{signup.house.building}}</td>
+					<td>{{sale.price|commaise}}</td>
+					<td>{{sale.date|date:"j/m/y"}}</td>
+				</tr>
+			{% endfor %}
+			</table>
+			<a href="/sale" class="fancybox"> 
+				<img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" />
+			</a>
+		</fieldset>
+		<fieldset class="cardFieldset" style="float:right; width:45%">
+			<legend>רציניים בתהליך</legend>
+			<table class="formTable">
+				<tr>
+					<th></th>
+					<th>שם הלקוח</th>
+					<th>בניין ודירה</th>
+					<th>מחיר</th>
+					<th>התנגדויות</th>
+					<th>הערות</th>
+				</tr>
+			{% for saleprocess in object.saleprocess_set.all %}
+				<tr>
+					<th>
+						<a href="{{saleprocess.get_absolute_url}}" class="fancybox">
+							<img src="/site_media/images/documentinfo-48.png" width="15" height="15" border="0" alt="פרטים" />
+						</a>
+					</th>
+					<th>{{saleprocess.clients}}</th>
+					<td>{{saleprocess.house}}/{{signup.house.building}}</td>
+					<td>{{saleprocess.price|commaise}}</td>
+					<td>{{saleprocess.objection}}</td>
+					<td>{{saleprocess.remarks}}</td>
+				</tr>
+			{% endfor %}
+			</table>
+			<a href="/activitybase/{{object.id}}/saleprocess/add" class="fancybox"> 
+				<img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" />
+			</a>
+		</fieldset>
+		<fieldset class="cardFieldset" style="float:right; width:45%">
+			<legend>אירועים</legend>
+			<table class="formTable">
+				<tr>
+					<th></th>
+					<th>תאריך</th>
+					<th>נוכחים</th>
+					<th>נושא</th>
+				</tr>
+			{% for event in object.event_set.all %}
+				<tr>
+					<th>
+						<a href="{{event.get_absolute_url}}" class="fancybox">
+							<img src="/site_media/images/documentinfo-48.png" width="15" height="15" border="0" alt="פרטים" />
+						</a>
+					</th>
+					<th>{{event.date|date:"j/m/y"}}</th>
+					<td>{{event.attendees}}</td>
+					<td>{{event.subject}}</td>
+				</tr>
+			{% endfor %}
+			</table>
+			<a href="/activitybase/{{object.id}}/event/add" class="fancybox"> 
+				<img src="/site_media/images/add_48.png" width="15" height="15" border="0" alt="הוספה" />
+			</a>
+		</fieldset>
 	</div>
 	<div class="clearBoth"></div> 
 {% endblock content %}
