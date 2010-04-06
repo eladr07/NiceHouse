@@ -5,7 +5,8 @@
 	var projectSelect;
 	var buildingSelect;
 	var houseSelect;
-
+	var employeeSelect;
+	
 	$(document).ready(function() {
 		$("input[type!='submit']").attr("class", "inputText");
 		$("select").attr("class", "inputText");
@@ -13,52 +14,64 @@
 		projectSelect = $("#id_project");
 		buildingSelect = $("#id_building");
 		houseSelect = $("#id_house");
+		employeeSelect = $("#id_employee");
 		
 		//add click event to projects select : use ajax to get related buildings and employees
 		projectSelect.change(onChangeProject);
 		//add click event to buildings select : use ajax to get related houses.
 		buildingSelect.change(onChangeBuilding);
+		houseSelect.change(showHouseDetails);
 	});
 	
 	function onChangeBuilding()
 	{
 		$("option[value!='']", houseSelect).remove();
 		var selectedBuilding = buildingSelect.val();
-		$.getJSON("/xml/houses/" + selectedBuilding, function(data){
-				for (i in data)
-				{
-					obj = data[i];
-					houseSelect.append(
-						"<option value='" + obj.pk + "'>" + obj.fields['num'] + "</option>");
-				}
-			});
+		$("#buildingCard").attr("href", "/buildings/" + selectedBuilding + "/pricelist/type1");
+		$.getJSON("/xml/houses/" + selectedBuilding, onHouseDataArrived);
 	}
 	
 	function onChangeProject()
 	{
 		$("option[value!='']", buildingSelect).remove();
 		$("option[value!='']", houseSelect).remove();
+		$("option", employeeSelect).remove();
 		var selectedProject = projectSelect.val();
-		$.getJSON("/xml/buildings/" + selectedProject, function(data){
-			for (i in data)
-			{
-				obj = data[i];
-				buildingSelect.append(
-					"<option value='" + obj.pk + "'>" + obj.fields['num'] + "</option>");
-			}
-			onChangeBuilding();
-		});
+		$("#projectCard").attr("href", "/projects/" + selectedProject);
+		$.getJSON("/xml/buildings/" + selectedProject, onBuildingDataArrived);
+		$.getJSON("/xml/employees/" + selectedProject, onEmployeeDataArrived);
 	}
-					
-	$(document).ready(function() {
-		houseSelect.change(function () {
-			$("#houseDetails").empty();
-			var selectedHouse = houseSelect.val();
-			$.get("/house_details/" + selectedHouse, function(data){
-				$("#houseDetails").append(data);
-			});
-		});
-	});
+	
+	function onHouseDataArrived(data)
+	{				
+		for (i in data)
+		{
+			obj = data[i];
+			houseSelect.append("<option value='" + obj.pk + "'>" + obj.fields['num'] + "</option>");
+		}
+	}
+	
+	function onBuildingDataArrived(data)
+	{
+		for (i in data)
+		{
+			obj = data[i];
+			buildingSelect.append("<option value='" + obj.pk + "'>" + obj.fields['num'] + "</option>");
+		}
+		onChangeBuilding();
+	}
+	
+	function onEmployeeDataArrived(data)
+	{
+		for (i in data)
+		{
+			obj = data[i];
+			text = obj.fields['pid'] + " : " + obj.fields['first_name'] + " " + obj.fields['last_name'];
+			employeeSelect.append("<option value='" + obj.pk + "'>" + text + "</option>");
+		}
+		if (data.length == 1)
+			employeeSelect.attr("value", data[0].pk);	
+	}
 </script>
 {% endblock header %}
 {% block content %}
