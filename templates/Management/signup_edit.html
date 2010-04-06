@@ -20,7 +20,9 @@
 		projectSelect.change(onChangeProject);
 		//add click event to buildings select : use ajax to get related houses.
 		buildingSelect.change(onChangeBuilding);
-		houseSelect.change(showHouseDetails);
+		houseSelect.change(showHouseDetails);;
+		
+		showHouseDetails();
 	});
 	
 	function onChangeBuilding()
@@ -71,6 +73,15 @@
 		}
 		if (data.length == 1)
 			employeeSelect.attr("value", data[0].pk);	
+	}
+	
+	function showHouseDetails()
+	{
+		$("#houseDetails").empty();
+		var selectedHouse = houseSelect.val();
+		$.get("/house_details/" + selectedHouse, function(data){
+			$("#houseDetails").append(data);
+		});
 	}
 </script>
 {% endblock header %}
