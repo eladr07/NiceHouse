@@ -3351,7 +3351,7 @@ def global_profit_lost(request):
 @permission_required('Management.add_activity')
 def activity_add(request):
     activity = Activity()
-    return object_edit_core(request, ActivityForm, activity, 'Management/activity_add.html')
+    return object_edit_core(request, ActivityForm, activity, 'Management/activity_edit.html')
     
 @permission_required('Management.add_citycallers')
 def activitybase_citycallers_add(request, activitybase_id):

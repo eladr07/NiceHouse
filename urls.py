@@ -481,5 +481,5 @@ urlpatterns += patterns('Management.views',
      {'queryset':Activity.objects.all(), 'template_name':'Management/activity_detail.html', 
       'context_processors':[RequestContext]}),
     (r'^activity/(?P<object_id>\d+)/edit$', 'limited_update_object',
-     {'form_class' : Management.forms.ActivityForm, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : 'edit'}),    
+     {'form_class' : Management.forms.ActivityForm, 'template_name' : 'Management/activity_edit.html', 'post_save_redirect' : 'edit'}),    
 )
