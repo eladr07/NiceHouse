@@ -210,8 +210,12 @@
 				<tr>
 					<th></th>
 					<th>תאריך</th>
+					<th>יוזם</th>
 					<th>נוכחים</th>
 					<th>נושא</th>
+					<th>סיכום</th>
+					<th>נושאים לטיפול</th>
+					<th>הערות</th>
 				</tr>
 			{% for event in object.event_set.all %}
 				<tr>
@@ -221,8 +225,12 @@
 						</a>
 					</th>
 					<th>{{event.date|date:"j/m/y"}}</th>
+					<td>{{event.initiator}}</td>
 					<td>{{event.attendees}}</td>
 					<td>{{event.subject}}</td>
+					<td>{{event.summary}}</td>
+					<td>{{event.issues}}</td>
+					<td>{{event.remarks}}</td>
 				</tr>
 			{% endfor %}
 			</table>
