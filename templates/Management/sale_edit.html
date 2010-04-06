@@ -44,14 +44,7 @@
 		$("option[value!='']", houseSelect).remove();
 		var selectedBuilding = buildingSelect.val();
 		$("#buildingCard").attr("href", "/buildings/" + selectedBuilding + "/pricelist/type1");
-		$.getJSON("/xml/houses/" + selectedBuilding, function(data){
-				for (i in data)
-				{
-					obj = data[i];
-					houseSelect.append(
-						"<option value='" + obj.pk + "'>" + obj.fields['num'] + "</option>");
-				}
-			});
+		$.getJSON("/xml/houses/" + selectedBuilding, onHouseDataArrived);
 	}
 	
 	function onChangeProject()
@@ -61,29 +54,42 @@
 		$("option", employeeSelect).remove();
 		var selectedProject = projectSelect.val();
 		$("#projectCard").attr("href", "/projects/" + selectedProject);
-		$.getJSON("/xml/buildings/" + selectedProject, function(data){
-			for (i in data)
-			{
-				obj = data[i];
-				buildingSelect.append(
-					"<option value='" + obj.pk + "'>" + obj.fields['num'] + "</option>");
-			}
-			onChangeBuilding();
-		});
-		$.getJSON("/xml/employees/" + selectedProject, function(data){
-			for (i in data)
-			{
-				obj = data[i];
-				text = obj.fields['pid'] + " : " + obj.fields['first_name'] + " " + obj.fields['last_name'];
-				employeeSelect.append(
-					"<option value='" + obj.pk + "'>" + text + "</option>");
-			}
-			if (data.length == 1)
-				employeeSelect.attr("value", data[0].pk);
-		});
+		$.getJSON("/xml/buildings/" + selectedProject, onBuildingDataArrived);
+		$.getJSON("/xml/employees/" + selectedProject, onEmployeeDataArrived);
 		showMonthSales();
 	}
-
+	
+	function onHouseDataArrived(data)
+	{				
+		for (i in data)
+		{
+			obj = data[i];
+			houseSelect.append("<option value='" + obj.pk + "'>" + obj.fields['num'] + "</option>");
+		}
+	}
+	
+	function onBuildingDataArrived(data)
+	{
+		for (i in data)
+		{
+			obj = data[i];
+			buildingSelect.append("<option value='" + obj.pk + "'>" + obj.fields['num'] + "</option>");
+		}
+		onChangeBuilding();
+	}
+	
+	function onEmployeeDataArrived(data)
+	{
+		for (i in data)
+		{
+			obj = data[i];
+			text = obj.fields['pid'] + " : " + obj.fields['first_name'] + " " + obj.fields['last_name'];
+			employeeSelect.append("<option value='" + obj.pk + "'>" + text + "</option>");
+		}
+		if (data.length == 1)
+			employeeSelect.attr("value", data[0].pk);	
+	}
+	
 	function showMonthSales()
 	{
 		var selectedProject = projectSelect.val();

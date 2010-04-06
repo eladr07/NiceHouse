@@ -30,8 +30,7 @@
 		{
 			obj = data[i];
 			text = obj.fields['pid'] + " : " + obj.fields['first_name'] + " " + obj.fields['last_name'];
-			employeeSelect.append(
-				"<option value='" + obj.pk + "'>" + text + "</option>");
+			employeeSelect.append("<option value='" + obj.pk + "'>" + text + "</option>");
 		}
 		if (data.length == 1)
 			employeeSelect.attr("value", data[0].pk);
