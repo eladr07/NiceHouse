@@ -388,6 +388,7 @@ def signup_edit(request, id=None, house_id=None, project_id=None):
             form.fields['building'].queryset = h.building.project.non_deleted_buildings()
         elif project_id:
             form = SignupForm(initial = {'project':project_id})
+            form.fields['building'].queryset = Building.objects.filter(project__id = project_id)
         else:
             form = SignupForm()
             
