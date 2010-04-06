@@ -891,7 +891,7 @@ class EventForm(forms.ModelForm):
         
 class SaleProcessForm(forms.ModelForm):
     def __init__(self, *args, **kw):
-        super(EventForm, self).__init__(*args, **kw)
+        super(SaleProcessForm, self).__init__(*args, **kw)
         self.fields['objection'].widget.attrs = {'cols':'30', 'rows':'3'}
         self.fields['remarks'].widget.attrs = {'cols':'30', 'rows':'3'}
     class Meta:
