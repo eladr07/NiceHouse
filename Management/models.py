@@ -1762,7 +1762,7 @@ class DemandQuerySet(models.query.QuerySet):
     def noinvoice(self):
         query = self.annotate(invoices_num = Count('invoices'), payments_num = Count('payments'))
         return query.filter(invoices_num = 0, payments_num__gt = 0, force_fully_paid = False)
-    def demands_nopayment(self):
+    def nopayment(self):
         query = self.annotate(invoices_num = Count('invoices'), payments_num = Count('payments'))
         return query.filter(invoices_num__gt = 0, payments_num = 0, force_fully_paid = False)
     
