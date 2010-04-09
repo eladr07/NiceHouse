@@ -1789,7 +1789,7 @@ def building_pricelist_pdf(request, object_id, type_id):
 @permission_required('Management.building_clients')
 def building_clients(request, object_id):
     b = Building.objects.get(pk = object_id)
-    for h in b.sold_houses():
+    for h in b.houses.sold():
         try:
             h.price = h.versions.filter(type__id = PricelistType.Company).latest().price
         except HouseVersion.DoesNotExist:
@@ -1801,7 +1801,7 @@ def building_clients(request, object_id):
 @permission_required('Management.building_clients_pdf')
 def building_clients_pdf(request, object_id):
     b = Building.objects.get(pk = object_id)
-    houses = b.sold_houses()
+    houses = b.houses.sold()
     for h in houses:
         try:
             h.price = h.versions.filter(type__id = PricelistType.Company).latest().price
@@ -2171,8 +2171,8 @@ def project_buildings(request, project_id):
     total_signed_houses, total_houses, total_avalible_houses = 0,0,0
     for b in buildings:
         total_houses = total_houses + b.house_count
-        total_signed_houses = total_signed_houses + len(b.signed_houses())
-        total_avalible_houses = total_avalible_houses + len(b.avalible_houses())
+        total_signed_houses = total_signed_houses + len(b.houses.signed())
+        total_avalible_houses = total_avalible_houses + len(b.houses.avalible())
 
     return render_to_response('Management/building_list.html', 
                               { 'buildings' : buildings,'total_houses':total_houses,'project':p,

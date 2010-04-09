@@ -290,6 +290,20 @@ class Storage(models.Model):
         unique_together = ('building', 'num')
         ordering = ['num']
     
+class HouseManager(models.Manager):
+    use_for_related_fields = True
+    
+    def sold(self):
+        q = models.Q(is_sold = True) | models.Q(sales__salecancel__isnull = True)
+        return self.filter(q).annotate(sales_num = Count('sales')).filter(sales_num = 1)
+
+    def signed(self):
+        return self.filter(signups__cancel__isnull = False).annotate(signups_num = Count('signups')).filter(signups_num = 1)
+    
+    def avalible(self):
+        q = models.Q(is_sold = False) & models.Q(sales__salecancel__isnull = True) & models.Q(signups__cancel__isnull = True)
+        return self.filter(q).annotate(sales_num = Count('sales'), signups_num = Count('signups')).filter(sales_num = 0, signups_num = 0)
+    
 class House(models.Model):
     building = models.ForeignKey('Building', related_name='houses',verbose_name = ugettext('building'), editable=False)
     type = models.ForeignKey('HouseType', verbose_name=ugettext('asset_type'))
@@ -305,6 +319,8 @@ class House(models.Model):
     parking_size = models.FloatField(ugettext('parking_size'), null=True, blank=True)
     
     is_sold = models.BooleanField(ugettext('is_sold'), default= False)
+    
+    objects = HouseManager()
     
     @property
     def perfect_size(self):
@@ -428,20 +444,7 @@ class Building(models.Model):
     stage = models.CharField(ugettext('stage'), max_length = 1, null=True, blank=True)
     remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
     is_deleted = models.BooleanField(default= False, editable= False)
-    @cache_method
-    def sold_houses(self):
-        q = models.Q(is_sold = True) | models.Q(sales__salecancel__isnull = True)
-        query = self.houses.filter(q).annotate(sales_num = Count('sales')).filter(sales_num = 1)
-        return query.all()
-    @cache_method
-    def signed_houses(self):
-        query = self.houses.filter(signups__cancel__isnull = False).annotate(signups_num = Count('signups')).filter(signups_num = 1)
-        return query.all()
-    @cache_method
-    def avalible_houses(self):
-        q = models.Q(is_sold = False) & models.Q(sales__salecancel__isnull = True) & models.Q(signups__cancel__isnull = True)
-        query = self.houses.filter(q).annotate(sales_num = Count('sales'), signups_num = Count('signups')).filter(sales_num = 0, signups_num = 0)
-        return query.all()
+
     def is_cottage(self):
         return self.type.id == BuildingType.Cottage
     def pricelist_types(self):
