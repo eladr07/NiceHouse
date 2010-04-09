@@ -2441,7 +2441,7 @@ class SaleCancel(SaleMod):
 
 class SaleQuerySet(models.query.QuerySet):
     def total_price(self):
-        return self.aggregate(Sum('price'))['sum_price']
+        return self.aggregate(Sum('price'))['price__sum']
     
 class SaleManager(models.Manager):
     use_for_related_fields = True
