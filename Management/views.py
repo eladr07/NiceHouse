@@ -1791,9 +1791,11 @@ def building_clients(request, object_id):
     b = Building.objects.get(pk = object_id)
     total_sale_price = 0
     for h in b.houses.sold():
+        sale = h.get_sale()
+        if sale:
+            total_sale_price += sale.price
         try:
             h.price = h.versions.filter(type__id = PricelistType.Company).latest().price
-            total_sale_price += h.price
         except HouseVersion.DoesNotExist:
             h.price = None
     return render_to_response('Management/building_clients.html',

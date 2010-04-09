@@ -964,12 +964,13 @@ class BuildingClientsWriter:
             signup = h.get_signup()
             if sale:
                 clients_name, clients_address, clients_phone = clientsPara(sale.clients), '', clientsPara(sale.clients_phone)
+                sale_price = sale.price
                 total_sale_price += sale.price
             else:
-                clients_name, clients_address, clients_phone = '','',''
+                clients_name, clients_address, clients_phone, sale_price = '','','',''
             row = [h.num, log2vis(unicode(h.type)), h.net_size, h.floor, clients_name, '', clients_address, clients_phone, 
                    '', signup and signup.date.strftime('%d/%m/%Y'), sale and sale.sale_date.strftime('%d/%m/%Y') or '',
-                   h.price and commaise(h.price) or '-', commaise(h.price), Paragraph(parkings, styleRow), Paragraph(storages, styleRow), 
+                   h.price and commaise(h.price) or '-', commaise(sale_price), Paragraph(parkings, styleRow), Paragraph(storages, styleRow), 
                    '','']
             row.reverse()
             rows.append(row)
