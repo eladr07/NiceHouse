@@ -1782,7 +1782,7 @@ def building_pricelist_pdf(request, object_id, type_id):
     subtitle = u'בניין %s' % b.num
     subtitle += ' - %s' % unicode(pricelist_type)
     q = HouseVersion.objects.filter(house__building = b, type=pricelist_type)
-    if q.count > 0:
+    if q.count() > 0:
         subtitle += u' לתאריך ' + q.latest().date.strftime('%d/%m/%Y')
     PricelistWriter(b.pricelist, houses, title, subtitle).build(filename)
     p = open(filename,'r')
