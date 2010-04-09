@@ -285,7 +285,7 @@ class MonthDemandWriter:
         s = log2vis(u'א. רצ"ב פירוט דרישתנו לתשלום בגין %i עסקאות שנחתמו החודש.' %
                     self.demand.get_sales().count()) + '<br/>'
         s += log2vis(u'ב. סה"כ מכירות (%s%s) - %s ש"ח.' %
-                     (tax_str, lawyer_str, commaise(self.demand.get_final_sales_amount()))) + '<br/>'
+                     (tax_str, lawyer_str, commaise(self.demand.get_sales().total_price_final()))) + '<br/>'
         s += log2vis(u'ג. עמלתנו (כולל מע"מ) - %s ש"ח (ראה פירוט רצ"ב).' % 
                     commaise(self.demand.get_total_amount())) + '<br/>'
         s += log2vis(u'ד. נא בדיקתכם ואישורכם לתשלום לתאריך %s אודה.' % datetime.now().strftime('31/%m/%Y')) + '<br/>'
@@ -527,7 +527,7 @@ class MonthDemandWriter:
                     if self.signup_adds:
                         row.append(None)
                     row.extend([None,Paragraph(log2vis('%s' % self.demand.get_sales().count()), styleSumRow),None])
-                    row.append(Paragraph(commaise(self.demand.get_sales_amount()), styleSumRow))
+                    row.append(Paragraph(commaise(self.demand.get_sales().total_price()), styleSumRow))
                     if zilber:
                         row.extend([None,None,None,None,None])
                     if discount:
@@ -637,7 +637,7 @@ class MultipleDemandWriter:
                 row.extend([log2vis(d.project.initiator), project_name])
             if self.show_month:
                 row.append('%s/%s' % (d.month, d.year))
-            row.extend([commaise(d.get_sales_amount()), commaise(d.get_total_amount())])
+            row.extend([commaise(d.get_sales().total_price()), commaise(d.get_total_amount())])
             row.append(', '.join([str(i.num) for i in d.invoices.all()]))
             row.append(', '.join([commaise(i.amount) for i in d.invoices.all()]))
             row.append(', '.join([str(p.num) for p in d.payments.all()]))
@@ -645,7 +645,7 @@ class MultipleDemandWriter:
             row.reverse()
             rows.append(row)
             rowHeights.append(28)
-            total_sales_amount += d.get_sales_amount()
+            total_sales_amount += d.get_sales().total_price()
             total_amount += d.get_total_amount()
         sumRow.extend([Paragraph(commaise(total_sales_amount), styleSumRow), 
                        Paragraph(commaise(total_amount), styleSumRow), None, None, None, None])

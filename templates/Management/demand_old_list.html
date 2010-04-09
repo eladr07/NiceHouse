@@ -192,7 +192,7 @@
 			<td><a href="/projects/{{d.project.id}}">{{ d.project.name }}</a></td>
 			<td><a href="/demandsales/?demand_id={{d.id}}" class="bigfancybox">{{ d.get_sales.count|default:"אין מכירות" }}</a></td>
 			<td>{{d.sale_count}}</td>
-			<td>{% if d.get_final_sales_amount %} {{ d.get_final_sales_amount|commaise }} ש"ח {% else %}----{% endif %}</td>
+			<td>{% if d.get_sales.total_price_final %} {{ d.get_sales.total_price_final|commaise }} ש"ח {% else %}----{% endif %}</td>
 			<td>{% if d.sales_commission %} {{ d.sales_commission|commaise }} ש"ח {% else %}----{% endif %}</td>
 			<td style="color:#08A600;">{% if d.fixed_diff %} {{ d.fixed_diff.amount|commaise }} ש"ח {% endif %}</td>
 			<td style="color:#08A600;">{% if d.var_diff %} {{ d.var_diff.amount|commaise }} ש"ח - {{ d.var_diff.reason }} {% endif %}</td>

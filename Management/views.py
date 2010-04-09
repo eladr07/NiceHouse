@@ -567,7 +567,7 @@ def demand_old_list(request):
         ds = Demand.objects.filter(year = year, month = month)
         for d in ds:
             total_sales_count += d.get_sales().count()
-            total_sales_amount += d.get_final_sales_amount()
+            total_sales_amount += d.get_sales().total_price_final()
             total_sales_commission += d.sales_commission
             total_amount += d.get_total_amount()
             expected_sales_count += d.sale_count
@@ -994,7 +994,7 @@ def demand_list(request):
             unhandled_projects.append(project)
     for d in ds:
         sales_count += d.get_sales().count()
-        sales_amount += d.get_final_sales_amount()
+        sales_amount += d.get_sales().total_price_final()
         expected_sales_count += d.sale_count
         
     return render_to_response('Management/demand_list.html', 
@@ -2831,7 +2831,7 @@ def demand_sale_list(request):
     if demand_id:
         d = Demand.objects.get(pk=demand_id)
         sales = d.get_sales()
-        sales_amount = d.get_sales_amount()
+        sales_amount = d.get_sales().total_price()
         title = u'ריכוז מכירות לפרוייקט %s לחודש %s/%s' % (unicode(d.project), d.month, d.year)
     elif project_id:
         current = date(from_year, from_month, 1)
@@ -2843,7 +2843,7 @@ def demand_sale_list(request):
         demands = Demand.objects.range(from_year, from_month, to_year, to_month).filter(project = project)
         for demand in demands:
             sales.extend(demand.get_sales())
-            sales_amount += demand.get_sales_amount()
+            sales_amount += demand.get_sales().total_price()
 
         title = u'ריכוז מכירות לפרוייקט %s מחודש %s/%s עד חודש %s/%s' % (unicode(project), from_month, from_year,
                                                                          to_month, to_year)
@@ -2965,7 +2965,7 @@ def demand_season_list(request):
 
             for d in ds:
                 total_sales_count += d.get_sales().count()
-                total_sales_amount += d.get_final_sales_amount()
+                total_sales_amount += d.get_sales().total_price_final()
                 total_sales_commission += d.sales_commission
                 total_amount += d.get_total_amount()
     else:

@@ -1949,12 +1949,6 @@ class Demand(models.Model):
         if self.project.commissions.commission_by_signups:
             query = query.order_by('house__signups__date')
         return query
-    @cache_method
-    def get_sales_amount(self):
-        return self.get_sales().aggregate(Sum('price'))['price__sum'] or 0
-    @cache_method
-    def get_final_sales_amount(self):
-        return self.get_sales().aggregate(Sum('price_final'))['price_final__sum'] or 0
     def calc_sales_commission(self):
         if self.get_sales().count() == 0: 
             return
@@ -2441,7 +2435,9 @@ class SaleCancel(SaleMod):
 
 class SaleQuerySet(models.query.QuerySet):
     def total_price(self):
-        return self.aggregate(Sum('price'))['price__sum']
+        return self.aggregate(Sum('price'))['price__sum'] or 0
+    def total_price_final(self):
+        return self.aggregate(Sum('price_final'))['price_final__sum'] or 0
     
 class SaleManager(models.Manager):
     use_for_related_fields = True
