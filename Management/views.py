@@ -2850,16 +2850,13 @@ def demand_sale_list(request):
                               context_instance=RequestContext(request))  
        
 def demand_sales(request, project_id, year, month):
-    salesTotal = 0
     try:
         d = Demand.objects.get(project__id = project_id, year=year, month=month)
-        sales = d.get_sales().all()
-        for s in sales:
-            salesTotal = salesTotal + s.price
+        sales = d.get_sales()
     except Demand.DoesNotExist:
         sales=[]
     return render_to_response('Management/sale_table.html', 
-                              {'sales':sales, 'salesTotal':salesTotal },
+                              {'sales':sales },
                               context_instance=RequestContext(request))  
 @login_required
 def project_demands(request, project_id, func, template_name):
