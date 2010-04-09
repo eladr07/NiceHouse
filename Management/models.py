@@ -289,20 +289,29 @@ class Storage(models.Model):
         db_table='Storage'
         unique_together = ('building', 'num')
         ordering = ['num']
-    
+
+class HouseQuerySet(models.query.QuerySet):
+    def sold(self):
+        q = models.Q(is_sold = True) | models.Q(sales__salecancel__isnull = True)
+        return self.filter(q).annotate(sales_num = Count('sales')).filter(sales_num = 1)
+    def signed(self):
+        return self.filter(signups__cancel__isnull = False).annotate(signups_num = Count('signups')).filter(signups_num = 1)
+    def avalible(self):
+        q = models.Q(is_sold = False) & models.Q(sales__salecancel__isnull = True) & models.Q(signups__cancel__isnull = True)
+        return self.filter(q).annotate(sales_num = Count('sales'), signups_num = Count('signups')).filter(sales_num = 0, signups_num = 0)
+
+
 class HouseManager(models.Manager):
     use_for_related_fields = True
     
     def sold(self):
-        q = models.Q(is_sold = True) | models.Q(sales__salecancel__isnull = True)
-        return self.filter(q).annotate(sales_num = Count('sales')).filter(sales_num = 1)
-
+        return self.get_query_set().sold()
     def signed(self):
-        return self.filter(signups__cancel__isnull = False).annotate(signups_num = Count('signups')).filter(signups_num = 1)
-    
+        return self.get_query_set().signed()
     def avalible(self):
-        q = models.Q(is_sold = False) & models.Q(sales__salecancel__isnull = True) & models.Q(signups__cancel__isnull = True)
-        return self.filter(q).annotate(sales_num = Count('sales'), signups_num = Count('signups')).filter(sales_num = 0, signups_num = 0)
+        return self.get_query_set().avalible()
+    def get_query_set(self):
+        return HouseQuerySet(self.model)
     
 class House(models.Model):
     building = models.ForeignKey('Building', related_name='houses',verbose_name = ugettext('building'), editable=False)
@@ -1760,10 +1769,6 @@ class DemandQuerySet(models.query.QuerySet):
         return self.aggregate(Sum('sales_commission'))['sales_commission__sum'] or 0
     def total_sale_count(self):
         return self.aggregate(Sum('sale_count'))['sale_count__sum'] or 0
-    
-class DemandManager(SeasonManager):
-    use_for_related_fields = True
-    
     def noinvoice(self):
         query = self.annotate(invoices_num = Count('invoices'), payments_num = Count('payments'))
         return query.filter(invoices_num = 0, payments_num__gt = 0, force_fully_paid = False)
@@ -1771,6 +1776,13 @@ class DemandManager(SeasonManager):
         query = self.annotate(invoices_num = Count('invoices'), payments_num = Count('payments'))
         return query.filter(invoices_num__gt = 0, payments_num = 0, force_fully_paid = False)
     
+class DemandManager(SeasonManager):
+    use_for_related_fields = True
+    
+    def noinvoice(self):
+        return self.get_query_set().noinvoice()
+    def nopayment(self):
+        return self.get_query_set().nopayment()
     def current(self):
         now = Demand.current_month()
         return self.filter(year = now.year, month = now.month)
