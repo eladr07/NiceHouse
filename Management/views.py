@@ -761,13 +761,13 @@ def demands_all(request):
         for d in p.demands_mispaid():
             amount_mispaid += d.get_total_amount()
             total_mispaid += 1
-        for d in p.demands.unpaid():
+        for d in p.demands.all().unpaid():
             amount_unpaid += d.get_total_amount()
             total_unpaid += 1
-        for d in p.demands.nopayment():
+        for d in p.demands.all().nopayment():
             amount_nopayment += d.get_total_amount()
             total_nopayment += 1
-        for d in p.demands.noinvoice():
+        for d in p.demands.all().noinvoice():
             amount_noinvoice += d.get_total_amount()
             total_noinvoice += 1
     return render_to_response('Management/demands_all.html', 
