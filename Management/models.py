@@ -206,6 +206,8 @@ class Project(models.Model):
     @cache_method
     def annotated_demands(self):
         return self.demands.annotate(invoices_num = Count('invoices'), payments_num = Count('payments'))
+    def demands_unpaid(self):
+        return [d for d in self.annotated_demands() if d.invoices_num == 0 and d.payments_num == 0 and d.is_fully_paid == False]
     def demands_mispaid(self):
         return [d for d in self.annotated_demands() if d.invoices_num > 0 and d.payments_num > 0 and d.diff_invoice_payment != 0 and d.is_fully_paid == False]
     def current_demand(self):
@@ -1756,9 +1758,6 @@ class DemandQuerySet(models.query.QuerySet):
     def total_sale_count(self):
         return self.aggregate(Sum('sale_count'))['sale_count__sum'] or 0
     
-    def unpaid(self):
-        query = self.annotate(invoices_num = Count('invoices'), payments_num = Count('payments'))
-        return query.filter(invoices_num = 0, payments_num = 0, force_fully_paid = False)
     def noinvoice(self):
         query = self.annotate(invoices_num = Count('invoices'), payments_num = Count('payments'))
         return query.filter(invoices_num = 0, payments_num__gt = 0, force_fully_paid = False)

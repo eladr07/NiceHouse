@@ -761,7 +761,7 @@ def demands_all(request):
         for d in p.demands_mispaid():
             amount_mispaid += d.get_total_amount()
             total_mispaid += 1
-        for d in p.demands.all().unpaid():
+        for d in p.demands_unpaid():
             amount_unpaid += d.get_total_amount()
             total_unpaid += 1
         for d in p.demands.all().nopayment():
