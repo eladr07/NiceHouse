@@ -1793,7 +1793,7 @@ def building_pricelist_pdf(request, object_id, type_id):
 @permission_required('Management.building_clients')
 def building_clients(request, object_id):
     b = Building.objects.get(pk = object_id)
-    for h in b.houses.all():
+    for h in b.sold_houses():
         try:
             h.price = h.versions.filter(type__id = PricelistType.Company).latest().price
         except HouseVersion.DoesNotExist:

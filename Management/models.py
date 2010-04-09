@@ -2438,7 +2438,17 @@ class SaleCancel(SaleMod):
         return '/salecancel/%s' % self.id
     class Meta:
         db_table = 'SaleCancel'
-        
+
+class SaleQuerySet(models.query.QuerySet):
+    def total_price(self):
+        return self.aggregate(Sum('price'))['sum_price']
+    
+class SaleManager(models.Manager):
+    use_for_related_fields = True
+    
+    def get_query_set(self):
+        return SaleQuerySet(self.model)
+
 class Sale(models.Model):
     demand = models.ForeignKey('Demand', related_name='sales', editable=False)
     house = models.ForeignKey('House', related_name = 'sales', verbose_name=ugettext('house'))
@@ -2466,6 +2476,9 @@ class Sale(models.Model):
     discount = models.FloatField(ugettext('given_discount'), null=True, blank=True)
     allowed_discount = models.FloatField(ugettext('allowed_discount'), null=True, blank=True)
     commission_include = models.BooleanField(ugettext('commission include'), default=True, blank=True)
+    
+    objects = SaleManager()
+    
     def __init__(self, *args, **kw):
         models.Model.__init__(self, *args, **kw)
         self.custom_cache = {}
@@ -2475,7 +2488,6 @@ class Sale(models.Model):
             self.restore_date = actual_demand and actual_demand.finish_date or None
         else:
             self.restore_date = None
-            
     @property
     def tax(self):
         if not self.custom_cache.has_key('tax'):
