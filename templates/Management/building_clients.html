@@ -56,9 +56,11 @@
 				{% endwith %}
 			</tr>
 		{% endfor %}
-		<tr>{{object.houses.count}}</td>
-		<td colspan="11"></td>
-		<td>{{total_sale_price}}</td>
+		<tr>
+			<td>{{object.houses.count}}</td>
+			<td colspan="11"></td>
+			<td>{{total_sale_price}}</td>
+		</tr>
 	</table>
 </div>
 {% endblock content %}
