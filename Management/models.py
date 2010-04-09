@@ -1761,15 +1761,15 @@ class DemandQuerySet(models.query.QuerySet):
     def total_sale_count(self):
         return self.aggregate(Sum('sale_count'))['sale_count__sum'] or 0
     
+class DemandManager(SeasonManager):
+    use_for_related_fields = True
+    
     def noinvoice(self):
         query = self.annotate(invoices_num = Count('invoices'), payments_num = Count('payments'))
         return query.filter(invoices_num = 0, payments_num__gt = 0, force_fully_paid = False)
     def nopayment(self):
         query = self.annotate(invoices_num = Count('invoices'), payments_num = Count('payments'))
         return query.filter(invoices_num__gt = 0, payments_num = 0, force_fully_paid = False)
-    
-class DemandManager(SeasonManager):
-    use_for_related_fields = True
     
     def current(self):
         now = Demand.current_month()

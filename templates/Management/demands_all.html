@@ -76,8 +76,8 @@
 			</td>
 			<td><a href="/projects/{{p.id}}/demands/mispaid" class="bigfancybox">{{ p.demands_mispaid|length }}</a></td>
 			<td><a href="/projects/{{p.id}}/demands/unpaid" class="bigfancybox">{{ p.demands_unpaid|length }}</a></td>
-			<td><a href="/projects/{{p.id}}/demands/nopayment" class="bigfancybox">{{ p.demands.all.nopayment.count }}</a></td>
-			<td><a href="/projects/{{p.id}}/demands/noinvoice" class="bigfancybox">{{ p.demands.all.noinvoice.count }}</a></td>
+			<td><a href="/projects/{{p.id}}/demands/nopayment" class="bigfancybox">{{ p.demands.nopayment.count }}</a></td>
+			<td><a href="/projects/{{p.id}}/demands/noinvoice" class="bigfancybox">{{ p.demands.noinvoice.count }}</a></td>
 		</tr>
 	{% endfor %}
 	<tr class="rowSum">
