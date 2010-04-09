@@ -955,6 +955,7 @@ class BuildingClientsWriter:
                                         u'נלוות\nהוצאות',u'חזוי\nאכלוס\nמועד']]
         headers.reverse()
         rows = []
+        total_sale_price = 0
         i = 0
         for h in self.houses:
             parkings = '<br/>'.join([log2vis(unicode(p.num)) for p in h.parkings.all()])
@@ -963,6 +964,7 @@ class BuildingClientsWriter:
             signup = h.get_signup()
             if sale:
                 clients_name, clients_address, clients_phone = clientsPara(sale.clients), '', clientsPara(sale.clients_phone)
+                total_sale_price += sale.price
             else:
                 clients_name, clients_address, clients_phone = '','',''
             row = [h.num, log2vis(unicode(h.type)), h.net_size, h.floor, clients_name, '', clients_address, clients_phone, 
@@ -981,6 +983,10 @@ class BuildingClientsWriter:
                 if i < len(self.houses):
                     flows.extend([PageBreak(), Spacer(0, 50)])
                 rows = []
+        sumRow = [Paragraph(str(self.houses.count()), styleSumRow),None,None,None,None,None,None,None,None,None,None,None, 
+                  Paragraph(commaise(total_sale_price), styleSumRow), None, None, None, None]
+        sumRow.reverse()
+        rows.append(sumRow)
         data = [headers]
         data.extend(rows)
         t = Table(data)

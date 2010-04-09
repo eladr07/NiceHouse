@@ -1789,13 +1789,15 @@ def building_pricelist_pdf(request, object_id, type_id):
 @permission_required('Management.building_clients')
 def building_clients(request, object_id):
     b = Building.objects.get(pk = object_id)
+    total_sale_price = 0
     for h in b.houses.sold():
         try:
             h.price = h.versions.filter(type__id = PricelistType.Company).latest().price
+            total_sale_price += h.price
         except HouseVersion.DoesNotExist:
             h.price = None
     return render_to_response('Management/building_clients.html',
-                              { 'object':b},
+                              { 'object':b, 'total_sale_price':total_sale_price},
                               context_instance=RequestContext(request))
 
 @permission_required('Management.building_clients_pdf')
