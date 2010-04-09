@@ -3386,7 +3386,7 @@ def citycallers_core(request, instance):
 @permission_required('Management.add_mediareferrals')
 def activitybase_mediareferrals_add(request, activitybase_id):
     activity_base = ActivityBase.objects.get(pk = activitybase_id)
-    return mediareferrals_core(request, CityCallers(activity_base = activity_base))
+    return mediareferrals_core(request, MediaReferrals(activity_base = activity_base))
 
 @permission_required('Management.change_mediareferrals')
 def mediareferrals_edit(request, object_id):
