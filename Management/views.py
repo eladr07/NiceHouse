@@ -2854,7 +2854,7 @@ def demand_sales(request, project_id, year, month):
         d = Demand.objects.get(project__id = project_id, year=year, month=month)
         sales = d.get_sales()
     except Demand.DoesNotExist:
-        sales=[]
+        sales = Sale.objects.none()
     return render_to_response('Management/sale_table.html', 
                               {'sales':sales },
                               context_instance=RequestContext(request))  
