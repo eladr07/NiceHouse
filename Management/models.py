@@ -1756,10 +1756,21 @@ class DemandStatus(models.Model):
         db_table = 'DemandStatus'
         get_latest_by = 'date'
 
+class DemandQuerySet(models.query.QuerySet):
+    def total_sales_commission(self):
+        return self.aggregate(Sum('sales_commission'))['sales_commission__sum'] or 0
+    def total_sale_count(self):
+        return self.aggregate(Sum('sale_count'))['sale_count__sum'] or 0
+    
 class DemandManager(SeasonManager):
+    use_for_related_fields = True
+    
     def current(self):
         now = Demand.current_month()
         return self.filter(year = now.year, month = now.month)
+    
+    def get_query_set(self):
+        return DemandQuerySet(self.model)
 
 class DemandDiff(models.Model):
     demand = models.ForeignKey('Demand', editable=False, related_name='diffs')

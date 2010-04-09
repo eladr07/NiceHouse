@@ -568,9 +568,7 @@ def demand_old_list(request):
         for d in ds:
             total_sales_count += d.get_sales().count()
             total_sales_amount += d.get_sales().total_price_final()
-            total_sales_commission += d.sales_commission
             total_amount += d.get_total_amount()
-            expected_sales_count += d.sale_count
         for p in Project.objects.active():
             query = ds.filter(project=p)
             if query.count() == 0:
@@ -585,9 +583,7 @@ def demand_old_list(request):
                                 'filterForm':form,
                                 'total_sales_count':total_sales_count,
                                 'total_sales_amount':total_sales_amount,
-                                'total_sales_commission':total_sales_commission,
                                 'total_amount':total_amount,
-                                'expected_sales_count':expected_sales_count,
                                 'unhandled_projects':unhandled_projects},
                               context_instance=RequestContext(request))
 
