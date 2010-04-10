@@ -1742,7 +1742,7 @@ class PaymentType(models.Model):
 
 class PaymentQuerySet(models.query.QuerySet):
     def total_amount(self):
-        return self.aggregate(Sum('amount'))['amount__sum']
+        return self.aggregate(Sum('amount'))['amount__sum'] or 0
     
 class PaymentManager(models.Manager):
     use_for_related_fields = True
