@@ -336,11 +336,8 @@ class House(models.Model):
         balcony_size = self.garden_size or 0
         return self.net_size + balcony_size * 0.3
     def pricelist_types(self):
-        types = []
-        for v in self.versions.all():
-            if types.count(v.type) == 0:
-                types.append(v.type)
-        return types
+        versions = self.versions.select_related('type')
+        return set([version.type for version in versions])
     def get_cottage_num(self):
         return self.num[:-1]
     @cache_method
@@ -457,11 +454,9 @@ class Building(models.Model):
     def is_cottage(self):
         return self.type.id == BuildingType.Cottage
     def pricelist_types(self):
-        types = []
-        for h in self.houses.all():
-            for t in h.pricelist_types():
-                if not t in types:
-                    types.append(t)
+        types = set()
+        for house in self.houses.all():
+            types.update(house.pricelist_types())
         return types
     def save(self, *args, **kw):
         try:
