@@ -1690,7 +1690,21 @@ class ProjectCommission(models.Model):
             s.save()
     class Meta:
         db_table = 'ProjectCommission'
-  
+
+class InvoiceQuerySet(models.query.QuerySet):
+    def total_amount_offset(self):
+        invoices_amount = self.aggregate(Sum('amount'))['amount__sum']
+        offsets_amount = self.aggregate(Sum('offset__amount'))['offset__amount__sum']
+        return invoices_amount + offsets_amount
+    
+class InvoiceManager(models.Manager):
+    use_for_related_fields = True
+    
+    def total_amount_offset(self):
+        return self.get_query_set().total_amount_offset()
+    def get_query_set(self):
+        return InvoiceQuerySet(self.model)
+
 class Invoice(models.Model):
     num = models.IntegerField(ugettext('invoice_num'), unique=True, null=True, blank=True)
     creation_date = models.DateField(auto_now_add = True)
@@ -1698,9 +1712,9 @@ class Invoice(models.Model):
     amount = models.IntegerField(ugettext('amount'))
     remarks = models.TextField(ugettext('remarks'), null=True,blank=True)
     offset = models.OneToOneField('InvoiceOffset', editable=False, null=True)
-    @property
-    def amount_offset(self):
-        return self.offset and self.offset.amount + self.amount or self.amount
+    
+    objects = InvoiceManager()
+    
     def __unicode__(self):
         return u'חשבונית על סך %s ש"ח בתאריך %s' % (commaise(self.amount), self.date.strftime('%d/%m/%Y'))
     class Meta:
@@ -1726,6 +1740,18 @@ class PaymentType(models.Model):
     class Meta:
         db_table = 'PaymentType'
 
+class PaymentQuerySet(models.query.QuerySet):
+    def total_amount(self):
+        return self.aggregate(Sum('amount'))['amount__sum']
+    
+class PaymentManager(models.Manager):
+    use_for_related_fields = True
+    
+    def total_amount(self):
+        return self.get_query_set().total_amount()
+    def get_query_set(self):
+        return PaymentQuerySet(self.model)
+    
 class Payment(models.Model):
     num = models.IntegerField(ugettext('check_num'), null=True, blank=True)
     support_num = models.IntegerField(ugettext('support_num'), null=True, blank=True)
@@ -1736,6 +1762,9 @@ class Payment(models.Model):
     creation_date = models.DateField(auto_now_add = True)
     amount = models.IntegerField(ugettext('amount'))
     remarks = models.TextField(ugettext('remarks'), null=True,blank=True)
+    
+    objects = PaymentManager()
+    
     def __unicode__(self):
         return u'תשלום על סך %s ש"ח בתאריך %s' % (commaise(self.amount), self.payment_date.strftime('%d/%m/%Y'))
     def is_split(self):
@@ -1790,11 +1819,26 @@ class DemandManager(SeasonManager):
     def get_query_set(self):
         return DemandQuerySet(self.model)
 
+class DemandDiffQuerySet(models.query.QuerySet):
+    def total_amount(self):
+        return self.aggregate(Sum('amount'))['amount__sum']
+    
+class DemandDiffManager(models.Manager):
+    use_for_related_fields = True
+    
+    def total_amount(self):
+        return self.get_query_set().total_amount()
+    def get_query_set(self):
+        return DemandDiffQuerySet(self.model)
+    
 class DemandDiff(models.Model):
     demand = models.ForeignKey('Demand', editable=False, related_name='diffs')
     type = models.CharField(ugettext('diff_type'), max_length=30, help_text=u'קבועה, משתנה, בונוס, קיזוז או לבחירתך')
     reason = models.CharField(ugettext('diff_reason'), max_length=30, null=True, blank=True)
     amount = models.FloatField(ugettext('amount'))
+    
+    objects = DemandDiffManager()
+    
     def __unicode__(self):
         return u'תוספת מסוג %s על סך %s ש"ח - %s' % (self.type, self.amount, self.reason)
     def get_absolute_url(self):
@@ -1925,25 +1969,10 @@ class Demand(models.Model):
     @property
     def diff_invoice(self):
         if self.invoices.count() == 0: return 0
-        return self.invoices_amount - int(self.get_total_amount())
-    @property
-    @cache_method
-    def diffs_amount(self):
-        return self.diffs.aggregate(Sum('amount'))['amount__sum'] or 0
-    @property
-    @cache_method
-    def payments_amount(self):
-        return self.payments.aggregate(Sum('amount'))['amount__sum'] or 0
-    @property
-    @cache_method
-    def invoices_amount(self):
-        amount = 0
-        for i in self.invoices.all():
-            amount += i.amount_offset
-        return amount
+        return self.invoices.total_amount_offset() - int(self.get_total_amount())
     @property
     def diff_invoice_payment(self):
-        return self.payments_amount - self.invoices_amount
+        return self.payments.total_amount() - self.invoices.total_amount_offset()
     def get_open_reminders(self):
         return [r for r in self.reminders.all() if r.statuses.latest().type.id 
                 not in (ReminderStatusType.Deleted,ReminderStatusType.Done)]
@@ -1992,13 +2021,13 @@ class Demand(models.Model):
         self.save()
         return self.sales_commission
     def get_total_amount(self):
-        return self.sales_commission + self.diffs_amount
+        return self.sales_commission + self.diffs.total_amount()
     @property
     def is_fully_paid(self):
         if self.force_fully_paid:
             return True
         total = int(self.get_total_amount())
-        return total == self.invoices_amount and total == self.payments_amount
+        return total == self.invoices.total_amount_offset() and total == self.payments.total_amount()
     def feed(self):
         self.statuses.create(type= DemandStatusType.objects.get(pk=DemandFeed)).save()
     def send(self):
