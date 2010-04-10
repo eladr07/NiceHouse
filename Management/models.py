@@ -1693,8 +1693,8 @@ class ProjectCommission(models.Model):
 
 class InvoiceQuerySet(models.query.QuerySet):
     def total_amount_offset(self):
-        invoices_amount = self.aggregate(Sum('amount'))['amount__sum']
-        offsets_amount = self.aggregate(Sum('offset__amount'))['offset__amount__sum']
+        invoices_amount = self.aggregate(Sum('amount'))['amount__sum'] or 0
+        offsets_amount = self.aggregate(Sum('offset__amount'))['offset__amount__sum'] or 0
         return invoices_amount + offsets_amount
     
 class InvoiceManager(models.Manager):
