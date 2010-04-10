@@ -3041,8 +3041,8 @@ def demand_followup_list(request):
 
             for d in ds:
                 total_amount += d.get_total_amount()
-                total_invoices += d.invoices_amount
-                total_payments += d.payments_amount
+                total_invoices += d.invoices.total_amount_offset()
+                total_payments += d.payments.total_amount()
                 total_diff_invoice += d.diff_invoice
                 total_diff_invoice_payment += d.diff_invoice_payment
     else:
