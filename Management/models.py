@@ -1821,7 +1821,7 @@ class DemandManager(SeasonManager):
 
 class DemandDiffQuerySet(models.query.QuerySet):
     def total_amount(self):
-        return self.aggregate(Sum('amount'))['amount__sum']
+        return self.aggregate(Sum('amount'))['amount__sum'] or 0
     
 class DemandDiffManager(models.Manager):
     use_for_related_fields = True
