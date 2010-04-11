@@ -204,11 +204,11 @@ class Project(models.Model):
     def is_zilber(self):
         return self.commissions.c_zilber != None
     def demands_unpaid(self):
-        query = self.annotate(invoices_num = Count('invoices'), payments_num = Count('payments'))
+        query = self.demands.annotate(invoices_num = Count('invoices'), payments_num = Count('payments'))
         query = query.filter(invoices_num = 0, payments_num = 0)
         return [d for d in query if d.is_fully_paid == False]
     def demands_mispaid(self):
-        query = self.annotate(invoices_num = Count('invoices'), payments_num = Count('payments'))
+        query = self.demands.annotate(invoices_num = Count('invoices'), payments_num = Count('payments'))
         query = query.filter(invoices_num__gt = 0, payments_num__gt = 0)
         return [d for d in query if d.diff_invoice_payment != 0 and d.is_fully_paid == False]
     def current_demand(self):
