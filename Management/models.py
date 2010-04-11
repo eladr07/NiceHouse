@@ -204,10 +204,12 @@ class Project(models.Model):
     def is_zilber(self):
         return self.commissions.c_zilber != None
     def demands_unpaid(self):
-        query = self.demands.annotate(Count('invoices'), Count('payments')).filter(invoices__count__exact = 0, payments__count__exact = 0)
+        query = self.annotate(invoices_num = Count('invoices'), payments_num = Count('payments'))
+        query = query.filter(invoices_num = 0, payments_num = 0)
         return [d for d in query if d.is_fully_paid == False]
     def demands_mispaid(self):
-        query = self.demands.annotate(invoices_count = Count('invoices'), payments_count = Count('payments')).filter(invoices_count__gt = 0, payments_count__gt = 0)
+        query = self.annotate(invoices_num = Count('invoices'), payments_num = Count('payments'))
+        query = query.filter(invoices_num__gt = 0, payments_num__gt = 0)
         return [d for d in query if d.diff_invoice_payment != 0 and d.is_fully_paid == False]
     def current_demand(self):
         try:
@@ -1793,11 +1795,11 @@ class DemandQuerySet(models.query.QuerySet):
     def total_sale_count(self):
         return self.aggregate(Sum('sale_count'))['sale_count__sum'] or 0
     def noinvoice(self):
-        query = self.annotate(Count('invoices'), Count('payments'))
-        return query.filter(invoices__count__exact = 0, payments__count__gt = 0, force_fully_paid = False)
+        query = self.annotate(invoices_num = Count('invoices'), payments_num = Count('payments'))
+        return query.filter(invoices_num = 0, payments_num__gt = 0, force_fully_paid = False)
     def nopayment(self):
-        query = self.annotate(Count('invoices'), Count('payments'))
-        return query.filter(invoices__count__gt = 0, payments__count__exact = 0, force_fully_paid = False)
+        query = self.annotate(invoices_num = Count('invoices'), payments_num = Count('payments'))
+        return query.filter(invoices_num__gt = 0, payments_num = 0, force_fully_paid = False)
     
 class DemandManager(SeasonManager):
     use_for_related_fields = True
