@@ -207,7 +207,7 @@ class Project(models.Model):
         query = self.demands.annotate(Count('invoices'), Count('payments')).filter(invoices__count__exact = 0, payments__count__exact = 0)
         return [d for d in query if d.is_fully_paid == False]
     def demands_mispaid(self):
-        query = self.demands.annotate(Count('invoices'), Count('payments')).filter(invoices__count__gt = 0, payments__count__gt = 0)
+        query = self.demands.annotate(Count('invoices'), Count('payments')).filter(invoices__count__exact__gt = 0, payments__count__exact__gt = 0)
         return [d for d in query if d.diff_invoice_payment != 0 and d.is_fully_paid == False]
     def current_demand(self):
         try:
