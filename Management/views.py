@@ -2844,17 +2844,7 @@ def demand_sale_list(request):
         raise ValueError
     return render_to_response('Management/sale_list.html', 
                               {'sales':sales, 'sales_amount':sales_amount,'title':title},
-                              context_instance=RequestContext(request))  
-       
-def demand_sales(request, project_id, year, month):
-    try:
-        d = Demand.objects.get(project__id = project_id, year=year, month=month)
-        sales = d.get_sales()
-    except Demand.DoesNotExist:
-        sales = Sale.objects.none()
-    return render_to_response('Management/sale_table.html', 
-                              {'sales':sales },
-                              context_instance=RequestContext(request))  
+                              context_instance=RequestContext(request))
 @login_required
 def project_demands(request, project_id, func, template_name):
     p = Project.objects.get(pk = project_id)
