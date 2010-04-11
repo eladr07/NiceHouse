@@ -1735,22 +1735,15 @@ def building_pricelist(request, object_id, type_id):
         form = PricelistForm(instance = b.pricelist)
         formset = InlineFormSet(instance = b.pricelist)
         updateForm = PricelistUpdateForm(prefix='upd')
+    
     houses = b.houses.all()
-    signup_count = 0
-    sale_count = 0
     for house in houses:
-        if house.get_sale() or house.is_sold:
-            sale_count = sale_count+1
-        elif house.get_signup():
-            signup_count = signup_count+1
         versions = house.versions.filter(type__id = type_id)
         house.price = versions.count() > 0 and versions.latest().price or None
         
-    avaliable_count = houses.count() - signup_count - sale_count
     return render_to_response('Management/building_pricelist.html',
                               {'form': form, 'formset': formset, 'updateForm':updateForm, 
-                               'houses' : houses, 'signup_count':signup_count, 
-                               'sale_count':sale_count, 'avaliable_count':avaliable_count,
+                               'houses' : houses,
                                'type':PricelistType.objects.get(pk=type_id), 
                                'types':PricelistType.objects.all()}, 
                               context_instance=RequestContext(request))
