@@ -1739,7 +1739,7 @@ def building_pricelist(request, object_id, type_id):
     houses = b.houses.all()
     for house in houses:
         versions = house.versions.filter(type__id = type_id)
-        house.price = versions.exists() and versions.latest().price or None
+        house.price = versions.count() > 0 and versions.latest().price or None
         
     return render_to_response('Management/building_pricelist.html',
                               {'form': form, 'formset': formset, 'updateForm':updateForm, 
