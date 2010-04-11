@@ -2947,8 +2947,8 @@ def report_employeesalary_season(request, employee_id=None, from_year=Demand.cur
 
 @permission_required('Management.demand_season')
 def demand_season_list(request):
-    ds = []
-    total_sales_count,total_sales_amount, total_sales_commission, total_amount = 0,0,0,0
+    ds = Demand.objects.none()
+    total_sales_count,total_sales_amount, total_amount = 0,0,0
     from_date, to_date, project = None, None, None
     
     if len(request.GET):
@@ -2963,7 +2963,6 @@ def demand_season_list(request):
             for d in ds:
                 total_sales_count += d.get_sales().count()
                 total_sales_amount += d.get_sales().total_price_final()
-                total_sales_commission += d.sales_commission
                 total_amount += d.get_total_amount()
     else:
         form = ProjectSeasonForm()
@@ -2973,7 +2972,6 @@ def demand_season_list(request):
                                 'project':project, 'filterForm':form,
                                 'total_sales_count':total_sales_count,
                                 'total_sales_amount':total_sales_amount,
-                                'total_sales_commission':total_sales_commission,
                                 'total_amount':total_amount},
                               context_instance=RequestContext(request))
 
