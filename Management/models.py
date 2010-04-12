@@ -1353,7 +1353,6 @@ class CVar(models.Model):
     is_retro = models.BooleanField(ugettext('retroactive'))
     def calc(self,sales):
         dic = {}
-        i = 0
         if self.is_retro:
             c = self.get_amount(len(sales)).amount
             for s in sales:
@@ -1378,7 +1377,6 @@ class CVarPrecentage(models.Model):
     start_retro = models.PositiveSmallIntegerField(ugettext('retroactive_start'),null=True, blank=True, default=1)
     def calc(self, sales):
         dic={}
-        i=0
         if self.is_retro and len(sales) >= self.start_retro:
             c = self.get_precentage(len(sales)).precentage
             for s in sales:
