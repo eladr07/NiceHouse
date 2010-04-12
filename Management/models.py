@@ -1445,13 +1445,13 @@ class CByPrice(models.Model):
         for s in sales:
             dic[s] = self.get_amount(s.price_taxed)
         return dic
+    
     def get_amount(self, price):
-        amount = 0
-        for pa in self.price_amounts.reverse():
-            if price >= pa.price:
-                break
-            amount = pa.amount
-        return amount
+        query = self.price_amounts.filter(price__lte = price)
+        if query.count() == 0:
+            raise CommissionException
+        return query.latest().amount
+
     class Meta:
         db_table = 'CByPrice'
 
