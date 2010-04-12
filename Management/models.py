@@ -1290,12 +1290,12 @@ class CAmount(models.Model):
 
     def save(self, *args, **kw):
         if not self.id:
-            try:
+            if self.c_var.amounts.count() > 0:
                 latest = self.c_var.amounts.latest()
                 self.index = latest.index + 1
-            except:
+            else:
                 self.index = 1
-        models.Model.save(self, *args, **kw)
+        super(CAmount, self).save(*args, **kw)
 
     class Meta:
         ordering = ['index']
@@ -1310,12 +1310,12 @@ class CPrecentage(models.Model):
     
     def save(self, *args, **kw):
         if not self.id:
-            try:
+            if self.c_var_precentage.precentages.count() > 0:
                 latest = self.c_var_precentage.precentages.latest()
                 self.index = latest.index + 1
-            except:
+            else:
                 self.index = 1
-        models.Model.save(self, *args, **kw)
+        super(CPrecentage, self).save(*args, **kw)
     
     class Meta:
         ordering = ['index']
