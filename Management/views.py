@@ -1755,7 +1755,7 @@ def building_pricelist_pdf(request, object_id, type_id):
     pricelist_type = PricelistType.objects.get(pk = type_id)
     houses = b.houses.all()
     if type == 'avaliable':
-        houses = [h for h in houses.filter(is_sold=False) if h.get_sale() == None]
+        houses = b.houses.avalible()
     for h in houses:
         try:
             h.price = h.versions.filter(type__id = type_id).latest().price
