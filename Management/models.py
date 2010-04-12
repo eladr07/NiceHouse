@@ -1365,15 +1365,10 @@ class CVar(models.Model):
                 dic[s] = self.get_amount(i).amount
         return dic
     def get_amount(self, index):
-        amount = self.amounts.filter(index = index)
-        if amount.count() == 1:
-            return amount[0]
-        else:
-            for a in self.amounts.all():
-                amount = a
-                if a.index > index:
-                    break
-        return amount
+        query = self.amounts.filter(index__lte = index)
+        if query.count() == 0:
+            raise CommissionException
+        return query.latest()
             
     class Meta:
         db_table = 'CVar'
@@ -1394,17 +1389,14 @@ class CVarPrecentage(models.Model):
                 i += 1
                 c = self.get_precentage(i).precentage
                 dic[s] = c
-        return dic            
+        return dic
+        
     def get_precentage(self, index):
-        precentage = self.precentages.filter(index = index)
-        if precentage.count() == 1:
-            return precentage[0]
-        else:
-            for p in self.precentages.all():
-                precentage = p
-                if p.index > index:
-                    break
-        return precentage
+        query = self.precentages.filter(index__lte = index)
+        if query.count() == 0:
+            raise CommissionException
+        return query.latest()
+    
     class Meta:
         db_table = 'CVarPrecentage'
  
