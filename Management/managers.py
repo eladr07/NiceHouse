@@ -73,6 +73,22 @@ class HouseManager(models.Manager):
     def get_query_set(self):
         return HouseQuerySet(self.model)
 
+class CityCallersManager(models.Manager):
+    use_for_related_fields = True
+    
+    def total_callers_num(self):
+        return self.get_query_set().total_callers_num()
+    def get_query_set(self):
+        return CityCallerQuerySet(self.model)
+
+class MediaReferralsManager(models.Manager):
+    use_for_related_fields = True
+    
+    def total_referrals_num(self):
+        return self.get_query_set().total_referrals_num()
+    def get_query_set(self):
+        return MediaReferralsQuerySet(self.model)
+
 class ChangeLogManager(models.Manager):
     def object_changelog(obj):
         return self.filter(object_type = obj.__class__.name, object_id = obj.id)

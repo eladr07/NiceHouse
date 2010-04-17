@@ -2704,6 +2704,8 @@ class CityCallers(models.Model):
     city = models.ForeignKey('City', verbose_name = ugettext('city'), blank=True)
     callers_num = models.PositiveSmallIntegerField(ugettext('callers_num'))
     
+    objects = CityCallersManager()
+    
     def get_absolute_url(self):
         return '/citycallers/%s' % self.id
     
@@ -2715,6 +2717,8 @@ class MediaReferrals(models.Model):
     
     media = models.ForeignKey('Media', verbose_name = ugettext('media'), blank=True)
     referrals_num = models.PositiveSmallIntegerField(ugettext('referrals_num'))
+    
+    objects = MediaReferralsManager()
     
     def get_absolute_url(self):
         return '/mediareferrals/%s' % self.id

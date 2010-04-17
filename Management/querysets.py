@@ -42,3 +42,11 @@ class HouseQuerySet(models.query.QuerySet):
     def avalible(self):
         q = models.Q(is_sold = False) & models.Q(sales__salecancel__isnull = True) & models.Q(signups__cancel__isnull = True)
         return self.filter(q).annotate(sales_num = Count('sales'), signups_num = Count('signups')).filter(sales_num = 0, signups_num = 0)
+    
+class CityCallersQuerySet(models.query.QuerySet):
+    def total_callers_num(self):
+        return self.aggregate(Sum('callers_num'))['callers_num__sum'] or 0        
+
+class MediaReferralsQuerySet(models.query.QuerySet):
+    def total_referrals_num(self):
+        return self.aggregate(Sum('referrals_num'))['referrals_num__sum'] or 0
