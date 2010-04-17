@@ -148,7 +148,7 @@ def employeecheck_list(request):
     month = date.today()
     sum_check_amount, sum_invoice_amount, sum_diff_check_invoice, sum_salary_amount, sum_diff_check_salary = 0,0,0,0,0
     from_date, to_date = None,None
-    checks = []
+    checks = EmployeeCheck.objects.none()
     if len(request.GET):
         form = EmployeeCheckFilterForm(request.GET)
         if form.is_valid():
@@ -205,7 +205,7 @@ def advance_payment_toloan(request, id):
 @permission_required('Management.list_check')
 def check_list(request):
     month = date.today()
-    checks = []
+    checks = Check.objects.none()
     from_date, to_date = None, None
     sum_check_amount, sum_invoice_amount, sum_diff_check_invoice = 0,0,0
     if len(request.GET):
@@ -842,7 +842,7 @@ def nh_season_profit(request):
 
 @permission_required('Management.nhmonth_season')
 def nh_season_income(request):
-    month, nhmonth_set, employees, y, m = date.today(), [], [], 0, 0
+    month, nhmonth_set, employees, y, m = date.today(), NHMonth.objects.none(), [], 0, 0
     totals_notax = {'income':0, 'net_income':0}
     totals = {'income':0, 'net_income':0}
     avg = {'signed_commission':0, 'actual_commission':0}
@@ -1392,9 +1392,7 @@ def income_list(request):
                 incomes = incomes.filter(client_type = form.cleaned_data['client_type'])
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
-            incomes = [income for income in incomes if (date(income.year, income.month, 1) <= to_date and 
-                                                        date(income.year, income.month, 1) >= from_date)]
-
+            incomes = incomes.range(from_date.year, from_date.month, to_date.year, to_date.month)
     else:
         form = IncomeFilterForm()
     
@@ -2890,7 +2888,6 @@ def report_projects_month(request, year, month):
 @login_required
 def report_project_season(request, project_id=None, from_year=Demand.current_month().year, from_month=Demand.current_month().month, 
                           to_year=Demand.current_month().year, to_month=Demand.current_month().month):
-    ds = []
     from_date = date(int(from_year), int(from_month), 1)
     to_date = date(int(to_year), int(to_month), 1)
     
@@ -2901,7 +2898,7 @@ def report_project_season(request, project_id=None, from_year=Demand.current_mon
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
 
-    MultipleDemandWriter(ds, u'ריכוז דרישות תקופתי לפרוייקט %s' % Project.objects.get(pk=project_id),
+    MultipleDemandWriter(demands, u'ריכוז דרישות תקופתי לפרוייקט %s' % Project.objects.get(pk=project_id),
                          show_month=True, show_project=False).build(filename)
     p = open(filename,'r')
     response.write(p.read())
@@ -3007,7 +3004,7 @@ def season_income(request):
                               context_instance=RequestContext(request))
 
 def demand_followup_list(request):
-    ds = []
+    ds = Demand.objects.none()
     total_amount, total_invoices, total_payments, total_diff_invoice, total_diff_invoice_payment = 0,0,0,0,0
     from_date, to_date, project = None, None, None
     
