@@ -1809,7 +1809,7 @@ class Demand(models.Model):
         return s
     @property
     def was_sent(self):
-        return self.statuses.filter(pk__in = [DemandSent, DemandFinished]).count() > 0
+        return self.statuses.filter(type__in = [DemandSent, DemandFinished]).count() > 0
     @property
     @cache_method
     def finish_date(self):
