@@ -671,6 +671,8 @@ class NHCommission(models.Model):
             elif income_type_id == NHIncomeType.Relative:
                 self_pay = nhss.get_employee_pay(self.nhemployee)
                 all_pay = nhss.all_employee_commission
+                if all_pay == 0:
+                    return 0
                 if filter_id == NHSaleFilter.His:
                     income = self_pay / all_pay * nhss.net_income
                 elif filter_id == NHSaleFilter.NotHis:
