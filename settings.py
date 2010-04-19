@@ -96,6 +96,7 @@ import logging.handlers
 logger = logging.getLogger("commission")
 logger.setLevel(logging.DEBUG)
 # create console handler and set level to debug
+open('logs/commission.log','w')
 ch = logging.handlers.TimedRotatingFileHandler('logs/commission.log', 'midnight')
 ch.setLevel(logging.DEBUG)
 # create formatter
