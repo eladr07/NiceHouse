@@ -31,8 +31,6 @@ Boolean = (
            (1, u'כן')
            )
 
-DemandNoInvoice, DemandNoPayment, DemandPaidPlus, DemandPaidMinus, DemandPaid, DemandUnpaid = range(1, 7)
-
 RoomsChoices = [(float(i)/2,float(i)/2) for i in range(2, 21)]
 RoomsChoices.insert(0, ('',u'----'))
 
