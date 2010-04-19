@@ -1533,7 +1533,7 @@ class ProjectCommission(models.Model):
     agreement = models.FileField(ugettext('agreement'), upload_to='files', null=True, blank=True)
     remarks = models.TextField(ugettext('commission_remarks'), null=True, blank=True)
     def calc(self, sales, sub=0, restore_date = date.today()):
-        logger = logging.getLogger()
+        logger = logging.getLogger('commission')
         logger.info('starting to calculate commission for project %(p)s. %(sales_num)s sales.', 
                     {'p':self.project,'sales_num':sales.count()})
         if sales.count() == 0: 
