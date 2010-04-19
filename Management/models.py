@@ -1534,8 +1534,9 @@ class ProjectCommission(models.Model):
     remarks = models.TextField(ugettext('commission_remarks'), null=True, blank=True)
     def calc(self, sales, sub=0, restore_date = date.today()):
         logger = logging.getLogger('commission')
-        logger.info('starting to calculate commission for project %(p)s. %(sales_num)s sales.', 
-                    {'p':self.project,'sales_num':sales.count()})
+        logger.info('starting to calculate commission for project %(project)s. %(sale_count)s sales.', 
+                    {'project':self.project,'sale_count':sales.count()})
+        
         if sales.count() == 0: 
             return
         demand = sales[0].actual_demand
@@ -1552,25 +1553,43 @@ class ProjectCommission(models.Model):
                                                commission_include=True,
                                                contractor_pay__lt = max_contractor_pay)
                 subSales = subSales.order_by('house__signups__date')
+                
+                logger.info('calculating affected sales(%(sale_count)s) for month %(month)s/%(year)s',
+                            {'sale_count':subSales.count(), 'month':m,'year':y})
+                
                 self.calc(subSales, 1)#send these sales to regular processing
             if demand.bonus_diff: demand.bonus_diff.delete()
             bonus = 0
             for subSales in demand.get_affected_sales().values():
                 for s in subSales:
                     if not s.commission_include: 
+                        logger.info('skipping sale #%(id)s - commission_include=False', {'id':s.id})
                         continue
                     signup = s.house.get_signup()
                     if not signup: 
+                        logger.info('skipping sale #%(id)s - no signup', {'id':s.id})
                         continue
                     #get the finish date when the demand for the month the signup 
                     #were made we use it to find out what was the commission at
                     #that time
                     if not s.actual_demand or not s.actual_demand.finish_date:
+                        logger.info('skipping sale #%(id)s - actual_demand=None or actual_demand.finish_date=None', {'id':s.id})
                         continue
                     q = s.project_commission_details.filter(commission='final')
-                    if q.count()==0: continue
+                    if q.count()==0:
+                        logger.info('skipping sale #%(id)s - no final commission', {'id':s.id})
+                        continue
                     s.restore_date = demand.get_previous_demand().finish_date
                     diff = (q[0].value - s.c_final) * s.price_final / 100
+                    
+                    logger.debug('sale #(id)s bonus calc values: %(vals)s',
+                                 {'id': s.id,
+                                  vals: {'diff':diff,
+                                         'q[0].value':q[0].value,
+                                         's.c_final':s.c_final,
+                                         's.price_final':s.price_final}
+                                  })
+                    
                     bonus += int(diff)
             if bonus > 0:
                 demand.diffs.create(type=u'בונוס', reason = u'הפרשי עמלה (ניספח א)', amount=bonus)
