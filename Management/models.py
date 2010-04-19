@@ -4,7 +4,7 @@ from datetime import datetime, date
 from django.contrib.auth.models import User
 from templatetags.management_extras import *
 from decimal import InvalidOperation
-from django.db.signals import pre_save
+from django.db.models.signals import pre_save
 from django.db.backends.dummy.base import IntegrityError
 from django.db.models import Avg, Max, Min, Count, Sum
 from decorators import cache_method
