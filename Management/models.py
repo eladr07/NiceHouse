@@ -2820,6 +2820,9 @@ class NHActivity(ActivityBase):
 class VersionDate(models.Model):
     revision = models.ForeignKey('reversion.Revision')
     date = models.DateTimeField()
+    
+    class Meta:
+        db_table = 'VersionDate'
 
 class ChangeLog(models.Model):
     date = models.DateTimeField(auto_now_add=True)
