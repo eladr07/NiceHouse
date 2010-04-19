@@ -3,12 +3,12 @@ from django.utils.translation import ugettext
 from datetime import datetime, date
 from django.contrib.auth.models import User
 from templatetags.management_extras import *
-from django.db.models.signals import pre_save
 from decimal import InvalidOperation
 from django.db.backends.dummy.base import IntegrityError
 from django.db.models import Avg, Max, Min, Count, Sum
 from decorators import cache_method
 from managers import *
+import reversion
 
 Salary_Types = (
                 (None, u'לא ידוע'),
@@ -2833,10 +2833,15 @@ class ChangeLog(models.Model):
         ordering = ['-date']
         get_latest_by = 'date'
 
+#register models with reversion
+
 tracked_models = [BDiscountSave, BDiscountSavePrecentage, BHouseType, BSaleRate,
                   CAmount, CByPrice, CPrecentage, CPriceAmount, CVar,
                   CVarPrecentage, CVarPrecentageFixed, CZilber, EmploymentTerms,
                   ProjectCommission, SaleCommissionDetail, EmployeeSalaryBase, NHEmployeeSalary, NHCommission]
+
+for model in tracked_models:
+    reversion.register(model)
 
 def restore_object(instance, date):
     '''
@@ -2886,4 +2891,3 @@ def track_changes(sender, **kwargs):
                        new_value = getattr(instance, field.name))
         cl.save()
 
-pre_save.connect(track_changes)
