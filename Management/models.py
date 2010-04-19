@@ -9,6 +9,7 @@ from django.db.backends.dummy.base import IntegrityError
 from django.db.models import Avg, Max, Min, Count, Sum
 from decorators import cache_method
 from managers import *
+import logging
 import reversion
 
 Salary_Types = (
@@ -1532,6 +1533,8 @@ class ProjectCommission(models.Model):
     agreement = models.FileField(ugettext('agreement'), upload_to='files', null=True, blank=True)
     remarks = models.TextField(ugettext('commission_remarks'), null=True, blank=True)
     def calc(self, sales, sub=0, restore_date = date.today()):
+        logger = logging.getLogger('commission.ProjectCommission')
+        logger.info('starting to calculate commission for project %(p)s. %(sales_num)s sales.', {'p':project,'sales_num':sales.count()})
         if sales.count() == 0: 
             return
         demand = sales[0].actual_demand
