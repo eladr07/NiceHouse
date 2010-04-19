@@ -447,8 +447,6 @@ def demand_calc(request, id):
                 s.delete()
             for s in demand.get_sales():
                 for scd in s.commission_details.all():
-                    for cl in ChangeLog.objects.filter(object_type='SaleCommissionDetail', object_id = scd.id):
-                        cl.delete()
                     scd.delete()
         for d2 in Demand.objects.filter(project = d.project):
             d2.calc_sales_commission()

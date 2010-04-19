@@ -2841,22 +2841,6 @@ class VersionDate(models.Model):
     class Meta:
         db_table = 'VersionDate'
 
-class ChangeLog(models.Model):
-    date = models.DateTimeField(auto_now_add=True)
-    object_type = models.CharField(max_length = 30)
-    object_id = models.IntegerField()
-    attribute = models.CharField(max_length = 30)
-    verbose_name = models.CharField(max_length = 30)
-    old_value = models.CharField(max_length = 30, null=True)
-    new_value = models.CharField(max_length = 30, null=True)
-    
-    objects = ChangeLogManager()
-    
-    class Meta:
-        db_table = 'ChangeLog'
-        ordering = ['-date']
-        get_latest_by = 'date'
-
 #register models with reversion
 
 tracked_models = [BDiscountSave, BDiscountSavePrecentage, BHouseType, BSaleRate,
