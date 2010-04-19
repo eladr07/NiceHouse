@@ -2817,6 +2817,10 @@ class NHActivity(ActivityBase):
     class Meta:
         db_table = 'NHActivity'
 
+class VersionDate(models.Model):
+    revision = models.ForeignKey('reversion.Revision')
+    date = models.DateTimeField()
+
 class ChangeLog(models.Model):
     date = models.DateTimeField(auto_now_add=True)
     object_type = models.CharField(max_length = 30)
