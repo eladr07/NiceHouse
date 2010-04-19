@@ -374,7 +374,10 @@ class MonthDemandWriter:
                 s.restore = False
                 new_commission = s.c_final
                 scd_final = s.project_commission_details.filter(commission='final')[0]
-                orig_commission = models.restore_object(scd_final, last_demand_sent.finish_date).value
+                
+                version = reversion.Version.objects.get_for_date(scd_final, last_demand_sent.finish_date)
+                orig_commission = version.field_dict['value']
+                #orig_commission = models.restore_object(scd_final, last_demand_sent.finish_date).value
                 if orig_commission == new_commission:
                     continue
                 i += 1
