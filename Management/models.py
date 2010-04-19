@@ -1534,7 +1534,8 @@ class ProjectCommission(models.Model):
     remarks = models.TextField(ugettext('commission_remarks'), null=True, blank=True)
     def calc(self, sales, sub=0, restore_date = date.today()):
         logger = logging.getLogger()
-        logger.info('starting to calculate commission for project %(p)s. %(sales_num)s sales.', {'p':project,'sales_num':sales.count()})
+        logger.info('starting to calculate commission for project %(p)s. %(sales_num)s sales.', 
+                    {'p':self.project,'sales_num':sales.count()})
         if sales.count() == 0: 
             return
         demand = sales[0].actual_demand
