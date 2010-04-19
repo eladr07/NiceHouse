@@ -96,7 +96,7 @@ import logging.handlers
 logger = logging.getLogger("commission")
 logger.setLevel(logging.DEBUG)
 # create console handler and set level to debug
-ch = logging.handlers.TimedRotatingFileHandler('/var/www/NiceHouse/trunk/logs/commission.log', 'midnight')
+ch = logging.handlers.TimedRotatingFileHandler('logs/commission.log', 'midnight')
 ch.setLevel(logging.DEBUG)
 # create formatter
 formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
