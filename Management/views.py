@@ -573,7 +573,7 @@ def demand_old_list(request):
                 unhandled_projects.append(p)
                 continue
             d = query[0]
-            if d.statuses.count() == 0 or d.statuses.latest().type.id != DemandSent:
+            if d.statuses.count() == 0 or d.statuses.latest().type.id != DemandStatusType.Sent:
                 unhandled_projects.append(p)
         
     return render_to_response('Management/demand_old_list.html', 
@@ -984,7 +984,7 @@ def demand_list(request):
         ds.append(demand)
         if new and project.commissions.add_amount:
             demand.diffs.create(type=u'קבועה', amount = project.commissions.add_amount, reason = project.commissions.add_type)
-        if demand.statuses.count() == 0 or demand.statuses.latest().type.id == DemandFeed:
+        if demand.statuses.count() == 0 or demand.statuses.latest().type.id == DemandStatusType.Feed:
             unhandled_projects.append(project)
     for d in ds:
         sales_count += d.get_sales().count()
@@ -1139,14 +1139,14 @@ def demands_send(request):
 @permission_required('Management.change_demand')
 def demand_closeall(request):
     for d in Demand.objects.current():
-        if d.statuses.latest().type.id == DemandFeed:
+        if d.statuses.latest().type.id == DemandStatusType.Feed:
             d.close()
     return HttpResponseRedirect('/demands')
         
 @permission_required('Management.delete_sale')
 def demand_sale_del(request, id):
     sale = Sale.objects.get(pk=id)
-    if sale.demand.statuses.latest().type.id != DemandSent:
+    if sale.demand.statuses.latest().type.id != DemandStatusType.Sent:
         sale.delete()
         return HttpResponseRedirect('../../../')
     else:

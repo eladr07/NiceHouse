@@ -1666,9 +1666,10 @@ class Payment(models.Model):
         get_latest_by = 'creation_date'
         ordering = ['creation_date']
 
-DemandFeed, DemandClosed, DemandSent, DemandFinished = range(1,5)
 
 class DemandStatusType(models.Model):
+    Feed, Closed, Sent, Finished = range(1,5)
+    
     name = models.CharField(max_length=20)
     def __unicode__(self):
         return unicode(self.name)  
@@ -1808,11 +1809,11 @@ class Demand(models.Model):
         return s
     @property
     def was_sent(self):
-        return self.statuses.filter(type__id__in = [DemandSent, DemandFinished]).count() > 0
+        return self.statuses.filter(type__id__in = [DemandStatusType.Sent, DemandStatusType.Finished]).count() > 0
     @property
     @cache_method
     def finish_date(self):
-        query = self.statuses.filter(type__id = DemandFinished)
+        query = self.statuses.filter(type__id = DemandStatusType.Finished)
         return query.count() > 0 and query.latest().date or None
     @property
     def is_fixed(self):
@@ -1880,13 +1881,13 @@ class Demand(models.Model):
         total = int(self.get_total_amount())
         return total == self.invoices.total_amount_offset() and total == self.payments.total_amount()
     def feed(self):
-        self.statuses.create(type= DemandStatusType.objects.get(pk=DemandFeed)).save()
+        self.statuses.create(type= DemandStatusType.objects.get(pk=DemandStatusType.Feed)).save()
     def send(self):
-        self.statuses.create(type= DemandStatusType.objects.get(pk=DemandSent)).save()
+        self.statuses.create(type= DemandStatusType.objects.get(pk=DemandStatusType.Sent)).save()
     def close(self):
-        self.statuses.create(type= DemandStatusType.objects.get(pk=DemandClosed)).save()
+        self.statuses.create(type= DemandStatusType.objects.get(pk=DemandStatusType.Closed)).save()
     def finish(self):
-        self.statuses.create(type= DemandStatusType.objects.get(pk=DemandFinished)).save()
+        self.statuses.create(type= DemandStatusType.objects.get(pk=DemandStatusType.Finished)).save()
         self.is_finished = True
         self.save()
     def __unicode__(self):
