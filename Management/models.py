@@ -1027,7 +1027,7 @@ class NHEmployeeSalary(EmployeeSalaryBase):
         scds = []
         restore_date = date(self.year, self.month, 1)
         for nhcbi in self.nhemployee.nhcommission_set.filter(nhbranch = self.nhbranch):
-            commission = reversion.Version.objects.get_for_date(nhcbi, restore_date).object_version
+            commission = reversion.models.Version.objects.get_for_date(nhcbi, restore_date).object_version
             commission_res = commission.calc(self.year, self.month, self.ratio)
             if commission_res:
                 scds.extend(commission_res)
@@ -1178,7 +1178,7 @@ class EPCommission(models.Model):
         for c in ['c_var', 'c_by_price', 'b_house_type', 'b_discount_save']:
             commission = getattr(self,c)
             if not commission: continue
-            commission = reversion.Version.objects.get_for_date(commission, restore_date).object_version
+            commission = reversion.models.Version.objects.get_for_date(commission, restore_date).object_version
             amounts = commission.calc(sales)
             for s in amounts:
                 if amounts[s] == 0: continue
@@ -1189,7 +1189,7 @@ class EPCommission(models.Model):
         for c in ['c_var_precentage', 'b_discount_save_precentage']:
             commission = getattr(self,c)
             if not commission: continue
-            commission = reversion.Version.objects.get_for_date(commission, restore_date).object_version
+            commission = reversion.models.Version.objects.get_for_date(commission, restore_date).object_version
             precentages = commission.calc(sales)
             for s in precentages:
                 if precentages[s] == 0: continue
@@ -1204,7 +1204,7 @@ class EPCommission(models.Model):
         for c in ['b_sale_rate']:
             commission = getattr(self,c)
             if not commission: continue
-            commission = reversion.Version.objects.get_for_date(commission, restore_date).object_version
+            commission = reversion.models.Version.objects.get_for_date(commission, restore_date).object_version
             amount = commission.calc(sales)
             if amount == 0: continue
             total_amount = total_amount + amount
@@ -1434,7 +1434,7 @@ class CZilber(models.Model):
             q = s.project_commission_details.filter(commission='final')
             last_demand_finish_date = d.get_previous_demand().finish_date
             if q.count() > 0 and last_demand_finish_date:
-                version = reversion.Version.objects.get_for_date(q[0], last_demand_finish_date)
+                version = reversion.models.Version.objects.get_for_date(q[0], last_demand_finish_date)
                 pc_base = version.field_dict['value']
             else:
                 pc_base = s.pc_base
@@ -1576,7 +1576,7 @@ class ProjectCommission(models.Model):
         if getattr(self, 'c_zilber') != None:
             month = date(demand.year, demand.month, 1)
             c = getattr(self, 'c_zilber')
-            c = reversion.Version.objects.get_for_date(c, restore_date).object_version 
+            c = reversion.models.Version.objects.get_for_date(c, restore_date).object_version 
             c.calc(month)
             return
         dic={}
@@ -1585,7 +1585,7 @@ class ProjectCommission(models.Model):
             if getattr(self,c) == None:
                 continue
             commission = getattr(self,c)
-            commission = reversion.Version.objects.get_for_date(commission, restore_date).object_version
+            commission = reversion.models.Version.objects.get_for_date(commission, restore_date).object_version
             precentages = commission.calc(sales)
             for s in precentages:
                 if c in ['c_var_precentage', 'c_var_precentage_fixed'] and self.max and precentages[s] > self.max:
@@ -2405,7 +2405,7 @@ class Sale(models.Model):
             if q.count() == 0:
                 continue
             if self.restore and self.restore_date:
-                version = reversion.Version.objects.get_for_date(q[0], self.restore_date)
+                version = reversion.models.Version.objects.get_for_date(q[0], self.restore_date)
                 return version.field_dict['value']
             else:
                 return q[0].value
@@ -2415,7 +2415,7 @@ class Sale(models.Model):
         q = self.project_commission_details.filter(commission='c_zilber_discount')
         if q.count() == 0: return 0
         if self.restore and self.restore_date:
-            version = reversion.Version.objects.get_for_date(q[0], self.restore_date)
+            version = reversion.models.Version.objects.get_for_date(q[0], self.restore_date)
             return version.field_dict['value']
         else:
             return q[0].value
@@ -2424,7 +2424,7 @@ class Sale(models.Model):
         q = self.project_commission_details.filter(commission='b_discount_save_precentage')
         if q.count() == 0: return 0
         if self.restore and self.restore_date:
-            version = reversion.Version.objects.get_for_date(q[0], self.restore_date)
+            version = reversion.models.Version.objects.get_for_date(q[0], self.restore_date)
             return version.field_dict['value']
         else:
             return q[0].value
@@ -2433,7 +2433,7 @@ class Sale(models.Model):
         q = self.project_commission_details.filter(commission='final')
         if q.count() == 0: return 0
         if self.restore and self.restore_date:
-            version = reversion.Version.objects.get_for_date(q[0], self.restore_date)
+            version = reversion.models.Version.objects.get_for_date(q[0], self.restore_date)
             return version.field_dict['value']
         else:
             return q[0].value
