@@ -1,16 +1,17 @@
-﻿from django.db import models
-from django.utils.translation import ugettext
+﻿import logging
+import reversion
 from datetime import datetime, date
-from django.contrib.auth.models import User
-from templatetags.management_extras import *
 from decimal import InvalidOperation
+from django.core import serializers
+from django.db import models
+from django.db.models import Avg, Max, Min, Count, Sum
 from django.db.models.signals import pre_save
 from django.db.backends.dummy.base import IntegrityError
-from django.db.models import Avg, Max, Min, Count, Sum
+from django.utils.translation import ugettext
+from django.contrib.auth.models import User
+from templatetags.management_extras import *
 from decorators import cache_method
 from managers import *
-import logging
-import reversion
 
 Salary_Types = (
                 (None, u'לא ידוע'),
@@ -1398,17 +1399,29 @@ class CZilber(models.Model):
         '''
         month is datetime
         '''
+        
+        logger = logging.getLogger('commission')
+        logger.info('starting CZilber calculation for month %(month)s/%(year)s. fields - %(fields)',
+                    {'month':month.month, 'year':month.year, 'fields':serializers.serialize('json', [self])})
+        
         d = Demand.objects.get(project = self.projectcommission.project, year = month.year, month = month.month)
-        if d.var_diff: d.var_diff.delete()
-        if d.bonus_diff: d.bonus_diff.delete()
+        if d.var_diff: 
+            d.var_diff.delete()
+        if d.bonus_diff: 
+            d.bonus_diff.delete()
         demand = d
         sales = list(d.get_sales())
         while demand != None and demand.zilber_cycle_index() != 1:
             demand = demand.get_previous_demand()
             sales.extend(demand.get_sales().filter(commission_include=True))
+            
+        logger.info('total cycle sales count: %(sale_count)s', {'sale_count':len(sales)})
+            
         base = self.base + self.b_sale_rate * (len(sales) - 1)
         if base > self.b_sale_rate_max:
+            logger.info('base commission %(base)s exceeded max commisison %(max)s',{'base':base, 'max':self.b_sale_rate_max})
             base = self.b_sale_rate_max
+            
         prices_date = date(month.month == 12 and month.year+1 or month.year, month.month==12 and 1 or month.month+1, 1)
         for s in sales:
             for c in ['c_zilber_base', 'final']:
