@@ -1870,7 +1870,7 @@ class Demand(models.Model):
             for sale in self.get_sales():
                 self.sales_commission += int(sale.c_final_worth)
         except:
-            self.sales_commission = -1
+            raise#self.sales_commission = -1
         self.save()
         return self.sales_commission
     def get_total_amount(self):
