@@ -2943,7 +2943,7 @@ for model in tracked_models:
 def restore_object(instance, date):
     try:
         version = reversion.models.Version.objects.get_for_date(instance, date)
-        return version.version_object
+        return version.object_version
     except:
         return instance
 
