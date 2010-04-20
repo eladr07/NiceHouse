@@ -1438,6 +1438,10 @@ class CZilber(models.Model):
                 base = self.b_sale_rate_max
                     
             prices_date = date(month.month == 12 and month.year+1 or month.year, month.month==12 and 1 or month.month+1, 1)
+            current_madad = d.get_madad() < self.base_madad and self.base_madad or d.get_madad()
+            
+            logger.debug('prices_date = %s, current_madad=%s', prices_date, current_madad)
+            
             for s in sales:
                 for c in ['c_zilber_base', 'final']:
                     scd = s.commission_details.get_or_create(commission=c, employee_salary=None)[0]
@@ -1446,10 +1450,9 @@ class CZilber(models.Model):
                     logger.debug('sale #%(id)s %(commission)s = %(value)s', {'id':s.id, 'commission':c,'value':scd.value})
                     
                 if self.base_madad:
-                    current_madad = d.get_madad() < self.base_madad and self.base_madad or d.get_madad()
                     doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0, date__lte = prices_date)
                     if doh0prices.count() == 0: 
-                        logger.warning('skipping sale #%(id)s. no doh0 prices', {'id':s.id})
+                        logger.warning('skipping c_zilber_discount calc for sale #%(id)s. no doh0 prices', {'id':s.id})
                         continue
                     latest_doh0price = doh0prices.latest().price
                     memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * latest_doh0price
@@ -1458,8 +1461,7 @@ class CZilber(models.Model):
                     scd.save()
                     
                     logger.debug('sale #%(id)s c_zilber_discount calc values: %(vals)s',
-                                 {'id':s.id, 'vals':{'current_madad':current_madad,
-                                                     'latest_doh0price':latest_doh0price,
+                                 {'id':s.id, 'vals':{'latest_doh0price':latest_doh0price,
                                                      'memudad':memudad, 
                                                      'scd.value':scd.value}
                                  })
