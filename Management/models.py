@@ -1399,70 +1399,100 @@ class CZilber(models.Model):
         '''
         month is datetime
         '''
-        
-        logger = logging.getLogger('commission')
-        logger.info('starting CZilber calculation for month %(month)s/%(year)s. fields - %(fields)',
-                    {'month':month.month, 'year':month.year, 'fields':serializers.serialize('json', [self])})
-        
-        d = Demand.objects.get(project = self.projectcommission.project, year = month.year, month = month.month)
-        if d.var_diff: 
-            d.var_diff.delete()
-        if d.bonus_diff: 
-            d.bonus_diff.delete()
-        demand = d
-        sales = list(d.get_sales())
-        while demand != None and demand.zilber_cycle_index() != 1:
-            demand = demand.get_previous_demand()
-            sales.extend(demand.get_sales().filter(commission_include=True))
+        try:
+            logger = logging.getLogger('commission.czilber')
+            logger.info('starting calculation for month %(month)s/%(year)s. fields - %(fields)',
+                        {'month':month.month, 'year':month.year, 'fields':serializers.serialize('json', [self])})
             
-        logger.info('total cycle sales count: %(sale_count)s', {'sale_count':len(sales)})
-            
-        base = self.base + self.b_sale_rate * (len(sales) - 1)
-        if base > self.b_sale_rate_max:
-            logger.info('base commission %(base)s exceeded max commisison %(max)s',{'base':base, 'max':self.b_sale_rate_max})
-            base = self.b_sale_rate_max
-            
-        prices_date = date(month.month == 12 and month.year+1 or month.year, month.month==12 and 1 or month.month+1, 1)
-        for s in sales:
-            for c in ['c_zilber_base', 'final']:
-                scd = s.commission_details.get_or_create(commission=c, employee_salary=None)[0]
-                scd.value = s.commission_include and base or 0
-                scd.save()
-            s.price_final = s.project_price()
-            s.save()
-            if not s.commission_include:
-                continue
-            if self.base_madad:
-                current_madad = d.get_madad() < self.base_madad and self.base_madad or d.get_madad()
-                doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0, date__lte = prices_date)
-                if doh0prices.count() == 0: continue
-                memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * doh0prices.latest().price
-                scd = s.commission_details.get_or_create(commission='c_zilber_discount', employee_salary=None)[0]
-                scd.value = (s.price - memudad) * self.b_discount
-                scd.save()
-        prev_adds = 0
-        for s in sales:
-            if not s.commission_include:
-                continue
-            q = s.project_commission_details.filter(commission='final')
-            last_demand_finish_date = d.get_previous_demand().finish_date
-            if q.count() > 0 and last_demand_finish_date:
-                pc_base = restore_object(q[0], last_demand_finish_date).value
-            else:
-                pc_base = s.pc_base
-            prev_adds += (base - pc_base) * s.price_final / 100
-        if prev_adds:
-            d.diffs.create(type=u'משתנה', reason=u'הפרשי קצב מכירות (נספח א)', amount=round(prev_adds))
-        if d.include_zilber_bonus():
-            demand, bonus = d, 0
-            while demand != None:
-                for s in demand.get_sales().filter(commission_include=True):
-                    bonus += s.zdb
-                if demand.zilber_cycle_index() == 1:
-                    break
+            d = Demand.objects.get(project = self.projectcommission.project, year = month.year, month = month.month)
+            if d.var_diff: 
+                d.var_diff.delete()
+            if d.bonus_diff: 
+                d.bonus_diff.delete()
+            demand = d
+            sales = list(d.get_sales())
+            while demand != None and demand.zilber_cycle_index() != 1:
                 demand = demand.get_previous_demand()
-            if bonus != 0:
-                d.diffs.create(type=u'בונוס', reason=u'בונוס חסכון בהנחה (נספח ב)', amount=round(bonus))
+                sales.extend(demand.get_sales())
+    
+            logger.info('total cycle sales count: %(sale_count)s', {'sale_count':len(sales)})
+            
+            for s in sales:
+                s.price_final = s.project_price()
+                s.save()
+                logger.debug('sale #%(id)s price_final = %(value)s', {'id':s.id, 'value':s.price_final})
+            
+            excluded_sales = [sale for sale in sales if sale.commission_include == False]
+            sales = [sale for sale in sales if sale.commission_include == True]
+            
+            for s in excluded_sales:
+                for c in ['c_zilber_base', 'final']:
+                    scd = s.commission_details.get_or_create(commission=c, employee_salary=None)[0]
+                    scd.value = 0
+                    scd.save()
+                logger.warning('skipping sale #%(id)s. commission_include=False', {'id':s.id})
+            
+            base = self.base + self.b_sale_rate * (len(sales) - 1)
+            if base > self.b_sale_rate_max:
+                logger.info('base commission %(base)s exceeded max commisison %(max)s',{'base':base, 'max':self.b_sale_rate_max})
+                base = self.b_sale_rate_max
+                    
+            prices_date = date(month.month == 12 and month.year+1 or month.year, month.month==12 and 1 or month.month+1, 1)
+            for s in sales:
+                for c in ['c_zilber_base', 'final']:
+                    scd = s.commission_details.get_or_create(commission=c, employee_salary=None)[0]
+                    scd.value = base
+                    scd.save()
+                    logger.debug('sale #%(id)s %(commission)s = %(value)s', {'id':s.id, 'commission':c,'value':scd.value})
+                    
+                if self.base_madad:
+                    current_madad = d.get_madad() < self.base_madad and self.base_madad or d.get_madad()
+                    doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0, date__lte = prices_date)
+                    if doh0prices.count() == 0: 
+                        logger.warning('skipping sale #%(id)s. no doh0 prices', {'id':s.id})
+                        continue
+                    latest_doh0price = doh0prices.latest().price
+                    memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * latest_doh0price
+                    scd = s.commission_details.get_or_create(commission='c_zilber_discount', employee_salary=None)[0]
+                    scd.value = (s.price - memudad) * self.b_discount
+                    scd.save()
+                    
+                    logger.debug('sale #%(id)s c_zilber_discount calc values: %(vals)s',
+                                 {'id':s.id, 'vals':{'current_madad':current_madad,
+                                                     'latest_doh0price':latest_doh0price,
+                                                     'memudad':memudad, 
+                                                     'scd.value':scd.value}
+                                 })
+                    
+            prev_adds = 0
+            last_demand_finish_date = d.get_previous_demand().finish_date
+            
+            logger.debug('last_demand_finish_date: %s' % last_demand_finish_date)
+            
+            for s in sales:
+                q = s.project_commission_details.filter(commission='final')
+                if q.count() > 0 and last_demand_finish_date:
+                    pc_base = restore_object(q[0], last_demand_finish_date).value
+                else:
+                    pc_base = s.pc_base
+                prev_adds += (base - pc_base) * s.price_final / 100
+                
+                logger.debug('sale #%(id)s adds calc values: %(val)s', {'id':s.id, 'vals':{'q.count()':q.count(), 'pc_base':pc_base}})
+                
+            if prev_adds:
+                d.diffs.create(type=u'משתנה', reason=u'הפרשי קצב מכירות (נספח א)', amount=round(prev_adds))
+            if d.include_zilber_bonus():
+                bonus = 0
+                for s in sales:
+                    bonus += s.zdb
+                if bonus != 0:
+                    d.diffs.create(type=u'בונוס', reason=u'בונוס חסכון בהנחה (נספח ב)', amount=round(bonus))
+                logger.debug('demand #%(id)s created bonus=%(bonus)s', {'id':d.id, 'bonus':bonus})
+                
+            logger.info('finished calculation for month %(month)s/%(year)s', {'month':month.month, 'year':month.year})
+        except:
+            logger.exception('error while calculating commissions for month %(month)s/%(year)s', {'month':month.month, 'year':month.year})
+        
     class Meta:
         db_table = 'CZilber'
 
@@ -1580,17 +1610,17 @@ class ProjectCommission(models.Model):
                         continue
                     signup = s.house.get_signup()
                     if not signup: 
-                        logger.info('skipping sale #%(id)s - no signup', {'id':s.id})
+                        logger.warning('skipping sale #%(id)s - no signup', {'id':s.id})
                         continue
                     #get the finish date when the demand for the month the signup 
                     #were made we use it to find out what was the commission at
                     #that time
                     if not s.actual_demand or not s.actual_demand.finish_date:
-                        logger.info('skipping sale #%(id)s - actual_demand=None or actual_demand.finish_date=None', {'id':s.id})
+                        logger.warning('skipping sale #%(id)s - actual_demand=None or actual_demand.finish_date=None', {'id':s.id})
                         continue
                     q = s.project_commission_details.filter(commission='final')
                     if q.count()==0:
-                        logger.info('skipping sale #%(id)s - no final commission', {'id':s.id})
+                        logger.warning('skipping sale #%(id)s - no final commission', {'id':s.id})
                         continue
                     s.restore_date = demand.get_previous_demand().finish_date
                     diff = (q[0].value - s.c_final) * s.price_final / 100
