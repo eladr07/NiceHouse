@@ -1631,10 +1631,10 @@ class ProjectCommission(models.Model):
                         
                         logger.debug('sale #(id)s bonus calc values: %(vals)s',
                                      {'id': s.id,
-                                      vals: {'diff':diff,
-                                             'q[0].value':q[0].value,
-                                             's.c_final':s.c_final,
-                                             's.price_final':s.price_final}
+                                      'vals': {'diff':diff,
+                                               'q[0].value':q[0].value,
+                                               's.c_final':s.c_final,
+                                               's.price_final':s.price_final}
                                       })
                         
                         bonus += int(diff)
