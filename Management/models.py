@@ -1449,7 +1449,9 @@ class CZilber(models.Model):
                     scd.value = base
                     scd.save()
                     logger.debug('sale #%(id)s %(commission)s = %(value)s', {'id':s.id, 'commission':c,'value':scd.value})
-                    
+            
+            # only calculate discount bonus for current demand
+            for s in d.get_sales():
                 if self.base_madad:
                     doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0, date__lte = prices_date)
                     if doh0prices.count() == 0: 
