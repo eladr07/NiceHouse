@@ -218,3 +218,422 @@ NameError: global name 'vals' is not defined
 2010-04-20 17:35:18,455 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 0 sales.
 2010-04-20 17:35:19,479 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 0 sales.
 2010-04-20 17:35:19,500 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 0 sales.
+2010-04-20 17:39:08,487 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 0 sales.
+2010-04-20 17:39:09,513 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 0 sales.
+2010-04-20 17:39:10,539 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 6 sales.
+2010-04-20 17:39:10,624 commission - INFO in models: calculating affected sales(2) for month 11/2008
+2010-04-20 17:39:10,626 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 2 sales.
+2010-04-20 17:39:10,714 commission - INFO in models: sale #30 - price_final=847291
+2010-04-20 17:39:10,751 commission - INFO in models: sale #31 - price_final=827586
+2010-04-20 17:39:10,751 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:10,755 commission - INFO in models: calculating affected sales(2) for month 1/2009
+2010-04-20 17:39:10,757 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 2 sales.
+2010-04-20 17:39:10,854 commission - INFO in models: sale #28 - price_final=1182266
+2010-04-20 17:39:10,893 commission - INFO in models: sale #29 - price_final=1182266
+2010-04-20 17:39:10,893 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:10,897 commission - INFO in models: calculating affected sales(1) for month 2/2009
+2010-04-20 17:39:10,900 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 1 sales.
+2010-04-20 17:39:10,981 commission - INFO in models: sale #27 - price_final=1259113
+2010-04-20 17:39:10,981 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:10,991 commission - INFO in models: calculating affected sales(1) for month 12/2008
+2010-04-20 17:39:10,993 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 1 sales.
+2010-04-20 17:39:11,072 commission - INFO in models: sale #32 - price_final=817734
+2010-04-20 17:39:11,072 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:12,184 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 8 sales.
+2010-04-20 17:39:12,284 commission - INFO in models: calculating affected sales(3) for month 11/2008
+2010-04-20 17:39:12,286 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 3 sales.
+2010-04-20 17:39:12,376 commission - INFO in models: sale #68 - price_final=827586
+2010-04-20 17:39:12,427 commission - INFO in models: sale #30 - price_final=847291
+2010-04-20 17:39:12,479 commission - INFO in models: sale #31 - price_final=827586
+2010-04-20 17:39:12,479 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:12,483 commission - INFO in models: calculating affected sales(1) for month 10/2008
+2010-04-20 17:39:12,485 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 1 sales.
+2010-04-20 17:39:12,554 commission - INFO in models: sale #73 - price_final=825000
+2010-04-20 17:39:12,554 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:12,558 commission - INFO in models: calculating affected sales(1) for month 3/2009
+2010-04-20 17:39:12,559 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 1 sales.
+2010-04-20 17:39:12,628 commission - INFO in models: sale #74 - price_final=865024
+2010-04-20 17:39:12,628 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:12,632 commission - INFO in models: calculating affected sales(3) for month 1/2009
+2010-04-20 17:39:12,634 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 3 sales.
+2010-04-20 17:39:12,723 commission - INFO in models: sale #67 - price_final=820000
+2010-04-20 17:39:12,775 commission - INFO in models: sale #28 - price_final=1182266
+2010-04-20 17:39:12,826 commission - INFO in models: sale #29 - price_final=1182266
+2010-04-20 17:39:12,826 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:12,830 commission - INFO in models: calculating affected sales(5) for month 2/2009
+2010-04-20 17:39:12,832 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 5 sales.
+2010-04-20 17:39:12,925 commission - INFO in models: sale #72 - price_final=1212000
+2010-04-20 17:39:12,979 commission - INFO in models: sale #27 - price_final=1259113
+2010-04-20 17:39:13,013 commission - INFO in models: sale #69 - price_final=819704
+2010-04-20 17:39:13,047 commission - INFO in models: sale #70 - price_final=1212000
+2010-04-20 17:39:13,081 commission - INFO in models: sale #71 - price_final=1212000
+2010-04-20 17:39:13,081 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:13,178 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.0, 's.price_final': 827586L, 's.c_final': 1.0}
+2010-04-20 17:39:13,248 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1694.5819999999994, 'q[0].value': 1.2, 's.price_final': 847291L, 's.c_final': 1.0}
+2010-04-20 17:39:13,337 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.0, 's.price_final': 1182266L, 's.c_final': 1.0}
+2010-04-20 17:39:13,407 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.0, 's.price_final': 1182266L, 's.c_final': 1.0}
+2010-04-20 17:39:13,492 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 5036.4519999999993, 'q[0].value': 1.3999999999999999, 's.price_final': 1259113L, 's.c_final': 1.0}
+2010-04-20 17:39:14,594 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 1 sales.
+2010-04-20 17:39:14,626 commission - INFO in models: calculating affected sales(2) for month 10/2008
+2010-04-20 17:39:14,628 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 2 sales.
+2010-04-20 17:39:14,732 commission - INFO in models: sale #73 - price_final=825000
+2010-04-20 17:39:14,767 commission - INFO in models: sale #94 - price_final=825000
+2010-04-20 17:39:14,767 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:14,851 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.0, 's.price_final': 825000L, 's.c_final': 1.0}
+2010-04-20 17:39:15,885 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 6 sales.
+2010-04-20 17:39:15,970 commission - INFO in models: calculating affected sales(2) for month 5/2009
+2010-04-20 17:39:15,972 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 2 sales.
+2010-04-20 17:39:16,053 commission - INFO in models: sale #292 - price_final=820000
+2010-04-20 17:39:16,091 commission - INFO in models: sale #293 - price_final=1170000
+2010-04-20 17:39:16,091 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:16,095 commission - INFO in models: calculating affected sales(3) for month 3/2009
+2010-04-20 17:39:16,097 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 3 sales.
+2010-04-20 17:39:16,193 commission - INFO in models: sale #289 - price_final=870000
+2010-04-20 17:39:16,228 commission - INFO in models: sale #290 - price_final=820000
+2010-04-20 17:39:16,283 commission - INFO in models: sale #74 - price_final=865024
+2010-04-20 17:39:16,283 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:16,287 commission - INFO in models: calculating affected sales(2) for month 4/2009
+2010-04-20 17:39:16,289 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 2 sales.
+2010-04-20 17:39:16,369 commission - INFO in models: sale #291 - price_final=820000
+2010-04-20 17:39:16,405 commission - INFO in models: sale #294 - price_final=1170000
+2010-04-20 17:39:16,405 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:16,574 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1730.0479999999995, 'q[0].value': 1.2, 's.price_final': 865024L, 's.c_final': 1.0}
+2010-04-20 17:39:17,835 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 6 sales.
+2010-04-20 17:39:19,987 commission - INFO in models: calculating affected sales(5) for month 5/2009
+2010-04-20 17:39:20,047 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 5 sales.
+2010-04-20 17:39:22,735 commission - INFO in models: sale #292 - price_final=820000
+2010-04-20 17:39:23,482 commission - INFO in models: sale #381 - price_final=820000
+2010-04-20 17:39:24,301 commission - INFO in models: sale #380 - price_final=820000
+2010-04-20 17:39:26,257 commission - INFO in models: sale #293 - price_final=1170000
+2010-04-20 17:39:27,321 commission - INFO in models: sale #383 - price_final=1170000
+2010-04-20 17:39:27,322 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:27,487 commission - INFO in models: calculating affected sales(3) for month 6/2009
+2010-04-20 17:39:27,548 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 3 sales.
+2010-04-20 17:39:28,162 commission - INFO in models: sale #386 - price_final=845000
+2010-04-20 17:39:28,197 commission - INFO in models: sale #387 - price_final=1170000
+2010-04-20 17:39:28,232 commission - INFO in models: sale #382 - price_final=1280000
+2010-04-20 17:39:28,232 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:28,326 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 4679.9999999999991, 'q[0].value': 1.3999999999999999, 's.price_final': 1170000L, 's.c_final': 1.0}
+2010-04-20 17:39:28,400 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 3279.9999999999995, 'q[0].value': 1.3999999999999999, 's.price_final': 820000L, 's.c_final': 1.0}
+2010-04-20 17:39:29,483 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 14 sales.
+2010-04-20 17:39:29,650 commission - INFO in models: calculating affected sales(8) for month 6/2009
+2010-04-20 17:39:29,652 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 8 sales.
+2010-04-20 17:39:29,792 commission - INFO in models: sale #386 - price_final=845000
+2010-04-20 17:39:29,847 commission - INFO in models: sale #387 - price_final=1170000
+2010-04-20 17:39:29,882 commission - INFO in models: sale #484 - price_final=1030000
+2010-04-20 17:39:29,918 commission - INFO in models: sale #486 - price_final=1360000
+2010-04-20 17:39:29,953 commission - INFO in models: sale #488 - price_final=845000
+2010-04-20 17:39:29,988 commission - INFO in models: sale #483 - price_final=900000
+2010-04-20 17:39:30,025 commission - INFO in models: sale #475 - price_final=1360000
+2010-04-20 17:39:30,080 commission - INFO in models: sale #382 - price_final=1280000
+2010-04-20 17:39:30,080 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:30,084 commission - INFO in models: calculating affected sales(9) for month 7/2009
+2010-04-20 17:39:30,086 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 9 sales.
+2010-04-20 17:39:30,492 commission - INFO in models: sale #481 - price_final=1150000
+2010-04-20 17:39:30,527 commission - INFO in models: sale #482 - price_final=900000
+2010-04-20 17:39:30,563 commission - INFO in models: sale #485 - price_final=1280000
+2010-04-20 17:39:30,599 commission - INFO in models: sale #487 - price_final=1030000
+2010-04-20 17:39:30,666 commission - INFO in models: sale #489 - price_final=1490000
+2010-04-20 17:39:30,702 commission - INFO in models: sale #490 - price_final=900000
+2010-04-20 17:39:30,737 commission - INFO in models: sale #476 - price_final=1490000
+2010-04-20 17:39:30,775 commission - INFO in models: sale #478 - price_final=1480000
+2010-04-20 17:39:30,811 commission - INFO in models: sale #479 - price_final=1470000
+2010-04-20 17:39:30,812 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:30,918 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 6400.0, 'q[0].value': 1.5, 's.price_final': 1280000L, 's.c_final': 1.0}
+2010-04-20 17:39:30,993 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 2535.0000000000005, 'q[0].value': 1.5, 's.price_final': 845000L, 's.c_final': 1.2}
+2010-04-20 17:39:31,068 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 5850.0, 'q[0].value': 1.5, 's.price_final': 1170000L, 's.c_final': 1.0}
+2010-04-20 17:39:32,222 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 11 sales.
+2010-04-20 17:39:32,356 commission - INFO in models: calculating affected sales(3) for month 8/2009
+2010-04-20 17:39:32,358 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 3 sales.
+2010-04-20 17:39:32,448 commission - INFO in models: sale #497 - price_final=1236000
+2010-04-20 17:39:32,485 commission - INFO in models: sale #502 - price_final=865000
+2010-04-20 17:39:32,584 commission - INFO in models: sale #503 - price_final=1234970
+2010-04-20 17:39:32,585 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:32,589 commission - INFO in models: calculating affected sales(9) for month 6/2009
+2010-04-20 17:39:32,591 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 9 sales.
+2010-04-20 17:39:32,738 commission - INFO in models: sale #386 - price_final=845000
+2010-04-20 17:39:32,806 commission - INFO in models: sale #387 - price_final=1170000
+2010-04-20 17:39:32,860 commission - INFO in models: sale #484 - price_final=1030000
+2010-04-20 17:39:32,927 commission - INFO in models: sale #486 - price_final=1360000
+2010-04-20 17:39:32,980 commission - INFO in models: sale #488 - price_final=845000
+2010-04-20 17:39:33,030 commission - INFO in models: sale #496 - price_final=1030000
+2010-04-20 17:39:33,084 commission - INFO in models: sale #483 - price_final=900000
+2010-04-20 17:39:33,137 commission - INFO in models: sale #475 - price_final=1360000
+2010-04-20 17:39:33,190 commission - INFO in models: sale #382 - price_final=1280000
+2010-04-20 17:39:33,190 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:33,194 commission - INFO in models: calculating affected sales(16) for month 7/2009
+2010-04-20 17:39:33,196 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 16 sales.
+2010-04-20 17:39:33,394 commission - INFO in models: sale #481 - price_final=1150000
+2010-04-20 17:39:33,447 commission - INFO in models: sale #482 - price_final=900000
+2010-04-20 17:39:33,502 commission - INFO in models: sale #485 - price_final=1280000
+2010-04-20 17:39:33,554 commission - INFO in models: sale #487 - price_final=1030000
+2010-04-20 17:39:33,607 commission - INFO in models: sale #489 - price_final=1490000
+2010-04-20 17:39:33,662 commission - INFO in models: sale #490 - price_final=900000
+2010-04-20 17:39:33,697 commission - INFO in models: sale #495 - price_final=1280000
+2010-04-20 17:39:33,733 commission - INFO in models: sale #498 - price_final=850000
+2010-04-20 17:39:33,770 commission - INFO in models: sale #499 - price_final=900000
+2010-04-20 17:39:33,805 commission - INFO in models: sale #500 - price_final=1280000
+2010-04-20 17:39:33,840 commission - INFO in models: sale #501 - price_final=1185000
+2010-04-20 17:39:33,876 commission - INFO in models: sale #568 - price_final=1050000
+2010-04-20 17:39:33,975 commission - INFO in models: sale #569 - price_final=1050000
+2010-04-20 17:39:34,028 commission - INFO in models: sale #476 - price_final=1490000
+2010-04-20 17:39:34,081 commission - INFO in models: sale #478 - price_final=1480000
+2010-04-20 17:39:34,134 commission - INFO in models: sale #479 - price_final=1470000
+2010-04-20 17:39:34,135 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:34,276 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1280000L, 's.c_final': 1.5}
+2010-04-20 17:39:34,349 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 845000L, 's.c_final': 1.5}
+2010-04-20 17:39:34,421 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1170000L, 's.c_final': 1.5}
+2010-04-20 17:39:34,497 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1360000L, 's.c_final': 1.5}
+2010-04-20 17:39:34,570 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1360000L, 's.c_final': 1.5}
+2010-04-20 17:39:34,644 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 900000L, 's.c_final': 1.5}
+2010-04-20 17:39:34,718 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1030000L, 's.c_final': 1.5}
+2010-04-20 17:39:34,795 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 845000L, 's.c_final': 1.5}
+2010-04-20 17:39:34,939 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1490000L, 's.c_final': 1.5}
+2010-04-20 17:39:35,011 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1150000L, 's.c_final': 1.5}
+2010-04-20 17:39:35,147 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 900000L, 's.c_final': 1.5}
+2010-04-20 17:39:35,221 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1280000L, 's.c_final': 1.5}
+2010-04-20 17:39:35,295 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1030000L, 's.c_final': 1.5}
+2010-04-20 17:39:35,368 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1490000L, 's.c_final': 1.5}
+2010-04-20 17:39:35,443 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1480000L, 's.c_final': 1.5}
+2010-04-20 17:39:35,622 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1470000L, 's.c_final': 1.5}
+2010-04-20 17:39:35,695 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 900000L, 's.c_final': 1.5}
+2010-04-20 17:39:36,824 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 6 sales.
+2010-04-20 17:39:36,908 commission - INFO in models: calculating affected sales(4) for month 8/2009
+2010-04-20 17:39:36,910 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 4 sales.
+2010-04-20 17:39:37,015 commission - INFO in models: sale #616 - price_final=970000
+2010-04-20 17:39:37,069 commission - INFO in models: sale #497 - price_final=1236000
+2010-04-20 17:39:37,123 commission - INFO in models: sale #502 - price_final=865000
+2010-04-20 17:39:37,177 commission - INFO in models: sale #503 - price_final=1234970
+2010-04-20 17:39:37,177 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:37,181 commission - INFO in models: calculating affected sales(2) for month 9/2009
+2010-04-20 17:39:37,183 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 2 sales.
+2010-04-20 17:39:37,263 commission - INFO in models: sale #628 - price_final=910000
+2010-04-20 17:39:37,299 commission - INFO in models: sale #629 - price_final=1250000
+2010-04-20 17:39:37,299 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:37,303 commission - INFO in models: calculating affected sales(19) for month 7/2009
+2010-04-20 17:39:37,305 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 19 sales.
+2010-04-20 17:39:37,522 commission - INFO in models: sale #481 - price_final=1150000
+2010-04-20 17:39:37,578 commission - INFO in models: sale #482 - price_final=900000
+2010-04-20 17:39:37,632 commission - INFO in models: sale #485 - price_final=1280000
+2010-04-20 17:39:37,741 commission - INFO in models: sale #614 - price_final=1400000
+2010-04-20 17:39:37,882 commission - INFO in models: sale #487 - price_final=1030000
+2010-04-20 17:39:37,988 commission - INFO in models: sale #489 - price_final=1490000
+2010-04-20 17:39:38,094 commission - INFO in models: sale #490 - price_final=900000
+2010-04-20 17:39:38,210 commission - INFO in models: sale #615 - price_final=1030000
+2010-04-20 17:39:38,263 commission - INFO in models: sale #495 - price_final=1280000
+2010-04-20 17:39:38,316 commission - INFO in models: sale #498 - price_final=850000
+2010-04-20 17:39:38,370 commission - INFO in models: sale #499 - price_final=900000
+2010-04-20 17:39:38,423 commission - INFO in models: sale #500 - price_final=1280000
+2010-04-20 17:39:38,879 commission - INFO in models: sale #501 - price_final=1185000
+2010-04-20 17:39:38,999 commission - INFO in models: sale #617 - price_final=1420000
+2010-04-20 17:39:39,092 commission - INFO in models: sale #568 - price_final=1050000
+2010-04-20 17:39:39,230 commission - INFO in models: sale #569 - price_final=1050000
+2010-04-20 17:39:39,305 commission - INFO in models: sale #476 - price_final=1490000
+2010-04-20 17:39:39,378 commission - INFO in models: sale #478 - price_final=1480000
+2010-04-20 17:39:39,479 commission - INFO in models: sale #479 - price_final=1470000
+2010-04-20 17:39:39,479 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:39,704 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.0, 's.price_final': 1236000L, 's.c_final': 1.0}
+2010-04-20 17:39:40,148 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.0, 's.price_final': 865000L, 's.c_final': 1.0}
+2010-04-20 17:39:41,515 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.2, 's.price_final': 1234970L, 's.c_final': 1.2}
+2010-04-20 17:39:45,990 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1490000L, 's.c_final': 1.5}
+2010-04-20 17:39:46,880 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1150000L, 's.c_final': 1.5}
+2010-04-20 17:39:47,947 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 900000L, 's.c_final': 1.5}
+2010-04-20 17:39:48,391 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1280000L, 's.c_final': 1.5}
+2010-04-20 17:39:48,462 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1030000L, 's.c_final': 1.5}
+2010-04-20 17:39:48,532 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1490000L, 's.c_final': 1.5}
+2010-04-20 17:39:48,611 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1480000L, 's.c_final': 1.5}
+2010-04-20 17:39:48,687 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1470000L, 's.c_final': 1.5}
+2010-04-20 17:39:48,761 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 900000L, 's.c_final': 1.5}
+2010-04-20 17:39:48,838 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1280000L, 's.c_final': 1.5}
+2010-04-20 17:39:48,911 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 850000L, 's.c_final': 1.5}
+2010-04-20 17:39:48,981 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 900000L, 's.c_final': 1.5}
+2010-04-20 17:39:49,124 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1280000L, 's.c_final': 1.5}
+2010-04-20 17:39:49,194 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1185000L, 's.c_final': 1.5}
+2010-04-20 17:39:49,264 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1050000L, 's.c_final': 1.5}
+2010-04-20 17:39:49,334 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1050000L, 's.c_final': 1.5}
+2010-04-20 17:39:50,410 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 6 sales.
+2010-04-20 17:39:50,490 commission - INFO in models: calculating affected sales(5) for month 8/2009
+2010-04-20 17:39:50,492 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 5 sales.
+2010-04-20 17:39:50,611 commission - INFO in models: sale #616 - price_final=970000
+2010-04-20 17:39:50,664 commission - INFO in models: sale #497 - price_final=1236000
+2010-04-20 17:39:50,698 commission - INFO in models: sale #709 - price_final=910000
+2010-04-20 17:39:50,751 commission - INFO in models: sale #502 - price_final=865000
+2010-04-20 17:39:50,804 commission - INFO in models: sale #503 - price_final=1234970
+2010-04-20 17:39:50,804 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:50,808 commission - INFO in models: calculating affected sales(4) for month 9/2009
+2010-04-20 17:39:50,810 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 4 sales.
+2010-04-20 17:39:50,970 commission - INFO in models: sale #696 - price_final=1100000
+2010-04-20 17:39:51,168 commission - INFO in models: sale #628 - price_final=910000
+2010-04-20 17:39:51,219 commission - INFO in models: sale #629 - price_final=1250000
+2010-04-20 17:39:51,255 commission - INFO in models: sale #695 - price_final=1463000
+2010-04-20 17:39:51,255 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:51,259 commission - INFO in models: calculating affected sales(3) for month 10/2009
+2010-04-20 17:39:51,263 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 3 sales.
+2010-04-20 17:39:51,353 commission - INFO in models: sale #697 - price_final=1120000
+2010-04-20 17:39:51,387 commission - INFO in models: sale #708 - price_final=980000
+2010-04-20 17:39:51,421 commission - INFO in models: sale #685 - price_final=940000
+2010-04-20 17:39:51,422 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:51,528 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 4943.9999999999991, 'q[0].value': 1.3999999999999999, 's.price_final': 1236000L, 's.c_final': 1.0}
+2010-04-20 17:39:51,598 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 3459.9999999999995, 'q[0].value': 1.3999999999999999, 's.price_final': 865000L, 's.c_final': 1.0}
+2010-04-20 17:39:51,667 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 2469.9399999999996, 'q[0].value': 1.3999999999999999, 's.price_final': 1234970L, 's.c_final': 1.2}
+2010-04-20 17:39:51,737 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1939.9999999999998, 'q[0].value': 1.3999999999999999, 's.price_final': 970000L, 's.c_final': 1.2}
+2010-04-20 17:39:51,823 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1819.9999999999998, 'q[0].value': 1.2, 's.price_final': 910000L, 's.c_final': 1.0}
+2010-04-20 17:39:51,893 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.0, 's.price_final': 1250000L, 's.c_final': 1.0}
+2010-04-20 17:39:52,973 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 6 sales.
+2010-04-20 17:39:53,054 commission - INFO in models: calculating affected sales(1) for month 11/2009
+2010-04-20 17:39:53,056 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 1 sales.
+2010-04-20 17:39:53,127 commission - INFO in models: sale #799 - price_final=1375000
+2010-04-20 17:39:53,127 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:53,131 commission - INFO in models: calculating affected sales(6) for month 9/2009
+2010-04-20 17:39:53,133 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 6 sales.
+2010-04-20 17:39:53,237 commission - INFO in models: sale #800 - price_final=1090000
+2010-04-20 17:39:53,289 commission - INFO in models: sale #628 - price_final=910000
+2010-04-20 17:39:53,341 commission - INFO in models: sale #629 - price_final=1250000
+2010-04-20 17:39:53,394 commission - INFO in models: sale #695 - price_final=1463000
+2010-04-20 17:39:53,446 commission - INFO in models: sale #696 - price_final=1100000
+2010-04-20 17:39:53,479 commission - INFO in models: sale #794 - price_final=1566000
+2010-04-20 17:39:53,480 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:53,483 commission - INFO in models: calculating affected sales(6) for month 10/2009
+2010-04-20 17:39:53,485 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 6 sales.
+2010-04-20 17:39:53,588 commission - INFO in models: sale #801 - price_final=1140000
+2010-04-20 17:39:53,639 commission - INFO in models: sale #708 - price_final=980000
+2010-04-20 17:39:53,692 commission - INFO in models: sale #685 - price_final=940000
+2010-04-20 17:39:53,743 commission - INFO in models: sale #697 - price_final=1120000
+2010-04-20 17:39:53,777 commission - INFO in models: sale #795 - price_final=1475000
+2010-04-20 17:39:53,811 commission - INFO in models: sale #796 - price_final=1000000
+2010-04-20 17:39:53,811 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:53,920 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1819.9999999999998, 'q[0].value': 1.3999999999999999, 's.price_final': 910000L, 's.c_final': 1.2}
+2010-04-20 17:39:53,990 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 4999.9999999999991, 'q[0].value': 1.3999999999999999, 's.price_final': 1250000L, 's.c_final': 1.0}
+2010-04-20 17:39:54,061 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 5851.9999999999991, 'q[0].value': 1.3999999999999999, 's.price_final': 1463000L, 's.c_final': 1.0}
+2010-04-20 17:39:54,131 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 2199.9999999999995, 'q[0].value': 1.3999999999999999, 's.price_final': 1100000L, 's.c_final': 1.2}
+2010-04-20 17:39:54,224 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 3759.9999999999995, 'q[0].value': 1.3999999999999999, 's.price_final': 940000L, 's.c_final': 1.0}
+2010-04-20 17:39:54,294 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 2239.9999999999995, 'q[0].value': 1.3999999999999999, 's.price_final': 1120000L, 's.c_final': 1.2}
+2010-04-20 17:39:54,364 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 3919.9999999999995, 'q[0].value': 1.3999999999999999, 's.price_final': 980000L, 's.c_final': 1.0}
+2010-04-20 17:39:55,442 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 5 sales.
+2010-04-20 17:39:55,513 commission - INFO in models: calculating affected sales(4) for month 11/2009
+2010-04-20 17:39:55,515 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 4 sales.
+2010-04-20 17:39:55,614 commission - INFO in models: sale #881 - price_final=1160000
+2010-04-20 17:39:55,648 commission - INFO in models: sale #882 - price_final=1320000
+2010-04-20 17:39:55,699 commission - INFO in models: sale #799 - price_final=1375000
+2010-04-20 17:39:55,732 commission - INFO in models: sale #903 - price_final=940000
+2010-04-20 17:39:55,733 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:55,736 commission - INFO in models: calculating affected sales(8) for month 10/2009
+2010-04-20 17:39:55,738 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 8 sales.
+2010-04-20 17:39:55,874 commission - INFO in models: sale #801 - price_final=1140000
+2010-04-20 17:39:55,926 commission - INFO in models: sale #708 - price_final=980000
+2010-04-20 17:39:55,978 commission - INFO in models: sale #685 - price_final=940000
+2010-04-20 17:39:56,012 commission - INFO in models: sale #880 - price_final=970000
+2010-04-20 17:39:56,047 commission - INFO in models: sale #883 - price_final=1465000
+2010-04-20 17:39:56,099 commission - INFO in models: sale #697 - price_final=1120000
+2010-04-20 17:39:56,151 commission - INFO in models: sale #795 - price_final=1475000
+2010-04-20 17:39:56,203 commission - INFO in models: sale #796 - price_final=1000000
+2010-04-20 17:39:56,203 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:56,289 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.0, 's.price_final': 1375000L, 's.c_final': 1.0}
+2010-04-20 17:39:56,407 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 940.00000000000091, 'q[0].value': 1.5, 's.price_final': 940000L, 's.c_final': 1.3999999999999999}
+2010-04-20 17:39:56,477 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1120.0000000000009, 'q[0].value': 1.5, 's.price_final': 1120000L, 's.c_final': 1.3999999999999999}
+2010-04-20 17:39:56,547 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 980.00000000000091, 'q[0].value': 1.5, 's.price_final': 980000L, 's.c_final': 1.3999999999999999}
+2010-04-20 17:39:56,618 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1000.0000000000009, 'q[0].value': 1.5, 's.price_final': 1000000L, 's.c_final': 1.3999999999999999}
+2010-04-20 17:39:56,689 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1475.0000000000014, 'q[0].value': 1.5, 's.price_final': 1475000L, 's.c_final': 1.3999999999999999}
+2010-04-20 17:39:56,759 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1140.0000000000009, 'q[0].value': 1.5, 's.price_final': 1140000L, 's.c_final': 1.3999999999999999}
+2010-04-20 17:39:57,828 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 7 sales.
+2010-04-20 17:39:57,918 commission - INFO in models: calculating affected sales(2) for month 1/2010
+2010-04-20 17:39:57,920 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 2 sales.
+2010-04-20 17:39:57,998 commission - INFO in models: sale #963 - price_final=1000000
+2010-04-20 17:39:58,034 commission - INFO in models: sale #965 - price_final=980000
+2010-04-20 17:39:58,034 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:58,038 commission - INFO in models: calculating affected sales(6) for month 11/2009
+2010-04-20 17:39:58,040 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 6 sales.
+2010-04-20 17:39:58,143 commission - INFO in models: sale #960 - price_final=1125000
+2010-04-20 17:39:58,177 commission - INFO in models: sale #961 - price_final=1255000
+2010-04-20 17:39:58,229 commission - INFO in models: sale #903 - price_final=940000
+2010-04-20 17:39:58,282 commission - INFO in models: sale #881 - price_final=1160000
+2010-04-20 17:39:58,334 commission - INFO in models: sale #882 - price_final=1320000
+2010-04-20 17:39:58,385 commission - INFO in models: sale #799 - price_final=1375000
+2010-04-20 17:39:58,386 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:58,389 commission - INFO in models: calculating affected sales(2) for month 12/2009
+2010-04-20 17:39:58,391 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 2 sales.
+2010-04-20 17:39:58,468 commission - INFO in models: sale #966 - price_final=995000
+2010-04-20 17:39:58,502 commission - INFO in models: sale #959 - price_final=1375000
+2010-04-20 17:39:58,502 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:58,506 commission - INFO in models: calculating affected sales(7) for month 9/2009
+2010-04-20 17:39:58,508 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 7 sales.
+2010-04-20 17:39:58,638 commission - INFO in models: sale #800 - price_final=1090000
+2010-04-20 17:39:58,672 commission - INFO in models: sale #964 - price_final=1080000
+2010-04-20 17:39:58,725 commission - INFO in models: sale #628 - price_final=910000
+2010-04-20 17:39:58,777 commission - INFO in models: sale #629 - price_final=1250000
+2010-04-20 17:39:58,828 commission - INFO in models: sale #695 - price_final=1463000
+2010-04-20 17:39:58,880 commission - INFO in models: sale #696 - price_final=1100000
+2010-04-20 17:39:58,932 commission - INFO in models: sale #794 - price_final=1566000
+2010-04-20 17:39:58,932 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:39:59,045 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 5499.9999999999991, 'q[0].value': 1.3999999999999999, 's.price_final': 1375000L, 's.c_final': 1.0}
+2010-04-20 17:39:59,115 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 2639.9999999999995, 'q[0].value': 1.3999999999999999, 's.price_final': 1320000L, 's.c_final': 1.2}
+2010-04-20 17:39:59,186 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 3759.9999999999995, 'q[0].value': 1.3999999999999999, 's.price_final': 940000L, 's.c_final': 1.0}
+2010-04-20 17:39:59,260 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 2319.9999999999995, 'q[0].value': 1.3999999999999999, 's.price_final': 1160000L, 's.c_final': 1.2}
+2010-04-20 17:39:59,376 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 910.00000000000091, 'q[0].value': 1.5, 's.price_final': 910000L, 's.c_final': 1.3999999999999999}
+2010-04-20 17:39:59,514 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1250.0000000000011, 'q[0].value': 1.5, 's.price_final': 1250000L, 's.c_final': 1.3999999999999999}
+2010-04-20 17:39:59,584 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1463.0000000000011, 'q[0].value': 1.5, 's.price_final': 1463000L, 's.c_final': 1.3999999999999999}
+2010-04-20 17:39:59,654 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1100.0000000000009, 'q[0].value': 1.5, 's.price_final': 1100000L, 's.c_final': 1.3999999999999999}
+2010-04-20 17:39:59,725 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1566.0000000000014, 'q[0].value': 1.5, 's.price_final': 1566000L, 's.c_final': 1.3999999999999999}
+2010-04-20 17:39:59,796 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1090.0000000000009, 'q[0].value': 1.5, 's.price_final': 1090000L, 's.c_final': 1.3999999999999999}
+2010-04-20 17:40:00,883 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 5 sales.
+2010-04-20 17:40:02,520 commission - INFO in models: calculating affected sales(4) for month 1/2010
+2010-04-20 17:40:02,577 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 4 sales.
+2010-04-20 17:40:04,475 commission - INFO in models: sale #1066 - price_final=1700000
+2010-04-20 17:40:05,317 commission - INFO in models: sale #963 - price_final=1000000
+2010-04-20 17:40:06,172 commission - INFO in models: sale #965 - price_final=980000
+2010-04-20 17:40:06,736 commission - INFO in models: sale #1062 - price_final=1000000
+2010-04-20 17:40:06,736 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:40:06,796 commission - INFO in models: calculating affected sales(7) for month 11/2009
+2010-04-20 17:40:06,846 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 7 sales.
+2010-04-20 17:40:08,490 commission - INFO in models: sale #960 - price_final=1125000
+2010-04-20 17:40:09,438 commission - INFO in models: sale #961 - price_final=1255000
+2010-04-20 17:40:10,312 commission - INFO in models: sale #903 - price_final=940000
+2010-04-20 17:40:10,806 commission - INFO in models: sale #1067 - price_final=1616000
+2010-04-20 17:40:11,522 commission - INFO in models: sale #881 - price_final=1160000
+2010-04-20 17:40:12,526 commission - INFO in models: sale #882 - price_final=1320000
+2010-04-20 17:40:12,594 commission - INFO in models: sale #799 - price_final=1375000
+2010-04-20 17:40:12,594 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:40:12,598 commission - INFO in models: calculating affected sales(3) for month 12/2009
+2010-04-20 17:40:12,600 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 3 sales.
+2010-04-20 17:40:12,817 commission - INFO in models: sale #1061 - price_final=970000
+2010-04-20 17:40:12,879 commission - INFO in models: sale #966 - price_final=995000
+2010-04-20 17:40:12,930 commission - INFO in models: sale #959 - price_final=1375000
+2010-04-20 17:40:12,930 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:40:12,933 commission - INFO in models: calculating affected sales(1) for month 10/2010
+2010-04-20 17:40:12,935 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 1 sales.
+2010-04-20 17:40:13,136 commission - INFO in models: sale #1068 - price_final=1275000
+2010-04-20 17:40:13,136 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:40:13,288 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.0, 's.price_final': 980000L, 's.c_final': 1.0}
+2010-04-20 17:40:13,364 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.0, 's.price_final': 1000000L, 's.c_final': 1.0}
+2010-04-20 17:40:13,481 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1375.0000000000011, 'q[0].value': 1.5, 's.price_final': 1375000L, 's.c_final': 1.3999999999999999}
+2010-04-20 17:40:13,551 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1320.0000000000011, 'q[0].value': 1.5, 's.price_final': 1320000L, 's.c_final': 1.3999999999999999}
+2010-04-20 17:40:13,621 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 940.00000000000091, 'q[0].value': 1.5, 's.price_final': 940000L, 's.c_final': 1.3999999999999999}
+2010-04-20 17:40:13,692 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1160.0000000000009, 'q[0].value': 1.5, 's.price_final': 1160000L, 's.c_final': 1.3999999999999999}
+2010-04-20 17:40:13,788 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1125.0000000000009, 'q[0].value': 1.5, 's.price_final': 1125000L, 's.c_final': 1.3999999999999999}
+2010-04-20 17:40:13,858 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1255.0000000000011, 'q[0].value': 1.5, 's.price_final': 1255000L, 's.c_final': 1.3999999999999999}
+2010-04-20 17:40:13,944 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1989.9999999999993, 'q[0].value': 1.2, 's.price_final': 995000L, 's.c_final': 1.0}
+2010-04-20 17:40:14,014 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.0, 's.price_final': 1375000L, 's.c_final': 1.0}
+2010-04-20 17:40:15,084 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 5 sales.
+2010-04-20 17:40:15,154 commission - INFO in models: calculating affected sales(6) for month 1/2010
+2010-04-20 17:40:15,156 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 6 sales.
+2010-04-20 17:40:15,279 commission - INFO in models: sale #963 - price_final=1000000
+2010-04-20 17:40:15,331 commission - INFO in models: sale #965 - price_final=980000
+2010-04-20 17:40:15,383 commission - INFO in models: sale #1062 - price_final=1000000
+2010-04-20 17:40:15,435 commission - INFO in models: sale #1066 - price_final=1700000
+2010-04-20 17:40:15,469 commission - INFO in models: sale #1169 - price_final=1600000
+2010-04-20 17:40:15,503 commission - INFO in models: sale #1170 - price_final=1750000
+2010-04-20 17:40:15,503 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:40:15,507 commission - INFO in models: calculating affected sales(3) for month 2/2010
+2010-04-20 17:40:15,509 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 3 sales.
+2010-04-20 17:40:15,594 commission - INFO in models: sale #1168 - price_final=1200000
+2010-04-20 17:40:15,627 commission - INFO in models: sale #1171 - price_final=1020000
+2010-04-20 17:40:15,662 commission - INFO in models: sale #1179 - price_final=1050000
+2010-04-20 17:40:15,662 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 17:40:15,769 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 3919.9999999999995, 'q[0].value': 1.3999999999999999, 's.price_final': 980000L, 's.c_final': 1.0}
+2010-04-20 17:40:15,841 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 3999.9999999999986, 'q[0].value': 1.3999999999999999, 's.price_final': 1000000L, 's.c_final': 1.0}
+2010-04-20 17:40:15,911 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 3399.9999999999995, 'q[0].value': 1.3999999999999999, 's.price_final': 1700000L, 's.c_final': 1.2}
+2010-04-20 17:40:15,982 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1999.9999999999993, 'q[0].value': 1.3999999999999999, 's.price_final': 1000000L, 's.c_final': 1.2}
+2010-04-20 17:40:17,052 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 0 sales.
+2010-04-20 17:40:17,076 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 0 sales.
+2010-04-20 17:40:18,101 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 0 sales.
+2010-04-20 17:40:18,122 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 0 sales.
