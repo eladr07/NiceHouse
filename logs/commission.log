@@ -285,3 +285,149 @@ AttributeError: 'DeserializedObject' object has no attribute 'value'
 2010-04-20 19:01:23,655 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
 2010-04-20 19:01:25,202 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
 2010-04-20 19:01:26,035 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
+2010-04-20 19:39:08,671 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
+2010-04-20 19:39:09,695 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 6 sales.
+2010-04-20 19:39:09,715 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
+Traceback (most recent call last):
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
+    c = restore_object(c, restore_date)
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
+    version = reversion.models.Version.objects.get_for_date(instance, date)
+  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
+    raise self.model.DoesNotExist
+DoesNotExist
+2010-04-20 19:39:10,882 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 4 sales.
+2010-04-20 19:39:10,897 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
+Traceback (most recent call last):
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
+    c = restore_object(c, restore_date)
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
+    version = reversion.models.Version.objects.get_for_date(instance, date)
+  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
+    raise self.model.DoesNotExist
+DoesNotExist
+2010-04-20 19:39:12,221 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 6 sales.
+2010-04-20 19:39:12,263 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
+Traceback (most recent call last):
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
+    c = restore_object(c, restore_date)
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
+    version = reversion.models.Version.objects.get_for_date(instance, date)
+  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
+    raise self.model.DoesNotExist
+DoesNotExist
+2010-04-20 19:39:13,331 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
+2010-04-20 19:39:14,356 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 12 sales.
+2010-04-20 19:39:14,371 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
+Traceback (most recent call last):
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
+    c = restore_object(c, restore_date)
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
+    version = reversion.models.Version.objects.get_for_date(instance, date)
+  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
+    raise self.model.DoesNotExist
+DoesNotExist
+2010-04-20 19:39:15,485 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 6 sales.
+2010-04-20 19:39:15,501 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
+Traceback (most recent call last):
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
+    c = restore_object(c, restore_date)
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
+    version = reversion.models.Version.objects.get_for_date(instance, date)
+  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
+    raise self.model.DoesNotExist
+DoesNotExist
+2010-04-20 19:39:16,570 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 7 sales.
+2010-04-20 19:39:16,585 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
+Traceback (most recent call last):
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
+    c = restore_object(c, restore_date)
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
+    version = reversion.models.Version.objects.get_for_date(instance, date)
+  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
+    raise self.model.DoesNotExist
+DoesNotExist
+2010-04-20 19:39:17,660 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 19 sales.
+2010-04-20 19:39:17,676 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
+Traceback (most recent call last):
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
+    c = restore_object(c, restore_date)
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
+    version = reversion.models.Version.objects.get_for_date(instance, date)
+  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
+    raise self.model.DoesNotExist
+DoesNotExist
+2010-04-20 19:39:18,842 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 4 sales.
+2010-04-20 19:39:18,858 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
+Traceback (most recent call last):
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
+    c = restore_object(c, restore_date)
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
+    version = reversion.models.Version.objects.get_for_date(instance, date)
+  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
+    raise self.model.DoesNotExist
+DoesNotExist
+2010-04-20 19:39:19,914 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 1 sales.
+2010-04-20 19:39:19,943 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
+Traceback (most recent call last):
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
+    c = restore_object(c, restore_date)
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
+    version = reversion.models.Version.objects.get_for_date(instance, date)
+  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
+    raise self.model.DoesNotExist
+DoesNotExist
+2010-04-20 19:39:20,973 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 8 sales.
+2010-04-20 19:39:21,106 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
+Traceback (most recent call last):
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
+    c = restore_object(c, restore_date)
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
+    version = reversion.models.Version.objects.get_for_date(instance, date)
+  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
+    raise self.model.DoesNotExist
+DoesNotExist
+2010-04-20 19:39:24,805 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 2 sales.
+2010-04-20 19:39:24,821 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
+Traceback (most recent call last):
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
+    c = restore_object(c, restore_date)
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
+    version = reversion.models.Version.objects.get_for_date(instance, date)
+  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
+    raise self.model.DoesNotExist
+DoesNotExist
+2010-04-20 19:39:26,775 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 4 sales.
+2010-04-20 19:39:26,927 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
+Traceback (most recent call last):
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
+    c = restore_object(c, restore_date)
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
+    version = reversion.models.Version.objects.get_for_date(instance, date)
+  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
+    raise self.model.DoesNotExist
+DoesNotExist
+2010-04-20 19:39:28,488 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 3 sales.
+2010-04-20 19:39:28,503 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
+Traceback (most recent call last):
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
+    c = restore_object(c, restore_date)
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
+    version = reversion.models.Version.objects.get_for_date(instance, date)
+  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
+    raise self.model.DoesNotExist
+DoesNotExist
+2010-04-20 19:39:29,549 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 5 sales.
+2010-04-20 19:39:29,564 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
+Traceback (most recent call last):
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
+    c = restore_object(c, restore_date)
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
+    version = reversion.models.Version.objects.get_for_date(instance, date)
+  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
+    raise self.model.DoesNotExist
+DoesNotExist
+2010-04-20 19:39:30,625 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
+2010-04-20 19:39:30,690 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
+2010-04-20 19:39:31,813 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
+2010-04-20 19:39:31,834 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
