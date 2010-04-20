@@ -1,846 +1,186 @@
-2010-04-19 19:21:25,439 - commission - INFO - starting to calculate commission for project אלמוג כדאי -  young. 1 sales.
-F1 2010-04-19 19:31:49,022 INFO starting to calculate commission for project אלמוג כדאי -  young. 1 sales.
-F1 2010-04-19 19:32:56,907 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 6 sales.
-F1 2010-04-19 19:32:58,419 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 4 sales.
-F1 2010-04-19 19:32:59,920 INFO starting to calculate commission for project אלמוג כדאי -  young. 1 sales.
-F1 2010-04-19 19:33:03,358 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 6 sales.
-F1 2010-04-19 19:33:08,813 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 12 sales.
-F1 2010-04-19 19:33:11,390 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 6 sales.
-F1 2010-04-19 19:33:14,406 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 7 sales.
-F1 2010-04-19 19:33:18,664 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 19 sales.
-F1 2010-04-19 19:33:28,059 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 4 sales.
-F1 2010-04-19 19:33:29,481 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 1 sales.
-F1 2010-04-19 19:33:31,079 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 8 sales.
-F1 2010-04-19 19:33:33,533 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 2 sales.
-F1 2010-04-19 19:33:37,015 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 4 sales.
-F1 2010-04-19 19:33:38,831 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 3 sales.
-F1 2010-04-19 19:33:42,392 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 5 sales.
-2010-04-20 13:20:48,175 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
-2010-04-20 13:20:49,213 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 6 sales.
-2010-04-20 13:20:51,025 INFO total cycle sales count: 6
-2010-04-20 13:20:51,133 DEBUG sale #273 price_final = 964160
-2010-04-20 13:20:51,223 DEBUG sale #275 price_final = 963250
-2010-04-20 13:20:51,281 DEBUG sale #279 price_final = 894000
-2010-04-20 13:20:51,381 DEBUG sale #280 price_final = 900275
-2010-04-20 13:20:51,420 DEBUG sale #281 price_final = 910425
-2010-04-20 13:20:51,542 DEBUG sale #282 price_final = 963250
-2010-04-20 13:20:51,730 DEBUG sale #273 c_zilber_base = 1.283
-2010-04-20 13:20:51,926 DEBUG sale #273 final = 1.283
-2010-04-20 13:20:52,065 WARNING skipping sale #273. no doh0 prices
-2010-04-20 13:20:52,390 DEBUG sale #275 c_zilber_base = 1.283
-2010-04-20 13:20:52,920 DEBUG sale #275 final = 1.283
-2010-04-20 13:20:52,997 WARNING skipping sale #275. no doh0 prices
-2010-04-20 13:20:53,291 DEBUG sale #279 c_zilber_base = 1.283
-2010-04-20 13:20:53,603 DEBUG sale #279 final = 1.283
-2010-04-20 13:20:53,725 WARNING skipping sale #279. no doh0 prices
-2010-04-20 13:20:53,985 DEBUG sale #280 c_zilber_base = 1.283
-2010-04-20 13:20:54,312 DEBUG sale #280 final = 1.283
-2010-04-20 13:20:54,391 WARNING skipping sale #280. no doh0 prices
-2010-04-20 13:20:54,729 DEBUG sale #281 c_zilber_base = 1.283
-2010-04-20 13:20:55,082 DEBUG sale #281 final = 1.283
-2010-04-20 13:20:55,192 WARNING skipping sale #281. no doh0 prices
-2010-04-20 13:20:55,532 DEBUG sale #282 c_zilber_base = 1.283
-2010-04-20 13:20:55,900 DEBUG sale #282 final = 1.283
-2010-04-20 13:20:56,207 WARNING skipping sale #282. no doh0 prices
-2010-04-20 13:20:56,391 DEBUG last_demand_finish_date: 2010-04-20 13:20:48
-2010-04-20 13:20:58,166 INFO finished calculation for month 1/2009
-2010-04-20 13:20:59,241 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 4 sales.
-2010-04-20 13:20:59,355 INFO total cycle sales count: 10
-2010-04-20 13:20:59,362 DEBUG sale #272 price_final = 956100
-2010-04-20 13:20:59,370 DEBUG sale #277 price_final = 840440
-2010-04-20 13:20:59,378 DEBUG sale #278 price_final = 760205
-2010-04-20 13:20:59,385 DEBUG sale #276 price_final = 1003805
-2010-04-20 13:20:59,393 DEBUG sale #273 price_final = 964160
-2010-04-20 13:20:59,401 DEBUG sale #275 price_final = 963250
-2010-04-20 13:20:59,409 DEBUG sale #279 price_final = 894000
-2010-04-20 13:20:59,416 DEBUG sale #280 price_final = 900275
-2010-04-20 13:20:59,424 DEBUG sale #281 price_final = 910425
-2010-04-20 13:20:59,431 DEBUG sale #282 price_final = 963250
-2010-04-20 13:20:59,446 DEBUG sale #272 c_zilber_base = 1.3494
-2010-04-20 13:20:59,460 DEBUG sale #272 final = 1.3494
-2010-04-20 13:20:59,464 WARNING skipping sale #272. no doh0 prices
-2010-04-20 13:20:59,478 DEBUG sale #277 c_zilber_base = 1.3494
-2010-04-20 13:20:59,492 DEBUG sale #277 final = 1.3494
-2010-04-20 13:20:59,497 WARNING skipping sale #277. no doh0 prices
-2010-04-20 13:20:59,513 DEBUG sale #278 c_zilber_base = 1.3494
-2010-04-20 13:20:59,528 DEBUG sale #278 final = 1.3494
-2010-04-20 13:20:59,533 WARNING skipping sale #278. no doh0 prices
-2010-04-20 13:20:59,549 DEBUG sale #276 c_zilber_base = 1.3494
-2010-04-20 13:20:59,563 DEBUG sale #276 final = 1.3494
-2010-04-20 13:20:59,568 WARNING skipping sale #276. no doh0 prices
-2010-04-20 13:20:59,594 DEBUG sale #273 c_zilber_base = 1.3494
-2010-04-20 13:20:59,620 DEBUG sale #273 final = 1.3494
-2010-04-20 13:20:59,624 WARNING skipping sale #273. no doh0 prices
-2010-04-20 13:20:59,649 DEBUG sale #275 c_zilber_base = 1.3494
-2010-04-20 13:20:59,675 DEBUG sale #275 final = 1.3494
-2010-04-20 13:20:59,679 WARNING skipping sale #275. no doh0 prices
-2010-04-20 13:20:59,702 DEBUG sale #279 c_zilber_base = 1.3494
-2010-04-20 13:20:59,724 DEBUG sale #279 final = 1.3494
-2010-04-20 13:20:59,728 WARNING skipping sale #279. no doh0 prices
-2010-04-20 13:20:59,751 DEBUG sale #280 c_zilber_base = 1.3494
-2010-04-20 13:20:59,776 DEBUG sale #280 final = 1.3494
-2010-04-20 13:20:59,780 WARNING skipping sale #280. no doh0 prices
-2010-04-20 13:20:59,803 DEBUG sale #281 c_zilber_base = 1.3494
-2010-04-20 13:20:59,825 DEBUG sale #281 final = 1.3494
-2010-04-20 13:20:59,829 WARNING skipping sale #281. no doh0 prices
-2010-04-20 13:20:59,852 DEBUG sale #282 c_zilber_base = 1.3494
-2010-04-20 13:20:59,875 DEBUG sale #282 final = 1.3494
-2010-04-20 13:20:59,879 WARNING skipping sale #282. no doh0 prices
-2010-04-20 13:20:59,884 DEBUG last_demand_finish_date: 2010-04-20 13:20:58
-2010-04-20 13:21:00,098 INFO finished calculation for month 2/2009
-2010-04-20 13:21:01,156 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 6 sales.
-2010-04-20 13:21:01,315 INFO total cycle sales count: 16
-2010-04-20 13:21:01,323 DEBUG sale #270 price_final = 782535
-2010-04-20 13:21:01,330 DEBUG sale #266 price_final = 705000
-2010-04-20 13:21:01,338 DEBUG sale #267 price_final = 680000
-2010-04-20 13:21:01,346 DEBUG sale #268 price_final = 755000
-2010-04-20 13:21:01,353 DEBUG sale #269 price_final = 1095000
-2010-04-20 13:21:01,361 DEBUG sale #265 price_final = 900000
-2010-04-20 13:21:01,368 DEBUG sale #272 price_final = 956100
-2010-04-20 13:21:01,376 DEBUG sale #277 price_final = 840440
-2010-04-20 13:21:01,384 DEBUG sale #278 price_final = 760205
-2010-04-20 13:21:01,391 DEBUG sale #276 price_final = 1003805
-2010-04-20 13:21:01,399 DEBUG sale #273 price_final = 964160
-2010-04-20 13:21:01,407 DEBUG sale #275 price_final = 963250
-2010-04-20 13:21:01,414 DEBUG sale #279 price_final = 894000
-2010-04-20 13:21:01,422 DEBUG sale #280 price_final = 900275
-2010-04-20 13:21:01,429 DEBUG sale #281 price_final = 910425
-2010-04-20 13:21:01,437 DEBUG sale #282 price_final = 963250
-2010-04-20 13:21:01,450 DEBUG sale #270 c_zilber_base = 1.449
-2010-04-20 13:21:01,464 DEBUG sale #270 final = 1.449
-2010-04-20 13:21:01,468 WARNING skipping sale #270. no doh0 prices
-2010-04-20 13:21:01,482 DEBUG sale #266 c_zilber_base = 1.449
-2010-04-20 13:21:01,495 DEBUG sale #266 final = 1.449
-2010-04-20 13:21:01,500 WARNING skipping sale #266. no doh0 prices
-2010-04-20 13:21:01,513 DEBUG sale #267 c_zilber_base = 1.449
-2010-04-20 13:21:01,527 DEBUG sale #267 final = 1.449
-2010-04-20 13:21:01,531 WARNING skipping sale #267. no doh0 prices
-2010-04-20 13:21:01,546 DEBUG sale #268 c_zilber_base = 1.449
-2010-04-20 13:21:01,559 DEBUG sale #268 final = 1.449
-2010-04-20 13:21:01,563 WARNING skipping sale #268. no doh0 prices
-2010-04-20 13:21:01,578 DEBUG sale #269 c_zilber_base = 1.449
-2010-04-20 13:21:01,591 DEBUG sale #269 final = 1.449
-2010-04-20 13:21:01,596 WARNING skipping sale #269. no doh0 prices
-2010-04-20 13:21:01,609 DEBUG sale #265 c_zilber_base = 1.449
-2010-04-20 13:21:01,623 DEBUG sale #265 final = 1.449
-2010-04-20 13:21:01,627 WARNING skipping sale #265. no doh0 prices
-2010-04-20 13:21:01,650 DEBUG sale #272 c_zilber_base = 1.449
-2010-04-20 13:21:01,672 DEBUG sale #272 final = 1.449
-2010-04-20 13:21:01,677 WARNING skipping sale #272. no doh0 prices
-2010-04-20 13:21:01,699 DEBUG sale #277 c_zilber_base = 1.449
-2010-04-20 13:21:01,722 DEBUG sale #277 final = 1.449
-2010-04-20 13:21:01,726 WARNING skipping sale #277. no doh0 prices
-2010-04-20 13:21:01,749 DEBUG sale #278 c_zilber_base = 1.449
-2010-04-20 13:21:01,771 DEBUG sale #278 final = 1.449
-2010-04-20 13:21:01,776 WARNING skipping sale #278. no doh0 prices
-2010-04-20 13:21:01,799 DEBUG sale #276 c_zilber_base = 1.449
-2010-04-20 13:21:01,821 DEBUG sale #276 final = 1.449
-2010-04-20 13:21:01,825 WARNING skipping sale #276. no doh0 prices
-2010-04-20 13:21:01,848 DEBUG sale #273 c_zilber_base = 1.449
-2010-04-20 13:21:01,871 DEBUG sale #273 final = 1.449
-2010-04-20 13:21:01,876 WARNING skipping sale #273. no doh0 prices
-2010-04-20 13:21:01,899 DEBUG sale #275 c_zilber_base = 1.449
-2010-04-20 13:21:01,922 DEBUG sale #275 final = 1.449
-2010-04-20 13:21:01,926 WARNING skipping sale #275. no doh0 prices
-2010-04-20 13:21:01,949 DEBUG sale #279 c_zilber_base = 1.449
-2010-04-20 13:21:01,972 DEBUG sale #279 final = 1.449
-2010-04-20 13:21:01,977 WARNING skipping sale #279. no doh0 prices
-2010-04-20 13:21:02,000 DEBUG sale #280 c_zilber_base = 1.449
-2010-04-20 13:21:02,022 DEBUG sale #280 final = 1.449
-2010-04-20 13:21:02,026 WARNING skipping sale #280. no doh0 prices
-2010-04-20 13:21:02,049 DEBUG sale #281 c_zilber_base = 1.449
-2010-04-20 13:21:02,073 DEBUG sale #281 final = 1.449
-2010-04-20 13:21:02,078 WARNING skipping sale #281. no doh0 prices
-2010-04-20 13:21:02,101 DEBUG sale #282 c_zilber_base = 1.449
-2010-04-20 13:21:02,125 DEBUG sale #282 final = 1.449
-2010-04-20 13:21:02,129 WARNING skipping sale #282. no doh0 prices
-2010-04-20 13:21:02,134 DEBUG last_demand_finish_date: 2010-04-20 13:21:00
-2010-04-20 13:21:02,631 INFO finished calculation for month 3/2009
-2010-04-20 13:21:03,709 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
-2010-04-20 13:21:04,734 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 12 sales.
-2010-04-20 13:21:04,838 INFO total cycle sales count: 12
-2010-04-20 13:21:04,845 DEBUG sale #285 price_final = 1032512
-2010-04-20 13:21:04,853 DEBUG sale #284 price_final = 1027586
-2010-04-20 13:21:04,861 DEBUG sale #288 price_final = 1000000
-2010-04-20 13:21:04,868 DEBUG sale #286 price_final = 1108374
-2010-04-20 13:21:04,876 DEBUG sale #287 price_final = 1054187
-2010-04-20 13:21:04,883 DEBUG sale #295 price_final = 1205000
-2010-04-20 13:21:04,891 DEBUG sale #301 price_final = 1047044
-2010-04-20 13:21:04,899 DEBUG sale #296 price_final = 1142857
-2010-04-20 13:21:04,906 DEBUG sale #297 price_final = 911330
-2010-04-20 13:21:04,914 DEBUG sale #298 price_final = 1083744
-2010-04-20 13:21:04,922 DEBUG sale #300 price_final = 912315
-2010-04-20 13:21:04,929 DEBUG sale #299 price_final = 918970
-2010-04-20 13:21:04,943 DEBUG sale #285 c_zilber_base = 1.3826
-2010-04-20 13:21:04,957 DEBUG sale #285 final = 1.3826
-2010-04-20 13:21:04,962 WARNING skipping sale #285. no doh0 prices
-2010-04-20 13:21:04,976 DEBUG sale #284 c_zilber_base = 1.3826
-2010-04-20 13:21:04,990 DEBUG sale #284 final = 1.3826
-2010-04-20 13:21:04,994 WARNING skipping sale #284. no doh0 prices
-2010-04-20 13:21:05,008 DEBUG sale #288 c_zilber_base = 1.3826
-2010-04-20 13:21:05,021 DEBUG sale #288 final = 1.3826
-2010-04-20 13:21:05,025 WARNING skipping sale #288. no doh0 prices
-2010-04-20 13:21:05,039 DEBUG sale #286 c_zilber_base = 1.3826
-2010-04-20 13:21:05,053 DEBUG sale #286 final = 1.3826
-2010-04-20 13:21:05,057 WARNING skipping sale #286. no doh0 prices
-2010-04-20 13:21:05,071 DEBUG sale #287 c_zilber_base = 1.3826
-2010-04-20 13:21:05,085 DEBUG sale #287 final = 1.3826
-2010-04-20 13:21:05,089 WARNING skipping sale #287. no doh0 prices
-2010-04-20 13:21:05,103 DEBUG sale #295 c_zilber_base = 1.3826
-2010-04-20 13:21:05,116 DEBUG sale #295 final = 1.3826
-2010-04-20 13:21:05,121 WARNING skipping sale #295. no doh0 prices
-2010-04-20 13:21:05,134 DEBUG sale #301 c_zilber_base = 1.3826
-2010-04-20 13:21:05,148 DEBUG sale #301 final = 1.3826
-2010-04-20 13:21:05,152 WARNING skipping sale #301. no doh0 prices
-2010-04-20 13:21:05,166 DEBUG sale #296 c_zilber_base = 1.3826
-2010-04-20 13:21:05,179 DEBUG sale #296 final = 1.3826
-2010-04-20 13:21:05,184 WARNING skipping sale #296. no doh0 prices
-2010-04-20 13:21:05,197 DEBUG sale #297 c_zilber_base = 1.3826
-2010-04-20 13:21:05,211 DEBUG sale #297 final = 1.3826
-2010-04-20 13:21:05,215 WARNING skipping sale #297. no doh0 prices
-2010-04-20 13:21:05,228 DEBUG sale #298 c_zilber_base = 1.3826
-2010-04-20 13:21:05,243 DEBUG sale #298 final = 1.3826
-2010-04-20 13:21:05,247 WARNING skipping sale #298. no doh0 prices
-2010-04-20 13:21:05,261 DEBUG sale #300 c_zilber_base = 1.3826
-2010-04-20 13:21:05,274 DEBUG sale #300 final = 1.3826
-2010-04-20 13:21:05,279 WARNING skipping sale #300. no doh0 prices
-2010-04-20 13:21:05,292 DEBUG sale #299 c_zilber_base = 1.3826
-2010-04-20 13:21:05,306 DEBUG sale #299 final = 1.3826
-2010-04-20 13:21:05,310 WARNING skipping sale #299. no doh0 prices
-2010-04-20 13:21:05,315 DEBUG last_demand_finish_date: 2010-04-20 13:21:03
-2010-04-20 13:21:05,575 INFO finished calculation for month 5/2009
-2010-04-20 13:21:06,714 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 6 sales.
-2010-04-20 13:21:06,912 INFO total cycle sales count: 18
-2010-04-20 13:21:06,920 DEBUG sale #335 price_final = 1030970
-2010-04-20 13:21:06,928 DEBUG sale #334 price_final = 1065970
-2010-04-20 13:21:06,936 DEBUG sale #336 price_final = 1051970
-2010-04-20 13:21:06,944 DEBUG sale #339 price_final = 906404
-2010-04-20 13:21:06,952 DEBUG sale #337 price_final = 1123153
-2010-04-20 13:21:06,960 DEBUG sale #338 price_final = 906404
-2010-04-20 13:21:06,968 DEBUG sale #285 price_final = 1032512
-2010-04-20 13:21:06,975 DEBUG sale #284 price_final = 1027586
-2010-04-20 13:21:06,983 DEBUG sale #288 price_final = 1000000
-2010-04-20 13:21:06,991 DEBUG sale #286 price_final = 1108374
-2010-04-20 13:21:06,999 DEBUG sale #287 price_final = 1054187
-2010-04-20 13:21:07,007 DEBUG sale #295 price_final = 1205000
-2010-04-20 13:21:07,015 DEBUG sale #301 price_final = 1047044
-2010-04-20 13:21:07,022 DEBUG sale #296 price_final = 1142857
-2010-04-20 13:21:07,030 DEBUG sale #297 price_final = 911330
-2010-04-20 13:21:07,038 DEBUG sale #298 price_final = 1083744
-2010-04-20 13:21:07,046 DEBUG sale #300 price_final = 912315
-2010-04-20 13:21:07,057 DEBUG sale #299 price_final = 918970
-2010-04-20 13:21:07,071 DEBUG sale #335 c_zilber_base = 1.4822
-2010-04-20 13:21:07,085 DEBUG sale #335 final = 1.4822
-2010-04-20 13:21:07,105 DEBUG sale #335 c_zilber_discount calc values: {'memudad': 797000.0, 'scd.value': 24943.5, 'latest_doh0price': 797000L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:07,120 DEBUG sale #334 c_zilber_base = 1.4822
-2010-04-20 13:21:07,134 DEBUG sale #334 final = 1.4822
-2010-04-20 13:21:07,156 DEBUG sale #334 c_zilber_discount calc values: {'memudad': 797000.0, 'scd.value': 28496.0, 'latest_doh0price': 797000L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:07,172 DEBUG sale #336 c_zilber_base = 1.4822
-2010-04-20 13:21:07,188 DEBUG sale #336 final = 1.4822
-2010-04-20 13:21:07,194 WARNING skipping sale #336. no doh0 prices
-2010-04-20 13:21:07,210 DEBUG sale #339 c_zilber_base = 1.4822
-2010-04-20 13:21:07,226 DEBUG sale #339 final = 1.4822
-2010-04-20 13:21:07,232 WARNING skipping sale #339. no doh0 prices
-2010-04-20 13:21:07,285 DEBUG sale #337 c_zilber_base = 1.4822
-2010-04-20 13:21:07,301 DEBUG sale #337 final = 1.4822
-2010-04-20 13:21:07,306 WARNING skipping sale #337. no doh0 prices
-2010-04-20 13:21:07,323 DEBUG sale #338 c_zilber_base = 1.4822
-2010-04-20 13:21:07,339 DEBUG sale #338 final = 1.4822
-2010-04-20 13:21:07,344 WARNING skipping sale #338. no doh0 prices
-2010-04-20 13:21:07,370 DEBUG sale #285 c_zilber_base = 1.4822
-2010-04-20 13:21:07,394 DEBUG sale #285 final = 1.4822
-2010-04-20 13:21:07,399 WARNING skipping sale #285. no doh0 prices
-2010-04-20 13:21:07,424 DEBUG sale #284 c_zilber_base = 1.4822
-2010-04-20 13:21:07,447 DEBUG sale #284 final = 1.4822
-2010-04-20 13:21:07,452 WARNING skipping sale #284. no doh0 prices
-2010-04-20 13:21:07,475 DEBUG sale #288 c_zilber_base = 1.4822
-2010-04-20 13:21:07,501 DEBUG sale #288 final = 1.4822
-2010-04-20 13:21:07,506 WARNING skipping sale #288. no doh0 prices
-2010-04-20 13:21:07,530 DEBUG sale #286 c_zilber_base = 1.4822
-2010-04-20 13:21:07,553 DEBUG sale #286 final = 1.4822
-2010-04-20 13:21:07,559 WARNING skipping sale #286. no doh0 prices
-2010-04-20 13:21:07,588 DEBUG sale #287 c_zilber_base = 1.4822
-2010-04-20 13:21:07,615 DEBUG sale #287 final = 1.4822
-2010-04-20 13:21:07,621 WARNING skipping sale #287. no doh0 prices
-2010-04-20 13:21:07,648 DEBUG sale #295 c_zilber_base = 1.4822
-2010-04-20 13:21:07,676 DEBUG sale #295 final = 1.4822
-2010-04-20 13:21:07,700 DEBUG sale #295 c_zilber_discount calc values: {'memudad': 968171.0, 'scd.value': 23682.900000000001, 'latest_doh0price': 968171L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:07,724 DEBUG sale #301 c_zilber_base = 1.4822
-2010-04-20 13:21:07,748 DEBUG sale #301 final = 1.4822
-2010-04-20 13:21:07,752 WARNING skipping sale #301. no doh0 prices
-2010-04-20 13:21:07,776 DEBUG sale #296 c_zilber_base = 1.4822
-2010-04-20 13:21:07,802 DEBUG sale #296 final = 1.4822
-2010-04-20 13:21:07,807 WARNING skipping sale #296. no doh0 prices
-2010-04-20 13:21:07,832 DEBUG sale #297 c_zilber_base = 1.4822
-2010-04-20 13:21:07,856 DEBUG sale #297 final = 1.4822
-2010-04-20 13:21:07,860 WARNING skipping sale #297. no doh0 prices
-2010-04-20 13:21:07,884 DEBUG sale #298 c_zilber_base = 1.4822
-2010-04-20 13:21:07,908 DEBUG sale #298 final = 1.4822
-2010-04-20 13:21:07,913 WARNING skipping sale #298. no doh0 prices
-2010-04-20 13:21:07,939 DEBUG sale #300 c_zilber_base = 1.4822
-2010-04-20 13:21:07,966 DEBUG sale #300 final = 1.4822
-2010-04-20 13:21:07,974 WARNING skipping sale #300. no doh0 prices
-2010-04-20 13:21:08,004 DEBUG sale #299 c_zilber_base = 1.4822
-2010-04-20 13:21:08,030 DEBUG sale #299 final = 1.4822
-2010-04-20 13:21:08,035 WARNING skipping sale #299. no doh0 prices
-2010-04-20 13:21:08,041 DEBUG last_demand_finish_date: 2010-04-20 13:21:05
-2010-04-20 13:21:10,281 INFO finished calculation for month 6/2009
-2010-04-20 13:21:12,677 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 7 sales.
-2010-04-20 13:21:15,406 INFO total cycle sales count: 25
-2010-04-20 13:21:15,414 DEBUG sale #432 price_final = 1024631
-2010-04-20 13:21:15,421 DEBUG sale #431 price_final = 1034877
-2010-04-20 13:21:15,429 DEBUG sale #430 price_final = 896305
-2010-04-20 13:21:15,437 DEBUG sale #434 price_final = 1068966
-2010-04-20 13:21:15,450 DEBUG sale #436 price_final = 1076552
-2010-04-20 13:21:15,458 DEBUG sale #433 price_final = 1127970
-2010-04-20 13:21:15,465 DEBUG sale #435 price_final = 941970
-2010-04-20 13:21:15,473 DEBUG sale #335 price_final = 1030970
-2010-04-20 13:21:15,480 DEBUG sale #334 price_final = 1065970
-2010-04-20 13:21:15,488 DEBUG sale #336 price_final = 1051970
-2010-04-20 13:21:15,496 DEBUG sale #339 price_final = 906404
-2010-04-20 13:21:15,503 DEBUG sale #337 price_final = 1123153
-2010-04-20 13:21:15,511 DEBUG sale #338 price_final = 906404
-2010-04-20 13:21:15,518 DEBUG sale #285 price_final = 1032512
-2010-04-20 13:21:15,526 DEBUG sale #284 price_final = 1027586
-2010-04-20 13:21:15,533 DEBUG sale #288 price_final = 1000000
-2010-04-20 13:21:15,541 DEBUG sale #286 price_final = 1108374
-2010-04-20 13:21:15,548 DEBUG sale #287 price_final = 1054187
-2010-04-20 13:21:15,556 DEBUG sale #295 price_final = 1205000
-2010-04-20 13:21:15,563 DEBUG sale #301 price_final = 1047044
-2010-04-20 13:21:15,572 DEBUG sale #296 price_final = 1142857
-2010-04-20 13:21:15,579 DEBUG sale #297 price_final = 911330
-2010-04-20 13:21:15,587 DEBUG sale #298 price_final = 1083744
-2010-04-20 13:21:15,594 DEBUG sale #300 price_final = 912315
-2010-04-20 13:21:15,602 DEBUG sale #299 price_final = 918970
-2010-04-20 13:21:15,616 DEBUG sale #432 c_zilber_base = 1.5984
-2010-04-20 13:21:15,630 DEBUG sale #432 final = 1.5984
-2010-04-20 13:21:15,649 DEBUG sale #432 c_zilber_discount calc values: {'memudad': 893000.0, 'scd.value': 14700.0, 'latest_doh0price': 893000L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:15,663 DEBUG sale #431 c_zilber_base = 1.5984
-2010-04-20 13:21:15,676 DEBUG sale #431 final = 1.5984
-2010-04-20 13:21:15,695 DEBUG sale #431 c_zilber_discount calc values: {'memudad': 893000.0, 'scd.value': 15740.0, 'latest_doh0price': 893000L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:15,708 DEBUG sale #430 c_zilber_base = 1.5984
-2010-04-20 13:21:15,722 DEBUG sale #430 final = 1.5984
-2010-04-20 13:21:15,741 DEBUG sale #430 c_zilber_discount calc values: {'memudad': 893000.0, 'scd.value': 1675.0, 'latest_doh0price': 893000L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:15,755 DEBUG sale #434 c_zilber_base = 1.5984
-2010-04-20 13:21:15,768 DEBUG sale #434 final = 1.5984
-2010-04-20 13:21:15,772 WARNING skipping sale #434. no doh0 prices
-2010-04-20 13:21:15,786 DEBUG sale #436 c_zilber_base = 1.5984
-2010-04-20 13:21:15,799 DEBUG sale #436 final = 1.5984
-2010-04-20 13:21:15,804 WARNING skipping sale #436. no doh0 prices
-2010-04-20 13:21:15,817 DEBUG sale #433 c_zilber_base = 1.5984
-2010-04-20 13:21:15,831 DEBUG sale #433 final = 1.5984
-2010-04-20 13:21:15,835 WARNING skipping sale #433. no doh0 prices
-2010-04-20 13:21:15,849 DEBUG sale #435 c_zilber_base = 1.5984
-2010-04-20 13:21:15,862 DEBUG sale #435 final = 1.5984
-2010-04-20 13:21:15,866 WARNING skipping sale #435. no doh0 prices
-2010-04-20 13:21:15,889 DEBUG sale #335 c_zilber_base = 1.5984
-2010-04-20 13:21:15,911 DEBUG sale #335 final = 1.5984
-2010-04-20 13:21:15,939 DEBUG sale #335 c_zilber_discount calc values: {'memudad': 797000.0, 'scd.value': 24943.5, 'latest_doh0price': 797000L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:15,961 DEBUG sale #334 c_zilber_base = 1.5984
-2010-04-20 13:21:15,984 DEBUG sale #334 final = 1.5984
-2010-04-20 13:21:16,011 DEBUG sale #334 c_zilber_discount calc values: {'memudad': 797000.0, 'scd.value': 28496.0, 'latest_doh0price': 797000L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:16,034 DEBUG sale #336 c_zilber_base = 1.5984
-2010-04-20 13:21:16,057 DEBUG sale #336 final = 1.5984
-2010-04-20 13:21:16,077 DEBUG sale #336 c_zilber_discount calc values: {'memudad': 920535.0, 'scd.value': 14721.5, 'latest_doh0price': 920535L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:16,100 DEBUG sale #339 c_zilber_base = 1.5984
-2010-04-20 13:21:16,123 DEBUG sale #339 final = 1.5984
-2010-04-20 13:21:16,143 DEBUG sale #339 c_zilber_discount calc values: {'memudad': 872667.0, 'scd.value': 4733.3000000000002, 'latest_doh0price': 872667L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:16,166 DEBUG sale #337 c_zilber_base = 1.5984
-2010-04-20 13:21:16,189 DEBUG sale #337 final = 1.5984
-2010-04-20 13:21:16,211 DEBUG sale #337 c_zilber_discount calc values: {'memudad': 1099560.0, 'scd.value': 4044.0, 'latest_doh0price': 1099560L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:16,234 DEBUG sale #338 c_zilber_base = 1.5984
-2010-04-20 13:21:16,256 DEBUG sale #338 final = 1.5984
-2010-04-20 13:21:16,277 DEBUG sale #338 c_zilber_discount calc values: {'memudad': 872667.0, 'scd.value': 4733.3000000000002, 'latest_doh0price': 872667L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:16,299 DEBUG sale #285 c_zilber_base = 1.5984
-2010-04-20 13:21:16,322 DEBUG sale #285 final = 1.5984
-2010-04-20 13:21:16,326 WARNING skipping sale #285. no doh0 prices
-2010-04-20 13:21:16,348 DEBUG sale #284 c_zilber_base = 1.5984
-2010-04-20 13:21:16,371 DEBUG sale #284 final = 1.5984
-2010-04-20 13:21:16,375 WARNING skipping sale #284. no doh0 prices
-2010-04-20 13:21:16,398 DEBUG sale #288 c_zilber_base = 1.5984
-2010-04-20 13:21:16,420 DEBUG sale #288 final = 1.5984
-2010-04-20 13:21:16,424 WARNING skipping sale #288. no doh0 prices
-2010-04-20 13:21:16,447 DEBUG sale #286 c_zilber_base = 1.5984
-2010-04-20 13:21:16,470 DEBUG sale #286 final = 1.5984
-2010-04-20 13:21:16,474 WARNING skipping sale #286. no doh0 prices
-2010-04-20 13:21:16,496 DEBUG sale #287 c_zilber_base = 1.5984
-2010-04-20 13:21:16,519 DEBUG sale #287 final = 1.5984
-2010-04-20 13:21:16,523 WARNING skipping sale #287. no doh0 prices
-2010-04-20 13:21:16,545 DEBUG sale #295 c_zilber_base = 1.5984
-2010-04-20 13:21:16,568 DEBUG sale #295 final = 1.5984
-2010-04-20 13:21:16,595 DEBUG sale #295 c_zilber_discount calc values: {'memudad': 968171.0, 'scd.value': 23682.900000000001, 'latest_doh0price': 968171L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:16,618 DEBUG sale #301 c_zilber_base = 1.5984
-2010-04-20 13:21:16,641 DEBUG sale #301 final = 1.5984
-2010-04-20 13:21:16,645 WARNING skipping sale #301. no doh0 prices
-2010-04-20 13:21:16,668 DEBUG sale #296 c_zilber_base = 1.5984
-2010-04-20 13:21:16,690 DEBUG sale #296 final = 1.5984
-2010-04-20 13:21:16,694 WARNING skipping sale #296. no doh0 prices
-2010-04-20 13:21:16,717 DEBUG sale #297 c_zilber_base = 1.5984
-2010-04-20 13:21:16,739 DEBUG sale #297 final = 1.5984
-2010-04-20 13:21:16,744 WARNING skipping sale #297. no doh0 prices
-2010-04-20 13:21:16,766 DEBUG sale #298 c_zilber_base = 1.5984
-2010-04-20 13:21:16,789 DEBUG sale #298 final = 1.5984
-2010-04-20 13:21:16,793 WARNING skipping sale #298. no doh0 prices
-2010-04-20 13:21:16,816 DEBUG sale #300 c_zilber_base = 1.5984
-2010-04-20 13:21:16,839 DEBUG sale #300 final = 1.5984
-2010-04-20 13:21:16,859 DEBUG sale #300 c_zilber_discount calc values: {'memudad': 880222.0, 'scd.value': 4577.8000000000002, 'latest_doh0price': 880222L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:16,882 DEBUG sale #299 c_zilber_base = 1.5984
-2010-04-20 13:21:16,905 DEBUG sale #299 final = 1.5984
-2010-04-20 13:21:16,909 WARNING skipping sale #299. no doh0 prices
-2010-04-20 13:21:16,914 DEBUG last_demand_finish_date: 2010-04-20 13:21:11
-2010-04-20 13:21:17,466 INFO finished calculation for month 7/2009
-2010-04-20 13:21:18,551 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 19 sales.
-2010-04-20 13:21:19,300 INFO total cycle sales count: 44
-2010-04-20 13:21:19,308 DEBUG sale #526 price_final = 1054000
-2010-04-20 13:21:19,316 DEBUG sale #524 price_final = 947533
-2010-04-20 13:21:19,323 DEBUG sale #520 price_final = 947533
-2010-04-20 13:21:19,331 DEBUG sale #522 price_final = 947533
-2010-04-20 13:21:19,339 DEBUG sale #521 price_final = 924635
-2010-04-20 13:21:19,346 DEBUG sale #525 price_final = 1058000
-2010-04-20 13:21:19,354 DEBUG sale #523 price_final = 947533
-2010-04-20 13:21:19,361 DEBUG sale #528 price_final = 1180000
-2010-04-20 13:21:19,369 DEBUG sale #527 price_final = 989545
-2010-04-20 13:21:19,377 DEBUG sale #511 price_final = 991600
-2010-04-20 13:21:19,384 DEBUG sale #512 price_final = 1241087
-2010-04-20 13:21:19,392 DEBUG sale #513 price_final = 948995
-2010-04-20 13:21:19,399 DEBUG sale #514 price_final = 1200000
-2010-04-20 13:21:19,407 DEBUG sale #518 price_final = 950000
-2010-04-20 13:21:19,419 DEBUG sale #519 price_final = 1115000
-2010-04-20 13:21:19,573 DEBUG sale #515 price_final = 996700
-2010-04-20 13:21:19,656 DEBUG sale #516 price_final = 948995
-2010-04-20 13:21:19,664 DEBUG sale #517 price_final = 1104290
-2010-04-20 13:21:19,672 DEBUG sale #570 price_final = 1087970
-2010-04-20 13:21:19,679 DEBUG sale #432 price_final = 1024631
-2010-04-20 13:21:19,687 DEBUG sale #431 price_final = 1034877
-2010-04-20 13:21:19,695 DEBUG sale #430 price_final = 896305
-2010-04-20 13:21:19,702 DEBUG sale #434 price_final = 1068966
-2010-04-20 13:21:19,710 DEBUG sale #436 price_final = 1076552
-2010-04-20 13:21:19,717 DEBUG sale #433 price_final = 1127970
-2010-04-20 13:21:19,725 DEBUG sale #435 price_final = 941970
-2010-04-20 13:21:19,732 DEBUG sale #335 price_final = 1030970
-2010-04-20 13:21:19,740 DEBUG sale #334 price_final = 1065970
-2010-04-20 13:21:19,748 DEBUG sale #336 price_final = 1051970
-2010-04-20 13:21:19,755 DEBUG sale #339 price_final = 906404
-2010-04-20 13:21:19,763 DEBUG sale #337 price_final = 1123153
-2010-04-20 13:21:19,770 DEBUG sale #338 price_final = 906404
-2010-04-20 13:21:19,778 DEBUG sale #285 price_final = 1032512
-2010-04-20 13:21:19,786 DEBUG sale #284 price_final = 1027586
-2010-04-20 13:21:19,794 DEBUG sale #288 price_final = 1000000
-2010-04-20 13:21:19,801 DEBUG sale #286 price_final = 1108374
-2010-04-20 13:21:19,809 DEBUG sale #287 price_final = 1054187
-2010-04-20 13:21:19,817 DEBUG sale #295 price_final = 1205000
-2010-04-20 13:21:19,824 DEBUG sale #301 price_final = 1047044
-2010-04-20 13:21:19,832 DEBUG sale #296 price_final = 1142857
-2010-04-20 13:21:19,839 DEBUG sale #297 price_final = 911330
-2010-04-20 13:21:19,847 DEBUG sale #298 price_final = 1083744
-2010-04-20 13:21:19,854 DEBUG sale #300 price_final = 912315
-2010-04-20 13:21:19,862 DEBUG sale #299 price_final = 918970
-2010-04-20 13:21:19,862 INFO base commission 1.9138 exceeded max commisison 1.6
-2010-04-20 13:21:19,876 DEBUG sale #526 c_zilber_base = 1.6
-2010-04-20 13:21:19,891 DEBUG sale #526 final = 1.6
-2010-04-20 13:21:19,911 DEBUG sale #526 c_zilber_discount calc values: {'memudad': 1031415.0, 'scd.value': 2258.5, 'latest_doh0price': 1031415L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:19,925 DEBUG sale #524 c_zilber_base = 1.6
-2010-04-20 13:21:19,939 DEBUG sale #524 final = 1.6
-2010-04-20 13:21:19,958 DEBUG sale #524 c_zilber_discount calc values: {'memudad': 1031415.0, 'scd.value': -8388.2000000000007, 'latest_doh0price': 1031415L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:19,971 DEBUG sale #520 c_zilber_base = 1.6
-2010-04-20 13:21:19,985 DEBUG sale #520 final = 1.6
-2010-04-20 13:21:20,004 DEBUG sale #520 c_zilber_discount calc values: {'memudad': 1031415.0, 'scd.value': -8388.2000000000007, 'latest_doh0price': 1031415L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:20,020 DEBUG sale #522 c_zilber_base = 1.6
-2010-04-20 13:21:20,035 DEBUG sale #522 final = 1.6
-2010-04-20 13:21:20,054 DEBUG sale #522 c_zilber_discount calc values: {'memudad': 1031415.0, 'scd.value': -8388.2000000000007, 'latest_doh0price': 1031415L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:20,068 DEBUG sale #521 c_zilber_base = 1.6
-2010-04-20 13:21:20,082 DEBUG sale #521 final = 1.6
-2010-04-20 13:21:20,101 DEBUG sale #521 c_zilber_discount calc values: {'memudad': 1031415.0, 'scd.value': -10678.0, 'latest_doh0price': 1031415L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:20,116 DEBUG sale #525 c_zilber_base = 1.6
-2010-04-20 13:21:20,152 DEBUG sale #525 final = 1.6
-2010-04-20 13:21:20,172 DEBUG sale #525 c_zilber_discount calc values: {'memudad': 1031415.0, 'scd.value': 2658.5, 'latest_doh0price': 1031415L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:20,186 DEBUG sale #523 c_zilber_base = 1.6
-2010-04-20 13:21:20,199 DEBUG sale #523 final = 1.6
-2010-04-20 13:21:20,218 DEBUG sale #523 c_zilber_discount calc values: {'memudad': 1031415.0, 'scd.value': -8388.2000000000007, 'latest_doh0price': 1031415L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:20,232 DEBUG sale #528 c_zilber_base = 1.6
-2010-04-20 13:21:20,246 DEBUG sale #528 final = 1.6
-2010-04-20 13:21:20,250 WARNING skipping sale #528. no doh0 prices
-2010-04-20 13:21:20,264 DEBUG sale #527 c_zilber_base = 1.6
-2010-04-20 13:21:20,277 DEBUG sale #527 final = 1.6
-2010-04-20 13:21:20,282 WARNING skipping sale #527. no doh0 prices
-2010-04-20 13:21:20,295 DEBUG sale #511 c_zilber_base = 1.6
-2010-04-20 13:21:20,309 DEBUG sale #511 final = 1.6
-2010-04-20 13:21:20,313 WARNING skipping sale #511. no doh0 prices
-2010-04-20 13:21:20,327 DEBUG sale #512 c_zilber_base = 1.6
-2010-04-20 13:21:20,340 DEBUG sale #512 final = 1.6
-2010-04-20 13:21:20,344 WARNING skipping sale #512. no doh0 prices
-2010-04-20 13:21:20,358 DEBUG sale #513 c_zilber_base = 1.6
-2010-04-20 13:21:20,371 DEBUG sale #513 final = 1.6
-2010-04-20 13:21:20,375 WARNING skipping sale #513. no doh0 prices
-2010-04-20 13:21:20,389 DEBUG sale #514 c_zilber_base = 1.6
-2010-04-20 13:21:20,402 DEBUG sale #514 final = 1.6
-2010-04-20 13:21:20,406 WARNING skipping sale #514. no doh0 prices
-2010-04-20 13:21:20,420 DEBUG sale #518 c_zilber_base = 1.6
-2010-04-20 13:21:20,434 DEBUG sale #518 final = 1.6
-2010-04-20 13:21:20,438 WARNING skipping sale #518. no doh0 prices
-2010-04-20 13:21:20,452 DEBUG sale #519 c_zilber_base = 1.6
-2010-04-20 13:21:20,465 DEBUG sale #519 final = 1.6
-2010-04-20 13:21:20,469 WARNING skipping sale #519. no doh0 prices
-2010-04-20 13:21:20,483 DEBUG sale #515 c_zilber_base = 1.6
-2010-04-20 13:21:20,496 DEBUG sale #515 final = 1.6
-2010-04-20 13:21:20,500 WARNING skipping sale #515. no doh0 prices
-2010-04-20 13:21:20,514 DEBUG sale #516 c_zilber_base = 1.6
-2010-04-20 13:21:20,528 DEBUG sale #516 final = 1.6
-2010-04-20 13:21:20,532 WARNING skipping sale #516. no doh0 prices
-2010-04-20 13:21:20,545 DEBUG sale #517 c_zilber_base = 1.6
-2010-04-20 13:21:20,559 DEBUG sale #517 final = 1.6
-2010-04-20 13:21:20,563 WARNING skipping sale #517. no doh0 prices
-2010-04-20 13:21:20,577 DEBUG sale #570 c_zilber_base = 1.6
-2010-04-20 13:21:20,591 DEBUG sale #570 final = 1.6
-2010-04-20 13:21:20,610 DEBUG sale #570 c_zilber_discount calc values: {'memudad': 920535.0, 'scd.value': 18375.5, 'latest_doh0price': 920535L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:20,632 DEBUG sale #432 c_zilber_base = 1.6
-2010-04-20 13:21:20,655 DEBUG sale #432 final = 1.6
-2010-04-20 13:21:20,683 DEBUG sale #432 c_zilber_discount calc values: {'memudad': 1031415.0, 'scd.value': 858.5, 'latest_doh0price': 1031415L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:20,705 DEBUG sale #431 c_zilber_base = 1.6
-2010-04-20 13:21:20,727 DEBUG sale #431 final = 1.6
-2010-04-20 13:21:20,755 DEBUG sale #431 c_zilber_discount calc values: {'memudad': 1031415.0, 'scd.value': 1898.5, 'latest_doh0price': 1031415L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:20,777 DEBUG sale #430 c_zilber_base = 1.6
-2010-04-20 13:21:20,799 DEBUG sale #430 final = 1.6
-2010-04-20 13:21:20,827 DEBUG sale #430 c_zilber_discount calc values: {'memudad': 1031415.0, 'scd.value': -12166.5, 'latest_doh0price': 1031415L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:20,849 DEBUG sale #434 c_zilber_base = 1.6
-2010-04-20 13:21:20,871 DEBUG sale #434 final = 1.6
-2010-04-20 13:21:20,892 DEBUG sale #434 c_zilber_discount calc values: {'memudad': 920535.0, 'scd.value': 16446.5, 'latest_doh0price': 920535L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:20,914 DEBUG sale #436 c_zilber_base = 1.6
-2010-04-20 13:21:20,937 DEBUG sale #436 final = 1.6
-2010-04-20 13:21:20,957 DEBUG sale #436 c_zilber_discount calc values: {'memudad': 920535.0, 'scd.value': 17216.5, 'latest_doh0price': 920535L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:20,979 DEBUG sale #433 c_zilber_base = 1.6
-2010-04-20 13:21:21,002 DEBUG sale #433 final = 1.6
-2010-04-20 13:21:21,022 DEBUG sale #433 c_zilber_discount calc values: {'memudad': 1099560.0, 'scd.value': 4533.0, 'latest_doh0price': 1099560L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:21,044 DEBUG sale #435 c_zilber_base = 1.6
-2010-04-20 13:21:21,066 DEBUG sale #435 final = 1.6
-2010-04-20 13:21:21,087 DEBUG sale #435 c_zilber_discount calc values: {'memudad': 1036035.0, 'scd.value': -7993.5, 'latest_doh0price': 1036035L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:21,109 DEBUG sale #335 c_zilber_base = 1.6
-2010-04-20 13:21:21,131 DEBUG sale #335 final = 1.6
-2010-04-20 13:21:21,159 DEBUG sale #335 c_zilber_discount calc values: {'memudad': 920535.0, 'scd.value': 12590.0, 'latest_doh0price': 920535L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:21,186 DEBUG sale #334 c_zilber_base = 1.6
-2010-04-20 13:21:21,215 DEBUG sale #334 final = 1.6
-2010-04-20 13:21:21,242 DEBUG sale #334 c_zilber_discount calc values: {'memudad': 920535.0, 'scd.value': 16142.5, 'latest_doh0price': 920535L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:21,264 DEBUG sale #336 c_zilber_base = 1.6
-2010-04-20 13:21:21,286 DEBUG sale #336 final = 1.6
-2010-04-20 13:21:21,314 DEBUG sale #336 c_zilber_discount calc values: {'memudad': 920535.0, 'scd.value': 14721.5, 'latest_doh0price': 920535L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:21,335 DEBUG sale #339 c_zilber_base = 1.6
-2010-04-20 13:21:21,357 DEBUG sale #339 final = 1.6
-2010-04-20 13:21:21,384 DEBUG sale #339 c_zilber_discount calc values: {'memudad': 1036035.0, 'scd.value': -11603.5, 'latest_doh0price': 1036035L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:21,406 DEBUG sale #337 c_zilber_base = 1.6
-2010-04-20 13:21:21,428 DEBUG sale #337 final = 1.6
-2010-04-20 13:21:21,455 DEBUG sale #337 c_zilber_discount calc values: {'memudad': 1099560.0, 'scd.value': 4044.0, 'latest_doh0price': 1099560L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:21,477 DEBUG sale #338 c_zilber_base = 1.6
-2010-04-20 13:21:21,499 DEBUG sale #338 final = 1.6
-2010-04-20 13:21:21,526 DEBUG sale #338 c_zilber_discount calc values: {'memudad': 1036035.0, 'scd.value': -11603.5, 'latest_doh0price': 1036035L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:21,548 DEBUG sale #285 c_zilber_base = 1.6
-2010-04-20 13:21:21,569 DEBUG sale #285 final = 1.6
-2010-04-20 13:21:21,589 DEBUG sale #285 c_zilber_discount calc values: {'memudad': 920535.0, 'scd.value': 12746.5, 'latest_doh0price': 920535L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:21,611 DEBUG sale #284 c_zilber_base = 1.6
-2010-04-20 13:21:21,633 DEBUG sale #284 final = 1.6
-2010-04-20 13:21:21,656 DEBUG sale #284 c_zilber_discount calc values: {'memudad': 920535.0, 'scd.value': 12246.5, 'latest_doh0price': 920535L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:21,685 DEBUG sale #288 c_zilber_base = 1.6
-2010-04-20 13:21:21,722 DEBUG sale #288 final = 1.6
-2010-04-20 13:21:21,749 DEBUG sale #288 c_zilber_discount calc values: {'memudad': 1031415.0, 'scd.value': -1641.5, 'latest_doh0price': 1031415L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:21,780 DEBUG sale #286 c_zilber_base = 1.6
-2010-04-20 13:21:21,810 DEBUG sale #286 final = 1.6
-2010-04-20 13:21:21,840 DEBUG sale #286 c_zilber_discount calc values: {'memudad': 1099560.0, 'scd.value': 2544.0, 'latest_doh0price': 1099560L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:21,863 DEBUG sale #287 c_zilber_base = 1.6
-2010-04-20 13:21:21,886 DEBUG sale #287 final = 1.6
-2010-04-20 13:21:21,907 DEBUG sale #287 c_zilber_discount calc values: {'memudad': 1118237.0, 'scd.value': -4823.6999999999998, 'latest_doh0price': 1118237L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:21,930 DEBUG sale #295 c_zilber_base = 1.6
-2010-04-20 13:21:21,955 DEBUG sale #295 final = 1.6
-2010-04-20 13:21:21,985 DEBUG sale #295 c_zilber_discount calc values: {'memudad': 1118237.0, 'scd.value': 8676.3000000000011, 'latest_doh0price': 1118237L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:22,011 DEBUG sale #301 c_zilber_base = 1.6
-2010-04-20 13:21:22,034 DEBUG sale #301 final = 1.6
-2010-04-20 13:21:22,065 DEBUG sale #301 c_zilber_discount calc values: {'memudad': 1099560.0, 'scd.value': -3681.0, 'latest_doh0price': 1099560L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:22,088 DEBUG sale #296 c_zilber_base = 1.6
-2010-04-20 13:21:22,111 DEBUG sale #296 final = 1.6
-2010-04-20 13:21:22,131 DEBUG sale #296 c_zilber_discount calc values: {'memudad': 1099560.0, 'scd.value': 6044.0, 'latest_doh0price': 1099560L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:22,154 DEBUG sale #297 c_zilber_base = 1.6
-2010-04-20 13:21:22,177 DEBUG sale #297 final = 1.6
-2010-04-20 13:21:22,198 DEBUG sale #297 c_zilber_discount calc values: {'memudad': 872667.0, 'scd.value': 5233.3000000000002, 'latest_doh0price': 872667L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:22,221 DEBUG sale #298 c_zilber_base = 1.6
-2010-04-20 13:21:22,243 DEBUG sale #298 final = 1.6
-2010-04-20 13:21:22,264 DEBUG sale #298 c_zilber_discount calc values: {'memudad': 1099560.0, 'scd.value': 44.0, 'latest_doh0price': 1099560L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:22,286 DEBUG sale #300 c_zilber_base = 1.6
-2010-04-20 13:21:22,310 DEBUG sale #300 final = 1.6
-2010-04-20 13:21:22,338 DEBUG sale #300 c_zilber_discount calc values: {'memudad': 1036035.0, 'scd.value': -11003.5, 'latest_doh0price': 1036035L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:22,361 DEBUG sale #299 c_zilber_base = 1.6
-2010-04-20 13:21:22,383 DEBUG sale #299 final = 1.6
-2010-04-20 13:21:22,403 DEBUG sale #299 c_zilber_discount calc values: {'memudad': 1036035.0, 'scd.value': -10328.0, 'latest_doh0price': 1036035L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:22,408 DEBUG last_demand_finish_date: 2010-04-20 13:21:17
-2010-04-20 13:21:24,045 DEBUG demand #182 created bonus=169695.6
-2010-04-20 13:21:24,045 INFO finished calculation for month 8/2009
-2010-04-20 13:21:25,246 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 4 sales.
-2010-04-20 13:21:25,307 INFO total cycle sales count: 4
-2010-04-20 13:21:25,315 DEBUG sale #605 price_final = 1171921
-2010-04-20 13:21:25,323 DEBUG sale #607 price_final = 1133005
-2010-04-20 13:21:25,331 DEBUG sale #606 price_final = 1116970
-2010-04-20 13:21:25,421 DEBUG sale #608 price_final = 1379310
-2010-04-20 13:21:25,436 DEBUG sale #605 c_zilber_base = 1.2498
-2010-04-20 13:21:25,450 DEBUG sale #605 final = 1.2498
-2010-04-20 13:21:25,470 DEBUG sale #605 c_zilber_discount calc values: {'memudad': 1031415.0, 'scd.value': 15808.5, 'latest_doh0price': 1031415L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:25,484 DEBUG sale #607 c_zilber_base = 1.2498
-2010-04-20 13:21:25,499 DEBUG sale #607 final = 1.2498
-2010-04-20 13:21:25,538 DEBUG sale #607 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': -7312.7000000000007, 'latest_doh0price': 1223127L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:25,554 DEBUG sale #606 c_zilber_base = 1.2498
-2010-04-20 13:21:25,572 DEBUG sale #606 final = 1.2498
-2010-04-20 13:21:25,592 DEBUG sale #606 c_zilber_discount calc values: {'memudad': 1072423.0, 'scd.value': 6130.2000000000007, 'latest_doh0price': 1072423L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:25,607 DEBUG sale #608 c_zilber_base = 1.2498
-2010-04-20 13:21:25,624 DEBUG sale #608 final = 1.2498
-2010-04-20 13:21:25,644 DEBUG sale #608 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': 17687.299999999999, 'latest_doh0price': 1223127L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:25,649 DEBUG last_demand_finish_date: 2010-04-20 13:21:24
-2010-04-20 13:21:25,736 INFO finished calculation for month 9/2009
-2010-04-20 13:21:26,801 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 1 sales.
-2010-04-20 13:21:26,955 INFO total cycle sales count: 5
-2010-04-20 13:21:26,963 DEBUG sale #684 price_final = 985222
-2010-04-20 13:21:26,972 DEBUG sale #605 price_final = 1171921
-2010-04-20 13:21:26,980 DEBUG sale #607 price_final = 1133005
-2010-04-20 13:21:26,989 DEBUG sale #606 price_final = 1116970
-2010-04-20 13:21:26,997 DEBUG sale #608 price_final = 1379310
-2010-04-20 13:21:27,012 DEBUG sale #684 c_zilber_base = 1.2664
-2010-04-20 13:21:27,026 DEBUG sale #684 final = 1.2664
-2010-04-20 13:21:27,031 WARNING skipping sale #684. no doh0 prices
-2010-04-20 13:21:27,054 DEBUG sale #605 c_zilber_base = 1.2664
-2010-04-20 13:21:27,078 DEBUG sale #605 final = 1.2664
-2010-04-20 13:21:27,106 DEBUG sale #605 c_zilber_discount calc values: {'memudad': 1031415.0, 'scd.value': 15808.5, 'latest_doh0price': 1031415L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:27,130 DEBUG sale #607 c_zilber_base = 1.2664
-2010-04-20 13:21:27,154 DEBUG sale #607 final = 1.2664
-2010-04-20 13:21:27,183 DEBUG sale #607 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': -7312.7000000000007, 'latest_doh0price': 1223127L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:27,207 DEBUG sale #606 c_zilber_base = 1.2664
-2010-04-20 13:21:27,230 DEBUG sale #606 final = 1.2664
-2010-04-20 13:21:27,260 DEBUG sale #606 c_zilber_discount calc values: {'memudad': 1072423.0, 'scd.value': 6130.2000000000007, 'latest_doh0price': 1072423L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:27,284 DEBUG sale #608 c_zilber_base = 1.2664
-2010-04-20 13:21:27,308 DEBUG sale #608 final = 1.2664
-2010-04-20 13:21:27,337 DEBUG sale #608 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': 17687.299999999999, 'latest_doh0price': 1223127L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:27,342 DEBUG last_demand_finish_date: 2010-04-20 13:21:25
-2010-04-20 13:21:27,461 INFO finished calculation for month 10/2009
-2010-04-20 13:21:28,494 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 8 sales.
-2010-04-20 13:21:29,032 INFO total cycle sales count: 13
-2010-04-20 13:21:29,537 DEBUG sale #855 price_final = 613793
-2010-04-20 13:21:29,545 DEBUG sale #850 price_final = 1170000
-2010-04-20 13:21:29,564 DEBUG sale #856 price_final = 812808
-2010-04-20 13:21:29,573 DEBUG sale #852 price_final = 971970
-2010-04-20 13:21:29,580 DEBUG sale #851 price_final = 971970
-2010-04-20 13:21:29,588 DEBUG sale #853 price_final = 761576
-2010-04-20 13:21:29,595 DEBUG sale #857 price_final = 1011970
-2010-04-20 13:21:29,603 DEBUG sale #854 price_final = 761576
-2010-04-20 13:21:29,611 DEBUG sale #684 price_final = 985222
-2010-04-20 13:21:29,619 DEBUG sale #605 price_final = 1171921
-2010-04-20 13:21:29,626 DEBUG sale #607 price_final = 1133005
-2010-04-20 13:21:29,634 DEBUG sale #606 price_final = 1116970
-2010-04-20 13:21:29,642 DEBUG sale #608 price_final = 1379310
-2010-04-20 13:21:29,656 DEBUG sale #855 c_zilber_base = 1.3992
-2010-04-20 13:21:29,669 DEBUG sale #855 final = 1.3992
-2010-04-20 13:21:29,688 DEBUG sale #855 c_zilber_discount calc values: {'memudad': 620000.0, 'scd.value': 300.0, 'latest_doh0price': 620000L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:29,702 DEBUG sale #850 c_zilber_base = 1.3992
-2010-04-20 13:21:29,715 DEBUG sale #850 final = 1.3992
-2010-04-20 13:21:29,720 WARNING skipping sale #850. no doh0 prices
-2010-04-20 13:21:29,733 DEBUG sale #856 c_zilber_base = 1.3992
-2010-04-20 13:21:29,747 DEBUG sale #856 final = 1.3992
-2010-04-20 13:21:29,766 DEBUG sale #856 c_zilber_discount calc values: {'memudad': 850000.0, 'scd.value': -2500.0, 'latest_doh0price': 850000L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:29,780 DEBUG sale #852 c_zilber_base = 1.3992
-2010-04-20 13:21:29,793 DEBUG sale #852 final = 1.3992
-2010-04-20 13:21:29,812 DEBUG sale #852 c_zilber_discount calc values: {'memudad': 1000000.0, 'scd.value': -1345.0, 'latest_doh0price': 1000000L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:29,826 DEBUG sale #851 c_zilber_base = 1.3992
-2010-04-20 13:21:29,841 DEBUG sale #851 final = 1.3992
-2010-04-20 13:21:29,860 DEBUG sale #851 c_zilber_discount calc values: {'memudad': 1000000.0, 'scd.value': -1345.0, 'latest_doh0price': 1000000L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:29,874 DEBUG sale #853 c_zilber_base = 1.3992
-2010-04-20 13:21:29,888 DEBUG sale #853 final = 1.3992
-2010-04-20 13:21:29,907 DEBUG sale #853 c_zilber_discount calc values: {'memudad': 850000.0, 'scd.value': -7700.0, 'latest_doh0price': 850000L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:29,922 DEBUG sale #857 c_zilber_base = 1.3992
-2010-04-20 13:21:29,936 DEBUG sale #857 final = 1.3992
-2010-04-20 13:21:29,955 DEBUG sale #857 c_zilber_discount calc values: {'memudad': 1020000.0, 'scd.value': 715.0, 'latest_doh0price': 1020000L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:29,969 DEBUG sale #854 c_zilber_base = 1.3992
-2010-04-20 13:21:29,982 DEBUG sale #854 final = 1.3992
-2010-04-20 13:21:30,001 DEBUG sale #854 c_zilber_discount calc values: {'memudad': 850000.0, 'scd.value': -7700.0, 'latest_doh0price': 850000L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:30,024 DEBUG sale #684 c_zilber_base = 1.3992
-2010-04-20 13:21:30,047 DEBUG sale #684 final = 1.3992
-2010-04-20 13:21:30,068 DEBUG sale #684 c_zilber_discount calc values: {'memudad': 901300.0, 'scd.value': 9870.0, 'latest_doh0price': 901300L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:30,090 DEBUG sale #605 c_zilber_base = 1.3992
-2010-04-20 13:21:30,113 DEBUG sale #605 final = 1.3992
-2010-04-20 13:21:30,141 DEBUG sale #605 c_zilber_discount calc values: {'memudad': 1031415.0, 'scd.value': 15808.5, 'latest_doh0price': 1031415L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:30,163 DEBUG sale #607 c_zilber_base = 1.3992
-2010-04-20 13:21:30,189 DEBUG sale #607 final = 1.3992
-2010-04-20 13:21:30,218 DEBUG sale #607 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': -7312.7000000000007, 'latest_doh0price': 1223127L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:30,241 DEBUG sale #606 c_zilber_base = 1.3992
-2010-04-20 13:21:30,263 DEBUG sale #606 final = 1.3992
-2010-04-20 13:21:30,292 DEBUG sale #606 c_zilber_discount calc values: {'memudad': 1072423.0, 'scd.value': 6130.2000000000007, 'latest_doh0price': 1072423L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:30,314 DEBUG sale #608 c_zilber_base = 1.3992
-2010-04-20 13:21:30,337 DEBUG sale #608 final = 1.3992
-2010-04-20 13:21:30,365 DEBUG sale #608 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': 17687.299999999999, 'latest_doh0price': 1223127L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:30,370 DEBUG last_demand_finish_date: 2010-04-20 13:21:27
-2010-04-20 13:21:30,688 INFO finished calculation for month 11/2009
-2010-04-20 13:21:35,926 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 2 sales.
-2010-04-20 13:21:36,930 INFO total cycle sales count: 15
-2010-04-20 13:21:36,938 DEBUG sale #900 price_final = 1006897
-2010-04-20 13:21:36,946 DEBUG sale #899 price_final = 1006897
-2010-04-20 13:21:36,954 DEBUG sale #855 price_final = 613793
-2010-04-20 13:21:36,961 DEBUG sale #850 price_final = 1170000
-2010-04-20 13:21:36,969 DEBUG sale #856 price_final = 812808
-2010-04-20 13:21:36,976 DEBUG sale #852 price_final = 971970
-2010-04-20 13:21:36,984 DEBUG sale #851 price_final = 971970
-2010-04-20 13:21:36,992 DEBUG sale #853 price_final = 761576
-2010-04-20 13:21:36,999 DEBUG sale #857 price_final = 1011970
-2010-04-20 13:21:37,007 DEBUG sale #854 price_final = 761576
-2010-04-20 13:21:37,014 DEBUG sale #684 price_final = 985222
-2010-04-20 13:21:37,027 DEBUG sale #605 price_final = 1171921
-2010-04-20 13:21:37,035 DEBUG sale #607 price_final = 1133005
-2010-04-20 13:21:37,044 DEBUG sale #606 price_final = 1116970
-2010-04-20 13:21:37,052 DEBUG sale #608 price_final = 1379310
-2010-04-20 13:21:37,068 DEBUG sale #900 c_zilber_base = 1.4324
-2010-04-20 13:21:37,084 DEBUG sale #900 final = 1.4324
-2010-04-20 13:21:37,105 DEBUG sale #900 c_zilber_discount calc values: {'memudad': 1015622.0, 'scd.value': 637.80000000000007, 'latest_doh0price': 1015622L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:37,121 DEBUG sale #899 c_zilber_base = 1.4324
-2010-04-20 13:21:37,136 DEBUG sale #899 final = 1.4324
-2010-04-20 13:21:37,155 DEBUG sale #899 c_zilber_discount calc values: {'memudad': 1015622.0, 'scd.value': 637.80000000000007, 'latest_doh0price': 1015622L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:37,178 DEBUG sale #855 c_zilber_base = 1.4324
-2010-04-20 13:21:37,206 DEBUG sale #855 final = 1.4324
-2010-04-20 13:21:37,235 DEBUG sale #855 c_zilber_discount calc values: {'memudad': 617338.0, 'scd.value': 566.20000000000005, 'latest_doh0price': 617338L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:37,261 DEBUG sale #850 c_zilber_base = 1.4324
-2010-04-20 13:21:37,284 DEBUG sale #850 final = 1.4324
-2010-04-20 13:21:37,305 DEBUG sale #850 c_zilber_discount calc values: {'memudad': 994250.0, 'scd.value': 19330.0, 'latest_doh0price': 994250L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:37,335 DEBUG sale #856 c_zilber_base = 1.4324
-2010-04-20 13:21:37,358 DEBUG sale #856 final = 1.4324
-2010-04-20 13:21:37,387 DEBUG sale #856 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -2135.0999999999999, 'latest_doh0price': 846351L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:37,410 DEBUG sale #852 c_zilber_base = 1.4324
-2010-04-20 13:21:37,433 DEBUG sale #852 final = 1.4324
-2010-04-20 13:21:37,463 DEBUG sale #852 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': -915.80000000000007, 'latest_doh0price': 995708L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:37,491 DEBUG sale #851 c_zilber_base = 1.4324
-2010-04-20 13:21:37,515 DEBUG sale #851 final = 1.4324
-2010-04-20 13:21:37,544 DEBUG sale #851 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': -915.80000000000007, 'latest_doh0price': 995708L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:37,567 DEBUG sale #853 c_zilber_base = 1.4324
-2010-04-20 13:21:37,589 DEBUG sale #853 final = 1.4324
-2010-04-20 13:21:37,618 DEBUG sale #853 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -7335.1000000000004, 'latest_doh0price': 846351L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:37,641 DEBUG sale #857 c_zilber_base = 1.4324
-2010-04-20 13:21:37,663 DEBUG sale #857 final = 1.4324
-2010-04-20 13:21:37,691 DEBUG sale #857 c_zilber_discount calc values: {'memudad': 1015622.0, 'scd.value': 1152.8, 'latest_doh0price': 1015622L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:37,714 DEBUG sale #854 c_zilber_base = 1.4324
-2010-04-20 13:21:37,737 DEBUG sale #854 final = 1.4324
-2010-04-20 13:21:37,765 DEBUG sale #854 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -7335.1000000000004, 'latest_doh0price': 846351L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:37,788 DEBUG sale #684 c_zilber_base = 1.4324
-2010-04-20 13:21:37,811 DEBUG sale #684 final = 1.4324
-2010-04-20 13:21:37,843 DEBUG sale #684 c_zilber_discount calc values: {'memudad': 901300.0, 'scd.value': 9870.0, 'latest_doh0price': 901300L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:37,869 DEBUG sale #605 c_zilber_base = 1.4324
-2010-04-20 13:21:37,894 DEBUG sale #605 final = 1.4324
-2010-04-20 13:21:37,922 DEBUG sale #605 c_zilber_discount calc values: {'memudad': 1031415.0, 'scd.value': 15808.5, 'latest_doh0price': 1031415L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:37,947 DEBUG sale #607 c_zilber_base = 1.4324
-2010-04-20 13:21:37,970 DEBUG sale #607 final = 1.4324
-2010-04-20 13:21:38,000 DEBUG sale #607 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': -7312.7000000000007, 'latest_doh0price': 1223127L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:38,023 DEBUG sale #606 c_zilber_base = 1.4324
-2010-04-20 13:21:38,046 DEBUG sale #606 final = 1.4324
-2010-04-20 13:21:38,075 DEBUG sale #606 c_zilber_discount calc values: {'memudad': 1072423.0, 'scd.value': 6130.2000000000007, 'latest_doh0price': 1072423L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:38,097 DEBUG sale #608 c_zilber_base = 1.4324
-2010-04-20 13:21:38,119 DEBUG sale #608 final = 1.4324
-2010-04-20 13:21:38,146 DEBUG sale #608 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': 17687.299999999999, 'latest_doh0price': 1223127L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:38,151 DEBUG last_demand_finish_date: 2010-04-20 13:21:30
-2010-04-20 13:21:38,829 DEBUG demand #297 created bonus=43213.9
-2010-04-20 13:21:38,829 INFO finished calculation for month 12/2009
-2010-04-20 13:21:39,873 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 4 sales.
-2010-04-20 13:21:39,932 INFO total cycle sales count: 4
-2010-04-20 13:21:39,939 DEBUG sale #988 price_final = 845970
-2010-04-20 13:21:39,953 DEBUG sale #989 price_final = 1024631
-2010-04-20 13:21:39,961 DEBUG sale #990 price_final = 1085714
-2010-04-20 13:21:39,986 DEBUG sale #1036 price_final = 896974
-2010-04-20 13:21:40,028 DEBUG sale #988 c_zilber_base = 1.2498
-2010-04-20 13:21:40,042 DEBUG sale #988 final = 1.2498
-2010-04-20 13:21:40,061 DEBUG sale #988 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 1230.9000000000001, 'latest_doh0price': 846351L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:40,075 DEBUG sale #989 c_zilber_base = 1.2498
-2010-04-20 13:21:40,088 DEBUG sale #989 final = 1.2498
-2010-04-20 13:21:40,108 DEBUG sale #989 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': 4429.1999999999998, 'latest_doh0price': 995708L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:40,121 DEBUG sale #990 c_zilber_base = 1.2498
-2010-04-20 13:21:40,135 DEBUG sale #990 final = 1.2498
-2010-04-20 13:21:40,160 DEBUG sale #990 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 672.20000000000005, 'latest_doh0price': 1095278L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:40,174 DEBUG sale #1036 c_zilber_base = 1.2498
-2010-04-20 13:21:40,188 DEBUG sale #1036 final = 1.2498
-2010-04-20 13:21:40,207 DEBUG sale #1036 c_zilber_discount calc values: {'memudad': 717078.0, 'scd.value': 19335.100000000002, 'latest_doh0price': 717078L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:40,212 DEBUG last_demand_finish_date: 2010-04-20 13:21:38
-2010-04-20 13:21:40,297 INFO finished calculation for month 1/2010
-2010-04-20 13:21:41,355 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 3 sales.
-2010-04-20 13:21:41,451 INFO total cycle sales count: 7
-2010-04-20 13:21:41,458 DEBUG sale #1106 price_final = 859113
-2010-04-20 13:21:41,467 DEBUG sale #1108 price_final = 640394
-2010-04-20 13:21:41,475 DEBUG sale #1107 price_final = 1236453
-2010-04-20 13:21:41,483 DEBUG sale #988 price_final = 845970
-2010-04-20 13:21:41,491 DEBUG sale #989 price_final = 1024631
-2010-04-20 13:21:41,499 DEBUG sale #990 price_final = 1085714
-2010-04-20 13:21:41,507 DEBUG sale #1036 price_final = 896974
-2010-04-20 13:21:41,521 DEBUG sale #1106 c_zilber_base = 1.2996
-2010-04-20 13:21:41,536 DEBUG sale #1106 final = 1.2996
-2010-04-20 13:21:41,556 DEBUG sale #1106 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 2564.9000000000001, 'latest_doh0price': 846351L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:41,570 DEBUG sale #1108 c_zilber_base = 1.2996
-2010-04-20 13:21:41,584 DEBUG sale #1108 final = 1.2996
-2010-04-20 13:21:41,604 DEBUG sale #1108 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -19635.100000000002, 'latest_doh0price': 846351L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:41,618 DEBUG sale #1107 c_zilber_base = 1.2996
-2010-04-20 13:21:41,632 DEBUG sale #1107 final = 1.2996
-2010-04-20 13:21:41,652 DEBUG sale #1107 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 15972.200000000001, 'latest_doh0price': 1095278L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:41,675 DEBUG sale #988 c_zilber_base = 1.2996
-2010-04-20 13:21:41,698 DEBUG sale #988 final = 1.2996
-2010-04-20 13:21:41,726 DEBUG sale #988 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 1230.9000000000001, 'latest_doh0price': 846351L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:41,749 DEBUG sale #989 c_zilber_base = 1.2996
-2010-04-20 13:21:41,772 DEBUG sale #989 final = 1.2996
-2010-04-20 13:21:41,801 DEBUG sale #989 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': 4429.1999999999998, 'latest_doh0price': 995708L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:41,824 DEBUG sale #990 c_zilber_base = 1.2996
-2010-04-20 13:21:41,847 DEBUG sale #990 final = 1.2996
-2010-04-20 13:21:41,875 DEBUG sale #990 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 672.20000000000005, 'latest_doh0price': 1095278L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:41,899 DEBUG sale #1036 c_zilber_base = 1.2996
-2010-04-20 13:21:41,922 DEBUG sale #1036 final = 1.2996
-2010-04-20 13:21:41,951 DEBUG sale #1036 c_zilber_discount calc values: {'memudad': 717078.0, 'scd.value': 19335.100000000002, 'latest_doh0price': 717078L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:41,956 DEBUG last_demand_finish_date: 2010-04-20 13:21:40
-2010-04-20 13:21:42,122 INFO finished calculation for month 2/2010
-2010-04-20 13:21:43,172 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 5 sales.
-2010-04-20 13:21:43,307 INFO total cycle sales count: 12
-2010-04-20 13:21:43,315 DEBUG sale #1175 price_final = 1331970
-2010-04-20 13:21:43,323 DEBUG sale #1174 price_final = 1386970
-2010-04-20 13:21:43,331 DEBUG sale #1177 price_final = 661375
-2010-04-20 13:21:43,338 DEBUG sale #1176 price_final = 636970
-2010-04-20 13:21:43,347 DEBUG sale #1178 price_final = 837438
-2010-04-20 13:21:43,355 DEBUG sale #1106 price_final = 859113
-2010-04-20 13:21:43,363 DEBUG sale #1108 price_final = 640394
-2010-04-20 13:21:43,371 DEBUG sale #1107 price_final = 1236453
-2010-04-20 13:21:43,378 DEBUG sale #988 price_final = 845970
-2010-04-20 13:21:43,386 DEBUG sale #989 price_final = 1024631
-2010-04-20 13:21:43,394 DEBUG sale #990 price_final = 1085714
-2010-04-20 13:21:43,402 DEBUG sale #1036 price_final = 896974
-2010-04-20 13:21:43,416 DEBUG sale #1175 c_zilber_base = 1.3826
-2010-04-20 13:21:43,430 DEBUG sale #1175 final = 1.3826
-2010-04-20 13:21:43,450 DEBUG sale #1175 c_zilber_discount calc values: {'memudad': 1194849.0, 'scd.value': 15710.1, 'latest_doh0price': 1194849L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:43,464 DEBUG sale #1174 c_zilber_base = 1.3826
-2010-04-20 13:21:43,478 DEBUG sale #1174 final = 1.3826
-2010-04-20 13:21:43,499 DEBUG sale #1174 c_zilber_discount calc values: {'memudad': 1194849.0, 'scd.value': 21292.600000000002, 'latest_doh0price': 1194849L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:43,513 DEBUG sale #1177 c_zilber_base = 1.3826
-2010-04-20 13:21:43,527 DEBUG sale #1177 final = 1.3826
-2010-04-20 13:21:43,547 DEBUG sale #1177 c_zilber_discount calc values: {'memudad': 617338.0, 'scd.value': 5395.8000000000002, 'latest_doh0price': 617338L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:43,561 DEBUG sale #1176 c_zilber_base = 1.3826
-2010-04-20 13:21:43,575 DEBUG sale #1176 final = 1.3826
-2010-04-20 13:21:43,596 DEBUG sale #1176 c_zilber_discount calc values: {'memudad': 617338.0, 'scd.value': 2918.7000000000003, 'latest_doh0price': 617338L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:43,610 DEBUG sale #1178 c_zilber_base = 1.3826
-2010-04-20 13:21:43,625 DEBUG sale #1178 final = 1.3826
-2010-04-20 13:21:43,629 WARNING skipping sale #1178. no doh0 prices
-2010-04-20 13:21:43,653 DEBUG sale #1106 c_zilber_base = 1.3826
-2010-04-20 13:21:43,677 DEBUG sale #1106 final = 1.3826
-2010-04-20 13:21:43,706 DEBUG sale #1106 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 2564.9000000000001, 'latest_doh0price': 846351L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:43,729 DEBUG sale #1108 c_zilber_base = 1.3826
-2010-04-20 13:21:43,753 DEBUG sale #1108 final = 1.3826
-2010-04-20 13:21:43,782 DEBUG sale #1108 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -19635.100000000002, 'latest_doh0price': 846351L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:43,806 DEBUG sale #1107 c_zilber_base = 1.3826
-2010-04-20 13:21:43,829 DEBUG sale #1107 final = 1.3826
-2010-04-20 13:21:43,858 DEBUG sale #1107 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 15972.200000000001, 'latest_doh0price': 1095278L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:43,882 DEBUG sale #988 c_zilber_base = 1.3826
-2010-04-20 13:21:43,906 DEBUG sale #988 final = 1.3826
-2010-04-20 13:21:43,935 DEBUG sale #988 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 1230.9000000000001, 'latest_doh0price': 846351L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:43,959 DEBUG sale #989 c_zilber_base = 1.3826
-2010-04-20 13:21:43,982 DEBUG sale #989 final = 1.3826
-2010-04-20 13:21:44,011 DEBUG sale #989 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': 4429.1999999999998, 'latest_doh0price': 995708L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:44,038 DEBUG sale #990 c_zilber_base = 1.3826
-2010-04-20 13:21:44,062 DEBUG sale #990 final = 1.3826
-2010-04-20 13:21:44,093 DEBUG sale #990 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 672.20000000000005, 'latest_doh0price': 1095278L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:44,117 DEBUG sale #1036 c_zilber_base = 1.3826
-2010-04-20 13:21:44,141 DEBUG sale #1036 final = 1.3826
-2010-04-20 13:21:44,172 DEBUG sale #1036 c_zilber_discount calc values: {'memudad': 717078.0, 'scd.value': 19335.100000000002, 'latest_doh0price': 717078L, 'current_madad': 126.90000000000001}
-2010-04-20 13:21:44,177 DEBUG last_demand_finish_date: 2010-04-20 13:21:42
-2010-04-20 13:21:44,453 INFO finished calculation for month 3/2010
-2010-04-20 13:21:45,523 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
-2010-04-20 13:21:45,545 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
-2010-04-20 13:21:46,577 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
-2010-04-20 13:21:46,600 INFO starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
+2010-04-20 13:40:58,991 DEBUG -1225283824 models sale #607 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': -7312.7000000000007, 'latest_doh0price': 1223127L}
+2010-04-20 13:40:59,014 DEBUG -1225283824 models sale #606 c_zilber_base = 1.3992
+2010-04-20 13:40:59,036 DEBUG -1225283824 models sale #606 final = 1.3992
+2010-04-20 13:40:59,063 DEBUG -1225283824 models sale #606 c_zilber_discount calc values: {'memudad': 1072423.0, 'scd.value': 6130.2000000000007, 'latest_doh0price': 1072423L}
+2010-04-20 13:40:59,086 DEBUG -1225283824 models sale #608 c_zilber_base = 1.3992
+2010-04-20 13:40:59,109 DEBUG -1225283824 models sale #608 final = 1.3992
+2010-04-20 13:40:59,134 DEBUG -1225283824 models sale #608 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': 17687.299999999999, 'latest_doh0price': 1223127L}
+2010-04-20 13:40:59,139 DEBUG -1225283824 models last_demand_finish_date: 2010-04-20 13:40:57
+2010-04-20 13:40:59,744 INFO -1225283824 models finished calculation for month 11/2009
+2010-04-20 13:41:00,839 INFO -1225283824 models starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 2 sales.
+2010-04-20 13:41:01,011 INFO -1225283824 models total cycle sales count: 15
+2010-04-20 13:41:01,019 DEBUG -1225283824 models sale #900 price_final = 1006897
+2010-04-20 13:41:01,026 DEBUG -1225283824 models sale #899 price_final = 1006897
+2010-04-20 13:41:01,034 DEBUG -1225283824 models sale #855 price_final = 613793
+2010-04-20 13:41:01,041 DEBUG -1225283824 models sale #850 price_final = 1170000
+2010-04-20 13:41:01,049 DEBUG -1225283824 models sale #856 price_final = 812808
+2010-04-20 13:41:01,057 DEBUG -1225283824 models sale #852 price_final = 971970
+2010-04-20 13:41:01,064 DEBUG -1225283824 models sale #851 price_final = 971970
+2010-04-20 13:41:01,072 DEBUG -1225283824 models sale #853 price_final = 761576
+2010-04-20 13:41:01,079 DEBUG -1225283824 models sale #857 price_final = 1011970
+2010-04-20 13:41:01,087 DEBUG -1225283824 models sale #854 price_final = 761576
+2010-04-20 13:41:01,094 DEBUG -1225283824 models sale #684 price_final = 985222
+2010-04-20 13:41:01,102 DEBUG -1225283824 models sale #605 price_final = 1171921
+2010-04-20 13:41:01,110 DEBUG -1225283824 models sale #607 price_final = 1133005
+2010-04-20 13:41:01,117 DEBUG -1225283824 models sale #606 price_final = 1116970
+2010-04-20 13:41:01,125 DEBUG -1225283824 models sale #608 price_final = 1379310
+2010-04-20 13:41:01,127 DEBUG -1225283824 models prices_date = 2010-01-01, current_madad=126.9
+2010-04-20 13:41:01,141 DEBUG -1225283824 models sale #900 c_zilber_base = 1.4324
+2010-04-20 13:41:01,155 DEBUG -1225283824 models sale #900 final = 1.4324
+2010-04-20 13:41:01,172 DEBUG -1225283824 models sale #900 c_zilber_discount calc values: {'memudad': 1015622.0, 'scd.value': 637.80000000000007, 'latest_doh0price': 1015622L}
+2010-04-20 13:41:01,185 DEBUG -1225283824 models sale #899 c_zilber_base = 1.4324
+2010-04-20 13:41:01,199 DEBUG -1225283824 models sale #899 final = 1.4324
+2010-04-20 13:41:01,386 DEBUG -1225283824 models sale #899 c_zilber_discount calc values: {'memudad': 1015622.0, 'scd.value': 637.80000000000007, 'latest_doh0price': 1015622L}
+2010-04-20 13:41:01,440 DEBUG -1225283824 models sale #855 c_zilber_base = 1.4324
+2010-04-20 13:41:01,463 DEBUG -1225283824 models sale #855 final = 1.4324
+2010-04-20 13:41:01,489 DEBUG -1225283824 models sale #855 c_zilber_discount calc values: {'memudad': 617338.0, 'scd.value': 566.20000000000005, 'latest_doh0price': 617338L}
+2010-04-20 13:41:01,512 DEBUG -1225283824 models sale #850 c_zilber_base = 1.4324
+2010-04-20 13:41:01,534 DEBUG -1225283824 models sale #850 final = 1.4324
+2010-04-20 13:41:01,553 DEBUG -1225283824 models sale #850 c_zilber_discount calc values: {'memudad': 994250.0, 'scd.value': 19330.0, 'latest_doh0price': 994250L}
+2010-04-20 13:41:01,576 DEBUG -1225283824 models sale #856 c_zilber_base = 1.4324
+2010-04-20 13:41:01,598 DEBUG -1225283824 models sale #856 final = 1.4324
+2010-04-20 13:41:01,624 DEBUG -1225283824 models sale #856 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -2135.0999999999999, 'latest_doh0price': 846351L}
+2010-04-20 13:41:01,647 DEBUG -1225283824 models sale #852 c_zilber_base = 1.4324
+2010-04-20 13:41:01,669 DEBUG -1225283824 models sale #852 final = 1.4324
+2010-04-20 13:41:01,695 DEBUG -1225283824 models sale #852 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': -915.80000000000007, 'latest_doh0price': 995708L}
+2010-04-20 13:41:01,718 DEBUG -1225283824 models sale #851 c_zilber_base = 1.4324
+2010-04-20 13:41:01,741 DEBUG -1225283824 models sale #851 final = 1.4324
+2010-04-20 13:41:01,767 DEBUG -1225283824 models sale #851 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': -915.80000000000007, 'latest_doh0price': 995708L}
+2010-04-20 13:41:01,789 DEBUG -1225283824 models sale #853 c_zilber_base = 1.4324
+2010-04-20 13:41:01,812 DEBUG -1225283824 models sale #853 final = 1.4324
+2010-04-20 13:41:01,839 DEBUG -1225283824 models sale #853 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -7335.1000000000004, 'latest_doh0price': 846351L}
+2010-04-20 13:41:01,861 DEBUG -1225283824 models sale #857 c_zilber_base = 1.4324
+2010-04-20 13:41:01,884 DEBUG -1225283824 models sale #857 final = 1.4324
+2010-04-20 13:41:01,910 DEBUG -1225283824 models sale #857 c_zilber_discount calc values: {'memudad': 1015622.0, 'scd.value': 1152.8, 'latest_doh0price': 1015622L}
+2010-04-20 13:41:01,934 DEBUG -1225283824 models sale #854 c_zilber_base = 1.4324
+2010-04-20 13:41:01,956 DEBUG -1225283824 models sale #854 final = 1.4324
+2010-04-20 13:41:01,982 DEBUG -1225283824 models sale #854 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -7335.1000000000004, 'latest_doh0price': 846351L}
+2010-04-20 13:41:02,005 DEBUG -1225283824 models sale #684 c_zilber_base = 1.4324
+2010-04-20 13:41:02,028 DEBUG -1225283824 models sale #684 final = 1.4324
+2010-04-20 13:41:02,053 DEBUG -1225283824 models sale #684 c_zilber_discount calc values: {'memudad': 901300.0, 'scd.value': 9870.0, 'latest_doh0price': 901300L}
+2010-04-20 13:41:02,075 DEBUG -1225283824 models sale #605 c_zilber_base = 1.4324
+2010-04-20 13:41:02,099 DEBUG -1225283824 models sale #605 final = 1.4324
+2010-04-20 13:41:02,124 DEBUG -1225283824 models sale #605 c_zilber_discount calc values: {'memudad': 1031415.0, 'scd.value': 15808.5, 'latest_doh0price': 1031415L}
+2010-04-20 13:41:02,146 DEBUG -1225283824 models sale #607 c_zilber_base = 1.4324
+2010-04-20 13:41:02,169 DEBUG -1225283824 models sale #607 final = 1.4324
+2010-04-20 13:41:02,195 DEBUG -1225283824 models sale #607 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': -7312.7000000000007, 'latest_doh0price': 1223127L}
+2010-04-20 13:41:02,217 DEBUG -1225283824 models sale #606 c_zilber_base = 1.4324
+2010-04-20 13:41:02,240 DEBUG -1225283824 models sale #606 final = 1.4324
+2010-04-20 13:41:02,266 DEBUG -1225283824 models sale #606 c_zilber_discount calc values: {'memudad': 1072423.0, 'scd.value': 6130.2000000000007, 'latest_doh0price': 1072423L}
+2010-04-20 13:41:02,288 DEBUG -1225283824 models sale #608 c_zilber_base = 1.4324
+2010-04-20 13:41:02,310 DEBUG -1225283824 models sale #608 final = 1.4324
+2010-04-20 13:41:02,336 DEBUG -1225283824 models sale #608 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': 17687.299999999999, 'latest_doh0price': 1223127L}
+2010-04-20 13:41:02,341 DEBUG -1225283824 models last_demand_finish_date: 2010-04-20 13:40:59
+2010-04-20 13:41:03,033 DEBUG -1225283824 models demand #297 created bonus=43213.9
+2010-04-20 13:41:03,034 INFO -1225283824 models finished calculation for month 12/2009
+2010-04-20 13:41:04,096 INFO -1225283824 models starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 4 sales.
+2010-04-20 13:41:06,134 INFO -1225283824 models total cycle sales count: 4
+2010-04-20 13:41:06,303 DEBUG -1225283824 models sale #988 price_final = 845970
+2010-04-20 13:41:06,588 DEBUG -1225283824 models sale #989 price_final = 1024631
+2010-04-20 13:41:06,840 DEBUG -1225283824 models sale #990 price_final = 1085714
+2010-04-20 13:41:07,051 DEBUG -1225283824 models sale #1036 price_final = 896974
+2010-04-20 13:41:07,074 DEBUG -1225283824 models prices_date = 2010-02-01, current_madad=126.9
+2010-04-20 13:41:07,400 DEBUG -1225283824 models sale #988 c_zilber_base = 1.2498
+2010-04-20 13:41:10,013 DEBUG -1225283824 models sale #988 final = 1.2498
+2010-04-20 13:41:10,285 DEBUG -1225283824 models sale #988 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 1230.9000000000001, 'latest_doh0price': 846351L}
+2010-04-20 13:41:10,527 DEBUG -1225283824 models sale #989 c_zilber_base = 1.2498
+2010-04-20 13:41:10,710 DEBUG -1225283824 models sale #989 final = 1.2498
+2010-04-20 13:41:10,916 DEBUG -1225283824 models sale #989 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': 4429.1999999999998, 'latest_doh0price': 995708L}
+2010-04-20 13:41:11,116 DEBUG -1225283824 models sale #990 c_zilber_base = 1.2498
+2010-04-20 13:41:11,457 DEBUG -1225283824 models sale #990 final = 1.2498
+2010-04-20 13:41:11,833 DEBUG -1225283824 models sale #990 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 672.20000000000005, 'latest_doh0price': 1095278L}
+2010-04-20 13:41:12,004 DEBUG -1225283824 models sale #1036 c_zilber_base = 1.2498
+2010-04-20 13:41:12,200 DEBUG -1225283824 models sale #1036 final = 1.2498
+2010-04-20 13:41:12,494 DEBUG -1225283824 models sale #1036 c_zilber_discount calc values: {'memudad': 717078.0, 'scd.value': 19335.100000000002, 'latest_doh0price': 717078L}
+2010-04-20 13:41:12,595 DEBUG -1225283824 models last_demand_finish_date: 2010-04-20 13:41:03
+2010-04-20 13:41:15,162 INFO -1225283824 models finished calculation for month 1/2010
+2010-04-20 13:41:17,922 INFO -1225283824 models starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 3 sales.
+2010-04-20 13:41:18,033 INFO -1225283824 models total cycle sales count: 7
+2010-04-20 13:41:18,041 DEBUG -1225283824 models sale #1106 price_final = 859113
+2010-04-20 13:41:18,049 DEBUG -1225283824 models sale #1108 price_final = 640394
+2010-04-20 13:41:18,057 DEBUG -1225283824 models sale #1107 price_final = 1236453
+2010-04-20 13:41:18,065 DEBUG -1225283824 models sale #988 price_final = 845970
+2010-04-20 13:41:18,073 DEBUG -1225283824 models sale #989 price_final = 1024631
+2010-04-20 13:41:18,081 DEBUG -1225283824 models sale #990 price_final = 1085714
+2010-04-20 13:41:18,089 DEBUG -1225283824 models sale #1036 price_final = 896974
+2010-04-20 13:41:18,091 DEBUG -1225283824 models prices_date = 2010-03-01, current_madad=126.9
+2010-04-20 13:41:18,106 DEBUG -1225283824 models sale #1106 c_zilber_base = 1.2996
+2010-04-20 13:41:18,120 DEBUG -1225283824 models sale #1106 final = 1.2996
+2010-04-20 13:41:18,138 DEBUG -1225283824 models sale #1106 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 2564.9000000000001, 'latest_doh0price': 846351L}
+2010-04-20 13:41:18,152 DEBUG -1225283824 models sale #1108 c_zilber_base = 1.2996
+2010-04-20 13:41:18,166 DEBUG -1225283824 models sale #1108 final = 1.2996
+2010-04-20 13:41:18,184 DEBUG -1225283824 models sale #1108 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -19635.100000000002, 'latest_doh0price': 846351L}
+2010-04-20 13:41:18,198 DEBUG -1225283824 models sale #1107 c_zilber_base = 1.2996
+2010-04-20 13:41:18,215 DEBUG -1225283824 models sale #1107 final = 1.2996
+2010-04-20 13:41:18,233 DEBUG -1225283824 models sale #1107 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 15972.200000000001, 'latest_doh0price': 1095278L}
+2010-04-20 13:41:18,259 DEBUG -1225283824 models sale #988 c_zilber_base = 1.2996
+2010-04-20 13:41:18,283 DEBUG -1225283824 models sale #988 final = 1.2996
+2010-04-20 13:41:18,311 DEBUG -1225283824 models sale #988 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 1230.9000000000001, 'latest_doh0price': 846351L}
+2010-04-20 13:41:18,335 DEBUG -1225283824 models sale #989 c_zilber_base = 1.2996
+2010-04-20 13:41:18,358 DEBUG -1225283824 models sale #989 final = 1.2996
+2010-04-20 13:41:18,385 DEBUG -1225283824 models sale #989 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': 4429.1999999999998, 'latest_doh0price': 995708L}
+2010-04-20 13:41:18,409 DEBUG -1225283824 models sale #990 c_zilber_base = 1.2996
+2010-04-20 13:41:18,432 DEBUG -1225283824 models sale #990 final = 1.2996
+2010-04-20 13:41:18,458 DEBUG -1225283824 models sale #990 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 672.20000000000005, 'latest_doh0price': 1095278L}
+2010-04-20 13:41:18,482 DEBUG -1225283824 models sale #1036 c_zilber_base = 1.2996
+2010-04-20 13:41:18,505 DEBUG -1225283824 models sale #1036 final = 1.2996
+2010-04-20 13:41:18,532 DEBUG -1225283824 models sale #1036 c_zilber_discount calc values: {'memudad': 717078.0, 'scd.value': 19335.100000000002, 'latest_doh0price': 717078L}
+2010-04-20 13:41:18,537 DEBUG -1225283824 models last_demand_finish_date: 2010-04-20 13:41:16
+2010-04-20 13:41:18,912 INFO -1225283824 models finished calculation for month 2/2010
+2010-04-20 13:41:19,964 INFO -1225283824 models starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 5 sales.
+2010-04-20 13:41:20,104 INFO -1225283824 models total cycle sales count: 12
+2010-04-20 13:41:20,112 DEBUG -1225283824 models sale #1175 price_final = 1331970
+2010-04-20 13:41:20,121 DEBUG -1225283824 models sale #1174 price_final = 1386970
+2010-04-20 13:41:20,129 DEBUG -1225283824 models sale #1177 price_final = 661375
+2010-04-20 13:41:20,137 DEBUG -1225283824 models sale #1176 price_final = 636970
+2010-04-20 13:41:20,144 DEBUG -1225283824 models sale #1178 price_final = 837438
+2010-04-20 13:41:20,153 DEBUG -1225283824 models sale #1106 price_final = 859113
+2010-04-20 13:41:20,160 DEBUG -1225283824 models sale #1108 price_final = 640394
+2010-04-20 13:41:20,168 DEBUG -1225283824 models sale #1107 price_final = 1236453
+2010-04-20 13:41:20,176 DEBUG -1225283824 models sale #988 price_final = 845970
+2010-04-20 13:41:20,184 DEBUG -1225283824 models sale #989 price_final = 1024631
+2010-04-20 13:41:20,192 DEBUG -1225283824 models sale #990 price_final = 1085714
+2010-04-20 13:41:20,200 DEBUG -1225283824 models sale #1036 price_final = 896974
+2010-04-20 13:41:20,206 DEBUG -1225283824 models prices_date = 2010-04-01, current_madad=126.9
+2010-04-20 13:41:20,221 DEBUG -1225283824 models sale #1175 c_zilber_base = 1.3826
+2010-04-20 13:41:20,236 DEBUG -1225283824 models sale #1175 final = 1.3826
+2010-04-20 13:41:20,257 DEBUG -1225283824 models sale #1175 c_zilber_discount calc values: {'memudad': 1194849.0, 'scd.value': 15710.1, 'latest_doh0price': 1194849L}
+2010-04-20 13:41:20,271 DEBUG -1225283824 models sale #1174 c_zilber_base = 1.3826
+2010-04-20 13:41:20,285 DEBUG -1225283824 models sale #1174 final = 1.3826
+2010-04-20 13:41:20,303 DEBUG -1225283824 models sale #1174 c_zilber_discount calc values: {'memudad': 1194849.0, 'scd.value': 21292.600000000002, 'latest_doh0price': 1194849L}
+2010-04-20 13:41:20,317 DEBUG -1225283824 models sale #1177 c_zilber_base = 1.3826
+2010-04-20 13:41:20,331 DEBUG -1225283824 models sale #1177 final = 1.3826
+2010-04-20 13:41:20,351 DEBUG -1225283824 models sale #1177 c_zilber_discount calc values: {'memudad': 617338.0, 'scd.value': 5395.8000000000002, 'latest_doh0price': 617338L}
+2010-04-20 13:41:20,368 DEBUG -1225283824 models sale #1176 c_zilber_base = 1.3826
+2010-04-20 13:41:20,383 DEBUG -1225283824 models sale #1176 final = 1.3826
+2010-04-20 13:41:20,402 DEBUG -1225283824 models sale #1176 c_zilber_discount calc values: {'memudad': 617338.0, 'scd.value': 2918.7000000000003, 'latest_doh0price': 617338L}
+2010-04-20 13:41:20,417 DEBUG -1225283824 models sale #1178 c_zilber_base = 1.3826
+2010-04-20 13:41:20,432 DEBUG -1225283824 models sale #1178 final = 1.3826
+2010-04-20 13:41:20,434 WARNING -1225283824 models skipping c_zilber_discount calc for sale #1178. no doh0 prices
+2010-04-20 13:41:20,463 DEBUG -1225283824 models sale #1106 c_zilber_base = 1.3826
+2010-04-20 13:41:20,489 DEBUG -1225283824 models sale #1106 final = 1.3826
+2010-04-20 13:41:20,518 DEBUG -1225283824 models sale #1106 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 2564.9000000000001, 'latest_doh0price': 846351L}
+2010-04-20 13:41:20,542 DEBUG -1225283824 models sale #1108 c_zilber_base = 1.3826
+2010-04-20 13:41:20,568 DEBUG -1225283824 models sale #1108 final = 1.3826
+2010-04-20 13:41:20,596 DEBUG -1225283824 models sale #1108 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -19635.100000000002, 'latest_doh0price': 846351L}
+2010-04-20 13:41:20,621 DEBUG -1225283824 models sale #1107 c_zilber_base = 1.3826
+2010-04-20 13:41:20,646 DEBUG -1225283824 models sale #1107 final = 1.3826
+2010-04-20 13:41:20,675 DEBUG -1225283824 models sale #1107 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 15972.200000000001, 'latest_doh0price': 1095278L}
+2010-04-20 13:41:20,701 DEBUG -1225283824 models sale #988 c_zilber_base = 1.3826
+2010-04-20 13:41:20,726 DEBUG -1225283824 models sale #988 final = 1.3826
+2010-04-20 13:41:20,753 DEBUG -1225283824 models sale #988 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 1230.9000000000001, 'latest_doh0price': 846351L}
+2010-04-20 13:41:20,778 DEBUG -1225283824 models sale #989 c_zilber_base = 1.3826
+2010-04-20 13:41:20,803 DEBUG -1225283824 models sale #989 final = 1.3826
+2010-04-20 13:41:20,832 DEBUG -1225283824 models sale #989 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': 4429.1999999999998, 'latest_doh0price': 995708L}
+2010-04-20 13:41:20,857 DEBUG -1225283824 models sale #990 c_zilber_base = 1.3826
+2010-04-20 13:41:20,883 DEBUG -1225283824 models sale #990 final = 1.3826
+2010-04-20 13:41:20,910 DEBUG -1225283824 models sale #990 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 672.20000000000005, 'latest_doh0price': 1095278L}
+2010-04-20 13:41:20,935 DEBUG -1225283824 models sale #1036 c_zilber_base = 1.3826
+2010-04-20 13:41:20,962 DEBUG -1225283824 models sale #1036 final = 1.3826
+2010-04-20 13:41:20,991 DEBUG -1225283824 models sale #1036 c_zilber_discount calc values: {'memudad': 717078.0, 'scd.value': 19335.100000000002, 'latest_doh0price': 717078L}
+2010-04-20 13:41:20,996 DEBUG -1225283824 models last_demand_finish_date: 2010-04-20 13:41:18
+2010-04-20 13:41:21,348 INFO -1225283824 models finished calculation for month 3/2010
+2010-04-20 13:41:22,607 INFO -1225283824 models starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
+2010-04-20 13:41:22,628 INFO -1225283824 models starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
+2010-04-20 13:41:23,662 INFO -1225283824 models starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
+2010-04-20 13:41:23,686 INFO -1225283824 models starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
