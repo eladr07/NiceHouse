@@ -5,7 +5,6 @@ from decimal import InvalidOperation
 from django.core import serializers
 from django.db import models
 from django.db.models import Avg, Max, Min, Count, Sum
-from django.db.models.signals import pre_save
 from django.db.backends.dummy.base import IntegrityError
 from django.utils.translation import ugettext
 from django.contrib.auth.models import User
@@ -2918,22 +2917,6 @@ class VersionDate(models.Model):
     class Meta:
         db_table = 'VersionDate'
 
-class ChangeLog(models.Model):
-    date = models.DateTimeField(auto_now_add=True)
-    object_type = models.CharField(max_length = 30)
-    object_id = models.IntegerField()
-    attribute = models.CharField(max_length = 30)
-    verbose_name = models.CharField(max_length = 30)
-    old_value = models.CharField(max_length = 30, null=True)
-    new_value = models.CharField(max_length = 30, null=True)
-    
-    objects = ChangeLogManager()
-    
-    class Meta:
-        db_table = 'ChangeLog'
-        ordering = ['-date']
-        get_latest_by = 'date'
-
 #register models with reversion
 
 tracked_models = (BDiscountSave, BDiscountSavePrecentage, BHouseType, BSaleRate,
@@ -2950,53 +2933,3 @@ def restore_object(instance, date):
         return version.object_version.object
     except reversion.models.Version.DoesNotExist:
         return instance
-
-#def restore_object(instance, date):
-#    '''
-#    restores an object to is state at the given date, using ChangeLog records. if the object has foreign key fields, it also restores them to that date.
-#    it does NOT restore many-to-many fields.
-#    it also sets 'restore-date' attribute on instance to mark it as a restored object
-#    '''
-#    model = instance.__class__
-#    id = getattr(instance, 'id', None)
-#    if not model in tracked_models or not id:
-#        raise TypeError
-#    for l in ChangeLog.objects.filter(object_type = model.__name__,
-#                                      object_id = id,
-#                                      date__gt = date):
-#        try:
-#            if isinstance(getattr(instance, l.attribute), float):
-#                val = float(l.old_value)
-#            elif isinstance(getattr(instance, l.attribute), int):
-#                val = int(l.old_value)
-#            else:
-#                val = l.attribute
-#            setattr(instance, l.attribute, val)
-#        except:
-#            pass
-#    for field in model._meta.fields:
-#        attr = getattr(instance, field.name)
-#        if type(attr) in tracked_models:
-#            old_attr = restore_object(attr, date)
-#            setattr(instance, field.name, old_attr)
-#    return instance
-#
-#def track_changes(sender, **kwargs):
-#    instance = kwargs['instance']
-#    model = instance.__class__
-#    id = getattr(instance, 'id', None)
-#    if not model in tracked_models or not id:
-#        return
-#    old_obj = model.objects.get(pk=id)
-#    for field in model._meta.fields:
-#        if getattr(old_obj, field.name) == getattr(instance, field.name):
-#            continue
-#        cl = ChangeLog(object_type = model.__name__,
-#                       object_id = id,
-#                       attribute = field.name,
-#                       verbose_name = field.verbose_name,
-#                       old_value = getattr(old_obj, field.name),
-#                       new_value = getattr(instance, field.name))
-#        cl.save()
-#
-#pre_save.connect(track_changes)

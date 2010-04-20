@@ -89,10 +89,6 @@ class MediaReferralsManager(models.Manager):
     def get_query_set(self):
         return MediaReferralsQuerySet(self.model)
 
-class ChangeLogManager(models.Manager):
-    def object_changelog(obj):
-        return self.filter(object_type = obj.__class__.name, object_id = obj.id)
-
 class DivisionTypeManager(models.Manager):
     def nh_divisions(self):
         q = models.Q(pk = DivisionType.NHShoham) | models.Q(pk = DivisionType.NHModiin) | models.Q(pk = DivisionType.NHNesZiona)
