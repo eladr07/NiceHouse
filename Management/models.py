@@ -1401,8 +1401,8 @@ class CZilber(models.Model):
         '''
         try:
             logger = logging.getLogger('commission.czilber')
-            logger.info('starting calculation for month %(month)s/%(year)s. fields - %(fields)s',
-                        {'month':month.month, 'year':month.year, 'fields':serializers.serialize('json', [self])})
+            #logger.info('starting calculation for month %(month)s/%(year)s. fields - %(fields)s',
+            #            {'month':month.month, 'year':month.year, 'fields':serializers.serialize('json', [self])})
             
             d = Demand.objects.get(project = self.projectcommission.project, year = month.year, month = month.month)
             if d.var_diff: 
@@ -1487,6 +1487,7 @@ class CZilber(models.Model):
             if d.include_zilber_bonus():
                 bonus = 0
                 for s in sales:
+                    s.restore = False
                     bonus += s.zdb
                 if bonus != 0:
                     d.diffs.create(type=u'בונוס', reason=u'בונוס חסכון בהנחה (נספח ב)', amount=round(bonus))
