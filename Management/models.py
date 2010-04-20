@@ -1927,9 +1927,6 @@ class Demand(models.Model):
             query = query.order_by('house__signups__date')
         return query
     def calc_sales_commission(self):
-        if self.get_sales().count() == 0: 
-            return
-
         c = self.project.commissions
         c.calc(self.get_sales())
         self.sales_commission = 0
