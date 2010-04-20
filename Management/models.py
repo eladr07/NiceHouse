@@ -1483,6 +1483,7 @@ class CZilber(models.Model):
                 
             if prev_adds:
                 d.diffs.create(type=u'משתנה', reason=u'הפרשי קצב מכירות (נספח א)', amount=round(prev_adds))
+                
             if d.include_zilber_bonus():
                 bonus = 0
                 for s in sales:
@@ -1578,102 +1579,119 @@ class ProjectCommission(models.Model):
     agreement = models.FileField(ugettext('agreement'), upload_to='files', null=True, blank=True)
     remarks = models.TextField(ugettext('commission_remarks'), null=True, blank=True)
     def calc(self, sales, sub=0, restore_date = date.today()):
-        logger = logging.getLogger('commission')
-        logger.info('starting to calculate commission for project %(project)s. %(sale_count)s sales.', 
-                    {'project':self.project,'sale_count':sales.count()})
-        
-        if sales.count() == 0: 
-            return
-        demand = sales[0].actual_demand
-        if not demand:
-            return
-        if self.commission_by_signups and sub == 0:
-            for (m, y) in demand.get_signup_months():
-                #get sales that were signed up for specific month, not including future sales.
-                max_contractor_pay = date(demand.month==12 and demand.year+1 or demand.year, demand.month==12 and 1 or demand.month+1,1) 
-                subSales = Sale.objects.filter(house__signups__date__year=y,
-                                               house__signups__date__month=m,
-                                               house__signups__cancel=None,
-                                               house__building__project = demand.project,
-                                               commission_include=True,
-                                               contractor_pay__lt = max_contractor_pay)
-                subSales = subSales.order_by('house__signups__date')
-                
-                logger.info('calculating affected sales(%(sale_count)s) for month %(month)s/%(year)s',
-                            {'sale_count':subSales.count(), 'month':m,'year':y})
-                
-                self.calc(subSales, 1)#send these sales to regular processing
-            if demand.bonus_diff: demand.bonus_diff.delete()
-            bonus = 0
-            for subSales in demand.get_affected_sales().values():
-                for s in subSales:
-                    if not s.commission_include: 
-                        logger.info('skipping sale #%(id)s - commission_include=False', {'id':s.id})
-                        continue
-                    signup = s.house.get_signup()
-                    if not signup: 
-                        logger.warning('skipping sale #%(id)s - no signup', {'id':s.id})
-                        continue
-                    #get the finish date when the demand for the month the signup 
-                    #were made we use it to find out what was the commission at
-                    #that time
-                    if not s.actual_demand or not s.actual_demand.finish_date:
-                        logger.warning('skipping sale #%(id)s - actual_demand=None or actual_demand.finish_date=None', {'id':s.id})
-                        continue
-                    q = s.project_commission_details.filter(commission='final')
-                    if q.count()==0:
-                        logger.warning('skipping sale #%(id)s - no final commission', {'id':s.id})
-                        continue
-                    s.restore_date = demand.get_previous_demand().finish_date
-                    diff = (q[0].value - s.c_final) * s.price_final / 100
+        try:
+            logger = logging.getLogger('commission')
+            logger.info('starting to calculate commission for project %(project)s. %(sale_count)s sales.', 
+                        {'project':self.project,'sale_count':sales.count()})
+            
+            if sales.count() == 0: 
+                return
+            demand = sales[0].actual_demand
+            if not demand:
+                return
+            if self.commission_by_signups and sub == 0:
+                for (m, y) in demand.get_signup_months():
+                    #get sales that were signed up for specific month, not including future sales.
+                    max_contractor_pay = date(demand.month==12 and demand.year+1 or demand.year, demand.month==12 and 1 or demand.month+1,1) 
+                    subSales = Sale.objects.filter(house__signups__date__year=y,
+                                                   house__signups__date__month=m,
+                                                   house__signups__cancel=None,
+                                                   house__building__project = demand.project,
+                                                   commission_include=True,
+                                                   contractor_pay__lt = max_contractor_pay)
+                    subSales = subSales.order_by('house__signups__date')
                     
-                    logger.debug('sale #(id)s bonus calc values: %(vals)s',
-                                 {'id': s.id,
-                                  vals: {'diff':diff,
-                                         'q[0].value':q[0].value,
-                                         's.c_final':s.c_final,
-                                         's.price_final':s.price_final}
-                                  })
+                    logger.info('calculating affected sales(%(sale_count)s) for month %(month)s/%(year)s',
+                                {'sale_count':subSales.count(), 'month':m,'year':y})
                     
-                    bonus += int(diff)
-            if bonus > 0:
-                demand.diffs.create(type=u'בונוס', reason = u'הפרשי עמלה (ניספח א)', amount=bonus)
-            return
-        if getattr(self, 'c_zilber') != None:
-            month = date(demand.year, demand.month, 1)
-            c = getattr(self, 'c_zilber')
-            c = restore_object(c, restore_date) 
-            c.calc(month)
-            return
-        dic={}
-        details={}
-        for c in ['c_var_precentage','c_var_precentage_fixed','b_discount_save_precentage']:
-            if getattr(self,c) == None:
-                continue
-            commission = getattr(self,c)
-            commission = restore_object(commission, restore_date)
-            precentages = commission.calc(sales)
-            for s in precentages:
-                if c in ['c_var_precentage', 'c_var_precentage_fixed'] and self.max and precentages[s] > self.max:
-                    precentages[s] = self.max#set base commission to max commission
-                dic[s] = dic.has_key(s) and dic[s] + precentages[s] or precentages[s]
-                if not details.has_key(s):
-                    details[s]={}
-                details[s][c] = precentages[s]
-        if self.max:
-            for s in dic:
-                if dic[s] > self.max:
-                    dic[s] = self.max
-        for s in details:
-            for c, v in details[s].items():
-                scd, new = s.commission_details.get_or_create(employee_salary=None, commission=c)
-                scd.value = s.commission_include and v or 0
+                    self.calc(subSales, 1)#send these sales to regular processing
+                if demand.bonus_diff: demand.bonus_diff.delete()
+                bonus = 0
+                for subSales in demand.get_affected_sales().values():
+                    for s in subSales:
+                        if not s.commission_include: 
+                            logger.info('skipping sale #%(id)s - commission_include=False', {'id':s.id})
+                            continue
+                        signup = s.house.get_signup()
+                        if not signup: 
+                            logger.warning('skipping sale #%(id)s - no signup', {'id':s.id})
+                            continue
+                        #get the finish date when the demand for the month the signup 
+                        #were made we use it to find out what was the commission at
+                        #that time
+                        if not s.actual_demand or not s.actual_demand.finish_date:
+                            logger.warning('skipping sale #%(id)s - actual_demand=None or actual_demand.finish_date=None', {'id':s.id})
+                            continue
+                        q = s.project_commission_details.filter(commission='final')
+                        if q.count()==0:
+                            logger.warning('skipping sale #%(id)s - no final commission', {'id':s.id})
+                            continue
+                        s.restore_date = demand.get_previous_demand().finish_date
+                        diff = (q[0].value - s.c_final) * s.price_final / 100
+                        
+                        logger.debug('sale #(id)s bonus calc values: %(vals)s',
+                                     {'id': s.id,
+                                      vals: {'diff':diff,
+                                             'q[0].value':q[0].value,
+                                             's.c_final':s.c_final,
+                                             's.price_final':s.price_final}
+                                      })
+                        
+                        bonus += int(diff)
+                if bonus > 0:
+                    demand.diffs.create(type=u'בונוס', reason = u'הפרשי עמלה (ניספח א)', amount=bonus)
+                return
+            
+            if getattr(self, 'c_zilber') != None:
+                month = date(demand.year, demand.month, 1)
+                c = getattr(self, 'c_zilber')
+                c = restore_object(c, restore_date) 
+                c.calc(month)
+                return
+            
+            dic={}
+            details={}
+            for c in ['c_var_precentage','c_var_precentage_fixed','b_discount_save_precentage']:
+                if getattr(self,c) == None:
+                    continue
+                commission = getattr(self,c)
+                commission = restore_object(commission, restore_date)
+                precentages = commission.calc(sales)
+                for s in precentages:
+                    if c in ['c_var_precentage', 'c_var_precentage_fixed'] and self.max and precentages[s] > self.max:
+                        precentages[s] = self.max
+                        logger.info('sale #%(id)s - %(commission)s (%(commission_value)s) exceeded max commission %(max)s',
+                                    {'id':s.id, 'commission':c, 'commission_value':precentages[s], 'max':self.max})
+    
+                    dic[s] = dic.has_key(s) and dic[s] + precentages[s] or precentages[s]
+                    s_details = details.setdefault(s, {})
+                    s_details[c] = precentages[s]
+                    
+            if self.max:
+                for s in dic:
+                    if dic[s] > self.max:
+                        dic[s] = self.max
+                        logger.info('sale #%(id)s - final commission (%(commission_value)s) exceeded max commission %(max)s',
+                                    {'id':s.id, 'commission_value':dic[s], 'max':self.max})
+                        
+            for s in details:
+                for c, v in details[s].items():
+                    scd, new = s.commission_details.get_or_create(employee_salary=None, commission=c)
+                    scd.value = v
+                    scd.save()
+                    
+                scd, new = s.commission_details.get_or_create(employee_salary=None, commission='final')
+                scd.value = dic[s]
                 scd.save()
-            scd, new = s.commission_details.get_or_create(employee_salary=None, commission='final')
-            scd.value = s.commission_include and dic[s] or 0
-            scd.save()
-            s.price_final = s.project_price()
-            s.save()
+                
+                s.price_final = s.project_price()
+                s.save()
+                logger.info('sale #%(id)s - price_final=%(price_final)s', {'id':s.id, 'price_final':s.price_final})
+                
+            logger.info('finished to calculate commission for project %(project)s.', {'project':self.project})
+        except:
+            logger.exception('exception during calculate commission for project %(project)s.', {'project':self.project})
+            
     class Meta:
         db_table = 'ProjectCommission'
 
@@ -1862,9 +1880,9 @@ class Demand(models.Model):
             signup = s.house.get_signup()
             if not signup:
                 continue
-            if not months.has_key((signup.date.month, signup.date.year)):
-                months[(signup.date.month, signup.date.year)] = 0
-            months[(signup.date.month, signup.date.year)] += 1
+            key = (signup.date.month, signup.date.year)
+            months.setdefault(key, 0)
+            months[key] += 1
         return months
     def include_zilber_bonus(self):
         return self.zilber_cycle_index() == CZilber.Cycle
