@@ -1646,7 +1646,9 @@ class ProjectCommission(models.Model):
                         
                         bonus += int(diff)
                 if bonus > 0:
-                    demand.diffs.create(type=u'בונוס', reason = u'הפרשי עמלה (ניספח א)', amount=bonus)
+                    demand_diff, new = demand.diffs.get_or_create(type=u'בונוס', reason = u'הפרשי עמלה (ניספח א)')
+                    demand_diff.amount = bonus
+                    demand_diff.save()
                 return
             
             if getattr(self, 'c_zilber') != None:
