@@ -1401,6 +1401,7 @@ class CZilber(models.Model):
         '''
         try:
             logger = logging.getLogger('commission.czilber')
+            logger.propagate = 1
             logger.info('starting calculation for month %(month)s/%(year)s. fields - %(fields)',
                         {'month':month.month, 'year':month.year, 'fields':serializers.serialize('json', [self])})
             
