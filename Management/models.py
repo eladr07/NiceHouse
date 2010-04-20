@@ -1439,7 +1439,6 @@ class CZilber(models.Model):
                     
             prices_date = date(month.month == 12 and month.year+1 or month.year, month.month==12 and 1 or month.month+1, 1)
             current_madad = d.get_madad() < self.base_madad and self.base_madad or d.get_madad()
-            bonus = 0
             
             logger.debug('prices_date = %s, current_madad=%s', prices_date, current_madad)
             
@@ -1449,9 +1448,7 @@ class CZilber(models.Model):
                     scd.value = base
                     scd.save()
                     logger.debug('sale #%(id)s %(commission)s = %(value)s', {'id':s.id, 'commission':c,'value':scd.value})
-            
-            # only calculate discount bonus for current demand
-            for s in d.get_sales():
+                    
                 if self.base_madad:
                     doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0, date__lte = prices_date)
                     if doh0prices.count() == 0: 
@@ -1462,9 +1459,7 @@ class CZilber(models.Model):
                     scd = s.commission_details.get_or_create(commission='c_zilber_discount', employee_salary=None)[0]
                     scd.value = (s.price - memudad) * self.b_discount
                     scd.save()
-                    
-                    bonus += scd.value
-                    
+                                        
                     logger.debug('sale #%(id)s c_zilber_discount calc values: %(vals)s',
                                  {'id':s.id, 'vals':{'latest_doh0price':latest_doh0price,
                                                      'memudad':memudad, 
@@ -1496,8 +1491,12 @@ class CZilber(models.Model):
             if prev_adds:
                 d.diffs.create(type=u'משתנה', reason=u'הפרשי קצב מכירות (נספח א)', amount=round(prev_adds))
                 
-            if d.include_zilber_bonus() and bonus:
-                d.diffs.create(type=u'בונוס', reason=u'בונוס חסכון בהנחה (נספח ב)', amount=round(bonus))
+            if d.include_zilber_bonus():
+                bonus = 0
+                for s in sales:
+                    bonus += s.zdb
+                if bonus:
+                    d.diffs.create(type=u'בונוס', reason=u'בונוס חסכון בהנחה (נספח ב)', amount=round(bonus))
                 logger.debug('demand #%(id)s created bonus=%(bonus)s', {'id':d.id, 'bonus':bonus})
                 
             logger.info('finished calculation for month %(month)s/%(year)s', {'month':month.month, 'year':month.year})
