@@ -1,433 +1,689 @@
-2010-04-20 19:01:11,711 commission.czilber - DEBUG in models: sale #607 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': -7312.7000000000007, 'latest_doh0price': 1223127L}
-2010-04-20 19:01:11,822 commission.czilber - DEBUG in models: sale #606 c_zilber_base = 1.2498
-2010-04-20 19:01:11,828 commission.czilber - DEBUG in models: sale #606 final = 1.2498
-2010-04-20 19:01:11,837 commission.czilber - DEBUG in models: sale #606 c_zilber_discount calc values: {'memudad': 1072423.0, 'scd.value': 6130.2000000000007, 'latest_doh0price': 1072423L}
-2010-04-20 19:01:11,843 commission.czilber - DEBUG in models: sale #608 c_zilber_base = 1.2498
-2010-04-20 19:01:11,849 commission.czilber - DEBUG in models: sale #608 final = 1.2498
-2010-04-20 19:01:11,859 commission.czilber - DEBUG in models: sale #608 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': 17687.299999999999, 'latest_doh0price': 1223127L}
-2010-04-20 19:01:11,864 commission.czilber - DEBUG in models: last_demand_finish_date: 2010-04-20 19:01:10
-2010-04-20 19:01:11,985 commission.czilber - INFO in models: finished calculation for month 9/2009
-2010-04-20 19:01:13,104 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 1 sales.
-2010-04-20 19:01:13,177 commission.czilber - INFO in models: total cycle sales count: 5
-2010-04-20 19:01:13,185 commission.czilber - DEBUG in models: sale #684 price_final = 985222
-2010-04-20 19:01:13,193 commission.czilber - DEBUG in models: sale #605 price_final = 1171921
-2010-04-20 19:01:13,201 commission.czilber - DEBUG in models: sale #607 price_final = 1133005
-2010-04-20 19:01:13,208 commission.czilber - DEBUG in models: sale #606 price_final = 1116970
-2010-04-20 19:01:13,219 commission.czilber - DEBUG in models: sale #608 price_final = 1379310
-2010-04-20 19:01:13,221 commission.czilber - DEBUG in models: prices_date = 2009-11-01, current_madad=126.9
-2010-04-20 19:01:13,227 commission.czilber - DEBUG in models: sale #684 c_zilber_base = 1.2664
-2010-04-20 19:01:13,233 commission.czilber - DEBUG in models: sale #684 final = 1.2664
-2010-04-20 19:01:13,235 commission.czilber - WARNING in models: skipping c_zilber_discount calc for sale #684. no doh0 prices
-2010-04-20 19:01:13,240 commission.czilber - DEBUG in models: sale #605 c_zilber_base = 1.2664
-2010-04-20 19:01:13,245 commission.czilber - DEBUG in models: sale #605 final = 1.2664
-2010-04-20 19:01:13,253 commission.czilber - DEBUG in models: sale #605 c_zilber_discount calc values: {'memudad': 1031415.0, 'scd.value': 15808.5, 'latest_doh0price': 1031415L}
-2010-04-20 19:01:13,258 commission.czilber - DEBUG in models: sale #607 c_zilber_base = 1.2664
-2010-04-20 19:01:13,264 commission.czilber - DEBUG in models: sale #607 final = 1.2664
-2010-04-20 19:01:13,272 commission.czilber - DEBUG in models: sale #607 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': -7312.7000000000007, 'latest_doh0price': 1223127L}
-2010-04-20 19:01:13,277 commission.czilber - DEBUG in models: sale #606 c_zilber_base = 1.2664
-2010-04-20 19:01:13,282 commission.czilber - DEBUG in models: sale #606 final = 1.2664
-2010-04-20 19:01:13,290 commission.czilber - DEBUG in models: sale #606 c_zilber_discount calc values: {'memudad': 1072423.0, 'scd.value': 6130.2000000000007, 'latest_doh0price': 1072423L}
-2010-04-20 19:01:13,296 commission.czilber - DEBUG in models: sale #608 c_zilber_base = 1.2664
-2010-04-20 19:01:13,301 commission.czilber - DEBUG in models: sale #608 final = 1.2664
-2010-04-20 19:01:13,309 commission.czilber - DEBUG in models: sale #608 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': 17687.299999999999, 'latest_doh0price': 1223127L}
-2010-04-20 19:01:13,315 commission.czilber - DEBUG in models: last_demand_finish_date: 2010-04-20 19:01:12
-2010-04-20 19:01:13,369 commission.czilber - ERROR in models: error while calculating commissions for month 10/2009
+2010-04-20 20:06:59,240 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 0 sales.
+2010-04-20 20:07:00,265 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 0 sales.
+2010-04-20 20:07:01,297 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 6 sales.
+2010-04-20 20:07:01,391 commission - INFO in models: calculating affected sales(2) for month 11/2008
+2010-04-20 20:07:01,392 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 2 sales.
+2010-04-20 20:07:01,455 commission - INFO in models: sale #30 - price_final=847291
+2010-04-20 20:07:01,471 commission - INFO in models: sale #31 - price_final=827586
+2010-04-20 20:07:01,472 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:01,475 commission - INFO in models: calculating affected sales(2) for month 1/2009
+2010-04-20 20:07:01,476 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 2 sales.
+2010-04-20 20:07:01,529 commission - INFO in models: sale #28 - price_final=1182266
+2010-04-20 20:07:01,546 commission - INFO in models: sale #29 - price_final=1182266
+2010-04-20 20:07:01,546 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:01,549 commission - INFO in models: calculating affected sales(1) for month 2/2009
+2010-04-20 20:07:01,551 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 1 sales.
+2010-04-20 20:07:01,594 commission - INFO in models: sale #27 - price_final=1259113
+2010-04-20 20:07:01,594 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:01,597 commission - INFO in models: calculating affected sales(1) for month 12/2008
+2010-04-20 20:07:01,599 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 1 sales.
+2010-04-20 20:07:01,642 commission - INFO in models: sale #32 - price_final=817734
+2010-04-20 20:07:01,642 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:03,034 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 8 sales.
+2010-04-20 20:07:03,490 commission - INFO in models: calculating affected sales(3) for month 11/2008
+2010-04-20 20:07:03,491 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 3 sales.
+2010-04-20 20:07:03,560 commission - INFO in models: sale #68 - price_final=827586
+2010-04-20 20:07:03,578 commission - INFO in models: sale #30 - price_final=847291
+2010-04-20 20:07:03,595 commission - INFO in models: sale #31 - price_final=827586
+2010-04-20 20:07:03,596 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:03,599 commission - INFO in models: calculating affected sales(1) for month 10/2008
+2010-04-20 20:07:03,600 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 1 sales.
+2010-04-20 20:07:03,648 commission - INFO in models: sale #73 - price_final=825000
+2010-04-20 20:07:03,648 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:03,651 commission - INFO in models: calculating affected sales(1) for month 3/2009
+2010-04-20 20:07:03,653 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 1 sales.
+2010-04-20 20:07:03,698 commission - INFO in models: sale #74 - price_final=865024
+2010-04-20 20:07:03,698 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:03,702 commission - INFO in models: calculating affected sales(3) for month 1/2009
+2010-04-20 20:07:03,703 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 3 sales.
+2010-04-20 20:07:03,770 commission - INFO in models: sale #67 - price_final=820000
+2010-04-20 20:07:03,787 commission - INFO in models: sale #28 - price_final=1182266
+2010-04-20 20:07:03,805 commission - INFO in models: sale #29 - price_final=1182266
+2010-04-20 20:07:03,805 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:03,808 commission - INFO in models: calculating affected sales(5) for month 2/2009
+2010-04-20 20:07:03,810 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 5 sales.
+2010-04-20 20:07:03,887 commission - INFO in models: sale #72 - price_final=1212000
+2010-04-20 20:07:03,905 commission - INFO in models: sale #27 - price_final=1259113
+2010-04-20 20:07:03,923 commission - INFO in models: sale #69 - price_final=819704
+2010-04-20 20:07:03,941 commission - INFO in models: sale #70 - price_final=1212000
+2010-04-20 20:07:03,959 commission - INFO in models: sale #71 - price_final=1212000
+2010-04-20 20:07:03,959 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:04,088 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.0, 's.price_final': 827586L, 's.c_final': 1.0}
+2010-04-20 20:07:04,172 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1694.5819999999994, 'q[0].value': 1.2, 's.price_final': 847291L, 's.c_final': 1.0}
+2010-04-20 20:07:04,277 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.0, 's.price_final': 1182266L, 's.c_final': 1.0}
+2010-04-20 20:07:04,362 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.0, 's.price_final': 1182266L, 's.c_final': 1.0}
+2010-04-20 20:07:04,458 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 5036.4519999999993, 'q[0].value': 1.3999999999999999, 's.price_final': 1259113L, 's.c_final': 1.0}
+2010-04-20 20:07:04,461 commission - ERROR in models: exception during calculate commission for project מבני תעשיה - מרום השרון .
 Traceback (most recent call last):
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 1477, in calc
-    pc_base = restore_object(q[0], last_demand_finish_date).value
-AttributeError: 'DeserializedObject' object has no attribute 'value'
-2010-04-20 19:01:14,515 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 8 sales.
-2010-04-20 19:01:14,642 commission.czilber - INFO in models: total cycle sales count: 13
-2010-04-20 19:01:14,650 commission.czilber - DEBUG in models: sale #855 price_final = 613793
-2010-04-20 19:01:14,658 commission.czilber - DEBUG in models: sale #850 price_final = 1170000
-2010-04-20 19:01:14,666 commission.czilber - DEBUG in models: sale #856 price_final = 812808
-2010-04-20 19:01:14,674 commission.czilber - DEBUG in models: sale #852 price_final = 971970
-2010-04-20 19:01:14,682 commission.czilber - DEBUG in models: sale #851 price_final = 971970
-2010-04-20 19:01:14,690 commission.czilber - DEBUG in models: sale #853 price_final = 761576
-2010-04-20 19:01:14,698 commission.czilber - DEBUG in models: sale #857 price_final = 1011970
-2010-04-20 19:01:14,706 commission.czilber - DEBUG in models: sale #854 price_final = 761576
-2010-04-20 19:01:14,713 commission.czilber - DEBUG in models: sale #684 price_final = 985222
-2010-04-20 19:01:14,722 commission.czilber - DEBUG in models: sale #605 price_final = 1171921
-2010-04-20 19:01:14,729 commission.czilber - DEBUG in models: sale #607 price_final = 1133005
-2010-04-20 19:01:14,737 commission.czilber - DEBUG in models: sale #606 price_final = 1116970
-2010-04-20 19:01:14,745 commission.czilber - DEBUG in models: sale #608 price_final = 1379310
-2010-04-20 19:01:14,747 commission.czilber - DEBUG in models: prices_date = 2009-12-01, current_madad=126.9
-2010-04-20 19:01:14,753 commission.czilber - DEBUG in models: sale #855 c_zilber_base = 1.3992
-2010-04-20 19:01:14,759 commission.czilber - DEBUG in models: sale #855 final = 1.3992
-2010-04-20 19:01:14,768 commission.czilber - DEBUG in models: sale #855 c_zilber_discount calc values: {'memudad': 620000.0, 'scd.value': 300.0, 'latest_doh0price': 620000L}
-2010-04-20 19:01:14,774 commission.czilber - DEBUG in models: sale #850 c_zilber_base = 1.3992
-2010-04-20 19:01:14,779 commission.czilber - DEBUG in models: sale #850 final = 1.3992
-2010-04-20 19:01:14,781 commission.czilber - WARNING in models: skipping c_zilber_discount calc for sale #850. no doh0 prices
-2010-04-20 19:01:14,787 commission.czilber - DEBUG in models: sale #856 c_zilber_base = 1.3992
-2010-04-20 19:01:14,793 commission.czilber - DEBUG in models: sale #856 final = 1.3992
-2010-04-20 19:01:14,802 commission.czilber - DEBUG in models: sale #856 c_zilber_discount calc values: {'memudad': 850000.0, 'scd.value': -2500.0, 'latest_doh0price': 850000L}
-2010-04-20 19:01:14,808 commission.czilber - DEBUG in models: sale #852 c_zilber_base = 1.3992
-2010-04-20 19:01:14,814 commission.czilber - DEBUG in models: sale #852 final = 1.3992
-2010-04-20 19:01:14,825 commission.czilber - DEBUG in models: sale #852 c_zilber_discount calc values: {'memudad': 1000000.0, 'scd.value': -1345.0, 'latest_doh0price': 1000000L}
-2010-04-20 19:01:14,830 commission.czilber - DEBUG in models: sale #851 c_zilber_base = 1.3992
-2010-04-20 19:01:14,836 commission.czilber - DEBUG in models: sale #851 final = 1.3992
-2010-04-20 19:01:14,845 commission.czilber - DEBUG in models: sale #851 c_zilber_discount calc values: {'memudad': 1000000.0, 'scd.value': -1345.0, 'latest_doh0price': 1000000L}
-2010-04-20 19:01:14,851 commission.czilber - DEBUG in models: sale #853 c_zilber_base = 1.3992
-2010-04-20 19:01:14,857 commission.czilber - DEBUG in models: sale #853 final = 1.3992
-2010-04-20 19:01:14,866 commission.czilber - DEBUG in models: sale #853 c_zilber_discount calc values: {'memudad': 850000.0, 'scd.value': -7700.0, 'latest_doh0price': 850000L}
-2010-04-20 19:01:14,872 commission.czilber - DEBUG in models: sale #857 c_zilber_base = 1.3992
-2010-04-20 19:01:14,878 commission.czilber - DEBUG in models: sale #857 final = 1.3992
-2010-04-20 19:01:14,887 commission.czilber - DEBUG in models: sale #857 c_zilber_discount calc values: {'memudad': 1020000.0, 'scd.value': 715.0, 'latest_doh0price': 1020000L}
-2010-04-20 19:01:14,893 commission.czilber - DEBUG in models: sale #854 c_zilber_base = 1.3992
-2010-04-20 19:01:14,899 commission.czilber - DEBUG in models: sale #854 final = 1.3992
-2010-04-20 19:01:14,908 commission.czilber - DEBUG in models: sale #854 c_zilber_discount calc values: {'memudad': 850000.0, 'scd.value': -7700.0, 'latest_doh0price': 850000L}
-2010-04-20 19:01:14,913 commission.czilber - DEBUG in models: sale #684 c_zilber_base = 1.3992
-2010-04-20 19:01:14,918 commission.czilber - DEBUG in models: sale #684 final = 1.3992
-2010-04-20 19:01:14,928 commission.czilber - DEBUG in models: sale #684 c_zilber_discount calc values: {'memudad': 901300.0, 'scd.value': 9870.0, 'latest_doh0price': 901300L}
-2010-04-20 19:01:14,935 commission.czilber - DEBUG in models: sale #605 c_zilber_base = 1.3992
-2010-04-20 19:01:14,940 commission.czilber - DEBUG in models: sale #605 final = 1.3992
-2010-04-20 19:01:14,949 commission.czilber - DEBUG in models: sale #605 c_zilber_discount calc values: {'memudad': 1031415.0, 'scd.value': 15808.5, 'latest_doh0price': 1031415L}
-2010-04-20 19:01:14,954 commission.czilber - DEBUG in models: sale #607 c_zilber_base = 1.3992
-2010-04-20 19:01:14,959 commission.czilber - DEBUG in models: sale #607 final = 1.3992
-2010-04-20 19:01:14,968 commission.czilber - DEBUG in models: sale #607 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': -7312.7000000000007, 'latest_doh0price': 1223127L}
-2010-04-20 19:01:14,973 commission.czilber - DEBUG in models: sale #606 c_zilber_base = 1.3992
-2010-04-20 19:01:14,979 commission.czilber - DEBUG in models: sale #606 final = 1.3992
-2010-04-20 19:01:14,987 commission.czilber - DEBUG in models: sale #606 c_zilber_discount calc values: {'memudad': 1072423.0, 'scd.value': 6130.2000000000007, 'latest_doh0price': 1072423L}
-2010-04-20 19:01:14,993 commission.czilber - DEBUG in models: sale #608 c_zilber_base = 1.3992
-2010-04-20 19:01:14,998 commission.czilber - DEBUG in models: sale #608 final = 1.3992
-2010-04-20 19:01:15,007 commission.czilber - DEBUG in models: sale #608 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': 17687.299999999999, 'latest_doh0price': 1223127L}
-2010-04-20 19:01:15,013 commission.czilber - DEBUG in models: last_demand_finish_date: 2010-04-20 19:01:13
-2010-04-20 19:01:15,257 commission.czilber - ERROR in models: error while calculating commissions for month 11/2009
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1649, in calc
+    demand.diffs.create(type=u'בונוס', reason = u'הפרשי עמלה (ניספח א)', amount=bonus)
+  File "/usr/lib/python2.4/site-packages/django/db/models/fields/related.py", line 367, in create
+    return super(RelatedManager, self).create(**kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/manager.py", line 126, in create
+    return self.get_query_set().create(**kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/query.py", line 315, in create
+    obj.save(force_insert=True)
+  File "/usr/lib/python2.4/site-packages/django/db/models/base.py", line 410, in save
+    self.save_base(force_insert=force_insert, force_update=force_update)
+  File "/usr/lib/python2.4/site-packages/django/db/models/base.py", line 495, in save_base
+    result = manager._insert(values, return_id=update_pk)
+  File "/usr/lib/python2.4/site-packages/django/db/models/manager.py", line 177, in _insert
+    return insert_query(self.model, values, **kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/query.py", line 1087, in insert_query
+    return query.execute_sql(return_id)
+  File "/usr/lib/python2.4/site-packages/django/db/models/sql/subqueries.py", line 320, in execute_sql
+    cursor = super(InsertQuery, self).execute_sql(None)
+  File "/usr/lib/python2.4/site-packages/django/db/models/sql/query.py", line 2369, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/lib/python2.4/site-packages/django/db/backends/mysql/base.py", line 84, in execute
+    return self.cursor.execute(query, args)
+  File "build/bdist.linux-i686/egg/MySQLdb/cursors.py", line 166, in execute
+  File "build/bdist.linux-i686/egg/MySQLdb/connections.py", line 35, in defaulterrorhandler
+IntegrityError: (1062, "Duplicate entry '26-\xd7\x91\xd7\x95\xd7\xa0\xd7\x95\xd7\xa1' for key 2")
+2010-04-20 20:07:06,125 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 1 sales.
+2010-04-20 20:07:06,160 commission - INFO in models: calculating affected sales(2) for month 10/2008
+2010-04-20 20:07:06,162 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 2 sales.
+2010-04-20 20:07:06,219 commission - INFO in models: sale #73 - price_final=825000
+2010-04-20 20:07:06,237 commission - INFO in models: sale #94 - price_final=825000
+2010-04-20 20:07:06,237 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:06,335 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.0, 's.price_final': 825000L, 's.c_final': 1.0}
+2010-04-20 20:07:07,451 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 6 sales.
+2010-04-20 20:07:07,550 commission - INFO in models: calculating affected sales(2) for month 5/2009
+2010-04-20 20:07:07,552 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 2 sales.
+2010-04-20 20:07:07,608 commission - INFO in models: sale #292 - price_final=820000
+2010-04-20 20:07:07,626 commission - INFO in models: sale #293 - price_final=1170000
+2010-04-20 20:07:07,626 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:07,630 commission - INFO in models: calculating affected sales(3) for month 3/2009
+2010-04-20 20:07:07,631 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 3 sales.
+2010-04-20 20:07:07,698 commission - INFO in models: sale #289 - price_final=870000
+2010-04-20 20:07:07,716 commission - INFO in models: sale #290 - price_final=820000
+2010-04-20 20:07:07,734 commission - INFO in models: sale #74 - price_final=865024
+2010-04-20 20:07:07,734 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:07,737 commission - INFO in models: calculating affected sales(2) for month 4/2009
+2010-04-20 20:07:07,739 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 2 sales.
+2010-04-20 20:07:07,795 commission - INFO in models: sale #291 - price_final=820000
+2010-04-20 20:07:07,812 commission - INFO in models: sale #294 - price_final=1170000
+2010-04-20 20:07:07,813 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:07,921 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1730.0479999999995, 'q[0].value': 1.2, 's.price_final': 865024L, 's.c_final': 1.0}
+2010-04-20 20:07:07,924 commission - ERROR in models: exception during calculate commission for project מבני תעשיה - מרום השרון .
 Traceback (most recent call last):
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 1477, in calc
-    pc_base = restore_object(q[0], last_demand_finish_date).value
-AttributeError: 'DeserializedObject' object has no attribute 'value'
-2010-04-20 19:01:16,510 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 2 sales.
-2010-04-20 19:01:16,722 commission.czilber - INFO in models: total cycle sales count: 15
-2010-04-20 19:01:16,730 commission.czilber - DEBUG in models: sale #900 price_final = 1006897
-2010-04-20 19:01:16,738 commission.czilber - DEBUG in models: sale #899 price_final = 1006897
-2010-04-20 19:01:16,746 commission.czilber - DEBUG in models: sale #855 price_final = 613793
-2010-04-20 19:01:16,754 commission.czilber - DEBUG in models: sale #850 price_final = 1170000
-2010-04-20 19:01:16,762 commission.czilber - DEBUG in models: sale #856 price_final = 812808
-2010-04-20 19:01:16,770 commission.czilber - DEBUG in models: sale #852 price_final = 971970
-2010-04-20 19:01:16,778 commission.czilber - DEBUG in models: sale #851 price_final = 971970
-2010-04-20 19:01:16,786 commission.czilber - DEBUG in models: sale #853 price_final = 761576
-2010-04-20 19:01:16,794 commission.czilber - DEBUG in models: sale #857 price_final = 1011970
-2010-04-20 19:01:16,802 commission.czilber - DEBUG in models: sale #854 price_final = 761576
-2010-04-20 19:01:16,810 commission.czilber - DEBUG in models: sale #684 price_final = 985222
-2010-04-20 19:01:16,819 commission.czilber - DEBUG in models: sale #605 price_final = 1171921
-2010-04-20 19:01:16,827 commission.czilber - DEBUG in models: sale #607 price_final = 1133005
-2010-04-20 19:01:16,835 commission.czilber - DEBUG in models: sale #606 price_final = 1116970
-2010-04-20 19:01:16,843 commission.czilber - DEBUG in models: sale #608 price_final = 1379310
-2010-04-20 19:01:16,845 commission.czilber - DEBUG in models: prices_date = 2010-01-01, current_madad=126.9
-2010-04-20 19:01:16,851 commission.czilber - DEBUG in models: sale #900 c_zilber_base = 1.4324
-2010-04-20 19:01:16,857 commission.czilber - DEBUG in models: sale #900 final = 1.4324
-2010-04-20 19:01:16,866 commission.czilber - DEBUG in models: sale #900 c_zilber_discount calc values: {'memudad': 1015622.0, 'scd.value': 637.80000000000007, 'latest_doh0price': 1015622L}
-2010-04-20 19:01:16,872 commission.czilber - DEBUG in models: sale #899 c_zilber_base = 1.4324
-2010-04-20 19:01:16,877 commission.czilber - DEBUG in models: sale #899 final = 1.4324
-2010-04-20 19:01:16,887 commission.czilber - DEBUG in models: sale #899 c_zilber_discount calc values: {'memudad': 1015622.0, 'scd.value': 637.80000000000007, 'latest_doh0price': 1015622L}
-2010-04-20 19:01:16,892 commission.czilber - DEBUG in models: sale #855 c_zilber_base = 1.4324
-2010-04-20 19:01:16,897 commission.czilber - DEBUG in models: sale #855 final = 1.4324
-2010-04-20 19:01:16,905 commission.czilber - DEBUG in models: sale #855 c_zilber_discount calc values: {'memudad': 617338.0, 'scd.value': 566.20000000000005, 'latest_doh0price': 617338L}
-2010-04-20 19:01:16,911 commission.czilber - DEBUG in models: sale #850 c_zilber_base = 1.4324
-2010-04-20 19:01:16,916 commission.czilber - DEBUG in models: sale #850 final = 1.4324
-2010-04-20 19:01:16,925 commission.czilber - DEBUG in models: sale #850 c_zilber_discount calc values: {'memudad': 994250.0, 'scd.value': 19330.0, 'latest_doh0price': 994250L}
-2010-04-20 19:01:16,931 commission.czilber - DEBUG in models: sale #856 c_zilber_base = 1.4324
-2010-04-20 19:01:16,937 commission.czilber - DEBUG in models: sale #856 final = 1.4324
-2010-04-20 19:01:16,947 commission.czilber - DEBUG in models: sale #856 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -2135.0999999999999, 'latest_doh0price': 846351L}
-2010-04-20 19:01:16,952 commission.czilber - DEBUG in models: sale #852 c_zilber_base = 1.4324
-2010-04-20 19:01:16,957 commission.czilber - DEBUG in models: sale #852 final = 1.4324
-2010-04-20 19:01:16,966 commission.czilber - DEBUG in models: sale #852 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': -915.80000000000007, 'latest_doh0price': 995708L}
-2010-04-20 19:01:16,971 commission.czilber - DEBUG in models: sale #851 c_zilber_base = 1.4324
-2010-04-20 19:01:16,976 commission.czilber - DEBUG in models: sale #851 final = 1.4324
-2010-04-20 19:01:16,985 commission.czilber - DEBUG in models: sale #851 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': -915.80000000000007, 'latest_doh0price': 995708L}
-2010-04-20 19:01:16,990 commission.czilber - DEBUG in models: sale #853 c_zilber_base = 1.4324
-2010-04-20 19:01:16,995 commission.czilber - DEBUG in models: sale #853 final = 1.4324
-2010-04-20 19:01:17,004 commission.czilber - DEBUG in models: sale #853 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -7335.1000000000004, 'latest_doh0price': 846351L}
-2010-04-20 19:01:17,010 commission.czilber - DEBUG in models: sale #857 c_zilber_base = 1.4324
-2010-04-20 19:01:17,016 commission.czilber - DEBUG in models: sale #857 final = 1.4324
-2010-04-20 19:01:17,024 commission.czilber - DEBUG in models: sale #857 c_zilber_discount calc values: {'memudad': 1015622.0, 'scd.value': 1152.8, 'latest_doh0price': 1015622L}
-2010-04-20 19:01:17,030 commission.czilber - DEBUG in models: sale #854 c_zilber_base = 1.4324
-2010-04-20 19:01:17,035 commission.czilber - DEBUG in models: sale #854 final = 1.4324
-2010-04-20 19:01:17,044 commission.czilber - DEBUG in models: sale #854 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -7335.1000000000004, 'latest_doh0price': 846351L}
-2010-04-20 19:01:17,049 commission.czilber - DEBUG in models: sale #684 c_zilber_base = 1.4324
-2010-04-20 19:01:17,054 commission.czilber - DEBUG in models: sale #684 final = 1.4324
-2010-04-20 19:01:17,063 commission.czilber - DEBUG in models: sale #684 c_zilber_discount calc values: {'memudad': 901300.0, 'scd.value': 9870.0, 'latest_doh0price': 901300L}
-2010-04-20 19:01:17,068 commission.czilber - DEBUG in models: sale #605 c_zilber_base = 1.4324
-2010-04-20 19:01:17,073 commission.czilber - DEBUG in models: sale #605 final = 1.4324
-2010-04-20 19:01:17,081 commission.czilber - DEBUG in models: sale #605 c_zilber_discount calc values: {'memudad': 1031415.0, 'scd.value': 15808.5, 'latest_doh0price': 1031415L}
-2010-04-20 19:01:17,087 commission.czilber - DEBUG in models: sale #607 c_zilber_base = 1.4324
-2010-04-20 19:01:17,092 commission.czilber - DEBUG in models: sale #607 final = 1.4324
-2010-04-20 19:01:17,101 commission.czilber - DEBUG in models: sale #607 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': -7312.7000000000007, 'latest_doh0price': 1223127L}
-2010-04-20 19:01:17,106 commission.czilber - DEBUG in models: sale #606 c_zilber_base = 1.4324
-2010-04-20 19:01:17,111 commission.czilber - DEBUG in models: sale #606 final = 1.4324
-2010-04-20 19:01:17,119 commission.czilber - DEBUG in models: sale #606 c_zilber_discount calc values: {'memudad': 1072423.0, 'scd.value': 6130.2000000000007, 'latest_doh0price': 1072423L}
-2010-04-20 19:01:17,124 commission.czilber - DEBUG in models: sale #608 c_zilber_base = 1.4324
-2010-04-20 19:01:17,129 commission.czilber - DEBUG in models: sale #608 final = 1.4324
-2010-04-20 19:01:17,137 commission.czilber - DEBUG in models: sale #608 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': 17687.299999999999, 'latest_doh0price': 1223127L}
-2010-04-20 19:01:17,142 commission.czilber - DEBUG in models: last_demand_finish_date: 2010-04-20 19:01:15
-2010-04-20 19:01:17,223 commission.czilber - ERROR in models: error while calculating commissions for month 12/2009
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1649, in calc
+    demand.diffs.create(type=u'בונוס', reason = u'הפרשי עמלה (ניספח א)', amount=bonus)
+  File "/usr/lib/python2.4/site-packages/django/db/models/fields/related.py", line 367, in create
+    return super(RelatedManager, self).create(**kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/manager.py", line 126, in create
+    return self.get_query_set().create(**kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/query.py", line 315, in create
+    obj.save(force_insert=True)
+  File "/usr/lib/python2.4/site-packages/django/db/models/base.py", line 410, in save
+    self.save_base(force_insert=force_insert, force_update=force_update)
+  File "/usr/lib/python2.4/site-packages/django/db/models/base.py", line 495, in save_base
+    result = manager._insert(values, return_id=update_pk)
+  File "/usr/lib/python2.4/site-packages/django/db/models/manager.py", line 177, in _insert
+    return insert_query(self.model, values, **kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/query.py", line 1087, in insert_query
+    return query.execute_sql(return_id)
+  File "/usr/lib/python2.4/site-packages/django/db/models/sql/subqueries.py", line 320, in execute_sql
+    cursor = super(InsertQuery, self).execute_sql(None)
+  File "/usr/lib/python2.4/site-packages/django/db/models/sql/query.py", line 2369, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/lib/python2.4/site-packages/django/db/backends/mysql/base.py", line 84, in execute
+    return self.cursor.execute(query, args)
+  File "build/bdist.linux-i686/egg/MySQLdb/cursors.py", line 166, in execute
+  File "build/bdist.linux-i686/egg/MySQLdb/connections.py", line 35, in defaulterrorhandler
+IntegrityError: (1062, "Duplicate entry '104-\xd7\x91\xd7\x95\xd7\xa0\xd7\x95\xd7\xa1' for key 2")
+2010-04-20 20:07:10,529 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 6 sales.
+2010-04-20 20:07:10,679 commission - INFO in models: calculating affected sales(5) for month 5/2009
+2010-04-20 20:07:10,681 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 5 sales.
+2010-04-20 20:07:10,800 commission - INFO in models: sale #292 - price_final=820000
+2010-04-20 20:07:10,841 commission - INFO in models: sale #381 - price_final=820000
+2010-04-20 20:07:11,003 commission - INFO in models: sale #380 - price_final=820000
+2010-04-20 20:07:11,020 commission - INFO in models: sale #293 - price_final=1170000
+2010-04-20 20:07:11,038 commission - INFO in models: sale #383 - price_final=1170000
+2010-04-20 20:07:11,038 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:11,041 commission - INFO in models: calculating affected sales(3) for month 6/2009
+2010-04-20 20:07:11,043 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 3 sales.
+2010-04-20 20:07:11,107 commission - INFO in models: sale #386 - price_final=845000
+2010-04-20 20:07:11,124 commission - INFO in models: sale #387 - price_final=1170000
+2010-04-20 20:07:11,141 commission - INFO in models: sale #382 - price_final=1280000
+2010-04-20 20:07:11,141 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:11,252 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 4679.9999999999991, 'q[0].value': 1.3999999999999999, 's.price_final': 1170000L, 's.c_final': 1.0}
+2010-04-20 20:07:11,335 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 3279.9999999999995, 'q[0].value': 1.3999999999999999, 's.price_final': 820000L, 's.c_final': 1.0}
+2010-04-20 20:07:11,338 commission - ERROR in models: exception during calculate commission for project מבני תעשיה - מרום השרון .
 Traceback (most recent call last):
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 1477, in calc
-    pc_base = restore_object(q[0], last_demand_finish_date).value
-AttributeError: 'DeserializedObject' object has no attribute 'value'
-2010-04-20 19:01:18,631 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 4 sales.
-2010-04-20 19:01:18,682 commission.czilber - INFO in models: total cycle sales count: 4
-2010-04-20 19:01:18,690 commission.czilber - DEBUG in models: sale #988 price_final = 845970
-2010-04-20 19:01:18,698 commission.czilber - DEBUG in models: sale #989 price_final = 1024631
-2010-04-20 19:01:18,706 commission.czilber - DEBUG in models: sale #990 price_final = 1085714
-2010-04-20 19:01:18,714 commission.czilber - DEBUG in models: sale #1036 price_final = 896974
-2010-04-20 19:01:18,716 commission.czilber - DEBUG in models: prices_date = 2010-02-01, current_madad=126.9
-2010-04-20 19:01:18,722 commission.czilber - DEBUG in models: sale #988 c_zilber_base = 1.2498
-2010-04-20 19:01:18,727 commission.czilber - DEBUG in models: sale #988 final = 1.2498
-2010-04-20 19:01:18,737 commission.czilber - DEBUG in models: sale #988 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 1230.9000000000001, 'latest_doh0price': 846351L}
-2010-04-20 19:01:18,743 commission.czilber - DEBUG in models: sale #989 c_zilber_base = 1.2498
-2010-04-20 19:01:18,748 commission.czilber - DEBUG in models: sale #989 final = 1.2498
-2010-04-20 19:01:18,758 commission.czilber - DEBUG in models: sale #989 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': 4429.1999999999998, 'latest_doh0price': 995708L}
-2010-04-20 19:01:18,763 commission.czilber - DEBUG in models: sale #990 c_zilber_base = 1.2498
-2010-04-20 19:01:18,769 commission.czilber - DEBUG in models: sale #990 final = 1.2498
-2010-04-20 19:01:18,780 commission.czilber - DEBUG in models: sale #990 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 672.20000000000005, 'latest_doh0price': 1095278L}
-2010-04-20 19:01:18,786 commission.czilber - DEBUG in models: sale #1036 c_zilber_base = 1.2498
-2010-04-20 19:01:18,791 commission.czilber - DEBUG in models: sale #1036 final = 1.2498
-2010-04-20 19:01:18,801 commission.czilber - DEBUG in models: sale #1036 c_zilber_discount calc values: {'memudad': 717078.0, 'scd.value': 19335.100000000002, 'latest_doh0price': 717078L}
-2010-04-20 19:01:18,806 commission.czilber - DEBUG in models: last_demand_finish_date: 2010-04-20 19:01:17
-2010-04-20 19:01:18,915 commission.czilber - INFO in models: finished calculation for month 1/2010
-2010-04-20 19:01:19,990 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 3 sales.
-2010-04-20 19:01:20,080 commission.czilber - INFO in models: total cycle sales count: 7
-2010-04-20 19:01:20,088 commission.czilber - DEBUG in models: sale #1106 price_final = 859113
-2010-04-20 19:01:20,096 commission.czilber - DEBUG in models: sale #1108 price_final = 640394
-2010-04-20 19:01:20,106 commission.czilber - DEBUG in models: sale #1107 price_final = 1236453
-2010-04-20 19:01:20,113 commission.czilber - DEBUG in models: sale #988 price_final = 845970
-2010-04-20 19:01:20,121 commission.czilber - DEBUG in models: sale #989 price_final = 1024631
-2010-04-20 19:01:20,129 commission.czilber - DEBUG in models: sale #990 price_final = 1085714
-2010-04-20 19:01:20,137 commission.czilber - DEBUG in models: sale #1036 price_final = 896974
-2010-04-20 19:01:20,139 commission.czilber - DEBUG in models: prices_date = 2010-03-01, current_madad=126.9
-2010-04-20 19:01:20,145 commission.czilber - DEBUG in models: sale #1106 c_zilber_base = 1.2996
-2010-04-20 19:01:20,150 commission.czilber - DEBUG in models: sale #1106 final = 1.2996
-2010-04-20 19:01:20,160 commission.czilber - DEBUG in models: sale #1106 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 2564.9000000000001, 'latest_doh0price': 846351L}
-2010-04-20 19:01:20,165 commission.czilber - DEBUG in models: sale #1108 c_zilber_base = 1.2996
-2010-04-20 19:01:20,171 commission.czilber - DEBUG in models: sale #1108 final = 1.2996
-2010-04-20 19:01:20,180 commission.czilber - DEBUG in models: sale #1108 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -19635.100000000002, 'latest_doh0price': 846351L}
-2010-04-20 19:01:20,186 commission.czilber - DEBUG in models: sale #1107 c_zilber_base = 1.2996
-2010-04-20 19:01:20,192 commission.czilber - DEBUG in models: sale #1107 final = 1.2996
-2010-04-20 19:01:20,201 commission.czilber - DEBUG in models: sale #1107 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 15972.200000000001, 'latest_doh0price': 1095278L}
-2010-04-20 19:01:20,206 commission.czilber - DEBUG in models: sale #988 c_zilber_base = 1.2996
-2010-04-20 19:01:20,211 commission.czilber - DEBUG in models: sale #988 final = 1.2996
-2010-04-20 19:01:20,220 commission.czilber - DEBUG in models: sale #988 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 1230.9000000000001, 'latest_doh0price': 846351L}
-2010-04-20 19:01:20,225 commission.czilber - DEBUG in models: sale #989 c_zilber_base = 1.2996
-2010-04-20 19:01:20,230 commission.czilber - DEBUG in models: sale #989 final = 1.2996
-2010-04-20 19:01:20,239 commission.czilber - DEBUG in models: sale #989 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': 4429.1999999999998, 'latest_doh0price': 995708L}
-2010-04-20 19:01:20,244 commission.czilber - DEBUG in models: sale #990 c_zilber_base = 1.2996
-2010-04-20 19:01:20,249 commission.czilber - DEBUG in models: sale #990 final = 1.2996
-2010-04-20 19:01:20,257 commission.czilber - DEBUG in models: sale #990 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 672.20000000000005, 'latest_doh0price': 1095278L}
-2010-04-20 19:01:20,262 commission.czilber - DEBUG in models: sale #1036 c_zilber_base = 1.2996
-2010-04-20 19:01:20,285 commission.czilber - DEBUG in models: sale #1036 final = 1.2996
-2010-04-20 19:01:20,294 commission.czilber - DEBUG in models: sale #1036 c_zilber_discount calc values: {'memudad': 717078.0, 'scd.value': 19335.100000000002, 'latest_doh0price': 717078L}
-2010-04-20 19:01:20,298 commission.czilber - DEBUG in models: last_demand_finish_date: 2010-04-20 19:01:18
-2010-04-20 19:01:20,418 commission.czilber - ERROR in models: error while calculating commissions for month 2/2010
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1649, in calc
+    demand.diffs.create(type=u'בונוס', reason = u'הפרשי עמלה (ניספח א)', amount=bonus)
+  File "/usr/lib/python2.4/site-packages/django/db/models/fields/related.py", line 367, in create
+    return super(RelatedManager, self).create(**kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/manager.py", line 126, in create
+    return self.get_query_set().create(**kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/query.py", line 315, in create
+    obj.save(force_insert=True)
+  File "/usr/lib/python2.4/site-packages/django/db/models/base.py", line 410, in save
+    self.save_base(force_insert=force_insert, force_update=force_update)
+  File "/usr/lib/python2.4/site-packages/django/db/models/base.py", line 495, in save_base
+    result = manager._insert(values, return_id=update_pk)
+  File "/usr/lib/python2.4/site-packages/django/db/models/manager.py", line 177, in _insert
+    return insert_query(self.model, values, **kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/query.py", line 1087, in insert_query
+    return query.execute_sql(return_id)
+  File "/usr/lib/python2.4/site-packages/django/db/models/sql/subqueries.py", line 320, in execute_sql
+    cursor = super(InsertQuery, self).execute_sql(None)
+  File "/usr/lib/python2.4/site-packages/django/db/models/sql/query.py", line 2369, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/lib/python2.4/site-packages/django/db/backends/mysql/base.py", line 84, in execute
+    return self.cursor.execute(query, args)
+  File "build/bdist.linux-i686/egg/MySQLdb/cursors.py", line 166, in execute
+  File "build/bdist.linux-i686/egg/MySQLdb/connections.py", line 35, in defaulterrorhandler
+IntegrityError: (1062, "Duplicate entry '128-\xd7\x91\xd7\x95\xd7\xa0\xd7\x95\xd7\xa1' for key 2")
+2010-04-20 20:07:12,796 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 14 sales.
+2010-04-20 20:07:13,133 commission - INFO in models: calculating affected sales(8) for month 6/2009
+2010-04-20 20:07:13,134 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 8 sales.
+2010-04-20 20:07:13,233 commission - INFO in models: sale #386 - price_final=845000
+2010-04-20 20:07:13,250 commission - INFO in models: sale #387 - price_final=1170000
+2010-04-20 20:07:13,272 commission - INFO in models: sale #484 - price_final=1030000
+2010-04-20 20:07:13,299 commission - INFO in models: sale #486 - price_final=1360000
+2010-04-20 20:07:13,325 commission - INFO in models: sale #488 - price_final=845000
+2010-04-20 20:07:13,352 commission - INFO in models: sale #483 - price_final=900000
+2010-04-20 20:07:13,387 commission - INFO in models: sale #475 - price_final=1360000
+2010-04-20 20:07:13,418 commission - INFO in models: sale #382 - price_final=1280000
+2010-04-20 20:07:13,418 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:13,422 commission - INFO in models: calculating affected sales(9) for month 7/2009
+2010-04-20 20:07:13,425 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 9 sales.
+2010-04-20 20:07:13,548 commission - INFO in models: sale #481 - price_final=1150000
+2010-04-20 20:07:13,575 commission - INFO in models: sale #482 - price_final=900000
+2010-04-20 20:07:13,602 commission - INFO in models: sale #485 - price_final=1280000
+2010-04-20 20:07:13,628 commission - INFO in models: sale #487 - price_final=1030000
+2010-04-20 20:07:13,660 commission - INFO in models: sale #489 - price_final=1490000
+2010-04-20 20:07:13,791 commission - INFO in models: sale #490 - price_final=900000
+2010-04-20 20:07:13,809 commission - INFO in models: sale #476 - price_final=1490000
+2010-04-20 20:07:13,827 commission - INFO in models: sale #478 - price_final=1480000
+2010-04-20 20:07:13,844 commission - INFO in models: sale #479 - price_final=1470000
+2010-04-20 20:07:13,844 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:13,963 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 6400.0, 'q[0].value': 1.5, 's.price_final': 1280000L, 's.c_final': 1.0}
+2010-04-20 20:07:14,046 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 2535.0000000000005, 'q[0].value': 1.5, 's.price_final': 845000L, 's.c_final': 1.2}
+2010-04-20 20:07:14,130 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 5850.0, 'q[0].value': 1.5, 's.price_final': 1170000L, 's.c_final': 1.0}
+2010-04-20 20:07:14,133 commission - ERROR in models: exception during calculate commission for project מבני תעשיה - מרום השרון .
 Traceback (most recent call last):
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 1477, in calc
-    pc_base = restore_object(q[0], last_demand_finish_date).value
-AttributeError: 'DeserializedObject' object has no attribute 'value'
-2010-04-20 19:01:21,590 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 5 sales.
-2010-04-20 19:01:21,737 commission.czilber - INFO in models: total cycle sales count: 12
-2010-04-20 19:01:21,745 commission.czilber - DEBUG in models: sale #1175 price_final = 1331970
-2010-04-20 19:01:21,755 commission.czilber - DEBUG in models: sale #1174 price_final = 1386970
-2010-04-20 19:01:21,764 commission.czilber - DEBUG in models: sale #1177 price_final = 661375
-2010-04-20 19:01:21,775 commission.czilber - DEBUG in models: sale #1176 price_final = 636970
-2010-04-20 19:01:21,783 commission.czilber - DEBUG in models: sale #1178 price_final = 837438
-2010-04-20 19:01:21,791 commission.czilber - DEBUG in models: sale #1106 price_final = 859113
-2010-04-20 19:01:21,798 commission.czilber - DEBUG in models: sale #1108 price_final = 640394
-2010-04-20 19:01:21,806 commission.czilber - DEBUG in models: sale #1107 price_final = 1236453
-2010-04-20 19:01:21,814 commission.czilber - DEBUG in models: sale #988 price_final = 845970
-2010-04-20 19:01:21,842 commission.czilber - DEBUG in models: sale #989 price_final = 1024631
-2010-04-20 19:01:21,850 commission.czilber - DEBUG in models: sale #990 price_final = 1085714
-2010-04-20 19:01:21,858 commission.czilber - DEBUG in models: sale #1036 price_final = 896974
-2010-04-20 19:01:21,861 commission.czilber - DEBUG in models: prices_date = 2010-04-01, current_madad=126.9
-2010-04-20 19:01:21,866 commission.czilber - DEBUG in models: sale #1175 c_zilber_base = 1.3826
-2010-04-20 19:01:21,872 commission.czilber - DEBUG in models: sale #1175 final = 1.3826
-2010-04-20 19:01:21,882 commission.czilber - DEBUG in models: sale #1175 c_zilber_discount calc values: {'memudad': 1194849.0, 'scd.value': 15710.1, 'latest_doh0price': 1194849L}
-2010-04-20 19:01:21,910 commission.czilber - DEBUG in models: sale #1174 c_zilber_base = 1.3826
-2010-04-20 19:01:21,916 commission.czilber - DEBUG in models: sale #1174 final = 1.3826
-2010-04-20 19:01:21,929 commission.czilber - DEBUG in models: sale #1174 c_zilber_discount calc values: {'memudad': 1194849.0, 'scd.value': 21292.600000000002, 'latest_doh0price': 1194849L}
-2010-04-20 19:01:22,033 commission.czilber - DEBUG in models: sale #1177 c_zilber_base = 1.3826
-2010-04-20 19:01:22,038 commission.czilber - DEBUG in models: sale #1177 final = 1.3826
-2010-04-20 19:01:22,047 commission.czilber - DEBUG in models: sale #1177 c_zilber_discount calc values: {'memudad': 617338.0, 'scd.value': 5395.8000000000002, 'latest_doh0price': 617338L}
-2010-04-20 19:01:22,052 commission.czilber - DEBUG in models: sale #1176 c_zilber_base = 1.3826
-2010-04-20 19:01:22,058 commission.czilber - DEBUG in models: sale #1176 final = 1.3826
-2010-04-20 19:01:22,066 commission.czilber - DEBUG in models: sale #1176 c_zilber_discount calc values: {'memudad': 617338.0, 'scd.value': 2918.7000000000003, 'latest_doh0price': 617338L}
-2010-04-20 19:01:22,072 commission.czilber - DEBUG in models: sale #1178 c_zilber_base = 1.3826
-2010-04-20 19:01:22,078 commission.czilber - DEBUG in models: sale #1178 final = 1.3826
-2010-04-20 19:01:22,080 commission.czilber - WARNING in models: skipping c_zilber_discount calc for sale #1178. no doh0 prices
-2010-04-20 19:01:22,085 commission.czilber - DEBUG in models: sale #1106 c_zilber_base = 1.3826
-2010-04-20 19:01:22,089 commission.czilber - DEBUG in models: sale #1106 final = 1.3826
-2010-04-20 19:01:22,097 commission.czilber - DEBUG in models: sale #1106 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 2564.9000000000001, 'latest_doh0price': 846351L}
-2010-04-20 19:01:22,102 commission.czilber - DEBUG in models: sale #1108 c_zilber_base = 1.3826
-2010-04-20 19:01:22,107 commission.czilber - DEBUG in models: sale #1108 final = 1.3826
-2010-04-20 19:01:22,115 commission.czilber - DEBUG in models: sale #1108 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -19635.100000000002, 'latest_doh0price': 846351L}
-2010-04-20 19:01:22,120 commission.czilber - DEBUG in models: sale #1107 c_zilber_base = 1.3826
-2010-04-20 19:01:22,125 commission.czilber - DEBUG in models: sale #1107 final = 1.3826
-2010-04-20 19:01:22,133 commission.czilber - DEBUG in models: sale #1107 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 15972.200000000001, 'latest_doh0price': 1095278L}
-2010-04-20 19:01:22,138 commission.czilber - DEBUG in models: sale #988 c_zilber_base = 1.3826
-2010-04-20 19:01:22,143 commission.czilber - DEBUG in models: sale #988 final = 1.3826
-2010-04-20 19:01:22,151 commission.czilber - DEBUG in models: sale #988 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 1230.9000000000001, 'latest_doh0price': 846351L}
-2010-04-20 19:01:22,156 commission.czilber - DEBUG in models: sale #989 c_zilber_base = 1.3826
-2010-04-20 19:01:22,161 commission.czilber - DEBUG in models: sale #989 final = 1.3826
-2010-04-20 19:01:22,169 commission.czilber - DEBUG in models: sale #989 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': 4429.1999999999998, 'latest_doh0price': 995708L}
-2010-04-20 19:01:22,174 commission.czilber - DEBUG in models: sale #990 c_zilber_base = 1.3826
-2010-04-20 19:01:22,178 commission.czilber - DEBUG in models: sale #990 final = 1.3826
-2010-04-20 19:01:22,187 commission.czilber - DEBUG in models: sale #990 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 672.20000000000005, 'latest_doh0price': 1095278L}
-2010-04-20 19:01:22,192 commission.czilber - DEBUG in models: sale #1036 c_zilber_base = 1.3826
-2010-04-20 19:01:22,197 commission.czilber - DEBUG in models: sale #1036 final = 1.3826
-2010-04-20 19:01:22,205 commission.czilber - DEBUG in models: sale #1036 c_zilber_discount calc values: {'memudad': 717078.0, 'scd.value': 19335.100000000002, 'latest_doh0price': 717078L}
-2010-04-20 19:01:22,210 commission.czilber - DEBUG in models: last_demand_finish_date: 2010-04-20 19:01:20
-2010-04-20 19:01:22,368 commission.czilber - ERROR in models: error while calculating commissions for month 3/2010
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1649, in calc
+    demand.diffs.create(type=u'בונוס', reason = u'הפרשי עמלה (ניספח א)', amount=bonus)
+  File "/usr/lib/python2.4/site-packages/django/db/models/fields/related.py", line 367, in create
+    return super(RelatedManager, self).create(**kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/manager.py", line 126, in create
+    return self.get_query_set().create(**kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/query.py", line 315, in create
+    obj.save(force_insert=True)
+  File "/usr/lib/python2.4/site-packages/django/db/models/base.py", line 410, in save
+    self.save_base(force_insert=force_insert, force_update=force_update)
+  File "/usr/lib/python2.4/site-packages/django/db/models/base.py", line 495, in save_base
+    result = manager._insert(values, return_id=update_pk)
+  File "/usr/lib/python2.4/site-packages/django/db/models/manager.py", line 177, in _insert
+    return insert_query(self.model, values, **kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/query.py", line 1087, in insert_query
+    return query.execute_sql(return_id)
+  File "/usr/lib/python2.4/site-packages/django/db/models/sql/subqueries.py", line 320, in execute_sql
+    cursor = super(InsertQuery, self).execute_sql(None)
+  File "/usr/lib/python2.4/site-packages/django/db/models/sql/query.py", line 2369, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/lib/python2.4/site-packages/django/db/backends/mysql/base.py", line 84, in execute
+    return self.cursor.execute(query, args)
+  File "build/bdist.linux-i686/egg/MySQLdb/cursors.py", line 166, in execute
+  File "build/bdist.linux-i686/egg/MySQLdb/connections.py", line 35, in defaulterrorhandler
+IntegrityError: (1062, "Duplicate entry '148-\xd7\x91\xd7\x95\xd7\xa0\xd7\x95\xd7\xa1' for key 2")
+2010-04-20 20:07:16,022 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 11 sales.
+2010-04-20 20:07:16,175 commission - INFO in models: calculating affected sales(3) for month 8/2009
+2010-04-20 20:07:16,176 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 3 sales.
+2010-04-20 20:07:16,243 commission - INFO in models: sale #497 - price_final=1236000
+2010-04-20 20:07:16,261 commission - INFO in models: sale #502 - price_final=865000
+2010-04-20 20:07:16,279 commission - INFO in models: sale #503 - price_final=1234970
+2010-04-20 20:07:16,279 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:16,282 commission - INFO in models: calculating affected sales(9) for month 6/2009
+2010-04-20 20:07:16,284 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 9 sales.
+2010-04-20 20:07:16,388 commission - INFO in models: sale #386 - price_final=845000
+2010-04-20 20:07:16,406 commission - INFO in models: sale #387 - price_final=1170000
+2010-04-20 20:07:16,423 commission - INFO in models: sale #484 - price_final=1030000
+2010-04-20 20:07:16,440 commission - INFO in models: sale #486 - price_final=1360000
+2010-04-20 20:07:16,458 commission - INFO in models: sale #488 - price_final=845000
+2010-04-20 20:07:16,476 commission - INFO in models: sale #496 - price_final=1030000
+2010-04-20 20:07:16,494 commission - INFO in models: sale #483 - price_final=900000
+2010-04-20 20:07:16,511 commission - INFO in models: sale #475 - price_final=1360000
+2010-04-20 20:07:16,529 commission - INFO in models: sale #382 - price_final=1280000
+2010-04-20 20:07:16,529 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:16,532 commission - INFO in models: calculating affected sales(16) for month 7/2009
+2010-04-20 20:07:16,534 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 16 sales.
+2010-04-20 20:07:16,709 commission - INFO in models: sale #481 - price_final=1150000
+2010-04-20 20:07:16,729 commission - INFO in models: sale #482 - price_final=900000
+2010-04-20 20:07:16,748 commission - INFO in models: sale #485 - price_final=1280000
+2010-04-20 20:07:16,766 commission - INFO in models: sale #487 - price_final=1030000
+2010-04-20 20:07:16,784 commission - INFO in models: sale #489 - price_final=1490000
+2010-04-20 20:07:16,802 commission - INFO in models: sale #490 - price_final=900000
+2010-04-20 20:07:16,820 commission - INFO in models: sale #495 - price_final=1280000
+2010-04-20 20:07:16,837 commission - INFO in models: sale #498 - price_final=850000
+2010-04-20 20:07:16,855 commission - INFO in models: sale #499 - price_final=900000
+2010-04-20 20:07:16,872 commission - INFO in models: sale #500 - price_final=1280000
+2010-04-20 20:07:16,889 commission - INFO in models: sale #501 - price_final=1185000
+2010-04-20 20:07:16,906 commission - INFO in models: sale #568 - price_final=1050000
+2010-04-20 20:07:16,924 commission - INFO in models: sale #569 - price_final=1050000
+2010-04-20 20:07:16,941 commission - INFO in models: sale #476 - price_final=1490000
+2010-04-20 20:07:16,958 commission - INFO in models: sale #478 - price_final=1480000
+2010-04-20 20:07:16,975 commission - INFO in models: sale #479 - price_final=1470000
+2010-04-20 20:07:16,976 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:17,131 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1280000L, 's.c_final': 1.5}
+2010-04-20 20:07:17,214 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 845000L, 's.c_final': 1.5}
+2010-04-20 20:07:17,298 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1170000L, 's.c_final': 1.5}
+2010-04-20 20:07:17,381 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1360000L, 's.c_final': 1.5}
+2010-04-20 20:07:17,464 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1360000L, 's.c_final': 1.5}
+2010-04-20 20:07:17,547 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 900000L, 's.c_final': 1.5}
+2010-04-20 20:07:17,840 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1030000L, 's.c_final': 1.5}
+2010-04-20 20:07:17,925 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 845000L, 's.c_final': 1.5}
+2010-04-20 20:07:18,082 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1490000L, 's.c_final': 1.5}
+2010-04-20 20:07:18,196 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1150000L, 's.c_final': 1.5}
+2010-04-20 20:07:18,279 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 900000L, 's.c_final': 1.5}
+2010-04-20 20:07:18,362 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1280000L, 's.c_final': 1.5}
+2010-04-20 20:07:18,446 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1030000L, 's.c_final': 1.5}
+2010-04-20 20:07:18,529 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1490000L, 's.c_final': 1.5}
+2010-04-20 20:07:18,614 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1480000L, 's.c_final': 1.5}
+2010-04-20 20:07:18,698 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1470000L, 's.c_final': 1.5}
+2010-04-20 20:07:18,783 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 900000L, 's.c_final': 1.5}
+2010-04-20 20:07:20,765 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 6 sales.
+2010-04-20 20:07:21,158 commission - INFO in models: calculating affected sales(4) for month 8/2009
+2010-04-20 20:07:21,159 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 4 sales.
+2010-04-20 20:07:21,260 commission - INFO in models: sale #616 - price_final=970000
+2010-04-20 20:07:21,278 commission - INFO in models: sale #497 - price_final=1236000
+2010-04-20 20:07:21,296 commission - INFO in models: sale #502 - price_final=865000
+2010-04-20 20:07:21,313 commission - INFO in models: sale #503 - price_final=1234970
+2010-04-20 20:07:21,314 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:21,317 commission - INFO in models: calculating affected sales(2) for month 9/2009
+2010-04-20 20:07:21,318 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 2 sales.
+2010-04-20 20:07:21,374 commission - INFO in models: sale #628 - price_final=910000
+2010-04-20 20:07:21,391 commission - INFO in models: sale #629 - price_final=1250000
+2010-04-20 20:07:21,391 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:21,394 commission - INFO in models: calculating affected sales(19) for month 7/2009
+2010-04-20 20:07:21,396 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 19 sales.
+2010-04-20 20:07:21,580 commission - INFO in models: sale #481 - price_final=1150000
+2010-04-20 20:07:21,597 commission - INFO in models: sale #482 - price_final=900000
+2010-04-20 20:07:21,614 commission - INFO in models: sale #485 - price_final=1280000
+2010-04-20 20:07:21,631 commission - INFO in models: sale #614 - price_final=1400000
+2010-04-20 20:07:21,648 commission - INFO in models: sale #615 - price_final=1030000
+2010-04-20 20:07:21,845 commission - INFO in models: sale #489 - price_final=1490000
+2010-04-20 20:07:21,866 commission - INFO in models: sale #490 - price_final=900000
+2010-04-20 20:07:21,883 commission - INFO in models: sale #487 - price_final=1030000
+2010-04-20 20:07:21,901 commission - INFO in models: sale #495 - price_final=1280000
+2010-04-20 20:07:21,918 commission - INFO in models: sale #498 - price_final=850000
+2010-04-20 20:07:21,935 commission - INFO in models: sale #499 - price_final=900000
+2010-04-20 20:07:21,952 commission - INFO in models: sale #500 - price_final=1280000
+2010-04-20 20:07:21,969 commission - INFO in models: sale #501 - price_final=1185000
+2010-04-20 20:07:21,987 commission - INFO in models: sale #617 - price_final=1420000
+2010-04-20 20:07:22,004 commission - INFO in models: sale #568 - price_final=1050000
+2010-04-20 20:07:22,021 commission - INFO in models: sale #569 - price_final=1050000
+2010-04-20 20:07:22,038 commission - INFO in models: sale #476 - price_final=1490000
+2010-04-20 20:07:22,055 commission - INFO in models: sale #478 - price_final=1480000
+2010-04-20 20:07:22,072 commission - INFO in models: sale #479 - price_final=1470000
+2010-04-20 20:07:22,072 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:22,278 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 4943.9999999999991, 'q[0].value': 1.3999999999999999, 's.price_final': 1236000L, 's.c_final': 1.0}
+2010-04-20 20:07:22,362 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 3459.9999999999995, 'q[0].value': 1.3999999999999999, 's.price_final': 865000L, 's.c_final': 1.0}
+2010-04-20 20:07:22,446 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 2469.9399999999996, 'q[0].value': 1.3999999999999999, 's.price_final': 1234970L, 's.c_final': 1.2}
+2010-04-20 20:07:22,722 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1490000L, 's.c_final': 1.5}
+2010-04-20 20:07:22,808 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1150000L, 's.c_final': 1.5}
+2010-04-20 20:07:22,895 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 900000L, 's.c_final': 1.5}
+2010-04-20 20:07:22,981 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1280000L, 's.c_final': 1.5}
+2010-04-20 20:07:23,070 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1030000L, 's.c_final': 1.5}
+2010-04-20 20:07:23,156 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1490000L, 's.c_final': 1.5}
+2010-04-20 20:07:23,239 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1480000L, 's.c_final': 1.5}
+2010-04-20 20:07:23,322 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1470000L, 's.c_final': 1.5}
+2010-04-20 20:07:23,405 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 900000L, 's.c_final': 1.5}
+2010-04-20 20:07:23,488 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1280000L, 's.c_final': 1.5}
+2010-04-20 20:07:23,572 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 850000L, 's.c_final': 1.5}
+2010-04-20 20:07:23,663 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 900000L, 's.c_final': 1.5}
+2010-04-20 20:07:23,758 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1280000L, 's.c_final': 1.5}
+2010-04-20 20:07:23,845 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1185000L, 's.c_final': 1.5}
+2010-04-20 20:07:23,931 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1050000L, 's.c_final': 1.5}
+2010-04-20 20:07:24,017 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.5, 's.price_final': 1050000L, 's.c_final': 1.5}
+2010-04-20 20:07:25,788 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 6 sales.
+2010-04-20 20:07:25,880 commission - INFO in models: calculating affected sales(5) for month 8/2009
+2010-04-20 20:07:25,881 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 5 sales.
+2010-04-20 20:07:26,216 commission - INFO in models: sale #616 - price_final=970000
+2010-04-20 20:07:26,234 commission - INFO in models: sale #497 - price_final=1236000
+2010-04-20 20:07:26,252 commission - INFO in models: sale #709 - price_final=910000
+2010-04-20 20:07:26,269 commission - INFO in models: sale #502 - price_final=865000
+2010-04-20 20:07:26,287 commission - INFO in models: sale #503 - price_final=1234970
+2010-04-20 20:07:26,287 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:26,291 commission - INFO in models: calculating affected sales(4) for month 9/2009
+2010-04-20 20:07:26,292 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 4 sales.
+2010-04-20 20:07:26,368 commission - INFO in models: sale #696 - price_final=1100000
+2010-04-20 20:07:26,386 commission - INFO in models: sale #628 - price_final=910000
+2010-04-20 20:07:26,404 commission - INFO in models: sale #629 - price_final=1250000
+2010-04-20 20:07:26,421 commission - INFO in models: sale #695 - price_final=1463000
+2010-04-20 20:07:26,421 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:26,424 commission - INFO in models: calculating affected sales(3) for month 10/2009
+2010-04-20 20:07:26,426 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 3 sales.
+2010-04-20 20:07:26,494 commission - INFO in models: sale #697 - price_final=1120000
+2010-04-20 20:07:26,512 commission - INFO in models: sale #708 - price_final=980000
+2010-04-20 20:07:26,531 commission - INFO in models: sale #685 - price_final=940000
+2010-04-20 20:07:26,531 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:26,663 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 4943.9999999999991, 'q[0].value': 1.3999999999999999, 's.price_final': 1236000L, 's.c_final': 1.0}
+2010-04-20 20:07:26,750 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 3459.9999999999995, 'q[0].value': 1.3999999999999999, 's.price_final': 865000L, 's.c_final': 1.0}
+2010-04-20 20:07:26,837 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 2469.9399999999996, 'q[0].value': 1.3999999999999999, 's.price_final': 1234970L, 's.c_final': 1.2}
+2010-04-20 20:07:26,926 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1939.9999999999998, 'q[0].value': 1.3999999999999999, 's.price_final': 970000L, 's.c_final': 1.2}
+2010-04-20 20:07:27,031 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 4550.0, 'q[0].value': 1.5, 's.price_final': 910000L, 's.c_final': 1.0}
+2010-04-20 20:07:27,117 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 6250.0, 'q[0].value': 1.5, 's.price_final': 1250000L, 's.c_final': 1.0}
+2010-04-20 20:07:27,121 commission - ERROR in models: exception during calculate commission for project מבני תעשיה - מרום השרון .
 Traceback (most recent call last):
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 1477, in calc
-    pc_base = restore_object(q[0], last_demand_finish_date).value
-AttributeError: 'DeserializedObject' object has no attribute 'value'
-2010-04-20 19:01:23,634 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
-2010-04-20 19:01:23,655 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
-2010-04-20 19:01:25,202 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
-2010-04-20 19:01:26,035 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
-2010-04-20 19:39:08,671 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
-2010-04-20 19:39:09,695 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 6 sales.
-2010-04-20 19:39:09,715 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1649, in calc
+    demand.diffs.create(type=u'בונוס', reason = u'הפרשי עמלה (ניספח א)', amount=bonus)
+  File "/usr/lib/python2.4/site-packages/django/db/models/fields/related.py", line 367, in create
+    return super(RelatedManager, self).create(**kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/manager.py", line 126, in create
+    return self.get_query_set().create(**kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/query.py", line 315, in create
+    obj.save(force_insert=True)
+  File "/usr/lib/python2.4/site-packages/django/db/models/base.py", line 410, in save
+    self.save_base(force_insert=force_insert, force_update=force_update)
+  File "/usr/lib/python2.4/site-packages/django/db/models/base.py", line 495, in save_base
+    result = manager._insert(values, return_id=update_pk)
+  File "/usr/lib/python2.4/site-packages/django/db/models/manager.py", line 177, in _insert
+    return insert_query(self.model, values, **kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/query.py", line 1087, in insert_query
+    return query.execute_sql(return_id)
+  File "/usr/lib/python2.4/site-packages/django/db/models/sql/subqueries.py", line 320, in execute_sql
+    cursor = super(InsertQuery, self).execute_sql(None)
+  File "/usr/lib/python2.4/site-packages/django/db/models/sql/query.py", line 2369, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/lib/python2.4/site-packages/django/db/backends/mysql/base.py", line 84, in execute
+    return self.cursor.execute(query, args)
+  File "build/bdist.linux-i686/egg/MySQLdb/cursors.py", line 166, in execute
+  File "build/bdist.linux-i686/egg/MySQLdb/connections.py", line 35, in defaulterrorhandler
+IntegrityError: (1062, "Duplicate entry '230-\xd7\x91\xd7\x95\xd7\xa0\xd7\x95\xd7\xa1' for key 2")
+2010-04-20 20:07:28,616 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 6 sales.
+2010-04-20 20:07:28,709 commission - INFO in models: calculating affected sales(1) for month 11/2009
+2010-04-20 20:07:28,711 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 1 sales.
+2010-04-20 20:07:28,755 commission - INFO in models: sale #799 - price_final=1375000
+2010-04-20 20:07:28,756 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:28,759 commission - INFO in models: calculating affected sales(6) for month 9/2009
+2010-04-20 20:07:28,760 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 6 sales.
+2010-04-20 20:07:28,844 commission - INFO in models: sale #800 - price_final=1090000
+2010-04-20 20:07:28,862 commission - INFO in models: sale #628 - price_final=910000
+2010-04-20 20:07:28,879 commission - INFO in models: sale #629 - price_final=1250000
+2010-04-20 20:07:28,897 commission - INFO in models: sale #695 - price_final=1463000
+2010-04-20 20:07:28,915 commission - INFO in models: sale #696 - price_final=1100000
+2010-04-20 20:07:28,933 commission - INFO in models: sale #794 - price_final=1566000
+2010-04-20 20:07:28,933 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:28,936 commission - INFO in models: calculating affected sales(6) for month 10/2009
+2010-04-20 20:07:28,938 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 6 sales.
+2010-04-20 20:07:29,023 commission - INFO in models: sale #801 - price_final=1140000
+2010-04-20 20:07:29,041 commission - INFO in models: sale #708 - price_final=980000
+2010-04-20 20:07:29,060 commission - INFO in models: sale #685 - price_final=940000
+2010-04-20 20:07:29,077 commission - INFO in models: sale #697 - price_final=1120000
+2010-04-20 20:07:29,098 commission - INFO in models: sale #795 - price_final=1475000
+2010-04-20 20:07:29,116 commission - INFO in models: sale #796 - price_final=1000000
+2010-04-20 20:07:29,116 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:29,251 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 4550.0, 'q[0].value': 1.5, 's.price_final': 910000L, 's.c_final': 1.0}
+2010-04-20 20:07:29,338 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 3750.0000000000005, 'q[0].value': 1.5, 's.price_final': 1250000L, 's.c_final': 1.2}
+2010-04-20 20:07:29,426 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 7315.0, 'q[0].value': 1.5, 's.price_final': 1463000L, 's.c_final': 1.0}
+2010-04-20 20:07:29,518 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 3300.0000000000005, 'q[0].value': 1.5, 's.price_final': 1100000L, 's.c_final': 1.2}
+2010-04-20 20:07:29,632 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 4700.0, 'q[0].value': 1.5, 's.price_final': 940000L, 's.c_final': 1.0}
+2010-04-20 20:07:29,719 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 3360.0000000000005, 'q[0].value': 1.5, 's.price_final': 1120000L, 's.c_final': 1.2}
+2010-04-20 20:07:29,807 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 4900.0, 'q[0].value': 1.5, 's.price_final': 980000L, 's.c_final': 1.0}
+2010-04-20 20:07:29,808 commission - ERROR in models: exception during calculate commission for project מבני תעשיה - מרום השרון .
 Traceback (most recent call last):
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
-    c = restore_object(c, restore_date)
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
-    version = reversion.models.Version.objects.get_for_date(instance, date)
-  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
-    raise self.model.DoesNotExist
-DoesNotExist
-2010-04-20 19:39:10,882 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 4 sales.
-2010-04-20 19:39:10,897 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1649, in calc
+    demand.diffs.create(type=u'בונוס', reason = u'הפרשי עמלה (ניספח א)', amount=bonus)
+  File "/usr/lib/python2.4/site-packages/django/db/models/fields/related.py", line 367, in create
+    return super(RelatedManager, self).create(**kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/manager.py", line 126, in create
+    return self.get_query_set().create(**kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/query.py", line 315, in create
+    obj.save(force_insert=True)
+  File "/usr/lib/python2.4/site-packages/django/db/models/base.py", line 410, in save
+    self.save_base(force_insert=force_insert, force_update=force_update)
+  File "/usr/lib/python2.4/site-packages/django/db/models/base.py", line 495, in save_base
+    result = manager._insert(values, return_id=update_pk)
+  File "/usr/lib/python2.4/site-packages/django/db/models/manager.py", line 177, in _insert
+    return insert_query(self.model, values, **kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/query.py", line 1087, in insert_query
+    return query.execute_sql(return_id)
+  File "/usr/lib/python2.4/site-packages/django/db/models/sql/subqueries.py", line 320, in execute_sql
+    cursor = super(InsertQuery, self).execute_sql(None)
+  File "/usr/lib/python2.4/site-packages/django/db/models/sql/query.py", line 2369, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/lib/python2.4/site-packages/django/db/backends/mysql/base.py", line 84, in execute
+    return self.cursor.execute(query, args)
+  File "build/bdist.linux-i686/egg/MySQLdb/cursors.py", line 166, in execute
+  File "build/bdist.linux-i686/egg/MySQLdb/connections.py", line 35, in defaulterrorhandler
+IntegrityError: (1062, "Duplicate entry '268-\xd7\x91\xd7\x95\xd7\xa0\xd7\x95\xd7\xa1' for key 2")
+2010-04-20 20:07:31,534 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 5 sales.
+2010-04-20 20:07:31,633 commission - INFO in models: calculating affected sales(4) for month 11/2009
+2010-04-20 20:07:31,635 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 4 sales.
+2010-04-20 20:07:31,720 commission - INFO in models: sale #881 - price_final=1160000
+2010-04-20 20:07:31,741 commission - INFO in models: sale #882 - price_final=1320000
+2010-04-20 20:07:31,761 commission - INFO in models: sale #799 - price_final=1375000
+2010-04-20 20:07:31,781 commission - INFO in models: sale #903 - price_final=940000
+2010-04-20 20:07:31,784 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:31,788 commission - INFO in models: calculating affected sales(8) for month 10/2009
+2010-04-20 20:07:31,790 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 8 sales.
+2010-04-20 20:07:31,898 commission - INFO in models: sale #801 - price_final=1140000
+2010-04-20 20:07:31,919 commission - INFO in models: sale #708 - price_final=980000
+2010-04-20 20:07:31,939 commission - INFO in models: sale #685 - price_final=940000
+2010-04-20 20:07:31,958 commission - INFO in models: sale #880 - price_final=970000
+2010-04-20 20:07:31,978 commission - INFO in models: sale #883 - price_final=1465000
+2010-04-20 20:07:31,997 commission - INFO in models: sale #697 - price_final=1120000
+2010-04-20 20:07:32,016 commission - INFO in models: sale #795 - price_final=1475000
+2010-04-20 20:07:32,043 commission - INFO in models: sale #796 - price_final=1000000
+2010-04-20 20:07:32,044 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:32,158 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 6875.0, 'q[0].value': 1.5, 's.price_final': 1375000L, 's.c_final': 1.0}
+2010-04-20 20:07:32,307 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 940.00000000000091, 'q[0].value': 1.5, 's.price_final': 940000L, 's.c_final': 1.3999999999999999}
+2010-04-20 20:07:32,401 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1120.0000000000009, 'q[0].value': 1.5, 's.price_final': 1120000L, 's.c_final': 1.3999999999999999}
+2010-04-20 20:07:32,544 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 980.00000000000091, 'q[0].value': 1.5, 's.price_final': 980000L, 's.c_final': 1.3999999999999999}
+2010-04-20 20:07:32,662 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1000.0000000000009, 'q[0].value': 1.5, 's.price_final': 1000000L, 's.c_final': 1.3999999999999999}
+2010-04-20 20:07:32,755 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1475.0000000000014, 'q[0].value': 1.5, 's.price_final': 1475000L, 's.c_final': 1.3999999999999999}
+2010-04-20 20:07:32,850 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1140.0000000000009, 'q[0].value': 1.5, 's.price_final': 1140000L, 's.c_final': 1.3999999999999999}
+2010-04-20 20:07:32,956 commission - ERROR in models: exception during calculate commission for project מבני תעשיה - מרום השרון .
 Traceback (most recent call last):
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
-    c = restore_object(c, restore_date)
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
-    version = reversion.models.Version.objects.get_for_date(instance, date)
-  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
-    raise self.model.DoesNotExist
-DoesNotExist
-2010-04-20 19:39:12,221 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 6 sales.
-2010-04-20 19:39:12,263 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1649, in calc
+    demand.diffs.create(type=u'בונוס', reason = u'הפרשי עמלה (ניספח א)', amount=bonus)
+  File "/usr/lib/python2.4/site-packages/django/db/models/fields/related.py", line 367, in create
+    return super(RelatedManager, self).create(**kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/manager.py", line 126, in create
+    return self.get_query_set().create(**kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/query.py", line 315, in create
+    obj.save(force_insert=True)
+  File "/usr/lib/python2.4/site-packages/django/db/models/base.py", line 410, in save
+    self.save_base(force_insert=force_insert, force_update=force_update)
+  File "/usr/lib/python2.4/site-packages/django/db/models/base.py", line 495, in save_base
+    result = manager._insert(values, return_id=update_pk)
+  File "/usr/lib/python2.4/site-packages/django/db/models/manager.py", line 177, in _insert
+    return insert_query(self.model, values, **kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/query.py", line 1087, in insert_query
+    return query.execute_sql(return_id)
+  File "/usr/lib/python2.4/site-packages/django/db/models/sql/subqueries.py", line 320, in execute_sql
+    cursor = super(InsertQuery, self).execute_sql(None)
+  File "/usr/lib/python2.4/site-packages/django/db/models/sql/query.py", line 2369, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/lib/python2.4/site-packages/django/db/backends/mysql/base.py", line 84, in execute
+    return self.cursor.execute(query, args)
+  File "build/bdist.linux-i686/egg/MySQLdb/cursors.py", line 166, in execute
+  File "build/bdist.linux-i686/egg/MySQLdb/connections.py", line 35, in defaulterrorhandler
+IntegrityError: (1062, "Duplicate entry '301-\xd7\x91\xd7\x95\xd7\xa0\xd7\x95\xd7\xa1' for key 2")
+2010-04-20 20:07:34,889 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 7 sales.
+2010-04-20 20:07:34,993 commission - INFO in models: calculating affected sales(2) for month 1/2010
+2010-04-20 20:07:34,995 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 2 sales.
+2010-04-20 20:07:35,050 commission - INFO in models: sale #963 - price_final=1000000
+2010-04-20 20:07:35,068 commission - INFO in models: sale #965 - price_final=980000
+2010-04-20 20:07:35,068 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:35,071 commission - INFO in models: calculating affected sales(6) for month 11/2009
+2010-04-20 20:07:35,073 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 6 sales.
+2010-04-20 20:07:35,157 commission - INFO in models: sale #960 - price_final=1125000
+2010-04-20 20:07:35,174 commission - INFO in models: sale #961 - price_final=1255000
+2010-04-20 20:07:35,192 commission - INFO in models: sale #903 - price_final=940000
+2010-04-20 20:07:35,209 commission - INFO in models: sale #881 - price_final=1160000
+2010-04-20 20:07:35,227 commission - INFO in models: sale #882 - price_final=1320000
+2010-04-20 20:07:35,245 commission - INFO in models: sale #799 - price_final=1375000
+2010-04-20 20:07:35,245 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:35,248 commission - INFO in models: calculating affected sales(2) for month 12/2009
+2010-04-20 20:07:35,250 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 2 sales.
+2010-04-20 20:07:35,305 commission - INFO in models: sale #966 - price_final=995000
+2010-04-20 20:07:35,323 commission - INFO in models: sale #959 - price_final=1375000
+2010-04-20 20:07:35,323 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:35,327 commission - INFO in models: calculating affected sales(7) for month 9/2009
+2010-04-20 20:07:35,328 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 7 sales.
+2010-04-20 20:07:35,420 commission - INFO in models: sale #800 - price_final=1090000
+2010-04-20 20:07:35,438 commission - INFO in models: sale #964 - price_final=1080000
+2010-04-20 20:07:35,456 commission - INFO in models: sale #628 - price_final=910000
+2010-04-20 20:07:35,476 commission - INFO in models: sale #629 - price_final=1250000
+2010-04-20 20:07:35,494 commission - INFO in models: sale #695 - price_final=1463000
+2010-04-20 20:07:35,512 commission - INFO in models: sale #696 - price_final=1100000
+2010-04-20 20:07:35,530 commission - INFO in models: sale #794 - price_final=1566000
+2010-04-20 20:07:35,530 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:35,667 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 6875.0, 'q[0].value': 1.5, 's.price_final': 1375000L, 's.c_final': 1.0}
+2010-04-20 20:07:35,755 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 3960.0000000000005, 'q[0].value': 1.5, 's.price_final': 1320000L, 's.c_final': 1.2}
+2010-04-20 20:07:35,841 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 4700.0, 'q[0].value': 1.5, 's.price_final': 940000L, 's.c_final': 1.0}
+2010-04-20 20:07:35,929 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 3480.0000000000005, 'q[0].value': 1.5, 's.price_final': 1160000L, 's.c_final': 1.2}
+2010-04-20 20:07:36,066 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 910.00000000000091, 'q[0].value': 1.5, 's.price_final': 910000L, 's.c_final': 1.3999999999999999}
+2010-04-20 20:07:36,153 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1250.0000000000011, 'q[0].value': 1.5, 's.price_final': 1250000L, 's.c_final': 1.3999999999999999}
+2010-04-20 20:07:36,240 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1463.0000000000011, 'q[0].value': 1.5, 's.price_final': 1463000L, 's.c_final': 1.3999999999999999}
+2010-04-20 20:07:36,328 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1100.0000000000009, 'q[0].value': 1.5, 's.price_final': 1100000L, 's.c_final': 1.3999999999999999}
+2010-04-20 20:07:36,415 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1566.0000000000014, 'q[0].value': 1.5, 's.price_final': 1566000L, 's.c_final': 1.3999999999999999}
+2010-04-20 20:07:36,504 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1090.0000000000009, 'q[0].value': 1.5, 's.price_final': 1090000L, 's.c_final': 1.3999999999999999}
+2010-04-20 20:07:36,505 commission - ERROR in models: exception during calculate commission for project מבני תעשיה - מרום השרון .
 Traceback (most recent call last):
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
-    c = restore_object(c, restore_date)
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
-    version = reversion.models.Version.objects.get_for_date(instance, date)
-  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
-    raise self.model.DoesNotExist
-DoesNotExist
-2010-04-20 19:39:13,331 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
-2010-04-20 19:39:14,356 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 12 sales.
-2010-04-20 19:39:14,371 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1649, in calc
+    demand.diffs.create(type=u'בונוס', reason = u'הפרשי עמלה (ניספח א)', amount=bonus)
+  File "/usr/lib/python2.4/site-packages/django/db/models/fields/related.py", line 367, in create
+    return super(RelatedManager, self).create(**kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/manager.py", line 126, in create
+    return self.get_query_set().create(**kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/query.py", line 315, in create
+    obj.save(force_insert=True)
+  File "/usr/lib/python2.4/site-packages/django/db/models/base.py", line 410, in save
+    self.save_base(force_insert=force_insert, force_update=force_update)
+  File "/usr/lib/python2.4/site-packages/django/db/models/base.py", line 495, in save_base
+    result = manager._insert(values, return_id=update_pk)
+  File "/usr/lib/python2.4/site-packages/django/db/models/manager.py", line 177, in _insert
+    return insert_query(self.model, values, **kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/query.py", line 1087, in insert_query
+    return query.execute_sql(return_id)
+  File "/usr/lib/python2.4/site-packages/django/db/models/sql/subqueries.py", line 320, in execute_sql
+    cursor = super(InsertQuery, self).execute_sql(None)
+  File "/usr/lib/python2.4/site-packages/django/db/models/sql/query.py", line 2369, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/lib/python2.4/site-packages/django/db/backends/mysql/base.py", line 84, in execute
+    return self.cursor.execute(query, args)
+  File "build/bdist.linux-i686/egg/MySQLdb/cursors.py", line 166, in execute
+  File "build/bdist.linux-i686/egg/MySQLdb/connections.py", line 35, in defaulterrorhandler
+IntegrityError: (1062, "Duplicate entry '343-\xd7\x91\xd7\x95\xd7\xa0\xd7\x95\xd7\xa1' for key 2")
+2010-04-20 20:07:38,804 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 5 sales.
+2010-04-20 20:07:40,221 commission - INFO in models: calculating affected sales(4) for month 1/2010
+2010-04-20 20:07:40,222 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 4 sales.
+2010-04-20 20:07:40,926 commission - INFO in models: sale #1066 - price_final=1700000
+2010-04-20 20:07:40,943 commission - INFO in models: sale #963 - price_final=1000000
+2010-04-20 20:07:40,961 commission - INFO in models: sale #965 - price_final=980000
+2010-04-20 20:07:40,979 commission - INFO in models: sale #1062 - price_final=1000000
+2010-04-20 20:07:40,979 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:40,982 commission - INFO in models: calculating affected sales(7) for month 11/2009
+2010-04-20 20:07:40,983 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 7 sales.
+2010-04-20 20:07:41,074 commission - INFO in models: sale #960 - price_final=1125000
+2010-04-20 20:07:41,091 commission - INFO in models: sale #961 - price_final=1255000
+2010-04-20 20:07:41,108 commission - INFO in models: sale #903 - price_final=940000
+2010-04-20 20:07:41,125 commission - INFO in models: sale #1067 - price_final=1616000
+2010-04-20 20:07:41,142 commission - INFO in models: sale #881 - price_final=1160000
+2010-04-20 20:07:41,159 commission - INFO in models: sale #882 - price_final=1320000
+2010-04-20 20:07:41,176 commission - INFO in models: sale #799 - price_final=1375000
+2010-04-20 20:07:41,176 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:41,180 commission - INFO in models: calculating affected sales(3) for month 12/2009
+2010-04-20 20:07:41,181 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 3 sales.
+2010-04-20 20:07:41,245 commission - INFO in models: sale #1061 - price_final=970000
+2010-04-20 20:07:41,262 commission - INFO in models: sale #966 - price_final=995000
+2010-04-20 20:07:41,892 commission - INFO in models: sale #959 - price_final=1375000
+2010-04-20 20:07:41,892 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:41,895 commission - INFO in models: calculating affected sales(1) for month 10/2010
+2010-04-20 20:07:41,896 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 1 sales.
+2010-04-20 20:07:41,947 commission - INFO in models: sale #1068 - price_final=1275000
+2010-04-20 20:07:41,947 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:42,074 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 3919.9999999999995, 'q[0].value': 1.3999999999999999, 's.price_final': 980000L, 's.c_final': 1.0}
+2010-04-20 20:07:42,158 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 3999.9999999999986, 'q[0].value': 1.3999999999999999, 's.price_final': 1000000L, 's.c_final': 1.0}
+2010-04-20 20:07:42,289 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1375.0000000000011, 'q[0].value': 1.5, 's.price_final': 1375000L, 's.c_final': 1.3999999999999999}
+2010-04-20 20:07:42,373 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1320.0000000000011, 'q[0].value': 1.5, 's.price_final': 1320000L, 's.c_final': 1.3999999999999999}
+2010-04-20 20:07:42,457 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 940.00000000000091, 'q[0].value': 1.5, 's.price_final': 940000L, 's.c_final': 1.3999999999999999}
+2010-04-20 20:07:42,541 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1160.0000000000009, 'q[0].value': 1.5, 's.price_final': 1160000L, 's.c_final': 1.3999999999999999}
+2010-04-20 20:07:42,625 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1125.0000000000009, 'q[0].value': 1.5, 's.price_final': 1125000L, 's.c_final': 1.3999999999999999}
+2010-04-20 20:07:42,710 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1255.0000000000011, 'q[0].value': 1.5, 's.price_final': 1255000L, 's.c_final': 1.3999999999999999}
+2010-04-20 20:07:42,812 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1989.9999999999993, 'q[0].value': 1.2, 's.price_final': 995000L, 's.c_final': 1.0}
+2010-04-20 20:07:42,896 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 0.0, 'q[0].value': 1.0, 's.price_final': 1375000L, 's.c_final': 1.0}
+2010-04-20 20:07:42,899 commission - ERROR in models: exception during calculate commission for project מבני תעשיה - מרום השרון .
 Traceback (most recent call last):
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
-    c = restore_object(c, restore_date)
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
-    version = reversion.models.Version.objects.get_for_date(instance, date)
-  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
-    raise self.model.DoesNotExist
-DoesNotExist
-2010-04-20 19:39:15,485 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 6 sales.
-2010-04-20 19:39:15,501 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1649, in calc
+    demand.diffs.create(type=u'בונוס', reason = u'הפרשי עמלה (ניספח א)', amount=bonus)
+  File "/usr/lib/python2.4/site-packages/django/db/models/fields/related.py", line 367, in create
+    return super(RelatedManager, self).create(**kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/manager.py", line 126, in create
+    return self.get_query_set().create(**kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/query.py", line 315, in create
+    obj.save(force_insert=True)
+  File "/usr/lib/python2.4/site-packages/django/db/models/base.py", line 410, in save
+    self.save_base(force_insert=force_insert, force_update=force_update)
+  File "/usr/lib/python2.4/site-packages/django/db/models/base.py", line 495, in save_base
+    result = manager._insert(values, return_id=update_pk)
+  File "/usr/lib/python2.4/site-packages/django/db/models/manager.py", line 177, in _insert
+    return insert_query(self.model, values, **kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/query.py", line 1087, in insert_query
+    return query.execute_sql(return_id)
+  File "/usr/lib/python2.4/site-packages/django/db/models/sql/subqueries.py", line 320, in execute_sql
+    cursor = super(InsertQuery, self).execute_sql(None)
+  File "/usr/lib/python2.4/site-packages/django/db/models/sql/query.py", line 2369, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/lib/python2.4/site-packages/django/db/backends/mysql/base.py", line 84, in execute
+    return self.cursor.execute(query, args)
+  File "build/bdist.linux-i686/egg/MySQLdb/cursors.py", line 166, in execute
+  File "build/bdist.linux-i686/egg/MySQLdb/connections.py", line 35, in defaulterrorhandler
+IntegrityError: (1062, "Duplicate entry '414-\xd7\x91\xd7\x95\xd7\xa0\xd7\x95\xd7\xa1' for key 2")
+2010-04-20 20:07:44,941 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 5 sales.
+2010-04-20 20:07:45,020 commission - INFO in models: calculating affected sales(6) for month 1/2010
+2010-04-20 20:07:45,021 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 6 sales.
+2010-04-20 20:07:45,102 commission - INFO in models: sale #963 - price_final=1000000
+2010-04-20 20:07:45,119 commission - INFO in models: sale #965 - price_final=980000
+2010-04-20 20:07:45,137 commission - INFO in models: sale #1062 - price_final=1000000
+2010-04-20 20:07:45,154 commission - INFO in models: sale #1066 - price_final=1700000
+2010-04-20 20:07:45,171 commission - INFO in models: sale #1169 - price_final=1600000
+2010-04-20 20:07:45,188 commission - INFO in models: sale #1170 - price_final=1750000
+2010-04-20 20:07:45,188 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:45,191 commission - INFO in models: calculating affected sales(3) for month 2/2010
+2010-04-20 20:07:45,193 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 3 sales.
+2010-04-20 20:07:45,254 commission - INFO in models: sale #1168 - price_final=1200000
+2010-04-20 20:07:45,271 commission - INFO in models: sale #1171 - price_final=1020000
+2010-04-20 20:07:45,288 commission - INFO in models: sale #1179 - price_final=1050000
+2010-04-20 20:07:45,288 commission - INFO in models: finished to calculate commission for project מבני תעשיה - מרום השרון .
+2010-04-20 20:07:45,415 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 3919.9999999999995, 'q[0].value': 1.3999999999999999, 's.price_final': 980000L, 's.c_final': 1.0}
+2010-04-20 20:07:45,500 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 3999.9999999999986, 'q[0].value': 1.3999999999999999, 's.price_final': 1000000L, 's.c_final': 1.0}
+2010-04-20 20:07:45,796 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 3399.9999999999995, 'q[0].value': 1.3999999999999999, 's.price_final': 1700000L, 's.c_final': 1.2}
+2010-04-20 20:07:45,897 commission - DEBUG in models: sale #(id)s bonus calc values: {'diff': 1999.9999999999993, 'q[0].value': 1.3999999999999999, 's.price_final': 1000000L, 's.c_final': 1.2}
+2010-04-20 20:07:45,901 commission - ERROR in models: exception during calculate commission for project מבני תעשיה - מרום השרון .
 Traceback (most recent call last):
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
-    c = restore_object(c, restore_date)
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
-    version = reversion.models.Version.objects.get_for_date(instance, date)
-  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
-    raise self.model.DoesNotExist
-DoesNotExist
-2010-04-20 19:39:16,570 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 7 sales.
-2010-04-20 19:39:16,585 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
-Traceback (most recent call last):
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
-    c = restore_object(c, restore_date)
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
-    version = reversion.models.Version.objects.get_for_date(instance, date)
-  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
-    raise self.model.DoesNotExist
-DoesNotExist
-2010-04-20 19:39:17,660 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 19 sales.
-2010-04-20 19:39:17,676 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
-Traceback (most recent call last):
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
-    c = restore_object(c, restore_date)
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
-    version = reversion.models.Version.objects.get_for_date(instance, date)
-  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
-    raise self.model.DoesNotExist
-DoesNotExist
-2010-04-20 19:39:18,842 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 4 sales.
-2010-04-20 19:39:18,858 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
-Traceback (most recent call last):
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
-    c = restore_object(c, restore_date)
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
-    version = reversion.models.Version.objects.get_for_date(instance, date)
-  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
-    raise self.model.DoesNotExist
-DoesNotExist
-2010-04-20 19:39:19,914 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 1 sales.
-2010-04-20 19:39:19,943 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
-Traceback (most recent call last):
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
-    c = restore_object(c, restore_date)
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
-    version = reversion.models.Version.objects.get_for_date(instance, date)
-  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
-    raise self.model.DoesNotExist
-DoesNotExist
-2010-04-20 19:39:20,973 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 8 sales.
-2010-04-20 19:39:21,106 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
-Traceback (most recent call last):
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
-    c = restore_object(c, restore_date)
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
-    version = reversion.models.Version.objects.get_for_date(instance, date)
-  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
-    raise self.model.DoesNotExist
-DoesNotExist
-2010-04-20 19:39:24,805 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 2 sales.
-2010-04-20 19:39:24,821 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
-Traceback (most recent call last):
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
-    c = restore_object(c, restore_date)
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
-    version = reversion.models.Version.objects.get_for_date(instance, date)
-  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
-    raise self.model.DoesNotExist
-DoesNotExist
-2010-04-20 19:39:26,775 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 4 sales.
-2010-04-20 19:39:26,927 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
-Traceback (most recent call last):
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
-    c = restore_object(c, restore_date)
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
-    version = reversion.models.Version.objects.get_for_date(instance, date)
-  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
-    raise self.model.DoesNotExist
-DoesNotExist
-2010-04-20 19:39:28,488 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 3 sales.
-2010-04-20 19:39:28,503 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
-Traceback (most recent call last):
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
-    c = restore_object(c, restore_date)
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
-    version = reversion.models.Version.objects.get_for_date(instance, date)
-  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
-    raise self.model.DoesNotExist
-DoesNotExist
-2010-04-20 19:39:29,549 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 5 sales.
-2010-04-20 19:39:29,564 commission - ERROR in models: exception during calculate commission for project זילברמינץ  - זילברמינץ במודיעין .
-Traceback (most recent call last):
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 1655, in calc
-    c = restore_object(c, restore_date)
-  File "/var/www/NiceHouse/trunk/Management/models.py", line 2944, in restore_object
-    version = reversion.models.Version.objects.get_for_date(instance, date)
-  File "/usr/lib/python2.4/site-packages/reversion/managers.py", line 45, in get_for_date
-    raise self.model.DoesNotExist
-DoesNotExist
-2010-04-20 19:39:30,625 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
-2010-04-20 19:39:30,690 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
-2010-04-20 19:39:31,813 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
-2010-04-20 19:39:31,834 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1649, in calc
+    demand.diffs.create(type=u'בונוס', reason = u'הפרשי עמלה (ניספח א)', amount=bonus)
+  File "/usr/lib/python2.4/site-packages/django/db/models/fields/related.py", line 367, in create
+    return super(RelatedManager, self).create(**kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/manager.py", line 126, in create
+    return self.get_query_set().create(**kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/query.py", line 315, in create
+    obj.save(force_insert=True)
+  File "/usr/lib/python2.4/site-packages/django/db/models/base.py", line 410, in save
+    self.save_base(force_insert=force_insert, force_update=force_update)
+  File "/usr/lib/python2.4/site-packages/django/db/models/base.py", line 495, in save_base
+    result = manager._insert(values, return_id=update_pk)
+  File "/usr/lib/python2.4/site-packages/django/db/models/manager.py", line 177, in _insert
+    return insert_query(self.model, values, **kwargs)
+  File "/usr/lib/python2.4/site-packages/django/db/models/query.py", line 1087, in insert_query
+    return query.execute_sql(return_id)
+  File "/usr/lib/python2.4/site-packages/django/db/models/sql/subqueries.py", line 320, in execute_sql
+    cursor = super(InsertQuery, self).execute_sql(None)
+  File "/usr/lib/python2.4/site-packages/django/db/models/sql/query.py", line 2369, in execute_sql
+    cursor.execute(sql, params)
+  File "/usr/lib/python2.4/site-packages/django/db/backends/mysql/base.py", line 84, in execute
+    return self.cursor.execute(query, args)
+  File "build/bdist.linux-i686/egg/MySQLdb/cursors.py", line 166, in execute
+  File "build/bdist.linux-i686/egg/MySQLdb/connections.py", line 35, in defaulterrorhandler
+IntegrityError: (1062, "Duplicate entry '437-\xd7\x91\xd7\x95\xd7\xa0\xd7\x95\xd7\xa1' for key 2")
+2010-04-20 20:07:47,277 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 0 sales.
+2010-04-20 20:07:47,300 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 0 sales.
+2010-04-20 20:07:48,325 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 0 sales.
+2010-04-20 20:07:48,347 commission - INFO in models: starting to calculate commission for project מבני תעשיה - מרום השרון . 0 sales.
