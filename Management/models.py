@@ -1612,7 +1612,7 @@ class ProjectCommission(models.Model):
                                 {'sale_count':subSales.count(), 'month':m,'year':y})
                     
                     self.calc(subSales, 1)#send these sales to regular processing
-                if demand.bonus_diff: demand.bonus_diff.delete()
+
                 bonus = 0
                 for subSales in demand.get_affected_sales().values():
                     for s in subSales:
@@ -1646,9 +1646,11 @@ class ProjectCommission(models.Model):
                         
                         bonus += int(diff)
                 if bonus > 0:
-                    demand_diff, new = demand.diffs.get_or_create(type=u'בונוס', reason = u'הפרשי עמלה (ניספח א)')
-                    demand_diff.amount = bonus
-                    demand_diff.save()
+                    if demand.bonus_diff:
+                        demand.bonus_diff.amount = bonus
+                        demand.bonus_diff.save()
+                    else:
+                        demand.diffs.create(type=u'בונוס', reason = u'הפרשי עמלה (ניספח א)', amount = bonus)
                 return
             
             if getattr(self, 'c_zilber') != None:
