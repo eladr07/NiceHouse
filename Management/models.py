@@ -1480,9 +1480,16 @@ class CZilber(models.Model):
                     pc_base = restore_object(q[0], last_demand_finish_date).value
                 else:
                     pc_base = s.pc_base
-                prev_adds += (base - pc_base) * s.price_final / 100
+                sale_add = (base - pc_base) * s.price_final / 100
+                prev_adds += sale_add
                 
-                logger.debug('sale #%(id)s adds calc values: %(val)s', {'id':s.id, 'vals':{'q.count()':q.count(), 'pc_base':pc_base}})
+                logger.debug('sale #%(id)s adds calc values: %(val)s', {'id':s.id, 
+                                                                        'vals':{
+                                                                                'q.count()':q.count(), 
+                                                                                'pc_base':pc_base,
+                                                                                'sale_add':sale_add
+                                                                                }
+                                                                        })
                 
             if prev_adds:
                 d.diffs.create(type=u'משתנה', reason=u'הפרשי קצב מכירות (נספח א)', amount=round(prev_adds))
