@@ -1952,6 +1952,7 @@ class Demand(models.Model):
         if self.project.commissions.commission_by_signups:
             query = query.order_by('house__signups__date')
         return query
+    @reversion.revision.create_on_success
     def calc_sales_commission(self):
         c = self.project.commissions
         c.calc(self.get_sales())
@@ -2941,9 +2942,8 @@ for model in tracked_models:
 
 def restore_object(instance, date):
     try:
-        versions = reversion.models.Version.objects.get_for_object(instance)
-        versions = versions.filter(revision__date_created__lt = date).orderby('-pk')
-        return versions[0]
+        version = reversion.models.Version.objects.get_for_date(instance, date)
+        return version.version_object
     except:
         return instance
 
