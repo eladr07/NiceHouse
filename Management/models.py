@@ -1952,7 +1952,6 @@ class Demand(models.Model):
         if self.project.commissions.commission_by_signups:
             query = query.order_by('house__signups__date')
         return query
-    @reversion.revision.create_on_success
     def calc_sales_commission(self):
         c = self.project.commissions
         c.calc(self.get_sales())
