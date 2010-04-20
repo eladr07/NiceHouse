@@ -1,157 +1,287 @@
-2010-04-20 17:52:01,648 commission.czilber - DEBUG in models: sale #899 c_zilber_discount calc values: {'memudad': 1015622.0, 'scd.value': 637.80000000000007, 'latest_doh0price': 1015622L}
-2010-04-20 17:52:01,654 commission.czilber - DEBUG in models: sale #855 c_zilber_base = 1.4324
-2010-04-20 17:52:01,660 commission.czilber - DEBUG in models: sale #855 final = 1.4324
-2010-04-20 17:52:01,669 commission.czilber - DEBUG in models: sale #855 c_zilber_discount calc values: {'memudad': 617338.0, 'scd.value': 566.20000000000005, 'latest_doh0price': 617338L}
-2010-04-20 17:52:01,674 commission.czilber - DEBUG in models: sale #850 c_zilber_base = 1.4324
-2010-04-20 17:52:01,679 commission.czilber - DEBUG in models: sale #850 final = 1.4324
-2010-04-20 17:52:01,690 commission.czilber - DEBUG in models: sale #850 c_zilber_discount calc values: {'memudad': 994250.0, 'scd.value': 19330.0, 'latest_doh0price': 994250L}
-2010-04-20 17:52:01,695 commission.czilber - DEBUG in models: sale #856 c_zilber_base = 1.4324
-2010-04-20 17:52:01,702 commission.czilber - DEBUG in models: sale #856 final = 1.4324
-2010-04-20 17:52:01,712 commission.czilber - DEBUG in models: sale #856 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -2135.0999999999999, 'latest_doh0price': 846351L}
-2010-04-20 17:52:01,717 commission.czilber - DEBUG in models: sale #852 c_zilber_base = 1.4324
-2010-04-20 17:52:01,722 commission.czilber - DEBUG in models: sale #852 final = 1.4324
-2010-04-20 17:52:01,731 commission.czilber - DEBUG in models: sale #852 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': -915.80000000000007, 'latest_doh0price': 995708L}
-2010-04-20 17:52:01,736 commission.czilber - DEBUG in models: sale #851 c_zilber_base = 1.4324
-2010-04-20 17:52:01,741 commission.czilber - DEBUG in models: sale #851 final = 1.4324
-2010-04-20 17:52:01,750 commission.czilber - DEBUG in models: sale #851 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': -915.80000000000007, 'latest_doh0price': 995708L}
-2010-04-20 17:52:01,755 commission.czilber - DEBUG in models: sale #853 c_zilber_base = 1.4324
-2010-04-20 17:52:01,760 commission.czilber - DEBUG in models: sale #853 final = 1.4324
-2010-04-20 17:52:01,769 commission.czilber - DEBUG in models: sale #853 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -7335.1000000000004, 'latest_doh0price': 846351L}
-2010-04-20 17:52:01,774 commission.czilber - DEBUG in models: sale #857 c_zilber_base = 1.4324
-2010-04-20 17:52:01,780 commission.czilber - DEBUG in models: sale #857 final = 1.4324
-2010-04-20 17:52:01,790 commission.czilber - DEBUG in models: sale #857 c_zilber_discount calc values: {'memudad': 1015622.0, 'scd.value': 1152.8, 'latest_doh0price': 1015622L}
-2010-04-20 17:52:01,795 commission.czilber - DEBUG in models: sale #854 c_zilber_base = 1.4324
-2010-04-20 17:52:01,800 commission.czilber - DEBUG in models: sale #854 final = 1.4324
-2010-04-20 17:52:01,809 commission.czilber - DEBUG in models: sale #854 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -7335.1000000000004, 'latest_doh0price': 846351L}
-2010-04-20 17:52:01,815 commission.czilber - DEBUG in models: sale #684 c_zilber_base = 1.4324
-2010-04-20 17:52:01,821 commission.czilber - DEBUG in models: sale #684 final = 1.4324
-2010-04-20 17:52:01,830 commission.czilber - DEBUG in models: sale #684 c_zilber_discount calc values: {'memudad': 901300.0, 'scd.value': 9870.0, 'latest_doh0price': 901300L}
-2010-04-20 17:52:01,836 commission.czilber - DEBUG in models: sale #605 c_zilber_base = 1.4324
-2010-04-20 17:52:01,842 commission.czilber - DEBUG in models: sale #605 final = 1.4324
-2010-04-20 17:52:01,851 commission.czilber - DEBUG in models: sale #605 c_zilber_discount calc values: {'memudad': 1031415.0, 'scd.value': 15808.5, 'latest_doh0price': 1031415L}
-2010-04-20 17:52:01,856 commission.czilber - DEBUG in models: sale #607 c_zilber_base = 1.4324
-2010-04-20 17:52:01,861 commission.czilber - DEBUG in models: sale #607 final = 1.4324
-2010-04-20 17:52:01,869 commission.czilber - DEBUG in models: sale #607 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': -7312.7000000000007, 'latest_doh0price': 1223127L}
-2010-04-20 17:52:01,874 commission.czilber - DEBUG in models: sale #606 c_zilber_base = 1.4324
-2010-04-20 17:52:01,879 commission.czilber - DEBUG in models: sale #606 final = 1.4324
-2010-04-20 17:52:01,961 commission.czilber - DEBUG in models: sale #606 c_zilber_discount calc values: {'memudad': 1072423.0, 'scd.value': 6130.2000000000007, 'latest_doh0price': 1072423L}
-2010-04-20 17:52:02,073 commission.czilber - DEBUG in models: sale #608 c_zilber_base = 1.4324
-2010-04-20 17:52:02,092 commission.czilber - DEBUG in models: sale #608 final = 1.4324
-2010-04-20 17:52:02,102 commission.czilber - DEBUG in models: sale #608 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': 17687.299999999999, 'latest_doh0price': 1223127L}
-2010-04-20 17:52:02,107 commission.czilber - DEBUG in models: last_demand_finish_date: 2010-04-20 17:52:00
-2010-04-20 17:52:02,687 commission.czilber - DEBUG in models: demand #297 created bonus=45871.0
-2010-04-20 17:52:02,688 commission.czilber - INFO in models: finished calculation for month 12/2009
-2010-04-20 17:52:03,727 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 4 sales.
-2010-04-20 17:52:03,743 commission.czilber - INFO in models: starting calculation for month 1/2010. fields - [{"pk": 2, "model": "Management.czilber", "fields": {"b_sale_rate_max": 1.6000000000000001, "b_discount": 0.10000000000000001, "base_madad": 126.90000000000001, "base": 1.2, "third_start": "2009-01-01", "b_sale_rate": 0.0166}}]
-2010-04-20 17:52:03,779 commission.czilber - INFO in models: total cycle sales count: 4
-2010-04-20 17:52:03,787 commission.czilber - DEBUG in models: sale #988 price_final = 845970
-2010-04-20 17:52:03,795 commission.czilber - DEBUG in models: sale #989 price_final = 1024631
-2010-04-20 17:52:03,802 commission.czilber - DEBUG in models: sale #990 price_final = 1085714
-2010-04-20 17:52:03,810 commission.czilber - DEBUG in models: sale #1036 price_final = 896974
-2010-04-20 17:52:03,812 commission.czilber - DEBUG in models: prices_date = 2010-02-01, current_madad=126.9
-2010-04-20 17:52:03,818 commission.czilber - DEBUG in models: sale #988 c_zilber_base = 1.2498
-2010-04-20 17:52:03,824 commission.czilber - DEBUG in models: sale #988 final = 1.2498
-2010-04-20 17:52:03,833 commission.czilber - DEBUG in models: sale #988 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 1230.9000000000001, 'latest_doh0price': 846351L}
-2010-04-20 17:52:03,838 commission.czilber - DEBUG in models: sale #989 c_zilber_base = 1.2498
-2010-04-20 17:52:03,844 commission.czilber - DEBUG in models: sale #989 final = 1.2498
-2010-04-20 17:52:03,853 commission.czilber - DEBUG in models: sale #989 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': 4429.1999999999998, 'latest_doh0price': 995708L}
-2010-04-20 17:52:03,859 commission.czilber - DEBUG in models: sale #990 c_zilber_base = 1.2498
-2010-04-20 17:52:03,866 commission.czilber - DEBUG in models: sale #990 final = 1.2498
-2010-04-20 17:52:03,874 commission.czilber - DEBUG in models: sale #990 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 672.20000000000005, 'latest_doh0price': 1095278L}
-2010-04-20 17:52:03,880 commission.czilber - DEBUG in models: sale #1036 c_zilber_base = 1.2498
-2010-04-20 17:52:03,885 commission.czilber - DEBUG in models: sale #1036 final = 1.2498
-2010-04-20 17:52:03,894 commission.czilber - DEBUG in models: sale #1036 c_zilber_discount calc values: {'memudad': 717078.0, 'scd.value': 19335.100000000002, 'latest_doh0price': 717078L}
-2010-04-20 17:52:03,899 commission.czilber - DEBUG in models: last_demand_finish_date: 2010-04-20 17:52:02
-2010-04-20 17:52:03,982 commission.czilber - INFO in models: finished calculation for month 1/2010
-2010-04-20 17:52:05,041 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 3 sales.
-2010-04-20 17:52:05,057 commission.czilber - INFO in models: starting calculation for month 2/2010. fields - [{"pk": 2, "model": "Management.czilber", "fields": {"b_sale_rate_max": 1.6000000000000001, "b_discount": 0.10000000000000001, "base_madad": 126.90000000000001, "base": 1.2, "third_start": "2009-01-01", "b_sale_rate": 0.0166}}]
-2010-04-20 17:52:05,126 commission.czilber - INFO in models: total cycle sales count: 7
-2010-04-20 17:52:05,134 commission.czilber - DEBUG in models: sale #1106 price_final = 859113
-2010-04-20 17:52:05,141 commission.czilber - DEBUG in models: sale #1108 price_final = 640394
-2010-04-20 17:52:05,149 commission.czilber - DEBUG in models: sale #1107 price_final = 1236453
-2010-04-20 17:52:05,157 commission.czilber - DEBUG in models: sale #988 price_final = 845970
-2010-04-20 17:52:05,164 commission.czilber - DEBUG in models: sale #989 price_final = 1024631
-2010-04-20 17:52:05,172 commission.czilber - DEBUG in models: sale #990 price_final = 1085714
-2010-04-20 17:52:05,179 commission.czilber - DEBUG in models: sale #1036 price_final = 896974
-2010-04-20 17:52:05,181 commission.czilber - DEBUG in models: prices_date = 2010-03-01, current_madad=126.9
-2010-04-20 17:52:05,187 commission.czilber - DEBUG in models: sale #1106 c_zilber_base = 1.2996
-2010-04-20 17:52:05,192 commission.czilber - DEBUG in models: sale #1106 final = 1.2996
-2010-04-20 17:52:05,201 commission.czilber - DEBUG in models: sale #1106 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 2564.9000000000001, 'latest_doh0price': 846351L}
-2010-04-20 17:52:05,207 commission.czilber - DEBUG in models: sale #1108 c_zilber_base = 1.2996
-2010-04-20 17:52:05,212 commission.czilber - DEBUG in models: sale #1108 final = 1.2996
-2010-04-20 17:52:05,221 commission.czilber - DEBUG in models: sale #1108 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -19635.100000000002, 'latest_doh0price': 846351L}
-2010-04-20 17:52:05,227 commission.czilber - DEBUG in models: sale #1107 c_zilber_base = 1.2996
-2010-04-20 17:52:05,232 commission.czilber - DEBUG in models: sale #1107 final = 1.2996
-2010-04-20 17:52:05,241 commission.czilber - DEBUG in models: sale #1107 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 15972.200000000001, 'latest_doh0price': 1095278L}
-2010-04-20 17:52:05,246 commission.czilber - DEBUG in models: sale #988 c_zilber_base = 1.2996
-2010-04-20 17:52:05,251 commission.czilber - DEBUG in models: sale #988 final = 1.2996
-2010-04-20 17:52:05,259 commission.czilber - DEBUG in models: sale #988 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 1230.9000000000001, 'latest_doh0price': 846351L}
-2010-04-20 17:52:05,265 commission.czilber - DEBUG in models: sale #989 c_zilber_base = 1.2996
-2010-04-20 17:52:05,270 commission.czilber - DEBUG in models: sale #989 final = 1.2996
-2010-04-20 17:52:05,278 commission.czilber - DEBUG in models: sale #989 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': 4429.1999999999998, 'latest_doh0price': 995708L}
-2010-04-20 17:52:05,283 commission.czilber - DEBUG in models: sale #990 c_zilber_base = 1.2996
-2010-04-20 17:52:05,288 commission.czilber - DEBUG in models: sale #990 final = 1.2996
-2010-04-20 17:52:05,296 commission.czilber - DEBUG in models: sale #990 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 672.20000000000005, 'latest_doh0price': 1095278L}
-2010-04-20 17:52:05,301 commission.czilber - DEBUG in models: sale #1036 c_zilber_base = 1.2996
-2010-04-20 17:52:05,306 commission.czilber - DEBUG in models: sale #1036 final = 1.2996
-2010-04-20 17:52:05,315 commission.czilber - DEBUG in models: sale #1036 c_zilber_discount calc values: {'memudad': 717078.0, 'scd.value': 19335.100000000002, 'latest_doh0price': 717078L}
-2010-04-20 17:52:05,319 commission.czilber - DEBUG in models: last_demand_finish_date: 2010-04-20 17:52:04
-2010-04-20 17:52:05,462 commission.czilber - INFO in models: finished calculation for month 2/2010
-2010-04-20 17:52:06,512 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 5 sales.
-2010-04-20 17:52:06,528 commission.czilber - INFO in models: starting calculation for month 3/2010. fields - [{"pk": 2, "model": "Management.czilber", "fields": {"b_sale_rate_max": 1.6000000000000001, "b_discount": 0.10000000000000001, "base_madad": 126.90000000000001, "base": 1.2, "third_start": "2009-01-01", "b_sale_rate": 0.0166}}]
-2010-04-20 17:52:06,645 commission.czilber - INFO in models: total cycle sales count: 12
-2010-04-20 17:52:06,653 commission.czilber - DEBUG in models: sale #1175 price_final = 1331970
-2010-04-20 17:52:06,661 commission.czilber - DEBUG in models: sale #1174 price_final = 1386970
-2010-04-20 17:52:06,668 commission.czilber - DEBUG in models: sale #1177 price_final = 661375
-2010-04-20 17:52:06,676 commission.czilber - DEBUG in models: sale #1176 price_final = 636970
-2010-04-20 17:52:06,684 commission.czilber - DEBUG in models: sale #1178 price_final = 837438
-2010-04-20 17:52:06,691 commission.czilber - DEBUG in models: sale #1106 price_final = 859113
-2010-04-20 17:52:06,699 commission.czilber - DEBUG in models: sale #1108 price_final = 640394
-2010-04-20 17:52:06,706 commission.czilber - DEBUG in models: sale #1107 price_final = 1236453
-2010-04-20 17:52:06,714 commission.czilber - DEBUG in models: sale #988 price_final = 845970
-2010-04-20 17:52:06,721 commission.czilber - DEBUG in models: sale #989 price_final = 1024631
-2010-04-20 17:52:06,729 commission.czilber - DEBUG in models: sale #990 price_final = 1085714
-2010-04-20 17:52:06,736 commission.czilber - DEBUG in models: sale #1036 price_final = 896974
-2010-04-20 17:52:06,739 commission.czilber - DEBUG in models: prices_date = 2010-04-01, current_madad=126.9
-2010-04-20 17:52:06,744 commission.czilber - DEBUG in models: sale #1175 c_zilber_base = 1.3826
-2010-04-20 17:52:06,750 commission.czilber - DEBUG in models: sale #1175 final = 1.3826
-2010-04-20 17:52:06,759 commission.czilber - DEBUG in models: sale #1175 c_zilber_discount calc values: {'memudad': 1194849.0, 'scd.value': 15710.1, 'latest_doh0price': 1194849L}
-2010-04-20 17:52:06,764 commission.czilber - DEBUG in models: sale #1174 c_zilber_base = 1.3826
-2010-04-20 17:52:06,770 commission.czilber - DEBUG in models: sale #1174 final = 1.3826
-2010-04-20 17:52:06,778 commission.czilber - DEBUG in models: sale #1174 c_zilber_discount calc values: {'memudad': 1194849.0, 'scd.value': 21292.600000000002, 'latest_doh0price': 1194849L}
-2010-04-20 17:52:06,784 commission.czilber - DEBUG in models: sale #1177 c_zilber_base = 1.3826
-2010-04-20 17:52:06,789 commission.czilber - DEBUG in models: sale #1177 final = 1.3826
-2010-04-20 17:52:06,798 commission.czilber - DEBUG in models: sale #1177 c_zilber_discount calc values: {'memudad': 617338.0, 'scd.value': 5395.8000000000002, 'latest_doh0price': 617338L}
-2010-04-20 17:52:06,803 commission.czilber - DEBUG in models: sale #1176 c_zilber_base = 1.3826
-2010-04-20 17:52:06,809 commission.czilber - DEBUG in models: sale #1176 final = 1.3826
-2010-04-20 17:52:06,817 commission.czilber - DEBUG in models: sale #1176 c_zilber_discount calc values: {'memudad': 617338.0, 'scd.value': 2918.7000000000003, 'latest_doh0price': 617338L}
-2010-04-20 17:52:06,823 commission.czilber - DEBUG in models: sale #1178 c_zilber_base = 1.3826
-2010-04-20 17:52:06,829 commission.czilber - DEBUG in models: sale #1178 final = 1.3826
-2010-04-20 17:52:06,831 commission.czilber - WARNING in models: skipping c_zilber_discount calc for sale #1178. no doh0 prices
-2010-04-20 17:52:06,837 commission.czilber - DEBUG in models: sale #1106 c_zilber_base = 1.3826
-2010-04-20 17:52:06,843 commission.czilber - DEBUG in models: sale #1106 final = 1.3826
-2010-04-20 17:52:06,851 commission.czilber - DEBUG in models: sale #1106 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 2564.9000000000001, 'latest_doh0price': 846351L}
-2010-04-20 17:52:06,856 commission.czilber - DEBUG in models: sale #1108 c_zilber_base = 1.3826
-2010-04-20 17:52:06,861 commission.czilber - DEBUG in models: sale #1108 final = 1.3826
-2010-04-20 17:52:06,869 commission.czilber - DEBUG in models: sale #1108 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -19635.100000000002, 'latest_doh0price': 846351L}
-2010-04-20 17:52:06,874 commission.czilber - DEBUG in models: sale #1107 c_zilber_base = 1.3826
-2010-04-20 17:52:06,879 commission.czilber - DEBUG in models: sale #1107 final = 1.3826
-2010-04-20 17:52:06,888 commission.czilber - DEBUG in models: sale #1107 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 15972.200000000001, 'latest_doh0price': 1095278L}
-2010-04-20 17:52:06,893 commission.czilber - DEBUG in models: sale #988 c_zilber_base = 1.3826
-2010-04-20 17:52:06,897 commission.czilber - DEBUG in models: sale #988 final = 1.3826
-2010-04-20 17:52:06,906 commission.czilber - DEBUG in models: sale #988 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 1230.9000000000001, 'latest_doh0price': 846351L}
-2010-04-20 17:52:06,911 commission.czilber - DEBUG in models: sale #989 c_zilber_base = 1.3826
-2010-04-20 17:52:06,916 commission.czilber - DEBUG in models: sale #989 final = 1.3826
-2010-04-20 17:52:06,947 commission.czilber - DEBUG in models: sale #989 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': 4429.1999999999998, 'latest_doh0price': 995708L}
-2010-04-20 17:52:06,952 commission.czilber - DEBUG in models: sale #990 c_zilber_base = 1.3826
-2010-04-20 17:52:06,957 commission.czilber - DEBUG in models: sale #990 final = 1.3826
-2010-04-20 17:52:06,965 commission.czilber - DEBUG in models: sale #990 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 672.20000000000005, 'latest_doh0price': 1095278L}
-2010-04-20 17:52:06,971 commission.czilber - DEBUG in models: sale #1036 c_zilber_base = 1.3826
-2010-04-20 17:52:06,977 commission.czilber - DEBUG in models: sale #1036 final = 1.3826
-2010-04-20 17:52:06,985 commission.czilber - DEBUG in models: sale #1036 c_zilber_discount calc values: {'memudad': 717078.0, 'scd.value': 19335.100000000002, 'latest_doh0price': 717078L}
-2010-04-20 17:52:06,990 commission.czilber - DEBUG in models: last_demand_finish_date: 2010-04-20 17:52:05
-2010-04-20 17:52:07,241 commission.czilber - INFO in models: finished calculation for month 3/2010
-2010-04-20 17:52:08,312 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
-2010-04-20 17:52:08,334 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
-2010-04-20 17:52:09,360 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
-2010-04-20 17:52:09,383 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
+2010-04-20 19:01:11,711 commission.czilber - DEBUG in models: sale #607 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': -7312.7000000000007, 'latest_doh0price': 1223127L}
+2010-04-20 19:01:11,822 commission.czilber - DEBUG in models: sale #606 c_zilber_base = 1.2498
+2010-04-20 19:01:11,828 commission.czilber - DEBUG in models: sale #606 final = 1.2498
+2010-04-20 19:01:11,837 commission.czilber - DEBUG in models: sale #606 c_zilber_discount calc values: {'memudad': 1072423.0, 'scd.value': 6130.2000000000007, 'latest_doh0price': 1072423L}
+2010-04-20 19:01:11,843 commission.czilber - DEBUG in models: sale #608 c_zilber_base = 1.2498
+2010-04-20 19:01:11,849 commission.czilber - DEBUG in models: sale #608 final = 1.2498
+2010-04-20 19:01:11,859 commission.czilber - DEBUG in models: sale #608 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': 17687.299999999999, 'latest_doh0price': 1223127L}
+2010-04-20 19:01:11,864 commission.czilber - DEBUG in models: last_demand_finish_date: 2010-04-20 19:01:10
+2010-04-20 19:01:11,985 commission.czilber - INFO in models: finished calculation for month 9/2009
+2010-04-20 19:01:13,104 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 1 sales.
+2010-04-20 19:01:13,177 commission.czilber - INFO in models: total cycle sales count: 5
+2010-04-20 19:01:13,185 commission.czilber - DEBUG in models: sale #684 price_final = 985222
+2010-04-20 19:01:13,193 commission.czilber - DEBUG in models: sale #605 price_final = 1171921
+2010-04-20 19:01:13,201 commission.czilber - DEBUG in models: sale #607 price_final = 1133005
+2010-04-20 19:01:13,208 commission.czilber - DEBUG in models: sale #606 price_final = 1116970
+2010-04-20 19:01:13,219 commission.czilber - DEBUG in models: sale #608 price_final = 1379310
+2010-04-20 19:01:13,221 commission.czilber - DEBUG in models: prices_date = 2009-11-01, current_madad=126.9
+2010-04-20 19:01:13,227 commission.czilber - DEBUG in models: sale #684 c_zilber_base = 1.2664
+2010-04-20 19:01:13,233 commission.czilber - DEBUG in models: sale #684 final = 1.2664
+2010-04-20 19:01:13,235 commission.czilber - WARNING in models: skipping c_zilber_discount calc for sale #684. no doh0 prices
+2010-04-20 19:01:13,240 commission.czilber - DEBUG in models: sale #605 c_zilber_base = 1.2664
+2010-04-20 19:01:13,245 commission.czilber - DEBUG in models: sale #605 final = 1.2664
+2010-04-20 19:01:13,253 commission.czilber - DEBUG in models: sale #605 c_zilber_discount calc values: {'memudad': 1031415.0, 'scd.value': 15808.5, 'latest_doh0price': 1031415L}
+2010-04-20 19:01:13,258 commission.czilber - DEBUG in models: sale #607 c_zilber_base = 1.2664
+2010-04-20 19:01:13,264 commission.czilber - DEBUG in models: sale #607 final = 1.2664
+2010-04-20 19:01:13,272 commission.czilber - DEBUG in models: sale #607 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': -7312.7000000000007, 'latest_doh0price': 1223127L}
+2010-04-20 19:01:13,277 commission.czilber - DEBUG in models: sale #606 c_zilber_base = 1.2664
+2010-04-20 19:01:13,282 commission.czilber - DEBUG in models: sale #606 final = 1.2664
+2010-04-20 19:01:13,290 commission.czilber - DEBUG in models: sale #606 c_zilber_discount calc values: {'memudad': 1072423.0, 'scd.value': 6130.2000000000007, 'latest_doh0price': 1072423L}
+2010-04-20 19:01:13,296 commission.czilber - DEBUG in models: sale #608 c_zilber_base = 1.2664
+2010-04-20 19:01:13,301 commission.czilber - DEBUG in models: sale #608 final = 1.2664
+2010-04-20 19:01:13,309 commission.czilber - DEBUG in models: sale #608 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': 17687.299999999999, 'latest_doh0price': 1223127L}
+2010-04-20 19:01:13,315 commission.czilber - DEBUG in models: last_demand_finish_date: 2010-04-20 19:01:12
+2010-04-20 19:01:13,369 commission.czilber - ERROR in models: error while calculating commissions for month 10/2009
+Traceback (most recent call last):
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1477, in calc
+    pc_base = restore_object(q[0], last_demand_finish_date).value
+AttributeError: 'DeserializedObject' object has no attribute 'value'
+2010-04-20 19:01:14,515 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 8 sales.
+2010-04-20 19:01:14,642 commission.czilber - INFO in models: total cycle sales count: 13
+2010-04-20 19:01:14,650 commission.czilber - DEBUG in models: sale #855 price_final = 613793
+2010-04-20 19:01:14,658 commission.czilber - DEBUG in models: sale #850 price_final = 1170000
+2010-04-20 19:01:14,666 commission.czilber - DEBUG in models: sale #856 price_final = 812808
+2010-04-20 19:01:14,674 commission.czilber - DEBUG in models: sale #852 price_final = 971970
+2010-04-20 19:01:14,682 commission.czilber - DEBUG in models: sale #851 price_final = 971970
+2010-04-20 19:01:14,690 commission.czilber - DEBUG in models: sale #853 price_final = 761576
+2010-04-20 19:01:14,698 commission.czilber - DEBUG in models: sale #857 price_final = 1011970
+2010-04-20 19:01:14,706 commission.czilber - DEBUG in models: sale #854 price_final = 761576
+2010-04-20 19:01:14,713 commission.czilber - DEBUG in models: sale #684 price_final = 985222
+2010-04-20 19:01:14,722 commission.czilber - DEBUG in models: sale #605 price_final = 1171921
+2010-04-20 19:01:14,729 commission.czilber - DEBUG in models: sale #607 price_final = 1133005
+2010-04-20 19:01:14,737 commission.czilber - DEBUG in models: sale #606 price_final = 1116970
+2010-04-20 19:01:14,745 commission.czilber - DEBUG in models: sale #608 price_final = 1379310
+2010-04-20 19:01:14,747 commission.czilber - DEBUG in models: prices_date = 2009-12-01, current_madad=126.9
+2010-04-20 19:01:14,753 commission.czilber - DEBUG in models: sale #855 c_zilber_base = 1.3992
+2010-04-20 19:01:14,759 commission.czilber - DEBUG in models: sale #855 final = 1.3992
+2010-04-20 19:01:14,768 commission.czilber - DEBUG in models: sale #855 c_zilber_discount calc values: {'memudad': 620000.0, 'scd.value': 300.0, 'latest_doh0price': 620000L}
+2010-04-20 19:01:14,774 commission.czilber - DEBUG in models: sale #850 c_zilber_base = 1.3992
+2010-04-20 19:01:14,779 commission.czilber - DEBUG in models: sale #850 final = 1.3992
+2010-04-20 19:01:14,781 commission.czilber - WARNING in models: skipping c_zilber_discount calc for sale #850. no doh0 prices
+2010-04-20 19:01:14,787 commission.czilber - DEBUG in models: sale #856 c_zilber_base = 1.3992
+2010-04-20 19:01:14,793 commission.czilber - DEBUG in models: sale #856 final = 1.3992
+2010-04-20 19:01:14,802 commission.czilber - DEBUG in models: sale #856 c_zilber_discount calc values: {'memudad': 850000.0, 'scd.value': -2500.0, 'latest_doh0price': 850000L}
+2010-04-20 19:01:14,808 commission.czilber - DEBUG in models: sale #852 c_zilber_base = 1.3992
+2010-04-20 19:01:14,814 commission.czilber - DEBUG in models: sale #852 final = 1.3992
+2010-04-20 19:01:14,825 commission.czilber - DEBUG in models: sale #852 c_zilber_discount calc values: {'memudad': 1000000.0, 'scd.value': -1345.0, 'latest_doh0price': 1000000L}
+2010-04-20 19:01:14,830 commission.czilber - DEBUG in models: sale #851 c_zilber_base = 1.3992
+2010-04-20 19:01:14,836 commission.czilber - DEBUG in models: sale #851 final = 1.3992
+2010-04-20 19:01:14,845 commission.czilber - DEBUG in models: sale #851 c_zilber_discount calc values: {'memudad': 1000000.0, 'scd.value': -1345.0, 'latest_doh0price': 1000000L}
+2010-04-20 19:01:14,851 commission.czilber - DEBUG in models: sale #853 c_zilber_base = 1.3992
+2010-04-20 19:01:14,857 commission.czilber - DEBUG in models: sale #853 final = 1.3992
+2010-04-20 19:01:14,866 commission.czilber - DEBUG in models: sale #853 c_zilber_discount calc values: {'memudad': 850000.0, 'scd.value': -7700.0, 'latest_doh0price': 850000L}
+2010-04-20 19:01:14,872 commission.czilber - DEBUG in models: sale #857 c_zilber_base = 1.3992
+2010-04-20 19:01:14,878 commission.czilber - DEBUG in models: sale #857 final = 1.3992
+2010-04-20 19:01:14,887 commission.czilber - DEBUG in models: sale #857 c_zilber_discount calc values: {'memudad': 1020000.0, 'scd.value': 715.0, 'latest_doh0price': 1020000L}
+2010-04-20 19:01:14,893 commission.czilber - DEBUG in models: sale #854 c_zilber_base = 1.3992
+2010-04-20 19:01:14,899 commission.czilber - DEBUG in models: sale #854 final = 1.3992
+2010-04-20 19:01:14,908 commission.czilber - DEBUG in models: sale #854 c_zilber_discount calc values: {'memudad': 850000.0, 'scd.value': -7700.0, 'latest_doh0price': 850000L}
+2010-04-20 19:01:14,913 commission.czilber - DEBUG in models: sale #684 c_zilber_base = 1.3992
+2010-04-20 19:01:14,918 commission.czilber - DEBUG in models: sale #684 final = 1.3992
+2010-04-20 19:01:14,928 commission.czilber - DEBUG in models: sale #684 c_zilber_discount calc values: {'memudad': 901300.0, 'scd.value': 9870.0, 'latest_doh0price': 901300L}
+2010-04-20 19:01:14,935 commission.czilber - DEBUG in models: sale #605 c_zilber_base = 1.3992
+2010-04-20 19:01:14,940 commission.czilber - DEBUG in models: sale #605 final = 1.3992
+2010-04-20 19:01:14,949 commission.czilber - DEBUG in models: sale #605 c_zilber_discount calc values: {'memudad': 1031415.0, 'scd.value': 15808.5, 'latest_doh0price': 1031415L}
+2010-04-20 19:01:14,954 commission.czilber - DEBUG in models: sale #607 c_zilber_base = 1.3992
+2010-04-20 19:01:14,959 commission.czilber - DEBUG in models: sale #607 final = 1.3992
+2010-04-20 19:01:14,968 commission.czilber - DEBUG in models: sale #607 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': -7312.7000000000007, 'latest_doh0price': 1223127L}
+2010-04-20 19:01:14,973 commission.czilber - DEBUG in models: sale #606 c_zilber_base = 1.3992
+2010-04-20 19:01:14,979 commission.czilber - DEBUG in models: sale #606 final = 1.3992
+2010-04-20 19:01:14,987 commission.czilber - DEBUG in models: sale #606 c_zilber_discount calc values: {'memudad': 1072423.0, 'scd.value': 6130.2000000000007, 'latest_doh0price': 1072423L}
+2010-04-20 19:01:14,993 commission.czilber - DEBUG in models: sale #608 c_zilber_base = 1.3992
+2010-04-20 19:01:14,998 commission.czilber - DEBUG in models: sale #608 final = 1.3992
+2010-04-20 19:01:15,007 commission.czilber - DEBUG in models: sale #608 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': 17687.299999999999, 'latest_doh0price': 1223127L}
+2010-04-20 19:01:15,013 commission.czilber - DEBUG in models: last_demand_finish_date: 2010-04-20 19:01:13
+2010-04-20 19:01:15,257 commission.czilber - ERROR in models: error while calculating commissions for month 11/2009
+Traceback (most recent call last):
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1477, in calc
+    pc_base = restore_object(q[0], last_demand_finish_date).value
+AttributeError: 'DeserializedObject' object has no attribute 'value'
+2010-04-20 19:01:16,510 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 2 sales.
+2010-04-20 19:01:16,722 commission.czilber - INFO in models: total cycle sales count: 15
+2010-04-20 19:01:16,730 commission.czilber - DEBUG in models: sale #900 price_final = 1006897
+2010-04-20 19:01:16,738 commission.czilber - DEBUG in models: sale #899 price_final = 1006897
+2010-04-20 19:01:16,746 commission.czilber - DEBUG in models: sale #855 price_final = 613793
+2010-04-20 19:01:16,754 commission.czilber - DEBUG in models: sale #850 price_final = 1170000
+2010-04-20 19:01:16,762 commission.czilber - DEBUG in models: sale #856 price_final = 812808
+2010-04-20 19:01:16,770 commission.czilber - DEBUG in models: sale #852 price_final = 971970
+2010-04-20 19:01:16,778 commission.czilber - DEBUG in models: sale #851 price_final = 971970
+2010-04-20 19:01:16,786 commission.czilber - DEBUG in models: sale #853 price_final = 761576
+2010-04-20 19:01:16,794 commission.czilber - DEBUG in models: sale #857 price_final = 1011970
+2010-04-20 19:01:16,802 commission.czilber - DEBUG in models: sale #854 price_final = 761576
+2010-04-20 19:01:16,810 commission.czilber - DEBUG in models: sale #684 price_final = 985222
+2010-04-20 19:01:16,819 commission.czilber - DEBUG in models: sale #605 price_final = 1171921
+2010-04-20 19:01:16,827 commission.czilber - DEBUG in models: sale #607 price_final = 1133005
+2010-04-20 19:01:16,835 commission.czilber - DEBUG in models: sale #606 price_final = 1116970
+2010-04-20 19:01:16,843 commission.czilber - DEBUG in models: sale #608 price_final = 1379310
+2010-04-20 19:01:16,845 commission.czilber - DEBUG in models: prices_date = 2010-01-01, current_madad=126.9
+2010-04-20 19:01:16,851 commission.czilber - DEBUG in models: sale #900 c_zilber_base = 1.4324
+2010-04-20 19:01:16,857 commission.czilber - DEBUG in models: sale #900 final = 1.4324
+2010-04-20 19:01:16,866 commission.czilber - DEBUG in models: sale #900 c_zilber_discount calc values: {'memudad': 1015622.0, 'scd.value': 637.80000000000007, 'latest_doh0price': 1015622L}
+2010-04-20 19:01:16,872 commission.czilber - DEBUG in models: sale #899 c_zilber_base = 1.4324
+2010-04-20 19:01:16,877 commission.czilber - DEBUG in models: sale #899 final = 1.4324
+2010-04-20 19:01:16,887 commission.czilber - DEBUG in models: sale #899 c_zilber_discount calc values: {'memudad': 1015622.0, 'scd.value': 637.80000000000007, 'latest_doh0price': 1015622L}
+2010-04-20 19:01:16,892 commission.czilber - DEBUG in models: sale #855 c_zilber_base = 1.4324
+2010-04-20 19:01:16,897 commission.czilber - DEBUG in models: sale #855 final = 1.4324
+2010-04-20 19:01:16,905 commission.czilber - DEBUG in models: sale #855 c_zilber_discount calc values: {'memudad': 617338.0, 'scd.value': 566.20000000000005, 'latest_doh0price': 617338L}
+2010-04-20 19:01:16,911 commission.czilber - DEBUG in models: sale #850 c_zilber_base = 1.4324
+2010-04-20 19:01:16,916 commission.czilber - DEBUG in models: sale #850 final = 1.4324
+2010-04-20 19:01:16,925 commission.czilber - DEBUG in models: sale #850 c_zilber_discount calc values: {'memudad': 994250.0, 'scd.value': 19330.0, 'latest_doh0price': 994250L}
+2010-04-20 19:01:16,931 commission.czilber - DEBUG in models: sale #856 c_zilber_base = 1.4324
+2010-04-20 19:01:16,937 commission.czilber - DEBUG in models: sale #856 final = 1.4324
+2010-04-20 19:01:16,947 commission.czilber - DEBUG in models: sale #856 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -2135.0999999999999, 'latest_doh0price': 846351L}
+2010-04-20 19:01:16,952 commission.czilber - DEBUG in models: sale #852 c_zilber_base = 1.4324
+2010-04-20 19:01:16,957 commission.czilber - DEBUG in models: sale #852 final = 1.4324
+2010-04-20 19:01:16,966 commission.czilber - DEBUG in models: sale #852 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': -915.80000000000007, 'latest_doh0price': 995708L}
+2010-04-20 19:01:16,971 commission.czilber - DEBUG in models: sale #851 c_zilber_base = 1.4324
+2010-04-20 19:01:16,976 commission.czilber - DEBUG in models: sale #851 final = 1.4324
+2010-04-20 19:01:16,985 commission.czilber - DEBUG in models: sale #851 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': -915.80000000000007, 'latest_doh0price': 995708L}
+2010-04-20 19:01:16,990 commission.czilber - DEBUG in models: sale #853 c_zilber_base = 1.4324
+2010-04-20 19:01:16,995 commission.czilber - DEBUG in models: sale #853 final = 1.4324
+2010-04-20 19:01:17,004 commission.czilber - DEBUG in models: sale #853 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -7335.1000000000004, 'latest_doh0price': 846351L}
+2010-04-20 19:01:17,010 commission.czilber - DEBUG in models: sale #857 c_zilber_base = 1.4324
+2010-04-20 19:01:17,016 commission.czilber - DEBUG in models: sale #857 final = 1.4324
+2010-04-20 19:01:17,024 commission.czilber - DEBUG in models: sale #857 c_zilber_discount calc values: {'memudad': 1015622.0, 'scd.value': 1152.8, 'latest_doh0price': 1015622L}
+2010-04-20 19:01:17,030 commission.czilber - DEBUG in models: sale #854 c_zilber_base = 1.4324
+2010-04-20 19:01:17,035 commission.czilber - DEBUG in models: sale #854 final = 1.4324
+2010-04-20 19:01:17,044 commission.czilber - DEBUG in models: sale #854 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -7335.1000000000004, 'latest_doh0price': 846351L}
+2010-04-20 19:01:17,049 commission.czilber - DEBUG in models: sale #684 c_zilber_base = 1.4324
+2010-04-20 19:01:17,054 commission.czilber - DEBUG in models: sale #684 final = 1.4324
+2010-04-20 19:01:17,063 commission.czilber - DEBUG in models: sale #684 c_zilber_discount calc values: {'memudad': 901300.0, 'scd.value': 9870.0, 'latest_doh0price': 901300L}
+2010-04-20 19:01:17,068 commission.czilber - DEBUG in models: sale #605 c_zilber_base = 1.4324
+2010-04-20 19:01:17,073 commission.czilber - DEBUG in models: sale #605 final = 1.4324
+2010-04-20 19:01:17,081 commission.czilber - DEBUG in models: sale #605 c_zilber_discount calc values: {'memudad': 1031415.0, 'scd.value': 15808.5, 'latest_doh0price': 1031415L}
+2010-04-20 19:01:17,087 commission.czilber - DEBUG in models: sale #607 c_zilber_base = 1.4324
+2010-04-20 19:01:17,092 commission.czilber - DEBUG in models: sale #607 final = 1.4324
+2010-04-20 19:01:17,101 commission.czilber - DEBUG in models: sale #607 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': -7312.7000000000007, 'latest_doh0price': 1223127L}
+2010-04-20 19:01:17,106 commission.czilber - DEBUG in models: sale #606 c_zilber_base = 1.4324
+2010-04-20 19:01:17,111 commission.czilber - DEBUG in models: sale #606 final = 1.4324
+2010-04-20 19:01:17,119 commission.czilber - DEBUG in models: sale #606 c_zilber_discount calc values: {'memudad': 1072423.0, 'scd.value': 6130.2000000000007, 'latest_doh0price': 1072423L}
+2010-04-20 19:01:17,124 commission.czilber - DEBUG in models: sale #608 c_zilber_base = 1.4324
+2010-04-20 19:01:17,129 commission.czilber - DEBUG in models: sale #608 final = 1.4324
+2010-04-20 19:01:17,137 commission.czilber - DEBUG in models: sale #608 c_zilber_discount calc values: {'memudad': 1223127.0, 'scd.value': 17687.299999999999, 'latest_doh0price': 1223127L}
+2010-04-20 19:01:17,142 commission.czilber - DEBUG in models: last_demand_finish_date: 2010-04-20 19:01:15
+2010-04-20 19:01:17,223 commission.czilber - ERROR in models: error while calculating commissions for month 12/2009
+Traceback (most recent call last):
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1477, in calc
+    pc_base = restore_object(q[0], last_demand_finish_date).value
+AttributeError: 'DeserializedObject' object has no attribute 'value'
+2010-04-20 19:01:18,631 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 4 sales.
+2010-04-20 19:01:18,682 commission.czilber - INFO in models: total cycle sales count: 4
+2010-04-20 19:01:18,690 commission.czilber - DEBUG in models: sale #988 price_final = 845970
+2010-04-20 19:01:18,698 commission.czilber - DEBUG in models: sale #989 price_final = 1024631
+2010-04-20 19:01:18,706 commission.czilber - DEBUG in models: sale #990 price_final = 1085714
+2010-04-20 19:01:18,714 commission.czilber - DEBUG in models: sale #1036 price_final = 896974
+2010-04-20 19:01:18,716 commission.czilber - DEBUG in models: prices_date = 2010-02-01, current_madad=126.9
+2010-04-20 19:01:18,722 commission.czilber - DEBUG in models: sale #988 c_zilber_base = 1.2498
+2010-04-20 19:01:18,727 commission.czilber - DEBUG in models: sale #988 final = 1.2498
+2010-04-20 19:01:18,737 commission.czilber - DEBUG in models: sale #988 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 1230.9000000000001, 'latest_doh0price': 846351L}
+2010-04-20 19:01:18,743 commission.czilber - DEBUG in models: sale #989 c_zilber_base = 1.2498
+2010-04-20 19:01:18,748 commission.czilber - DEBUG in models: sale #989 final = 1.2498
+2010-04-20 19:01:18,758 commission.czilber - DEBUG in models: sale #989 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': 4429.1999999999998, 'latest_doh0price': 995708L}
+2010-04-20 19:01:18,763 commission.czilber - DEBUG in models: sale #990 c_zilber_base = 1.2498
+2010-04-20 19:01:18,769 commission.czilber - DEBUG in models: sale #990 final = 1.2498
+2010-04-20 19:01:18,780 commission.czilber - DEBUG in models: sale #990 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 672.20000000000005, 'latest_doh0price': 1095278L}
+2010-04-20 19:01:18,786 commission.czilber - DEBUG in models: sale #1036 c_zilber_base = 1.2498
+2010-04-20 19:01:18,791 commission.czilber - DEBUG in models: sale #1036 final = 1.2498
+2010-04-20 19:01:18,801 commission.czilber - DEBUG in models: sale #1036 c_zilber_discount calc values: {'memudad': 717078.0, 'scd.value': 19335.100000000002, 'latest_doh0price': 717078L}
+2010-04-20 19:01:18,806 commission.czilber - DEBUG in models: last_demand_finish_date: 2010-04-20 19:01:17
+2010-04-20 19:01:18,915 commission.czilber - INFO in models: finished calculation for month 1/2010
+2010-04-20 19:01:19,990 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 3 sales.
+2010-04-20 19:01:20,080 commission.czilber - INFO in models: total cycle sales count: 7
+2010-04-20 19:01:20,088 commission.czilber - DEBUG in models: sale #1106 price_final = 859113
+2010-04-20 19:01:20,096 commission.czilber - DEBUG in models: sale #1108 price_final = 640394
+2010-04-20 19:01:20,106 commission.czilber - DEBUG in models: sale #1107 price_final = 1236453
+2010-04-20 19:01:20,113 commission.czilber - DEBUG in models: sale #988 price_final = 845970
+2010-04-20 19:01:20,121 commission.czilber - DEBUG in models: sale #989 price_final = 1024631
+2010-04-20 19:01:20,129 commission.czilber - DEBUG in models: sale #990 price_final = 1085714
+2010-04-20 19:01:20,137 commission.czilber - DEBUG in models: sale #1036 price_final = 896974
+2010-04-20 19:01:20,139 commission.czilber - DEBUG in models: prices_date = 2010-03-01, current_madad=126.9
+2010-04-20 19:01:20,145 commission.czilber - DEBUG in models: sale #1106 c_zilber_base = 1.2996
+2010-04-20 19:01:20,150 commission.czilber - DEBUG in models: sale #1106 final = 1.2996
+2010-04-20 19:01:20,160 commission.czilber - DEBUG in models: sale #1106 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 2564.9000000000001, 'latest_doh0price': 846351L}
+2010-04-20 19:01:20,165 commission.czilber - DEBUG in models: sale #1108 c_zilber_base = 1.2996
+2010-04-20 19:01:20,171 commission.czilber - DEBUG in models: sale #1108 final = 1.2996
+2010-04-20 19:01:20,180 commission.czilber - DEBUG in models: sale #1108 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -19635.100000000002, 'latest_doh0price': 846351L}
+2010-04-20 19:01:20,186 commission.czilber - DEBUG in models: sale #1107 c_zilber_base = 1.2996
+2010-04-20 19:01:20,192 commission.czilber - DEBUG in models: sale #1107 final = 1.2996
+2010-04-20 19:01:20,201 commission.czilber - DEBUG in models: sale #1107 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 15972.200000000001, 'latest_doh0price': 1095278L}
+2010-04-20 19:01:20,206 commission.czilber - DEBUG in models: sale #988 c_zilber_base = 1.2996
+2010-04-20 19:01:20,211 commission.czilber - DEBUG in models: sale #988 final = 1.2996
+2010-04-20 19:01:20,220 commission.czilber - DEBUG in models: sale #988 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 1230.9000000000001, 'latest_doh0price': 846351L}
+2010-04-20 19:01:20,225 commission.czilber - DEBUG in models: sale #989 c_zilber_base = 1.2996
+2010-04-20 19:01:20,230 commission.czilber - DEBUG in models: sale #989 final = 1.2996
+2010-04-20 19:01:20,239 commission.czilber - DEBUG in models: sale #989 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': 4429.1999999999998, 'latest_doh0price': 995708L}
+2010-04-20 19:01:20,244 commission.czilber - DEBUG in models: sale #990 c_zilber_base = 1.2996
+2010-04-20 19:01:20,249 commission.czilber - DEBUG in models: sale #990 final = 1.2996
+2010-04-20 19:01:20,257 commission.czilber - DEBUG in models: sale #990 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 672.20000000000005, 'latest_doh0price': 1095278L}
+2010-04-20 19:01:20,262 commission.czilber - DEBUG in models: sale #1036 c_zilber_base = 1.2996
+2010-04-20 19:01:20,285 commission.czilber - DEBUG in models: sale #1036 final = 1.2996
+2010-04-20 19:01:20,294 commission.czilber - DEBUG in models: sale #1036 c_zilber_discount calc values: {'memudad': 717078.0, 'scd.value': 19335.100000000002, 'latest_doh0price': 717078L}
+2010-04-20 19:01:20,298 commission.czilber - DEBUG in models: last_demand_finish_date: 2010-04-20 19:01:18
+2010-04-20 19:01:20,418 commission.czilber - ERROR in models: error while calculating commissions for month 2/2010
+Traceback (most recent call last):
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1477, in calc
+    pc_base = restore_object(q[0], last_demand_finish_date).value
+AttributeError: 'DeserializedObject' object has no attribute 'value'
+2010-04-20 19:01:21,590 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 5 sales.
+2010-04-20 19:01:21,737 commission.czilber - INFO in models: total cycle sales count: 12
+2010-04-20 19:01:21,745 commission.czilber - DEBUG in models: sale #1175 price_final = 1331970
+2010-04-20 19:01:21,755 commission.czilber - DEBUG in models: sale #1174 price_final = 1386970
+2010-04-20 19:01:21,764 commission.czilber - DEBUG in models: sale #1177 price_final = 661375
+2010-04-20 19:01:21,775 commission.czilber - DEBUG in models: sale #1176 price_final = 636970
+2010-04-20 19:01:21,783 commission.czilber - DEBUG in models: sale #1178 price_final = 837438
+2010-04-20 19:01:21,791 commission.czilber - DEBUG in models: sale #1106 price_final = 859113
+2010-04-20 19:01:21,798 commission.czilber - DEBUG in models: sale #1108 price_final = 640394
+2010-04-20 19:01:21,806 commission.czilber - DEBUG in models: sale #1107 price_final = 1236453
+2010-04-20 19:01:21,814 commission.czilber - DEBUG in models: sale #988 price_final = 845970
+2010-04-20 19:01:21,842 commission.czilber - DEBUG in models: sale #989 price_final = 1024631
+2010-04-20 19:01:21,850 commission.czilber - DEBUG in models: sale #990 price_final = 1085714
+2010-04-20 19:01:21,858 commission.czilber - DEBUG in models: sale #1036 price_final = 896974
+2010-04-20 19:01:21,861 commission.czilber - DEBUG in models: prices_date = 2010-04-01, current_madad=126.9
+2010-04-20 19:01:21,866 commission.czilber - DEBUG in models: sale #1175 c_zilber_base = 1.3826
+2010-04-20 19:01:21,872 commission.czilber - DEBUG in models: sale #1175 final = 1.3826
+2010-04-20 19:01:21,882 commission.czilber - DEBUG in models: sale #1175 c_zilber_discount calc values: {'memudad': 1194849.0, 'scd.value': 15710.1, 'latest_doh0price': 1194849L}
+2010-04-20 19:01:21,910 commission.czilber - DEBUG in models: sale #1174 c_zilber_base = 1.3826
+2010-04-20 19:01:21,916 commission.czilber - DEBUG in models: sale #1174 final = 1.3826
+2010-04-20 19:01:21,929 commission.czilber - DEBUG in models: sale #1174 c_zilber_discount calc values: {'memudad': 1194849.0, 'scd.value': 21292.600000000002, 'latest_doh0price': 1194849L}
+2010-04-20 19:01:22,033 commission.czilber - DEBUG in models: sale #1177 c_zilber_base = 1.3826
+2010-04-20 19:01:22,038 commission.czilber - DEBUG in models: sale #1177 final = 1.3826
+2010-04-20 19:01:22,047 commission.czilber - DEBUG in models: sale #1177 c_zilber_discount calc values: {'memudad': 617338.0, 'scd.value': 5395.8000000000002, 'latest_doh0price': 617338L}
+2010-04-20 19:01:22,052 commission.czilber - DEBUG in models: sale #1176 c_zilber_base = 1.3826
+2010-04-20 19:01:22,058 commission.czilber - DEBUG in models: sale #1176 final = 1.3826
+2010-04-20 19:01:22,066 commission.czilber - DEBUG in models: sale #1176 c_zilber_discount calc values: {'memudad': 617338.0, 'scd.value': 2918.7000000000003, 'latest_doh0price': 617338L}
+2010-04-20 19:01:22,072 commission.czilber - DEBUG in models: sale #1178 c_zilber_base = 1.3826
+2010-04-20 19:01:22,078 commission.czilber - DEBUG in models: sale #1178 final = 1.3826
+2010-04-20 19:01:22,080 commission.czilber - WARNING in models: skipping c_zilber_discount calc for sale #1178. no doh0 prices
+2010-04-20 19:01:22,085 commission.czilber - DEBUG in models: sale #1106 c_zilber_base = 1.3826
+2010-04-20 19:01:22,089 commission.czilber - DEBUG in models: sale #1106 final = 1.3826
+2010-04-20 19:01:22,097 commission.czilber - DEBUG in models: sale #1106 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 2564.9000000000001, 'latest_doh0price': 846351L}
+2010-04-20 19:01:22,102 commission.czilber - DEBUG in models: sale #1108 c_zilber_base = 1.3826
+2010-04-20 19:01:22,107 commission.czilber - DEBUG in models: sale #1108 final = 1.3826
+2010-04-20 19:01:22,115 commission.czilber - DEBUG in models: sale #1108 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': -19635.100000000002, 'latest_doh0price': 846351L}
+2010-04-20 19:01:22,120 commission.czilber - DEBUG in models: sale #1107 c_zilber_base = 1.3826
+2010-04-20 19:01:22,125 commission.czilber - DEBUG in models: sale #1107 final = 1.3826
+2010-04-20 19:01:22,133 commission.czilber - DEBUG in models: sale #1107 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 15972.200000000001, 'latest_doh0price': 1095278L}
+2010-04-20 19:01:22,138 commission.czilber - DEBUG in models: sale #988 c_zilber_base = 1.3826
+2010-04-20 19:01:22,143 commission.czilber - DEBUG in models: sale #988 final = 1.3826
+2010-04-20 19:01:22,151 commission.czilber - DEBUG in models: sale #988 c_zilber_discount calc values: {'memudad': 846351.0, 'scd.value': 1230.9000000000001, 'latest_doh0price': 846351L}
+2010-04-20 19:01:22,156 commission.czilber - DEBUG in models: sale #989 c_zilber_base = 1.3826
+2010-04-20 19:01:22,161 commission.czilber - DEBUG in models: sale #989 final = 1.3826
+2010-04-20 19:01:22,169 commission.czilber - DEBUG in models: sale #989 c_zilber_discount calc values: {'memudad': 995708.0, 'scd.value': 4429.1999999999998, 'latest_doh0price': 995708L}
+2010-04-20 19:01:22,174 commission.czilber - DEBUG in models: sale #990 c_zilber_base = 1.3826
+2010-04-20 19:01:22,178 commission.czilber - DEBUG in models: sale #990 final = 1.3826
+2010-04-20 19:01:22,187 commission.czilber - DEBUG in models: sale #990 c_zilber_discount calc values: {'memudad': 1095278.0, 'scd.value': 672.20000000000005, 'latest_doh0price': 1095278L}
+2010-04-20 19:01:22,192 commission.czilber - DEBUG in models: sale #1036 c_zilber_base = 1.3826
+2010-04-20 19:01:22,197 commission.czilber - DEBUG in models: sale #1036 final = 1.3826
+2010-04-20 19:01:22,205 commission.czilber - DEBUG in models: sale #1036 c_zilber_discount calc values: {'memudad': 717078.0, 'scd.value': 19335.100000000002, 'latest_doh0price': 717078L}
+2010-04-20 19:01:22,210 commission.czilber - DEBUG in models: last_demand_finish_date: 2010-04-20 19:01:20
+2010-04-20 19:01:22,368 commission.czilber - ERROR in models: error while calculating commissions for month 3/2010
+Traceback (most recent call last):
+  File "/var/www/NiceHouse/trunk/Management/models.py", line 1477, in calc
+    pc_base = restore_object(q[0], last_demand_finish_date).value
+AttributeError: 'DeserializedObject' object has no attribute 'value'
+2010-04-20 19:01:23,634 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
+2010-04-20 19:01:23,655 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
+2010-04-20 19:01:25,202 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
+2010-04-20 19:01:26,035 commission - INFO in models: starting to calculate commission for project זילברמינץ  - זילברמינץ במודיעין . 0 sales.
