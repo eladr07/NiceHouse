@@ -2941,8 +2941,11 @@ for model in tracked_models:
     reversion.register(model)
 
 def restore_object(instance, date):
-    version = reversion.models.Version.objects.get_for_date(instance, date)
-    return version.object_version.object
+    try:
+        version = reversion.models.Version.objects.get_for_date(instance, date)
+        return version.object_version.object
+    except reversion.models.Version.DoesNotExist:
+        return instance
 
 #def restore_object(instance, date):
 #    '''
