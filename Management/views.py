@@ -19,6 +19,7 @@ from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, Emp
 from pdf import PricelistWriter, BuildingClientsWriter, EmployeeSalariesBookKeepingWriter
 from mail import mail
 from django.core.urlresolvers import reverse
+import reversion
 
 def object_edit_core(request, form_class, instance,
                      template_name = 'Management/object_edit.html', 
@@ -438,6 +439,9 @@ def demand_function(request,id , function):
 
 @permission_required('Management.list_demand')
 def demand_calc(request, id):
+    # invalidate the revision created by the middleware - i want manual control of the revision
+    reversion.revision.invalidate()
+    
     d = Demand.objects.get(pk=id)
     c = d.project.commissions
     if c.commission_by_signups or c.c_zilber:
