@@ -2922,7 +2922,7 @@ class VersionDate(models.Model):
 tracked_models = (BDiscountSave, BDiscountSavePrecentage, BHouseType, BSaleRate,
                   CAmount, CByPrice, CPrecentage, CPriceAmount, CVar,
                   CVarPrecentage, CVarPrecentageFixed, CZilber, EmploymentTerms,
-                  ProjectCommission, SaleCommissionDetail, EmployeeSalaryBase, NHEmployeeSalary, NHCommission)
+                  ProjectCommission, SaleCommissionDetail, NHCommission)
 
 for model in tracked_models:
     reversion.register(model)
