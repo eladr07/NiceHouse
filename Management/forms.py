@@ -37,11 +37,38 @@ class MonthForm(forms.Form):
         return int(self.cleaned_data['month'])
 
 CVarForm = modelform_factory(CVar)
+
 CVarPrecentageForm = modelform_factory(CVarPrecentage)
+
 CZilberForm = modelform_factory(CZilber)
+
 BDiscountSaveForm = modelform_factory(BDiscountSave)
+
 BDiscountSavePrecentageForm = modelform_factory(BDiscountSavePrecentage)
+
 CVarPrecentageFixedForm = modelform_factory(CVarPrecentageFixed)
+
+AdvancePaymentForm = modelform_factory(AdvancePayment)
+
+LoanPayForm = modelform_factory(LoanPay)
+        
+SalaryExpensesForm = modelform_factory(SalaryExpenses)
+        
+TaskForm = modelform_factory(Task)
+
+AccountForm = modelform_factory(Account)
+
+DemandRemarksForm = modelform_factory(Demand, fields = ('remarks',))
+
+DemandSaleCountForm = modelform_factory(Demand, fields = ('sale_count',))
+
+EmployeeSalaryRemarksForm = modelform_factory(EmployeeSalary, fields = ('employee', 'remarks'))
+
+EmployeeSalaryRefundForm = modelform_factory(EmployeeSalary, fields = ('employee', 'refund','refund_type'))
+
+NHEmployeeSalaryRemarksForm = modelform_factory(NHEmployeeSalary, fields = ('nhemployee', 'remarks'))
+
+NHEmployeeSalaryRefundForm = modelform_factory(NHEmployeeSalary, fields = ('nhemployee', 'refund','refund_type'))
 
 class VersionDateForm(forms.ModelForm):
     date = forms.DateTimeField()
@@ -554,10 +581,6 @@ class NHSaleSideForm(forms.ModelForm):
     class Meta:
         model = NHSaleSide
 
-class AdvancePaymentForm(forms.ModelForm):
-    class Meta:
-        model = AdvancePayment
-
 class LoanForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         super(LoanForm, self).__init__(*args, **kw)
@@ -593,10 +616,6 @@ class GloablProfitLossForm(SeasonForm):
             return DivisionType.objects.nh_divisions()
         return [DivisionType.objects.get(pk = int(division))]
 
-class LoanPayForm(forms.ModelForm):
-    class Meta:
-        model = LoanPay
-        
 class ReminderForm(forms.ModelForm):
     status = forms.ModelChoiceField(queryset=ReminderStatusType.objects.all(), label=ugettext('status'))
     def save(self, *args, **kw):
@@ -611,14 +630,6 @@ class ReminderForm(forms.ModelForm):
             self.fields['status'].initial = self.instance.statuses.latest().type.id
     class Meta:
         model = Reminder
-
-class SalaryExpensesForm(forms.ModelForm):
-    class Meta:
-        model = SalaryExpenses
-        
-class TaskForm(forms.ModelForm):
-    class Meta:
-        model = Task
 
 class TaxForm(forms.ModelForm):
     def __init__(self, *args, **kw):
@@ -642,10 +653,6 @@ class AttachmentForm(forms.ModelForm):
     
     class Meta:
         model = Attachment
-
-class AccountForm(forms.ModelForm):
-    class Meta:
-        model = Account
 
 class NHBranchEmployeeForm(forms.ModelForm):
     def __init__(self, *args, **kw):
@@ -784,10 +791,6 @@ class EmploymentTermsForm(forms.ModelForm):
     class Meta:
         model = EmploymentTerms
 
-DemandRemarksForm = modelform_factory(Demand, fields = ('remarks',))
-
-DemandSaleCountForm = modelform_factory(Demand, fields = ('sale_count',))
-
 class EmployeeSalaryForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         super(EmployeeSalaryForm, self).__init__(*args, **kw)
@@ -803,26 +806,6 @@ class NHEmployeeSalaryForm(forms.ModelForm):
         self.fields['pdf_remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
     class Meta:
         model = NHEmployeeSalary
-            
-class EmployeeSalaryRemarksForm(forms.ModelForm):
-    class Meta:
-        model = EmployeeSalary
-        fields= ('employee', 'remarks')
-
-class EmployeeSalaryRefundForm(forms.ModelForm):
-    class Meta:
-        model = EmployeeSalary
-        fields= ('employee', 'refund','refund_type')
-
-class NHEmployeeSalaryRemarksForm(forms.ModelForm):
-    class Meta:
-        model = NHEmployeeSalary
-        fields= ('nhemployee', 'remarks')
-
-class NHEmployeeSalaryRefundForm(forms.ModelForm):
-    class Meta:
-        model = NHEmployeeSalary
-        fields= ('nhemployee', 'refund','refund_type')
 
 class TaskFilterForm(forms.Form):
     status = forms.ChoiceField(choices = [('done', 'בוצעו'), ('undone','לא בוצעו'), ('all','הכל')])
