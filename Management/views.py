@@ -1980,13 +1980,14 @@ def project_bdsp(request, project_id):
     project = Project.objects.get(pk = project_id)
     c = project.commissions
     bdsp = c.b_discount_save_precentage or BDiscountSavePrecentage()
+    form_class = modelform_factory(BDiscountSavePrecentage)
     if request.method == 'POST':
-        form = BDiscountSavePrecentageForm(request.POST, instance = bdsp)
+        form = form_class(request.POST, instance = bdsp)
         if form.is_valid():
             c.b_discount_save_precentage = form.save()
             c.save()
     else:
-        form = BDiscountSavePrecentageForm(instance=bdsp)
+        form = form_class(instance=bdsp)
             
     return render_to_response('Management/object_edit.html', 
                               { 'form':form },
@@ -2578,13 +2579,14 @@ def employee_bdsp(request, employee_id, project_id):
     employee = Employee.objects.get(pk = employee_id)
     c = employee.commissions.filter(project__id = project_id)[0]
     bdsp = c.b_discount_save_precentage or BDiscountSavePrecentage()
+    form_class = modelform_factory(BDiscountSavePrecentage)
     if request.method == 'POST':
-        form = BDiscountSavePrecentageForm(request.POST, instance = bdsp)
+        form = form_class(request.POST, instance = bdsp)
         if form.is_valid():
             c.b_discount_save_precentage = form.save()
             c.save()
     else:
-        form = BDiscountSavePrecentageForm(instance=bdsp)
+        form = form_class(instance=bdsp)
             
     return render_to_response('Management/object_edit.html', 
                               { 'form':form },

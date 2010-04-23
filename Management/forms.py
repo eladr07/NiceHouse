@@ -237,10 +237,6 @@ class EmployeeRemoveProjectForm(forms.Form):
     def __init__(self, *args, **kw):
         super(EmployeeRemoveProjectForm, self).__init__(*args, **kw)
         self.fields['end_date'].widget.attrs = {'class':'vDateField'}
-        
-class BDiscountSavePrecentageForm(forms.ModelForm):
-    class Meta:
-        model = BDiscountSavePrecentage
 
 class CVarForm(forms.ModelForm):    
     class Meta:
