@@ -3,7 +3,7 @@ import django.core.paginator as paginator
 from django.forms.formsets import formset_factory
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
-from django.forms.models import inlineformset_factory, modelformset_factory, modelform_factory
+from django.forms.models import inlineformset_factory, modelformset_factory
 from django.template import RequestContext
 from datetime import datetime, date
 from django.core import serializers
@@ -1924,17 +1924,17 @@ def project_cvp(request, project_id):
     c = project.commissions
     cvp = c.c_var_precentage or CVarPrecentage()
     InlineFormSet = inlineformset_factory(CVarPrecentage, CPrecentage, can_delete=False)
-    form_class = modelform_factory(CVarPrecentage)
+
     if request.method == "POST":
         formset = InlineFormSet(request.POST, instance=cvp)
-        form = form_class(request.POST, instance=cvp)
+        form = CVarPrecentageForm(request.POST, instance=cvp)
         if formset.is_valid() and form.is_valid():
             c.c_var_precentage = form.save()
             c.save()
             formset.save()
     else:
         formset = InlineFormSet(instance=cvp)
-        form = form_class(instance=cvp)
+        form = CVarPrecentageForm(instance=cvp)
     return render_to_response('Management/commission_inline.html', 
                               { 'formset':formset,'form':form, 'show_house_num':True },
                               context_instance=RequestContext(request))
@@ -1944,14 +1944,14 @@ def project_cvpf(request, project_id):
     project = Project.objects.get(pk = project_id)
     c = project.commissions
     cvpf = c.c_var_precentage_fixed or CVarPrecentageFixed()
-    form_class = modelform_factory(CVarPrecentageFixed)
+    
     if request.method == 'POST':
-        form = form_class(request.POST, instance = cvpf)
+        form = CVarPrecentageFixedForm(request.POST, instance = cvpf)
         if form.is_valid():
             c.c_var_precentage_fixed = form.save()
             c.save()
     else:
-        form = form_class(instance= cvpf)
+        form = CVarPrecentageFixedForm(instance= cvpf)
             
     return render_to_response('Management/object_edit.html', 
                               { 'form':form },
@@ -1962,14 +1962,14 @@ def project_cz(request, project_id):
     project = Project.objects.get(pk = project_id)
     c = project.commissions
     cz = c.c_zilber or CZilber()
-    form_class = modelform_factory(CZilber)
+    
     if request.method == 'POST':
-        form = form_class(request.POST, instance= cz)
+        form = CZilberForm(request.POST, instance= cz)
         if form.is_valid():
             c.c_zilber = form.save()
             c.save()
     else:
-        form = form_class(instance= cz)
+        form = CZilberForm(instance= cz)
             
     return render_to_response('Management/object_edit.html', 
                               { 'form':form },
@@ -1980,14 +1980,14 @@ def project_bdsp(request, project_id):
     project = Project.objects.get(pk = project_id)
     c = project.commissions
     bdsp = c.b_discount_save_precentage or BDiscountSavePrecentage()
-    form_class = modelform_factory(BDiscountSavePrecentage)
+    
     if request.method == 'POST':
-        form = form_class(request.POST, instance = bdsp)
+        form = BDiscountSavePrecentageForm(request.POST, instance = bdsp)
         if form.is_valid():
             c.b_discount_save_precentage = form.save()
             c.save()
     else:
-        form = form_class(instance=bdsp)
+        form = BDiscountSavePrecentageForm(instance=bdsp)
             
     return render_to_response('Management/object_edit.html', 
                               { 'form':form },
@@ -2463,17 +2463,17 @@ def employee_cv(request, employee_id, project_id):
     pc = employee.commissions.filter(project__id = project_id)[0]
     cv = pc.c_var or CVar()
     InlineFormSet = inlineformset_factory(CVar, CAmount, can_delete=False)
-    form_class = modelform_factory(CVar)
+    
     if request.method == "POST":
         formset = InlineFormSet(request.POST, instance=cv)
-        form = form_class(request.POST, instance=cv)
+        form = CVarForm(request.POST, instance=cv)
         if formset.is_valid() and form.is_valid():
             pc.c_var = form.save()
             pc.save()
             formset.save()
     else:
         formset = InlineFormSet(instance=cv)
-        form = form_class(instance=cv)
+        form = CVarForm(instance=cv)
     return render_to_response('Management/commission_inline.html', 
                               { 'formset':formset,'form':form, 'show_house_num':True },
                               context_instance=RequestContext(request))
@@ -2484,17 +2484,17 @@ def employee_cvp(request, employee_id, project_id):
     pc = employee.commissions.filter(project__id = project_id)[0]
     cvp = pc.c_var_precentage or CVarPrecentage()
     InlineFormSet = inlineformset_factory(CVarPrecentage, CPrecentage, can_delete=False)
-    form_class = modelform_factory(CVarPrecentage)
+    
     if request.method == "POST":
         formset = InlineFormSet(request.POST, instance=cvp)
-        form = form_class(request.POST, instance=cvp)
+        form = CVarPrecentageForm(request.POST, instance=cvp)
         if formset.is_valid() and form.is_valid():
             pc.c_var_precentage = form.save()
             pc.save()
             formset.save()
     else:
         formset = InlineFormSet(instance=cvp)
-        form = form_class(instance=cvp)
+        form = CVarPrecentageForm(instance=cvp)
     return render_to_response('Management/commission_inline.html', 
                               { 'formset':formset,'form':form, 'show_house_num':True },
                               context_instance=RequestContext(request))
@@ -2563,14 +2563,14 @@ def employee_bds(request, employee_id, project_id):
     employee = Employee.objects.get(pk = employee_id)
     pc = employee.commissions.filter(project__id = project_id)[0]
     bds = pc.b_discount_save or BDiscountSave()
-    form_class = modelform_factory(BDiscountSave)
+    
     if request.method == 'POST':
-        form = form_class(request.POST, instance = bds)
+        form = BDiscountSaveForm(request.POST, instance = bds)
         if form.is_valid():
             pc.b_discount_save = form.save()
             pc.save()
     else:
-        form = form_class(instance=bds)
+        form = BDiscountSaveForm(instance=bds)
             
     return render_to_response('Management/object_edit.html', 
                               { 'form':form },
@@ -2581,14 +2581,14 @@ def employee_bdsp(request, employee_id, project_id):
     employee = Employee.objects.get(pk = employee_id)
     c = employee.commissions.filter(project__id = project_id)[0]
     bdsp = c.b_discount_save_precentage or BDiscountSavePrecentage()
-    form_class = modelform_factory(BDiscountSavePrecentage)
+    
     if request.method == 'POST':
-        form = form_class(request.POST, instance = bdsp)
+        form = BDiscountSavePrecentageForm(request.POST, instance = bdsp)
         if form.is_valid():
             c.b_discount_save_precentage = form.save()
             c.save()
     else:
-        form = form_class(instance=bdsp)
+        form = BDiscountSavePrecentageForm(instance=bdsp)
             
     return render_to_response('Management/object_edit.html', 
                               { 'form':form },

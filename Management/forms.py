@@ -1,4 +1,5 @@
 ﻿import django.forms as forms
+from django.forms.models import modelform_factory
 import sys
 import common
 from django.core.exceptions import ValidationError
@@ -34,6 +35,13 @@ class MonthForm(forms.Form):
         return int(self.cleaned_data['year'])
     def clean_month(self):
         return int(self.cleaned_data['month'])
+
+CVarForm = modelform_factory(CVar)
+CVarPrecentageForm = modelform_factory(CVarPrecentage)
+CZilberForm = modelform_factory(CZilber)
+BDiscountSaveForm = modelform_factory(BDiscountSave)
+BDiscountSavePrecentageForm = modelform_factory(BDiscountSavePrecentage)
+CVarPrecentageFixedForm = modelform_factory(CVarPrecentageFixed)
 
 class VersionDateForm(forms.ModelForm):
     date = forms.DateTimeField()
@@ -776,15 +784,9 @@ class EmploymentTermsForm(forms.ModelForm):
     class Meta:
         model = EmploymentTerms
 
-class DemandRemarksForm(forms.ModelForm):
-    class Meta:
-        model = Demand
-        fields= ('remarks',)
-        
-class DemandSaleCountForm(forms.ModelForm):
-    class Meta:
-        model = Demand
-        fields= ('sale_count',)
+DemandRemarksForm = modelform_factory(Demand, fields = ('remarks',))
+
+DemandSaleCountForm = modelform_factory(Demand, fields = ('sale_count',))
 
 class EmployeeSalaryForm(forms.ModelForm):
     def __init__(self, *args, **kw):
