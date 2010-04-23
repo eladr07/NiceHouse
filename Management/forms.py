@@ -36,6 +36,17 @@ class MonthForm(forms.Form):
     def clean_month(self):
         return int(self.cleaned_data['month'])
 
+class VersionDateForm(forms.ModelForm):
+    date = forms.DateTimeField()
+    def __init__(self, *args, **kw):
+        super(VersionDateForm, self).__init__(*args,**kw)
+        self.fields['date'].widget.attrs = {'class':'vDateField'}   
+    def save(self, *args, **kw):
+        reversion.revision.add_meta(VersionDate, date = self.cleaned_data['date'])
+    
+    class Meta:
+        pass
+        
 CVarForm = modelform_factory(CVar)
 
 CVarPrecentageForm = modelform_factory(CVarPrecentage)
@@ -69,14 +80,6 @@ EmployeeSalaryRefundForm = modelform_factory(EmployeeSalary, fields = ('employee
 NHEmployeeSalaryRemarksForm = modelform_factory(NHEmployeeSalary, fields = ('nhemployee', 'remarks'))
 
 NHEmployeeSalaryRefundForm = modelform_factory(NHEmployeeSalary, fields = ('nhemployee', 'refund','refund_type'))
-
-class VersionDateForm(forms.ModelForm):
-    date = forms.DateTimeField()
-    def __init__(self, *args, **kw):
-        super(VersionDateForm, self).__init__(*args,**kw)
-        self.fields['date'].widget.attrs = {'class':'vDateField'}   
-    def save(self, *args, **kw):
-        reversion.revision.add_meta(VersionDate, date = self.cleaned_data['date'])
         
 class ContactForm(forms.ModelForm):
     def __init__(self, *args, **kw):
