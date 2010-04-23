@@ -2898,7 +2898,7 @@ class NHActivity(ActivityBase):
         db_table = 'NHActivity'
 
 class RevisionExt(models.Model):
-    revision = models.ForeignKey('reversion.Revision')
+    revision = models.OneToOneField('reversion.Revision')
     date = models.DateTimeField()
     
     class Meta:
@@ -2915,8 +2915,14 @@ for model in tracked_models:
     reversion.register(model)
 
 def restore_object(instance, date):
-    try:
-        version = reversion.models.Version.objects.get_for_date(instance, date)
-        return version.object_version.object
-    except reversion.models.Version.DoesNotExist:
-        return instance
+    from reversion.models import Version
+    versions = list(Version.objects.filter(revisionext__date__lte = date))
+    if len(versions):
+        versions.sort(key = lambda v: v.revisionext.date)
+        version = versions[-1]
+    else:
+        try:
+            version = Version.objects.get_for_date(instance, date)
+        except Version.DoesNotExist:
+            return instance
+    return version.object_version.object
