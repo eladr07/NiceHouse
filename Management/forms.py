@@ -43,12 +43,12 @@ class VersionDateForm(forms.ModelForm):
         self.fields['date'].widget.attrs = {'class':'vDateField'}   
     def save(self, *args, **kw):
         reversion.revision.add_meta(VersionDate, date = self.cleaned_data['date'])
+        super(VersionDateForm, self).save(*args, **kw)
     
     class Meta:
-        pass
+        model = CVar
         
-CVarForm = modelform_factory(CVar)
-CVarForm.date = forms.DateTimeField()
+CVarForm = modelform_factory(CVar, VersionDateForm)
 
 CVarPrecentageForm = modelform_factory(CVarPrecentage)
 
