@@ -46,13 +46,9 @@ class VersionDateForm(forms.ModelForm):
         super(VersionDateForm, self).save(*args, **kw)
     
     class Meta:
-        model = CVar
+        pass
         
-#CVarForm = modelform_factory(CVar, VersionDateForm)
-
-class CVarForm(VersionDateForm):
-    class Meta:
-        model = CVar
+CVarForm = modelform_factory(CVar)
 
 CVarPrecentageForm = modelform_factory(CVarPrecentage)
 
