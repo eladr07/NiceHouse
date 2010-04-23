@@ -47,7 +47,8 @@ class VersionDateForm(forms.ModelForm):
     class Meta:
         pass
         
-CVarForm = modelform_factory(CVar, VersionDateForm)
+CVarForm = modelform_factory(CVar)
+CVarForm.date = forms.DateTimeField()
 
 CVarPrecentageForm = modelform_factory(CVarPrecentage)
 
