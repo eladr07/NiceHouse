@@ -36,30 +36,30 @@ class MonthForm(forms.Form):
     def clean_month(self):
         return int(self.cleaned_data['month'])
 
-class VersionDateForm(forms.ModelForm):
+class RevisionExtForm(forms.ModelForm):
     date = forms.DateTimeField(label = ugettext('modification_date'), help_text = ugettext('modification_date_help'))
     
     def __init__(self, *args, **kw):
         super(VersionDateForm, self).__init__(*args,**kw)
         self.fields['date'].widget.attrs = {'class':'vDateField'}   
     def save(self, *args, **kw):
-        reversion.revision.add_meta(VersionDate, date = self.cleaned_data['date'])
-        return super(VersionDateForm, self).save(*args, **kw)
+        reversion.revision.add_meta(RevisionExt, date = self.cleaned_data['date'])
+        return super(RevisionExtForm, self).save(*args, **kw)
     
     class Meta:
         pass
         
-CVarForm = modelform_factory(CVar, VersionDateForm)
+CVarForm = modelform_factory(CVar, RevisionExtForm)
 
-CVarPrecentageForm = modelform_factory(CVarPrecentage, VersionDateForm)
+CVarPrecentageForm = modelform_factory(CVarPrecentage, RevisionExtForm)
 
-CZilberForm = modelform_factory(CZilber, VersionDateForm)
+CZilberForm = modelform_factory(CZilber, RevisionExtForm)
 
-BDiscountSaveForm = modelform_factory(BDiscountSave, VersionDateForm)
+BDiscountSaveForm = modelform_factory(BDiscountSave, RevisionExtForm)
 
-BDiscountSavePrecentageForm = modelform_factory(BDiscountSavePrecentage, VersionDateForm)
+BDiscountSavePrecentageForm = modelform_factory(BDiscountSavePrecentage, RevisionExtForm)
 
-CVarPrecentageFixedForm = modelform_factory(CVarPrecentageFixed, VersionDateForm)
+CVarPrecentageFixedForm = modelform_factory(CVarPrecentageFixed, RevisionExtForm)
 
 AdvancePaymentForm = modelform_factory(AdvancePayment)
 
@@ -83,7 +83,7 @@ NHEmployeeSalaryRemarksForm = modelform_factory(NHEmployeeSalary, fields = ('nhe
 
 NHEmployeeSalaryRefundForm = modelform_factory(NHEmployeeSalary, fields = ('nhemployee', 'refund','refund_type'))
 
-NHCommissionForm = modelform_factory(NHCommission, VersionDateForm)
+NHCommissionForm = modelform_factory(NHCommission, RevisionExtForm)
 
 class ContactForm(forms.ModelForm):
     def __init__(self, *args, **kw):
@@ -253,7 +253,7 @@ class NHEmployeeForm(forms.ModelForm):
     class Meta:
         model = NHEmployee
       
-class ProjectCommissionForm(VersionDateForm):
+class ProjectCommissionForm(RevisionExtForm):
     def __init__(self, *args, **kw):
         super(ProjectCommissionForm, self).__init__(*args,**kw)
         self.fields['remarks'].widget.attrs = {'cols':'20', 'rows':'5'}
@@ -791,7 +791,7 @@ class DealForm(forms.ModelForm):
 class NHMonthForm(MonthForm):
     nhbranch = forms.ModelChoiceField(queryset = NHBranch.objects.all(), label=ugettext('nhbranch'))  
     
-class EmploymentTermsForm(VersionDateForm):
+class EmploymentTermsForm(RevisionExtForm):
     def __init__(self, *args, **kw):
         super(EmploymentTermsForm, self).__init__(*args, **kw)
         self.fields['tax_deduction_date'].widget.attrs = {'class':'vDateField'}
