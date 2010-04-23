@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext
 from models import *
 from datetime import datetime, date
+import reversion
 
 class SeasonForm(forms.Form):
     from_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
@@ -33,7 +34,19 @@ class MonthForm(forms.Form):
         return int(self.cleaned_data['year'])
     def clean_month(self):
         return int(self.cleaned_data['month'])
-    
+
+class VersionDateForm(forms.ModelForm):
+    def __init__(self, *args, **kw):
+        super(VersionDateForm, self).__init__(*args,**kw)
+        self.fields['date'].widget = forms.TextInput({'class':'vDateField'})   
+    def save(self, *args, **kw):
+        if not self.instance.revision:
+            self.instance.revision = reversion.revision
+        super(VersionDateForm, self).save(*args, **kw)
+    class Meta:
+        model = VersionDate
+        exclude = ('revision')
+        
 class ContactForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
@@ -224,10 +237,6 @@ class EmployeeRemoveProjectForm(forms.Form):
     def __init__(self, *args, **kw):
         super(EmployeeRemoveProjectForm, self).__init__(*args, **kw)
         self.fields['end_date'].widget.attrs = {'class':'vDateField'}
-    
-class BDiscountSaveForm(forms.ModelForm):
-    class Meta:
-        model = BDiscountSave
         
 class BDiscountSavePrecentageForm(forms.ModelForm):
     class Meta:

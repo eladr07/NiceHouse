@@ -3,7 +3,7 @@ import django.core.paginator as paginator
 from django.forms.formsets import formset_factory
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
-from django.forms.models import inlineformset_factory, modelformset_factory
+from django.forms.models import inlineformset_factory, modelformset_factory, modelform_factory
 from django.template import RequestContext
 from datetime import datetime, date
 from django.core import serializers
@@ -2560,13 +2560,14 @@ def employee_bds(request, employee_id, project_id):
     employee = Employee.objects.get(pk = employee_id)
     pc = employee.commissions.filter(project__id = project_id)[0]
     bds = pc.b_discount_save or BDiscountSave()
+    form_class = modelform_factory(BDiscountSave)
     if request.method == 'POST':
-        form = BDiscountSaveForm(request.POST, instance = bds)
+        form = form_class(request.POST, instance = bds)
         if form.is_valid():
             pc.b_discount_save = form.save()
             pc.save()
     else:
-        form = BDiscountSaveForm(instance=bds)
+        form = form_class(instance=bds)
             
     return render_to_response('Management/object_edit.html', 
                               { 'form':form },
