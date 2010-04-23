@@ -2466,7 +2466,7 @@ def employee_cv(request, employee_id, project_id):
     form_class = modelform_factory(CVar, VersionDateForm)
     if request.method == "POST":
         formset = InlineFormSet(request.POST, instance=cv)
-        form = form_class(instance=cv, data=request.POST)
+        form = form_class(request.POST, instance=cv)
         if formset.is_valid() and form.is_valid():
             pc.c_var = form.save()
             pc.save()
