@@ -1,5 +1,7 @@
+import common
 from django.db import models
 from querysets import *
+from datetime import date
 
 def nhemployee_sort(nhemployee1, nhemployee2):
     query1 = nhemployee1.nhbranchemployee_set.all()
@@ -41,7 +43,7 @@ class DemandManager(SeasonManager):
     def nopayment(self):
         return self.get_query_set().nopayment()
     def current(self):
-        now = Demand.current_month()
+        now = common.current_month()
         return self.filter(year = now.year, month = now.month)
     
     def get_query_set(self):

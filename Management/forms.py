@@ -1,5 +1,6 @@
 ﻿import django.forms as forms
 import sys
+import common
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext
 from models import *
@@ -7,13 +8,13 @@ from datetime import datetime, date
 
 class SeasonForm(forms.Form):
     from_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                             label = ugettext('from_year'), initial = Demand.current_month().year)
+                             label = ugettext('from_year'), initial = common.current_month().year)
     from_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('from_month'),
-                              initial = Demand.current_month().month)
+                              initial = common.current_month().month)
     to_year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
-                             label = ugettext('to_year'), initial = Demand.current_month().year)
+                             label = ugettext('to_year'), initial = common.current_month().year)
     to_month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('to_month'),
-                              initial = Demand.current_month().month)
+                              initial = common.current_month().month)
     def clean_from_year(self):
         return int(self.cleaned_data['from_year'])
     def clean_from_month(self):
@@ -27,7 +28,7 @@ class MonthForm(forms.Form):
     year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
                              label = ugettext('year'), initial = datetime.now().year)
     month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), label = ugettext('month'),
-                              initial = Demand.current_month().month)  
+                              initial = common.current_month().month)  
     def clean_year(self):
         return int(self.cleaned_data['year'])
     def clean_month(self):

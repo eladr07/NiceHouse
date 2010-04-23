@@ -11,6 +11,7 @@ from django.contrib.auth.models import User
 from templatetags.management_extras import *
 from decorators import cache_method
 from managers import *
+import common
 
 Salary_Types = (
                 (None, u'לא ידוע'),
@@ -199,12 +200,12 @@ class Project(models.Model):
         return [r for r in self.reminders.all() if r.statuses.latest().type.id 
                 not in (ReminderStatusType.Deleted,ReminderStatusType.Done)]
     def sales(self):
-        current = Demand.current_month()
+        current = common.current_month()
         return Sale.objects.filter(house__building__project = self,
                                    contractor_pay__month = current.month,
                                    contractor_pay__year = current.year)
     def signups(self):
-        current = Demand.current_month()
+        current = common.current_month()
         return Signup.objects.filter(house__building__project = self, date__year = current.year, date__month= current.month)
     def end(self):
         self.end_date = datetime.now()
@@ -1817,12 +1818,6 @@ class Demand(models.Model):
 
     objects = DemandManager()
     
-    @staticmethod
-    def current_month():
-        now = datetime.now()
-        if now.day <= 22:
-            now = datetime(now.month == 1 and now.year - 1 or now.year, now.month == 1 and 12 or now.month - 1, now.day)
-        return now
     @property
     def fixed_diff(self):
         q = self.diffs.filter(type=u'קבועה')

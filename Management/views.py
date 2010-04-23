@@ -1,25 +1,21 @@
-﻿from django.forms.formsets import formset_factory
-from django.db.backends.dummy.base import IntegrityError
-import settings
-import inspect, itertools, time
+﻿import settings, common, reversion, inspect, itertools, time
+import django.core.paginator as paginator
+from django.forms.formsets import formset_factory
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.forms.models import inlineformset_factory, modelformset_factory
-from django.db.models import Avg, Max, Min, Count
 from django.template import RequestContext
 from datetime import datetime, date
-from forms import *
 from django.core import serializers
+from django.core.urlresolvers import reverse
 from django.views.generic.create_update import create_object, update_object
 from django.views.generic.list_detail import object_list, object_detail
 from django.views.generic.simple import direct_to_template
 from django.contrib.auth.decorators import login_required, permission_required
-from django.core.paginator import Paginator, InvalidPage, EmptyPage
+from forms import *
 from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter 
 from pdf import PricelistWriter, BuildingClientsWriter, EmployeeSalariesBookKeepingWriter
 from mail import mail
-from django.core.urlresolvers import reverse
-import reversion
 
 def object_edit_core(request, form_class, instance,
                      template_name = 'Management/object_edit.html', 
@@ -465,7 +461,7 @@ def demand_calc(request, id):
     return HttpResponseRedirect('/demandsold/?year=%s&month=%s' % (d.year,d.month))
 
 def projects_profit(request):
-    month = Demand.current_month()
+    month = common.current_month()
     from_year = int(request.GET.get('from_year', month.year))
     from_month = int(request.GET.get('from_month', month.month))
     to_year = int(request.GET.get('to_year', month.year))
@@ -561,7 +557,7 @@ def demand_old_list(request):
         if form.is_valid():
             year, month = form.cleaned_data['year'], form.cleaned_data['month']
     else:
-        current = Demand.current_month()
+        current = common.current_month()
         year, month = current.year, current.month
         form = MonthForm(initial={'year':year,'month':month})
         
@@ -644,7 +640,7 @@ def salary_expenses_approve(request, id):
     
 @permission_required('Management.list_employeesalary')
 def employee_salary_list(request):
-    current = Demand.current_month()
+    current = common.current_month()
     year = int(request.GET.get('year', current.year))
     month = int(request.GET.get('month', current.month))
     salaries = []
@@ -667,7 +663,7 @@ def employee_salary_list(request):
 
 @permission_required('Management.list_salaryexpenses')
 def salary_expenses_list(request):
-    current = Demand.current_month()
+    current = common.current_month()
     year = int(request.GET.get('year', current.year))
     month = int(request.GET.get('month', current.month))
     salaries = list(EmployeeSalary.objects.filter(year = year, month= month))
@@ -678,7 +674,7 @@ def salary_expenses_list(request):
 
 @permission_required('Management.list_salaryexpenses')
 def nh_salary_expenses_list(request):
-    current = Demand.current_month()
+    current = common.current_month()
     year = int(request.GET.get('year', current.year))
     month = int(request.GET.get('month', current.month))
     salaries = list(NHEmployeeSalary.objects.filter(year = year, month= month))
@@ -689,7 +685,7 @@ def nh_salary_expenses_list(request):
 
 @permission_required('Management.list_nhemployeesalary')
 def nhemployee_salary_list(request):
-    current = Demand.current_month()
+    current = common.current_month()
     year = int(request.GET.get('year', current.year))
     month = int(request.GET.get('month', current.month))
     
@@ -971,7 +967,7 @@ def demand_list(request):
     ds, unhandled_projects = [], []
     sales_count, expected_sales_count, sales_amount = 0,0,0
     
-    current = Demand.current_month()
+    current = common.current_month()
     year, month = current.year, current.month
     
     if len(request.GET):
@@ -1103,7 +1099,7 @@ def demand_send_mail(demand, addr):
 
 @permission_required('Management.change_demand')
 def demands_send(request):
-    current = Demand.current_month()
+    current = common.current_month()
     y = int(request.GET.get('year', current.year))
     m = int(request.GET.get('month', current.month))
     form = MonthForm(initial={'year':y,'month':m})
@@ -1229,7 +1225,7 @@ def demand_invoice_list(request):
             invoices = [invoice for invoice in query if invoice.demands.count()]
             if project:
                 invoices = [invoice for invoice in invoices if invoice.demands.filter(project = project).count()]
-            paginator = Paginator(invoices, 25) 
+            paginator = paginator.Paginator(invoices, 25) 
         
             try:
                 page = int(request.GET.get('page', '1'))
@@ -1238,7 +1234,7 @@ def demand_invoice_list(request):
         
             try:
                 invoices = paginator.page(page)
-            except (EmptyPage, InvalidPage):
+            except (paginator.EmptyPage, paginator.InvalidPage):
                 invoices = paginator.page(paginator.num_pages)
     else:
         form = ProjectSeasonForm()
@@ -1261,7 +1257,7 @@ def demand_payment_list(request):
             payments = [p for p in query if p.demands.count()]
             if project:
                 payments = [p for p in payments if p.demands.filter(project = project).count()]
-            paginator = Paginator(payments, 25) 
+            paginator = paginator.Paginator(payments, 25) 
         
             try:
                 page = int(request.GET.get('page', '1'))
@@ -1270,7 +1266,7 @@ def demand_payment_list(request):
         
             try:
                 payments = paginator.page(page)
-            except (EmptyPage, InvalidPage):
+            except (paginator.EmptyPage, paginator.InvalidPage):
                 payments = paginator.page(paginator.num_pages)
     else:
         form = ProjectSeasonForm()
@@ -2775,7 +2771,7 @@ def sale_add(request, demand_id=None):
         demand = Demand.objects.get(pk = demand_id)
         year, month = demand.year, demand.month
     else:
-        year, month = Demand.current_month().year, Demand.current_month().month
+        year, month = common.current_month().year, common.current_month().month
     if request.POST:
         form = SaleForm(request.POST)
         if form.is_valid():
@@ -2888,8 +2884,8 @@ def report_projects_month(request, year, month):
     return response
 
 @login_required
-def report_project_season(request, project_id=None, from_year=Demand.current_month().year, from_month=Demand.current_month().month, 
-                          to_year=Demand.current_month().year, to_month=Demand.current_month().month):
+def report_project_season(request, project_id=None, from_year=common.current_month().year, from_month=common.current_month().month, 
+                          to_year=common.current_month().year, to_month=common.current_month().month):
     from_date = date(int(from_year), int(from_month), 1)
     to_date = date(int(to_year), int(to_month), 1)
     
@@ -2908,8 +2904,8 @@ def report_project_season(request, project_id=None, from_year=Demand.current_mon
     return response
 
 @login_required
-def report_employeesalary_season(request, employee_id=None, from_year=Demand.current_month().year, from_month=Demand.current_month().month, 
-                          to_year=Demand.current_month().year, to_month=Demand.current_month().month):
+def report_employeesalary_season(request, employee_id=None, from_year=common.current_month().year, from_month=common.current_month().month, 
+                          to_year=common.current_month().year, to_month=common.current_month().month):
     from_date = date(int(from_year), int(from_month), 1)
     to_date = date(int(to_year), int(to_month), 1)  
     
