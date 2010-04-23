@@ -398,7 +398,8 @@ class DemandInvoiceForm(forms.ModelForm):
     def save(self, *args, **kw):
         d = Demand.objects.get(project = self.cleaned_data['project'], year = self.cleaned_data['year'],
                                month = self.cleaned_data['month'])
-        self.instance.demands.clear()
+        if self.instance.id:
+            self.instance.demands.clear()
         i = forms.ModelForm.save(self, *args, **kw)
         d.invoices.add(i)
         return i
@@ -495,7 +496,8 @@ class DemandPaymentForm(PaymentBaseForm):
     def save(self, *args, **kw):
         d = Demand.objects.get(project = self.cleaned_data['project'], year = self.cleaned_data['year'],
                                month = self.cleaned_data['month'])
-        self.instance.demands.clear()
+        if self.instance.id:
+            self.instance.demands.clear()
         p = forms.ModelForm.save(self, *args, **kw)
         d.payments.add(p)
         return p
