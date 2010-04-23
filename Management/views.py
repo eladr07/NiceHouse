@@ -36,9 +36,6 @@ def object_edit_core(request, form_class, instance,
         
     return render_to_response(template_name, {'form':form }, context_instance = context_class(request))
 
-def generate_unique_pdf_filename():
-    return settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.pdf'
-
 @login_required
 def index(request):
     return render_to_response('Management/index.html',
@@ -589,7 +586,7 @@ def nhemployee_salary_send(request, nhbranch_id, year, month):
     pass
     
 def nhemployee_salary_pdf(request, nhbranch_id, year, month):
-    filename = generate_unique_pdf_filename()
+    filename = common.generate_unique_media_filename('pdf')
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
@@ -706,7 +703,7 @@ def nhemployee_salary_list(request):
                                context_instance=RequestContext(request))
 
 def employee_salary_pdf(request, year, month):
-    filename = generate_unique_pdf_filename()
+    filename = common.generate_unique_media_filename('pdf')
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
@@ -779,7 +776,7 @@ def demands_all(request):
                               context_instance=RequestContext(request))
 
 def employee_list_pdf(request):
-    filename = generate_unique_pdf_filename()
+    filename = common.generate_unique_media_filename('pdf')
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
@@ -1090,7 +1087,7 @@ def demand_zero(request, id):
     return HttpResponseRedirect('/demands')
 
 def demand_send_mail(demand, addr):
-    filename = generate_unique_pdf_filename()
+    filename = common.generate_unique_media_filename('pdf')
     MonthDemandWriter(demand, to_mail=True).build(filename)
     mail(addr,
          u'עמלה לפרויקט %s לחודש %s/%s' % (demand.project, demand.month, demand.year),
@@ -1758,7 +1755,7 @@ def building_pricelist_pdf(request, object_id, type_id):
         except HouseVersion.DoesNotExist:
             h.price = None
     
-    filename = generate_unique_pdf_filename()
+    filename = common.generate_unique_media_filename('pdf')
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
@@ -1801,7 +1798,7 @@ def building_clients_pdf(request, object_id):
         except HouseVersion.DoesNotExist:
             h.price = None
     
-    filename = generate_unique_pdf_filename()
+    filename = common.generate_unique_media_filename('pdf')
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
@@ -2241,50 +2238,50 @@ def building_copy(request, building_id):
                                                                                         form.cleaned_data['include_storages'])
             
             if building.pricelist:
-                new_pricelist = clone(building.pricelist, False)
+                new_pricelist = common.clone(building.pricelist, False)
                 new_pricelist.save()
             else:
                 new_pricelist = None
             
-            new_building = clone(building, False)
+            new_building = common.clone(building, False)
             new_building.num = form.cleaned_data['new_building_num']
             new_building.pricelist = new_pricelist
             new_building.save()
             
             if include_parkings:
                 for parking in building.parkings.filter(house__isnull=True):
-                    new_parking = clone(parking, False)
+                    new_parking = common.clone(parking, False)
                     new_parking.building = new_building
                     new_parking.save()
                     
             if include_storages:
                 for storage in building.storages.filter(house__isnull=True):
-                    new_storage = clone(storage, False)
+                    new_storage = common.clone(storage, False)
                     new_storage.building = new_building
                     new_storage.save()
                                 
             if include_houses:
                 for house in building.houses.all():
-                    new_house = clone(house, False)
+                    new_house = common.clone(house, False)
                     new_house.building = new_building
                     new_house.save()
                     
                     if include_house_prices:
                         for house_version in house.versions.all():
-                            new_house_version = clone(house_version, False)
+                            new_house_version = common.clone(house_version, False)
                             new_house_version.house = new_house
                             new_house_version.save()
                             
                     if include_parkings:
                         for parking in house.parkings.all():
-                            new_parking = clone(parking, False)
+                            new_parking = common.clone(parking, False)
                             new_parking.house = new_house
                             new_parking.building = new_building
                             new_parking.save()
                             
                     if include_storages:
                         for storage in house.storages.all():
-                            new_storage = clone(storage, False)
+                            new_storage = common.clone(storage, False)
                             new_storage.house = new_house
                             new_storage.building = new_building
                             new_storage.save()
@@ -2864,7 +2861,7 @@ def report_project_month(request, project_id, year, month):
         return render_to_response('Management/error.html', 
                                   {'error':u'לדרישה שנבחרה אין מכירות'},
                                   context_instance=RequestContext(request))
-    filename = generate_unique_pdf_filename()
+    filename = common.generate_unique_media_filename('pdf')
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
@@ -2878,7 +2875,7 @@ def report_project_month(request, project_id, year, month):
 
 @permission_required('Management.report_projects_month')
 def report_projects_month(request, year, month):
-    filename = generate_unique_pdf_filename()
+    filename = common.generate_unique_media_filename('pdf')
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
@@ -2899,7 +2896,7 @@ def report_project_season(request, project_id=None, from_year=common.current_mon
     
     demands = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(project__id = project_id)
     
-    filename = generate_unique_pdf_filename()
+    filename = common.generate_unique_media_filename('pdf')
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
@@ -2919,7 +2916,7 @@ def report_employeesalary_season(request, employee_id=None, from_year=common.cur
     
     salaries = EmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(employee__id = employee_id)
     
-    filename = generate_unique_pdf_filename()
+    filename = common.generate_unique_media_filename('pdf')
     
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
