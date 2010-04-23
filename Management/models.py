@@ -2902,7 +2902,7 @@ class RevisionExt(models.Model):
     date = models.DateTimeField()
     
     class Meta:
-        db_table = 'VersionDate'
+        db_table = 'RevisionExt'
 
 #register models with reversion
 
