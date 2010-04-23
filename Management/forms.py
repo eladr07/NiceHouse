@@ -39,7 +39,7 @@ class VersionDateForm(forms.ModelForm):
     date = forms.DateTimeField()
     def __init__(self, *args, **kw):
         super(VersionDateForm, self).__init__(*args,**kw)
-        self.fields['date'].widget = forms.TextInput({'class':'vDateField'})   
+        self.fields['date'].widget.attrs = {'class':'vDateField'}   
     def save(self, *args, **kw):
         reversion.revision.add_meta(VersionDate, **self.cleaned_data)
         
@@ -194,9 +194,9 @@ class HouseForm(forms.ModelForm):
 class EmployeeForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
-        self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
-        self.fields['work_start'].widget = forms.TextInput(attrs={'class':'vDateField'})
-        self.fields['work_end'].widget = forms.TextInput(attrs={'class':'vDateField'})
+        self.fields['remarks'].widget.attrs = {'cols':'20', 'rows':'3'}
+        self.fields['work_start'].widget.attrs = {'class':'vDateField'}
+        self.fields['work_end'].widget.attrs = {'class':'vDateField'}
         if self.instance.id:
             self.fields['main_project'].queryset = self.instance.projects
     class Meta:
@@ -205,16 +205,16 @@ class EmployeeForm(forms.ModelForm):
 class NHEmployeeForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
-        self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
-        self.fields['work_start'].widget = forms.TextInput(attrs={'class':'vDateField'})
-        self.fields['work_end'].widget = forms.TextInput(attrs={'class':'vDateField'})
+        self.fields['remarks'].widget.attrs = {'cols':'20', 'rows':'3'}
+        self.fields['work_start'].widget.attrs = {'class':'vDateField'}
+        self.fields['work_end'].widget.attrs = {'class':'vDateField'}
     class Meta:
         model = NHEmployee
       
 class ProjectCommissionForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
-        self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'5'})
+        self.fields['remarks'].widget.attrs = {'cols':'20', 'rows':'5'}
     class Meta:
         model = ProjectCommission
 
