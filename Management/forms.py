@@ -36,16 +36,12 @@ class MonthForm(forms.Form):
         return int(self.cleaned_data['month'])
 
 class VersionDateForm(forms.ModelForm):
+    date = forms.DateTimeField()
     def __init__(self, *args, **kw):
         super(VersionDateForm, self).__init__(*args,**kw)
         self.fields['date'].widget = forms.TextInput({'class':'vDateField'})   
     def save(self, *args, **kw):
-        if not self.instance.revision:
-            self.instance.revision = reversion.revision
-        super(VersionDateForm, self).save(*args, **kw)
-    class Meta:
-        model = VersionDate
-        exclude = ('revision')
+        reversion.revision.add_meta(VersionDate, self.cleaned_data['date'])
         
 class ContactForm(forms.ModelForm):
     def __init__(self, *args, **kw):

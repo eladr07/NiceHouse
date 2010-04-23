@@ -2463,7 +2463,7 @@ def employee_cv(request, employee_id, project_id):
     pc = employee.commissions.filter(project__id = project_id)[0]
     cv = pc.c_var or CVar()
     InlineFormSet = inlineformset_factory(CVar, CAmount, can_delete=False)
-    form_class = modelform_factory(CVar)
+    form_class = modelform_factory(CVar, VersionDateForm)
     if request.method == "POST":
         formset = InlineFormSet(request.POST, instance=cv)
         form = form_class(instance=cv, data=request.POST)

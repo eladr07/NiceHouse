@@ -21,3 +21,7 @@ def clone(from_object, save):
     else:
         new_object = from_object.__class__(**args)
         return new_object
+    
+def model_to_dict(model):
+    fields = model._meta.fields
+    return dict([(field.name, getattr(model, field)) for field in fields])
