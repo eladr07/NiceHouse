@@ -369,9 +369,9 @@ class SaleForm(forms.ModelForm):
         self.fields['sale_date'].widget = forms.TextInput({'class':'vDateField'})
         self.fields['signup_date'].widget = forms.TextInput({'class':'vDateField'})
         if self.instance.id:
-            self.fields['project'].initial = self.instance.house.building.project.id
-            self.fields['building'].initial = self.instance.house.building.id
-            self.fields['house'].initial = self.instance.house.id
+            self.fields['project'].initial = self.instance.house.building.project_id
+            self.fields['building'].initial = self.instance.house.building_id
+            self.fields['house'].initial = self.instance.house_id
             self.fields['building'].queryset = self.instance.house.building.project.buildings.all()
             self.fields['house'].queryset = self.instance.house.building.houses.all()
             #fill signup_date field.
@@ -631,7 +631,7 @@ class ReminderForm(forms.ModelForm):
         forms.ModelForm.__init__(self,*args,**kw)
         self.fields['content'].widget = forms.Textarea(attrs={'cols':'30', 'rows':'6'})
         if self.instance.statuses.count():
-            self.fields['status'].initial = self.instance.statuses.latest().type.id
+            self.fields['status'].initial = self.instance.statuses.latest().type_id
     class Meta:
         model = Reminder
 
