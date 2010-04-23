@@ -238,22 +238,6 @@ class EmployeeRemoveProjectForm(forms.Form):
         super(EmployeeRemoveProjectForm, self).__init__(*args, **kw)
         self.fields['end_date'].widget.attrs = {'class':'vDateField'}
 
-class CVarForm(forms.ModelForm):    
-    class Meta:
-        model = CVar
-        
-class CVarPrecentageForm(forms.ModelForm):          
-    class Meta:
-        model = CVarPrecentage
-    
-class CVarPrecentageFixedForm(forms.ModelForm):
-    class Meta:
-        model = CVarPrecentageFixed
-        
-class CZilberForm(forms.ModelForm):
-    class Meta:
-        model = CZilber
-
 class CByPriceForm(forms.ModelForm):
     def save(self, *args, **kw):
         if self.instance.price == 0:
