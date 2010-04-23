@@ -41,7 +41,7 @@ class VersionDateForm(forms.ModelForm):
         super(VersionDateForm, self).__init__(*args,**kw)
         self.fields['date'].widget.attrs = {'class':'vDateField'}   
     def save(self, *args, **kw):
-        reversion.revision.add_meta(VersionDate, **self.cleaned_data)
+        reversion.revision.add_meta(VersionDate, date = self.cleaned_data['date'])
         
 class ContactForm(forms.ModelForm):
     def __init__(self, *args, **kw):
