@@ -2916,7 +2916,7 @@ for model in tracked_models:
 
 def restore_object(instance, date):
     from reversion.models import Version
-    versions = list(Version.objects.filter(revisionext__date__lte = date))
+    versions = list(Version.objects.get_for_object(instance).filter(revisionext__date__lte = date))
     if len(versions):
         versions.sort(key = lambda v: v.revisionext.date)
         version = versions[-1]
