@@ -48,7 +48,11 @@ class VersionDateForm(forms.ModelForm):
     class Meta:
         model = CVar
         
-CVarForm = modelform_factory(CVar, VersionDateForm)
+#CVarForm = modelform_factory(CVar, VersionDateForm)
+
+class CVarForm(VersionDateForm):
+    class Meta:
+        model = CVar
 
 CVarPrecentageForm = modelform_factory(CVarPrecentage)
 
