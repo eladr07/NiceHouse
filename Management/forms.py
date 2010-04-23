@@ -40,7 +40,7 @@ class RevisionExtForm(forms.ModelForm):
     date = forms.DateTimeField(label = ugettext('modification_date'), help_text = ugettext('modification_date_help'))
     
     def __init__(self, *args, **kw):
-        super(VersionDateForm, self).__init__(*args,**kw)
+        super(RevisionExtForm, self).__init__(*args,**kw)
         self.fields['date'].widget.attrs = {'class':'vDateField'}   
     def save(self, *args, **kw):
         reversion.revision.add_meta(RevisionExt, date = self.cleaned_data['date'])
