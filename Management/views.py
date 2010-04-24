@@ -2459,8 +2459,7 @@ def employee_employmentterms(request, id, model):
     
 @permission_required('Management.add_cvar')
 def employee_cv(request, employee_id, project_id):
-    employee = Employee.objects.get(pk = employee_id)
-    pc = employee.commissions.filter(project__id = project_id)[0]
+    pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id)
     cv = pc.c_var or CVar()
     InlineFormSet = inlineformset_factory(CVar, CAmount, can_delete=False)
     
@@ -2480,8 +2479,7 @@ def employee_cv(request, employee_id, project_id):
     
 @permission_required('Management.add_cvarprecentage')
 def employee_cvp(request, employee_id, project_id):
-    employee = Employee.objects.get(pk = employee_id)
-    pc = employee.commissions.filter(project__id = project_id)[0]
+    pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id)
     cvp = pc.c_var_precentage or CVarPrecentage()
     InlineFormSet = inlineformset_factory(CVarPrecentage, CPrecentage, can_delete=False)
     
@@ -2501,8 +2499,7 @@ def employee_cvp(request, employee_id, project_id):
     
 @permission_required('Management.add_cbyprice')
 def employee_cbp(request, employee_id, project_id):
-    employee = Employee.objects.get(pk = employee_id)
-    pc = employee.commissions.filter(project__id = project_id)[0]
+    pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id)
     cbp = pc.c_by_price or CByPrice()
     InlineFormSet = inlineformset_factory(CByPrice, CPriceAmount, can_delete=False)
     if request.method == "POST":
@@ -2522,8 +2519,7 @@ def employee_cbp(request, employee_id, project_id):
 
 @permission_required('Management.add_bsalerate')
 def employee_bsr(request, employee_id, project_id):
-    employee = Employee.objects.get(pk = employee_id)
-    pc = employee.commissions.filter(project__id = project_id)[0]
+    pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id)
     bsr = pc.b_sale_rate or BSaleRate()
     InlineFormSet = inlineformset_factory(BSaleRate, SaleRateBonus, can_delete=False)
     if request.method == "POST":
@@ -2543,8 +2539,7 @@ def employee_bsr(request, employee_id, project_id):
     
 @permission_required('Management.add_bhousetype')
 def employee_bht(request, employee_id, project_id):
-    employee = Employee.objects.get(pk = employee_id)
-    pc = employee.commissions.filter(project__id = project_id)[0]
+    pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id)
     htb = pc.b_house_type or BHouseType()
     InlineFormSet = inlineformset_factory(BHouseType, HouseTypeBonus, can_delete=False)
     if request.method == "POST":
@@ -2564,8 +2559,7 @@ def employee_bht(request, employee_id, project_id):
     
 @permission_required('Management.add_bdiscountsave')
 def employee_bds(request, employee_id, project_id):
-    employee = Employee.objects.get(pk = employee_id)
-    pc = employee.commissions.filter(project__id = project_id)[0]
+    pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id)
     bds = pc.b_discount_save or BDiscountSave()
     
     if request.method == 'POST':
@@ -2582,15 +2576,14 @@ def employee_bds(request, employee_id, project_id):
 
 @permission_required('Management.add_bdiscountsaveprecentage')
 def employee_bdsp(request, employee_id, project_id):
-    employee = Employee.objects.get(pk = employee_id)
-    c = employee.commissions.filter(project__id = project_id)[0]
-    bdsp = c.b_discount_save_precentage or BDiscountSavePrecentage()
+    pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id)
+    bdsp = pc.b_discount_save_precentage or BDiscountSavePrecentage()
     
     if request.method == 'POST':
         form = BDiscountSavePrecentageForm(request.POST, instance = bdsp)
         if form.is_valid():
-            c.b_discount_save_precentage = form.save()
-            c.save()
+            pc.b_discount_save_precentage = form.save()
+            pc.save()
     else:
         form = BDiscountSavePrecentageForm(instance=bdsp)
             
