@@ -53,13 +53,19 @@ CVarForm = modelform_factory(CVar, RevisionExtForm)
 
 CVarPrecentageForm = modelform_factory(CVarPrecentage, RevisionExtForm)
 
+CByPriceForm = modelform_factory(CByPrice, RevisionExtForm)
+
 CZilberForm = modelform_factory(CZilber, RevisionExtForm)
+
+CVarPrecentageFixedForm = modelform_factory(CVarPrecentageFixed, RevisionExtForm)
 
 BDiscountSaveForm = modelform_factory(BDiscountSave, RevisionExtForm)
 
 BDiscountSavePrecentageForm = modelform_factory(BDiscountSavePrecentage, RevisionExtForm)
 
-CVarPrecentageFixedForm = modelform_factory(CVarPrecentageFixed, RevisionExtForm)
+BHouseTypeForm = modelform_factory(BHouseType)
+
+BSaleRateForm = modelform_factory(BSaleRate)
 
 AdvancePaymentForm = modelform_factory(AdvancePayment)
 

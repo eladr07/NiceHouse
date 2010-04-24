@@ -2507,16 +2507,17 @@ def employee_cbp(request, employee_id, project_id):
     InlineFormSet = inlineformset_factory(CByPrice, CPriceAmount, can_delete=False)
     if request.method == "POST":
         formset = InlineFormSet(request.POST, instance=cbp)
-        if formset.is_valid():
-            cbp.save()
-            pc.c_by_price = cbp
+        form = CByPriceForm(request.POST, instance=cbp)
+        if formset.is_valid() and form.is_valid():
+            pc.c_by_price = form.save()
             pc.save()
             formset.save()
     else:
-        formset = InlineFormSet(instance=cbp)
+        formset = InlineFormSet(instance = cbp)
+        form = CByPriceForm(instance = cbp)
         
     return render_to_response('Management/commission_inline.html', 
-                              { 'formset':formset, 'show_house_num':False },
+                              { 'form':form, 'formset':formset, 'show_house_num':False },
                               context_instance=RequestContext(request))
 
 @permission_required('Management.add_bsalerate')
@@ -2527,15 +2528,17 @@ def employee_bsr(request, employee_id, project_id):
     InlineFormSet = inlineformset_factory(BSaleRate, SaleRateBonus, can_delete=False)
     if request.method == "POST":
         formset = InlineFormSet(request.POST, instance=bsr)
-        if formset.is_valid():
-            bsr.save()
-            pc.b_sale_rate = bsr
+        form = BSaleRateForm(request.POST, instance=bsr)
+        if formset.is_valid() and form.is_valid():
+            pc.b_sale_rate = form.save()
             pc.save()
             formset.save()
     else:
-        formset = InlineFormSet(instance=bsr)
+        formset = InlineFormSet(instance = bsr)
+        form = BSaleRateForm(instance = bsr)
+        
     return render_to_response('Management/commission_inline.html', 
-                              { 'formset':formset, 'show_house_num':False},
+                              { 'form':form, 'formset':formset, 'show_house_num':False},
                               context_instance=RequestContext(request))
     
 @permission_required('Management.add_bhousetype')
@@ -2546,13 +2549,14 @@ def employee_bht(request, employee_id, project_id):
     InlineFormSet = inlineformset_factory(BHouseType, HouseTypeBonus, can_delete=False)
     if request.method == "POST":
         formset = InlineFormSet(request.POST, instance=htb)
-        if formset.is_valid():
-            htb.save()
-            pc.b_house_type = htb
+        form = BHouseTypeForm(request.POST, instance=htb)
+        if formset.is_valid() and form.is_valid():
+            pc.b_house_type = form.save()
             pc.save()
             formset.save()
     else:
         formset = InlineFormSet(instance=htb)
+        form = BHouseTypeForm(instance = htb)
         
     return render_to_response('Management/commission_inline.html', 
                               { 'formset':formset, 'show_house_num':False},
