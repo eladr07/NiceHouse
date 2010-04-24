@@ -1920,8 +1920,7 @@ def employee_commission_add(request, employee_id, project_id, commission):
         
 @permission_required('Management.add_cvarprecentage')
 def project_cvp(request, project_id):
-    project = Project.objects.get(pk=project_id)
-    c = project.commissions
+    c = ProjectCommission.objects.get(project__id = project_id)
     cvp = c.c_var_precentage or CVarPrecentage()
     InlineFormSet = inlineformset_factory(CVarPrecentage, CPrecentage, can_delete=False)
 
@@ -1941,8 +1940,7 @@ def project_cvp(request, project_id):
 
 @permission_required('Management.add_cvarprecentagefixed')
 def project_cvpf(request, project_id):
-    project = Project.objects.get(pk = project_id)
-    c = project.commissions
+    c = ProjectCommission.objects.get(project__id = project_id)
     cvpf = c.c_var_precentage_fixed or CVarPrecentageFixed()
     
     if request.method == 'POST':
@@ -1959,8 +1957,7 @@ def project_cvpf(request, project_id):
     
 @permission_required('Management.add_czilber')
 def project_cz(request, project_id):
-    project = Project.objects.get(pk = project_id)
-    c = project.commissions
+    c = ProjectCommission.objects.get(project__id = project_id)
     cz = c.c_zilber or CZilber()
     
     if request.method == 'POST':
@@ -1977,8 +1974,7 @@ def project_cz(request, project_id):
 
 @permission_required('Management.add_bdiscountsaveprecentage')
 def project_bdsp(request, project_id):
-    project = Project.objects.get(pk = project_id)
-    c = project.commissions
+    c = ProjectCommission.objects.get(project__id = project_id)
     bdsp = c.b_discount_save_precentage or BDiscountSavePrecentage()
     
     if request.method == 'POST':
