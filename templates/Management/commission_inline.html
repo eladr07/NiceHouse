@@ -19,28 +19,30 @@
 				{{ form }} 
 			</table>
 		{% endif %}
-		{{ formset.management_form }}
-		<table class="formTable">
-			{% if show_house_num %}
-				<th>מס' דירה</th>
-			{% endif %}
-			{% for field in formset.forms.0 %}
-				<th>{% if not field.is_hidden %}{{ field.label_tag }}{% endif %}</th>
-			{% endfor %}
-			{% for f in formset.forms %}
-				<tr>
-					{% if show_house_num %}
-						<th>{{ forloop.counter }}</th>
-					{% endif %}
-					{% for field in f %}
-						<td>
-							{{field}}
-							{% if field.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{field.errors|join:""}}'/>{% endif %}
-						</td>
-					{% endfor %}
-				</tr>
-			{% endfor %}
-		</table>
+		{% if formset %}
+			{{ formset.management_form }}
+			<table class="formTable">
+				{% if show_house_num %}
+					<th>מס' דירה</th>
+				{% endif %}
+				{% for field in formset.forms.0 %}
+					<th>{% if not field.is_hidden %}{{ field.label_tag }}{% endif %}</th>
+				{% endfor %}
+				{% for f in formset.forms %}
+					<tr>
+						{% if show_house_num %}
+							<th>{{ forloop.counter }}</th>
+						{% endif %}
+						{% for field in f %}
+							<td>
+								{{field}}
+								{% if field.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{field.errors|join:""}}'/>{% endif %}
+							</td>
+						{% endfor %}
+					</tr>
+				{% endfor %}
+			</table>
+		{% endif %}
 		<input type="submit" value="אישור" class="button"/>
 	</form>
 </div>

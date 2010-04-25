@@ -63,9 +63,9 @@ BDiscountSaveForm = modelform_factory(BDiscountSave, RevisionExtForm)
 
 BDiscountSavePrecentageForm = modelform_factory(BDiscountSavePrecentage, RevisionExtForm)
 
-BHouseTypeForm = modelform_factory(BHouseType)
+BHouseTypeForm = modelform_factory(BHouseType, RevisionExtForm)
 
-BSaleRateForm = modelform_factory(BSaleRate)
+BSaleRateForm = modelform_factory(BSaleRate, RevisionExtForm)
 
 AdvancePaymentForm = modelform_factory(AdvancePayment)
 

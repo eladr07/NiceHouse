@@ -2550,7 +2550,7 @@ def employee_bht(request, employee_id, project_id):
         form = BHouseTypeForm(instance = htb)
         
     return render_to_response('Management/commission_inline.html', 
-                              { 'formset':formset, 'show_house_num':False},
+                              { 'form':form, 'formset':formset, 'show_house_num':False},
                               context_instance=RequestContext(request))
     
 @permission_required('Management.add_bdiscountsave')
