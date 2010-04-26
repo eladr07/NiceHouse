@@ -1070,12 +1070,12 @@ class EmployeeSalary(EmployeeSalaryBase):
         sales = {}
         if self.employee.rank.id != RankType.RegionalSaleManager:
             for s in self.employee.sales.filter(employee_pay__year = self.year, employee_pay__month = self.month):
-                if not sales.has_key(s.house.building.project): sales[s.house.building.project]= []
-                sales[s.house.building.project].append(s)
+                project_sales = sales.setdefault(s.house.building.project, [])
+                project_sales.append(s)
             for p in self.employee.projects.all():
-                if not sales.has_key(p): sales[p]= []                    
-                sales[p].extend(list(Sale.objects.filter(house__building__project = p, employee_pay__month = self.month,
-                                                         employee_pay__year = self.year, employee = None)))
+                project_sales = sales.setdefault(p, [])            
+                project_sales.extend(list(Sale.objects.filter(house__building__project = p, employee_pay__month = self.month,
+                                                              employee_pay__year = self.year, employee = None)))
         else:
             for p in self.employee.projects.all():
                 sales[p] = list(Sale.objects.filter(house__building__project = p,
