@@ -1062,9 +1062,7 @@ class EmployeeSalary(EmployeeSalaryBase):
         gets the demands that are related to this salary. these are simply all demands for the projects the employee
         is hired in, for the salary's month
         '''
-        queries = [Demand.objects.filter(project = project, year = self.year, month = self.month) 
-                   for project in self.employee.projects.all()]
-        return [query[0] for query in queries if query.count() == 1]
+        return Demand.objects.filter(project__in = self.employee.projects.all(), year = self.year, month = self.month)
     @property
     @cache_method
     def sales(self):
