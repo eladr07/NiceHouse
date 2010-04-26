@@ -1066,21 +1066,21 @@ class EmployeeSalary(EmployeeSalaryBase):
     @property
     @cache_method
     def sales(self):
-        sales = {}
         if self.employee.rank.id == RankType.RegionalSaleManager:
             query = Sale.objects.filter(house__building__project__in = self.employee.projects.all(), 
                                         employee_pay__month = self.month, employee_pay__year = self.year)
-            query = query.order_by('house__building__project')
-            for project, sale_group in itertools.groupby(query, lambda sale: sale.house.building.project):
-                sales[project] = list(sale_group)
         else:
             q = models.Q(employee = self.employee) | models.Q(employee__isnull = True)
             query = Sale.objects.filter(q, house__building__project__in = self.employee.projects.all(), 
                                         employee_pay__month = self.month,
                                         employee_pay__year = self.year)
-            query = query.order_by('house__building__project')
-            for project, sale_group in itertools.groupby(query, lambda sale: sale.house.building.project):
-                sales[project] = list(sale_group)
+            
+        query = query.order_by('house__building__project')
+        sales = {}
+        
+        for project, sale_group in itertools.groupby(query, lambda sale: sale.house.building.project):
+            sales[project] = list(sale_group)
+            
         return sales
     @property
     @cache_method
