@@ -1,4 +1,5 @@
-﻿import logging
+﻿import itertools
+import logging
 import reversion
 from datetime import datetime, date
 from decimal import InvalidOperation
@@ -1068,19 +1069,20 @@ class EmployeeSalary(EmployeeSalaryBase):
     @cache_method
     def sales(self):
         sales = {}
-        if self.employee.rank.id != RankType.RegionalSaleManager:
-            for s in self.employee.sales.filter(employee_pay__year = self.year, employee_pay__month = self.month):
-                project_sales = sales.setdefault(s.house.building.project, [])
-                project_sales.append(s)
-            for p in self.employee.projects.all():
-                project_sales = sales.setdefault(p, [])            
-                project_sales.extend(list(Sale.objects.filter(house__building__project = p, employee_pay__month = self.month,
-                                                              employee_pay__year = self.year, employee = None)))
+        if self.employee.rank.id == RankType.RegionalSaleManager:
+            query = Sale.objects.filter(house__building__project__in = self.employee.projects.all(), 
+                                        employee_pay__month = self.month, employee_pay__year = self.year)
+            for project, sale_group in itertools.groupby(query, lambda sale: sale.house.building.project):
+                sales[project] = list(sale_group)
         else:
+            query = self.employee.sales.filter(employee_pay__year = self.year, employee_pay__month = self.month)
+            for project, sale_group in itertools.groupby(query, lambda sale: sale.house.building.project):
+                sales[project] = list(sale_group)
             for p in self.employee.projects.all():
-                sales[p] = list(Sale.objects.filter(house__building__project = p,
-                                                    employee_pay__month = self.month,
-                                                    employee_pay__year = self.year))
+                project_sales = sales.setdefault(p, [])
+                query = Sale.objects.filter(house__building__project = p, employee_pay__month = self.month,
+                                            employee_pay__year = self.year, employee = None)
+                project_sales.extend(query)
         return sales
     @property
     @cache_method
