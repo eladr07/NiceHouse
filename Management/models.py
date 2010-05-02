@@ -1449,7 +1449,10 @@ class CZilber(models.Model):
                     latest_doh0price = doh0prices.latest().price
                     memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * latest_doh0price
                     scd = s.commission_details.get_or_create(commission='c_zilber_discount', employee_salary=None)[0]
-                    scd.value = (s.price - memudad) * self.b_discount
+		    if s.price > memudad:
+                    	scd.value = (s.price - memudad) * self.b_discount
+		    else:
+		 	scd.value = 0
                     scd.save()
                                         
                     logger.debug('sale #%(id)s c_zilber_discount calc values: %(vals)s',
