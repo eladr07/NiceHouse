@@ -311,6 +311,7 @@ class MonthDemandWriter:
         base_madad = demand.project.commissions.c_zilber.base_madad
         current_madad = demand.get_madad() < base_madad and base_madad or demand.get_madad()
         while demand != None:
+            prices_date = date(demand.month == 12 and demand.year+1 or demand.year, demand.month==12 and 1 or demand.month+1, 1)
             for s in demand.get_sales().filter(commission_include=True):
                 i += 1
                 actual_demand = s.actual_demand
@@ -320,7 +321,7 @@ class MonthDemandWriter:
                     row = [None, None]
                 row.extend([log2vis(s.clients), '%s/%s' % (unicode(s.house.building), unicode(s.house)), 
                             s.sale_date.strftime('%d/%m/%y'), commaise(s.price)])
-                doh0prices = s.house.versions.filter(type__id = models.PricelistType.Doh0)
+                doh0prices = s.house.versions.filter(type__id = models.PricelistType.Doh0, date__lte = prices_date)
                 if doh0prices.count() > 0:
                     doh0price = doh0prices.latest().price
                     memudad = (((current_madad / base_madad) - 1) * 0.6 + 1) * doh0price
