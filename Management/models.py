@@ -2507,6 +2507,9 @@ class Sale(models.Model):
     def pb_dsp_worth(self):
         return self.pb_dsp * self.price_final / 100
     @property
+    def zdb_worth(self):
+        return self.zdb * self.price_final / 100
+    @property
     def c_final_worth(self):
         return (self.c_final or 0) * (self.price_final or 0) / 100
     @property

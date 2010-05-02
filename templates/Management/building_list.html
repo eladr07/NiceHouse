@@ -63,10 +63,11 @@
 				<th></th>
 				<th>מס'</th>
 				<th>סוג</th>
-				<th>מס' קומות</th>
-				<th>מס' דירות</th>
-				<th>מס' דירות בהרשמה</th>
-				<th>מס' דירות פנויות</th>
+				<th>מס'<br>קומות</th>
+				<th>מס'<br>דירות</th>
+				<th>מס'<br>דירות<br>בהרשמה</th>
+				<th>מס'<br>דירות<br>בחוזים</th>
+				<th>מס'<br>דירות<br>פנויות</th>
 				<th>שלב</th>
 				<th>הערות</th>
 				<th>מחירון מעודכן</th>
@@ -79,6 +80,7 @@
 					<td>{{ b.floors }}</td>
 					<td>{{ b.house_count }}</td>
 					<td>{{ b.houses.signed|length }}</td>
+					<td>{{ b.houses.sold|length }}</td>
 					<td>{{ b.houses.avalible|length }}</td>
 					<td>{{ b.stage }}</td>
 					<td>{{ b.remarks }}</td>

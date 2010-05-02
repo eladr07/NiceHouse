@@ -292,7 +292,7 @@
 			{% endif %}
 			<th>% עמלת <br>בסיס</th>
 			<th>שווי עמלת <br>בסיס</th>
-			{% if form.instance.project.commissions.b_discount_save_precentage %}
+			{% if form.instance.project.commissions.b_discount_save_precentage or form.instance.project.commissions.c_zilber %}
 			<th>% בונוס <br>חסכון</th>
 			<th>שווי בונוס <br>חסכון</th>
 			{% endif %}
@@ -337,8 +337,12 @@
 				<td>{{s.pc_base}}</td>
 				<td>{{s.pc_base_worth|commaise}} ש"ח</td>
 				{% if form.instance.project.commissions.b_discount_save_precentage %}
-				<td>{{s.pb_dsp|floatformat:3|default:"----"}}</td>
-				<td>{% if s.pb_dsp_worth %} {{s.pb_dsp_worth|commaise}} ש"ח {% else %}----{% endif %}</td>
+					<td>{{s.pb_dsp|floatformat:3|default:"----"}}</td>
+					<td>{% if s.pb_dsp_worth %} {{s.pb_dsp_worth|commaise}} ש"ח {% else %}----{% endif %}</td>
+				{% endif %}
+				{% if form.instance.project.commissions.c_zilber %}
+					<td>{{s.zdb|floatformat:3|default:"----"}}</td>
+					<td>{% if s.zdb_worth %} {{s.zdb_worth|commaise}} ש"ח {% else %}----{% endif %}</td>
 				{% endif %}
 				<td>{{s.c_final|floatformat:3}}</td>
 				<td><b>{{s.c_final_worth|commaise}} ש"ח</b></td>
