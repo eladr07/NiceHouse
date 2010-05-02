@@ -1435,6 +1435,8 @@ class CZilber(models.Model):
             logger.debug('prices_date = %s, current_madad=%s', prices_date, current_madad)
             
             for s in sales:
+		if s.actual_demand != d:
+		    continue
                 for c in ['c_zilber_base', 'final']:
                     scd = s.commission_details.get_or_create(commission=c, employee_salary=None)[0]
                     scd.value = base
