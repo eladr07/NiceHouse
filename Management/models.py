@@ -1453,7 +1453,6 @@ class CZilber(models.Model):
                         memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * latest_doh0price
                         scd = s.commission_details.get_or_create(commission='c_zilber_discount', employee_salary=None)[0]
        		        zdb = (s.price - memudad) * self.b_discount
-		        c_final += zdb
 		        scd.value = zdb
                         scd.save()
                                         
@@ -1465,16 +1464,16 @@ class CZilber(models.Model):
 		else:
 		    q = s.project_commission_details.filter(commission='c_zilber_base')
                     if q.count() > 0 and last_demand_finish_date:
-                        pc_base = restore_object(q[0], last_demand_finish_date).value
+                        old_base = restore_object(q[0], last_demand_finish_date).value
                     else:
-                        pc_base = s.pc_base
-                    sale_add = (base - pc_base) * s.price_final / 100
+                        old_base = s.pc_base
+                    sale_add = (base - old_base) * s.price_final / 100
                     prev_adds += sale_add
                 
                     logger.debug('sale #%(id)s adds calc values: %(val)s', {'id':s.id, 
                                                                             'vals':{
                                                                                     'q.count()':q.count(), 
-                                                                                    'pc_base':pc_base,
+                                                                                    'old_base':old_base,
                                                                                     'sale_add':sale_add
                                                                                     }
                                                                             })
