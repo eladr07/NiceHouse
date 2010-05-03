@@ -3169,7 +3169,7 @@ def sale_analysis(request):
             house_attrs = ['net_size', 'garden_size', 'rooms', 'floor', 'perfect_size']
             sale_attrs = ['price_taxed', 'price_taxed_for_perfect_size']
             
-            all_sales = Sale.objects.filter(house__building__project = project, contractor_pay__gte = start, contractor_pay__lt = end).order_by('contractor_pay')
+            all_sales = Sale.objects.filter(house__building__project = project, contractor_pay__gte = start, contractor_pay__lt = end).order_by('contractor_pay').select_related('house')
             if rooms_num:
                 all_sales = all_sales.filter(house__rooms = rooms_num)
             if house_type:
