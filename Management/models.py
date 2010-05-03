@@ -1473,7 +1473,7 @@ class CZilber(models.Model):
             logger.debug('last_demand_finish_date: %s' % last_demand_finish_date)
             
             for s in sales:
-                q = s.project_commission_details.filter(commission='base')
+                q = s.project_commission_details.filter(commission='c_zilber_base')
                 if q.count() > 0 and last_demand_finish_date:
                     pc_base = restore_object(q[0], last_demand_finish_date).value
                 else:
