@@ -2161,15 +2161,16 @@ def reminder_do(request, id):
 def project_buildings(request, project_id):
     p = Project.objects.get(pk = project_id)
     buildings = p.buildings.filter(is_deleted=False)
-    total_signed_houses, total_houses, total_avalible_houses = 0,0,0
+    total_signed_houses, total_houses, total_avalible_houses, total_sold_houses = 0,0,0
     for b in buildings:
         total_houses = total_houses + b.house_count
-        total_signed_houses = total_signed_houses + len(b.houses.signed())
-        total_avalible_houses = total_avalible_houses + len(b.houses.avalible())
+        total_signed_houses += len(b.houses.signed())
+	total_sold_houses += len(b.houses.sold())
+        total_avalible_houses += len(b.houses.avalible())
 
     return render_to_response('Management/building_list.html', 
                               { 'buildings' : buildings,'total_houses':total_houses,'project':p,
-                               'total_signed_houses':total_signed_houses, 'total_avalible_houses':total_avalible_houses},
+                               'total_signed_houses':total_signed_houses, 'total_avalible_houses':total_avalible_houses, 'total_sold_houses':total_sold_houses},
                               context_instance=RequestContext(request))
 
 @permission_required('Management.add_building')

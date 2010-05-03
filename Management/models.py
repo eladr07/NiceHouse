@@ -1437,11 +1437,10 @@ class CZilber(models.Model):
             for s in sales:
 		if s.actual_demand != d:
 		    continue
-                for c in ['c_zilber_base', 'final']:
-                    scd = s.commission_details.get_or_create(commission=c, employee_salary=None)[0]
-                    scd.value = base
-                    scd.save()
-                    logger.debug('sale #%(id)s %(commission)s = %(value)s', {'id':s.id, 'commission':c,'value':scd.value})
+                scd, new = s.commission_details.get_or_create(commission='c_zilber_base', employee_salary=None)
+                scd.value = base
+                scd.save()
+                logger.debug('sale #%(id)s c_zilber_base = %(value)s', {'id':s.id,'value':scd.value})
                     
                 if self.base_madad:
                     doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0, date__lte = prices_date)
@@ -1459,7 +1458,11 @@ class CZilber(models.Model):
                                                      'memudad':memudad, 
                                                      'scd.value':scd.value}
                                  })
-                    
+
+		scd, new = s.commission_details.get_or_create(commission='c_zilber_base', employee_salary=None)
+                scd.value = s.pc_base + s.zdb
+		scd.save()
+
             prev_adds = 0
             last_demand_finish_date = d.get_previous_demand().finish_date
             
