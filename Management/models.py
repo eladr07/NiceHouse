@@ -1441,7 +1441,9 @@ class CZilber(models.Model):
                 scd.value = base
                 scd.save()
                 logger.debug('sale #%(id)s c_zilber_base = %(value)s', {'id':s.id,'value':scd.value})
-                    
+                
+		c_final = base
+
                 if self.base_madad:
                     doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0, date__lte = prices_date)
                     if doh0prices.count() == 0: 
@@ -1450,17 +1452,19 @@ class CZilber(models.Model):
                     latest_doh0price = doh0prices.latest().price
                     memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * latest_doh0price
                     scd = s.commission_details.get_or_create(commission='c_zilber_discount', employee_salary=None)[0]
-		    scd.value = (s.price - memudad) * self.b_discount
+		    zdb = (s.price - memudad) * self.b_discount
+		    c_final += zdb
+		    scd.value = zdb
                     scd.save()
                                         
                     logger.debug('sale #%(id)s c_zilber_discount calc values: %(vals)s',
                                  {'id':s.id, 'vals':{'latest_doh0price':latest_doh0price,
                                                      'memudad':memudad, 
-                                                     'scd.value':scd.value}
+                                                     'zdb':zdb}
                                  })
 
 		scd, new = s.commission_details.get_or_create(commission='c_zilber_base', employee_salary=None)
-                scd.value = s.pc_base + s.zdb
+                scd.value = final
 		scd.save()
 
             prev_adds = 0
