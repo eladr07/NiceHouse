@@ -1479,7 +1479,7 @@ class CZilber(models.Model):
                                                                                     }
                                                                             })
 
-		scd, new = s.commission_details.get_or_create(commission='c_zilber_base', employee_salary=None)
+		scd, new = s.commission_details.get_or_create(commission='final', employee_salary=None)
                 scd.value = c_final
 		scd.save()
                 
