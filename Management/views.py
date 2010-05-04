@@ -2165,7 +2165,7 @@ def project_buildings(request, project_id):
     for b in buildings:
         total_houses = total_houses + b.house_count
         total_signed_houses += len(b.houses.signed())
-	total_sold_houses += len(b.houses.sold())
+        total_sold_houses += len(b.houses.sold())
         total_avalible_houses += len(b.houses.avalible())
 
     return render_to_response('Management/building_list.html', 
