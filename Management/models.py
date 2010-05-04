@@ -1,18 +1,17 @@
 ﻿import itertools
 import logging
 import reversion
+import common
 from datetime import datetime, date
 from decimal import InvalidOperation
-from django.core import serializers
 from django.db import models
-from django.db.models import Avg, Max, Min, Count, Sum
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.backends.dummy.base import IntegrityError
 from django.utils.translation import ugettext
 from django.contrib.auth.models import User
 from templatetags.management_extras import *
 from decorators import cache_method
 from managers import *
-import common
 
 Salary_Types = (
                 (None, u'לא ידוע'),
@@ -631,7 +630,7 @@ class NHCommission(models.Model):
                 if self.operator_id == Operator.lt and sales_income > self.left_amount:
                     return scds
             else:
-                raise CommissionError('missing one of (left_amount, left_income_type)')
+                raise CommissionException('missing one of (left_amount, left_income_type)')
         
         if self.right_amount_type_id == AmountType.Amount:
             scds.append(NHSaleCommissionDetail(commission = self.name, amount = self.right_amount))
@@ -1393,8 +1392,6 @@ class CZilber(models.Model):
         '''
         try:
             logger = logging.getLogger('commission.czilber')
-            #logger.info('starting calculation for month %(month)s/%(year)s. fields - %(fields)s',
-            #            {'month':month.month, 'year':month.year, 'fields':serializers.serialize('json', [self])})
             
             d = Demand.objects.get(project = self.projectcommission.project, year = month.year, month = month.month)
             if d.var_diff: 
@@ -2632,9 +2629,9 @@ class EmployeeCheck(CheckBase):
                                                                                             datetime.now().year + 10)))
     def salary(self):
         if isinstance(self.employee.derived, Employee):
-            query = EmployeeSalary.objects.filter(year = year, month = month, employee = self.employee.derived)
+            query = EmployeeSalary.objects.filter(year = self.year, month = self.month, employee = self.employee.derived)
         elif isinstance(self.employee.derived, NHEmployee):
-            query = NHEmployeeSalary.objects.filter(year = year, month = month, nhemployee = self.employee.derived)
+            query = NHEmployeeSalary.objects.filter(year = self.year, month = self.month, nhemployee = self.employee.derived)
         if query.count() == 0: return None
         if query.count() > 1: raise InvalidOperation % 'more than 1 salary for employee for the month'
         return query[0]
@@ -2928,6 +2925,6 @@ def restore_object(instance, date):
     else:
         try:
             version = Version.objects.get_for_date(instance, date)
-        except Version.DoesNotExist:
+        except ObjectDoesNotExist:
             return instance
     return version.object_version.object

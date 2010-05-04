@@ -80,8 +80,6 @@ class CityCallersManager(models.Manager):
     
     def total_callers_num(self):
         return self.get_query_set().total_callers_num()
-    def get_query_set(self):
-        return CityCallerQuerySet(self.model)
 
 class MediaReferralsManager(models.Manager):
     use_for_related_fields = True

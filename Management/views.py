@@ -332,7 +332,7 @@ def employeecheck_add(request):
 def employeecheck_edit(request, id):
     ec = EmployeeCheck.objects.get(pk=id)
     if request.method == 'POST':
-        form = EmployeeCheckForm(request.POST, instance = c)
+        form = EmployeeCheckForm(request.POST, instance = ec)
         if form.is_valid():
             process_check_base_form(form)
             ec = form.save()
@@ -355,7 +355,7 @@ def signup_list(request, project_id):
     p = Project.objects.get(pk = project_id)
     signups = p.signups(y, m)
     return render_to_response('Management/signup_list.html', 
-                          { 'project':p, 'signups':signups, 'month':month, 'filterForm':filterForm },
+                          { 'project':p, 'signups':signups, 'month':month, 'filterForm':form },
                           context_instance=RequestContext(request))
 
 @permission_required('Management.add_signup')
@@ -1360,7 +1360,7 @@ def income_core(request, instance):
             and (paymentForm.has_changed() == False or paymentForm.is_valid())):
             process_deal_form(dealForm)
             process_income_form(incomeForm)
-            income.deal, income.invoice, income.payment = dealForm.save(), invoiceForm.save(), paymentForm.save()
+            instance.deal, instance.invoice, instance.payment = dealForm.save(), invoiceForm.save(), paymentForm.save()
             incomeForm.save()
     else:
         incomeForm, dealForm, invoiceForm, paymentForm = (IncomeForm(instance = instance), 
@@ -1609,14 +1609,14 @@ def nhsale_move_nhmonth(request, object_id):
     if request.method == 'POST':
         form = NHMonthForm(request.POST)
         if form.is_valid():
-            q = NHMonth.objects.filter(nhbranch = monthForm.cleaned_data['nhbranch'],
-                                       year = monthForm.cleaned_data['year'],
-                                       month = monthForm.cleaned_data['month'])
-            nhsale.nhmonth = q.count() == 1 and q[0] or monthForm.save()
+            q = NHMonth.objects.filter(nhbranch = form.cleaned_data['nhbranch'],
+                                       year = form.cleaned_data['year'],
+                                       month = form.cleaned_data['month'])
+            nhsale.nhmonth = q.count() == 1 and q[0] or form.save()
     else:
         form = NHMonthForm(instance = nhsale.nhmonth)
     return render_to_response('Management/object_edit.html',
-                              {'form': form, title:u'העברת עסקה מס ' + str(nhsale.num)}, 
+                              {'form': form, 'title':u'העברת עסקה מס ' + str(nhsale.num)}, 
                               context_instance=RequestContext(request))
 
 @permission_required('Management.add_nhsale')
