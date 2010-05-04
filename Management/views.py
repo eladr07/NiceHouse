@@ -2161,7 +2161,7 @@ def reminder_do(request, id):
 def project_buildings(request, project_id):
     p = Project.objects.get(pk = project_id)
     buildings = p.buildings.filter(is_deleted=False)
-    total_signed_houses, total_houses, total_avalible_houses, total_sold_houses = 0,0,0
+    total_signed_houses, total_houses, total_avalible_houses, total_sold_houses = 0,0,0,0
     for b in buildings:
         total_houses = total_houses + b.house_count
         total_signed_houses += len(b.houses.signed())
