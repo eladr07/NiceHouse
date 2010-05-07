@@ -2389,8 +2389,8 @@ class SaleHouseMod(SaleMod):
         db_table = 'SaleHouseMod'
 
 class SalePre(SaleMod):
-    employee_pay_month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
-    employee_pay_year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
+    employee_pay_month = models.PositiveSmallIntegerField(ugettext('employee_pay_month'), choices=((i,i) for i in range(1,13)))
+    employee_pay_year = models.PositiveSmallIntegerField(ugettext('employee_pay_year'), choices=((i,i) for i in range(datetime.now().year - 10,
                                                                                                          datetime.now().year + 10)))
     def save(self, *args, **kw):
         super(SalePre, self).save(*args, **kw)
@@ -2400,11 +2400,11 @@ class SalePre(SaleMod):
         db_table = 'SalePre'
 
 class SaleReject(SaleMod):
-    to_month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
-    to_year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
+    to_month = models.PositiveSmallIntegerField(ugettext('reject_month'), choices=((i,i) for i in range(1,13)))
+    to_year = models.PositiveSmallIntegerField(ugettext('reject_year'), choices=((i,i) for i in range(datetime.now().year - 10,
  																							   datetime.now().year + 10)))
-    employee_pay_month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
-    employee_pay_year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
+    employee_pay_month = models.PositiveSmallIntegerField(ugettext('employee_pay_month'), choices=((i,i) for i in range(1,13)))
+    employee_pay_year = models.PositiveSmallIntegerField(ugettext('employee_pay_year'), choices=((i,i) for i in range(datetime.now().year - 10,
  																										 datetime.now().year + 10)))
     def save(self, *args, **kw):
         super(SaleReject, self).save(*args, **kw)

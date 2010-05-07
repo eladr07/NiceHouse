@@ -1163,7 +1163,8 @@ def demand_sale_reject(request, id):
     except SaleReject.DoesNotExist:
         sr = SaleReject(sale = sale, employee_pay_month = m, employee_pay_year = y)
     sr.date = date.today()
-    sr.to_month = date(m==12 and y+1 or y, m==12 and 1 or m+1,1)
+    sr.to_year = m==12 and y+1 or y
+    sr.to_month = m==12 and 1 or m+1
     sr.save()
     
     #re-calculate the entire destination demand
