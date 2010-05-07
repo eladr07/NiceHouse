@@ -1161,7 +1161,7 @@ def demand_sale_reject(request, id):
     try:
         sr = sale.salereject
     except SaleReject.DoesNotExist:
-        sr = SaleReject(sale = sale, employee_pay = date(y,m,1))
+        sr = SaleReject(sale = sale, employee_pay_month = m, employee_pay_year = y)
     sr.date = date.today()
     sr.to_month = date(m==12 and y+1 or y, m==12 and 1 or m+1,1)
     sr.save()
@@ -2787,7 +2787,8 @@ def sale_add(request, demand_id=None):
             if demand.was_sent:
                 y,m = demand.year, demand.month
                 sp = SalePre(sale = form.instance, date=date.today(),
-                             employee_pay = date(m==12 and y+1 or y,m==12 and 1 or m, 1))
+							 employee_pay_year = m == 12 and y+1 or y,
+							 employee_pay_month = m==12 and 1 or m)
                 sp.save()
                 next = '/salepre/%s' % sp.id 
             demand.calc_sales_commission()

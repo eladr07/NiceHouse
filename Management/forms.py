@@ -118,17 +118,14 @@ class SaleHouseModForm(forms.ModelForm):
 class SalePreForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
-        self.fields['date'].widget = forms.TextInput({'class':'vDateField'})   
-        self.fields['employee_pay'].widget = forms.TextInput({'class':'vDateField'})    
+        self.fields['date'].widget = forms.TextInput({'class':'vDateField'})
     class Meta:
         model = SalePre
         
 class SaleRejectForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
-        self.fields['date'].widget = forms.TextInput({'class':'vDateField'})   
-        self.fields['employee_pay'].widget = forms.TextInput({'class':'vDateField'}) 
-        self.fields['to_month'].widget = forms.TextInput({'class':'vDateField'})    
+        self.fields['date'].widget = forms.TextInput({'class':'vDateField'})
     class Meta:
         model = SaleReject
         

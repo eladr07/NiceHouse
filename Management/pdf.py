@@ -475,11 +475,11 @@ class MonthDemandWriter:
                           u'לחישוב\nמחיר',u'נוספות\nהוצאות'])
             colWidths.extend([35,35,None,None,35])
             zilber = True
-	    if not self.demand.project.id == 5:
-	        if sales[0].discount or sales[0].allowed_discount:
-	            names.extend([u'ניתן\nהנחה\n%',u'מותר\nהנחה\n%'])
-	            colWidths.extend([None,None])
-	            discount = True
+        if not self.demand.project.id == 5:
+            if sales[0].discount or sales[0].allowed_discount:
+                names.extend([u'ניתן\nהנחה\n%',u'מותר\nהנחה\n%'])
+                colWidths.extend([None,None])
+                discount = True
         names.extend([u'בסיס\nעמלת\n%',u'בסיס\nעמלת\nשווי'])
         colWidths.extend([None,None])
         if self.demand.project.commissions.b_discount_save_precentage:
