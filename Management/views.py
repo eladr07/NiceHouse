@@ -2854,7 +2854,7 @@ def project_demands(request, project_id, func, template_name):
                                context_instance=RequestContext(request))
 
 @login_required
-def demand_sales(request, project, year, month):
+def demand_sales(request, project_id, year, month):
 	demand = Demand.objects.get(project__id = project_id, year = year, month = month)
 	sales = demand.get_sales()
 	return render_to_response('Management/sale_table.html',
