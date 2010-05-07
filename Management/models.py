@@ -1439,45 +1439,45 @@ class CZilber(models.Model):
                 scd.save()
                 logger.debug('sale #%(id)s c_zilber_base = %(value)s', {'id':s.id,'value':scd.value})
                 
-            c_final = base
-            if s.actual_demand == d:
-                if self.base_madad:
-                    doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0, date__lte = prices_date)
-                    if doh0prices.count() == 0: 
-                        logger.warning('skipping c_zilber_discount calc for sale #%(id)s. no doh0 prices', {'id':s.id})
-                        continue
-                    latest_doh0price = doh0prices.latest().price
-                    memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * latest_doh0price
-                    scd = s.commission_details.get_or_create(commission='c_zilber_discount', employee_salary=None)[0]
-                    zdb = (s.price - memudad) * self.b_discount
-                    scd.value = zdb
-                    scd.save()
-                                    
-                    logger.debug('sale #%(id)s c_zilber_discount calc values: %(vals)s',
-                                 {'id':s.id, 'vals':{'latest_doh0price':latest_doh0price,
-                                                     'memudad':memudad, 
-                                                     'zdb':zdb}
-                                 })
-            else:
-                q = s.project_commission_details.filter(commission='c_zilber_base')
-                if q.count() > 0 and last_demand_finish_date:
-                    old_base = restore_object(q[0], last_demand_finish_date).value
+                c_final = base
+                if s.actual_demand == d:
+                    if self.base_madad:
+                        doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0, date__lte = prices_date)
+                        if doh0prices.count() == 0: 
+                            logger.warning('skipping c_zilber_discount calc for sale #%(id)s. no doh0 prices', {'id':s.id})
+                            continue
+                        latest_doh0price = doh0prices.latest().price
+                        memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * latest_doh0price
+                        scd = s.commission_details.get_or_create(commission='c_zilber_discount', employee_salary=None)[0]
+                        zdb = (s.price - memudad) * self.b_discount
+                        scd.value = zdb
+                        scd.save()
+                                        
+                        logger.debug('sale #%(id)s c_zilber_discount calc values: %(vals)s',
+                                     {'id':s.id, 'vals':{'latest_doh0price':latest_doh0price,
+                                                         'memudad':memudad, 
+                                                         'zdb':zdb}
+                                     })
                 else:
-                    old_base = s.pc_base
-                sale_add = (base - old_base) * s.price_final / 100
-                prev_adds += sale_add
-            
-                logger.debug('sale #%(id)s adds calc values: %(val)s', {'id':s.id, 
-                                                                        'vals':{
-                                                                                'q.count()':q.count(), 
-                                                                                'old_base':old_base,
-                                                                                'sale_add':sale_add
-                                                                                    }
-                                                                            })
+                    q = s.project_commission_details.filter(commission='c_zilber_base')
+                    if q.count() > 0 and last_demand_finish_date:
+                        old_base = restore_object(q[0], last_demand_finish_date).value
+                    else:
+                        old_base = s.pc_base
+                    sale_add = (base - old_base) * s.price_final / 100
+                    prev_adds += sale_add
+                
+                    logger.debug('sale #%(id)s adds calc values: %(val)s', {'id':s.id, 
+                                                                            'vals':{
+                                                                                    'q.count()':q.count(), 
+                                                                                    'old_base':old_base,
+                                                                                    'sale_add':sale_add
+                                                                                        }
+                                                                                })
     
-            scd, new = s.commission_details.get_or_create(commission='final', employee_salary=None)
-            scd.value = c_final
-            scd.save()
+                scd, new = s.commission_details.get_or_create(commission='final', employee_salary=None)
+                scd.value = c_final
+                scd.save()
                 
             if prev_adds:
                 d.diffs.create(type=u'משתנה', reason=u'הפרשי קצב מכירות (נספח א)', amount=round(prev_adds))
