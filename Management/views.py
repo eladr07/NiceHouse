@@ -2857,9 +2857,9 @@ def project_demands(request, project_id, func, template_name):
 def demand_sales(request, project_id, year, month):
 	demand = Demand.objects.get(project__id = project_id, year = year, month = month)
 	sales = demand.get_sales()
-    return render_to_response('Management/sale_table.html',
-                              {'sales':sales},
-                              context_instance=RequestContext(request))
+	return render_to_response('Management/sale_table.html',
+							  {'sales':sales},
+							  context_instance=RequestContext(request))
 
 @permission_required('Management.report_project_month')
 def report_project_month(request, project_id, year, month):
