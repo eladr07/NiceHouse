@@ -154,7 +154,7 @@
 				<li>מכירה מס' 
 				<a href="/sale/{{s.id}}">{{s.id}}</a> - ({{s}})
 				הוקדמה לחודש זה. העובד יקבל תשלום בחודש
-				<b>{{s.salepre.employee_pay.month}}/{{s.salepre.employee_pay.year}}</b>. 
+				<b>{{s.salepre.employee_pay_month}}/{{s.salepre.employee_pay_year}}</b>. 
 				<a href="{{ s.salepre.get_absolute_url }}">פרטים</a>
 				</li>
 			{% endfor %}
@@ -162,9 +162,9 @@
 				<li>מכירה מס' 
 				<a href="/sale/{{s.id}}">{{s.id}}</a> - ({{s}})
 				נדחתה לחודש
-				<b>{{s.salereject.to_month.month}}/{{s.salereject.to_month.year}}</b>
+				<b>{{s.salereject.to_month}}/{{s.salereject.to_year}}</b>
 				העובד יקבל תשלום בחודש
-				<b>{{s.salereject.employee_pay.month}}/{{s.salereject.employee_pay.year}}</b>. 
+				<b>{{s.salereject.employee_pay_month}}/{{s.salereject.employee_pay_year}}</b>. 
 				<a href="{{ s.salereject.get_absolute_url }}">פרטים</a>
 				</li>			
 			{% endfor %}

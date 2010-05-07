@@ -2389,7 +2389,6 @@ class SaleHouseMod(SaleMod):
         db_table = 'SaleHouseMod'
 
 class SalePre(SaleMod):
-    employee_pay = models.DateField(ugettext('employee_pay'), null=True)
     employee_pay_month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
     employee_pay_year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
                                                                                                          datetime.now().year + 10)))
@@ -2401,11 +2400,9 @@ class SalePre(SaleMod):
         db_table = 'SalePre'
 
 class SaleReject(SaleMod):
-    to_month = models.DateField(ugettext('reject_month'), null=True)
-    to_month2 = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
+    to_month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
     to_year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
  																							   datetime.now().year + 10)))
-    employee_pay = models.DateField(ugettext('employee_pay'), null=True)
     employee_pay_month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
     employee_pay_year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
  																										 datetime.now().year + 10)))
