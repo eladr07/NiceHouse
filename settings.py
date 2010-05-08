@@ -86,7 +86,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.admin',
     'reversion',
-    'django_dowser'
+    'django_dowser',
     'Management',
 )
 
