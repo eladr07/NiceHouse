@@ -85,11 +85,11 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.sites',
     'django.contrib.admin',
-    'reversion',
-    'django_dowser',
+    #'reversion',
+    #'django_dowser',
     'Management',
 )
 
-#import logging.config
+import logging.config
 
-#logging.config.fileConfig('/var/www/NiceHouse/trunk/logging.conf')
+logging.config.fileConfig('/var/www/NiceHouse/trunk/logging.conf')
