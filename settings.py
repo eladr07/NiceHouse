@@ -6,7 +6,7 @@ TEMPLATE_DEBUG = DEBUG
 if DEBUG:
     SITE_ROOT = '/home/elad/workspace/NiceHouse/NiceHouse/'
 else:
-    SITE_ROOT = '/var/www/NiceHouse/trunk'
+    SITE_ROOT = '/var/www/NiceHouse/trunk/'
 
 ADMINS = (
     ('Elad Reuveni', 'adush07@gmail.com'),
