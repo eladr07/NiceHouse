@@ -20,9 +20,7 @@ urlpatterns = patterns('',
     (r'^accounts/login/$', 'django.contrib.auth.views.login'),
     (r'^accounts/logout/$', 'django.contrib.auth.views.logout'),
     (r'^accounts/password_change/$', 'django.contrib.auth.views.password_change'),
-    (r'^site_media/(?P<path>.*)$', 'django.views.static.serve',
-        {'document_root': settings.MEDIA_ROOT,
-         'show_indexes': True}),)
+    )
 
 urlpatterns += patterns('',
                        (r'^dowser/', include('django_dowser.urls')),
