@@ -90,6 +90,6 @@ INSTALLED_APPS = (
     'Management',
 )
 
-import logging.config
+#import logging.config
 
-logging.config.fileConfig('/var/www/NiceHouse/trunk/logging.conf')
+#logging.config.fileConfig('/var/www/NiceHouse/trunk/logging.conf')
