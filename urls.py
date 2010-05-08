@@ -3,6 +3,7 @@ from Management.models import *
 from django.template import RequestContext
 import Management.forms
 import settings
+import django_dowser
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
@@ -23,6 +24,10 @@ urlpatterns = patterns('',
     (r'^site_media/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.MEDIA_ROOT,
          'show_indexes': True}),)
+
+urlpatterns = patterns('',
+                       (r'^dowser/', include('django_dowser.urls')),
+                       )
 
 urlpatterns += patterns('Management.views',
     (r'^$', 'index'),
