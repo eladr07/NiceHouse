@@ -3,6 +3,11 @@
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
+if DEBUG:
+    SITE_ROOT = '/home/elad/workspace/NiceHouse/NiceHouse/'
+else:
+    SITE_ROOT = '/var/www/NiceHouse/trunk'
+
 ADMINS = (
     ('Elad Reuveni', 'adush07@gmail.com'),
 )
@@ -37,7 +42,7 @@ USE_I18N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = '/var/www/NiceHouse/trunk/media/'
+MEDIA_ROOT = SITE_ROOT + 'media/'
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -73,7 +78,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    '/var/www/NiceHouse/trunk/templates',
+    SITE_ROOT + 'templates',
     'templates',
 )
 
@@ -95,4 +100,4 @@ CACHE_BACKEND = 'dummy://'
 
 #import logging.config
 
-#logging.config.fileConfig('/var/www/NiceHouse/trunk/logging.conf')
+#logging.config.fileConfig(SITE_ROOT + 'logging.conf')
