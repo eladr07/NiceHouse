@@ -2446,8 +2446,6 @@ class Sale(models.Model):
     clients = models.TextField(ugettext('clients'))
     clients_phone = models.CharField(ugettext('phone'), max_length = 10)
     price_final = models.IntegerField(editable=False, null=True)
-    employee_pay = models.DateField(ugettext('employee_paid'), editable=False)
-    contractor_pay = models.DateField(ugettext('contractor_paid'), editable=False)
     
     employee_pay_month = models.PositiveSmallIntegerField(ugettext('employee_pay_month'), editable=False)
     employee_pay_year = models.PositiveSmallIntegerField(ugettext('employee_pay_year'), editable=False)
