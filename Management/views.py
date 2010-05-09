@@ -559,7 +559,7 @@ def demand_old_list(request):
         form = MonthForm(initial={'year':year,'month':month})
         
     if year and month:
-        ds = Demand.objects.filter(year = year, month = month)
+        ds = Demand.objects.filter(year = year, month = month).select_related('project')
         for d in ds:
             total_sales_count += d.get_sales().count()
             total_sales_amount += d.get_sales().total_price_final()
