@@ -3179,13 +3179,13 @@ def sale_analysis(request):
             house_attrs = ['net_size', 'garden_size', 'rooms', 'floor', 'perfect_size']
             sale_attrs = ['price_taxed', 'price_taxed_for_perfect_size']
             
-            all_sales = Sale.objects.filter(house__building__project = project, contractor_pay__gte = start, contractor_pay__lt = end).order_by('contractor_pay').select_related('house')
+            all_sales = Sale.objects.filter(house__building__project = project, contractor_pay__gte = start, contractor_pay__lt = end).order_by('contractor_pay_year', 'contractor_pay_month').select_related('house')
             if rooms_num:
                 all_sales = all_sales.filter(house__rooms = rooms_num)
             if house_type:
                 all_sales = all_sales.filter(house__type = house_type)
             
-            for (month, year), sales in itertools.groupby(all_sales, lambda sale: (sale.contractor_pay.month, sale.contractor_pay.year)):
+            for (month, year), sales in itertools.groupby(all_sales, lambda sale: (sale.contractor_pay_month, sale.contractor_pay_year)):
                 sales_list = list(sales)
                 houses = [sale.house for sale in sales_list]
                 item_count = len(sales_list)

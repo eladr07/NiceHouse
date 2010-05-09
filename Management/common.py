@@ -1,6 +1,9 @@
 from datetime import datetime
 import settings
 
+YEAR_CHOICES = ((i,i) for i in range(datetime.now().year - 10, datetime.now().year + 10))
+MONTH_CHOICES = ((i,i) for i in range(1,13))
+
 def current_month():
     now = datetime.now()
     if now.day <= 22:

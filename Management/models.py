@@ -194,8 +194,8 @@ class Project(models.Model):
     def sales(self):
         current = common.current_month()
         return Sale.objects.filter(house__building__project = self,
-                                   contractor_pay__month = current.month,
-                                   contractor_pay__year = current.year)
+                                   contractor_pay_month = current.month,
+                                   contractor_pay_year = current.year)
     def signups(self):
         current = common.current_month()
         return Signup.objects.filter(house__building__project = self, date__year = current.year, date__month= current.month)
@@ -1067,12 +1067,12 @@ class EmployeeSalary(EmployeeSalaryBase):
     def sales(self):
         if self.employee.rank.id == RankType.RegionalSaleManager:
             query = Sale.objects.filter(house__building__project__in = self.employee.projects.all(), 
-                                        employee_pay__month = self.month, employee_pay__year = self.year)
+                                        employee_pay_month = self.month, employee_pay_year = self.year)
         else:
             q = models.Q(employee = self.employee) | models.Q(employee__isnull = True)
             query = Sale.objects.filter(q, house__building__project__in = self.employee.projects.all(), 
-                                        employee_pay__month = self.month,
-                                        employee_pay__year = self.year)
+                                        employee_pay_month = self.month,
+                                        employee_pay_year = self.year)
             
         query = query.select_related('house__building__project').order_by('house__building__project')
         sales = {}
@@ -1596,7 +1596,7 @@ class ProjectCommission(models.Model):
                                                    house__signups__cancel=None,
                                                    house__building__project = demand.project,
                                                    commission_include=True,
-                                                   contractor_pay__lt = max_contractor_pay)
+                                                   contractor_pay_lt = max_contractor_pay)
                     subSales = subSales.order_by('house__signups__date')
                     
                     logger.info('calculating affected sales(%(sale_count)s) for month %(month)s/%(year)s',
@@ -1868,7 +1868,7 @@ class Demand(models.Model):
                                              house__signups__cancel=None,
                                              demand__project__id = self.project.id,
                                              salecancel=None
-                        ).exclude(contractor_pay__gte = date(self.year,self.month, 1))
+                        ).exclude(contractor_pay_gte = date(self.year,self.month, 1))
         return dic
     def get_signup_months(self):
         months = {}
@@ -1910,34 +1910,32 @@ class Demand(models.Model):
     def get_open_reminders(self):
         return [r for r in self.reminders.all() if r.statuses.latest().type.id 
                 not in (ReminderStatusType.Deleted,ReminderStatusType.Done)]
+    def _get_sales(self):
+        return Sale.objects.filter(contractor_pay_year = self.year, contractor_pay_month = self.month,
+                                   house__building__project = self.project)
     @cache_method
     def get_pricemodsales(self):
-        return Sale.objects.filter(contractor_pay__year = self.year, contractor_pay__month = self.month,
-                                   house__building__project = self.project).exclude(salepricemod=None)
+        return self._get_sales().exclude(salepricemod=None)
     @cache_method
     def get_housemodsales(self):
-        return Sale.objects.filter(contractor_pay__year = self.year, contractor_pay__month = self.month,
-                                   house__building__project = self.project).exclude(salehousemod=None)
+        return self._get_sales().exclude(salehousemod=None)
     def get_presales(self):
         return self.sales.exclude(salepre=None)
     def get_rejectedsales(self):
         return self.sales.exclude(salereject=None)
     @cache_method
     def get_canceledsales(self):
-        return Sale.objects.filter(contractor_pay__year = self.year, contractor_pay__month = self.month,
-                                   house__building__project = self.project).exclude(salecancel=None)
+        return self._get_sales().exclude(salecancel=None)
     @cache_method
     def get_sales(self):
-        query = Sale.objects.filter(contractor_pay__year = self.year, contractor_pay__month = self.month,
-                                    house__building__project = self.project, commission_include=True, salecancel__isnull=True)
+        query = self._get_sales().filter(commission_include=True, salecancel__isnull=True)
         if self.project.commissions.commission_by_signups:
             query = query.order_by('house__signups__date')
         return query
     @cache_method
     def get_excluded_sales(self):
         q = models.Q(commission_include=False) | models.Q(salecancel__isnull=False)
-        query = Sale.objects.filter(q, contractor_pay__year = self.year, contractor_pay__month = self.month,
-                                    house__building__project = self.project)
+        query = self._get_sales().filter(q)
         if self.project.commissions.commission_by_signups:
             query = query.order_by('house__signups__date')
         return query
@@ -2394,22 +2392,23 @@ class SalePre(SaleMod):
                                                                                                          datetime.now().year + 10)))
     def save(self, *args, **kw):
         super(SalePre, self).save(*args, **kw)
-        self.sale.employee_pay = date(self.employee_pay_year, self.employee_pay_month, 1)
+        self.sale.employee_pay_year = self.employee_pay_year
+        self.sale.employee_pay_month = self.employee_pay_month
         self.sale.save()
     class Meta:
         db_table = 'SalePre'
 
 class SaleReject(SaleMod):
-    to_month = models.PositiveSmallIntegerField(ugettext('reject_month'), choices=((i,i) for i in range(1,13)))
-    to_year = models.PositiveSmallIntegerField(ugettext('reject_year'), choices=((i,i) for i in range(datetime.now().year - 10,
- 																							   datetime.now().year + 10)))
-    employee_pay_month = models.PositiveSmallIntegerField(ugettext('employee_pay_month'), choices=((i,i) for i in range(1,13)))
-    employee_pay_year = models.PositiveSmallIntegerField(ugettext('employee_pay_year'), choices=((i,i) for i in range(datetime.now().year - 10,
- 																										 datetime.now().year + 10)))
+    to_month = models.PositiveSmallIntegerField(ugettext('reject_month'), choices = common.MONTH_CHOICES)
+    to_year = models.PositiveSmallIntegerField(ugettext('reject_year'), choices = common.YEAR_CHOICES)
+    employee_pay_month = models.PositiveSmallIntegerField(ugettext('employee_pay_month'), choices = common.MONTH_CHOICES)
+    employee_pay_year = models.PositiveSmallIntegerField(ugettext('employee_pay_year'), choices = common.YEAR_CHOICES)
     def save(self, *args, **kw):
         super(SaleReject, self).save(*args, **kw)
-        self.sale.employee_pay = date(self.employee_pay_year, self.employee_pay_month, 1)
-        self.sale.contractor_pay = date(self.to_year, self.to_month2, 1)
+        self.sale.employee_pay_year = self.employee_pay_year
+        self.sale.employee_pay_month = self.employee_pay_month
+        self.sale.contractor_pay_year = self.to_year
+        self.sale.contractor_pay_month = self.to_month
         self.sale.save()
     class Meta:
         db_table = 'SaleReject'
@@ -2449,6 +2448,12 @@ class Sale(models.Model):
     price_final = models.IntegerField(editable=False, null=True)
     employee_pay = models.DateField(ugettext('employee_paid'), editable=False)
     contractor_pay = models.DateField(ugettext('contractor_paid'), editable=False)
+    
+    employee_pay_month = models.PositiveSmallIntegerField(ugettext('employee_pay_month'), editable=False)
+    employee_pay_year = models.PositiveSmallIntegerField(ugettext('employee_pay_year'), editable=False)
+    contractor_pay_month = models.PositiveSmallIntegerField(ugettext('contractor_pay_month'), editable=False)
+    contractor_pay_year = models.PositiveSmallIntegerField(ugettext('contractor_pay_year'), editable=False)
+    
     remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
     contract_num = models.CharField(ugettext('so_contact_num'), max_length=10, null=True, blank=True)    
     include_tax = models.BooleanField(ugettext('include_tax'), choices=Boolean, default=1)
@@ -2470,13 +2475,13 @@ class Sale(models.Model):
     @property
     def tax(self):
         if not self.custom_cache.has_key('tax'):
-            tax_date = date(self.contractor_pay.month == 12 and self.contractor_pay.year+ 1 or self.contractor_pay.year,
-                            self.contractor_pay.month == 12 and 1 or self.contractor_pay.month + 1, 1)
+            tax_date = date(self.contractor_pay_month == 12 and self.contractor_pay_year+ 1 or self.contractor_pay_year,
+                            self.contractor_pay_month == 12 and 1 or self.contractor_pay_month + 1, 1)
             self.custom_cache['tax'] = Tax.objects.filter(date__lte = tax_date).latest().value / 100 + 1
         return self.custom_cache['tax']
     @property
     def actual_demand(self):
-        demand, new = Demand.objects.get_or_create(month=self.contractor_pay.month, year=self.contractor_pay.year,
+        demand, new = Demand.objects.get_or_create(month=self.contractor_pay_month, year=self.contractor_pay_year,
                                               project=self.demand.project)
         return demand
     @property
@@ -2563,11 +2568,10 @@ class Sale(models.Model):
             price = self.include_tax and price / self.tax or price
         return price
     def save(self, *args, **kw):
-        d = date(self.demand.year, self.demand.month, 1)
         if not self.employee_pay:
-            self.employee_pay = d
+            self.employee_pay_year, self.employee_pay_month = self.demand.year, self.demand.month
         if not self.contractor_pay:
-            self.contractor_pay = d
+            self.contractor_pay_year, self.contractor_pay_month = self.demand.year, self.demand.month
         if self.price_final == None:
             self.price_final = self.project_price()
         models.Model.save(self, args, kw)
@@ -2578,10 +2582,10 @@ class Sale(models.Model):
                 return True
     @property
     def is_ep_ok(self):
-        return self.employee_pay.year == self.demand.year and self.employee_pay.month == self.demand.month 
+        return self.employee_pay_year == self.demand.year and self.employee_pay_month == self.demand.month 
     @property
     def is_cp_ok(self):
-        return self.contractor_pay.year == self.demand.year and self.contractor_pay.month == self.demand.month 
+        return self.contractor_pay_year == self.demand.year and self.contractor_pay_month == self.demand.month 
     def __unicode__(self):
         return u'בניין %s דירה %s ל%s' % (self.house.building.num, self.house.num, self.clients)
     def get_absolute_url(self):
