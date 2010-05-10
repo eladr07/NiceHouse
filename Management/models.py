@@ -2566,9 +2566,9 @@ class Sale(models.Model):
             price = self.include_tax and price / self.tax or price
         return price
     def save(self, *args, **kw):
-        if not self.employee_pay:
+        if not self.employee_pay_year or not self.employee_pay_month:
             self.employee_pay_year, self.employee_pay_month = self.demand.year, self.demand.month
-        if not self.contractor_pay:
+        if not self.contractor_pay_year or not self.contractor_pay_month:
             self.contractor_pay_year, self.contractor_pay_month = self.demand.year, self.demand.month
         if self.price_final == None:
             self.price_final = self.project_price()
