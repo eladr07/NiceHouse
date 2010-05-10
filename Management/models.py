@@ -1879,12 +1879,13 @@ class Demand(models.Model):
         if not self.project.commissions.commission_by_signups:
             return dic
         for m,y in self.get_signup_months():
+            q = models.Q(contractor_pay_year = self.year, contractor_pay_month__gte = self.month) | models.Q(contractor_pay_year__gt = self.year)
             dic[(m,y)] = Sale.objects.filter(house__signups__date__year=y,
                                              house__signups__date__month=m,
                                              house__signups__cancel=None,
                                              demand__project__id = self.project.id,
                                              salecancel=None
-                        ).exclude(contractor_pay_gte = date(self.year,self.month, 1))
+                        ).exclude(q)
         return dic
     def get_signup_months(self):
         months = {}
