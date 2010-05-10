@@ -363,7 +363,10 @@ class MonthDemandWriter:
         headers.reverse()
         rows = []
         demand = self.demand
-        last_demand_sent = self.demand.get_previous_demand()
+        while demand.zilber_cycle_index()>1:
+            demand = demand.get_previous_demand()
+        first_demand_sent = demand.get_previous_demand()
+        demand = self.demand
         i = 1
         total_prices, total_adds = 0, 0
         while demand != None and demand.zilber_cycle_index() != 1:
@@ -375,7 +378,7 @@ class MonthDemandWriter:
                 s.restore = False
                 new_commission = s.c_final
                 scd_final = s.project_commission_details.filter(commission='final')[0]
-                orig_commission = models.restore_object(scd_final, last_demand_sent.finish_date).value
+                orig_commission = models.restore_object(scd_final, first_demand_sent.finish_date).value
                 if orig_commission == new_commission:
                     continue
                 i += 1
