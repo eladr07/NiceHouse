@@ -438,14 +438,22 @@ def demand_calc(request, id):
     d = Demand.objects.get(pk=id)
     c = d.project.commissions
     if c.commission_by_signups or c.c_zilber:
+        if c.commission_by_signups:
+            demands = list(Demand.objects.filter(project = d.project))
+        elif c.c_zilber:
+            demand = d
+            demands = [demand]
+            while demand.zilber_cycle_index() >= 1:
+                demands.insert(0, demand)
+                demand = demand.get_previous_demand()
         #delete all commissions and sale commission details before re-calculating
-        for demand in Demand.objects.filter(project = d.project):
+        for demand in demands:
             for s in demand.statuses.all():
                 s.delete()
             for s in demand.get_sales():
                 for scd in s.commission_details.all():
                     scd.delete()
-        for d2 in Demand.objects.filter(project = d.project):
+        for d2 in demands:
             d2.calc_sales_commission()
             demand = Demand.objects.get(pk=d2.id)
             if demand.get_next_demand() != None:
@@ -455,6 +463,7 @@ def demand_calc(request, id):
                 demand.close()
     else:
         d.calc_sales_commission()
+        
     return HttpResponseRedirect('/demandsold/?year=%s&month=%s' % (d.year,d.month))
 
 def projects_profit(request):

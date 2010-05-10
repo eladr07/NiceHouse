@@ -1398,11 +1398,17 @@ class CZilber(models.Model):
                 d.var_diff.delete()
             if d.bonus_diff: 
                 d.bonus_diff.delete()
+
+            # get sales from all demands
             demand = d
             sales = list(d.get_sales())
-            while demand != None and demand.zilber_cycle_index() != 1:
+            
+            while demand.zilber_cycle_index() > 1:
                 demand = demand.get_previous_demand()
                 sales.extend(demand.get_sales())
+                
+            # get the finish date of the first demand
+            first_demand_finish_date = demand.finish_date
     
             logger.info('total cycle sales count: %(sale_count)s', {'sale_count':len(sales)})
             
@@ -1439,29 +1445,38 @@ class CZilber(models.Model):
                 scd.save()
                 logger.debug('sale #%(id)s c_zilber_base = %(value)s', {'id':s.id,'value':scd.value})
                 
-                c_final = base
-                if s.actual_demand == d:
-                    if self.base_madad:
-                        doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0, date__lte = prices_date)
-                        if doh0prices.count() == 0: 
-                            logger.warning('skipping c_zilber_discount calc for sale #%(id)s. no doh0 prices', {'id':s.id})
-                            continue
-                        latest_doh0price = doh0prices.latest().price
-                        memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * latest_doh0price
-                        scd = s.commission_details.get_or_create(commission='c_zilber_discount', employee_salary=None)[0]
-                        zdb = (s.price - memudad) * self.b_discount
-                        scd.value = zdb
-                        scd.save()
-                                        
-                        logger.debug('sale #%(id)s c_zilber_discount calc values: %(vals)s',
-                                     {'id':s.id, 'vals':{'latest_doh0price':latest_doh0price,
-                                                         'memudad':memudad, 
-                                                         'zdb':zdb}
-                                     })
-                else:
+                if s.actual_demand != d:
+                    continue
+                
+                if self.base_madad:
+                    doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0, date__lte = prices_date)
+                    if doh0prices.count() == 0: 
+                        logger.warning('skipping c_zilber_discount calc for sale #%(id)s. no doh0 prices', {'id':s.id})
+                        continue
+                    latest_doh0price = doh0prices.latest().price
+                    memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * latest_doh0price
+                    scd = s.commission_details.get_or_create(commission='c_zilber_discount', employee_salary=None)[0]
+                    zdb = (s.price - memudad) * self.b_discount
+                    scd.value = zdb
+                    scd.save()
+                                    
+                    logger.debug('sale #%(id)s c_zilber_discount calc values: %(vals)s',
+                                 {'id':s.id, 'vals':{'latest_doh0price':latest_doh0price,
+                                                     'memudad':memudad, 
+                                                     'zdb':zdb}
+                                 })
+                    
+                scd, new = s.commission_details.get_or_create(commission='final', employee_salary=None)
+                scd.value = base
+                scd.save()
+
+            if d.include_zilber_bonus():
+                for s in sales:
+                    if s.actual_demand == d:
+                        continue
                     q = s.project_commission_details.filter(commission='c_zilber_base')
                     if q.count() > 0 and last_demand_finish_date:
-                        old_base = restore_object(q[0], last_demand_finish_date).value
+                        old_base = restore_object(q[0], first_demand_finish_date).value
                     else:
                         old_base = s.pc_base
                     sale_add = (base - old_base) * s.price_final / 100
@@ -1472,17 +1487,16 @@ class CZilber(models.Model):
                                                                                     'q.count()':q.count(), 
                                                                                     'old_base':old_base,
                                                                                     'sale_add':sale_add
-                                                                                        }
+                                                                                    }
                                                                                 })
-    
-                scd, new = s.commission_details.get_or_create(commission='final', employee_salary=None)
-                scd.value = c_final
-                scd.save()
+
+                    scd, new = s.commission_details.get_or_create(commission='final', employee_salary=None)
+                    scd.value = base
+                    scd.save()
                 
-            if prev_adds:
-                d.diffs.create(type=u'משתנה', reason=u'הפרשי קצב מכירות (נספח א)', amount=round(prev_adds))
-                
-            if d.include_zilber_bonus():
+                if prev_adds:
+                    d.diffs.create(type=u'משתנה', reason=u'הפרשי קצב מכירות (נספח א)', amount=round(prev_adds))
+                    
                 bonus = 0
                 for s in sales:
                     bonus += s.zdb
@@ -1862,6 +1876,8 @@ class Demand(models.Model):
         excluding sales from current demand
         '''
         dic = {}
+        if not self.project.commissions.commission_by_signups:
+            return dic
         for m,y in self.get_signup_months():
             dic[(m,y)] = Sale.objects.filter(house__signups__date__year=y,
                                              house__signups__date__month=m,
