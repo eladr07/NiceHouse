@@ -583,12 +583,11 @@ class MonthDemandWriter:
             story.append(PageBreak())
         if self.demand.diffs.count() > 0:
             story.extend([Spacer(0, 20), self.addsPara()])
-        if self.demand.project.is_zilber():
+        if self.demand.project.is_zilber() and (self.demand.include_zilber_bonus() or not self.to_mail):
             story.extend([PageBreak(), Spacer(0,30)])
             story.extend(self.zilberAddsFlows())
-            if self.demand.include_zilber_bonus() or not self.to_mail:
-                story.extend([PageBreak(), Spacer(0,30)])
-                story.extend(self.zilberBonusFlows())
+            story.extend([PageBreak(), Spacer(0,30)])
+            story.extend(self.zilberBonusFlows())
         story.extend([Spacer(0, 20), self.remarkPara()]) 
         if self.signup_adds:
             story.extend([PageBreak(), Spacer(0,30), titlePara(u'נספח א')])
