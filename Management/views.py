@@ -1590,7 +1590,7 @@ def payment_del(request, id):
 
 @login_required
 def project_list(request):    
-    projects = Project.objects.filter(end_date = None)
+    projects = Project.objects.filter(end_date = None).select_related('demand_contact','payment_contact')
     return render_to_response('Management/project_list.html',
                               {'projects': projects}, 
                               context_instance=RequestContext(request))
@@ -1856,7 +1856,7 @@ def salecommissiondetail_edit(request, sale_id):
     
 @permission_required('Management.change_project')
 def project_edit(request, id):
-    project = Project.objects.get(pk=id)
+    project = Project.objects.select_related('demand_contact','payment_contact').get(pk=id)
     details = project.details or ProjectDetails()
     if request.method == 'POST':
         form = ProjectForm(request.POST, instance=project)
