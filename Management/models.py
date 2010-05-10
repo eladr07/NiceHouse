@@ -1407,6 +1407,7 @@ class CZilber(models.Model):
                 demand = demand.get_previous_demand()
                 sales.extend(demand.get_sales())
                 
+            sales.extend(demand.get_sales())
             # get the finish date of the first demand
             first_demand_finish_date = demand.finish_date
     
