@@ -443,9 +443,10 @@ def demand_calc(request, id):
         elif c.c_zilber:
             demand = d
             demands = [demand]
-            while demand.zilber_cycle_index() >= 1:
+            while demand.zilber_cycle_index() > 1:
                 demands.insert(0, demand)
                 demand = demand.get_previous_demand()
+            demands.insert(0, demand)
         #delete all commissions and sale commission details before re-calculating
         for demand in demands:
             for s in demand.statuses.all():
