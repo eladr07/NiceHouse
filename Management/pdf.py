@@ -391,7 +391,7 @@ class MonthDemandWriter:
                 scd_final = s.project_commission_details.filter(commission='final')[0]
                 orig_commission = models.restore_object(scd_final, first_demand_sent_finish_date).value
                 if orig_commission == new_commission:
-                    logger.warning('skipping sale #%(id)s - orig_commission == new_commission == %(commission)',
+                    logger.warning('skipping sale #%(id)s - orig_commission == new_commission == %(commission)s',
                                    {'id':s.id, 'commission':orig_commission})
                     continue
                 i += 1
