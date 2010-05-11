@@ -365,7 +365,7 @@ class MonthDemandWriter:
         demand = self.demand
         while demand.zilber_cycle_index()>1:
             demand = demand.get_previous_demand()
-        first_demand_sent = demand.get_previous_demand()
+        first_demand_sent = demand
         demand = self.demand
         i = 1
         total_prices, total_adds = 0, 0
