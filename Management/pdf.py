@@ -377,7 +377,12 @@ class MonthDemandWriter:
         while demand != self.demand:
             demand = demand.get_next_demand()
             logger.info('writing rows for demand: %s' % demand)
-            for s in demand.get_sales():
+            sales = demand.get_sales()
+            if sales.count() == 0:
+                logger.warn('skipping demand %(demand)s - no sales',
+                            {'demand':demand})
+                continue
+            for s in sales:
                 row = [log2vis('%s/%s' % (demand.month, demand.year)), clientsPara(s.clients), 
                                '%s/%s' % (unicode(s.house.building), unicode(s.house)), s.sale_date.strftime('%d/%m/%y'), 
                                commaise(s.price)]
