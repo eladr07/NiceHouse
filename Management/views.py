@@ -1092,7 +1092,7 @@ def demand_edit(request, object_id):
         if form.is_valid():
             form.save()
     else:
-        form = DemandForm()
+        form = DemandForm(instance = demand)
         
     return render_to_response('Management/demand_edit.html', 
                               { 'form':form, 'demand':demand, 'sales':sales },
