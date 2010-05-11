@@ -396,6 +396,11 @@ class MonthDemandWriter:
                     continue
                 i += 1
                 diff_amount = s.price_final * (new_commission - orig_commission) / 100
+                
+                logger.debug('commission calc details: new_commission:%(new_commission)s, orig_commission:%(orig_commission)s, s.price_final:%(s.price_final)s, diff_amount:%(diff_amount)s',
+                             {'new_commission':new_commission,'orig_commission':orig_commission,
+                              's.price_final':s.price_final, 'diff_amount':diff_amount})
+                
                 row.extend([orig_commission, new_commission, new_commission - orig_commission, commaise(diff_amount)])
                 row.reverse()
                 rows.append(row)
