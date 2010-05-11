@@ -1,4 +1,5 @@
 ﻿import settings, models
+import logging
 from datetime import datetime, date
 from templatetags.management_extras import commaise
 import reportlab.rl_config
@@ -354,6 +355,8 @@ class MonthDemandWriter:
         return flows
     
     def zilberAddsFlows(self):        
+        logger = logging.getLogger('pdf.MonthDemandWriter')
+        
         flows = [tableCaption(caption=log2vis(u'נספח א - הפרשי קצב מכירות לדרישה')),
                  Spacer(0,30)]
         headers = [log2vis(n) for n in [u'דרישה\nחודש', u'שם הרוכשים', u'ודירה\nבניין',u'מכירה\nתאריך', u'חוזה\nמחיר',
@@ -366,6 +369,8 @@ class MonthDemandWriter:
         while demand.zilber_cycle_index()>1:
             demand = demand.get_previous_demand()
         first_demand_sent = demand
+        
+        logger.info('first_demand_sent: %s' % first_demand_sent)
 
         i = 1
         total_prices, total_adds = 0, 0
@@ -568,6 +573,10 @@ class MonthDemandWriter:
         return Paragraph(s, ParagraphStyle(name='addsPara', fontName='David', fontSize=14, 
                                            leading=16, alignment=TA_LEFT))
     def build(self, filename):
+        logger = logging.getLogger('pdf.MonthDemandWriter')
+        
+        logger.info('starting build for %(demand)s', {'demand':self.demand})
+        
         doc = SimpleDocTemplate(filename)
         story = [Spacer(0,100)]
         title = u'הנדון : עמלה לפרויקט %s לחודש %s/%s' % (self.demand.project, 
