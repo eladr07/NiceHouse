@@ -375,7 +375,6 @@ class MonthDemandWriter:
         i = 1
         total_prices, total_adds = 0, 0
         while demand != self.demand:
-            demand = demand.get_next_demand()
             logger.info('writing rows for demand: %s' % demand)
             sales = demand.get_sales()
             
@@ -398,9 +397,11 @@ class MonthDemandWriter:
                 i += 1
                 diff_amount = s.price_final * (new_commission - orig_commission) / 100
                 
-                logger.debug('commission calc details: %s',
-                             {'new_commission':new_commission,'orig_commission':orig_commission,
-                              's.price_final':s.price_final, 'diff_amount':diff_amount})
+                logger.debug('commission calc details: %(vals)s',
+                             {'vals':
+                              {'new_commission':new_commission,'orig_commission':orig_commission,
+                               's.price_final':s.price_final, 'diff_amount':diff_amount}
+                              })
                 
                 row.extend([orig_commission, new_commission, new_commission - orig_commission, commaise(diff_amount)])
                 row.reverse()
@@ -414,6 +415,9 @@ class MonthDemandWriter:
                     t.setStyle(saleTableStyle)
                     flows.extend([t, PageBreak(), Spacer(0,70)])
                     rows = []
+            
+            demand = demand.get_next_demand()
+            
         sum_row = [None, None, None, None, Paragraph(commaise(total_prices), styleSumRow), None, None, None, 
                    Paragraph(commaise(total_adds), styleSumRow)]
         sum_row.reverse()
