@@ -1404,10 +1404,10 @@ class CZilber(models.Model):
             demands = [demand]
             
             while True:
-                demand = demand.get_previous_demand()
-                demands.insert(0, demand)
                 if demand.zilber_cycle_index() <= 1:
                     break
+                demand = demand.get_previous_demand()
+                demands.insert(0, demand)
 
             # get the finish date of the first demand
             first_demand_finish_date = demands[0].finish_date
