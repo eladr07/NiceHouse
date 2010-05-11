@@ -1401,15 +1401,21 @@ class CZilber(models.Model):
 
             # get sales from all demands
             demand = d
-            sales = list(d.get_sales())
+            demands = [demand]
             
-            while demand.zilber_cycle_index() > 1:
+            while True:
                 demand = demand.get_previous_demand()
-                sales.extend(demand.get_sales())
-                
-            sales.extend(demand.get_sales())
+                demands.insert(0, demand)
+                if demand.zilber_cycle_index() <= 1:
+                    break
+
             # get the finish date of the first demand
-            first_demand_finish_date = demand.finish_date
+            first_demand_finish_date = demand[0].finish_date
+            
+            # get sales from all demands
+            sales = []
+            for demand in demands:
+                sales.extend(demand.get_sales())
     
             logger.info('total cycle sales count: %(sale_count)s', {'sale_count':len(sales)})
             
