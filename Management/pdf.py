@@ -368,9 +368,9 @@ class MonthDemandWriter:
         demand = self.demand
         while demand.zilber_cycle_index()>1:
             demand = demand.get_previous_demand()
-        first_demand_sent = demand
+        first_demand_sent_finish_date = demand.finish_date
         
-        logger.info('first_demand_sent: %s' % first_demand_sent)
+        logger.info('first_demand_sent_finish_date: %s' % first_demand_sent_finish_date)
 
         i = 1
         total_prices, total_adds = 0, 0
@@ -378,11 +378,11 @@ class MonthDemandWriter:
             demand = demand.get_next_demand()
             logger.info('writing rows for demand: %s' % demand)
             sales = demand.get_sales()
-            logger.debug('sales: %s', sales)
+            
             if sales.count() == 0:
-                logger.warn('skipping demand %(demand)s - no sales',
-                            {'demand':demand})
+                logger.warn('skipping demand %(demand)s - no sales', {'demand':demand})
                 continue
+            
             for s in sales:
                 row = [log2vis('%s/%s' % (demand.month, demand.year)), clientsPara(s.clients), 
                                '%s/%s' % (unicode(s.house.building), unicode(s.house)), s.sale_date.strftime('%d/%m/%y'), 
@@ -390,10 +390,10 @@ class MonthDemandWriter:
                 s.restore = False
                 new_commission = s.c_final
                 scd_final = s.project_commission_details.filter(commission='final')[0]
-                orig_commission = models.restore_object(scd_final, first_demand_sent.finish_date).value
+                orig_commission = models.restore_object(scd_final, first_demand_sent_finish_date).value
                 if orig_commission == new_commission:
-                    logger.warn('skipping sale #%(id)s - orig_commission == new_commission == %(commission)',
-                                {'id':s.id, 'commission':orig_commission})
+                    logger.warning('skipping sale #%(id)s - orig_commission == new_commission == %(commission)',
+                                   {'id':s.id, 'commission':orig_commission})
                     continue
                 i += 1
                 diff_amount = s.price_final * (new_commission - orig_commission) / 100
