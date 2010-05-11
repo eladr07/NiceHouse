@@ -1441,10 +1441,13 @@ class CZilber(models.Model):
             logger.debug('prices_date = %s, current_madad=%s, last_demand_finish_date=%s', prices_date, current_madad, last_demand_finish_date)
             
             for s in sales:
-                scd, new = s.commission_details.get_or_create(commission='c_zilber_base', employee_salary=None)
-                scd.value = base
-                scd.save()
-                logger.debug('sale #%(id)s c_zilber_base = %(value)s', {'id':s.id,'value':scd.value})
+                for commission in ['c_zilber_base','final']:
+                    scd, new = s.commission_details.get_or_create(
+                                      commission = commission, employee_salary = None)
+                    scd.value = base
+                    scd.save()
+                    logger.debug('sale #%(id)s %(commission)s = %(value)s', 
+                                 {'id':s.id,'commission':commission,'value':scd.value})
                 
                 if s.actual_demand != d:
                     continue
@@ -1466,10 +1469,6 @@ class CZilber(models.Model):
                                                      'memudad':memudad, 
                                                      'zdb':zdb}
                                  })
-                    
-                scd, new = s.commission_details.get_or_create(commission='final', employee_salary=None)
-                scd.value = base
-                scd.save()
 
             if d.include_zilber_bonus():
                 for s in sales:

@@ -371,7 +371,7 @@ class MonthDemandWriter:
         total_prices, total_adds = 0, 0
         while demand != None and demand.zilber_cycle_index() != 1:
             demand = demand.get_previous_demand()
-            for s in demand.get_sales().filter(commission_include=True):
+            for s in demand.get_sales():
                 row = [log2vis('%s/%s' % (demand.month, demand.year)), clientsPara(s.clients), 
                                '%s/%s' % (unicode(s.house.building), unicode(s.house)), s.sale_date.strftime('%d/%m/%y'), 
                                commaise(s.price)]
