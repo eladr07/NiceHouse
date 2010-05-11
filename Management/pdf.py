@@ -378,6 +378,7 @@ class MonthDemandWriter:
             demand = demand.get_next_demand()
             logger.info('writing rows for demand: %s' % demand)
             sales = demand.get_sales()
+            logger.debug('sales: %s', sales)
             if sales.count() == 0:
                 logger.warn('skipping demand %(demand)s - no sales',
                             {'demand':demand})
