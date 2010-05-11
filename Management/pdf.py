@@ -376,6 +376,7 @@ class MonthDemandWriter:
         total_prices, total_adds = 0, 0
         while demand != self.demand:
             demand = demand.get_next_demand()
+            logger.info('writing rows for demand: %s' % demand)
             for s in demand.get_sales():
                 row = [log2vis('%s/%s' % (demand.month, demand.year)), clientsPara(s.clients), 
                                '%s/%s' % (unicode(s.house.building), unicode(s.house)), s.sale_date.strftime('%d/%m/%y'), 
@@ -385,6 +386,8 @@ class MonthDemandWriter:
                 scd_final = s.project_commission_details.filter(commission='final')[0]
                 orig_commission = models.restore_object(scd_final, first_demand_sent.finish_date).value
                 if orig_commission == new_commission:
+                    logger.warn('skipping sale #%(id)s - orig_commission == new_commission == %(commission)',
+                                {'id':s.id, 'commission':orig_commission})
                     continue
                 i += 1
                 diff_amount = s.price_final * (new_commission - orig_commission) / 100
