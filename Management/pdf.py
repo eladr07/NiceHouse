@@ -366,11 +366,11 @@ class MonthDemandWriter:
         while demand.zilber_cycle_index()>1:
             demand = demand.get_previous_demand()
         first_demand_sent = demand
-        demand = self.demand
+
         i = 1
         total_prices, total_adds = 0, 0
-        while demand != None and demand.zilber_cycle_index() != 1:
-            demand = demand.get_previous_demand()
+        while demand != self.demand:
+            demand = demand.get_next_demand()
             for s in demand.get_sales():
                 row = [log2vis('%s/%s' % (demand.month, demand.year)), clientsPara(s.clients), 
                                '%s/%s' % (unicode(s.house.building), unicode(s.house)), s.sale_date.strftime('%d/%m/%y'), 
