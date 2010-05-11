@@ -1410,7 +1410,7 @@ class CZilber(models.Model):
                     break
 
             # get the finish date of the first demand
-            first_demand_finish_date = demand[0].finish_date
+            first_demand_finish_date = demands[0].finish_date
             
             # get sales from all demands
             sales = []
