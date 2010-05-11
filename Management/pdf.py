@@ -355,7 +355,7 @@ class MonthDemandWriter:
         return flows
     
     def zilberAddsFlows(self):        
-        logger = logging.getLogger('pdf.MonthDemandWriter')
+        logger = logging.getLogger('pdf')
         
         flows = [tableCaption(caption=log2vis(u'נספח א - הפרשי קצב מכירות לדרישה')),
                  Spacer(0,30)]
@@ -573,7 +573,7 @@ class MonthDemandWriter:
         return Paragraph(s, ParagraphStyle(name='addsPara', fontName='David', fontSize=14, 
                                            leading=16, alignment=TA_LEFT))
     def build(self, filename):
-        logger = logging.getLogger('pdf.MonthDemandWriter')
+        logger = logging.getLogger('pdf')
         
         logger.info('starting build for %(demand)s', {'demand':self.demand})
         
