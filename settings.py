@@ -21,7 +21,7 @@ DATABASE_NAME = 'Management'             # Or path to database file if using sql
 DATABASE_USER = 'root'             # Not used with sqlite3.
 DATABASE_PASSWORD = 'HwMqJY8'         # Not used with sqlite3.
 DATABASE_HOST = 'localhost'             # Set to empty string for localhost. Not used with sqlite3.
-DATABASE_PORT = '3306'             # Set to empty string for default. Not used with sqlite3.
+DATABASE_PORT = '8081'             # Set to empty string for default. Not used with sqlite3.
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

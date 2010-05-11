@@ -19,8 +19,8 @@
 			{//sync links
 				$("#saleEdit").attr("href", "/sale/" + selectedID);
 				$("#saleCommissionEdit").attr("href", "/sale/" + selectedID + "/commission");
-				$("#saleDelete").attr("href", "{{form.instance.id}}/sale/" + selectedID + "/cancel");
-				$("#saleReject").attr("href", "{{form.instance.id}}/sale/" + selectedID + "/reject");
+				$("#saleDelete").attr("href", "{{demand.id}}/sale/" + selectedID + "/cancel");
+				$("#saleReject").attr("href", "{{demand.id}}/sale/" + selectedID + "/reject");
 			}
 		});
 		$("#saleTable td").attr("style","border-bottom: 1px solid; border-left: 1px solid;");
@@ -37,45 +37,45 @@
 </script>
 {% endblock header %}
 {% block content %}
-{% if form.instance.id %}
+{% if demand.id %}
 	<div class="title">
 		<div class="pageTitle">
-			{% if form.instance.get_previous_demand %}
-			<a href="/demands/{{form.instance.get_previous_demand.id}}" style="text-decoration:none;">
+			{% if demand.get_previous_demand %}
+			<a href="/demands/{{demand.get_previous_demand.id}}" style="text-decoration:none;">
 				<img src="/site_media/images/1rightarrow-48.png" width="24" height="24" border="0" alt="דרישה קודמת" />
 			</a>
 			{% endif %}
-			ריכוז מכירות {{form.instance.month}}/{{form.instance.year}}
+			ריכוז מכירות {{demand.month}}/{{demand.year}}
 			לפרוייקט
-			{{form.instance.project}}
-			{% if form.instance.get_next_demand %}
-			<a href="/demands/{{form.instance.get_next_demand.id}}" style="text-decoration:none;">
+			{{demand.project}}
+			{% if demand.get_next_demand %}
+			<a href="/demands/{{demand.get_next_demand.id}}" style="text-decoration:none;">
 				<img src="/site_media/images/1leftarrow-48.png" width="24" height="24" border="0" alt="דרישה הבאה" />
 			</a>
 			{% endif %}
 			<br>
 			מצב - 
-			{{form.instance.statuses.latest.type}}
+			{{demand.statuses.latest.type}}
 		</div>
 	</div>
 	<div class="clearBoth"></div>
 	<table class="pageSubTitle" align="center">
 		<tr>
 			<th>יזם</th>
-			<td>{{form.instance.project.initiator}}</td>
+			<td>{{demand.project.initiator}}</td>
 		</tr>
 		<tr>
 			<th>פרוייקט</th>
-			<td><a href="/projects/{{form.instance.project.id}}">{{form.instance.project.name}}</a></td>
+			<td><a href="/projects/{{demand.project.id}}">{{demand.project.name}}</a></td>
 		</tr>
 		<tr>
 			<th>עיר</th>
-			<td>{{form.instance.project.city}}</td>
+			<td>{{demand.project.city}}</td>
 		</tr>
 		<tr>
 			<th>אנשי מכירות בפרוייקט</th>
 			<td>
-			{% for e in form.instance.project.employees.all %}
+			{% for e in demand.project.employees.all %}
 				<a href="/employees/{{e.id}}">{{e}}</a> ,
 			{% endfor %}
 			</td>
@@ -106,27 +106,27 @@
 	<table class="formTable">
 		<tr>
 			<th>עמלה בגין מכירות</th>
-			<td>{{form.instance.sales_commission|commaise}} ש"ח</td>
+			<td>{{demand.sales_commission|commaise}} ש"ח</td>
 		</tr>
 		<tr>
 			<th>סה"כ תשלום לחברה</th>
-			<td>{{form.instance.get_total_amount|commaise}} ש"ח</td>
+			<td>{{demand.get_total_amount|commaise}} ש"ח</td>
 		</tr>
 	</table>
 	<fieldset class="cardFieldset" >
 		<legend>תוספות וקיזוזים</legend>
-		{% for d in form.instance.diffs.all %}
+		{% for d in demand.diffs.all %}
 			{{ d }}				
 			<a href="{{d.get_absolute_url}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="20" height="20" border="0" alt="עריכה" /></a>
 			<a href="{{d.get_absolute_url}}/del"><img src="/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
 			<br>
 		{% endfor %}
-		<br><a class="fancybox" href="{{form.instance.id}}/adddiff">תוספת\קיזוז חדש</a><br>
+		<br><a class="fancybox" href="{{demand.id}}/adddiff">תוספת\קיזוז חדש</a><br>
 	</fieldset>
 	<fieldset class="cardFieldset">
 		<legend>תיקונים לדרישה</legend>
 		<ul>
-			{% for s in form.instance.get_pricemodsales %}
+			{% for s in demand.get_pricemodsales %}
 				<li>המחיר עבור מכירה מס'
 				<a href="/sale/{{s.id}}">{{s.id}}</a>
 				שונה מ- 
@@ -136,7 +136,7 @@
 				<a href="{{ s.salepricemod.get_absolute_url }}">פרטים</a>
 				</li>
 			{% endfor %}
-			{% for s in form.instance.get_housemodsales %}
+			{% for s in demand.get_housemodsales %}
 				<li>הדירה עבור מכירה מס'
 				<a href="/sale/{{s.id}}">{{s.id}}</a>
 				 שונתה מבניין
@@ -150,7 +150,7 @@
 				<a href="{{ s.salehousemod.get_absolute_url }}">פרטים</a>
 				</li>
 			{% endfor %}
-			{% for s in form.instance.get_presales %}
+			{% for s in demand.get_presales %}
 				<li>מכירה מס' 
 				<a href="/sale/{{s.id}}">{{s.id}}</a> - ({{s}})
 				הוקדמה לחודש זה. העובד יקבל תשלום בחודש
@@ -158,7 +158,7 @@
 				<a href="{{ s.salepre.get_absolute_url }}">פרטים</a>
 				</li>
 			{% endfor %}
-			{% for s in form.instance.get_rejectedsales %}
+			{% for s in demand.get_rejectedsales %}
 				<li>מכירה מס' 
 				<a href="/sale/{{s.id}}">{{s.id}}</a> - ({{s}})
 				נדחתה לחודש
@@ -168,7 +168,7 @@
 				<a href="{{ s.salereject.get_absolute_url }}">פרטים</a>
 				</li>			
 			{% endfor %}
-			{% for s in form.instance.get_canceledsales %}
+			{% for s in demand.get_canceledsales %}
 				<li>מכירה מס' 
 				<a href="/sale/{{s.id}}">{{s.id}}</a> - ({{s}})
 				בוטלה.
@@ -179,7 +179,7 @@
 	</fieldset>
 	<fieldset class="cardFieldset" >
 		<legend>חשבוניות</legend>
-		{% for i in form.instance.invoices.all %}
+		{% for i in demand.invoices.all %}
 			{{ i.num }}
 			- בתאריך
 			<b>{{i.date|date:"j/m/y"}}</b>
@@ -201,11 +201,11 @@
 			{% endif %}
 			<br>
 		{% endfor %}
-		<br><a href="{{form.instance.id}}/invoice/add">חשבונית חדשה</a><br>
+		<br><a href="{{demand.id}}/invoice/add">חשבונית חדשה</a><br>
 	</fieldset>
 	<fieldset class="cardFieldset" >
 		<legend>תשלומים מהיזם</legend>
-		{% for p in form.instance.payments.all %}
+		{% for p in demand.payments.all %}
 			{{ p.num }}
 			- לתאריך
 			<b>{{p.payment_date|date:"j/m/y"}}</b>
@@ -215,30 +215,30 @@
 			<a href="/payments/{{p.id}}/del"><img src="/site_media/images/delete_48.png" width="20" height="20" border="0" alt="מחיקה" /></a>
 			<br>
 		{% endfor %}
-		<br><a href="{{form.instance.id}}/payment/add">הוסף תשלום</a><br>
+		<br><a href="{{demand.id}}/payment/add">הוסף תשלום</a><br>
 	</fieldset>
 </div>
 	<div class="clearBoth"/>
 	<p style="color: #CC0000; font-weight: bold;">
-		{% if not form.instance.invoices.count %}
+		{% if not demand.invoices.count %}
 			לתשומת לבך ! לא הוצאה חשבונית בגין הדרישה<br>
 		{% endif %}
-		{% if not form.instance.payments.count %}
+		{% if not demand.payments.count %}
 			לתשומת לבך ! לא התקבל תשלום בגין הדרישה<br>
-		{% endif %}	{% if form.instance.diff_invoice_payment %}
+		{% endif %}	{% if demand.diff_invoice_payment %}
 			לתשומת לבך ! קיים פער בין הסכום בחשבונית שהוצאה, לסכום בתשלום שהתקבל מהיזם<br>
 		{% endif %}
 	</p>
-	{% ifequal form.instance.statuses.latest.type.id 1 %}
+	{% ifequal demand.statuses.latest.type.id 1 %}
 		<a href="close">סגור דרישה</a><br><br>
 	{% endifequal %}
 <div class="clearBoth"></div>
 {% if user.is_staff %}
 	<fieldset class="cardFieldset">
-		<legend>פירוט מכירות - {{form.instance.project}} לחודש {{form.instance.month}}/{{form.instance.year}}</legend>
+		<legend>פירוט מכירות - {{demand.project}} לחודש {{demand.month}}/{{demand.year}}</legend>
 		<div class="someIcon" style="width:100px;">
 			<img src="/site_media/images/add_48.png" width="20" height="20"  alt="הוספה" /> 
-				<a href="{{form.instance.id}}/sale/add" >הזנת מכירה</a>
+				<a href="{{demand.id}}/sale/add" >הזנת מכירה</a>
 		</div>
 		<div class="someIcon" style="width:100px;">
 			<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="עריכה" /> 
@@ -258,7 +258,7 @@
 		</div>
 		<div class="someIcon" style="width:120px;">
 			<img src="/site_media/images/print-48.png" width="20" height="20"  alt="הדפסה" /> 
-			<a href="/reports/project_month/{{form.instance.project.id}}/{{form.instance.year}}/{{form.instance.month}}">לגרסת ההדפסה</a>
+			<a href="/reports/project_month/{{demand.project.id}}/{{demand.year}}/{{demand.month}}">לגרסת ההדפסה</a>
 		</div>		
 		<table class="formTable" style="float:left;">
 			<tr>
@@ -273,9 +273,9 @@
 		<div class="clearBoth"></div> 
 		<br>
 		<table class="dataTable" id="saleTable" >
-			<caption>סה"כ {{form.instance.get_sales.count}} מכירות בדרישה</caption>
+			<caption>סה"כ {{sales.count}} מכירות בדרישה</caption>
 			<th>מזהה <br>מכירה</th>
-			{% if form.instance.get_sales.0.contract_num %}
+			{% if sales.0.contract_num %}
 			<th>מס' <br>חוזה</th>
 			{% endif %}
 			<th>שם <br>הרוכשים</th>
@@ -285,14 +285,14 @@
 			<th>תאריך<br> מכירה</th>
 			<th>מחיר <br>חוזה</th>
 			<th>מחיר חוזה<br>לעמלה</th>
-			{% if form.instance.get_sales.0.discount %}
+			{% if sales.0.discount %}
 			<th>מחיר כולל <br>מע"מ</th>
 			<th>% הנחה <br>ניתן</th>
 			<th>% הנחה <br>מותר</th>
 			{% endif %}
 			<th>% עמלת <br>בסיס</th>
 			<th>שווי עמלת <br>בסיס</th>
-			{% if form.instance.project.commissions.b_discount_save_precentage or form.instance.project.commissions.c_zilber %}
+			{% if demand.project.commissions.b_discount_save_precentage or demand.project.commissions.c_zilber %}
 			<th>% בונוס <br>חסכון</th>
 			<th>שווי בונוס <br>חסכון</th>
 			{% endif %}
@@ -300,13 +300,13 @@
 			<th>שווי עמלה <br>סופי</th>
 			<th>תיקונים</th>
 			<th>הערות</th>
-			{% for s in form.instance.get_sales %}
+			{% for s in sales %}
 			{% if not s.is_cp_ok %}
 				<tr class="row3" objid={{s.id}}>
 			{% else %}
 				<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}}>
 			{% endif %}
-				<td><a href="/sale/{{s.id}}">{{form.instance.id}}-{{forloop.counter}}</a></td>
+				<td><a href="/sale/{{s.id}}">{{demand.id}}-{{forloop.counter}}</a></td>
 				{% if s.contract_num %}
 				<td>{{s.contract_num}}</td>
 				{% endif %}
@@ -336,11 +336,11 @@
 				{% endif %}
 				<td>{{s.pc_base}}</td>
 				<td>{{s.pc_base_worth|commaise}} ש"ח</td>
-				{% if form.instance.project.commissions.b_discount_save_precentage %}
+				{% if demand.project.commissions.b_discount_save_precentage %}
 					<td>{{s.pb_dsp|floatformat:3}}</td>
 					<td>{% if s.pb_dsp_worth %}{{s.pb_dsp_worth|commaise}} ש"ח{% endif %}</td>
 				{% endif %}
-				{% if form.instance.project.commissions.c_zilber %}
+				{% if demand.project.commissions.c_zilber %}
 					<td></td>
 					<td>{% if s.zdb %}{{s.zdb|commaise}} ש"ח{% endif %}</td>
 				{% endif %}
@@ -366,13 +366,13 @@
 				<td>{{s.remarks}}</td>
 			</tr>
 			{% endfor %}
-			{% if form.instance.get_excluded_sales %}
+			{% if demand.get_excluded_sales %}
 				<tr>
 					<td align="center" colspan="20"><b>מכירות שלא נכללות בדרישה</b></td>
 				</tr>
-				{% for s in form.instance.get_excluded_sales %}
+				{% for s in demand.get_excluded_sales %}
 				<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}}>
-					<td><a href="/sale/{{s.id}}">{{form.instance.id}}-{{forloop.counter}}</a></td>
+					<td><a href="/sale/{{s.id}}">{{demand.id}}-{{forloop.counter}}</a></td>
 					{% if s.contract_num %}
 					<td>{{s.contract_num}}</td>
 					{% endif %}
@@ -395,7 +395,7 @@
 					<td colspan="3"></td>
 					{% endif %}
 					<td colspan="2"></td>
-					{% if form.instance.project.commissions.b_discount_save_precentage %}
+					{% if demand.project.commissions.b_discount_save_precentage %}
 					<td colspan="2"></td>
 					{% endif %}
 					<td colspan="2"></td>
@@ -421,12 +421,12 @@
 				{% endfor %}
 			{% endif %}
 			<tr height="40px">
-				<td colspan={% if form.instance.get_sales.0.discount %}"7"{%else%}"6"{%endif%}></td>
-				<td><b><u>{{form.instance.get_sales.total_price|commaise}} ש"ח</u></b></td>
-				<td><b><u>{{form.instance.get_sales.total_price_final|commaise}} ש"ח</u></b></td>
-				<td colspan={% if form.instance.get_sales.0.discount %}"5"{%else%}"2"{%endif%}></td>
-				<td colspan={% if form.instance.project.commissions.b_discount_save_precentage %}"3"{%else%}"1"{%endif%}></td>
-				<td colspan="2"><b><u style="color:#1A339C;">{{form.instance.sales_commission|commaise}} ש"ח</u></b></td>
+				<td colspan={% if sales.0.discount %}"7"{%else%}"6"{%endif%}></td>
+				<td><b><u>{{sales.total_price|commaise}} ש"ח</u></b></td>
+				<td><b><u>{{sales.total_price_final|commaise}} ש"ח</u></b></td>
+				<td colspan={% if sales.0.discount %}"5"{%else%}"2"{%endif%}></td>
+				<td colspan={% if demand.project.commissions.b_discount_save_precentage %}"3"{%else%}"1"{%endif%}></td>
+				<td colspan="2"><b><u style="color:#1A339C;">{{demand.sales_commission|commaise}} ש"ח</u></b></td>
 			</tr>
 		</table>
 	</fieldset>

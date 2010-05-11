@@ -1082,7 +1082,22 @@ def nhemployee_remarks(request, year, month):
     return render_to_response('Management/nhemployee_salary_edit.html', 
                               { 'form':form, 'month':month, 'year':year },
                               context_instance=RequestContext(request))
+
+@permission_required('Management.change_demand')
+def demand_edit(request, object_id):
+    demand = Demand.objects.select_related('project').get(pk = object_id)
+    sales = demand.get_sales().select_related('house__building')
+    if request.method == 'POST':
+        form = DemandForm(request.POST, instance = demand)
+        if form.is_valid():
+            form.save()
+    else:
+        form = DemandForm()
         
+    return render_to_response('Management/demand_edit.html', 
+                              { 'form':form, 'demand':demand, 'sales':sales },
+                              context_instance=RequestContext(request))
+    
 @permission_required('Management.change_demand')
 def demand_close(request, id):
     d = Demand.objects.get(pk=id)
@@ -1178,7 +1193,7 @@ def demand_sale_reject(request, id):
     sr.save()
     
     #re-calculate the entire destination demand
-    demand, new = Demand.objects.get_or_create(project = sale.demand.project, year = sr.to_month.year, month = sr.to_month.month)
+    demand, new = Demand.objects.get_or_create(project = sale.demand.project, year = sr.to_year, month = sr.to_month)
     demand.calc_sales_commission()
     
     return HttpResponseRedirect('/salereject/%s' % sr.id)
