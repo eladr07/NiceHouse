@@ -295,7 +295,10 @@ class MonthDemandWriter:
         s += log2vis(u'ו. לנוחיותכם, הדרישה מועברת אליכם גם במייל וגם בפקס.')
         return Paragraph(s, ParagraphStyle(name='into', fontName='David', fontSize=14,
                                            alignment=TA_RIGHT, leading=16))
-    def zilberBonusFlows(self):  
+    def zilberBonusFlows(self):
+        logger = logging.getLogger('pdf')
+        logger.info('starting zilberBonusFlows')
+        
         flows = [tableCaption(caption=log2vis(u'נספח ב - דו"ח חסכון בהנחה')), Spacer(0,20),
                  tableCaption(caption=log2vis(u'מדד בסיס - %s' % self.demand.project.commissions.c_zilber.base_madad)),
                  Spacer(0,30)]
@@ -311,9 +314,25 @@ class MonthDemandWriter:
         demand = self.demand
         base_madad = demand.project.commissions.c_zilber.base_madad
         current_madad = demand.get_madad() < base_madad and base_madad or demand.get_madad()
+        
+        logger.debug(str({'base_madad':base_madad, 'current_madad':current_madad}))
+        
         while demand != None:
+            logger.info('starting to write bonuses for %(demand)s', {'demand':demand})
+
+            sales = demand.get_sales().select_related('house__building')
+            
+            if not sales.count():
+                logger.warning('skipping demand %(demand)s - no sales',{'demand':demand})
+                continue
+                        
             prices_date = date(demand.month == 12 and demand.year+1 or demand.year, demand.month==12 and 1 or demand.month+1, 1)
-            for s in demand.get_sales().filter(commission_include=True):
+            
+            logger.debug('initial values: %s' % {'prices_date':prices_date, 'sales':sales})
+            
+            for s in sales:
+                logger.info('starting to write bonus for sale #%(id)s', {'id':s.id})
+                
                 i += 1
                 actual_demand = s.actual_demand
                 if actual_demand:
@@ -327,6 +346,8 @@ class MonthDemandWriter:
                     doh0price = doh0prices.latest().price
                     memudad = (((current_madad / base_madad) - 1) * 0.6 + 1) * doh0price
                     row.extend([commaise(doh0price), current_madad, commaise(memudad), commaise(s.price-memudad), commaise(s.zdb)])
+                    
+                    logger.debug('zilber bonus values: %s' % {'doh0price':doh0price, 'memudad':memudad})
                 else:
                     row.extend([None,None,None,None,None])
                 row.reverse()
@@ -354,8 +375,9 @@ class MonthDemandWriter:
         flows.append(t)
         return flows
     
-    def zilberAddsFlows(self):        
+    def zilberAddsFlows(self):
         logger = logging.getLogger('pdf')
+        logger.info('starting zilberAddsFlows')
         
         flows = [tableCaption(caption=log2vis(u'נספח א - הפרשי קצב מכירות לדרישה')),
                  Spacer(0,30)]
@@ -376,7 +398,7 @@ class MonthDemandWriter:
         total_prices, total_adds = 0, 0
         while demand != self.demand:
             logger.info('writing rows for demand: %s' % demand)
-            sales = demand.get_sales()
+            sales = demand.get_sales().select_related('house__building')
             
             if sales.count() == 0:
                 logger.warn('skipping demand %(demand)s - no sales', {'demand':demand})
