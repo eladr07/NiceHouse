@@ -1,8 +1,12 @@
-from datetime import datetime
+from datetime import datetime, date
 import settings
 
-YEAR_CHOICES = ((i,i) for i in range(datetime.now().year - 10, datetime.now().year + 10))
-MONTH_CHOICES = ((i,i) for i in range(1,13))
+def get_year_choices():
+    today = date.today()
+    return ((i,i) for i in range(today.year - 10, today.year + 10))
+
+def get_month_choices():
+    return ((i,i) for i in range(1,13))
 
 def current_month():
     now = datetime.now()

@@ -855,9 +855,8 @@ class SalaryExpenses(models.Model):
         permissions = (('list_salaryexpenses', 'Can list salary expenses'),)
         
 class EmployeeSalaryBase(models.Model):
-    month = models.PositiveSmallIntegerField(ugettext('month'), editable=False, choices=((i,i) for i in range(1,13)))
-    year = models.PositiveSmallIntegerField(ugettext('year'), editable=False, choices=((i,i) for i in range(datetime.now().year - 10,
-                                                                                             datetime.now().year + 10)))
+    month = models.PositiveSmallIntegerField(ugettext('month'), editable=False, choices=common.get_month_choices())
+    year = models.PositiveSmallIntegerField(ugettext('year'), editable=False, choices=common.get_year_choices())
     base = models.FloatField(ugettext('salary_base'), null=True)
     commissions = models.FloatField(ugettext('commissions'), editable=False, null=True)
     safety_net = models.FloatField(ugettext('safety_net'), null=True, blank=True)
@@ -1812,9 +1811,8 @@ class DemandDiff(models.Model):
       
 class Demand(models.Model):
     project = models.ForeignKey('Project', related_name='demands', verbose_name = ugettext('project'))
-    month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
-    year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
-                                                                                             datetime.now().year + 10)))
+    month = models.PositiveSmallIntegerField(ugettext('month'), choices=common.get_month_choices())
+    year = models.PositiveSmallIntegerField(ugettext('year'), choices=common.get_year_choices())
     sale_count = models.PositiveSmallIntegerField(ugettext('sale_count'), default=0)
     remarks = models.TextField(ugettext('remarks'), null=True,blank=True)
     is_finished = models.BooleanField(default=False, editable=False)
@@ -2410,9 +2408,8 @@ class SaleHouseMod(SaleMod):
         db_table = 'SaleHouseMod'
 
 class SalePre(SaleMod):
-    employee_pay_month = models.PositiveSmallIntegerField(ugettext('employee_pay_month'), choices=((i,i) for i in range(1,13)))
-    employee_pay_year = models.PositiveSmallIntegerField(ugettext('employee_pay_year'), choices=((i,i) for i in range(datetime.now().year - 10,
-                                                                                                         datetime.now().year + 10)))
+    employee_pay_month = models.PositiveSmallIntegerField(ugettext('employee_pay_month'), choices=common.get_month_choices())
+    employee_pay_year = models.PositiveSmallIntegerField(ugettext('employee_pay_year'), choices=common.get_year_choices())
     def save(self, *args, **kw):
         super(SalePre, self).save(*args, **kw)
         self.sale.employee_pay_year = self.employee_pay_year
@@ -2422,10 +2419,10 @@ class SalePre(SaleMod):
         db_table = 'SalePre'
 
 class SaleReject(SaleMod):
-    to_month = models.PositiveSmallIntegerField(ugettext('reject_month'), choices = common.MONTH_CHOICES)
-    to_year = models.PositiveSmallIntegerField(ugettext('reject_year'), choices = common.YEAR_CHOICES)
-    employee_pay_month = models.PositiveSmallIntegerField(ugettext('employee_pay_month'), choices = common.MONTH_CHOICES)
-    employee_pay_year = models.PositiveSmallIntegerField(ugettext('employee_pay_year'), choices = common.YEAR_CHOICES)
+    to_month = models.PositiveSmallIntegerField(ugettext('reject_month'), choices = common.get_month_choices())
+    to_year = models.PositiveSmallIntegerField(ugettext('reject_year'), choices = common.get_year_choices())
+    employee_pay_month = models.PositiveSmallIntegerField(ugettext('employee_pay_month'), choices = common.get_month_choices())
+    employee_pay_year = models.PositiveSmallIntegerField(ugettext('employee_pay_year'), choices = common.get_year_choices())
     def save(self, *args, **kw):
         super(SaleReject, self).save(*args, **kw)
         self.sale.employee_pay_year = self.employee_pay_year
@@ -2655,9 +2652,8 @@ class CheckBase(models.Model):
 class EmployeeCheck(CheckBase):
     employee = models.ForeignKey('EmployeeBase', related_name='checks', verbose_name=ugettext('employee'))
     purpose_type = models.ForeignKey('PurposeType', verbose_name=ugettext('purpose_type'))
-    month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
-    year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
-                                                                                            datetime.now().year + 10)))
+    month = models.PositiveSmallIntegerField(ugettext('month'), choices=common.get_month_choices())
+    year = models.PositiveSmallIntegerField(ugettext('year'), choices=common.get_year_choices())
     def salary(self):
         if isinstance(self.employee.derived, Employee):
             query = EmployeeSalary.objects.filter(year = self.year, month = self.month, employee = self.employee.derived)
