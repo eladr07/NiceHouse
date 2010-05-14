@@ -264,12 +264,12 @@
 			<legend>פרטי עמלה</legend>
 			<table class="formTable">
 				<tr>
-					<th>ת. תשלום לעובד</th>
-					<td>{{sale.employee_pay|date:"m/y"|default_if_none:"לא"}}</td>
+					<th>חודש תשלום לעובד</th>
+					<td>{{sale.employee_pay_month}}/{{sale.employee_pay_year}}</td>
 				</tr>
 				<tr>
-					<th>ת. תשלום לחברה</th>
-					<td>{{sale.contractor_pay|date:"m/y"|default_if_none:"לא"}}</td>
+					<th>חודש תשלום לחברה</th>
+					<td>{{sale.contractor_pay_month}}/{{sale.contractor_pay_year}}</td>
 				</tr>
 			</table>
 		</fieldset>
