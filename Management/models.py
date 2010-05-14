@@ -752,9 +752,8 @@ class NHSaleCommissionDetail(models.Model):
         
 class AdvancePayment(models.Model):
     employee = models.ForeignKey('EmployeeBase', related_name = 'advance_payments', verbose_name=ugettext('employee'))
-    month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
-    year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
-                                                                                             datetime.now().year + 10)))
+    month = models.PositiveSmallIntegerField(ugettext('month'), choices=common.get_month_choices())
+    year = models.PositiveSmallIntegerField(ugettext('year'), choices=common.get_year_choices())
     amount = models.IntegerField(ugettext('amount'))
     date_paid = models.DateField(editable=False, null=True)
     is_paid = models.NullBooleanField(editable=False)
@@ -772,9 +771,8 @@ class AdvancePayment(models.Model):
 class Loan(models.Model):
     employee = models.ForeignKey('EmployeeBase', related_name = 'loans', verbose_name=ugettext('employee'))
     amount = models.IntegerField(ugettext('amount'))
-    month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
-    year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
-                                                                                             datetime.now().year + 10)))
+    month = models.PositiveSmallIntegerField(ugettext('month'), choices=common.get_month_choices())
+    year = models.PositiveSmallIntegerField(ugettext('year'), choices=common.get_year_choices())
     date = models.DateField(ugettext('date'), help_text = ugettext('loan_date_help'), null=True)
     pay_num = models.PositiveSmallIntegerField(ugettext('pay_num'))
     remarks = models.TextField(ugettext('remarks'), blank=True, null=True)
@@ -785,9 +783,8 @@ class Loan(models.Model):
 
 class LoanPay(models.Model):
     employee = models.ForeignKey('EmployeeBase', related_name='loan_pays', verbose_name=ugettext('employee'))
-    month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
-    year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
-                                                                                             datetime.now().year + 10)))
+    month = models.PositiveSmallIntegerField(ugettext('month'), choices=common.get_month_choices())
+    year = models.PositiveSmallIntegerField(ugettext('year'), choices=common.get_year_choices())
     amount = models.FloatField(ugettext('amount'))
     deduct_from_salary = models.BooleanField(ugettext('deduct_from_salary'), choices = Boolean, blank = True,
                                              help_text = ugettext('deduct_from_salary_help'))
@@ -826,9 +823,8 @@ class EmployeeSalaryBaseStatus(models.Model):
 
 class SalaryExpenses(models.Model):
     employee = models.ForeignKey('EmployeeBase', verbose_name=ugettext('employee'))
-    month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
-    year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
-                                                                                            datetime.now().year + 10)))
+    month = models.PositiveSmallIntegerField(ugettext('month'), choices=common.get_month_choices())
+    year = models.PositiveSmallIntegerField(ugettext('year'), choices=common.get_year_choices())
     income_tax = models.FloatField(ugettext('income_tax'))
     national_insurance = models.FloatField(ugettext('national_insurance'))
     health = models.FloatField(ugettext('health'))
@@ -2278,11 +2274,8 @@ class NHSaleSide(models.Model):
 
 class NHMonth(models.Model):
     nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'))
-    month = models.PositiveSmallIntegerField(ugettext('month'), 
-                                             choices=((i,i) for i in range(1,13)))
-    year = models.PositiveSmallIntegerField(ugettext('year'), 
-                                            choices=((i,i) for i in range(datetime.now().year - 10,
-                                                                          datetime.now().year + 10)))
+    month = models.PositiveSmallIntegerField(ugettext('month'), choices=common.get_month_choices())
+    year = models.PositiveSmallIntegerField(ugettext('year'), choices=common.get_year_choices())
     is_closed = models.BooleanField(editable=False, default=False)
     
     objects = SeasonManager()
@@ -2748,9 +2741,8 @@ class ClientStatusType(models.Model):
         db_table = 'ClientStatusType'
 
 class Income(models.Model):
-    year = models.PositiveSmallIntegerField(ugettext('year'), choices=((i,i) for i in range(datetime.now().year - 10,
-                                                                                             datetime.now().year + 10)))
-    month = models.PositiveSmallIntegerField(ugettext('month'), choices=((i,i) for i in range(1,13)))
+    year = models.PositiveSmallIntegerField(ugettext('year'), choices=common.get_year_choices())
+    month = models.PositiveSmallIntegerField(ugettext('month'), choices=common.get_month_choices())
     
     division_type = models.ForeignKey('DivisionType', verbose_name=ugettext('division_type'), blank=True)
     income_type = models.ForeignKey('IncomeType', verbose_name=ugettext('income_type'), blank=True)
