@@ -22,10 +22,6 @@ urlpatterns = patterns('',
     (r'^accounts/password_change/$', 'django.contrib.auth.views.password_change'),
     )
 
-urlpatterns += patterns('',
-                       (r'^dowser/', include('django_dowser.urls')),
-                       )
-
 urlpatterns += patterns('Management.views',
     (r'^$', 'index'),
     (r'^locate_house$', 'locate_house'),
