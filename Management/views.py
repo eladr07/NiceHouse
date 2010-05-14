@@ -1226,7 +1226,7 @@ def demand_sale_pre(request, id):
                      employee_pay_month = sale.employee_pay_month, 
                      employee_pay_year = sale.employee_pay_year)
     
-    to_year, to_month = m==12 and y+1 or y, m==12 and 1 or m+1
+    to_year, to_month = m==1 and y-1 or y, m==1 and 12 or m-1
     
     if to_year != sr.to_year or to_month != sr.to_month:
         # need to recalc both origin and destination demands
