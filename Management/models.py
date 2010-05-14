@@ -2371,7 +2371,7 @@ class NHSale(models.Model):
 
 class SaleMod(models.Model):
     sale = models.OneToOneField('Sale', unique=True, editable=False, related_name='%(class)s')
-    date = models.DateField(ugettext('date'))
+    date = models.DateField(ugettext('date'), auto_now = True)
     remarks = models.TextField(ugettext('remarks'), null=True)
     def get_absolute_url(self):
         return '/%s/%s' % (self.__class__.__name__.lower(), self.id)
@@ -2400,29 +2400,28 @@ class SaleHouseMod(SaleMod):
     class Meta:
         db_table = 'SaleHouseMod'
 
-class SalePre(SaleMod):
-    employee_pay_month = models.PositiveSmallIntegerField(ugettext('employee_pay_month'), choices=common.get_month_choices())
-    employee_pay_year = models.PositiveSmallIntegerField(ugettext('employee_pay_year'), choices=common.get_year_choices())
-    def save(self, *args, **kw):
-        super(SalePre, self).save(*args, **kw)
-        self.sale.employee_pay_year = self.employee_pay_year
-        self.sale.employee_pay_month = self.employee_pay_month
-        self.sale.save()
-    class Meta:
-        db_table = 'SalePre'
-
-class SaleReject(SaleMod):
+class SalePayMod(SaleMod):
     to_month = models.PositiveSmallIntegerField(ugettext('reject_month'), choices = common.get_month_choices())
     to_year = models.PositiveSmallIntegerField(ugettext('reject_year'), choices = common.get_year_choices())
     employee_pay_month = models.PositiveSmallIntegerField(ugettext('employee_pay_month'), choices = common.get_month_choices())
     employee_pay_year = models.PositiveSmallIntegerField(ugettext('employee_pay_year'), choices = common.get_year_choices())
+    
     def save(self, *args, **kw):
-        super(SaleReject, self).save(*args, **kw)
+        super(SalePayMod, self).save(*args, **kw)
         self.sale.employee_pay_year = self.employee_pay_year
         self.sale.employee_pay_month = self.employee_pay_month
         self.sale.contractor_pay_year = self.to_year
         self.sale.contractor_pay_month = self.to_month
         self.sale.save()
+    
+    class Meta:
+        abstract = True
+
+class SalePre(SalePayMod):
+    class Meta:
+        db_table = 'SalePre'
+
+class SaleReject(SalePayMod):
     class Meta:
         db_table = 'SaleReject'
         
@@ -2604,7 +2603,8 @@ class Sale(models.Model):
     class Meta:
         ordering = ['sale_date']
         db_table = 'Sale'
-        permissions = (('reject_sale', 'Can reject sales'),('cancel_sale', 'Can cancel sales'),)
+        permissions = (('reject_sale', 'Can reject sales'),('cancel_sale', 'Can cancel sales'),
+                       ('pre_sale', 'Can pre sales'),)
         
 class Account(models.Model):
     num = models.IntegerField(ugettext('account_num'), unique=True)

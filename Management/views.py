@@ -13,9 +13,13 @@ from django.views.generic.list_detail import object_list, object_detail
 from django.views.generic.simple import direct_to_template
 from django.contrib.auth.decorators import login_required, permission_required
 from forms import *
+from models import *
 from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter 
 from pdf import PricelistWriter, BuildingClientsWriter, EmployeeSalariesBookKeepingWriter
 from mail import mail
+
+def sync_demand(demand):
+    demand.calc_sales_commission()
 
 def object_edit_core(request, form_class, instance,
                      template_name = 'Management/object_edit.html', 
@@ -1182,21 +1186,58 @@ def demand_sale_del(request, id):
 @permission_required('Management.reject_sale')
 def demand_sale_reject(request, id):
     sale = Sale.objects.get(pk=id)
-    y,m = sale.demand.year, sale.demand.month
+    y,m = sale.contractor_pay_year, sale.contractor_pay_month
+    demands_to_calc = []
+    
     try:
         sr = sale.salereject
     except SaleReject.DoesNotExist:
         sr = SaleReject(sale = sale, employee_pay_month = m, employee_pay_year = y)
-    sr.date = date.today()
-    sr.to_year = m==12 and y+1 or y
-    sr.to_month = m==12 and 1 or m+1
+    
+    to_year, to_month = m==12 and y+1 or y, m==12 and 1 or m+1
+    
+    if to_year != sr.to_year or to_month != sr.to_month:
+        # need to recalc both origin and destination demands
+        demands_to_calc.append(Demand.objects.get(project = sale.demand.project,
+                                                  year = y, month = m))
+        demands_to_calc.append(Demand.objects.get(project = sale.demand.project,
+                                                  year = to_year, month = to_month))
+        
+    sr.to_year, sr.to_month = to_year, to_month
     sr.save()
     
-    #re-calculate the entire destination demand
-    demand, new = Demand.objects.get_or_create(project = sale.demand.project, year = sr.to_year, month = sr.to_month)
-    demand.calc_sales_commission()
+    for demand in demands_to_calc:
+        sync_demand(demand)
     
     return HttpResponseRedirect('/salereject/%s' % sr.id)
+
+@permission_required('Management.pre_sale')
+def demand_sale_pre(request, id):
+    sale = Sale.objects.get(pk=id)
+    y,m = sale.contractor_pay_year, sale.contractor_pay_month
+    demands_to_calc = []
+    
+    try:
+        sr = sale.salepre
+    except SalePre.DoesNotExist:
+        sr = SalePre(sale = sale, employee_pay_month = m, employee_pay_year = y)
+    
+    to_year, to_month = m==12 and y+1 or y, m==12 and 1 or m+1
+    
+    if to_year != sr.to_year or to_month != sr.to_month:
+        # need to recalc both origin and destination demands
+        demands_to_calc.append(Demand.objects.get(project = sale.demand.project,
+                                                  year = y, month = m))
+        demands_to_calc.append(Demand.objects.get(project = sale.demand.project,
+                                                  year = to_year, month = to_month))
+        
+    sr.to_year, sr.to_month = to_year, to_month
+    sr.save()
+    
+    for demand in demands_to_calc:
+        sync_demand(demand)
+    
+    return HttpResponseRedirect('/salepre/%s' % sr.id)
 
 @permission_required('Management.cancel_sale')
 def demand_sale_cancel(request, id):
@@ -2762,7 +2803,6 @@ def sale_edit(request, id):
                         spm = sale.salepricemod
                     except SalePriceMod.DoesNotExist:
                         spm = SalePriceMod(sale = sale, old_price = sale.price) 
-                    spm.date = date.today()
                     spm.save()
                     next = '/salepricemod/%s' % spm.id
                     sale.price = sale.project_price()
@@ -2771,7 +2811,6 @@ def sale_edit(request, id):
                         shm = sale.salehousemod
                     except SaleHouseMod.DoesNotExist:
                         shm = SaleHouseMod(sale = sale, old_house = sale.house)
-                    shm.date = date.today()
                     shm.save()
                     next = '/salehousemod/%s' % shm.id
             form.save()
@@ -2812,7 +2851,8 @@ def sale_add(request, demand_id=None):
                 demand.feed()
             if demand.was_sent:
                 y,m = demand.year, demand.month
-                sp = SalePre(sale = form.instance, date=date.today(),
+                sp = SalePre(sale = form.instance,
+                             to_month = m, to_year = y,
 							 employee_pay_year = m == 12 and y+1 or y,
 							 employee_pay_month = m==12 and 1 or m)
                 sp.save()

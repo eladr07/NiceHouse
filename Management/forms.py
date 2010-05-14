@@ -91,6 +91,14 @@ NHEmployeeSalaryRefundForm = modelform_factory(NHEmployeeSalary, fields = ('nhem
 
 NHCommissionForm = modelform_factory(NHCommission, RevisionExtForm)
 
+SalePriceModForm = modelform_factory(SalePriceMod)
+
+SaleHouseModForm = modelform_factory(SaleHouseMod)
+
+SalePreForm = modelform_factory(SalePre)
+
+SaleRejectForm = modelform_factory(SaleReject)
+
 class ContactForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
@@ -101,34 +109,6 @@ class ContactForm(forms.ModelForm):
 class ExistContactForm(forms.Form):
     contact = forms.ModelChoiceField(queryset=Contact.objects.all())
 
-class SalePriceModForm(forms.ModelForm):
-    def __init__(self, *args, **kw):
-        forms.ModelForm.__init__(self,*args,**kw)
-        self.fields['date'].widget = forms.TextInput({'class':'vDateField'})    
-    class Meta:
-        model = SalePriceMod
-
-class SaleHouseModForm(forms.ModelForm):
-    def __init__(self, *args, **kw):
-        forms.ModelForm.__init__(self,*args,**kw)
-        self.fields['date'].widget = forms.TextInput({'class':'vDateField'})    
-    class Meta:
-        model = SaleHouseMod
-
-class SalePreForm(forms.ModelForm):
-    def __init__(self, *args, **kw):
-        forms.ModelForm.__init__(self,*args,**kw)
-        self.fields['date'].widget = forms.TextInput({'class':'vDateField'})
-    class Meta:
-        model = SalePre
-        
-class SaleRejectForm(forms.ModelForm):
-    def __init__(self, *args, **kw):
-        forms.ModelForm.__init__(self,*args,**kw)
-        self.fields['date'].widget = forms.TextInput({'class':'vDateField'})
-    class Meta:
-        model = SaleReject
-        
 class ProjectForm(forms.ModelForm):    
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
