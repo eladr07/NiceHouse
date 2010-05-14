@@ -1192,7 +1192,9 @@ def demand_sale_reject(request, id):
     try:
         sr = sale.salereject
     except SaleReject.DoesNotExist:
-        sr = SaleReject(sale = sale, employee_pay_month = m, employee_pay_year = y)
+        sr = SaleReject(sale = sale, 
+                        employee_pay_month = sale.employee_pay_month, 
+                        employee_pay_year = sale.employee_pay_year)
     
     to_year, to_month = m==12 and y+1 or y, m==12 and 1 or m+1
     
@@ -1220,7 +1222,9 @@ def demand_sale_pre(request, id):
     try:
         sr = sale.salepre
     except SalePre.DoesNotExist:
-        sr = SalePre(sale = sale, employee_pay_month = m, employee_pay_year = y)
+        sr = SalePre(sale = sale, 
+                     employee_pay_month = sale.employee_pay_month, 
+                     employee_pay_year = sale.employee_pay_year)
     
     to_year, to_month = m==12 and y+1 or y, m==12 and 1 or m+1
     

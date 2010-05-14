@@ -20,6 +20,7 @@
 				$("#saleEdit").attr("href", "/sale/" + selectedID);
 				$("#saleCommissionEdit").attr("href", "/sale/" + selectedID + "/commission");
 				$("#saleDelete").attr("href", "{{demand.id}}/sale/" + selectedID + "/cancel");
+				$("#salePre").attr("href", "{{demand.id}}/sale/" + selectedID + "/pre");
 				$("#saleReject").attr("href", "{{demand.id}}/sale/" + selectedID + "/reject");
 			}
 		});
@@ -247,6 +248,10 @@
 		<div class="someIcon" style="width:120px;">
 			<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="עדכון עמלה" /> 
 			<a id="saleCommissionEdit" class="fancybox">עדכון עמלה ידנית</a>
+		</div>
+		<div class="someIcon" style="width:100px;">
+			<img src="/site_media/imagesagt_forward-48.png" width="20" height="20" alt="הקדמה" border="0" />
+			<a id="salePre">הקדמת מכירה</a>
 		</div>
 		<div class="someIcon" style="width:100px;">
 			<img src="/site_media/images/agt_back-48.png" width="20" height="20" alt="דחייה" border="0" />
