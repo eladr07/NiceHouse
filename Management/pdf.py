@@ -388,13 +388,13 @@ class MonthDemandWriter:
         headers.reverse()
         rows = []
         demand = self.demand
-        sales = [demand.get_sales().select_related('house__building')]
+        sales = [demand.get_sales()]
         i = 1
         total_prices, total_adds = 0, 0
         
         while demand.zilber_cycle_index() > 1:
             demand = demand.get_previous_demand()
-            sales.extend(demand.get_sales().select_related('house__building'))
+            sales.extend(demand.get_sales())
         
         c_zilber = self.demand.project.commissions.c_zilber
         base = c_zilber.base + c_zilber.b_sale_rate * (len(sales) - 1)

@@ -430,7 +430,7 @@
 				<td><b><u>{{sales.total_price|commaise}} ש"ח</u></b></td>
 				<td><b><u>{{sales.total_price_final|commaise}} ש"ח</u></b></td>
 				<td colspan={% if sales.0.discount %}"5"{%else%}"2"{%endif%}></td>
-				<td colspan={% if demand.project.commissions.b_discount_save_precentage %}"3"{%else%}"1"{%endif%}></td>
+				<td colspan={% if demand.project.commissions.b_discount_save_precentage or demand.project.commissions.c_zilber %}"3"{%else%}"1"{%endif%}></td>
 				<td colspan="2"><b><u style="color:#1A339C;">{{demand.sales_commission|commaise}} ש"ח</u></b></td>
 			</tr>
 		</table>
