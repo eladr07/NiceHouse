@@ -1273,47 +1273,47 @@ class CVar(models.Model):
     is_retro = models.BooleanField(ugettext('retroactive'))
     def calc(self,sales):
         dic = {}
+        amounts = dict(self.amounts.value_list('index','amount'))
+        last_index = self.amounts.latest().index
+        
         if self.is_retro:
-            c = self.get_amount(len(sales)).amount
+            index = min((len(sales), last_index))
+            amount = amounts[index]
+
             for s in sales:
-                dic[s] = c
+                dic[s] = amount
         else:
-            i=0
+            i = 1
             for s in sales:
+                index = min((i, last_index))
+                dic[s] = amounts[index]
                 i += 1
-                dic[s] = self.get_amount(i).amount
         return dic
-    def get_amount(self, index):
-        query = self.amounts.filter(index__lte = index)
-        if query.count() == 0:
-            raise CommissionException
-        return query.latest()
-            
+
     class Meta:
         db_table = 'CVar'
         
 class CVarPrecentage(models.Model):
     is_retro = models.BooleanField(ugettext('retroactive'))
     start_retro = models.PositiveSmallIntegerField(ugettext('retroactive_start'),null=True, blank=True, default=1)
-    def calc(self, sales):
-        dic={}
-        if self.is_retro and len(sales) >= self.start_retro:
-            c = self.get_precentage(len(sales)).precentage
-            for s in sales:
-                dic[s] = c
-        else:
-            i=0
-            for s in sales:
-                i += 1
-                c = self.get_precentage(i).precentage
-                dic[s] = c
-        return dic
+    def calc(self, sales):        
+        dic = {}
+        precentages = dict(self.precentages.value_list('index','precentage'))
+        last_index = self.precentages.latest().index
         
-    def get_precentage(self, index):
-        query = self.precentages.filter(index__lte = index)
-        if query.count() == 0:
-            raise CommissionException
-        return query.latest()
+        if self.is_retro and len(sales) >= self.start_retro:
+            index = min((len(sales), last_index))
+            precentage = precentages[index]
+
+            for s in sales:
+                dic[s] = precentage
+        else:
+            i = 1
+            for s in sales:
+                index = min((i, last_index))
+                dic[s] = precentages[index]
+                i += 1
+        return dic
     
     class Meta:
         db_table = 'CVarPrecentage'

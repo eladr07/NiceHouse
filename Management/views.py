@@ -1184,6 +1184,7 @@ def demand_sale_del(request, id):
 def salepaymod_edit(request, model, object_id):
     object = model.objects.get(pk = object_id).select_related('sale__demand__project')
     form_class = modelform_factory(model)
+    
     if request.method == 'POST':
         form = form_class(request.POST, instance = object)
         if form.is_valid():
