@@ -1203,10 +1203,9 @@ def salepaymod_edit(request, model, object_id):
                 
             # need to calc origin and destination salaries for all project employees
             if object.employee_pay_year != employee_pay_year or object.employee_pay_month != employee_pay_month:
-                employees = project.employees.all()
-                for employee in employees:
-                    q = models.Q(year = object.employee_pay_year, month = object.employee_pay_month) | models.Q(year = employee_pay_year, month = employee_pay_month)
-                    salaries_to_calc.extend(employee.salaries.filter(q))
+                q = models.Q(year = object.employee_pay_year, month = object.employee_pay_month) | models.Q(year = employee_pay_year, month = employee_pay_month)
+                salaries = EmployeeSalary.objects.filter(q, employee__in = project.employees.all())
+                salaries_to_calc.extend(salaries)
             
             for demand in demands_to_calc:
                 demand.calc_sales_commission()
