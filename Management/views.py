@@ -2847,13 +2847,11 @@ def sale_edit(request, id):
             form.save()
             demand.calc_sales_commission()
             year, month = sale.demand.year, sale.demand.month
-            for employee in demand.project.employees.exclude(work_end__isnull = False, work_end__lt = date(year, month, 1)):
-                try:
-                    salary = employee.salaries.get(year = year, month = month)
-                    salary.calculate()
-                    salary.save()
-                except EmployeeSalary.DoesNotExist:
-                    pass
+            employees = demand.project.employees.exclude(work_end__isnull = False, work_end__lt = date(year, month, 1))
+            
+            for salary in EmployeeSalary.objects.filter(employee__in = employees, year = year, month = month):
+                salary.calculate()
+                salary.save()
                 
             if request.POST.has_key('addanother'):
                 return HttpResponseRedirect(next or '/demands/%s/sale/add' % sale.demand.id)
@@ -2890,13 +2888,12 @@ def sale_add(request, demand_id=None):
                 sp.save()
                 next = '/salepre/%s' % sp.id 
             demand.calc_sales_commission()
-            for employee in demand.project.employees.exclude(work_end__isnull = False, work_end__lt = date(year, month, 1)):
-                try:
-                    salary = employee.salaries.get(year = year, month = month)
-                    salary.calculate()
-                    salary.save()
-                except EmployeeSalary.DoesNotExist:
-                    pass
+            
+            employees = demand.project.employees.exclude(work_end__isnull = False, work_end__lt = date(year, month, 1))
+            
+            for salary in EmployeeSalary.objects.filter(employee__in = employees, year = year, month = month):
+                salary.calculate()
+                salary.save()
                 
             if request.POST.has_key('addanother'):
                 return HttpResponseRedirect(next or reverse(sale_add, args=[demand_id]))
