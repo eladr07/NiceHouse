@@ -313,7 +313,8 @@ class MonthDemandWriter:
         total_prices, total_adds = 0, 0
         demand = self.demand
         base_madad = demand.project.commissions.c_zilber.base_madad
-        current_madad = demand.get_madad() < base_madad and base_madad or demand.get_madad()
+        current_madad = max((demand.get_madad(), base_madad))
+        memudad_multiplier = ((current_madad / base_madad) - 1) * 0.6 + 1
         
         logger.debug(str({'base_madad':base_madad, 'current_madad':current_madad}))
         
@@ -344,7 +345,7 @@ class MonthDemandWriter:
                 doh0prices = s.house.versions.filter(type__id = models.PricelistType.Doh0, date__lte = prices_date)
                 if doh0prices.count() > 0:
                     doh0price = doh0prices.latest().price
-                    memudad = (((current_madad / base_madad) - 1) * 0.6 + 1) * doh0price
+                    memudad = doh0price * memudad_multiplier
                     row.extend([commaise(doh0price), current_madad, commaise(memudad), commaise(s.price-memudad), commaise(s.zdb)])
                     
                     logger.debug('zilber bonus values: %s' % {'doh0price':doh0price, 'memudad':memudad})
