@@ -388,57 +388,46 @@ class MonthDemandWriter:
         headers.reverse()
         rows = []
         demand = self.demand
-        while demand.zilber_cycle_index()>1:
-            demand = demand.get_previous_demand()
-        first_demand_sent_finish_date = demand.finish_date
-        
-        logger.info('first_demand_sent_finish_date: %s' % first_demand_sent_finish_date)
-
+        sales = [demand.get_sales().select_related('house__building')]
         i = 1
         total_prices, total_adds = 0, 0
-        while demand != self.demand:
-            logger.info('writing rows for demand: %s' % demand)
-            sales = demand.get_sales().select_related('house__building')
-            
-            if sales.count() == 0:
-                logger.warn('skipping demand %(demand)s - no sales', {'demand':demand})
+        
+        while demand.zilber_cycle_index() > 1:
+            demand = demand.get_previous_demand()
+            sales.extend(demand.get_sales().select_related('house__building'))
+        
+        c_zilber = self.demand.project.commissions.c_zilber
+        base = c_zilber.base + c_zilber.b_sale_rate * (len(sales) - 1)
+        if base > c_zilber.b_sale_rate_max:
+            base = c_zilber.b_sale_rate_max
+            logger.info('base commission %(base)s exceeded max commisison %(max)s',{'base':base, 'max':c_zilber.b_sale_rate_max})
+        
+        for s in sales:
+            row = [log2vis('%s/%s' % (demand.month, demand.year)), clientsPara(s.clients), 
+                           '%s/%s' % (unicode(s.house.building), unicode(s.house)), s.sale_date.strftime('%d/%m/%y'), 
+                           commaise(s.price)]
+            if base == s.pc_base:
+                logger.warning('skipping sale #%(id)s - base == s.pc_base == %(base)s',
+                               {'id':s.id, 'base':base})
                 continue
+            i += 1
+            diff_amount = s.price_final * (base - s.pc_base) / 100
             
-            for s in sales:
-                row = [log2vis('%s/%s' % (demand.month, demand.year)), clientsPara(s.clients), 
-                               '%s/%s' % (unicode(s.house.building), unicode(s.house)), s.sale_date.strftime('%d/%m/%y'), 
-                               commaise(s.price)]
-                s.restore = False
-                new_commission = s.c_final
-                scd_final = s.project_commission_details.filter(commission='final')[0]
-                orig_commission = models.restore_object(scd_final, first_demand_sent_finish_date).value
-                if orig_commission == new_commission:
-                    logger.warning('skipping sale #%(id)s - orig_commission == new_commission == %(commission)s',
-                                   {'id':s.id, 'commission':orig_commission})
-                    continue
-                i += 1
-                diff_amount = s.price_final * (new_commission - orig_commission) / 100
-                
-                logger.debug('commission calc details: %(vals)s',
-                             {'vals':
-                              {'new_commission':new_commission,'orig_commission':orig_commission,
-                               's.price_final':s.price_final, 'diff_amount':diff_amount}
-                              })
-                
-                row.extend([orig_commission, new_commission, new_commission - orig_commission, commaise(diff_amount)])
-                row.reverse()
-                rows.append(row)
-                total_prices += s.price
-                total_adds += round(diff_amount)
-                if i % 17 == 0:
-                    data = [headers]
-                    data.extend(rows)
-                    t = Table(data)
-                    t.setStyle(saleTableStyle)
-                    flows.extend([t, PageBreak(), Spacer(0,70)])
-                    rows = []
+            logger.debug('commission calc details: %(vals)s',
+                         {'vals': {'base':base,'s.pc_base':s.pc_base, 's.price_final':s.price_final, 'diff_amount':diff_amount}})
             
-            demand = demand.get_next_demand()
+            row.extend([s.pc_base, base, base - s.pc_base, commaise(diff_amount)])
+            row.reverse()
+            rows.append(row)
+            total_prices += s.price
+            total_adds += round(diff_amount)
+            if i % 17 == 0:
+                data = [headers]
+                data.extend(rows)
+                t = Table(data)
+                t.setStyle(saleTableStyle)
+                flows.extend([t, PageBreak(), Spacer(0,70)])
+                rows = []
             
         sum_row = [None, None, None, None, Paragraph(commaise(total_prices), styleSumRow), None, None, None, 
                    Paragraph(commaise(total_adds), styleSumRow)]
