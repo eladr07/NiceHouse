@@ -795,11 +795,11 @@ class LoanPay(models.Model):
         db_table = 'LoanPay'
     
 class SaleCommissionDetail(models.Model):
-    employee_salary = models.ForeignKey('EmployeeSalary', related_name='commission_details',
-                                        null=True)
+    employee_salary = models.ForeignKey('EmployeeSalary', related_name='commission_details', null=True)
     commission = models.CharField(max_length=30)
     value = models.FloatField(null=True)
     sale = models.ForeignKey('Sale', null=True, related_name='commission_details')
+    
     class Meta:
         db_table = 'SaleCommissionDetail'
         ordering=['commission','value']
@@ -2487,8 +2487,9 @@ class Sale(models.Model):
     @property
     def zdb(self):
         q = self.project_commission_details.filter(commission='c_zilber_discount')
-        if q.count() == 0: return 0
-        return self.restore and self.restore_date and restore_object(q[0], self.restore_date).value or q[0].value
+        if q.count() == 0:
+            return 0
+        return q[0].value
     @property
     def pb_dsp(self):
         q = self.project_commission_details.filter(commission='b_discount_save_precentage')

@@ -316,17 +316,13 @@ class MonthDemandWriter:
         current_madad = max((demand.get_madad(), base_madad))
         memudad_multiplier = ((current_madad / base_madad) - 1) * 0.6 + 1
         
-        logger.debug(str({'base_madad':base_madad, 'current_madad':current_madad}))
+        logger.debug(str({'base_madad':base_madad, 'current_madad':current_madad, 'memudad_multiplier':memudad_multiplier}))
         
         while demand != None:
             logger.info('starting to write bonuses for %(demand)s', {'demand':demand})
 
             sales = demand.get_sales().select_related('house__building')
-            
-            if not sales.count():
-                logger.warning('skipping demand %(demand)s - no sales',{'demand':demand})
-                continue
-                        
+                                    
             prices_date = date(demand.month == 12 and demand.year+1 or demand.year, demand.month==12 and 1 or demand.month+1, 1)
             
             logger.debug('initial values: %s' % {'prices_date':prices_date, 'sales':sales})
@@ -362,9 +358,12 @@ class MonthDemandWriter:
                     t.setStyle(saleTableStyle)
                     flows.extend([t, PageBreak(), Spacer(0,70)])
                     rows = []
+                    
             if demand.zilber_cycle_index() == 1:
                 break
+            
             demand = demand.get_previous_demand()
+            
         sum_row = [None, None, None, None, None, Paragraph(commaise(total_prices), styleSumRow), None, None, None, None, 
                    Paragraph(commaise(round(total_adds)), styleSumRow)]
         sum_row.reverse()
