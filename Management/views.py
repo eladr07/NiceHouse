@@ -1184,7 +1184,7 @@ def demand_sale_del(request, id):
         return HttpResponseRedirect('/salecancel/%s' % sc.id)
 
 def salepaymod_edit(request, model, object_id):
-    object = model.objects.get(pk = object_id).select_related('sale__demand__project')
+    object = model.objects.select_related('sale__demand__project').get(pk = object_id)
     form_class = modelform_factory(model)
     
     if request.method == 'POST':
