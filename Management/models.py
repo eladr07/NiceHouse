@@ -1393,26 +1393,10 @@ class CZilber(models.Model):
                 d.var_diff.delete()
             if d.bonus_diff: 
                 d.bonus_diff.delete()
-
-            # get sales from all demands
-            demand = d
-            demands = [demand]
             
-            while True:
-                if demand.zilber_cycle_index() <= 1:
-                    break
-                demand = demand.get_previous_demand()
-                demands.insert(0, demand)
-
-            # get the finish date of the first demand
-            first_demand_finish_date = demands[0].finish_date
-            
-            # get sales from all demands
-            sales = []
-            for demand in demands:
-                sales.extend(demand.get_sales())
+            sales = d.get_sales()
     
-            logger.info('total cycle sales count: %(sale_count)s', {'sale_count':len(sales)})
+            logger.info('sales count: %(sale_count)s', {'sale_count':len(sales)})
             
             for s in sales:
                 s.price_final = s.project_price()
@@ -1428,39 +1412,29 @@ class CZilber(models.Model):
                     scd.value = 0
                     scd.save()
                 logger.warning('skipping sale #%(id)s. commission_include=False', {'id':s.id})
-            
-            base = self.base + self.b_sale_rate * (len(sales) - 1)
-            if base > self.b_sale_rate_max:
-                logger.info('base commission %(base)s exceeded max commisison %(max)s',{'base':base, 'max':self.b_sale_rate_max})
-                base = self.b_sale_rate_max
-                    
+                                
             prices_date = date(month.month == 12 and month.year+1 or month.year, month.month==12 and 1 or month.month+1, 1)
             current_madad = max((d.get_madad(), self.base_madad))
-            prev_adds = 0
-            last_demand_finish_date = d.get_previous_demand().finish_date
-            
-            logger.debug('prices_date = %s, current_madad=%s, last_demand_finish_date=%s', prices_date, current_madad, last_demand_finish_date)
+            memudad_multiplier = ((current_madad / self.base_madad) - 1) * 0.6 + 1
+                        
+            logger.debug('%(vals)s', {'vals': {'prices_date':prices_date, 'current_madad':current_madad, 'memudad_multiplier':memudad_multiplier}})
             
             for s in sales:
                 for commission in ['c_zilber_base','final']:
                     scd, new = s.commission_details.get_or_create(commission = commission, employee_salary = None)
-                    scd.value = base
+                    scd.value = self.base
                     scd.save()
                     logger.debug('sale #%(id)s %(commission)s = %(value)s', {'id':s.id,'commission':commission,'value':scd.value})
-                
-                # only calc zilber discount bonus for current demand sales
-                if s.actual_demand != d:
-                    continue
-                
+                                
                 if self.base_madad:
                     doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0, date__lte = prices_date)
                     if doh0prices.count() == 0: 
                         logger.warning('skipping c_zilber_discount calc for sale #%(id)s. no doh0 prices', {'id':s.id})
                         continue
                     latest_doh0price = doh0prices.latest().price
-                    memudad = (((current_madad / self.base_madad) - 1) * 0.6 + 1) * latest_doh0price
-                    scd = s.commission_details.get_or_create(commission='c_zilber_discount', employee_salary=None)[0]
+                    memudad = latest_doh0price * memudad_multiplier
                     zdb = (s.price - memudad) * self.b_discount
+                    scd = s.commission_details.get_or_create(commission='c_zilber_discount', employee_salary=None)[0]
                     scd.value = zdb
                     scd.save()
                                     
@@ -1468,23 +1442,36 @@ class CZilber(models.Model):
                                  {'id':s.id, 'vals':{'latest_doh0price':latest_doh0price,'memudad':memudad,'zdb':zdb}})
 
             if d.include_zilber_bonus():
+                logger.info('starting to calculate ziber adds for the entire cycle')
+                
+                demand = d
+                demands = [demand]
+                while demand.zilber_cycle_index() > 1:
+                    demand = demand.get_previous_demand()
+                    demands.append(demand)
+                
+                sales = []
+                for demand in demands:
+                    sales.extend(demand.get_sales())
+                
+                excluded_sales = [sale for sale in sales if sale.commission_include == False]
+                sales = [sale for sale in sales if sale.commission_include == True]
+                
+                if len(excluded_sales):
+                    logger.warning('excluding %(sale_count)s sales from zilber adds calc', {'sale_count':len(excluded_sales)})
+            
+                base = self.base + self.b_sale_rate * (len(sales) - 1)
+                if base > self.b_sale_rate_max:
+                    logger.info('base commission %(base)s exceeded max commisison %(max)s',{'base':base, 'max':self.b_sale_rate_max})
+                    base = self.b_sale_rate_max
+                
+                prev_adds = 0
+                
                 for s in sales:
-                    if s.actual_demand == d:
-                        continue
-                    q = s.project_commission_details.filter(commission='c_zilber_base')
-                    if q.count() > 0 and last_demand_finish_date:
-                        old_base = restore_object(q[0], first_demand_finish_date).value
-                    else:
-                        old_base = s.pc_base
-                    sale_add = (base - old_base) * s.price_final / 100
+                    sale_add = (base - s.pc_base) * s.price_final / 100
                     prev_adds += sale_add
                 
-                    logger.debug('sale #%(id)s adds calc values: %(val)s', 
-                                 {'id':s.id, 'vals':{'q.count()':q.count(),'old_base':old_base,'sale_add':sale_add}})
-
-                    scd, new = s.commission_details.get_or_create(commission='final', employee_salary=None)
-                    scd.value = base
-                    scd.save()
+                    logger.debug('sale #%(id)s adds calc values: %(val)s', {'id':s.id, 'vals':{'s.pc_base':s.pc_base,'sale_add':sale_add}})
                 
                 if prev_adds:
                     d.diffs.create(type=u'משתנה', reason=u'הפרשי קצב מכירות (נספח א)', amount=round(prev_adds))
@@ -1494,6 +1481,7 @@ class CZilber(models.Model):
                     bonus += s.zdb
                 if bonus:
                     d.diffs.create(type=u'בונוס', reason=u'בונוס חסכון בהנחה (נספח ב)', amount=round(bonus))
+                    
                 logger.debug('demand #%(id)s created bonus=%(bonus)s', {'id':d.id, 'bonus':bonus})
                 
             logger.info('finished calculation for month %(month)s/%(year)s', {'month':month.month, 'year':month.year})
