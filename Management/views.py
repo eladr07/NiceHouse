@@ -1,12 +1,14 @@
 ﻿import settings, common, reversion, inspect, itertools, time
+from datetime import datetime, date
+
 import django.core.paginator as paginator
+from django.db import models
 from django.forms.formsets import formset_factory
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
 from django.forms.models import inlineformset_factory, modelformset_factory,\
     modelform_factory
 from django.template import RequestContext
-from datetime import datetime, date
 from django.core import serializers
 from django.core.urlresolvers import reverse
 from django.views.generic.create_update import create_object, update_object
@@ -1196,15 +1198,15 @@ def salepaymod_edit(request, model, object_id):
             
             # need to re-calc both origin and destination demand (if changed)
             if object.to_year != to_year or object.to_month != to_month:
-                demands_to_calc.append(project.demands.get(year = object.to_year, month = object.to_month))
-                demands_to_calc.append(project.demands.get(year = to_year, month = to_month))
+                q = models.Q(year = object.to_year, month = object.to_month) | models.Q(year = to_year, month = to_month)
+                demands_to_calc.extend(project.demands.filter(q))
                 
             # need to calc origin and destination salaries for all project employees
             if object.employee_pay_year != employee_pay_year or object.employee_pay_month != employee_pay_month:
                 employees = project.employees.all()
                 for employee in employees:
-                    salaries_to_calc.append(employee.salaries.get(year = object.employee_pay_year, month = object.employee_pay_month))
-                    salaries_to_calc.append(employee.salaries.get(year = employee_pay_year, month = employee_pay_month))
+                    q = models.Q(year = object.employee_pay_year, month = object.employee_pay_month) | models.Q(year = employee_pay_year, month = employee_pay_month)
+                    salaries_to_calc.extend(employee.salaries.filter(q))
             
             for demand in demands_to_calc:
                 demand.calc_sales_commission()
@@ -1234,8 +1236,8 @@ def demand_sale_reject(request, id):
     if to_year != sr.to_year or to_month != sr.to_month:
         project = sale.demand.project
         # need to recalc both origin and destination demands
-        demands_to_calc.append(project.demands.get(year = y, month = m))
-        demands_to_calc.append(project.demands.get(year = to_year, month = to_month))
+        q = models.Q(year = y, month = m) | models.Q(year = to_year, month = to_month)
+        demands_to_calc.extend(project.demands.filter(q))
         
     sr.to_year, sr.to_month = to_year, to_month
     sr.save()
@@ -1261,8 +1263,8 @@ def demand_sale_pre(request, id):
     if to_year != sr.to_year or to_month != sr.to_month:
         project = sale.demand.project
         # need to recalc both origin and destination demands
-        demands_to_calc.append(project.demands.get(year = y, month = m))
-        demands_to_calc.append(project.demands.get(year = to_year, month = to_month))
+        q = models.Q(year = y, month = m) | models.Q(year = to_year, month = to_month)
+        demands_to_calc.extend(project.demands.filter(q))
         
     sr.to_year, sr.to_month = to_year, to_month
     sr.save()
@@ -2953,9 +2955,9 @@ def project_demands(request, project_id, func, template_name):
 
 @login_required
 def demand_sales(request, project_id, year, month):
-	demand = Demand.objects.get(project__id = project_id, year = year, month = month)
-	sales = demand.get_sales()
-	return render_to_response('Management/sale_table.html',
+    demand = Demand.objects.get(project__id = project_id, year = year, month = month)
+    sales = demand.get_sales()
+    return render_to_response('Management/sale_table.html',
 							  {'sales':sales},
 							  context_instance=RequestContext(request))
 
