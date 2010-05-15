@@ -313,19 +313,19 @@ class MonthDemandWriter:
         total_prices, total_adds = 0, 0
         demand = self.demand
         base_madad = demand.project.commissions.c_zilber.base_madad
-        current_madad = max((demand.get_madad(), base_madad))
-        memudad_multiplier = ((current_madad / base_madad) - 1) * 0.6 + 1
-        
-        logger.debug(str({'base_madad':base_madad, 'current_madad':current_madad, 'memudad_multiplier':memudad_multiplier}))
+                
+        logger.debug(str({'base_madad':base_madad}))
         
         while demand != None:
             logger.info('starting to write bonuses for %(demand)s', {'demand':demand})
 
             sales = demand.get_sales().select_related('house__building')
-                                    
+            
+            current_madad = max((demand.get_madad(), base_madad))
+            memudad_multiplier = ((current_madad / base_madad) - 1) * 0.6 + 1            
             prices_date = date(demand.month == 12 and demand.year+1 or demand.year, demand.month==12 and 1 or demand.month+1, 1)
             
-            logger.debug('initial values: %s' % {'prices_date':prices_date, 'sales':sales})
+            logger.debug(str({'prices_date':prices_date, 'sales':sales, 'current_madad':current_madad, 'memudad_multiplier':memudad_multiplier}))
             
             for s in sales:
                 logger.info('starting to write bonus for sale #%(id)s', {'id':s.id})
