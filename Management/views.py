@@ -2816,17 +2816,17 @@ def sale_edit(request, id):
     sale = Sale.objects.get(pk=id)
     if request.POST:
         form = SaleForm(request.POST, instance = sale)
-        #handles the case when the building changes, and the house is not
-        #in the queryset of the house field
+        #handles the case when the building changes, and the house is not in the queryset of the house field
         form.fields['house'].queryset = House.objects.all()
         form.fields['building'].queryset = Building.objects.all()
         if form.is_valid():
             project = form.cleaned_data['project']
             next = None
             #temp fix. should remove
-            if sale.demand.statuses.count() == 0:
-                sale.demand.feed()
-            if sale.demand.was_sent:
+            demand = sale.demand
+            if demand.statuses.count() == 0:
+                demand.feed()
+            if demand.was_sent:
                 #check for mods:
                 if sale.price != form.cleaned_data['price']:
                     try:
@@ -2844,14 +2844,16 @@ def sale_edit(request, id):
                     shm.save()
                     next = '/salehousemod/%s' % shm.id
             form.save()
-            sale.demand.calc_sales_commission()
+            demand.calc_sales_commission()
             year, month = sale.demand.year, sale.demand.month
-            for employee in project.employees.all():
-                if employee.work_end and employee.work_end < date(year, month, 1):
-                    continue
-                es = employee.salaries.get_or_create(year = year, month = month)
-                es[0].calculate()
-                es[0].save()
+            for employee in demand.project.employees.exclude(work_end__isnull = False, work_end__lt = date(year, month, 1)):
+                try:
+                    salary = employee.salaries.get(year = year, month = month)
+                    salary.calculate()
+                    salary.save()
+                except EmployeeSalary.DoesNotExist:
+                    pass
+                
             if request.POST.has_key('addanother'):
                 return HttpResponseRedirect(next or '/demands/%s/sale/add' % sale.demand.id)
             elif request.POST.has_key('todemand'):
@@ -2873,27 +2875,28 @@ def sale_add(request, demand_id=None):
         form = SaleForm(request.POST)
         if form.is_valid():
             if not demand_id:
-                demand, is_new = Demand.objects.get_or_create(year = year, month = month, project = form.cleaned_data['project'])
+                demand, new = Demand.objects.get_or_create(year = year, month = month, project = form.cleaned_data['project'])
             form.instance.demand = demand
             form.save()
             next = None
             if demand.statuses.count() == 0:
                 demand.feed()
             if demand.was_sent:
-                y,m = demand.year, demand.month
                 sp = SalePre(sale = form.instance,
-                             to_month = m, to_year = y,
-							 employee_pay_year = m == 12 and y+1 or y,
-							 employee_pay_month = m==12 and 1 or m)
+                             to_month = month, to_year = year,
+							 employee_pay_year = month == 12 and year + 1 or year,
+							 employee_pay_month = month == 12 and 1 or month)
                 sp.save()
                 next = '/salepre/%s' % sp.id 
             demand.calc_sales_commission()
-            for employee in demand.project.employees.all():
-                if employee.work_end and employee.work_end < date(year, month, 1):
-                    continue
-                es, new = employee.salaries.get_or_create(year = year, month = month)
-                es.calculate()
-                es.save()
+            for employee in demand.project.employees.exclude(work_end__isnull = False, work_end__lt = date(year, month, 1)):
+                try:
+                    salary = employee.salaries.get(year = year, month = month)
+                    salary.calculate()
+                    salary.save()
+                except EmployeeSalary.DoesNotExist:
+                    pass
+                
             if request.POST.has_key('addanother'):
                 return HttpResponseRedirect(next or reverse(sale_add, args=[demand_id]))
             elif request.POST.has_key('todemand'):
