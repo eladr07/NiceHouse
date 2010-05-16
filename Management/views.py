@@ -3269,13 +3269,14 @@ def sale_analysis(request):
         if form.is_valid():
             project = form.cleaned_data['project']
             rooms_num, house_type = form.cleaned_data['rooms_num'], form.cleaned_data['house_type']
-            start = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
-            end = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
-            end = date(end.month == 12 and end.year + 1 or end.year, end.month == 12 and 1 or end.month + 1, 1)
+            from_year, from_month, to_year, to_month = (form.cleaned_data['from_year'], form.cleaned_data['from_month'],
+                                                        form.cleaned_data['to_year'], form.cleaned_data['to_month'])
+
             house_attrs = ['net_size', 'garden_size', 'rooms', 'floor', 'perfect_size']
             sale_attrs = ['price_taxed', 'price_taxed_for_perfect_size']
             
-            all_sales = Sale.objects.filter(house__building__project = project, contractor_pay__gte = start, contractor_pay__lt = end).order_by('contractor_pay_year', 'contractor_pay_month').select_related('house')
+            q = models.Q(contractor_pay_year = from_year, contractor_pay_month__gte = from_month) | models.Q(contractor_pay_year__gt = from_year, contractor_pay_year__lt = to_year) | models.Q(contractor_pay_year = to_year, contractor_pay_month__lte = to_month)
+            all_sales = Sale.objects.filter(q, house__building__project = project).order_by('contractor_pay_year', 'contractor_pay_month').select_related('house')
             if rooms_num:
                 all_sales = all_sales.filter(house__rooms = rooms_num)
             if house_type:

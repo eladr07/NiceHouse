@@ -1273,7 +1273,7 @@ class CVar(models.Model):
     is_retro = models.BooleanField(ugettext('retroactive'))
     def calc(self,sales):
         dic = {}
-        amounts = dict(self.amounts.value_list('index','amount'))
+        amounts = dict(self.amounts.values_list('index','amount'))
         last_index = self.amounts.latest().index
         
         if self.is_retro:
@@ -1298,7 +1298,7 @@ class CVarPrecentage(models.Model):
     start_retro = models.PositiveSmallIntegerField(ugettext('retroactive_start'),null=True, blank=True, default=1)
     def calc(self, sales):        
         dic = {}
-        precentages = dict(self.precentages.value_list('index','precentage'))
+        precentages = dict(self.precentages.values_list('index','precentage'))
         last_index = self.precentages.latest().index
         
         if self.is_retro and len(sales) >= self.start_retro:
