@@ -421,7 +421,7 @@ class MonthDemandWriter:
             rows.append(row)
             total_prices += s.price
             total_adds += round(diff_amount)
-            if i % 17 == 0:
+            if i % 16 == 0:
                 data = [headers]
                 data.extend(rows)
                 t = Table(data)
