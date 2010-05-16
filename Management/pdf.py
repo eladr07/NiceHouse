@@ -403,7 +403,7 @@ class MonthDemandWriter:
             logger.info('base commission %(base)s exceeded max commisison %(max)s',{'base':base, 'max':c_zilber.b_sale_rate_max})
         
         for s in sales:
-            row = [log2vis('%s/%s' % (demand.month, demand.year)), clientsPara(s.clients), 
+            row = [log2vis('%s/%s' % (s.actual_demand.month, s.actual_demand.year)), clientsPara(s.clients), 
                            '%s/%s' % (unicode(s.house.building), unicode(s.house)), s.sale_date.strftime('%d/%m/%y'), 
                            commaise(s.price)]
             if base == s.pc_base:
@@ -505,12 +505,11 @@ class MonthDemandWriter:
         if self.signup_adds:
             names.append(u'הרשמה\nתאריך')
             colWidths.append(None)
-        names.extend([u'שם הרוכשים',u'ודירה\nבניין',u'מכירה\nתאריך', u'חוזה\nמחיר'])
-        colWidths.extend([70, None,None,None])
+        names.extend([u'שם הרוכשים',u'ודירה\nבניין',u'מכירה\nתאריך', u'חוזה\nמחיר', u'עמלה\nלחישוב\nמחיר'])
+        colWidths.extend([70, None,None,None,None])
         if self.demand.project.is_zilber():
-            names.extend([u'מזומן\nהנחת', u'מפרט\nהוצאות',u'עו"ד\nשכ"ט', 
-                          u'לחישוב\nמחיר',u'נוספות\nהוצאות'])
-            colWidths.extend([35,35,None,None,35])
+            names.extend([u'מזומן\nהנחת', u'מפרט\nהוצאות',u'עו"ד\nשכ"ט', u'נוספות\nהוצאות'])
+            colWidths.extend([35,35,None,35])
             zilber = True
         if not self.demand.project.id == 5:
             if sales[0].discount or sales[0].allowed_discount:
@@ -520,8 +519,7 @@ class MonthDemandWriter:
         names.extend([u'בסיס\nעמלת\n%',u'בסיס\nעמלת\nשווי'])
         colWidths.extend([None,None])
         if self.demand.project.commissions.b_discount_save_precentage:
-            names.extend([u'חסכון\nבונוס\n%',u'חסכון\nבונוס\nשווי',
-                            u'סופי\nעמלה\n%',u'סופי\nעמלה\nשווי'])
+            names.extend([u'חסכון\nבונוס\n%',u'חסכון\nבונוס\nשווי', u'סופי\nעמלה\n%',u'סופי\nעמלה\nשווי'])
             colWidths.extend([35,30,None,None])
             final = True
         colWidths.reverse()
@@ -533,6 +531,8 @@ class MonthDemandWriter:
         if self.signup_adds:
             flows.extend([self.signup_counts_para(), Spacer(0,10)])
         rows = []
+        total_lawyer_pay = 0
+        
         for s in sales:
             s.restore = True
             row = ['%s-%s' % (self.demand.id, i)]
@@ -542,10 +542,11 @@ class MonthDemandWriter:
                 signup = s.house.get_signup()
                 row.append(signup and signup.date.strftime('%d/%m/%y') or '')
             row.extend([clientsPara(s.clients), '%s/%s' % (unicode(s.house.building), unicode(s.house)), 
-                        s.sale_date.strftime('%d/%m/%y'), commaise(s.price)])
+                        s.sale_date.strftime('%d/%m/%y'), commaise(s.price), commaise(s.price_final)])
             if zilber:
                 lawyer_pay = s.price_include_lawyer and (s.price - s.price_no_lawyer) or s.price * 0.015
-                row.extend([None,None,commaise(lawyer_pay), commaise(s.price_final)])
+                total_lawyer_pay += lawyer_pay
+                row.extend([None,None,commaise(lawyer_pay)])
                 if s.include_registration == False:
                     row.append(s.house.building.project.commissions.registration_amount)
                 else:
@@ -566,8 +567,11 @@ class MonthDemandWriter:
                         row.append(None)
                     row.extend([None,Paragraph(log2vis('%s' % self.demand.get_sales().count()), styleSumRow),None])
                     row.append(Paragraph(commaise(self.demand.get_sales().total_price()), styleSumRow))
+                    row.append(Paragraph(commaise(self.demand.get_sales().total_price_final()), styleSumRow))
                     if zilber:
-                        row.extend([None,None,None,None,None])
+                        row.extend([None,None])
+                        row.append(Paragraph(commaise(total_lawyer_pay), styleSumRow))
+                        row.append(None)
                     if discount:
                         row.extend([None,None])
                     if final:
