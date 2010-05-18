@@ -395,7 +395,7 @@ class MonthDemandWriter:
         while demand.zilber_cycle_index() > 1:
             demand = demand.get_previous_demand()
             # adds sales of the current demand before the sales we already have because we are iterating in reverse
-            demand_sales = demand.get_sales().select_related('house__building')
+            demand_sales = list(demand.get_sales().select_related('house__building'))
             demand_sales.extend(sales)
             sales = demand_sales
         
