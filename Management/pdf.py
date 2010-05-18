@@ -305,7 +305,7 @@ class MonthDemandWriter:
         headers = [log2vis(n) for n in [u'מס"ד',u'דרישה\nחודש', u'שם הרוכשים', u'ודירה\nבניין', u'חוזה\nתאריך',
                                         u'חוזה\nמחיר', u'0 דו"ח\nמחירון', u'חדש\nמדד', 
                                         u'60%\nממודד\nמחירון', u'מחיר\nהפרש', u'בהנחה\nחסכון\nשווי']]
-        colWidths  =[None,None,80,None,None,None,40,40,40,40,40]
+        colWidths  =[None,None,100,None,None,None,40,40,40,40,40]
         colWidths.reverse()
         headers.reverse()
         rows = []
@@ -394,7 +394,10 @@ class MonthDemandWriter:
         
         while demand.zilber_cycle_index() > 1:
             demand = demand.get_previous_demand()
-            sales.extend(demand.get_sales().select_related('house__building'))
+            # adds sales of the current demand before the sales we already have because we are iterating in reverse
+            demand_sales = demand.get_sales().select_related('house__building')
+            demand_sales.extend(sales)
+            sales = demand_sales
         
         c_zilber = self.demand.project.commissions.c_zilber
         base = c_zilber.base + c_zilber.b_sale_rate * (len(sales) - 1)
