@@ -16,7 +16,11 @@ def nhemployee_sort(nhemployee1, nhemployee2):
 
 class SeasonManager(models.Manager):
     def range(self, from_year, from_month, to_year, to_month):
-        q = models.Q(year = from_year, month__gte = from_month) | models.Q(year__gt = from_year, year__lt = to_year) | models.Q(year = to_year, month__lte = to_month)
+        q = models.Q(year = from_year, month__gte = from_month)
+        if from_year == to_year:
+            q = q & models.Q(month__lte = to_month)
+        else:
+            q = q | models.Q(year__gt = from_year, year__lt = to_year) | models.Q(year = to_year, month__lte = to_month)
         return self.filter(q)
     
 class InvoiceManager(models.Manager):
