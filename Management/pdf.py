@@ -391,7 +391,6 @@ class MonthDemandWriter:
         sales = list(demand.get_sales().select_related('house__building'))
         i = 1
         total_prices, total_adds = 0, 0
-        c_zilber = demand.project.commissions.c_zilber
         
         while demand.zilber_cycle_index() > 1:
             demand = demand.get_previous_demand()
@@ -403,12 +402,13 @@ class MonthDemandWriter:
         for s in sales:
             try:
                 sale_add = s.project_commission_details.get(commission='c_zilber_add').value
+                sale_base_with_add = s.project_commission_details.get(commission='c_zilber_base_with_add').value
             except ObjectDoesNotExist:
                 continue
                                     
             row = [log2vis('%s/%s' % (s.actual_demand.month, s.actual_demand.year)), clientsPara(s.clients), 
                            '%s/%s' % (unicode(s.house.building), unicode(s.house)), s.sale_date.strftime('%d/%m/%y'), 
-                           commaise(s.price), s.pc_base, c_zilber.base, c_zilber.base - s.pc_base, commaise(sale_add)]
+                           commaise(s.price), s.pc_base, sale_base_with_add, sale_base_with_add - s.pc_base, commaise(sale_add)]
 
             i += 1
             

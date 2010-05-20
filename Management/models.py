@@ -1471,6 +1471,11 @@ class CZilber(models.Model):
                     logger.debug('sale #%(id)s no zilber add', {'id':s.id})
                     continue
                 
+                # store the new base commission value in the sale commission details
+                scd, new = s.commission_details.get_or_create(commission = 'c_zilber_base_with_add', employee_salary = None)
+                scd.value = base
+                scd.save()
+                
                 sale_add = (base - s.pc_base) * s.price_final / 100
                 
                 # store the sale_add value in the sale commission details
