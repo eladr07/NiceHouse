@@ -7,6 +7,7 @@ reportlab.rl_config.warnOnMissingFontGlyphs = 0
 
 from reportlab.lib.pagesizes import A4, landscape
 from django.utils.translation import ugettext
+from django.core.exceptions import ObjectDoesNotExist
 from reportlab.pdfgen import canvas
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Image, Spacer, Frame, Table, PageBreak
@@ -302,9 +303,10 @@ class MonthDemandWriter:
         flows = [tableCaption(caption=log2vis(u'נספח ב - דו"ח חסכון בהנחה')), Spacer(0,20),
                  tableCaption(caption=log2vis(u'מדד בסיס - %s' % self.demand.project.commissions.c_zilber.base_madad)),
                  Spacer(0,30)]
-        headers = [log2vis(n) for n in [u'מס"ד',u'דרישה\nחודש', u'שם הרוכשים', u'ודירה\nבניין', u'חוזה\nתאריך',
-                                        u'חוזה\nמחיר', u'0 דו"ח\nמחירון', u'חדש\nמדד', 
-                                        u'60%\nממודד\nמחירון', u'מחיר\nהפרש', u'בהנחה\nחסכון\nשווי']]
+        
+        headers = [log2vis(n) for n in [u'מס"ד',u'דרישה\nחודש', u'שם הרוכשים', u'ודירה\nבניין', u'חוזה\nתאריך', u'חוזה\nמחיר', u'0 דו"ח\nמחירון', 
+                                        u'חדש\nמדד', u'60%\nממודד\nמחירון', u'מחיר\nהפרש', u'בהנחה\nחסכון\nשווי']]
+        
         colWidths  =[None,None,100,None,None,None,40,40,40,40,40]
         colWidths.reverse()
         headers.reverse()
@@ -322,10 +324,8 @@ class MonthDemandWriter:
             sales = demand.get_sales().select_related('house__building')
             
             current_madad = max((demand.get_madad(), base_madad))
-            memudad_multiplier = ((current_madad / base_madad) - 1) * 0.6 + 1            
-            prices_date = date(demand.month == 12 and demand.year+1 or demand.year, demand.month==12 and 1 or demand.month+1, 1)
             
-            logger.debug(str({'prices_date':prices_date, 'sales':sales, 'current_madad':current_madad, 'memudad_multiplier':memudad_multiplier}))
+            logger.debug(str({'sales':sales, 'current_madad':current_madad}))
             
             for s in sales:
                 logger.info('starting to write bonus for sale #%(id)s', {'id':s.id})
@@ -336,17 +336,17 @@ class MonthDemandWriter:
                     row = ['%s-%s' % (actual_demand.id, i),'%s/%s' % (actual_demand.month, actual_demand.year)]
                 else:
                     row = [None, None]
-                row.extend([log2vis(s.clients), '%s/%s' % (unicode(s.house.building), unicode(s.house)), 
-                            s.sale_date.strftime('%d/%m/%y'), commaise(s.price)])
-                doh0prices = s.house.versions.filter(type__id = models.PricelistType.Doh0, date__lte = prices_date)
-                if doh0prices.count() > 0:
-                    doh0price = doh0prices.latest().price
-                    memudad = doh0price * memudad_multiplier
-                    row.extend([commaise(doh0price), current_madad, commaise(memudad), commaise(s.price-memudad), commaise(s.zdb)])
                     
-                    logger.debug('zilber bonus values: %s' % {'doh0price':doh0price, 'memudad':memudad})
-                else:
-                    row.extend([None,None,None,None,None])
+                commission_details = dict(s.project_commission_details.values_list('commission','value'))
+                
+                doh0price = commission_details.get('latest_doh0price', '')
+                memudad = commission_details.get('memudad', '')
+                price_memduad_diff = s.price - (memudad or 0)
+                
+                row.extend([log2vis(s.clients), '%s/%s' % (unicode(s.house.building), unicode(s.house)), 
+                            s.sale_date.strftime('%d/%m/%y'), commaise(s.price), commaise(doh0price), 
+                            current_madad, commaise(memudad), commaise(price_memduad_diff), commaise(s.zdb)])
+
                 row.reverse()
                 rows.append(row)
                 total_prices += s.price
@@ -391,6 +391,7 @@ class MonthDemandWriter:
         sales = list(demand.get_sales().select_related('house__building'))
         i = 1
         total_prices, total_adds = 0, 0
+        c_zilber = demand.project.commissions.c_zilber
         
         while demand.zilber_cycle_index() > 1:
             demand = demand.get_previous_demand()
@@ -399,31 +400,23 @@ class MonthDemandWriter:
             demand_sales.extend(sales)
             sales = demand_sales
         
-        c_zilber = self.demand.project.commissions.c_zilber
-        base = c_zilber.base + c_zilber.b_sale_rate * (len(sales) - 1)
-        if base > c_zilber.b_sale_rate_max:
-            base = c_zilber.b_sale_rate_max
-            logger.info('base commission %(base)s exceeded max commisison %(max)s',{'base':base, 'max':c_zilber.b_sale_rate_max})
-        
         for s in sales:
+            try:
+                sale_add = s.project_commission_details.get(commission='c_zilber_add')
+            except ObjectDoesNotExist:
+                continue
+                                    
             row = [log2vis('%s/%s' % (s.actual_demand.month, s.actual_demand.year)), clientsPara(s.clients), 
                            '%s/%s' % (unicode(s.house.building), unicode(s.house)), s.sale_date.strftime('%d/%m/%y'), 
-                           commaise(s.price)]
-            if base == s.pc_base:
-                logger.warning('skipping sale #%(id)s - base == s.pc_base == %(base)s',
-                               {'id':s.id, 'base':base})
-                continue
+                           commaise(s.price), s.pc_base, c_zilber.base, c_zilber.base - s.pc_base, commaise(sale_add)]
+
             i += 1
-            diff_amount = s.price_final * (base - s.pc_base) / 100
             
-            logger.debug('commission calc details: %(vals)s',
-                         {'vals': {'base':base,'s.pc_base':s.pc_base, 's.price_final':s.price_final, 'diff_amount':diff_amount}})
-            
-            row.extend([s.pc_base, base, base - s.pc_base, commaise(diff_amount)])
             row.reverse()
             rows.append(row)
             total_prices += s.price
-            total_adds += round(diff_amount)
+            total_adds += round(sale_add)
+            
             if i % 16 == 0:
                 data = [headers]
                 data.extend(rows)

@@ -1398,19 +1398,21 @@ class CZilber(models.Model):
     
             logger.info('sales count: %(sale_count)s', {'sale_count':len(sales)})
             
-            for s in sales:
-                s.price_final = s.project_price()
-                s.save()
-                logger.debug('sale #%(id)s price_final = %(value)s', {'id':s.id, 'value':s.price_final})
+            for sale in sales:
+                sale.price_final = sale.project_price()
+                sale.save()
+                
+                # delete all commission details for the sale
+                for scd in sale.project_commission_details:
+                    scd.delete()
+                logger.debug('sale #%(id)s price_final = %(value)s', {'id':sale.id, 'value':sale.price_final})
             
             excluded_sales = [sale for sale in sales if sale.commission_include == False]
             sales = [sale for sale in sales if sale.commission_include == True]
             
             for s in excluded_sales:
-                for c in ['c_zilber_base', 'final']:
-                    scd = s.commission_details.get_or_create(commission=c, employee_salary=None)[0]
-                    scd.value = 0
-                    scd.save()
+                s.commission_details.create(commission = 'c_zilber_base', value = 0)
+                s.commission_details.create(commission = 'final', value = 0)
                 logger.warning('skipping sale #%(id)s. commission_include=False', {'id':s.id})
                                 
             prices_date = date(month.month == 12 and month.year+1 or month.year, month.month==12 and 1 or month.month+1, 1)
@@ -1420,11 +1422,9 @@ class CZilber(models.Model):
             logger.debug('%(vals)s', {'vals': {'prices_date':prices_date, 'current_madad':current_madad, 'memudad_multiplier':memudad_multiplier}})
             
             for s in sales:
-                for commission in ['c_zilber_base','final']:
-                    scd, new = s.commission_details.get_or_create(commission = commission, employee_salary = None)
-                    scd.value = self.base
-                    scd.save()
-                    logger.debug('sale #%(id)s %(commission)s = %(value)s', {'id':s.id,'commission':commission,'value':scd.value})
+                s.commission_details.create(commission = 'c_zilber_base', value = self.base)
+                s.commission_details.create(commission = 'final', value = self.base)
+                logger.debug('sale #%(id)s base commission = %(value)s', {'id':s.id,'value':self.base})
                                 
                 if self.base_madad:
                     doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0, date__lte = prices_date)
@@ -1434,9 +1434,9 @@ class CZilber(models.Model):
                     latest_doh0price = doh0prices.latest().price
                     memudad = latest_doh0price * memudad_multiplier
                     zdb = (s.price - memudad) * self.b_discount
-                    scd = s.commission_details.get_or_create(commission='c_zilber_discount', employee_salary=None)[0]
-                    scd.value = zdb
-                    scd.save()
+                    s.commission_details.create(commission='c_zilber_discount', value = zdb)
+                    s.commission_details.create(commission='latest_doh0price', value = latest_doh0price)
+                    s.commission_details.create(commission='memudad', value = memudad)
                                     
                     logger.debug('sale #%(id)s c_zilber_discount calc values: %(vals)s',
                                  {'id':s.id, 'vals':{'latest_doh0price':latest_doh0price,'memudad':memudad,'zdb':zdb}})
@@ -1468,7 +1468,17 @@ class CZilber(models.Model):
                 prev_adds = 0
                 
                 for s in sales:
+                    if base == s.pc_base:
+                        logger.debug('sale #%(id)s no zilber add', {'id':s.id})
+                        continue
+                    
                     sale_add = (base - s.pc_base) * s.price_final / 100
+                    
+                    # store the sale_add value in the sale commission details
+                    scd, new = s.commission_details.get_or_create(commission = 'c_zilber_add', employee_salary = None)
+                    scd.value = sale_add
+                    scd.save()
+                    
                     prev_adds += sale_add
                 
                     logger.debug('sale #%(id)s adds calc values: %(val)s', {'id':s.id, 'vals':{'s.pc_base':s.pc_base,'sale_add':sale_add}})
