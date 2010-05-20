@@ -1441,48 +1441,48 @@ class CZilber(models.Model):
                     logger.debug('sale #%(id)s c_zilber_discount calc values: %(vals)s',
                                  {'id':s.id, 'vals':{'latest_doh0price':latest_doh0price,'memudad':memudad,'zdb':zdb}})
 
-            if d.include_zilber_bonus():
-                logger.info('starting to calculate ziber adds for the entire cycle')
-                
-                demand = d
-                demands = [demand]
-                while demand.zilber_cycle_index() > 1:
-                    demand = demand.get_previous_demand()
-                    demands.append(demand)
-                
-                sales = []
-                for demand in demands:
-                    sales.extend(demand.get_sales())
-                
-                excluded_sales = [sale for sale in sales if sale.commission_include == False]
-                sales = [sale for sale in sales if sale.commission_include == True]
-                
-                if len(excluded_sales):
-                    logger.warning('excluding %(sale_count)s sales from zilber adds calc', {'sale_count':len(excluded_sales)})
+            logger.info('starting to calculate ziber adds')
             
-                base = self.base + self.b_sale_rate * (len(sales) - 1)
-                if base > self.b_sale_rate_max:
-                    logger.info('base commission %(base)s exceeded max commisison %(max)s',{'base':base, 'max':self.b_sale_rate_max})
-                    base = self.b_sale_rate_max
+            demand = d
+            demands = [demand]
+            while demand.zilber_cycle_index() > 1:
+                demand = demand.get_previous_demand()
+                demands.append(demand)
+            
+            sales = []
+            for demand in demands:
+                sales.extend(demand.get_sales())
+            
+            excluded_sales = [sale for sale in sales if sale.commission_include == False]
+            sales = [sale for sale in sales if sale.commission_include == True]
+            
+            if len(excluded_sales):
+                logger.warning('excluding %(sale_count)s sales from zilber adds calc', {'sale_count':len(excluded_sales)})
+        
+            base = self.base + self.b_sale_rate * (len(sales) - 1)
+            if base > self.b_sale_rate_max:
+                logger.info('base commission %(base)s exceeded max commisison %(max)s',{'base':base, 'max':self.b_sale_rate_max})
+                base = self.b_sale_rate_max
+            
+            prev_adds = 0
+            
+            for s in sales:
+                if base == s.pc_base:
+                    logger.debug('sale #%(id)s no zilber add', {'id':s.id})
+                    continue
                 
-                prev_adds = 0
+                sale_add = (base - s.pc_base) * s.price_final / 100
                 
-                for s in sales:
-                    if base == s.pc_base:
-                        logger.debug('sale #%(id)s no zilber add', {'id':s.id})
-                        continue
-                    
-                    sale_add = (base - s.pc_base) * s.price_final / 100
-                    
-                    # store the sale_add value in the sale commission details
-                    scd, new = s.commission_details.get_or_create(commission = 'c_zilber_add', employee_salary = None)
-                    scd.value = sale_add
-                    scd.save()
-                    
-                    prev_adds += sale_add
+                # store the sale_add value in the sale commission details
+                scd, new = s.commission_details.get_or_create(commission = 'c_zilber_add', employee_salary = None)
+                scd.value = sale_add
+                scd.save()
                 
-                    logger.debug('sale #%(id)s adds calc values: %(val)s', {'id':s.id, 'vals':{'s.pc_base':s.pc_base,'sale_add':sale_add}})
-                
+                prev_adds += sale_add
+            
+                logger.debug('sale #%(id)s adds calc values: %(val)s', {'id':s.id, 'vals':{'s.pc_base':s.pc_base,'sale_add':sale_add}})
+            
+            if d.include_zilber_bonus():
                 if prev_adds:
                     d.diffs.create(type=u'משתנה', reason=u'הפרשי קצב מכירות (נספח א)', amount=round(prev_adds))
                     
