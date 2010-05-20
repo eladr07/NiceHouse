@@ -402,7 +402,7 @@ class MonthDemandWriter:
         
         for s in sales:
             try:
-                sale_add = s.project_commission_details.get(commission='c_zilber_add')
+                sale_add = s.project_commission_details.get(commission='c_zilber_add').value
             except ObjectDoesNotExist:
                 continue
                                     
