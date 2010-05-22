@@ -3297,6 +3297,7 @@ def sale_analysis(request):
                     sum = 0
                     for sale in sales:
                         attr_value = getattr(sale, attr)
+                        raise TypeError
                         sum += (attr_value or 0)
                     row['avg_' + attr] = item_count and (sum / item_count) or 0
                     row['avg_' + attr] = sum
