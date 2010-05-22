@@ -589,7 +589,9 @@ class MonthDemandWriter:
                     if discount:
                         row.extend([None,None])
                     if final:
-                        row.extend([None,commaise(total_pc_base_worth),None,commaise(total_pb_dsp_worth),None,Paragraph(commaise(self.demand.sales_commission), styleSumRow)])
+                        row.extend([None,Paragraph(commaise(total_pc_base_worth), styleSumRow),
+                                    None,Paragraph(commaise(total_pb_dsp_worth), styleSumRow),
+                                    None,Paragraph(commaise(self.demand.sales_commission), styleSumRow)])
                     else:
                         row.extend([None,Paragraph(commaise(self.demand.sales_commission), styleSumRow)])
                     row.reverse()
