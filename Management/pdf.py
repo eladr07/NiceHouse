@@ -17,6 +17,7 @@ from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib import colors
 from reportlab.lib.enums import *
 from pyfribidi import log2vis
+
 #register Hebrew fonts
 pdfmetrics.registerFont(TTFont('David', settings.MEDIA_ROOT + 'fonts/DavidCLM-Medium.ttf'))
 pdfmetrics.registerFont(TTFont('David-Bold', settings.MEDIA_ROOT + 'fonts/DavidCLM-Bold.ttf'))
@@ -31,6 +32,7 @@ styleSumRow = ParagraphStyle('Row', fontName='David-Bold',fontSize=11, leading=1
 styleSubj = ParagraphStyle('subject', fontName='David',fontSize=16, leading=15, alignment=TA_CENTER)
 styleSubTitleBold = ParagraphStyle('subtitle', fontName='David-Bold', fontSize=15, alignment=TA_CENTER)
 styleSubTitle = ParagraphStyle('subtitle', fontName='David', fontSize=15, alignment=TA_CENTER)
+
 saleTableStyle = TableStyle(
                             [('FONTNAME', (0,0), (-1,0), 'David-Bold'),
                              ('FONTNAME', (0,1), (-1,-1), 'David'),
@@ -312,7 +314,7 @@ class MonthDemandWriter:
         headers.reverse()
         rows = []
         i = 1
-        total_prices, total_adds = 0, 0
+        total_prices, total_adds, total_doh0price, total_memudad, total_diff = 0, 0, 0, 0, 0
         demand = self.demand
         base_madad = demand.project.commissions.c_zilber.base_madad
                 
@@ -349,8 +351,13 @@ class MonthDemandWriter:
 
                 row.reverse()
                 rows.append(row)
+                
                 total_prices += s.price
                 total_adds += s.zdb
+                total_doh0price += doh0price
+                total_memudad += memudad
+                total_diff += price_memduad_diff
+                
                 if i % 17 == 0:
                     data = [headers]
                     data.extend(rows)
@@ -364,8 +371,14 @@ class MonthDemandWriter:
             
             demand = demand.get_previous_demand()
             
-        sum_row = [None, None, None, None, None, Paragraph(commaise(total_prices), styleSumRow), None, None, None, None, 
+        sum_row = [None, None, None, None, None, 
+                   Paragraph(commaise(total_prices), styleSumRow), 
+                   Paragraph(commaise(total_doh0price), styleSumRow),
+                   None,
+                   Paragraph(commaise(total_memudad), styleSumRow), 
+                   Paragraph(commaise(total_diff), styleSumRow), 
                    Paragraph(commaise(round(total_adds)), styleSumRow)]
+        
         sum_row.reverse()
         rows.append(sum_row)
         data = [headers]
