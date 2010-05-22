@@ -3295,12 +3295,10 @@ def sale_analysis(request):
                     row['avg_' + attr] = item_count and (sum / item_count) or 0
                 for attr in sale_attrs:
                     sum = 0
-                    for sale in sales:
+                    for sale in sales_list:
                         attr_value = getattr(sale, attr)
-                        raise TypeError
                         sum += (attr_value or 0)
                     row['avg_' + attr] = item_count and (sum / item_count) or 0
-                    row['avg_' + attr] = sum
                 data.append(row)
 
             for i in range(1,len(data)):
