@@ -3272,8 +3272,8 @@ def sale_analysis(request):
             from_year, from_month, to_year, to_month = (form.cleaned_data['from_year'], form.cleaned_data['from_month'],
                                                         form.cleaned_data['to_year'], form.cleaned_data['to_month'])
 
-            house_attrs = ['net_size', 'garden_size', 'rooms', 'floor', 'perfect_size']
-            sale_attrs = ['price_taxed', 'price_taxed_for_perfect_size']
+            house_attrs = ('net_size', 'garden_size', 'rooms', 'floor', 'perfect_size')
+            sale_attrs = ('price_taxed', 'price_taxed_for_perfect_size')
             
             q = models.Q(contractor_pay_year = from_year, contractor_pay_month__gte = from_month) | models.Q(contractor_pay_year__gt = from_year, contractor_pay_year__lt = to_year) | models.Q(contractor_pay_year = to_year, contractor_pay_month__lte = to_month)
             all_sales = Sale.objects.filter(q, house__building__project = project).order_by('contractor_pay_year', 'contractor_pay_month').select_related('house')
@@ -3297,10 +3297,8 @@ def sale_analysis(request):
                     sum = 0
                     for sale in sales:
                         attr_value = getattr(sale, attr)
-                        if callable(attr_value):
-                            attr_value = attr_value()
                         sum += (attr_value or 0)
-                    row['avg_' + attr] = item_count and (sum / item_count) or 0
+                    row['avg_' + attr] = item_count and (float(sum) / item_count) or 0
                 data.append(row)
 
             for i in range(1,len(data)):
