@@ -29,6 +29,7 @@ styleDate = ParagraphStyle('date', fontName='David',fontSize=14, leading=15)
 styleRow = ParagraphStyle('sumRow', fontName='David',fontSize=11, leading=15)
 styleRow9 = ParagraphStyle('sumRow', fontName='David',fontSize=9, leading=15)
 styleSumRow = ParagraphStyle('Row', fontName='David-Bold',fontSize=11, leading=15)
+styleSaleSumRow = ParagraphStyle('Row', fontName='David-Bold',fontSize=9, leading=15)
 styleSubj = ParagraphStyle('subject', fontName='David',fontSize=16, leading=15, alignment=TA_CENTER)
 styleSubTitleBold = ParagraphStyle('subtitle', fontName='David-Bold', fontSize=15, alignment=TA_CENTER)
 styleSubTitle = ParagraphStyle('subtitle', fontName='David', fontSize=15, alignment=TA_CENTER)
@@ -372,12 +373,12 @@ class MonthDemandWriter:
             demand = demand.get_previous_demand()
             
         sum_row = [None, None, None, None, None, 
-                   Paragraph(commaise(total_prices), styleSumRow), 
-                   Paragraph(commaise(total_doh0price), styleSumRow),
+                   Paragraph(commaise(total_prices), styleSaleSumRow), 
+                   Paragraph(commaise(total_doh0price), styleSaleSumRow),
                    None,
-                   Paragraph(commaise(total_memudad), styleSumRow), 
-                   Paragraph(commaise(total_diff), styleSumRow), 
-                   Paragraph(commaise(round(total_adds)), styleSumRow)]
+                   Paragraph(commaise(total_memudad), styleSaleSumRow), 
+                   Paragraph(commaise(total_diff), styleSaleSumRow), 
+                   Paragraph(commaise(round(total_adds)), styleSaleSumRow)]
         
         sum_row.reverse()
         rows.append(sum_row)
@@ -438,8 +439,8 @@ class MonthDemandWriter:
                 flows.extend([t, PageBreak(), Spacer(0,70)])
                 rows = []
             
-        sum_row = [None, None, None, None, Paragraph(commaise(total_prices), styleSumRow), None, None, None, 
-                   Paragraph(commaise(total_adds), styleSumRow)]
+        sum_row = [None, None, None, None, Paragraph(commaise(total_prices), styleSaleSumRow), None, None, None, 
+                   Paragraph(commaise(total_adds), styleSaleSumRow)]
         sum_row.reverse()
         rows.append(sum_row)
         data = [headers]
@@ -484,7 +485,7 @@ class MonthDemandWriter:
                     t.setStyle(saleTableStyle)
                     flows.extend([t, PageBreak(), Spacer(0,70)])
                     rows = []
-        sum_row = [None,None,None,None,None,None,None,None,None,Paragraph(commaise(total), styleSumRow)]
+        sum_row = [None,None,None,None,None,None,None,None,None,Paragraph(commaise(total), styleSaleSumRow)]
         sum_row.reverse()
         rows.append(sum_row)      
         data = [headers]
@@ -579,21 +580,21 @@ class MonthDemandWriter:
                         row.append(None)
                     if self.signup_adds:
                         row.append(None)
-                    row.extend([None,Paragraph(log2vis('%s' % self.demand.get_sales().count()), styleSumRow),None])
-                    row.append(Paragraph(commaise(self.demand.get_sales().total_price()), styleSumRow))
-                    row.append(Paragraph(commaise(self.demand.get_sales().total_price_final()), styleSumRow))
+                    row.extend([None,Paragraph(log2vis('%s' % self.demand.get_sales().count()), styleSaleSumRow),None])
+                    row.append(Paragraph(commaise(self.demand.get_sales().total_price()), styleSaleSumRow))
+                    row.append(Paragraph(commaise(self.demand.get_sales().total_price_final()), styleSaleSumRow))
                     if zilber:
                         row.extend([None,None])
-                        row.append(Paragraph(commaise(total_lawyer_pay), styleSumRow))
+                        row.append(Paragraph(commaise(total_lawyer_pay), styleSaleSumRow))
                         row.append(None)
                     if discount:
                         row.extend([None,None])
                     if final:
-                        row.extend([None,Paragraph(commaise(total_pc_base_worth), styleSumRow),
-                                    None,Paragraph(commaise(total_pb_dsp_worth), styleSumRow),
-                                    None,Paragraph(commaise(self.demand.sales_commission), styleSumRow)])
+                        row.extend([None,Paragraph(commaise(total_pc_base_worth), styleSaleSumRow),
+                                    None,Paragraph(commaise(total_pb_dsp_worth), styleSaleSumRow),
+                                    None,Paragraph(commaise(self.demand.sales_commission), styleSaleSumRow)])
                     else:
-                        row.extend([None,Paragraph(commaise(self.demand.sales_commission), styleSumRow)])
+                        row.extend([None,Paragraph(commaise(self.demand.sales_commission), styleSaleSumRow)])
                     row.reverse()
                     rows.append(row)
                 data = [headers]
