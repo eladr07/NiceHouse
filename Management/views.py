@@ -3297,6 +3297,8 @@ def sale_analysis(request):
                     sum = 0
                     for sale in sales:
                         attr_value = getattr(sale, attr)
+                        if callable(attr_value):
+                            attr_value = attr_value()
                         sum += (attr_value or 0)
                     row['avg_' + attr] = item_count and (sum / item_count) or 0
                 data.append(row)
