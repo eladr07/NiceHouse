@@ -36,7 +36,7 @@ styleSubTitle = ParagraphStyle('subtitle', fontName='David', fontSize=15, alignm
 saleTableStyle = TableStyle(
                             [('FONTNAME', (0,0), (-1,0), 'David-Bold'),
                              ('FONTNAME', (0,1), (-1,-1), 'David'),
-                             ('FONTSIZE', (0,0), (-1,-1), 8),
+                             ('FONTSIZE', (0,0), (-1,-1), 9),
                              ('ALIGN', (0,0), (-1,-1), 'CENTER'),
                              ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
                              ('BOX', (0,0), (-1,-1), 0.25, colors.black),
@@ -515,10 +515,10 @@ class MonthDemandWriter:
             names.append(u'הרשמה\nתאריך')
             colWidths.append(None)
         names.extend([u'שם הרוכשים',u'ודירה\nבניין',u'מכירה\nתאריך', u'חוזה\nמחיר', u'עמלה\nלחישוב\nמחיר'])
-        colWidths.extend([70, None,None,None,None])
+        colWidths.extend([65, None,None,None,None])
         if self.demand.project.is_zilber():
             names.extend([u'מזומן\nהנחת', u'מפרט\nהוצאות',u'עו"ד\nשכ"ט', u'נוספות\nהוצאות'])
-            colWidths.extend([35,35,None,35])
+            colWidths.extend([30,30,None,30])
             zilber = True
         if not self.demand.project.id == 5:
             if sales[0].discount or sales[0].allowed_discount:
@@ -529,7 +529,7 @@ class MonthDemandWriter:
         colWidths.extend([None,None])
         if self.demand.project.commissions.b_discount_save_precentage:
             names.extend([u'חסכון\nבונוס\n%',u'חסכון\nבונוס\nשווי', u'סופי\nעמלה\n%',u'סופי\nעמלה\nשווי'])
-            colWidths.extend([35,30,None,None])
+            colWidths.extend([30,30,None,None])
             final = True
         colWidths.reverse()
         names.reverse()
