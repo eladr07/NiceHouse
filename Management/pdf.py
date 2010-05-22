@@ -515,7 +515,7 @@ class MonthDemandWriter:
             names.append(u'הרשמה\nתאריך')
             colWidths.append(None)
         names.extend([u'שם הרוכשים',u'ודירה\nבניין',u'מכירה\nתאריך', u'חוזה\nמחיר', u'עמלה\nלחישוב\nמחיר'])
-        colWidths.extend([65, None,None,40,40])
+        colWidths.extend([65, None,None,45,45])
         if self.demand.project.is_zilber():
             names.extend([u'מזומן\nהנחת', u'מפרט\nהוצאות',u'עו"ד\nשכ"ט', u'נוספות\nהוצאות'])
             colWidths.extend([30,30,None,30])
