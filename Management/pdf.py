@@ -36,7 +36,7 @@ styleSubTitle = ParagraphStyle('subtitle', fontName='David', fontSize=15, alignm
 saleTableStyle = TableStyle(
                             [('FONTNAME', (0,0), (-1,0), 'David-Bold'),
                              ('FONTNAME', (0,1), (-1,-1), 'David'),
-                             ('FONTSIZE', (0,0), (-1,-1), 9),
+                             ('FONTSIZE', (0,0), (-1,-1), 8),
                              ('ALIGN', (0,0), (-1,-1), 'CENTER'),
                              ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
                              ('BOX', (0,0), (-1,-1), 0.25, colors.black),
