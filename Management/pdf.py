@@ -540,7 +540,7 @@ class MonthDemandWriter:
         if self.signup_adds:
             flows.extend([self.signup_counts_para(), Spacer(0,10)])
         rows = []
-        total_lawyer_pay, total_pc_base, total_pb_dsp = 0, 0 ,0
+        total_lawyer_pay, total_pc_base_worth, total_pb_dsp_worth = 0, 0 ,0
         
         for s in sales:
             s.restore = True
@@ -564,11 +564,11 @@ class MonthDemandWriter:
                 row.extend([s.discount, s.allowed_discount])
                 
             row.extend([s.pc_base, commaise(s.pc_base_worth)])
-            total_pc_base += s.pc_base
+            total_pc_base_worth += s.pc_base_worth
             
             if final:
                 row.extend([s.pb_dsp, commaise(s.pb_dsp_worth), s.c_final, commaise(s.c_final_worth)])
-                total_pb_dsp += s.pb_dsp
+                total_pb_dsp_worth += s.pb_dsp_worth
                 
             row.reverse()#reportlab prints columns ltr
             rows.append(row)
@@ -589,7 +589,7 @@ class MonthDemandWriter:
                     if discount:
                         row.extend([None,None])
                     if final:
-                        row.extend([None,commaise(total_pc_base),None,commaise(total_pb_dsp),None,Paragraph(commaise(self.demand.sales_commission), styleSumRow)])
+                        row.extend([None,commaise(total_pc_base_worth),None,commaise(total_pb_dsp_worth),None,Paragraph(commaise(self.demand.sales_commission), styleSumRow)])
                     else:
                         row.extend([None,Paragraph(commaise(self.demand.sales_commission), styleSumRow)])
                     row.reverse()
