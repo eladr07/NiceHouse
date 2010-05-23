@@ -342,8 +342,8 @@ class MonthDemandWriter:
                     
                 commission_details = dict(s.project_commission_details.values_list('commission','value'))
                 
-                doh0price = commission_details.get('latest_doh0price', '')
-                memudad = commission_details.get('memudad', '')
+                doh0price = commission_details.get('latest_doh0price', 0)
+                memudad = commission_details.get('memudad', 0)
                 price_memduad_diff = s.price - (memudad or 0)
                 
                 row.extend([log2vis(s.clients), '%s/%s' % (unicode(s.house.building), unicode(s.house)), 
@@ -466,7 +466,7 @@ class MonthDemandWriter:
             for s in subSales.all():
                 i += 1
                 singup = s.house.get_signup() 
-                row = [singup.date.strftime('%d/%m/%y'), s.contractor_pay.strftime('%m/%y'), 
+                row = [singup.date.strftime('%d/%m/%y'), '%s/%s' % s.contractor_pay_month, s.contractor_pay_year, 
                        clientsPara(s.clients), '%s/%s' % (unicode(s.house.building), unicode(s.house)), 
                        s.sale_date.strftime('%d/%m/%y'), commaise(s.price)]
                 s.restore_date = self.demand.get_previous_demand().finish_date
