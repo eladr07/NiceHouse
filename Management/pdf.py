@@ -466,7 +466,7 @@ class MonthDemandWriter:
             for s in subSales.all():
                 i += 1
                 singup = s.house.get_signup() 
-                row = [singup.date.strftime('%d/%m/%y'), '%s/%s' % s.contractor_pay_month, s.contractor_pay_year, 
+                row = [singup.date.strftime('%d/%m/%y'), '%s/%s' % (s.contractor_pay_month, s.contractor_pay_year), 
                        clientsPara(s.clients), '%s/%s' % (unicode(s.house.building), unicode(s.house)), 
                        s.sale_date.strftime('%d/%m/%y'), commaise(s.price)]
                 s.restore_date = self.demand.get_previous_demand().finish_date
