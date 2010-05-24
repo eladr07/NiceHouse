@@ -1104,9 +1104,8 @@ class EmployeeSalary(EmployeeSalaryBase):
                     res[project] = commission + base
         return res 
     def calculate(self):
-        #clean any sale commission details associated with this salary
-        for scd in SaleCommissionDetail.objects.filter(employee_salary=self):
-            scd.delete()
+        SaleCommissionDetail.objects.filter(employee_salary=self).delete()
+
         terms = self.employee.employment_terms        
         if not terms:
             self.remarks = u'לעובד לא הוגדרו תנאי העסקה!'
