@@ -1401,10 +1401,8 @@ class CZilber(models.Model):
             for sale in sales:
                 sale.price_final = sale.project_price()
                 sale.save()
+                sale.project_commission_details.delete()
                 
-                # delete all commission details for the sale
-                for scd in sale.project_commission_details:
-                    scd.delete()
                 logger.debug('sale #%(id)s price_final = %(value)s', {'id':sale.id, 'value':sale.price_final})
             
             excluded_sales = [sale for sale in sales if sale.commission_include == False]
