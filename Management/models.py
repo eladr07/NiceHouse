@@ -1142,13 +1142,13 @@ class EPCommission(models.Model):
     start_date = models.DateField(ugettext('start_date'))
     end_date = models.DateField(ugettext('end_date'), null=True, blank=True)
     max = models.FloatField(ugettext('max_commission'), null=True, blank=True)
-    c_var = models.OneToOneField('CVar', related_name= 'epcommission', null=True, editable=False)
-    c_var_precentage = models.OneToOneField('CVarPrecentage', related_name= 'epcommission', null=True, editable=False)
-    c_by_price = models.OneToOneField('CByPrice', related_name= 'epcommission', null= True, editable=False)
-    b_house_type = models.OneToOneField('BHouseType', related_name= 'epcommission', null=True, editable=False)
-    b_discount_save = models.OneToOneField('BDiscountSave', related_name= 'epcommission', null=True, editable=False)
-    b_discount_save_precentage = models.OneToOneField('BDiscountSavePrecentage', related_name= 'epcommission', null=True, editable=False)
-    b_sale_rate = models.OneToOneField('BSaleRate', related_name= 'epcommission', null=True, editable=False)
+    c_var = models.OneToOneField('CVar', null=True, editable=False)
+    c_var_precentage = models.OneToOneField('CVarPrecentage', null=True, editable=False)
+    c_by_price = models.OneToOneField('CByPrice', null= True, editable=False)
+    b_house_type = models.OneToOneField('BHouseType', null=True, editable=False)
+    b_discount_save = models.OneToOneField('BDiscountSave', null=True, editable=False)
+    b_discount_save_precentage = models.OneToOneField('BDiscountSavePrecentage', null=True, editable=False)
+    b_sale_rate = models.OneToOneField('BSaleRate', null=True, editable=False)
     def is_active(self, date=date.today()):
         if not self.end_date:
             return True
