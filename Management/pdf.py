@@ -372,7 +372,7 @@ class MonthDemandWriter:
             
             demand = demand.get_previous_demand()
             
-        sum_row = [None, None, None, None, None, 
+        sum_row = [log2vis(u'סה"כ'), None, None, None, None, 
                    Paragraph(commaise(total_prices), styleSaleSumRow), 
                    Paragraph(commaise(total_doh0price), styleSaleSumRow),
                    None,
@@ -439,7 +439,7 @@ class MonthDemandWriter:
                 flows.extend([t, PageBreak(), Spacer(0,70)])
                 rows = []
             
-        sum_row = [None, None, None, None, Paragraph(commaise(total_prices), styleSaleSumRow), None, None, None, 
+        sum_row = [log2vis(u'סה"כ'), None, None, None, Paragraph(commaise(total_prices), styleSaleSumRow), None, None, None, 
                    Paragraph(commaise(total_adds), styleSaleSumRow)]
         sum_row.reverse()
         rows.append(sum_row)
@@ -485,7 +485,7 @@ class MonthDemandWriter:
                     t.setStyle(saleTableStyle)
                     flows.extend([t, PageBreak(), Spacer(0,70)])
                     rows = []
-        sum_row = [None,None,None,None,None,None,None,None,None,Paragraph(commaise(total), styleSaleSumRow)]
+        sum_row = [log2vis(u'סה"כ'),None,None,None,None,None,None,None,None,Paragraph(commaise(total), styleSaleSumRow)]
         sum_row.reverse()
         rows.append(sum_row)      
         data = [headers]
