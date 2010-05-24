@@ -372,7 +372,7 @@ class MonthDemandWriter:
             
             demand = demand.get_previous_demand()
             
-        sum_row = [log2vis(u'סה"כ'), None, None, None, None, 
+        sum_row = [Paragraph(log2vis(u'סה"כ'), styleSaleSumRow), None, None, None, None, 
                    Paragraph(commaise(total_prices), styleSaleSumRow), 
                    Paragraph(commaise(total_doh0price), styleSaleSumRow),
                    None,
@@ -439,8 +439,8 @@ class MonthDemandWriter:
                 flows.extend([t, PageBreak(), Spacer(0,70)])
                 rows = []
             
-        sum_row = [log2vis(u'סה"כ'), None, None, None, Paragraph(commaise(total_prices), styleSaleSumRow), None, None, None, 
-                   Paragraph(commaise(total_adds), styleSaleSumRow)]
+        sum_row = [Paragraph(log2vis(u'סה"כ'), styleSaleSumRow), None, None, None, Paragraph(commaise(total_prices), styleSaleSumRow), 
+                   None, None, None, Paragraph(commaise(total_adds), styleSaleSumRow)]
         sum_row.reverse()
         rows.append(sum_row)
         data = [headers]
@@ -485,7 +485,7 @@ class MonthDemandWriter:
                     t.setStyle(saleTableStyle)
                     flows.extend([t, PageBreak(), Spacer(0,70)])
                     rows = []
-        sum_row = [log2vis(u'סה"כ'),None,None,None,None,None,None,None,None,Paragraph(commaise(total), styleSaleSumRow)]
+        sum_row = [Paragraph(log2vis(u'סה"כ'), styleSaleSumRow),None,None,None,None,None,None,None,None,Paragraph(commaise(total), styleSaleSumRow)]
         sum_row.reverse()
         rows.append(sum_row)      
         data = [headers]
@@ -575,7 +575,7 @@ class MonthDemandWriter:
             rows.append(row)
             if i % next_break == 0 or i == sales.count():
                 if i == sales.count():# insert column summaries if last row
-                    row = [log2vis(u'סה"כ')]
+                    row = [Paragraph(log2vis(u'סה"כ'), styleSaleSumRow)]
                     if contract_num:
                         row.append(None)
                     if self.signup_adds:
