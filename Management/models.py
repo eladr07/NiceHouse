@@ -2934,6 +2934,7 @@ def restore_object(instance, date):
     from reversion.models import Version
     versions = list(Version.objects.get_for_object(instance).filter(revision__revisionext__date__lte = date))
     if len(versions):
+        d = dir(versions[0])
         versions.sort(key = lambda v: v.revisionext.date)
         version = versions[-1]
     else:
