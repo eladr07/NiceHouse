@@ -16,6 +16,7 @@
 		</div> 
 		<br /> 
 		<form method="POST" class="formTable"> 
+			{% csrf_token %}
 			<table cellspacing="2" cellpadding="2" class="formTable"> 
 				<tr> 
 					<td>{{ form.username.label_tag }}</td> 
