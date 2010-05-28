@@ -87,7 +87,7 @@
 		<td>
 			<select id="changeType">
 			{% for t in types.all %}
-				<option value="{{t.id}}" {% ifequal t type %}selected="selected"{% endifequal %}>{{t}}</option>
+				<option value="{{t.id}}" {% if t == type %}selected="selected"{% endif %}>{{t}}</option>
 			{% endfor %}
 			</select>
 		</td>

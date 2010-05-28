@@ -95,18 +95,18 @@
 	{% if not d.statuses.count %}
     	<tr class="row3" objid={{d.id}}>
 	{% else %}
-		{% ifequal d.statuses.latest.type.id 1 %}
+		{% if d.statuses.latest.type.id == 1 %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{d.id}}>
-		{% endifequal %}
-		{% ifequal d.statuses.latest.type.id 2 %}
+		{% endif %}
+		{% if d.statuses.latest.type.id == 2 %}
 			<tr class="row4" objid={{d.id}}>
-		{% endifequal %}
-		{% ifequal d.statuses.latest.type.id 3 %}
+		{% endif %}
+		{% if d.statuses.latest.type.id == 3 %}
 			<tr class="row5" objid={{d.id}}>
-		{% endifequal %}
-		{% ifequal d.statuses.latest.type.id 4 %}
+		{% endif %}
+		{% if d.statuses.latest.type.id == 4 %}
 			<tr class="row5" objid={{d.id}}>
-		{% endifequal %}
+		{% endif %}
 	{% endif %}
 			<td><a href="/demands/{{d.id}}">{{d.id}}</a></td>
 			<td>

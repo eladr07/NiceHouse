@@ -230,9 +230,9 @@
 			לתשומת לבך ! קיים פער בין הסכום בחשבונית שהוצאה, לסכום בתשלום שהתקבל מהיזם<br>
 		{% endif %}
 	</p>
-	{% ifequal demand.statuses.latest.type.id 1 %}
+	{% if demand.statuses.latest.type.id == 1 %}
 		<a href="close">סגור דרישה</a><br><br>
-	{% endifequal %}
+	{% endif %}
 <div class="clearBoth"></div>
 {% if user.is_staff %}
 	<fieldset class="cardFieldset">

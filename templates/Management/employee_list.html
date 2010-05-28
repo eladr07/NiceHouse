@@ -125,9 +125,9 @@
 					<td>{{ e.phone }}</td>
 					<td>{{ e.address }}</td>
 					<td>{{ e.work_start }}</td>
-					<td {% ifequal e.employment_terms.hire_type.id 1 %}style="color:#1AA337;"{%endifequal%}>
+					<td {% if e.employment_terms.hire_type.id == 1 %}style="color:#1AA337;"{%endif%}>
 					{{e.employment_terms.hire_type}}
-					{% ifequal e.employment_terms.hire_type.id 2 %} - {{e.employment_terms.salary_net|yesno:"נטו, ברוטו"}} {%endifequal%}
+					{% if e.employment_terms.hire_type.id == 2 %} - {{e.employment_terms.salary_net|yesno:"נטו, ברוטו"}} {%endif%}
 					</td>
 					<td>
 					{% for p in e.projects.all %}
@@ -162,9 +162,9 @@
 					<td>{{ e.phone }}</td>
 					<td>{{ e.address }}</td>
 					<td>{{ e.work_start }}</td>
-					<td {% ifequal e.employment_terms.hire_type.id 1 %}style="color:#1AA337;"{%endifequal%}>
+					<td {% if e.employment_terms.hire_type.id == 1 %}style="color:#1AA337;"{%endif%}>
 					{{e.employment_terms.hire_type}}
-					{% ifequal e.employment_terms.hire_type.id 2 %} - {{e.employment_terms.salary_net|yesno:"נטו, ברוטו"}} {%endifequal%}
+					{% if e.employment_terms.hire_type.id == 2 %} - {{e.employment_terms.salary_net|yesno:"נטו, ברוטו"}} {%endif%}
 					</td>
 					<td>{{ e.remarks }}</td>
 				</tr>

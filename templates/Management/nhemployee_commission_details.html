@@ -14,11 +14,11 @@
 		{% for scd in details %}
 		<tr>
 			<td>
-				{% ifequal scd.commission "base" %}בסיס{% endifequal %}
-				{% ifequal scd.commission "nhcbase" %}ניהול בסיס{% endifequal %}
-				{% ifequal scd.commission "nhcbase_min" %}מינימום{% endifequal %}
-				{% ifequal scd.commission "nhcbranchincome" %}ניהול סניף{% endifequal %}
-				{% ifequal scd.commission "nhcbranchincome_min" %}מינימום{% endifequal %}
+				{% if scd.commission == "base" %}בסיס{% endif %}
+				{% if scd.commission == "nhcbase" %}ניהול בסיס{% endif %}
+				{% if scd.commission == "nhcbase_min" %}מינימום{% endif %}
+				{% if scd.commission == "nhcbranchincome" %}ניהול סניף{% endif %}
+				{% if scd.commission == "nhcbranchincome_min" %}מינימום{% endif %}
 			</td>
 			<td>
 				{{scd.amount|commaise}} 

@@ -115,15 +115,15 @@ $(document).ready(function() {
 				<td>{{ss.invoices.all.0.num}}</td>
 				{% for nhe in employees %}
 				<td>
-					{% ifequal nhe ss.employee1 %}
+					{% if nhe == ss.employee1 %}
 						{{ss.employee1_pay|commaise}}<br>{{ss.employee1_commission}}%
-					{% endifequal %}
-					{% ifequal nhe ss.employee2 %}
+					{% endif %}
+					{% if nhe == ss.employee2 %}
 						{{ss.employee2_pay|commaise}}<br>{{ss.employee2_commission}}%
-					{% endifequal %}
-					{% ifequal nhe ss.director %}
+					{% endif %}
+					{% if nhe == ss.director %}
 						{{ss.director_pay|commaise}}<br>{{ss.director_commission}}%
-					{% endifequal %}
+					{% endif %}
 				</td>
 				{% endfor %}
 				<td>

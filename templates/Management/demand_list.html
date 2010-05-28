@@ -169,11 +169,11 @@
 	{% if not d.statuses.count %}
     	<tr class="row3" objid={{d.id}}>
 	{% else %}
-		{% ifnotequal d.statuses.latest.type.id 1 %}
+		{% if d.statuses.latest.type.id != 1 %}
 			<tr class="row4" objid={{d.id}}>
 		{% else %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{d.id}}>
-		{% endifnotequal %}
+		{% endif %}
 	{% endif %}
 			<td>{{d.id}}</td>
 			<td>
@@ -206,9 +206,9 @@
 			<td>
 				{% if d.statuses.count %}
 					{{ d.statuses.latest.type }}<br>
-					{% ifequal d.statuses.latest.type.id 1 %}
+					{% if d.statuses.latest.type.id == 1 %}
 						<a href="{{d.get_absolute_url}}/close" class="fancybox">אשר</a>
-					{% endifequal %}
+					{% endif %}
 				{% else %}
 					<a href="{{d.get_absolute_url}}/close" class="fancybox">אשר</a>
 				{% endif %}

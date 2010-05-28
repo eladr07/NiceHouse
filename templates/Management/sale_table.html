@@ -41,9 +41,9 @@
 			<td>
 				{{s.price|commaise}}<br>
 				{{s.include_tax|yesno:"כולל מע\"מ, לא כולל מע\"מ"}}, 
-				{% ifnotequal s.house.building.project.commissions.include_lawyer None %}
+				{% if s.house.building.project.commissions.include_lawyer != None %}
 					{{s.price_include_lawyer|yesno:"כולל עו\"ד, לא כולל עו\"ד"}}
-				{% endifnotequal %}
+				{% endif %}
 			</td>
 			{% if s.discount %}<td>{{s.discount}}%</td>{% endif %}
 			{% if s.allowed_discount %}<td>{{s.allowed_discount}}%</td>{% endif %}

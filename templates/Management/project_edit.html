@@ -272,21 +272,21 @@
 				<tr>
 					<th>כולל מע"מ לעמלה</th>
 					<td>
-					{% ifnotequal c.include_tax None %}
+					{% if c.include_tax != None %}
 						{{c.include_tax|yesno}}
 					{% else %}
 						לא ידוע
-					{% endifnotequal %}
+					{% endif %}
 					</td>
 				</tr>
 				<tr>
 					<th>כולל עו"ד לעמלה</th>
 					<td>
-					{% ifnotequal c.include_lawyer None %}
+					{% if c.include_lawyer != None %}
 						{{c.include_lawyer|yesno}}
 					{% else %}
 						לא ידוע
-					{% endifnotequal %}
+					{% endif %}
 					</td>
 				</tr>
 				<tr>

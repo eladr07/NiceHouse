@@ -19,13 +19,13 @@
 			{% for cl in commission_list %}
 			<tr>
 				<td>
-				{% ifequal cl.grouper "c_var" %}עמלה משתנה{% endifequal %}
-				{% ifequal cl.grouper "c_var_precentage" %}עמלה משתנה באחוזים{% endifequal %}
-				{% ifequal cl.grouper "c_by_price" %}עמלה לפי מחיר דירה{% endifequal %}
-				{% ifequal cl.grouper "b_discount_save" %}בונוס חסכון בהנחה{% endifequal %}
-				{% ifequal cl.grouper "b_discount_save_precentage" %}בונוס חסכון בהנחה באחוזים{% endifequal %}
-				{% ifequal cl.grouper "b_house_type" %}בונוס לסוג דירה{% endifequal %}
-				{% ifequal cl.grouper "b_sale_rate" %}בונוס קצב מכירות{% endifequal %}
+				{% if cl.grouper == "c_var" %}עמלה משתנה{% endif %}
+				{% if cl.grouper == "c_var_precentage" %}עמלה משתנה באחוזים{% endif %}
+				{% if cl.grouper == "c_by_price" %}עמלה לפי מחיר דירה{% endif %}
+				{% if cl.grouper == "b_discount_save" %}בונוס חסכון בהנחה{% endif %}
+				{% if cl.grouper == "b_discount_save_precentage" %}בונוס חסכון בהנחה באחוזים{% endif %}
+				{% if cl.grouper == "b_house_type" %}בונוס לסוג דירה{% endif %}
+				{% if cl.grouper == "b_sale_rate" %}בונוס קצב מכירות{% endif %}
 				</td>
 			</tr>
 			{% regroup cl.list by value as value_list %}

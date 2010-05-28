@@ -173,11 +173,10 @@
 				{% endif %}
 			</td>
 			<td>
-				{% ifequal s.employee.employment_terms.salary_net None %}
-					הנהלת חשבונות
+				{% if s.employee.employment_terms.salary_net == None %}					הנהלת חשבונות
 				{% else %}
 					<a href="{{s.id}}/checkdetails" class="fancybox">{{s.check_amount|default_if_none:""|commaise}}</a>
-				{% endifequal %}
+				{% endif %}
 			</td>
 			<td>{{s.bruto|default_if_none:""|commaise}}</td>
 			<td></td>
