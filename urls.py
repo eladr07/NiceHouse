@@ -421,7 +421,7 @@ urlpatterns += patterns('Management.views',
     (r'^tax/add$', 'limited_create_object',
      {'form_class' : Management.forms.TaxForm, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '%(id)s'}),
     (r'^tax/(?P<object_id>\d+)$', 'limited_update_object',
-     {'model' : Management.forms.TaxForm, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '%(id)s'}),
+     {'form_class' : Management.forms.TaxForm, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '%(id)s'}),
     (r'^tax/(?P<object_id>\d+)/del$', 'limited_delete_object',
      {'model':Tax, 'post_delete_redirect':'/tax'}),
     
