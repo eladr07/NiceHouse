@@ -972,7 +972,8 @@ def nhmonth_close(request):
     if query.count() == 1:
         nhm = query[0]
     elif query.count() == 0:
-        nhm = NHMonth(nhbranch__id = nhbranch_id, year=year, month=month)
+        nhbranch = NHBranch.objects.get(pk=)
+        nhm = NHMonth(nhbranch = nhbranch, year = year, month = month)
     nhm.close()
     return HttpResponseRedirect('/nhbranch/%s/sales?year=%s&month=%s' % (nhbranch_id, nhm.year, nhm.month))
 
