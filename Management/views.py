@@ -2724,7 +2724,7 @@ def json_employees(request, project_id):
 
 @login_required
 def json_houses(request, building_id):
-    houses = House.objects.filter(building__id = building_id).values('id','num')
+    houses = House.objects.filter(building__id = building_id).only('id','num')
     data = serializers.serialize('json', houses, fields=('id','num'))
     return HttpResponse(data)
 
