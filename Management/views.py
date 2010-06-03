@@ -6,8 +6,7 @@ from django.db import models
 from django.forms.formsets import formset_factory
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
-from django.forms.models import inlineformset_factory, modelformset_factory,\
-    modelform_factory
+from django.forms.models import inlineformset_factory, modelformset_factory, modelform_factory
 from django.template import RequestContext
 from django.core import serializers
 from django.core.urlresolvers import reverse
@@ -15,6 +14,7 @@ from django.views.generic.create_update import create_object, update_object
 from django.views.generic.list_detail import object_list, object_detail
 from django.views.generic.simple import direct_to_template
 from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib.contenttypes.models import ContentType
 from forms import *
 from models import *
 from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter 
@@ -2192,30 +2192,36 @@ def contact_delete(request, id):
 
 @permission_required('Management.add_attachment')
 def obj_add_attachment(request, obj_id, model):
-    obj = model.objects.get(pk= obj_id)
+    content_type = ContentType.objects.get_for_model(model)
+    obj = content_type.get_object_for_this_type(pk = obj_id)
     if request.method == 'POST':
         form = AttachmentForm(request.POST, request.FILES, initial={'is_private':False})
-        form.instance.user_added = request.user
-        form.instance.file = request.FILES['file']
+        attachment = form.instance
+        attachment.user_added = request.user
+        attachment.file = request.FILES['file']
+        attachment.content_type = content_type
+        attachment.object_id = obj_id
         if form.is_valid():
-            a = form.save()
-            obj.attachments.add(a)
+            form.save()
             return HttpResponseRedirect('../attachments')
     else:
         form = AttachmentForm()
     
-    return render_to_response('Management/attachment_edit.html',
+    return render_to_response('Management/attachment_add.html',
                               {'form': form, 'obj':obj}, context_instance=RequestContext(request))
 
 @login_required
 def obj_attachments(request, obj_id, model):
-    obj = model.objects.get(pk= obj_id)
-    if request.user.is_staff:
-        attachments = obj.attachments.all()
-    else:
-        attachments = obj.attachments.filter(is_private=False)        
-    return render_to_response('Management/object_attachment_list.html',
-                              {'attachments': attachments, 'obj':obj}, context_instance=RequestContext(request))
+    content_type = ContentType.objects.get_for_model(model)
+    obj = content_type.get_object_for_this_type(pk = obj_id)
+    attachments = Attachment.objects.filter(content_type = content_type, object_id = obj_id)
+
+    if not request.user.is_staff:
+        attachments = attachments.filter(is_private=False)
+        
+    return render_to_response('Management/object_attachment_list.html', 
+                              {'attachments': attachments, 'obj':obj}, 
+                              context_instance=RequestContext(request))
 
 @permission_required('Management.add_reminder')
 def obj_add_reminder(request, obj_id, model):
@@ -2793,24 +2799,47 @@ def task_del(request, id):
 @permission_required('Management.delete_attachment')
 def attachment_delete(request, id):
     a = Attachment.objects.get(pk= id)
-    back = (a.project and '/projects/%s/attachments' % a.project.id) or (
-        a.employee and '/employees/%s/attachments' % a.employee.id) or '/attachments'   
     a.delete()
-    return HttpResponseRedirect(back)
+    return HttpResponseRedirect('/attachments')
 
 @permission_required('Management.add_attachment')
 def attachment_add(request):
     if request.method == "POST":
         form = AttachmentForm(request.POST, request.FILES)
-        form.instance.user_added = request.user
-        form.instance.file = request.FILES['file']
+        attachment = form.instance
+        attachment.user_added = request.user
+        attachment.file = request.FILES['file']
+        
+        if request.POST.has_key('project'):
+            select_form = ProjectSelectForm(request.POST, prefix = 'project')
+            if select_form.is_valid():
+                attachment.content_type = ContentType.objects.get_for_model(Project)
+                attachment.object_id = select_form.cleaned_data['project'].id
+        elif request.POST.has_key('employee'):
+            select_form = EmployeeSelectForm(request.POST, prefix = 'employee')
+            if select_form.is_valid():
+                attachment.content_type = ContentType.objects.get_for_model(EmployeeBase)
+                attachment.object_id = select_form.cleaned_data['employee'].id
+        elif request.POST.has_key('demand'):
+            select_form = DemandSelectForm(request.POST, prefix = 'demand')
+            if select_form.is_valid():
+                attachment.content_type = ContentType.objects.get_for_model(Demand)
+                kwargs = select_form.cleaned_data
+                demand = Demand.objects.get(**kwargs)
+                attachment.object_id = demand.id
+        
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/attachments')
     else:
         form = AttachmentForm()
-    return render_to_response('Management/attachment_edit.html', 
-                              {'form':form },
+        project_select_form = ProjectSelectForm(prefix = 'project')
+        employee_select_form = EmployeeSelectForm(prefix = 'employee')
+        demand_select_form = DemandSelectForm(prefix = 'demand')
+        
+    return render_to_response('Management/attachment_add.html', 
+                              {'form':form, 'project_select_form':project_select_form, 'employee_select_form':employee_select_form,
+                               'demand_select_form':demand_select_form },
                               context_instance=RequestContext(request))
 
 @permission_required('Management.change_sale')

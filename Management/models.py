@@ -9,6 +9,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.backends.dummy.base import IntegrityError
 from django.utils.translation import ugettext
 from django.contrib.auth.models import User
+from django.contrib.contenttypes.models import ContentType
 from templatetags.management_extras import *
 from decorators import cache_method
 from managers import *
@@ -33,6 +34,11 @@ Boolean = (
            (1, u'כן')
            )
 
+Attachment_types = (
+                    (1, ugettext('sent')),
+                    (2, ugettext('received')),
+                    )
+
 RoomsChoices = [(float(i)/2,float(i)/2) for i in range(2, 21)]
 RoomsChoices.insert(0, ('',u'----'))
     
@@ -44,28 +50,21 @@ class Tag(models.Model):
     class Meta:
         db_table = 'Tag'
         ordering = ['name']
-
-class AttachmentType(models.Model):
-    name = models.CharField(max_length=10, unique=True)
-    def __unicode__(self):
-        return unicode(self.name)            
-    class Meta:
-        db_table = 'AttachmentType'
         
 class Attachment(models.Model):
+    object_id = models.TextField(null = True, editable = False)
+    
+    content_type = models.ForeignKey(ContentType, null = True, editable = False)
+     
     add_time = models.DateTimeField(auto_now_add=True, editable=False)
     user_added = models.ForeignKey(User, related_name = 'attachments', editable=False, verbose_name=ugettext('user'))
     tags = models.ManyToManyField('Tag', related_name = 'attachments',null=True, blank=True, verbose_name = ugettext('tags'))
     file = models.FileField(ugettext('filename'), upload_to='files')
 
-    type = models.ForeignKey('AttachmentType', verbose_name = ugettext('attachment_type'))
+    type = models.SmallIntegerField(ugettext('attachment_type'), choices = Attachment_types)
     sr_name = models.CharField(ugettext('sr_name'), max_length=20)
     is_private = models.BooleanField(ugettext('is_private'), blank=True)
     remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
-    
-    project = models.ForeignKey('Project', related_name='attachments', editable=False, null=True)
-    employee = models.ForeignKey('EmployeeBase', related_name='attachments', editable=False, null=True)
-    car = models.ForeignKey('Car', related_name='attachments', editable=False, null=True)
     
     class Meta:
         db_table = 'Attachment'

@@ -76,6 +76,44 @@
 				<td><input type="submit" value="אישור" class="button"/></td>
 			</tr>
 		</table>
+		{% if not obj %}
+			<fieldset class="cardFieldset">
+				<legend>קישור לפרויקט</legend>
+				<table class="formTable">
+					{% with project_select_form as form %}
+						{% include "form_fields.html" %}
+					{% endwith %}
+					<tr>
+						<td></td>
+						<td><input class="button" name="project" type="submit">אישור</button></td>
+					</tr>
+				</table>
+			</fieldset>
+			<fieldset class="cardFieldset">
+				<legend>קישור לעובד</legend>
+				<table class="formTable">
+					{% with employee_select_form as form %}
+						{% include "form_fields.html" %}
+					{% endwith %}
+					<tr>
+						<td></td>
+						<td><input class="button" name="employee" type="submit">אישור</button></td>
+					</tr>
+				</table>
+			</fieldset>
+			<fieldset class="cardFieldset">
+				<legend>קישור לדרישה</legend>
+				<table class="formTable">
+					{% with demand_select_form as form %}
+						{% include "form_fields.html" %}
+					{% endwith %}
+					<tr>
+						<td></td>
+						<td><input class="button" name="demand" type="submit">אישור</button></td>
+					</tr>
+				</table>
+			</fieldset>
+		{% endif %}
 	</form>
 </div>
 {% endblock page %}

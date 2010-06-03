@@ -899,3 +899,12 @@ class CopyBuildingForm(forms.Form):
     include_house_prices = forms.BooleanField(label=ugettext('include_house_prices'), initial=True)
     include_parkings = forms.BooleanField(label=ugettext('include_parkings'), initial=True)
     include_storages = forms.BooleanField(label=ugettext('include_storages'), initial=True)
+    
+class ProjectSelectForm(forms.Form):
+    project = forms.ModelChoiceField(queryset = Project.objects.all(), label = ugettext('project'))
+    
+class EmployeeSelectForm(forms.Form):
+    employee = forms.ModelChoiceField(queryset = EmployeeBase.objects.all(), label = ugettext('Employee'))
+    
+class DemandSelectForm(MonthForm):
+    project = forms.ModelChoiceField(queryset = Project.objects.all(), label = ugettext('project'))
