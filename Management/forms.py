@@ -904,7 +904,7 @@ class ProjectSelectForm(forms.Form):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label = ugettext('project'))
     
 class EmployeeSelectForm(forms.Form):
-    employee = forms.ModelChoiceField(queryset = EmployeeBase.objects.all(), label = ugettext('Employee'))
+    employee = forms.ModelChoiceField(queryset = EmployeeBase.objects.all(), label = ugettext('employee'))
     
 class DemandSelectForm(MonthForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label = ugettext('project'))
