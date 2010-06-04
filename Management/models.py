@@ -919,7 +919,7 @@ class EmployeeSalaryBase(models.Model):
         terms = self.get_employee().employment_terms
         if terms.salary_net != None:
             return None
-        return self.derived.total_amount
+        return self.derived.total_amount - self.loan_pay
     @property
     @cache_method
     def bruto_employer_expense(self):
