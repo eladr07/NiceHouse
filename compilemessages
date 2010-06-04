@@ -1,0 +1,2 @@
+#! /bin/sh
+python /usr/lib/python2.4/site-packages/django/bin/django-admin.py compilemessages
