@@ -1596,12 +1596,15 @@ class ProjectCommission(models.Model):
                 for (m, y) in demand.get_signup_months():
                     #get sales that were signed up for specific month, not including future sales.
                     max_contractor_pay = date(demand.month==12 and demand.year+1 or demand.year, demand.month==12 and 1 or demand.month+1,1) 
-                    subSales = Sale.objects.filter(house__signups__date__year=y,
+                    q = models.Q(contractor_pay_year = max_contractor_pay.year, contractor_pay_month__lt = max_contractor_pay.month) | \
+                        models.Q(contractor_pay_year__lt = max_contractor_pay.year)
+                    
+                    
+                    subSales = Sale.objects.filter(q, house__signups__date__year=y,
                                                    house__signups__date__month=m,
                                                    house__signups__cancel=None,
                                                    house__building__project = demand.project,
-                                                   commission_include=True,
-                                                   contractor_pay_lt = max_contractor_pay)
+                                                   commission_include=True)
                     subSales = subSales.order_by('house__signups__date')
                     
                     logger.info('calculating affected sales(%(sale_count)s) for month %(month)s/%(year)s',
