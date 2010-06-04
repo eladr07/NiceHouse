@@ -53,7 +53,7 @@ $(document).ready(function () {
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{a.id}}>
 				<td>{{ a.add_time }}</td>
 				<td>{{ a.user_added }}</td>
-				<td><a href="{{a.file.url}}" target="_blank">{{ a.file.filename }}</a></td>
+				<td><a href="{{a.file.url}}" target="_blank">{{ a.file.name }}</a></td>
 				<td>{{a.file.size|filesizeformat}}</td>
 				<td>{{a.tags.all|join:", "}}</td>
 			</tr>
