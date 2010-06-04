@@ -78,7 +78,7 @@
 						</tr>
 						<tr>
 							<th>שכר נטו</th>
-							<td>{% if terms.salary_net == True %}נטו{% endif %}{% if terms.salary_net == False %}ברוטו{%endif%}</td>
+							<td>{{ terms.get_salary_net_display }}</td>
 						</tr>
 						<tr>
 							<th>רשת בטחון</th>
