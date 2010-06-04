@@ -2805,25 +2805,26 @@ def attachment_delete(request, id):
 def attachment_add(request):
     if request.method == "POST":
         form = AttachmentForm(request.POST, request.FILES)
+        project_select_form = ProjectSelectForm(request.POST, prefix = 'project')
+        employee_select_form = EmployeeSelectForm(request.POST, prefix = 'employee')
+        demand_select_form = DemandSelectForm(request.POST, prefix = 'demand')
+        
         attachment = form.instance
         attachment.user_added = request.user
         attachment.file = request.FILES['file']
         
         if request.POST.has_key('project'):
-            select_form = ProjectSelectForm(request.POST, prefix = 'project')
-            if select_form.is_valid():
+            if project_select_form.is_valid():
                 attachment.content_type = ContentType.objects.get_for_model(Project)
-                attachment.object_id = select_form.cleaned_data['project'].id
+                attachment.object_id = project_select_form.cleaned_data['project'].id
         elif request.POST.has_key('employee'):
-            select_form = EmployeeSelectForm(request.POST, prefix = 'employee')
-            if select_form.is_valid():
+            if employee_select_form.is_valid():
                 attachment.content_type = ContentType.objects.get_for_model(EmployeeBase)
-                attachment.object_id = select_form.cleaned_data['employee'].id
+                attachment.object_id = employee_select_form.cleaned_data['employee'].id
         elif request.POST.has_key('demand'):
-            select_form = DemandSelectForm(request.POST, prefix = 'demand')
-            if select_form.is_valid():
+            if demand_select_form.is_valid():
                 attachment.content_type = ContentType.objects.get_for_model(Demand)
-                kwargs = select_form.cleaned_data
+                kwargs = demand_select_form.cleaned_data
                 demand = Demand.objects.get(**kwargs)
                 attachment.object_id = demand.id
         
