@@ -216,7 +216,7 @@ class HouseForm(forms.ModelForm):
             i=i+1
         vs = self.instance.versions.filter(type__id = price_type_id)
         if vs.count() > 0:
-            latest_version = vs.latest().price
+            latest_version = vs.latest()
             self.initial['price'] = latest_version.price
             self.initial['price_date'] = latest_version.date
     class Meta:
