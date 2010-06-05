@@ -58,7 +58,7 @@ $(document).ready(function () {
 	<form method="GET">
 		<table class="dataTable">
 			<tr class="row1">
-				<td colspan="2" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש לפי עובד</td>
+				<td colspan="{{employee_select_form.fields|length|add:'1'}}" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש לפי עובד</td>
 			</tr>
 			<tr class="row2">
 				{% with employee_select_form as form %}
@@ -73,7 +73,7 @@ $(document).ready(function () {
 	<form method="GET">
 		<table class="dataTable">
 			<tr class="row1">
-				<td colspan="4" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש לפי דרישה</td>
+				<td colspan="{{demand_select_form.fields|length|add:'1'}}" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש לפי דרישה</td>
 			</tr>
 			<tr class="row2">
 				{% with demand_select_form as form %}
