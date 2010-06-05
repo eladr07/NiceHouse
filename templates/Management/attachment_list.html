@@ -103,7 +103,7 @@ $(document).ready(function () {
 			<th>גודל</th>
 			<th>תגיות</th>
 		</tr>
-		{% for a in object_list %}
+		{% for a in attachments %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{a.id}}>
 				<td>{{ a.add_time }}</td>
 				<td>{{ a.user_added }}</td>

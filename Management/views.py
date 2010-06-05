@@ -2840,7 +2840,7 @@ def attachment_list(request):
           
     return render_to_response('Management/attachment_list.html', 
                               {'project_select_form':project_select_form, 'employee_select_form':employee_select_form,
-                               'demand_select_form':demand_select_form },
+                               'demand_select_form':demand_select_form, 'attachments':attachments },
                               context_instance=RequestContext(request))
 
 @permission_required('Management.add_attachment')
