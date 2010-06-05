@@ -2820,7 +2820,7 @@ def attachment_list(request):
                 object_id = project.id
         elif request.GET.has_key('employee'):
             if employee_select_form.is_valid():
-                employee = employee_select_form.cleaned_data['project']
+                employee = employee_select_form.cleaned_data['employee']
                 model = employee.__class__
                 content_type = ContentType.objects.get_for_model(model)
                 object_id = employee.id
