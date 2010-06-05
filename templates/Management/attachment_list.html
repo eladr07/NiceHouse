@@ -43,15 +43,12 @@ $(document).ready(function () {
 	<form method="GET">
 		<table class="dataTable">
 			<tr class="row1">
-				<td colspan="2" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש לפי פרוייקט</td>
+				<td colspan="{{project_select_form.fields|length|add:'1'}}" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש לפי פרוייקט</td>
 			</tr>
 			<tr class="row2">
-				{% for field in project_select_form %}
-				<td>
-					{{ field.label_tag }} : 
-					{{ field }}
-				</td>
-				{% endfor %}
+				{% with project_select_form as form %}
+					{% include "Management/filter_form_fields.html" %}
+				{% endwith %}
 				<td><input name="project" type="submit" value="חפש" class="button"/></td>
 			</tr>
 		</table>
@@ -64,12 +61,9 @@ $(document).ready(function () {
 				<td colspan="2" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש לפי עובד</td>
 			</tr>
 			<tr class="row2">
-				{% for field in employee_select_form %}
-				<td>
-					{{ field.label_tag }} : 
-					{{ field }}
-				</td>
-				{% endfor %}
+				{% with employee_select_form as form %}
+					{% include "Management/filter_form_fields.html" %}
+				{% endwith %}
 				<td><input name="employee" type="submit" value="חפש" class="button"/></td>
 			</tr>
 		</table>
@@ -82,12 +76,9 @@ $(document).ready(function () {
 				<td colspan="4" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש לפי דרישה</td>
 			</tr>
 			<tr class="row2">
-				{% for field in demand_select_form %}
-				<td>
-					{{ field.label_tag }} : 
-					{{ field }}
-				</td>
-				{% endfor %}
+				{% with demand_select_form as form %}
+					{% include "Management/filter_form_fields.html" %}
+				{% endwith %}
 				<td><input name="demand" type="submit" value="חפש" class="button"/></td>
 			</tr>
 		</table>
