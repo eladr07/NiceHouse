@@ -2801,6 +2801,48 @@ def attachment_delete(request, id):
     a.delete()
     return HttpResponseRedirect('/attachments')
 
+@permission_required('Management.list_attachment')
+def attachment_list(request):
+    attachments = Attachment.objects.all()
+    
+    if len(request.GET):
+        project_select_form = ProjectSelectForm(request.GET, prefix = 'project')
+        employee_select_form = EmployeeSelectForm(request.GET, prefix = 'employee')
+        demand_select_form = DemandSelectForm(request.GET, prefix = 'demand')
+        
+        object_id, content_type = None, None
+        
+        if request.GET.has_key('project'):
+            if project_select_form.is_valid():
+                project = project_select_form.cleaned_data['project']
+                model = project.__class__
+                content_type = ContentType.objects.get_for_model(model)
+                object_id = project.id
+        elif request.GET.has_key('employee'):
+            if employee_select_form.is_valid():
+                employee = employee_select_form.cleaned_data['project']
+                model = employee.__class__
+                content_type = ContentType.objects.get_for_model(model)
+                object_id = employee.id
+        elif request.GET.has_key('demand'):
+            if demand_select_form.is_valid():
+                kwargs = demand_select_form.cleaned_data
+                demand = Demand.objects.get(**kwargs)
+                model = demand.__class__
+                content_type = ContentType.objects.get_for_model(model)
+                object_id = demand.id
+        
+        attachments = attachments.filter(content_type = content_type, object_id = object_id)
+    else:
+        project_select_form = ProjectSelectForm(prefix = 'project')
+        employee_select_form = EmployeeSelectForm(prefix = 'employee')
+        demand_select_form = DemandSelectForm(prefix = 'demand')
+          
+    return render_to_response('Management/attachment_list.html', 
+                              {'project_select_form':project_select_form, 'employee_select_form':employee_select_form,
+                               'demand_select_form':demand_select_form },
+                              context_instance=RequestContext(request))
+
 @permission_required('Management.add_attachment')
 def attachment_add(request):
     if request.method == "POST":

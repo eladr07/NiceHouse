@@ -22,7 +22,6 @@ $(document).ready(function () {
 });
 </script>
 {% endblock header %}
-
 {% block content %}
 	<div class="title">
 		<div class="pageTitle">ארכיב מסמכים</div>
@@ -40,7 +39,60 @@ $(document).ready(function () {
 		<a id="attachmentDelete">מחיקה</a>
 	</div>
 	<div class="clearBoth"> </div>
-	<br /> 		
+<div style="float:right;width:30%;">
+	<form method="GET">
+		<table class="dataTable">
+			<tr class="row1">
+				<td colspan="2" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש לפי פרוייקט</td>
+			</tr>
+			<tr class="row2">
+				{% for field in project_select_form %}
+				<td>
+					{{ field.label_tag }} : 
+					{{ field }}
+				</td>
+				{% endfor %}
+				<td><input name="project" type="submit" value="חפש" class="button"/></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div style="float:right;width:30%;">
+	<form method="GET">
+		<table class="dataTable">
+			<tr class="row1">
+				<td colspan="2" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש לפי עובד</td>
+			</tr>
+			<tr class="row2">
+				{% for field in employee_select_form %}
+				<td>
+					{{ field.label_tag }} : 
+					{{ field }}
+				</td>
+				{% endfor %}
+				<td><input name="employee" type="submit" value="חפש" class="button"/></td>
+			</tr>
+		</table>
+	</form>
+</div>
+<div style="float:right;width:30%;">
+	<form method="GET">
+		<table class="dataTable">
+			<tr class="row1">
+				<td colspan="4" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש לפי דרישה</td>
+			</tr>
+			<tr class="row2">
+				{% for field in demand_select_form %}
+				<td>
+					{{ field.label_tag }} : 
+					{{ field }}
+				</td>
+				{% endfor %}
+				<td><input name="demand" type="submit" value="חפש" class="button"/></td>
+			</tr>
+		</table>
+	</form>
+</div>
 	<table id="attachmentTable" class="dataTable" border="1">
 		<tr>
 			<th>תאריך הוספה</th>
