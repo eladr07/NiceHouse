@@ -166,6 +166,13 @@
 						{% if form.price.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.price.errors|join:""}}'/>{% endif %}
 					</td>
 				</tr>
+				<tr>
+					<th>{{form.price_date.label_tag}}</th>
+					<td>
+						{{form.price_date}}
+						{% if form.price_date.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.price_date.errors|join:""}}'/>{% endif %}
+					</td>
+				</tr>
 			</table>
 		</fieldset>
 		{% with form.instance.get_signup as signup %}

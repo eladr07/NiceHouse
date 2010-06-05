@@ -184,6 +184,8 @@ class HouseForm(forms.ModelForm):
     storage1 = forms.ModelChoiceField(queryset=Storage.objects.all(), required=False, label = ugettext('storage') + ' 1')
     storage2 = forms.ModelChoiceField(queryset=Storage.objects.all(), required=False, label = ugettext('storage') + ' 2')
     price = forms.IntegerField(label=ugettext('price'), required=False)
+    price_date = forms.DateField(label = ugettext('price_date'), required = False)
+    
     def save(self, price_type_id, *args, **kw):
         h = forms.ModelForm.save(self, *args, **kw)
         for f in ['parking1','parking2','parking3']:
@@ -192,14 +194,16 @@ class HouseForm(forms.ModelForm):
         for f in ['storage1','storage2']:
             if self.cleaned_data[f]:
                 h.storages.add(self.cleaned_data[f])
-        price = self.cleaned_data['price']
+        price, price_date = self.cleaned_data['price'], self.cleaned_data['price_date']
         q = self.instance.versions.filter(type__id = price_type_id)
         if price and (q.count() == 0 or q.latest().price != price):
-            self.instance.versions.add(HouseVersion(type=PricelistType.objects.get(pk=price_type_id), price = price,
-                                                    date = datetime.now()))
+            house_version = HouseVersion(type = PricelistType.objects.get(pk=price_type_id), price = price, date = price_date)
+            self.instance.versions.add(house_version)
         return h
     def __init__(self, price_type_id, *args, **kw):
-        forms.ModelForm.__init__(self, *args, **kw)
+        super(HouseForm, self).__init__(*args, **kw)
+        self.fields['price_date'].widget.attrs = {'class':'vDateField'}
+        
         if not self.instance.id:
             return
         i=1
@@ -212,7 +216,9 @@ class HouseForm(forms.ModelForm):
             i=i+1
         vs = self.instance.versions.filter(type__id = price_type_id)
         if vs.count() > 0:
-            self.initial['price'] = vs.latest().price
+            latest_version = vs.latest().price
+            self.initial['price'] = latest_version.price
+            self.initial['price_date'] = latest_version.date
     class Meta:
         model = House
 
