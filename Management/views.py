@@ -1704,7 +1704,7 @@ def nhsale_edit(request, object_id):
 
 @permission_required('Management.nhsale_move_nhmonth')
 def nhsale_move_nhmonth(request, object_id):
-    nhsale = NHSale.objects.get(pk=id)
+    nhsale = NHSale.objects.get(pk=object_id)
     if request.method == 'POST':
         form = NHMonthForm(request.POST)
         if form.is_valid():
@@ -1712,6 +1712,7 @@ def nhsale_move_nhmonth(request, object_id):
                                        year = form.cleaned_data['year'],
                                        month = form.cleaned_data['month'])
             nhsale.nhmonth = q.count() == 1 and q[0] or form.save()
+            nhsale.save()
     else:
         form = NHMonthForm(instance = nhsale.nhmonth)
     return render_to_response('Management/object_edit.html',
@@ -1734,9 +1735,8 @@ def nhsale_add(request, branch_id):
         payment2Forms = PaymentFormset(request.POST, prefix='payments2')
         
         if monthForm.is_valid() and saleForm.is_valid() and side1Form.is_valid() and side2Form.is_valid():
-            nhmonth, new = NHMonth.objects.get_or_create(nhbranch = monthForm.cleaned_data['nhbranch'],
-                                                         year = monthForm.cleaned_data['year'],
-                                                         month = monthForm.cleaned_data['month'])
+            kwargs = monthForm.cleaned_data
+            nhmonth, new = NHMonth.objects.get_or_create(**kwargs)
             saleForm.instance.nhmonth = nhmonth
             nhsale = saleForm.save()
             side1Form.instance.nhsale = side2Form.instance.nhsale = nhsale

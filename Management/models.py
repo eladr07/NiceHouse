@@ -68,6 +68,7 @@ class Attachment(models.Model):
     
     class Meta:
         db_table = 'Attachment'
+        permissions = (('list_attachment', 'Can list attachments'),)
 
 class Car(models.Model):
     number = models.IntegerField(ugettext('car_num'), unique = True)
