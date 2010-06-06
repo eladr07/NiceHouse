@@ -234,7 +234,6 @@
 		<a href="close">סגור דרישה</a><br><br>
 	{% endif %}
 <div class="clearBoth"></div>
-{% if user.is_staff %}
 	<fieldset class="cardFieldset">
 		<legend>פירוט מכירות - {{demand.project}} לחודש {{demand.month}}/{{demand.year}}</legend>
 		<div class="someIcon" style="width:100px;">
@@ -435,6 +434,5 @@
 			</tr>
 		</table>
 	</fieldset>
-{% endif %}
 <div class="clearBoth"></div>
 {% endblock content%}

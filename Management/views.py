@@ -2397,7 +2397,9 @@ def building_copy(request, building_id):
         form.fields['building'].queryset = building.project.buildings.all()
         form.fields['building'].initial = building.id
         
-    return render_to_response('Management/object_edit.html', {'form' : form}, context_instance=RequestContext(request))
+    return render_to_response('Management/object_edit.html',
+                              {'form' : form, 'title':ugettext('copy_building')}, 
+                              context_instance=RequestContext(request))
     
 @permission_required('Management.add_house')
 def building_addhouse(request, type_id, building_id):
