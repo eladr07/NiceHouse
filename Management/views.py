@@ -1714,8 +1714,8 @@ def nhsale_move_nhmonth(request, object_id):
             nhsale.save()
     else:
         nhmonth = nhsale.nhmonth
-        form = NHMonthForm(initial = dict((field.name, getattr(nhmonth, field.name)) 
-                                          for field in nhmonth._meta.fields if field.editable))
+        form = NHMonthForm(initial = {'year':nhmonth.year, 'month':nhmonth.month, 'nhbranch':nhmonth.nhbranch.id})
+        
     return render_to_response('Management/object_edit.html',
                               {'form': form, 'title':u'העברת עסקה מס ' + str(nhsale.num)}, 
                               context_instance=RequestContext(request))
