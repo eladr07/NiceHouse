@@ -1709,11 +1709,13 @@ def nhsale_move_nhmonth(request, object_id):
         form = NHMonthForm(request.POST)
         if form.is_valid():
             kwargs = form.cleaned_data
-            nhmonth = NHMonth.objects.get_or_create(**kwargs)
+            nhmonth, new = NHMonth.objects.get_or_create(**kwargs)
             nhsale.nhmonth = nhmonth
             nhsale.save()
     else:
-        form = NHMonthForm()
+        nhmonth = nhsale.nhmonth
+        form = NHMonthForm(initial = dict((field.name, getattr(nhmonth, field.name)) 
+                                          for field in nhmonth._meta.fields if field.editable))
     return render_to_response('Management/object_edit.html',
                               {'form': form, 'title':u'העברת עסקה מס ' + str(nhsale.num)}, 
                               context_instance=RequestContext(request))
