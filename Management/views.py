@@ -1708,10 +1708,9 @@ def nhsale_move_nhmonth(request, object_id):
     if request.method == 'POST':
         form = NHMonthForm(request.POST)
         if form.is_valid():
-            q = NHMonth.objects.filter(nhbranch = form.cleaned_data['nhbranch'],
-                                       year = form.cleaned_data['year'],
-                                       month = form.cleaned_data['month'])
-            nhsale.nhmonth = q.count() == 1 and q[0] or form.save()
+            kwargs = form.cleaned_data
+            nhmonth = NHMonth.objects.get_or_create(**kwargs)
+            nhsale.nhmonth = nhmonth
             nhsale.save()
     else:
         form = NHMonthForm()
