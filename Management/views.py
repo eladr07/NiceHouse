@@ -1714,7 +1714,7 @@ def nhsale_move_nhmonth(request, object_id):
             nhsale.nhmonth = q.count() == 1 and q[0] or form.save()
             nhsale.save()
     else:
-        form = NHMonthForm(instance = nhsale.nhmonth)
+        form = NHMonthForm()
     return render_to_response('Management/object_edit.html',
                               {'form': form, 'title':u'העברת עסקה מס ' + str(nhsale.num)}, 
                               context_instance=RequestContext(request))
