@@ -471,6 +471,7 @@ def demand_calc(request, id):
         
     return HttpResponseRedirect('/demandsold/?year=%s&month=%s' % (d.year,d.month))
 
+@permission_required('Management.projects_profit')
 def projects_profit(request):
     month = common.current_month()
     from_year = int(request.GET.get('from_year', month.year))
@@ -805,6 +806,7 @@ def employee_list_pdf(request):
     p.close()
     return response
 
+@permission_required('Management.nh_season_profit')
 def nh_season_profit(request):
     months = []
     totals = {}
@@ -3184,6 +3186,7 @@ def season_income(request):
                                 'avg_amount_notax':total_amount_notax/month_count,'avg_sale_count':total_sale_count/month_count},
                               context_instance=RequestContext(request))
 
+@permission_required('Management.demand_followup')
 def demand_followup_list(request):
     ds = Demand.objects.none()
     total_amount, total_invoices, total_payments, total_diff_invoice, total_diff_invoice_payment = 0,0,0,0,0
@@ -3214,6 +3217,7 @@ def demand_followup_list(request):
                                 'total_diff_invoice':total_diff_invoice, 'total_diff_invoice_payment':total_diff_invoice_payment},
                               context_instance=RequestContext(request))
 
+@permission_required('Management.season_employeesalary')
 def employeesalary_season_list(request):
     salaries = []
     from_date, to_date, employee_base = None,None,None
@@ -3248,6 +3252,7 @@ def employeesalary_season_list(request):
                                 'total_refund':total_refund},
                               context_instance=RequestContext(request))
 
+@permission_required('Management.season_salaryexpenses')
 def employeesalary_season_expenses(request):
     salaries = []
     total_neto, total_check_amount, total_loan_pay, total_bruto, total_bruto_employer, total_refund = 0,0,0,0,0,0
@@ -3285,6 +3290,7 @@ def employeesalary_season_expenses(request):
                                 'total_loan_pay':total_loan_pay,'total_bruto':total_bruto,'total_bruto_employer':total_bruto_employer},
                               context_instance=RequestContext(request))
 
+@permission_required('Management.season_total_salaryexpenses')
 def employeesalary_season_total_expenses(request):
     employees = []
     to_date, from_date = None, None
@@ -3335,6 +3341,7 @@ def employeesalary_season_total_expenses(request):
                                 'filterForm':form},
                               context_instance=RequestContext(request))
 
+@permission_required('Management.sale_analysis')
 def sale_analysis(request):
     data = []
     include_clients = None
@@ -3393,6 +3400,7 @@ def sale_analysis(request):
                                'total_sale_count':total_sale_count },
                               context_instance=RequestContext(request))
     
+@permission_required('Management.global_profit_lost')
 def global_profit_lost(request):
     data = []
     global_income, global_loss = 0,0

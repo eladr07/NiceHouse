@@ -221,6 +221,7 @@ class Project(models.Model):
         verbose_name_plural = ugettext('projects')
         db_table = 'Project'
         ordering = ['initiator','name']
+        permissions = (('projects_profit','Projects profit'),)
 
 class ParkingType(models.Model):
     name = models.CharField(ugettext('name'), max_length=20, unique=True)
@@ -848,7 +849,8 @@ class SalaryExpenses(models.Model):
     class Meta:
         db_table = 'SalaryExpenses'
         unique_together = ('employee','year','month')
-        permissions = (('list_salaryexpenses', 'Can list salary expenses'),)
+        permissions = (('list_salaryexpenses', 'Can list salary expenses'),('season_salaryexpenses','Season salary expenses'),
+                       ('season_total_salaryexpenses', 'Season total salary expenses'))
         
 class EmployeeSalaryBase(models.Model):
     month = models.PositiveSmallIntegerField(ugettext('month'), editable=False, choices=common.get_month_choices())
@@ -1135,6 +1137,7 @@ class EmployeeSalary(EmployeeSalaryBase):
         return '/employeesalaries/%s' % self.id
     class Meta:
         db_table = 'EmployeeSalary'
+        permissions = (('season_employeesalary','Season employee salary'),)
 
 class EPCommission(models.Model):
     employee = models.ForeignKey('Employee', related_name='commissions', editable=False)
@@ -1989,7 +1992,8 @@ class Demand(models.Model):
                        ('demand_season', 'Demand Season'), ('demand_followup', 'Demand Followup'), 
                        ('demand_remarks', 'Demand Remarks'), ('demand_sale_count', 'Demand Sale Count'),
                        ('demand_invoices', 'Demand Invoices'), ('demand_payments', 'Demand Payments'),
-                       ('season_income', 'Season Income'), ('demand_force_fully_paid', 'Demand Force Fully Paid'))
+                       ('season_income', 'Season Income'), ('demand_force_fully_paid', 'Demand Force Fully Paid'),
+                       ('demand_followup', 'Demand followup'))
 
 class SignupCancel(models.Model):
     date = models.DateField(ugettext('cancel_date'))
@@ -2339,7 +2343,7 @@ class NHMonth(models.Model):
     class Meta:
         db_table = 'NHMonth'
         ordering = ['year', 'month']
-        permissions = (('nhmonth_season', 'NHMonth Season'),)
+        permissions = (('nhmonth_season', 'NHMonth Season'),('nh_season_profit', 'NH season profit'),)
         unique_together = ('nhbranch','year','month')
 
 class NHSale(models.Model):
@@ -2599,7 +2603,7 @@ class Sale(models.Model):
         ordering = ['sale_date']
         db_table = 'Sale'
         permissions = (('reject_sale', 'Can reject sales'),('cancel_sale', 'Can cancel sales'),
-                       ('pre_sale', 'Can pre sales'),)
+                       ('pre_sale', 'Can pre sales'), ('sale_analysis', 'Sale analysis'))
         
 class Account(models.Model):
     num = models.IntegerField(ugettext('account_num'), unique=True)
@@ -2706,6 +2710,7 @@ class DivisionType(models.Model):
         return unicode(self.name)
     class Meta:
         db_table = 'DivisionType'
+        permissions = (('global_profit_lost','Global profit & loss'),)
 
 class IncomeType(models.Model):
     name = models.CharField(ugettext('name'), max_length=40, unique=True)
