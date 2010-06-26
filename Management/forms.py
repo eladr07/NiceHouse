@@ -784,13 +784,14 @@ class EmploymentTermsForm(RevisionExtForm):
     def __init__(self, *args, **kw):
         super(EmploymentTermsForm, self).__init__(*args, **kw)
         self.fields['tax_deduction_date'].widget.attrs = {'class':'vDateField'}
+        self.fields['remarks'].widget.attrs = {'cols':'20', 'rows':'3'}
     class Meta:
         model = EmploymentTerms
 
 class EmployeeSalaryForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         super(EmployeeSalaryForm, self).__init__(*args, **kw)
-        self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
+        self.fields['remarks'].widget.attrs = {'cols':'20', 'rows':'3'}
         self.fields['pdf_remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
     class Meta:
         model = EmployeeSalary
@@ -798,7 +799,7 @@ class EmployeeSalaryForm(forms.ModelForm):
 class NHEmployeeSalaryForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         super(NHEmployeeSalaryForm, self).__init__(*args, **kw)
-        self.fields['remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
+        self.fields['remarks'].widget.attrs = {'cols':'20', 'rows':'3'}
         self.fields['pdf_remarks'].widget = forms.Textarea(attrs={'cols':'20', 'rows':'3'})
     class Meta:
         model = NHEmployeeSalary
