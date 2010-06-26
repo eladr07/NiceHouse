@@ -1127,7 +1127,7 @@ def send_mail(request):
             field_names = ['attachment1','attachment2','attachment3','attachment4','attachment5']
             attachments = [request.FILES[field_name] for field_name in field_names if form.cleaned_data[field_name]]
                                 
-            mail(to = form.cleaned_data['to'], cc = form.cleaned_data['Cc'], bcc = form.cleaned_data['bcc'],
+            mail(to = form.cleaned_data['to'], cc = form.cleaned_data['Cc'], bcc = form.cleaned_data['Bcc'],
                  subject = form.cleaned_data['subject'], contents = form.cleaned_data['contents'], attachments = attachments)
     else:
         form = MailForm()
