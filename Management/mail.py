@@ -28,7 +28,7 @@ def mail(to, cc, bcc, subject, contents, attachments = ()):
             
         payload = attachment_file.read()
         filename = attachment_file.name
-        raise TypeError
+
         part.set_payload(payload)
         Encoders.encode_base64(part)
         part.add_header('Content-Disposition', 'attachment; filename="%s"' % filename)
