@@ -1,4 +1,4 @@
-﻿{% extends "./template.html" %}
+﻿{% extends "./base.html" %}
 {% block header %}
 <script>
 	$(document).ready(function() {		
@@ -11,8 +11,7 @@
 	});
 </script>
 {% endblock header %}
-{% block page %}
-<div id="content">
+{% block content %}
 	<div class="title">
 		<div class="pageTitle">שליחת דואר אלקטרוני</div>
 	</div>
@@ -27,5 +26,4 @@
 			</tr>
 		</table>
 	</form>
-</div>
-{% endblock page %}
+{% endblock content %}

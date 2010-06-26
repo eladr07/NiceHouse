@@ -27,7 +27,7 @@ def mail(to, cc, bcc, subject, contents, attachments = ()):
             attachment_file = attachment
             
         payload = attachment_file.read()
-        filename = attachment_file.name
+        filename = unicode(attachment_file.name)
 
         part.set_payload(payload)
         Encoders.encode_base64(part)
