@@ -460,6 +460,7 @@ class EmploymentTerms(models.Model):
     tax_deduction_source = models.NullBooleanField(ugettext('tax_deduction_source'), choices = TaxDeductionTypes)
     tax_deduction_source_precentage = models.FloatField(ugettext('tax_deduction_source_precentage'), null=True, blank=True)
     tax_deduction_date = models.DateField(ugettext('tax_deduction_date'), null=True, blank=True)
+    remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
     class Meta:
         db_table='EmploymentTerms'
     
