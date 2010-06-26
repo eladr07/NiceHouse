@@ -31,7 +31,7 @@ def mail(to, cc, bcc, subject, contents, attachments = ()):
 
         part.set_payload(payload)
         Encoders.encode_base64(part)
-        part.add_header('Content-Disposition', 'attachment; filename="%s"' % filename)
+        part.add_header(u'Content-Disposition', 'attachment; filename="%s"' % filename)
         msg.attach(part)
 
     mailServer = smtplib.SMTP("smtp.gmail.com", 587)
