@@ -8,7 +8,7 @@ import os
 gmail_user = "nevehair@gmail.com"
 gmail_pwd = "q9w8e7r6"
 
-def mail(to, cc, bcc, subject, contents, attachments):
+def mail(to, cc, bcc, subject, contents, attachments = ()):
     msg = MIMEMultipart()
 
     msg['From'] = gmail_user
@@ -19,21 +19,20 @@ def mail(to, cc, bcc, subject, contents, attachments):
 
     msg.attach(MIMEText(contents))
     
-    if attachments:
-        for attachment in attachments:
-            part = MIMEBase('application', 'octet-stream')
-            if isinstance(attachment, str):
-                attachment_file = open(attachment)
-            elif isinstance(attachment, file):
-                attachment_file = attachment
-                
-            payload = attachment_file.read()
-            filename = attachment_file.name
-
-            part.set_payload(payload)
-            Encoders.encode_base64(part)
-            part.add_header('Content-Disposition', 'attachment; filename="%s"' % filename)
-            msg.attach(part)
+    for attachment in attachments:
+        part = MIMEBase('application', 'octet-stream')
+        if isinstance(attachment, str):
+            attachment_file = open(attachment)
+        elif isinstance(attachment, file):
+            attachment_file = attachment
+            
+        payload = attachment_file.read()
+        filename = attachment_file.name
+        raise TypeError
+        part.set_payload(payload)
+        Encoders.encode_base64(part)
+        part.add_header('Content-Disposition', 'attachment; filename="%s"' % filename)
+        msg.attach(part)
 
     mailServer = smtplib.SMTP("smtp.gmail.com", 587)
     mailServer.ehlo()
