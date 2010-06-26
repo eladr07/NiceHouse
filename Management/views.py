@@ -1101,9 +1101,7 @@ def demand_edit(request, object_id):
     else:
         form = DemandForm(instance = demand)
         
-    return render_to_response('Management/demand_edit.html', 
-                              { 'form':form, 'demand':demand, 'sales':sales },
-                              context_instance=RequestContext(request))
+    return render_to_response('Management/demand_edit.html', { 'form':form, 'demand':demand, 'sales':sales }, context_instance=RequestContext(request))
     
 @permission_required('Management.change_demand')
 def demand_close(request, id):
@@ -1121,12 +1119,25 @@ def demand_zero(request, id):
     d.close()
     return HttpResponseRedirect('/demands')
 
+@permission_required('Management.send_mail')
+def send_mail(request):
+    if request.method == 'POST':
+        form = MailForm(request.POST, request.FILES)
+        if form.is_valid():
+            field_names = ['attachment1','attachment2','attachment3','attachment4','attachment5']
+            attachments = [request.FILES[field_name] for field_name in field_names if form.cleaned_data[field_name]]
+                                
+            mail(to = form.cleaned_data['to'], cc = form.cleaned_data['Cc'], bcc = form.cleaned_data['bcc'],
+                 subject = form.cleaned_data['subject'], contents = form.cleaned_data['contents'], attachments = attachments)
+    else:
+        form = MailForm()
+        
+    return render_to_response('Management/send_mail.html',  { 'form':form }, context_instance=RequestContext(request))
+
 def demand_send_mail(demand, addr):
     filename = common.generate_unique_media_filename('pdf')
     MonthDemandWriter(demand, to_mail=True).build(filename)
-    mail(addr,
-         u'עמלה לפרויקט %s לחודש %s/%s' % (demand.project, demand.month, demand.year),
-         '', filename)
+    mail(to = addr, subject = u'עמלה לפרויקט %s לחודש %s/%s' % (demand.project, demand.month, demand.year), attachments = [filename])
     demand.send()
 
 @permission_required('Management.change_demand')

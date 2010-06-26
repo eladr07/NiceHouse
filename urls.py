@@ -445,6 +445,8 @@ urlpatterns += patterns('Management.views',
      {'form_class' : Management.forms.NHSaleSideForm, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '%(id)s'}),
     (r'^nhsaleside/(?P<object_id>\d+)/payment/add$', 'nhsaleside_payment_add'),
     (r'^nhsaleside/(?P<object_id>\d+)/invoice/add$', 'nhsaleside_invoice_add'),
+    
+    (r'^mail', 'send_mail'),
 )
 
 urlpatterns += patterns('Management.views',

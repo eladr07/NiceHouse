@@ -915,3 +915,15 @@ class EmployeeSelectForm(forms.Form):
     
 class DemandSelectForm(MonthForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label = ugettext('project'))
+    
+class MailForm(forms.Form):
+    to = forms.EmailField(label = ugettext('to'))
+    Cc = forms.EmailField(label = ugettext('CC'), required = False)
+    Bcc = forms.EmailField(label = ugettext('BCC'), required = False)
+    subject = forms.CharField(label = ugettext('subject'), max_length = 100, required = False)
+    attachment1 = forms.FileField(label = ugettext('attachment') + ' 1', required = False)
+    attachment2 = forms.FileField(label = ugettext('attachment') + ' 2', required = False)
+    attachment3 = forms.FileField(label = ugettext('attachment') + ' 3', required = False)
+    attachment4 = forms.FileField(label = ugettext('attachment') + ' 4', required = False)
+    attachment5 = forms.FileField(label = ugettext('attachment') + ' 5', required = False)
+    contents = forms.Textarea(label = ugettext('contents'), required = False)

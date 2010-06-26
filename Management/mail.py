@@ -8,21 +8,32 @@ import os
 gmail_user = "nevehair@gmail.com"
 gmail_pwd = "q9w8e7r6"
 
-def mail(to, subject, text, attach):
+def mail(to, cc, bcc, subject, text, attachments):
     msg = MIMEMultipart()
 
     msg['From'] = gmail_user
     msg['To'] = to
+    msg['Cc'] = cc
+    msg['Bcc'] = bcc
     msg['Subject'] = subject
 
     msg.attach(MIMEText(text))
-   
-    part = MIMEBase('application', 'octet-stream')
-    part.set_payload(open(attach, 'rb').read())
-    Encoders.encode_base64(part)
-    part.add_header('Content-Disposition',
-                   'attachment; filename="%s"' % os.path.basename(attach))
-    msg.attach(part)
+    
+    if attachments:
+        for attachment in attachments:
+            part = MIMEBase('application', 'octet-stream')
+            if isinstance(attachment, str):
+                attachment_file = open(attachment)
+            elif isinstance(attachment, file):
+                attachment_file = attachment
+                
+            payload = attachment_file.read()
+            filename = attachment_file.name
+
+            part.set_payload(payload)
+            Encoders.encode_base64(part)
+            part.add_header('Content-Disposition', 'attachment; filename="%s"' % filename)
+            msg.attach(part)
 
     mailServer = smtplib.SMTP("smtp.gmail.com", 587)
     mailServer.ehlo()
