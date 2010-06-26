@@ -1126,7 +1126,7 @@ def send_mail(request):
         if form.is_valid():
             field_names = ['attachment1','attachment2','attachment3','attachment4','attachment5']
             attachments = [request.FILES[field_name] for field_name in field_names if form.cleaned_data[field_name]]
-                                
+            raise TypeError
             mail(to = form.cleaned_data['to'], cc = form.cleaned_data['Cc'], bcc = form.cleaned_data['Bcc'],
                  subject = form.cleaned_data['subject'], contents = form.cleaned_data['contents'], attachments = attachments)
     else:
@@ -1283,7 +1283,7 @@ def demand_sale_pre(request, id):
     sr.save()
     
     for demand in demands_to_calc:
-        sync_demand(demand)
+        demand.calc_sales_commission()
     
     return HttpResponseRedirect('/salepre/%s' % sr.id)
 
