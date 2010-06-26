@@ -27,13 +27,11 @@ def mail(to, cc, bcc, subject, contents, attachments = ()):
             attachment_file = attachment
             
         payload = attachment_file.read()
-        filename = attachment_file.name
+        filename = attachment_file._name
 
         part.set_payload(payload)
         Encoders.encode_base64(part)
         part.add_header(u'Content-Disposition', 'attachment; filename="%s"' % filename)
-        h=u'Content-Disposition', 'attachment; filename="%s"' % filename
-        raise TypeError
         msg.attach(part)
 
     mailServer = smtplib.SMTP("smtp.gmail.com", 587)
