@@ -926,4 +926,4 @@ class MailForm(forms.Form):
     attachment3 = forms.FileField(label = ugettext('attachment') + ' 3', required = False)
     attachment4 = forms.FileField(label = ugettext('attachment') + ' 4', required = False)
     attachment5 = forms.FileField(label = ugettext('attachment') + ' 5', required = False)
-    contents = forms.Textarea(label = ugettext('contents'), required = False)
+    contents = forms.CharField(widget = forms.Textarea(), label = ugettext('contents'), required = False)
