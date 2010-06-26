@@ -3028,8 +3028,12 @@ def project_demands(request, project_id, func, template_name):
 
 @login_required
 def demand_sales(request, project_id, year, month):
-    demand = Demand.objects.get(project__id = project_id, year = year, month = month)
-    sales = demand.get_sales()
+    try:
+        demand = Demand.objects.get(project__id = project_id, year = year, month = month)
+        sales = demand.get_sales()
+    except Demand.DoesNotExist:
+        sales = Demand.objects.none()
+        
     return render_to_response('Management/sale_table.html',
 							  {'sales':sales},
 							  context_instance=RequestContext(request))
