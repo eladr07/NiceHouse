@@ -1,4 +1,4 @@
-﻿{% extends "./template.html" %}
+﻿{% extends "./base.html" %}
 
 {% block header %}
 <script>
@@ -23,8 +23,7 @@
 </script>
 {% endblock header %}
 
-{% block page %}
-<div id="content">
+{% block content %}
 	<div class="title">
 		<div class="pageTitle">ארכיב מסמכים - {{obj}}</div>
 	</div>
@@ -66,5 +65,4 @@
 			</tr>
 		{% endfor %}
 	</table>
-</div>
-{% endblock page %}
+{% endblock content %}
