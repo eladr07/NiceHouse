@@ -105,11 +105,11 @@ $(document).ready(function () {
 				<td><a href="{{a.file.url}}" target="_blank">{{ a.file.name }}</a></td>
 				<td>{{a.file.size|filesizeformat}}</td>
 				<td>{{a.tags.all|join:", "}}</td>
-				<th>
+				<td>
 					{% with a.get_related_object as related_object %}
 						<a href="{{related_object.get_absolute_url}}" target="_blank">{{related_object}}</a>
 					{% endwith %}
-				</th>
+				</td>
 			</tr>
 		{% endfor %}
 	</table>
