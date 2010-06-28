@@ -89,19 +89,27 @@ $(document).ready(function () {
 <br>
 	<table id="attachmentTable" class="dataTable" border="1">
 		<tr>
+			<th></th>
 			<th>תאריך הוספה</th>
 			<th>משתמש מוסיף</th>
 			<th>שם</th>
 			<th>גודל</th>
 			<th>תגיות</th>
+			<th>מצורף ל-</th>
 		</tr>
 		{% for a in attachments %}
 			<tr class="{% cycle 'row1' 'row2' %}" objid={{a.id}}>
+				<td><a href="{{a.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
 				<td>{{ a.add_time }}</td>
 				<td>{{ a.user_added }}</td>
 				<td><a href="{{a.file.url}}" target="_blank">{{ a.file.name }}</a></td>
 				<td>{{a.file.size|filesizeformat}}</td>
 				<td>{{a.tags.all|join:", "}}</td>
+				<th>
+					{% with a.get_related_object as related_object %}
+						<a href="{{related_object.get_absolute_url}}" target="_blank">{{related_object}}</a>
+					{% endwith %}
+				</th>
 			</tr>
 		{% endfor %}
 	</table>

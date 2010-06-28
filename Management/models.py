@@ -66,6 +66,10 @@ class Attachment(models.Model):
     is_private = models.BooleanField(ugettext('is_private'), blank=True)
     remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
     
+    def get_related_object(self):
+        obj = self.content_type.get_object_for_this_type(pk = self.object_id)
+        return obj
+    
     class Meta:
         db_table = 'Attachment'
         permissions = (('list_attachment', 'Can list attachments'),)
