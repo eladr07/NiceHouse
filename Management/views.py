@@ -1,7 +1,7 @@
 ﻿import settings, common, reversion, inspect, itertools, time
 from datetime import datetime, date
 
-import django.core.paginator as paginator
+import django.core.paginator
 from django.db import models
 from django.forms.formsets import formset_factory
 from django.shortcuts import render_to_response
@@ -1337,7 +1337,7 @@ def demand_invoice_list(request):
             invoices = [invoice for invoice in query if invoice.demands.count()]
             if project:
                 invoices = [invoice for invoice in invoices if invoice.demands.filter(project = project).count()]
-            paginator = paginator.Paginator(invoices, 25) 
+            paginator = django.core.paginator.Paginator(invoices, 25) 
         
             try:
                 page = int(request.GET.get('page', '1'))
@@ -1369,7 +1369,7 @@ def demand_payment_list(request):
             payments = [p for p in query if p.demands.count()]
             if project:
                 payments = [p for p in payments if p.demands.filter(project = project).count()]
-            paginator = paginator.Paginator(payments, 25) 
+            paginator = django.core.paginator.Paginator(payments, 25) 
         
             try:
                 page = int(request.GET.get('page', '1'))
