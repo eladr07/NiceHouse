@@ -1043,6 +1043,8 @@ def employee_remarks(request, year, month):
         if form.is_valid():            
             form.instance = EmployeeSalary.objects.get_or_create(employee = form.cleaned_data['employee'], year = year, month = month)[0]
             form.save()
+        else:
+            raise TypeError
     else:
         form = EmployeeSalaryRemarksForm()
 
