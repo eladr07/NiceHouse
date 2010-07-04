@@ -1040,9 +1040,11 @@ def employee_refund(request, year, month):
 def employee_remarks(request, year, month):
     if request.method == 'POST':
         form = EmployeeSalaryRemarksForm(request.POST)
-        if form.is_valid():            
-            form.instance = EmployeeSalary.objects.get_or_create(employee = form.cleaned_data['employee'], year = year, month = month)[0]
+        if form.is_valid():  
+            es = EmployeeSalary.objects.get_or_create(employee = form.cleaned_data['employee'], year = year, month = month)[0]
+            form.instance = es
             form.save()
+            raise TypeError
     else:
         form = EmployeeSalaryRemarksForm()
 
