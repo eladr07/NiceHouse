@@ -86,7 +86,7 @@ DemandSaleCountForm = modelform_factory(Demand, fields = ('sale_count',))
 class EmployeeSalaryRemarksForm(forms.ModelForm):
     class Meta:
         model = EmployeeSalary
-        fields = ('employee','remraks')
+        fields = ('employee','remarks')
 
 EmployeeSalaryRefundForm = modelform_factory(EmployeeSalary, fields = ('employee', 'refund','refund_type'))
 
