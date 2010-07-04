@@ -1025,10 +1025,11 @@ def employee_refund(request, year, month):
     if request.method == 'POST':
         form = EmployeeSalaryRefundForm(request.POST)
         if form.is_valid():
-            form.instance = EmployeeSalary.objects.get_or_create(employee = form.cleaned_data['employee'], 
-                                                                 year = year, 
-                                                                 month = month)[0]
-            form.save()
+            cleaned_data = form.cleaned_data
+            es = EmployeeSalary.objects.get_or_create(employee = cleaned_data['employee'], year = year, month = month)[0]
+            es.refund = cleaned_data['refund']
+            es.refund_type = cleaned_data['refund_type']
+            es.save()
     else:
         form = EmployeeSalaryRefundForm()
 
@@ -1041,11 +1042,10 @@ def employee_remarks(request, year, month):
     if request.method == 'POST':
         form = EmployeeSalaryRemarksForm(request.POST)
         if form.is_valid():  
-            es = EmployeeSalary.objects.get_or_create(employee = form.cleaned_data['employee'], year = year, month = month)[0]
             cleaned_data = form.cleaned_data
-            form.instance = es
-            form.save()
-            raise TypeError
+            es = EmployeeSalary.objects.get_or_create(employee = cleaned_data['employee'], year = year, month = month)[0]
+            es.remarks = cleaned_data['remarks']
+            es.save()
     else:
         form = EmployeeSalaryRemarksForm()
 
@@ -1064,10 +1064,11 @@ def nhemployee_refund(request, year, month):
     if request.method == 'POST':
         form = NHEmployeeSalaryRefundForm(request.POST)
         if form.is_valid():
-            form.instance = NHEmployeeSalary.objects.get_or_create(nhemployee = form.cleaned_data['nhemployee'], 
-                                                                   year = year, 
-                                                                   month = month)[0]
-            form.save()
+            cleaned_data = form.cleaned_data
+            es = NHEmployeeSalary.objects.get_or_create(nhemployee = cleaned_data['nhemployee'], year = year, month = month)[0]
+            es.refund = cleaned_data['refund']
+            es.refund_type = cleaned_data['refund_type']
+            es.save()
     else:
         form = NHEmployeeSalaryRefundForm()
 
@@ -1080,10 +1081,10 @@ def nhemployee_remarks(request, year, month):
     if request.method == 'POST':
         form = EmployeeSalaryRemarksForm(request.POST)
         if form.is_valid():            
-            form.instance = NHEmployeeSalary.objects.get_or_create(nhemployee = form.cleaned_data['nhemployee'], 
-                                                                   year = year, 
-                                                                   month = month)[0]
-            form.save()
+            cleaned_data = form.cleaned_data
+            es = NHEmployeeSalary.objects.get_or_create(nhemployee = cleaned_data['nhemployee'], year = year, month = month)[0]
+            es.remarks = cleaned_data['remarks']
+            es.save()
     else:
         form = NHEmployeeSalaryRemarksForm()
 
