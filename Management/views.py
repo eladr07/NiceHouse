@@ -1039,7 +1039,7 @@ def employee_refund(request, year, month):
 @permission_required('Management.add_employeesalary')
 def employee_remarks(request, year, month):
     if request.method == 'POST':
-        form = EmployeeSalaryRemarksForm(reqauest.POST)
+        form = EmployeeSalaryRemarksForm(request.POST)
         if form.is_valid():            
             form.instance = EmployeeSalary.objects.get_or_create(employee = form.cleaned_data['employee'], year = year, month = month)[0]
             form.save()
