@@ -1215,7 +1215,7 @@ class EPCommission(models.Model):
             return total_amount
             
         except:
-            logger.exception('exception during calculate commission for employee %(employee)s project %(project)s. Details: %(ex)', 
+            logger.exception('exception during calculate commission for employee %(employee)s project %(project)s.', 
                              {'employee':self.employee, 'project':self.project})
             return 0
         
@@ -1725,7 +1725,7 @@ class ProjectCommission(models.Model):
                 
             logger.info('finished to calculate commission for project %(project)s.', {'project':self.project})
         except:
-            logger.exception('exception during calculate commission for project %(project)s. Details: %(ex)', {'project':self.project})
+            logger.exception('exception during calculate commission for project %(project)s.', {'project':self.project})
             
     class Meta:
         db_table = 'ProjectCommission'
