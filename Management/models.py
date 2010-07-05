@@ -1217,6 +1217,7 @@ class EPCommission(models.Model):
         except:
             logger.exception('exception during calculate commission for employee %(employee)s project %(project)s. Details: %(ex)', 
                              {'employee':self.employee, 'project':self.project})
+            return 0
         
             
     def get_absolute_url(self):
