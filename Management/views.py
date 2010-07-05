@@ -2935,13 +2935,13 @@ def sale_edit(request, id):
                     shm.save()
                     next = '/salehousemod/%s' % shm.id
             form.save()
-            demand.calc_sales_commission()
+            #demand.calc_sales_commission()
             year, month = sale.demand.year, sale.demand.month
             employees = demand.project.employees.exclude(work_end__isnull = False, work_end__lt = date(year, month, 1))
             
-            for salary in EmployeeSalary.objects.filter(employee__in = employees, year = year, month = month):
-                salary.calculate()
-                salary.save()
+            #for salary in EmployeeSalary.objects.filter(employee__in = employees, year = year, month = month):
+            #    salary.calculate()
+            #    salary.save()
                 
             if request.POST.has_key('addanother'):
                 return HttpResponseRedirect(next or '/demands/%s/sale/add' % sale.demand.id)
@@ -2977,13 +2977,13 @@ def sale_add(request, demand_id=None):
 							 employee_pay_month = month == 12 and 1 or month)
                 sp.save()
                 next = '/salepre/%s' % sp.id 
-            demand.calc_sales_commission()
+            #demand.calc_sales_commission()
             
             employees = demand.project.employees.exclude(work_end__isnull = False, work_end__lt = date(year, month, 1))
             
-            for salary in EmployeeSalary.objects.filter(employee__in = employees, year = year, month = month):
-                salary.calculate()
-                salary.save()
+            #for salary in EmployeeSalary.objects.filter(employee__in = employees, year = year, month = month):
+            #    salary.calculate()
+            #    salary.save()
                 
             if request.POST.has_key('addanother'):
                 return HttpResponseRedirect(next or reverse(sale_add, args=[demand_id]))
