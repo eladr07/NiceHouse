@@ -1,9 +1,12 @@
+import reversion
 from worker import Worker
 from threading import Thread
 
+@reversion.revision.create_on_success
 def calc_demand(demand):
     demand.calc_sales_commission()
     
+@reversion.revision.create_on_success    
 def calc_salary(salary):
     salary.calculate()
     salary.save()
