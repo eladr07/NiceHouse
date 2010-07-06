@@ -1506,7 +1506,7 @@ class CZilber(models.Model):
                 
                 prev_adds += sale_add
             
-                logger.debug('sale #%(id)s adds calc values: %(val)s', {'id':s.id, 'vals':{'s.pc_base':s.pc_base,'sale_add':sale_add}})
+                logger.debug('sale #%(id)s adds calc values: %(vals)s', {'id':s.id, 'vals':{'s.pc_base':s.pc_base,'sale_add':sale_add}})
             
             if d.include_zilber_bonus():
                 if prev_adds:
