@@ -1660,7 +1660,7 @@ class ProjectCommission(models.Model):
                         s.restore_date = demand.get_previous_demand().finish_date
                         diff = (q[0].value - s.c_final) * s.price_final / 100
                         
-                        logger.debug('sale #(id)s bonus calc values: %(vals)s',
+                        logger.debug('sale #%(id)s bonus calc values: %(vals)s',
                                      {'id': s.id,
                                       'vals': {'diff':diff,
                                                'q[0].value':q[0].value,
