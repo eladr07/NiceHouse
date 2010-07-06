@@ -265,13 +265,13 @@ class EmployeeRemoveProjectForm(forms.Form):
         super(EmployeeRemoveProjectForm, self).__init__(*args, **kw)
         self.fields['end_date'].widget.attrs = {'class':'vDateField'}
 
-class CByPriceForm(forms.ModelForm):
+class CPriceAmountForm(forms.ModelForm):
     def save(self, *args, **kw):
         if self.instance.price == 0:
-            self.instance.price == sys.maxint
-        return forms.ModelForm.save(self, *args, **kw)
+            self.instance.price = sys.maxint
+        return super(CPriceAmountForm, self).save(*args, **kw)
     class Meta:
-        model = CByPrice
+        model = CPriceAmount
  
 class SignupForm(forms.ModelForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label=ugettext('project'))

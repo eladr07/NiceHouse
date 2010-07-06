@@ -2625,7 +2625,7 @@ def employee_cvp(request, employee_id, project_id):
 def employee_cbp(request, employee_id, project_id):
     pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id)
     cbp = pc.c_by_price or CByPrice()
-    InlineFormSet = inlineformset_factory(CByPrice, CPriceAmount, can_delete=False)
+    InlineFormSet = inlineformset_factory(CByPrice, CPriceAmount,CPriceAmountForm, can_delete=False)
     if request.method == "POST":
         formset = InlineFormSet(request.POST, instance=cbp)
         form = CByPriceForm(request.POST, instance=cbp)
