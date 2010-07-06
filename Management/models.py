@@ -1211,7 +1211,7 @@ class EPCommission(models.Model):
                 scd.save()
                 
             logger.info('finished to calculate commission for employee %(employee)s project %(project)s. %(sale_count)s sales.', 
-                        {'employee':self.employee, 'project':self.project,'sale_count':len(sales.count())})
+                        {'employee':self.employee, 'project':self.project,'sale_count':len(sales)})
             return total_amount
             
         except:
