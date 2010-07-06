@@ -437,7 +437,7 @@ def demand_function(request,id , function):
 @permission_required('Management.list_demand')
 def demand_calc(request, id):
     # end the revision created by the middleware - i want manual control of the revision
-    reversion.revision.end()
+    #reversion.revision.end()
     
     d = Demand.objects.get(pk=id)
     c = d.project.commissions
