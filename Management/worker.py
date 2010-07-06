@@ -3,7 +3,6 @@ import threading, logging
 class Worker:
     
     def __init__(self, func):
-        super(Worker, self).__init__()
         # lock used to make the list synchronized
         self._lock = threading.Lock()
         # the list of items
