@@ -1167,7 +1167,7 @@ class EPCommission(models.Model):
         try:
             logger = logging.getLogger('commission')
             logger.info('starting to calculate commission for employee %(employee)s project %(project)s. %(sale_count)s sales.', 
-                        {'employee':self.employee, 'project':self.project,'sale_count':sales.count()})
+                        {'employee':self.employee, 'project':self.project,'sale_count':len(sales)})
             
             restore_date = date(salary.year, salary.month , 1)
             dic = {}# key: sale value: commission amount for sale
@@ -1211,7 +1211,7 @@ class EPCommission(models.Model):
                 scd.save()
                 
             logger.info('finished to calculate commission for employee %(employee)s project %(project)s. %(sale_count)s sales.', 
-                        {'employee':self.employee, 'project':self.project,'sale_count':sales.count()})
+                        {'employee':self.employee, 'project':self.project,'sale_count':len(sales.count())})
             return total_amount
             
         except:
