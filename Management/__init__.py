@@ -5,7 +5,7 @@ from threading import Thread, enumerate
 initialize = True
 
 for thread in enumerate():
-    if thread.name in ['demand thread','salary thread']:
+    if thread.getName() in ['demand thread','salary thread']:
         initialize = False
         break
 
