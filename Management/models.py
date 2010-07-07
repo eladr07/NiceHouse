@@ -994,13 +994,7 @@ class NHEmployeeSalary(EmployeeSalaryBase):
         if not terms:
             self.remarks = u'לעובד לא הוגדרו תנאי העסקה!'
             return
-        
-        # calculate base salary. if the employee only worked for part of the month, get that relative amount
-        if self.year == self.nhemployee.work_start.year and self.month == self.nhemployee.work_start.month:
-            self.base = float(30 - self.nhemployee.work_start.day) / 30 * terms.salary_base 
-        else:
-            self.base = terms.salary_base
-            
+                    
         if terms.salary_net == False:
             self.pdf_remarks = u'ברוטו, כמה נטו בעדכון הוצאות'
         if not terms.include_tax:
@@ -1012,6 +1006,12 @@ class NHEmployeeSalary(EmployeeSalaryBase):
             scd.delete()
         self.admin_commission, self.commissions, self.base = 0, 0, 0
         
+        # calculate base salary. if the employee only worked for part of the month, get that relative amount
+        if self.year == self.nhemployee.work_start.year and self.month == self.nhemployee.work_start.month:
+            self.base = float(30 - self.nhemployee.work_start.day) / 30 * terms.salary_base 
+        else:
+            self.base = terms.salary_base
+            
         # get all sales where either employee1, employee2, employee3, director is self.nhemployee
         q = models.Q(employee1 = self.nhemployee) | models.Q(employee2 = self.nhemployee) | models.Q(employee3 = self.nhemployee) | models.Q(director = self.nhemployee)
         
