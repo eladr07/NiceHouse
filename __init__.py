@@ -1,0 +1,3 @@
+import Management
+
+Management.initialize()

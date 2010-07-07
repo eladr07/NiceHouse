@@ -12,9 +12,6 @@ def initialize():
     def calc_salary(salary):
         salary.calculate()
         salary.save()
-    
-    if hasattr(Management,'_initialized'):
-        return
         
     demand_worker = Worker(calc_demand)
     salary_worker = Worker(calc_salary)
@@ -29,7 +26,3 @@ def initialize():
     
     Management.demand_worker = demand_worker
     Management.salary_worker = salary_worker
-    
-    Management._initialized = True
-    
-initialize()
