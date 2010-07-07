@@ -1259,7 +1259,7 @@ def demand_sale_reject(request, id):
     sr.save()
     
     for demand in demands_to_calc:
-        demand.calc_sales_commission()
+        demand_worker.add(demand)
     
     return HttpResponseRedirect('/salereject/%s' % sr.id)
 
@@ -1286,7 +1286,7 @@ def demand_sale_pre(request, id):
     sr.save()
     
     for demand in demands_to_calc:
-        demand.calc_sales_commission()
+        demand_worker.add(demand)
     
     return HttpResponseRedirect('/salepre/%s' % sr.id)
 
@@ -1303,7 +1303,7 @@ def demand_sale_cancel(request, id):
     sale.save()
     
     #re-calculate the entire demand
-    sale.demand.calc_sales_commission()
+    demand_worker.add(demand)
     
     return HttpResponseRedirect('/salecancel/%s' % sc.id)
 
