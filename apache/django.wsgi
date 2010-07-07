@@ -1,9 +1,24 @@
-import os
 import sys
+import os
 
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
-os.environ['PYTHON_EGG_CACHE'] = '/tmp/hoge'
+os.environ['PYTHON_EGG_CACHE']='/tmp/hoge'
+
+sys.path.append('/var/www/NiceHouse/trunk')
+
+import settings
+
+import django.core.management
+django.core.management.setup_environ(settings)
+utility = django.core.management.ManagementUtility()
+command = utility.fetch_command('runserver')
+
+command.validate()
+
+import django.conf
+import django.utils
+
+django.utils.translation.activate(django.conf.settings.LANGUAGE_CODE)
 
 import django.core.handlers.wsgi
+
 application = django.core.handlers.wsgi.WSGIHandler()
-sys.path.append('/var/www/NiceHouse/trunk')
