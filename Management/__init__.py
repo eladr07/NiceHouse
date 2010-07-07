@@ -9,7 +9,7 @@ for thread in enumerate():
         initialize = False
         break
 
-if initialize:
+if initialize and __name__ != '__main__':
     @reversion.revision.create_on_success
     def calc_demand(demand):
         demand.calc_sales_commission()
