@@ -17,40 +17,10 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.contenttypes.models import ContentType
 from forms import *
 from models import *
+from Management import demand_worker, salary_worker
 from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter 
 from pdf import PricelistWriter, BuildingClientsWriter, EmployeeSalariesBookKeepingWriter
 from mail import mail
-
-from worker import Worker
-from threading import Thread
-
-@reversion.revision.create_on_success
-def calc_demand(demand):
-    demand.calc_sales_commission()
-    
-@reversion.revision.create_on_success    
-def calc_salary(salary):
-    salary.calculate()
-    salary.save()
-
-if not hasattr(settings, 'workers_up'):
-    settings.workers_up = False
-
-if not settings.workers_up:
-    demand_worker = Worker(calc_demand)
-    salary_worker = Worker(calc_salary)
-    
-    demand_thread = Thread(target = lambda: demand_worker.start())
-    demand_thread.setDaemon(True)
-    demand_thread.start()
-    
-    salary_thread = Thread(target = lambda: salary_worker.start())
-    salary_thread.setDaemon(True)
-    salary_thread.start()
-    
-    settings.workers_up = True
-
-#################
 
 def object_edit_core(request, form_class, instance,
                      template_name = 'Management/object_edit.html', 
