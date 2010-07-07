@@ -994,6 +994,13 @@ class NHEmployeeSalary(EmployeeSalaryBase):
         if not terms:
             self.remarks = u'לעובד לא הוגדרו תנאי העסקה!'
             return
+        
+        # calculate base salary. if the employee only worked for part of the month, get that relative amount
+        if self.year == self.employee.work_start.year and self.month == self.employee.work_start.month:
+            self.base = float(30 - self.employee.work_start.day) / 30 * terms.salary_base 
+        else:
+            self.base = terms.salary_base
+            
         if terms.salary_net == False:
             self.pdf_remarks = u'ברוטו, כמה נטו בעדכון הוצאות'
         if not terms.include_tax:
