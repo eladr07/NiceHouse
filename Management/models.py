@@ -996,8 +996,8 @@ class NHEmployeeSalary(EmployeeSalaryBase):
             return
         
         # calculate base salary. if the employee only worked for part of the month, get that relative amount
-        if self.year == self.employee.work_start.year and self.month == self.employee.work_start.month:
-            self.base = float(30 - self.employee.work_start.day) / 30 * terms.salary_base 
+        if self.year == self.nhemployee.work_start.year and self.month == self.nhemployee.work_start.month:
+            self.base = float(30 - self.nhemployee.work_start.day) / 30 * terms.salary_base 
         else:
             self.base = terms.salary_base
             
