@@ -2,6 +2,7 @@ import sys
 import os
 
 os.environ['PYTHON_EGG_CACHE']='/tmp/hoge'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
 sys.path.append('/var/www/NiceHouse/trunk')
 
