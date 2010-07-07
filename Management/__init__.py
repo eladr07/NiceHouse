@@ -23,6 +23,3 @@ def initialize():
     salary_thread = Thread(target = lambda: salary_worker.start(), name='salary thread')
     salary_thread.setDaemon(True)
     salary_thread.start()
-    
-    Management.demand_worker = demand_worker
-    Management.salary_worker = salary_worker
