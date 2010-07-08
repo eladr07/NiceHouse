@@ -1,5 +1,6 @@
 ﻿from django.conf.urls.defaults import *
 from Management.models import *
+from Management.views import *
 from django.template import RequestContext
 import Management.forms
 import settings
@@ -22,8 +23,8 @@ urlpatterns = patterns('',
     (r'^accounts/password_change/$', 'django.contrib.auth.views.password_change'),
     )
 
-urlpatterns += patterns('Management.views',
-    (r'^$', 'index'),
+urlpatterns += patterns(
+    (r'^$', index),
     (r'^locate_house$', 'locate_house'),
     
     (r'^contacts/$', 'limited_object_list',
