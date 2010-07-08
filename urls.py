@@ -24,7 +24,7 @@ urlpatterns = patterns('',
     )
 
 urlpatterns += patterns(
-    (r'^$', index))
+    (r'^$', index),)
 urlpatterns += patterns(
     (r'^locate_house$', 'locate_house'),
     
