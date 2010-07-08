@@ -129,7 +129,7 @@ urlpatterns += patterns('Management.views',
     (r'^employees/(?P<object_id>\d+)/$', limited_update_object,
      {'form_class' : Management.forms.EmployeeForm, 'post_save_redirect' : '/employees/%(id)s'}),
     (r'^employees/end/(?P<object_id>\d+)$', employee_end),
-    (r'^employees/(?P<id>\d+)/employmentterms$', employee_employmentterms',
+    (r'^employees/(?P<id>\d+)/employmentterms$', employee_employmentterms,
      {'model':EmployeeBase}),
     (r'^employees/(?P<id>\d+)/account$', employee_account',
      {'model':EmployeeBase}),
@@ -408,7 +408,7 @@ urlpatterns += patterns('Management.views',
     (r'^mail', send_mail),
 )
 
-urlpatterns += patterns('Management.views',
+urlpatterns += patterns(
     (r'^demands/(?P<id>\d+)/zero$', demand_zero),
     (r'^demands/(?P<id>\d+)/forcefullypaid$', demand_force_fully_paid),
     (r'^demands/(?P<object_id>\d+)$', demand_edit),
@@ -457,7 +457,7 @@ urlpatterns += patterns('Management.views',
      {'model':Demand}),
 )
 
-urlpatterns += patterns('Management.views',
+urlpatterns += patterns(
     (r'^xml/buildings/(?P<project_id>\d+)$', json_buildings),
     (r'^xml/employees/(?P<project_id>\d+)$', json_employees),
     (r'^xml/houses/(?P<building_id>\d+)$', json_houses),
@@ -472,7 +472,7 @@ urlpatterns += patterns('Management.views',
     (r'^profitloss$', global_profit_lost),
 )
 
-urlpatterns += patterns('Management.views',
+urlpatterns += patterns(
     (r'^activitybase/(?P<activitybase_id>\d+)/citycallers/add$', activitybase_citycallers_add),
     (r'^citycallers/(?P<object_id>\d+)$', citycallers_edit),
     (r'^activitybase/(?P<activitybase_id>\d+)/mediareferrals/add$', activitybase_mediareferrals_add),
