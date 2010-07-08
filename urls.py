@@ -8,7 +8,7 @@ import Management.forms
 from django.contrib import admin
 admin.autodiscover()
 
-urlpatterns = patterns(
+urlpatterns = patterns('',
     # Example:
     # (r'^NiceHouse/', include('NiceHouse.foo.urls')),
 
@@ -22,7 +22,7 @@ urlpatterns = patterns(
     (r'^accounts/password_change/$', django.contrib.auth.views.password_change),
     )
 
-urlpatterns += patterns(
+urlpatterns += patterns('',
     (r'^$', index),
     (r'^locate_house$', locate_house),
     
@@ -407,7 +407,7 @@ urlpatterns += patterns(
     (r'^mail', send_mail),
 )
 
-urlpatterns += patterns(
+urlpatterns += patterns('',
     (r'^demands/(?P<id>\d+)/zero$', demand_zero),
     (r'^demands/(?P<id>\d+)/forcefullypaid$', demand_force_fully_paid),
     (r'^demands/(?P<object_id>\d+)$', demand_edit),
@@ -456,7 +456,7 @@ urlpatterns += patterns(
      {'model':Demand}),
 )
 
-urlpatterns += patterns(
+urlpatterns += patterns('',
     (r'^xml/buildings/(?P<project_id>\d+)$', json_buildings),
     (r'^xml/employees/(?P<project_id>\d+)$', json_employees),
     (r'^xml/houses/(?P<building_id>\d+)$', json_houses),
@@ -471,7 +471,7 @@ urlpatterns += patterns(
     (r'^profitloss$', global_profit_lost),
 )
 
-urlpatterns += patterns(
+urlpatterns += patterns('',
     (r'^activitybase/(?P<activitybase_id>\d+)/citycallers/add$', activitybase_citycallers_add),
     (r'^citycallers/(?P<object_id>\d+)$', citycallers_edit),
     (r'^activitybase/(?P<activitybase_id>\d+)/mediareferrals/add$', activitybase_mediareferrals_add),
