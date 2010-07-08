@@ -348,7 +348,7 @@ urlpatterns += patterns('Management.views',
     (r'^employeechecks/(?P<id>\d+)/del$', limited_delete_object,
      {'model':EmployeeCheck, 'post_delete_redirect':'/employeechecks'}),
     
-    (r'^reports/$', limited_direct_to_template',
+    (r'^reports/$', limited_direct_to_template,
      {'template': 'Management/reports.html',
       'extra_context': {'form':Management.forms.DemandReportForm, 'form2':Management.forms.DemandReportForm(prefix='2)}}),
     (r'^reports/project_month/(?P<project_id>\d+)/(?P<year>\d+)/(?P<month>\d+)$', report_project_month),
