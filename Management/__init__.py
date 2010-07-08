@@ -1,17 +1,7 @@
 ######## workers setup #########
-import logging, inspect, os
-
-logger = logging.getLogger('commission')
-
-logger.debug('importing...')
-logger.debug(inspect.stack())
-logger.debug(os.getpid())
-
 import reversion
 from worker import Worker
 from threading import Thread, enumerate
-
-logger.debug(len(enumerate()))
 
 @reversion.revision.create_on_success
 def calc_demand(demand):

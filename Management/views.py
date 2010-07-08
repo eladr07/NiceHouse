@@ -468,7 +468,8 @@ def demand_calc(request, id):
             else:
                 demand.close()
     else:
-        d.calc_sales_commission()
+        demand_worker.add(d)
+        #d.calc_sales_commission()
         
     return HttpResponseRedirect('/demandsold/?year=%s&month=%s' % (d.year,d.month))
 
