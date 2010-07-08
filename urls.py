@@ -3,13 +3,12 @@ from Management.models import *
 from Management.views import *
 from django.template import RequestContext
 import Management.forms
-import settings
 
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 admin.autodiscover()
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
     # Example:
     # (r'^NiceHouse/', include('NiceHouse.foo.urls')),
 
@@ -23,7 +22,7 @@ urlpatterns = patterns('',
     (r'^accounts/password_change/$', django.contrib.auth.views.password_change),
     )
 
-urlpatterns += patterns('Management.views',
+urlpatterns += patterns(
     (r'^$', index),
     (r'^locate_house$', locate_house),
     
