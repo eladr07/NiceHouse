@@ -1,4 +1,9 @@
 ######## workers setup #########
+import logging
+
+logger = logging.getLogger('commission')
+
+logger.debug('importing...')
 
 import reversion
 from worker import Worker
