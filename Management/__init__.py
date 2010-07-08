@@ -10,6 +10,8 @@ import reversion
 from worker import Worker
 from threading import Thread, enumerate
 
+logger.debug(len(enumerate()))
+
 @reversion.revision.create_on_success
 def calc_demand(demand):
     demand.calc_sales_commission()
