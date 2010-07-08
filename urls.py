@@ -23,7 +23,7 @@ urlpatterns = patterns(
     )
 
 urlpatterns += patterns(
-    (r'', index),
+    (r'^$', index),
     (r'^locate_house$', locate_house),
     
     (r'^contacts/$', limited_object_list,
