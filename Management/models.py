@@ -1172,34 +1172,48 @@ class EPCommission(models.Model):
         return False 
     def calc(self, sales, salary):
         try:
-            logger = logging.getLogger('commission')
+            logger = logging.getLogger('salary')
             logger.info('starting to calculate commission for employee %(employee)s project %(project)s. %(sale_count)s sales.', 
                         {'employee':self.employee, 'project':self.project,'sale_count':len(sales)})
             
             restore_date = date(salary.year, salary.month , 1)
+            logger.debug('restore_date: %s' % restore_date)
+            
             dic = {}# key: sale value: commission amount for sale
             for s in sales:
                 for scd in s.commission_details.filter(employee_salary=salary):
                     scd.delete()
             for c in ['c_var', 'c_by_price', 'b_house_type', 'b_discount_save']:
                 commission = getattr(self,c)
-                if not commission: continue
+                if not commission: 
+                    continue
                 commission = restore_object(commission, restore_date)
+                
+                logger.info('calculating commission : %s' % c)
+                
                 amounts = commission.calc(sales)
                 for s in amounts:
-                    if amounts[s] == 0: continue
-                    if self.max and amounts[s] > self.max:
-                        amounts[s] = self.max
+                    if amounts[s] == 0: 
+                        logger.warning('sale #%s has 0 commission!' % s.id)
+                        continue
                     s.commission_details.create(employee_salary = salary, value = amounts[s], commission = c)
                     dic[s] = dic.has_key(s) and dic[s] + amounts[s] or amounts[s]
             for c in ['c_var_precentage', 'b_discount_save_precentage']:
                 commission = getattr(self,c)
-                if not commission: continue
+                if not commission: 
+                    continue
                 commission = restore_object(commission, restore_date)
+                
+                logger.info('calculating commission : %s' % c)
+                
                 precentages = commission.calc(sales)
                 for s in precentages:
-                    if precentages[s] == 0: continue
+                    if precentages[s] == 0: 
+                        logger.warning('sale #%s has 0 commission!' % s.id)
+                        continue
                     if self.max and precentages[s] > self.max:
+                        logger.warning('sale #%(id)s commission %(commission)s is higher than max commission %(max_commission)s',
+                                       {'id':s.id, 'commission':precentages[s], 'max_commission':self.max})
                         precentages[s] = self.max
                     amount = precentages[s] * s.employee_price(self.employee) / 100
                     s.commission_details.create(employee_salary = salary, value = amount, commission = c)
@@ -1209,10 +1223,16 @@ class EPCommission(models.Model):
                 total_amount = total_amount + dic[s]
             for c in ['b_sale_rate']:
                 commission = getattr(self,c)
-                if not commission: continue
+                if not commission: 
+                    continue
+                
+                logger.info('calculating commission : %s' % c)
+                
                 commission = restore_object(commission, restore_date)
                 amount = commission.calc(sales)
-                if amount == 0: continue
+                if amount == 0: 
+                    logger.warning('sales has 0 commission!' % s.id)
+                    continue
                 total_amount = total_amount + amount
                 scd = SaleCommissionDetail(employee_salary = salary, value = amount, commission = c)
                 scd.save()
