@@ -23,7 +23,7 @@ class SeasonManager(models.Manager):
             q = q | models.Q(year__gt = from_year, year__lt = to_year) | models.Q(year = to_year, month__lte = to_month)
         return self.filter(q)
     
-class InvoiceManager(SeasonManager):
+class InvoiceManager(models.Manager):
     use_for_related_fields = True
     
     def total_amount_offset(self):
@@ -31,7 +31,7 @@ class InvoiceManager(SeasonManager):
     def get_query_set(self):
         return InvoiceQuerySet(self.model)
 
-class PaymentManager(SeasonManager):
+class PaymentManager(models.Manager):
     use_for_related_fields = True
     
     def total_amount(self):

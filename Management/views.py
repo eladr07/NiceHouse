@@ -1333,10 +1333,10 @@ def demand_invoice_list(request):
         form = ProjectSeasonForm(request.GET)
         if form.is_valid():
             project = form.cleaned_data['project']
+            from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
+            to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
 
-            query = Invoice.objects.range(form.cleaned_data['from_year'], form.cleaned_data['from_month'],
-                                          form.cleaned_data['to_year'], form.cleaned_data['to_month']).reverse().select_related()
-                                          
+            query = Invoice.objects.filter(date__range = (from_date, to_date)).reverse().select_related()
             invoices = [invoice for invoice in query if invoice.demands.count()]
             if project:
                 invoices = [invoice for invoice in invoices if invoice.demands.filter(project = project).count()]
@@ -1365,13 +1365,29 @@ def demand_payment_list(request):
         form = ProjectSeasonForm(request.GET)
         if form.is_valid():
             project = form.cleaned_data['project']
+            from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
+            to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
 
-            query = Payment.objects.range(form.cleaned_data['from_year'], form.cleaned_data['from_month'],
-                                          form.cleaned_data['to_year'], form.cleaned_data['to_month']).reverse().select_related()
-                                          
-            payments = [p for p in query if p.demands.count()]
-            if project:
-                payments = [p for p in payments if p.demands.filter(project = project).count()]
+            query = Payment.objects.reverse().select_related()
+            
+            payments = []
+            for payment in query:
+                if not payment.demands.count():
+                    continue
+                if project:
+                    payment_demands = payment.demands.filter(project = project)
+                else:
+                    payment_demands = payment.demands.all()
+                    
+                if not payment_demands.count():
+                    continue
+                for demand in payment_demands:
+                    demand_date = date(demand.year, demand.month, 1)
+                    if demand_date >= from_date and demand_date <= to_date:
+                        payments.add(payment)
+                        break
+                payments.add(payment)
+            
             paginator = django.core.paginator.Paginator(payments, 25) 
         
             try:
