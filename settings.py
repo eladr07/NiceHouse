@@ -107,5 +107,3 @@ CACHE_BACKEND = 'dummy://'
 import logging.config
 
 logging.config.fileConfig(SITE_ROOT + 'logging.conf')
-
-import Management
