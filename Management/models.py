@@ -1440,10 +1440,10 @@ class CByPrice(models.Model):
         return dic
     
     def get_amount(self, price):
-        query = self.price_amounts.filter(price__lte = price)
+        query = self.price_amounts.filter(price__gte = price)
         if query.count() == 0:
             raise CommissionException
-        return query.latest().amount
+        return query[0].amount
 
     class Meta:
         db_table = 'CByPrice'
