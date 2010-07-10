@@ -1367,13 +1367,12 @@ def demand_payment_list(request):
             project = form.cleaned_data['project']
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
+            to_date = date(to_date.month == 12 and to_date.year + 1 or to_date.year, to_date.month == 12 and 1 or to_date.month + 1, 1)
 
             query = Payment.objects.reverse().select_related()
             
             payments = []
             for payment in query:
-                if not payment.demands.count():
-                    continue
                 if project:
                     payment_demands = payment.demands.filter(project = project)
                 else:
@@ -1381,6 +1380,7 @@ def demand_payment_list(request):
                     
                 if not payment_demands.count():
                     continue
+                
                 for demand in payment_demands:
                     demand_date = date(demand.year, demand.month, 1)
                     if demand_date >= from_date and demand_date < to_date:
