@@ -1118,33 +1118,60 @@ class EmployeeSalary(EmployeeSalaryBase):
                     res[project] = commission + base
         return res 
     def calculate(self):
-        SaleCommissionDetail.objects.filter(employee_salary=self).delete()
+        logger = logging.getLogger('salary')
+        
+        try:
+            logger.info('starting to calculate salary for employee %(employee)s, year %(year)s, month %(month)s',
+                        {'employee':self.employee, 'year':self.year, 'month':self.month})
+            
+            sale_commission_details =  SaleCommissionDetail.objects.filter(employee_salary=self)
+            
+            logger.info('deleting %s sale commisison details' % sale_commission_details.count())
+            sale_commission_details.delete()
 
-        terms = self.employee.employment_terms        
-        if not terms:
-            self.remarks = u'לעובד לא הוגדרו תנאי העסקה!'
-            return
-        self.commissions = 0
-        self.safety_net = self.sales_count == 0 and terms.safety or None
-        if self.year == self.employee.work_start.year and self.month == self.employee.work_start.month:
-            self.base = float(30 - self.employee.work_start.day) / 30 * terms.salary_base 
+            terms = self.employee.employment_terms        
+            if not terms:
+                self.remarks = u'לעובד לא הוגדרו תנאי העסקה!'
+                logger.warn('could not load employment terms.')
+                return
+            self.commissions = 0
+            self.safety_net = self.sales_count == 0 and terms.safety or None
+            if self.year == self.employee.work_start.year and self.month == self.employee.work_start.month:
+                self.base = float(30 - self.employee.work_start.day) / 30 * terms.salary_base 
+            else:
+                self.base = terms.salary_base
+    
+            logger.debug('salary base : %s' % self.base)
+    
+            for project, sales in self.sales.items():
+                q = self.employee.commissions.filter(project__id = project.id)
+                if q.count() == 0: 
+                    logger.warning('no employee commission is defined for project %s, continuing' % project)
+                    continue
+                epc = q[0]
+                if not epc.is_active(date(self.year, self.month,1)) or not sales or len(sales) == 0:
+                    self.project_commission[epc.project] = 0
+                    logger.warning('no employee commission for project %(project)s is not active - start: %(start)s end: %(end)s, continuing',
+                                   {'project':project, 'start':epc.start_date, 'end':epc.end_date})
+                    continue
+                
+                amount = epc.calc(sales, self)
+                logger.info('employee commission for project %(project)s is %(amount)s', {'project':project, 'amount':amount})
+                
+                self.project_commission[epc.project] = amount
+                self.commissions += amount
+                if terms.salary_net == False:
+                    self.pdf_remarks = u'ברוטו, כמה נטו בעדכון הוצאות'
+                for s in sales:
+                    s.employee_paid = True
+                    s.save() 
+        except:
+            logger.exception('exception while trying to calculate salary for employee %(employee)s, year %(year)s, month %(month)s',
+                             {'employee':self.employee, 'year':self.year, 'month':self.month})
         else:
-            self.base = terms.salary_base
-
-        for project, sales in self.sales.items():
-            q = self.employee.commissions.filter(project__id = project.id)
-            if q.count() == 0: continue
-            epc = q[0]
-            if not epc.is_active(date(self.year, self.month,1)) or not sales or len(sales) == 0:
-                self.project_commission[epc.project] = 0
-                continue
-            self.project_commission[epc.project] = epc.calc(sales, self)
-            self.commissions += self.project_commission[epc.project]
-            if terms.salary_net == False:
-                self.pdf_remarks = u'ברוטו, כמה נטו בעדכון הוצאות'
-            for s in sales:
-                s.employee_paid = True
-                s.save() 
+            logger.info('succeeded to calculate salary for employee %(employee)s, year %(year)s, month %(month)s',
+                        {'employee':self.employee, 'year':self.year, 'month':self.month})
+            
     def get_absolute_url(self):
         return '/employeesalaries/%s' % self.id
     class Meta:
@@ -1236,17 +1263,15 @@ class EPCommission(models.Model):
                 total_amount = total_amount + amount
                 scd = SaleCommissionDetail(employee_salary = salary, value = amount, commission = c)
                 scd.save()
-                
-            logger.info('finished to calculate commission for employee %(employee)s project %(project)s. %(sale_count)s sales.', 
-                        {'employee':self.employee, 'project':self.project,'sale_count':len(sales)})
             return total_amount
-            
         except:
             logger.exception('exception during calculate commission for employee %(employee)s project %(project)s.', 
                              {'employee':self.employee, 'project':self.project})
             return 0
+        else:
+            logger.info('finished to calculate commission for employee %(employee)s project %(project)s. %(sale_count)s sales.', 
+                        {'employee':self.employee, 'project':self.project,'sale_count':len(sales)})
         
-            
     def get_absolute_url(self):
         return '/epcommission/%s' % self.id
     class Meta:
@@ -1749,10 +1774,10 @@ class ProjectCommission(models.Model):
                 s.price_final = s.project_price()
                 s.save()
                 logger.info('sale #%(id)s - price_final=%(price_final)s', {'id':s.id, 'price_final':s.price_final})
-                
-            logger.info('finished to calculate commission for project %(project)s.', {'project':self.project})
         except:
             logger.exception('exception during calculate commission for project %(project)s.', {'project':self.project})
+        else:
+            logger.info('finished to calculate commission for project %(project)s.', {'project':self.project})
             
     class Meta:
         db_table = 'ProjectCommission'
