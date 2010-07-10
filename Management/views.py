@@ -1335,11 +1335,26 @@ def demand_invoice_list(request):
             project = form.cleaned_data['project']
             from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
+            to_date = date(to_date.month == 12 and to_date.year + 1 or to_date.year, to_date.month == 12 and 1 or to_date.month + 1, 1)
 
-            query = Invoice.objects.filter(date__range = (from_date, to_date)).reverse().select_related()
-            invoices = [invoice for invoice in query if invoice.demands.count()]
-            if project:
-                invoices = [invoice for invoice in invoices if invoice.demands.filter(project = project).count()]
+            query = Invoice.objects.reverse().select_related()
+
+            invoices = []
+            for invoice in query:
+                if project:
+                    invoice_demands = invoice.demands.filter(project = project)
+                else:
+                    invoice_demands = invoice.demands.all()
+                    
+                if not invoice_demands.count():
+                    continue
+                
+                for demand in invoice_demands:
+                    demand_date = date(demand.year, demand.month, 1)
+                    if demand_date >= from_date and demand_date < to_date:
+                        invoices.append(invoice)
+                        break
+
             paginator = django.core.paginator.Paginator(invoices, 25) 
         
             try:
