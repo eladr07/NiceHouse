@@ -1386,7 +1386,6 @@ def demand_payment_list(request):
                     if demand_date >= from_date and demand_date <= to_date:
                         payments.add(payment)
                         break
-                payments.add(payment)
             
             paginator = django.core.paginator.Paginator(payments, 25) 
         
