@@ -1,5 +1,5 @@
 ######## workers setup #########
-import reversion
+import reversion, settings
 from worker import Worker
 from threading import Thread, enumerate
 
@@ -22,3 +22,9 @@ demand_thread.start()
 salary_thread = Thread(target = lambda: salary_worker.start(), name='salary thread')
 salary_thread.setDaemon(True)
 salary_thread.start()
+
+####### logging setup ###############
+
+import logging.config
+
+logging.config.fileConfig(settings.SITE_ROOT + 'logging.conf')

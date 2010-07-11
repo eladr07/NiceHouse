@@ -101,9 +101,3 @@ INSTALLED_APPS = (
 )
 
 CACHE_BACKEND = 'dummy://'
-
-####### logging setup ###############
-
-import logging.config
-
-logging.config.fileConfig(SITE_ROOT + 'logging.conf')
