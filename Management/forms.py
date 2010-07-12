@@ -510,12 +510,11 @@ class DemandPaymentForm(PaymentBaseForm):
                               initial = datetime.now().month)
     
     def save(self, *args, **kw):
-        d = Demand.objects.get(project = self.cleaned_data['project'], year = self.cleaned_data['year'],
-                               month = self.cleaned_data['month'])
+        new, demand = Demand.objects.get_or_create(project = self.cleaned_data['project'], year = self.cleaned_data['year'], month = self.cleaned_data['month'])
         if self.instance.id:
             self.instance.demands.clear()
         p = forms.ModelForm.save(self, *args, **kw)
-        d.payments.add(p)
+        demand.payments.add(p)
         return p
     def __init__(self, *args, **kw):
         super(DemandPaymentForm, self).__init__(*args, **kw)
