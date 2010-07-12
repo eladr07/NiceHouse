@@ -42,6 +42,13 @@ class PaymentManager(models.Manager):
 class DemandManager(SeasonManager):
     use_for_related_fields = True
     
+    def get_or_create(self, **kwargs):
+        created, demand = super(DemandManager, self).get_or_create(**kwargs)
+        commissions = demand.project.commissions
+        if created and commissions.add_amount:
+            demand.diffs.create(type=u'קבועה', amount = commissions.add_amount, reason = commissions.add_type)
+        return created, demand
+            
     def noinvoice(self):
         return self.get_query_set().noinvoice()
     def nopayment(self):

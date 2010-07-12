@@ -1000,8 +1000,6 @@ def demand_list(request):
     for project in Project.objects.active():
         demand, new = Demand.objects.get_or_create(project = project, year = year, month = month)
         ds.append(demand)
-        if new and project.commissions.add_amount:
-            demand.diffs.create(type=u'קבועה', amount = project.commissions.add_amount, reason = project.commissions.add_type)
         if demand.statuses.count() == 0 or demand.statuses.latest().type.id == DemandStatusType.Feed:
             unhandled_projects.append(project)
     for d in ds:
