@@ -16,13 +16,13 @@ from managers import *
 
 Salary_Types = (
                 (None, u'לא ידוע'),
-                (0, u'ברוטו'),
-                (1, u'נטו')
+                (False, u'ברוטו'),
+                (True, u'נטו')
                 )
 TaxDeductionTypes = (
                 (None, u'לא ידוע'),
-                (0, u'פטור'),
-                (1, u'יש')
+                (False, u'פטור'),
+                (True, u'יש')
                 )
 Family_State_Types = (
                       (1, u'רווק'),
