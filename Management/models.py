@@ -30,8 +30,8 @@ Family_State_Types = (
                       (3, u'גרוש')
                       )
 Boolean = (
-           (0, u'לא'),
-           (1, u'כן')
+           (False, u'לא'),
+           (True, u'כן')
            )
 
 Attachment_types = (
