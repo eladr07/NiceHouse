@@ -8,7 +8,7 @@ import os
 gmail_user = "nevehair@gmail.com"
 gmail_pwd = "q9w8e7r6"
 
-def mail(to, cc='', bcc='', subject, contents='', attachments = ()):
+def mail(to, cc='', bcc='', subject='', contents='', attachments = ()):
     msg = MIMEMultipart()
 
     msg['From'] = gmail_user
