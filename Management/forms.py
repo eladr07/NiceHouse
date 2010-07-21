@@ -408,7 +408,7 @@ class DemandInvoiceForm(forms.ModelForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label = ugettext('project'))
     year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
                              label = ugettext('year'), initial = datetime.now().year)
-    month = forms.ChoiceField(choices=((i,i) for i in range(1,12)), label = ugettext('month'),
+    month = forms.ChoiceField(choices=((i+1,i+1) for i in range(12)), label = ugettext('month'),
                               initial = datetime.now().month)
     
     def save(self, *args, **kw):
