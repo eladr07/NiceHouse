@@ -457,7 +457,7 @@ def demand_calc(request, id):
             for s in demand.statuses.all():
                 s.delete()
             for s in demand.get_sales():
-                for scd in s.commission_details.all():
+                for scd in s.project_commission_details.all():
                     scd.delete()
         for d2 in demands:
             d2.calc_sales_commission()
@@ -468,6 +468,9 @@ def demand_calc(request, id):
             else:
                 demand.close()
     else:
+        for s in d.get_sales():
+            for scd in s.project_commission_details.all():
+                scd.delete()
         d.calc_sales_commission()
         
     return HttpResponseRedirect('/demandsold/?year=%s&month=%s' % (d.year,d.month))
