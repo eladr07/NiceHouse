@@ -1598,7 +1598,11 @@ def demand_payment_edit(request, id):
         if form.is_valid():
             form.save()
             if request.POST.has_key('addanother'):
-                return HttpResponseRedirect('/demands/%s/payment/add' % payment.demand_id)
+                try:
+                    demand = payment.demands.all()[0]
+                    return HttpResponseRedirect('/demands/%s/payment/add' % demand.id)
+                except KeyError:
+                    return HttpResponseRedirect(reverse(payment_add))
             if request.POST.has_key('addinvoice'):
                 return HttpResponseRedirect('/invoices/add')
     else:
@@ -1614,7 +1618,11 @@ def demand_invoice_edit(request, id):
         if form.is_valid():
             form.save()
             if request.POST.has_key('addanother'):
-                return HttpResponseRedirect('/demands/%s/invoice/add' % invoice.demand_id)
+                try:
+                    demand = invoice.demands.all()[0]
+                    return HttpResponseRedirect('/demands/%s/invoice/add' % demand.id)
+                except KeyError:
+                    return HttpResponseRedirect(reverse(invoice_add))
             if request.POST.has_key('addpayment'):
                 return HttpResponseRedirect('/payments/add')
     else:
