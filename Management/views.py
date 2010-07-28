@@ -2946,7 +2946,7 @@ def attachment_add(request):
 def sale_edit(request, id):
     sale = Sale.objects.get(pk=id)
     if request.POST:
-        form = SaleForm(request.POST, instance = sale)
+        form = SaleForm(request.POST)
         #handles the case when the building changes, and the house is not in the queryset of the house field
         form.fields['house'].queryset = House.objects.all()
         form.fields['building'].queryset = Building.objects.all()
@@ -2960,7 +2960,6 @@ def sale_edit(request, id):
             if demand.was_sent:
                 #check for mods:
                 if sale.price != form.cleaned_data['price']:
-                    raise TypeError
                     try:
                         spm = sale.salepricemod
                     except SalePriceMod.DoesNotExist:
