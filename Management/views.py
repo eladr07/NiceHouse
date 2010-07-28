@@ -2960,13 +2960,13 @@ def sale_edit(request, id):
             if demand.was_sent:
                 #check for mods:
                 if sale.price != form.cleaned_data['price']:
+                    raise TypeError
                     try:
                         spm = sale.salepricemod
                     except SalePriceMod.DoesNotExist:
                         spm = SalePriceMod(sale = sale, old_price = sale.price) 
                     spm.save()
                     next = '/salepricemod/%s' % spm.id
-                    sale.price = sale.project_price()
                 if sale.house != form.cleaned_data['house']:
                     try:
                         shm = sale.salehousemod
