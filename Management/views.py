@@ -2959,19 +2959,18 @@ def sale_edit(request, id):
                 demand.feed()
             if demand.was_sent:
                 #check for mods:
-                db_sale = Sale.objects.get(pk = id)
-                if db_sale.price != form.cleaned_data['price']:
+                if form.changed_data.count('price'):
                     try:
-                        spm = db_sale.salepricemod
+                        spm = sale.salepricemod
                     except SalePriceMod.DoesNotExist:
-                        spm = SalePriceMod(sale = db_sale, old_price = db_sale.price) 
+                        spm = SalePriceMod(sale = sale, old_price = sale.price) 
                     spm.save()
                     next = '/salepricemod/%s' % spm.id
-                if db_sale.house != form.cleaned_data['house']:
+                if form.changed_data.count('house'):
                     try:
-                        shm = db_sale.salehousemod
+                        shm = sale.salehousemod
                     except SaleHouseMod.DoesNotExist:
-                        shm = SaleHouseMod(sale = db_sale, old_house = db_sale.house)
+                        shm = SaleHouseMod(sale = sale, old_house = sale.house)
                     shm.save()
                     next = '/salehousemod/%s' % shm.id
             form.save()
