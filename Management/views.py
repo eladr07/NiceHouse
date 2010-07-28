@@ -2960,6 +2960,7 @@ def sale_edit(request, id):
             if demand.was_sent:
                 #check for mods:
                 p1, p2 = sale.price, form.cleaned_data['price']
+                raise TypeError
                 if sale.price != form.cleaned_data['price']:
                     try:
                         spm = sale.salepricemod
