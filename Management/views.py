@@ -2960,6 +2960,8 @@ def sale_edit(request, id):
             if demand.was_sent:
                 #check for mods:
                 if form.changed_data.count('price'):
+                    p = form.cleaned_data['price']
+                    raise TypeError
                     try:
                         spm = sale.salepricemod
                     except SalePriceMod.DoesNotExist:
