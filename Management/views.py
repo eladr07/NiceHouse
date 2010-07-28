@@ -2975,13 +2975,13 @@ def sale_edit(request, id):
                     next = '/salehousemod/%s' % shm.id
             form.save()
 
-            #demand_worker.add(demand)
+            demand_worker.add(demand)
 
             year, month = sale.demand.year, sale.demand.month
             employees = demand.project.employees.exclude(work_end__isnull = False, work_end__lt = date(year, month, 1))
             
-            #for salary in EmployeeSalary.objects.filter(employee__in = employees, year = year, month = month):
-            #    salary_worker.add(salary)
+            for salary in EmployeeSalary.objects.filter(employee__in = employees, year = year, month = month):
+                salary_worker.add(salary)
                 
             if request.POST.has_key('addanother'):
                 return HttpResponseRedirect(next or '/demands/%s/sale/add' % sale.demand.id)

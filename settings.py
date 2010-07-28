@@ -1,9 +1,9 @@
 # Django settings for NiceHouse project.
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
-if not DEBUG:
+if DEBUG:
     SITE_ROOT = '/home/elad/workspace/NiceHouse/NiceHouse/'
 else:
     SITE_ROOT = '/var/www/NiceHouse/trunk/'
