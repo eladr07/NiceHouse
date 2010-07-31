@@ -2,7 +2,7 @@
 from datetime import datetime, date
 
 import django.core.paginator
-from django.db import models
+from django.db import models, transaction
 from django.forms.formsets import formset_factory
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
@@ -2943,6 +2943,7 @@ def attachment_add(request):
                               context_instance=RequestContext(request))
 
 @permission_required('Management.change_sale')
+@transaction.autocommit
 def sale_edit(request, id):
     sale = Sale.objects.get(pk=id)
     if request.POST:
@@ -2994,6 +2995,7 @@ def sale_edit(request, id):
                               context_instance=RequestContext(request))    
 
 @permission_required('Management.add_sale')
+@transaction.autocommit
 def sale_add(request, demand_id=None):
     if demand_id:
         demand = Demand.objects.get(pk = demand_id)
