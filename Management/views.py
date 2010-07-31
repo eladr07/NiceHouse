@@ -1,4 +1,4 @@
-﻿import settings, common, reversion, inspect, itertools, time
+﻿import common, reversion, inspect, itertools, time
 from datetime import datetime, date
 
 import django.core.paginator
@@ -2468,7 +2468,7 @@ def building_addhouse(request, type_id, building_id):
             if request.POST.has_key('addanother'):
                 next_url = reverse(building_addhouse, args=[building_id, type_id])
             elif request.POST.has_key('finish'):
-                next_url = reverse(building_pricelist, args=[type_id])
+                next_url = reverse(building_pricelist, args=[building_id, type_id])
             else:
                 next_url = reverse(house_edit, args=[form.instance.id, type_id])
             return HttpResponseRedirect(next_url)
@@ -3055,8 +3055,6 @@ def demand_sale_list(request):
         sales_amount = d.get_sales().total_price()
         title = u'ריכוז מכירות לפרוייקט %s לחודש %s/%s' % (unicode(d.project), d.month, d.year)
     elif project_id:
-        current = date(from_year, from_month, 1)
-        end = date(to_year, to_month, 1)
         sales = []
         sales_amount = 0
         project = Project.objects.get(pk=project_id)
