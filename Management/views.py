@@ -1304,7 +1304,7 @@ def demand_sale_cancel(request, id):
     sale.save()
     
     #re-calculate the entire demand
-    demand_worker.add(demand)
+    demand_worker.add(sale.demand)
     
     return HttpResponseRedirect('/salecancel/%s' % sc.id)
 
