@@ -200,6 +200,18 @@ class HouseForm(forms.ModelForm):
             house_version = HouseVersion(type = PricelistType.objects.get(pk=price_type_id), price = price, date = price_date)
             self.instance.versions.add(house_version)
         return h
+    
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        price, price_date = cleaned_data.get('price'), cleaned_data.get('price_date')
+        if price and not price_date:
+            self._errors['price_date'] = ugettext('mandatory_field')
+            del cleaned_data['price_date']
+        if price_date and not price:
+            self._errors['price'] = ugettext('mandatory_field')
+            del cleaned_data['price']
+        return cleaned_data
+    
     def __init__(self, price_type_id, *args, **kw):
         super(HouseForm, self).__init__(*args, **kw)
         self.fields['price_date'].widget.attrs = {'class':'vDateField'}
