@@ -112,6 +112,7 @@
 	{
 		var p = priceInput.val();
 		var include = priceIncludeLawyerChk.val();
+		alert(include);
 		if (include == true)
 			priceNoLawyerInput.attr("value", Math.round(p / 1.015));
 		else
