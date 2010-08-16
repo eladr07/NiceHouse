@@ -111,9 +111,9 @@
 	function fillPriceNoLawyer()
 	{
 		var p = priceInput.val();
-		var include = priceIncludeLawyerChk.val();
+		var include = new Boolean(priceIncludeLawyerChk.val());
 		
-		if (include == True)
+		if (include == true)
 			priceNoLawyerInput.attr("value", Math.round(p / 1.015));
 		else
 			priceNoLawyerInput.attr("value", p);
