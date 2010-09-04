@@ -707,7 +707,7 @@ class MultipleDemandWriter:
             row.reverse()
             rows.append(row)
             maxSubRows = max([1, d.invoices.count(), d.payments.count()])
-            rowHeights.append(15 * maxSubRows)
+            rowHeights.append(18 * maxSubRows)
             index += 1
             total_sales_amount += d.get_sales().total_price()
             total_amount += d.get_total_amount()
