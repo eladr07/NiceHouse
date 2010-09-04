@@ -706,7 +706,7 @@ class MultipleDemandWriter:
                         Paragraph('<br/>'.join([commaise(p.amount) for p in d.payments.all()]), styleRow9)])
             row.reverse()
             rows.append(row)
-            maxSubRows = max([d.invoices.count(), d.payments.count()])
+            maxSubRows = max([1, d.invoices.count(), d.payments.count()])
             rowHeights.append(15 * maxSubRows)
             index += 1
             total_sales_amount += d.get_sales().total_price()
