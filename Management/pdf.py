@@ -718,7 +718,7 @@ class MultipleDemandWriter:
                 table.setStyle(projectTableStyle)
                 flows.append([table, PageBreak(), Spacer(0,50)])
                 rows = []
-                rowHeights = []
+                rowHeights = [28]
                 
         sumRow.extend([Paragraph(commaise(total_sales_amount), styleSumRow), 
                        Paragraph(commaise(total_amount), styleSumRow), None, None, None, None])
