@@ -920,7 +920,7 @@ class CopyBuildingForm(forms.Form):
     
     def clean_new_building_num(self):
         new_building_num = self.cleaned_data['new_building_num']
-        if Building.objects.exists(num = new_building_num):
+        if Building.objects.filter(num = new_building_num).exists():
             raise forms.ValidationError(ugettext('existing_building_num'))
         return new_building_num
     
