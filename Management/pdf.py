@@ -665,7 +665,7 @@ class MultipleDemandWriter:
         self.show_project = show_project
     @property
     def pages_count(self):
-        return len(self.demands) % 18 + 1
+        return len(self.demands) % 20 + 1
     def addTemplate(self, canv, doc):
         frame2 = Frame(0, 680, 650, 150)
         frame2.addFromList([nhLogo(), datePara()], canv)
@@ -706,12 +706,13 @@ class MultipleDemandWriter:
                         Paragraph('<br/>'.join([commaise(p.amount) for p in d.payments.all()]), styleRow9)])
             row.reverse()
             rows.append(row)
-            rowHeights.append(30)
+            maxSubRows = max([d.invoices.count(), d.payments.count()])
+            rowHeights.append(15 * maxSubRows)
             index += 1
             total_sales_amount += d.get_sales().total_price()
             total_amount += d.get_total_amount()
             
-            if index % 18 == 0:
+            if index % 20 == 0:
                 data = [headers]
                 data.extend(rows)
                 table = Table(data, colWidths, rowHeights)
