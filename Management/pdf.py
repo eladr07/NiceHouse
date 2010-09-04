@@ -691,7 +691,7 @@ class MultipleDemandWriter:
         colWidths.reverse()
         rows = []
         rowHeights = [28]
-        i, total_sales_amount, total_amount = 0,0,0
+        index, total_sales_amount, total_amount = 0,0,0
         for d in self.demands:
             row = []
             if self.show_project:
@@ -707,11 +707,11 @@ class MultipleDemandWriter:
             row.reverse()
             rows.append(row)
             rowHeights.append(30)
-            i += 1
+            index += 1
             total_sales_amount += d.get_sales().total_price()
             total_amount += d.get_total_amount()
             
-            if i % 18 == 0:
+            if index % 18 == 0:
                 data = [headers]
                 data.extend(rows)
                 table = Table(data, colWidths, rowHeights)
