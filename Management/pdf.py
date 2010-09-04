@@ -716,7 +716,7 @@ class MultipleDemandWriter:
                 data.extend(rows)
                 table = Table(data, colWidths, rowHeights)
                 table.setStyle(projectTableStyle)
-                flows.append([table, PageBreak(), Spacer(0,50)])
+                flows.extend([table, PageBreak(), Spacer(0,50)])
                 rows = []
                 rowHeights = [28]
                 
