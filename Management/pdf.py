@@ -665,7 +665,7 @@ class MultipleDemandWriter:
         self.show_project = show_project
     @property
     def pages_count(self):
-        return 1
+        return len(self.demands) % 18 + 1
     def addTemplate(self, canv, doc):
         frame2 = Frame(0, 680, 650, 150)
         frame2.addFromList([nhLogo(), datePara()], canv)
@@ -676,7 +676,7 @@ class MultipleDemandWriter:
         frame4.addFromList([nhAddr()], canv)
         self.current_page += 1
     def projectsFlows(self):
-        headers, colWidths = [], []
+        flows, headers, colWidths = [], [], []
         if self.show_project:
             headers.extend([log2vis(n) for n in [u'שם היזם', u'שם הפרוייקט']])
             colWidths.extend([90,140])
@@ -691,7 +691,7 @@ class MultipleDemandWriter:
         colWidths.reverse()
         rows = []
         rowHeights = [28]
-        total_sales_amount, total_amount = 0,0
+        i, total_sales_amount, total_amount = 0,0,0
         for d in self.demands:
             row = []
             if self.show_project:
@@ -706,9 +706,20 @@ class MultipleDemandWriter:
                         Paragraph('<br/>'.join([commaise(p.amount) for p in d.payments.all()]), styleRow9)])
             row.reverse()
             rows.append(row)
-            rowHeights.append(28)
+            rowHeights.append(30)
+            i += 1
             total_sales_amount += d.get_sales().total_price()
             total_amount += d.get_total_amount()
+            
+            if i % 18 == 0:
+                data = [headers]
+                data.extend(rows)
+                table = Table(data, colWidths, rowHeights)
+                table.setStyle(projectTableStyle)
+                flows.append([table, PageBreak(), Spacer(0,50)])
+                rows = []
+                rowHeights = []
+                
         sumRow.extend([Paragraph(commaise(total_sales_amount), styleSumRow), 
                        Paragraph(commaise(total_amount), styleSumRow), None, None, None, None])
         sumRow.reverse()
@@ -716,9 +727,11 @@ class MultipleDemandWriter:
         rowHeights.append(28)
         data = [headers]
         data.extend(rows)
-        t = Table(data, colWidths, rowHeights)
-        t.setStyle(projectTableStyle)
-        return [t]
+        table = Table(data, colWidths, rowHeights)
+        table.setStyle(projectTableStyle)
+        flows.append(table)
+        return flows
+    
     def build(self, filename):
         self.current_page = 1
         doc = SimpleDocTemplate(filename)
