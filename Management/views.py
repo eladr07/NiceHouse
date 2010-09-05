@@ -797,6 +797,14 @@ def demands_all(request):
                                'error':error },
                               context_instance=RequestContext(request))
 
+@login_required
+def employee_list(request):
+    employee_list = Employee.objects.active().select_related('employment_terms__hire_type')
+    nhbranch_list = NHBranch.objects.all()
+    return render_to_response('Management/employee_list.html', 
+                              {'employee_list':employee_list, 'nhbranch_list':nhbranch_list},
+                              context_instance=RequestContext(request))
+    
 def employee_list_pdf(request):
     filename = common.generate_unique_media_filename('pdf')
     
