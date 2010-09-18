@@ -1661,8 +1661,10 @@ class ProjectCommission(models.Model):
     def calc(self, sales, sub=0, restore_date = date.today()):
         try:
             logger = logging.getLogger('commission')
-            logger.info('starting to calculate commission for project %(project)s. %(sale_count)s sales.', 
-                        {'project':self.project,'sale_count':sales.count()})
+            
+            if not sub:
+                logger.info('starting to calculate commission for project %(project)s. %(sale_count)s sales.', 
+                            {'project':self.project,'sale_count':sales.count()})
             
             if sales.count() == 0: 
                 return
