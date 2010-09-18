@@ -1658,7 +1658,7 @@ class ProjectCommission(models.Model):
     max = models.FloatField(ugettext('max_commission'), null=True, blank=True)
     agreement = models.FileField(ugettext('agreement'), upload_to='files', null=True, blank=True)
     remarks = models.TextField(ugettext('commission_remarks'), null=True, blank=True)
-    def calc(self, sales = Sale.objects.none(), demand = None, restore_date = date.today()):
+    def calc(self, sales = (), demand = None, restore_date = date.today()):
         try:
             logger = logging.getLogger('commission')
             
