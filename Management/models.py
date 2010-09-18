@@ -1658,20 +1658,19 @@ class ProjectCommission(models.Model):
     max = models.FloatField(ugettext('max_commission'), null=True, blank=True)
     agreement = models.FileField(ugettext('agreement'), upload_to='files', null=True, blank=True)
     remarks = models.TextField(ugettext('commission_remarks'), null=True, blank=True)
-    def calc(self, sales, sub=0, restore_date = date.today()):
+    def calc(self, sales = Sale.objects.none(), demand = None, restore_date = date.today()):
         try:
             logger = logging.getLogger('commission')
             
-            if not sub:
-                logger.info('starting to calculate commission for project %(project)s. %(sale_count)s sales.', 
-                            {'project':self.project,'sale_count':sales.count()})
+            if demand:
+                sales = demand.get_sales()
+                logger.info('starting to calculate commission for project %(project)s: %(month)s-%(year)s %(sale_count)s sales.', 
+                            {'project':self.project,'sale_count':sales.count(),'month':demand.month, 'year':demand.year})
             
-            if sales.count() == 0: 
+            if len(sales) == 0: 
                 return
-            demand = sales[0].actual_demand
-            if not demand:
-                return
-            if self.commission_by_signups and sub == 0:
+
+            if self.commission_by_signups and demand:
                 for (m, y) in demand.get_signup_months():
                     #get sales that were signed up for specific month, not including future sales.
                     max_contractor_pay = date(demand.month==12 and demand.year+1 or demand.year, demand.month==12 and 1 or demand.month+1,1) 
@@ -1689,7 +1688,7 @@ class ProjectCommission(models.Model):
                     logger.info('calculating affected sales(%(sale_count)s) for month %(month)s/%(year)s',
                                 {'sale_count':subSales.count(), 'month':m,'year':y})
                     
-                    self.calc(subSales, 1)#send these sales to regular processing
+                    self.calc(sales = subSales)#send these sales to regular processing
 
                 bonus = 0
                 for subSales in demand.get_affected_sales().values():
@@ -2035,7 +2034,7 @@ class Demand(models.Model):
                     {'demand_id':self.id,'project_id':self.project_id,'month':self.month, 'year':self.year})
         
         c = self.project.commissions
-        c.calc(self.get_sales())
+        c.calc(demand = self)
         self.sales_commission = 0
         for sale in self.get_sales():
             self.sales_commission += int(sale.c_final_worth)
