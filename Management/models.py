@@ -1661,17 +1661,14 @@ class ProjectCommission(models.Model):
     def calc(self, sales, sub=0, restore_date = date.today()):
         try:
             logger = logging.getLogger('commission')
-            logger.info('starting to calculate commission for project #%(project_id)s. %(sale_count)s sales.', 
-                        {'project_id':self.project_id,'sale_count':len(sales)})
+            logger.info('starting to calculate commission for project %(project)s. %(sale_count)s sales.', 
+                        {'project':self.project,'sale_count':sales.count()})
             
             if sales.count() == 0: 
                 return
             demand = sales[0].actual_demand
             if not demand:
                 return
-            
-            logger.info('demand month is %s,%s' % (demand.month, demand.year))
-            
             if self.commission_by_signups and sub == 0:
                 for (m, y) in demand.get_signup_months():
                     #get sales that were signed up for specific month, not including future sales.
@@ -1687,7 +1684,7 @@ class ProjectCommission(models.Model):
                                                    commission_include=True)
                     subSales = subSales.order_by('house__signups__date')
                     
-                    logger.info('calculating affected sales(%(sale_count)s) from month %(month)s/%(year)s',
+                    logger.info('calculating affected sales(%(sale_count)s) for month %(month)s/%(year)s',
                                 {'sale_count':subSales.count(), 'month':m,'year':y})
                     
                     self.calc(subSales, 1)#send these sales to regular processing
@@ -1716,7 +1713,11 @@ class ProjectCommission(models.Model):
                         diff = (q[0].value - s.c_final) * s.price_final / 100
                         
                         logger.debug('sale #%(id)s bonus calc values: %(vals)s',
-                                     {'id': s.id, 'vals': {'diff':diff,'q[0].value':q[0].value,'s.c_final':s.c_final,'s.price_final':s.price_final}
+                                     {'id': s.id,
+                                      'vals': {'diff':diff,
+                                               'q[0].value':q[0].value,
+                                               's.c_final':s.c_final,
+                                               's.price_final':s.price_final}
                                       })
                         
                         bonus += int(diff)
