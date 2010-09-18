@@ -1685,7 +1685,7 @@ class ProjectCommission(models.Model):
                                                    commission_include=True)
                     subSales = subSales.order_by('house__signups__date')
                     
-                    logger.info('calculating affected sales (%(sale_ids)s) for month %(month)s/%(year)s',
+                    logger.info('calculating affected sales %(sale_ids)s for month %(month)s/%(year)s',
                                 {'sale_ids':[sale.id for sale in subSales], 'month':m,'year':y})
                     
                     self.calc(sales = subSales)#send these sales to regular processing
