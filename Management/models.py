@@ -2028,6 +2028,10 @@ class Demand(models.Model):
         return query
     @reversion.revision.create_on_success
     def calc_sales_commission(self):
+        logger = logging.getLogger('commission')
+        logger.info('calculaion commissions for demand #%(demand_id)s - project_id:%(project_id),month:%(month)s,year:%(year)s',
+                    {'demand_id':self.id,'project_id':self.project_id,'month':self.month, 'year':self.year})
+        
         c = self.project.commissions
         c.calc(self.get_sales())
         self.sales_commission = 0
