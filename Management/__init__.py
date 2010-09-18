@@ -25,6 +25,11 @@ salary_thread.start()
 
 ####### logging setup ###############
 
-import logging.config
+def init_logging():
+    import logging.config
+    logging.config.fileConfig(settings.SITE_ROOT + 'logging.conf')
 
-logging.config.fileConfig(settings.SITE_ROOT + 'logging.conf')
+logInitDone=False
+if not logInitDone:
+    logInitDone = True
+    init_logging()
