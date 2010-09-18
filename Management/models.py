@@ -1767,6 +1767,7 @@ class ProjectCommission(models.Model):
                     scd, new = s.commission_details.get_or_create(employee_salary=None, commission=c)
                     scd.value = v
                     scd.save()
+                logger.debug('sale #%(id)s - commission details %(details)s', {'id':s.id, 'details':details[s]})
                     
                 scd, new = s.commission_details.get_or_create(employee_salary=None, commission='final')
                 scd.value = dic[s]
@@ -1774,7 +1775,7 @@ class ProjectCommission(models.Model):
                 
                 s.price_final = s.project_price()
                 s.save()
-                logger.info('sale #%(id)s - price_final=%(price_final)s', {'id':s.id, 'price_final':s.price_final})
+                logger.debug('sale #%(id)s - price_final=%(price_final)s', {'id':s.id, 'price_final':s.price_final})
         except:
             logger.exception('exception during calculate commission for project %(project)s.', {'project':self.project})
         else:
