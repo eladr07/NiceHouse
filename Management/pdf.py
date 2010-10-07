@@ -960,7 +960,7 @@ class SalariesBankWriter:
         rows = []
         i = 0
         for es in self.salaries:
-            employee = es.emploeyee
+            employee = es.employee
             terms = employee.employment_terms
             if (es.neto):
                 logger.warn('skipping salary for employee #(employee_id)s - %(employee_name)s because he does not have neto salary',
