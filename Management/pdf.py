@@ -960,6 +960,7 @@ class SalariesBankWriter:
         rows = []
         i = 0
         for es in self.salaries:
+            i+=1
             employee = es.employee
             terms = employee.employment_terms
             if not es.neto:
@@ -968,12 +969,12 @@ class SalariesBankWriter:
                 continue
             account = employee.account
             row = [employee.id, log2vis(employee.first_name), log2vis(employee.last_name), employee.pid, log2vis(account.payee),
-                   es.neto, account.num, log2vis(account.bank), log2vis(account.branch), account.branch_num, '']
+                   commaise(es.neto), account.num, log2vis(account.bank), log2vis(account.branch), account.branch_num, '']
             
             row.reverse()
             rows.append(row)
-            i += 1
-            if i % 27 == 0 or i == len(self.salaries):
+
+            if len(rows) % 27 == 0 or i == len(self.salaries):
                 data = [headers]
                 data.extend(rows)
                 t = Table(data, colWidths)
