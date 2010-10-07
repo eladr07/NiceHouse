@@ -968,6 +968,8 @@ class SalariesBankWriter:
                             {'employee_id':employee.id, 'employee_name':employee})
                 continue
             account = employee.account
+            if not account:
+                account = models.Account()
             row = [employee.id, log2vis(employee.first_name), log2vis(employee.last_name), employee.pid, log2vis(account.payee),
                    commaise(es.neto), account.num, log2vis(account.bank), log2vis(account.branch), account.branch_num, '']
             
