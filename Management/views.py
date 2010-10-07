@@ -727,24 +727,27 @@ def nhemployee_salary_list(request):
 def salaries_bank(request):
     if request.method == 'POST':
         form = MonthForm(request.POST)
-        month, year = form.cleaned_data['month'], form.cleaned_data['year']
-        salary_ids = [key.replace('house-','') for key in request.POST if key.startswith('house-')]
-        if len(salary_ids):
-            salaries = EmployeeSalary.objects.filter(pk__in = salary_ids)
-            
-            filename = common.generate_unique_media_filename('pdf')
-    
-            response = HttpResponse(mimetype='application/pdf')
-            response['Content-Disposition'] = 'attachment; filename=' + filename
+        if form.is_valid():
+            month, year = form.cleaned_data['month'], form.cleaned_data['year']
+            salary_ids = [key.replace('house-','') for key in request.POST if key.startswith('house-')]
+            if len(salary_ids):
+                salaries = EmployeeSalary.objects.filter(pk__in = salary_ids)
+                
+                filename = common.generate_unique_media_filename('pdf')
         
-            SalariesBankWriter(salaries, month, year).build(filename)
-            p = open(filename,'r')
-            response.write(p.read())
-            p.close()
+                response = HttpResponse(mimetype='application/pdf')
+                response['Content-Disposition'] = 'attachment; filename=' + filename
             
-            return response  
+                SalariesBankWriter(salaries, month, year).build(filename)
+                p = open(filename,'r')
+                response.write(p.read())
+                p.close()
+                
+                return response  
+            else:
+                salaries = EmployeeSalary.objects.filter(month=month, year=year)
         else:
-            salaries = EmployeeSalary.objects.filter(month=month, year=year)
+            raise ValidationError
     else:
         now = datetime.now()
         month, year = now.month, now.year
