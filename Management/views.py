@@ -756,7 +756,7 @@ def salaries_bank(request):
         salaries = EmployeeSalary.objects.filter(**args)
 
     return render_to_response('Management/salaries_bank.html', 
-                              {'filterForm':form, 'month':datetime(year, month, 1)},
+                              {'salaries':salaries,'filterForm':form, 'month':datetime(year, month, 1)},
                                context_instance=RequestContext(request))  
 
 def employee_salary_pdf(request, year, month):
