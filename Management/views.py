@@ -19,7 +19,7 @@ from forms import *
 from models import *
 from Management import demand_worker, salary_worker
 from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter 
-from pdf import PricelistWriter, BuildingClientsWriter, EmployeeSalariesBookKeepingWriter
+from pdf import PricelistWriter, BuildingClientsWriter, EmployeeSalariesBookKeepingWriter, SalariesBankWriter
 from mail import mail
 
 def object_edit_core(request, form_class, instance,
@@ -723,6 +723,38 @@ def nhemployee_salary_list(request):
                               {'branch_list':branch_list, 'month': date(int(year), int(month), 1),
                                'filterForm':MonthForm(initial={'year':year,'month':month})},
                                context_instance=RequestContext(request))
+
+def bank_salaries(request):
+    if request.method == 'POST':
+        form = MonthForm(request.POST)
+        month, year = form.cleaned_data['month'], form.cleaned_data['year']
+        salary_ids = [key.replace('house-','') for key in request.POST if key.startswith('house-')]
+        if len(salary_ids):
+            salaries = EmployeeSalary.objects.filter(pk__in = salary_ids)
+            
+            filename = common.generate_unique_media_filename('pdf')
+    
+            response = HttpResponse(mimetype='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename=' + filename
+        
+            SalariesBankWriter(salaries, month, year).build(filename)
+            p = open(filename,'r')
+            response.write(p.read())
+            p.close()
+            
+            return response  
+        else:
+            salaries = EmployeeSalary.objects.filter(month=month, year=year)
+    else:
+        now = datetime.now()
+        month, year = now.month, now.year
+        args = {'month':month, 'year':year}
+        form = MonthForm(initial = args)
+        salaries = EmployeeSalary.objects.filter(**args)
+
+    return render_to_response('Management/salaries_bank.html', 
+                              {'filterForm':form, 'month':datetime(year, month, 1)},
+                               context_instance=RequestContext(request))  
 
 def employee_salary_pdf(request, year, month):
     filename = common.generate_unique_media_filename('pdf')

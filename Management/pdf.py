@@ -930,6 +930,71 @@ class EmployeeSalariesWriter:
         story.extend(self.salariesFlows())
         doc.build(story, self.addTemplate, self.addTemplate)
         return doc.canv
+    
+class SalariesBankWriter:
+    def __init__(self, salaries, month, year):
+        self.salaries = salaries
+        self.title = u'שכר להעברה בנקאית לחודש %s/%s' % (month, year)
+    @property
+    def pages_count(self):
+        return len(self.salaries) / 28 + 1
+    def addTemplate(self, canv, doc):
+        frame2 = Frame(0, 680, 650, 150)
+        frame2.addFromList([nhLogo(), datePara()], canv)
+        frame3 = Frame(50, 20, 150, 40)
+        frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
+                            ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
+        frame4 = Frame(50, 30, 500, 70)
+        frame4.addFromList([nhAddr()], canv)
+        self.current_page += 1
+    def salariesFlows(self):
+        logger = logging.getLogger('pdf')
+        logger.info('starting to write %(salary_count)s salaries for bank', {'salary_count':len(self.salaries)})
+        
+        flows = []
+        headers = [log2vis(n) for n in [u'העובד\nמס', u'פרטי\nשם', u'משפחה\nשם', u'ת.ז', u'המוטב\nשם', u'להעברה\nסכום', u'חשבון\nמספר', u'בנק',
+                                        u'סניף\nכתובת', u'סניף\nמספר', u'הערות']]
+        colWidths = [None for header in headers]
+        headers.reverse()
+        colWidths.reverse()
+        rows = []
+        i = 0
+        for es in self.salaries:
+            employee = es.emploeyee
+            terms = employee.employment_terms
+            if (es.neto):
+                logger.warn('skipping salary for employee #(employee_id)s - %(employee_name)s because he does not have neto salary',
+                            {'employee_id':employee.id, 'employee_name':employee})
+                continue
+            account = employee.account
+            row = [employee.id, log2vis(employee.first_name), log2vis(employee.last_name), employee.pid, log2vis(account.payee),
+                   es.neto, account.num, log2vis(account.bank), log2vis(account.branch), account.branch_num, '']
+            
+            row.reverse()
+            rows.append(row)
+            i += 1
+            if i % 27 == 0 or i == len(self.salaries):
+                data = [headers]
+                data.extend(rows)
+                t = Table(data, colWidths)
+                t.setStyle(saleTableStyle)
+                flows.append(t)
+                if i < len(self.salaries):
+                    flows.extend([PageBreak(), Spacer(0, 50)])
+                rows = []
+
+        logger.info('finished writing salaries for bank')
+
+        return flows
+    def build(self, filename):
+        self.current_page = 1
+        doc = SimpleDocTemplate(filename)
+        story = [Spacer(0,50)]
+        story.append(titlePara(self.title))
+        story.append(Spacer(0, 10))
+        story.extend(self.salariesFlows())
+        doc.build(story, self.addTemplate, self.addTemplate)
+        return doc.canv
 
 class PricelistWriter:
     def __init__(self, pricelist, houses, title, subtitle):
