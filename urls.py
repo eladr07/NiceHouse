@@ -220,7 +220,7 @@ urlpatterns += patterns('',
 
     (r'^splitpayment/add$', split_payment_add),
 
-    (r'^banksalaries/$', bank_salaries),
+    (r'^salariesbank/$', salaries_bank),
 
     (r'^salaryexpenses/$', salary_expenses_list),
     (r'^nhsalaryexpenses/$', nh_salary_expenses_list),
