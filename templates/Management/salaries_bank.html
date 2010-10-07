@@ -1,5 +1,18 @@
 ﻿{% extends "./base.html" %}
 {% load management_extras %}
+{% block header %}
+{{ block.super }}
+<script>
+	$(document).ready(function() {
+		$("#all-checkboxes").change(function() {
+			var value = $(this).attr("checked");
+			$("input[name^='salary-']").each(function (index, elem) {
+				$(elem).attr("checked", value);
+			});
+		});
+	});
+</script>
+{% endblock header %}
 {% block content %}
 <div class="title">
 	<div class="pageTitle">שכר להעברה בנקאית לחודש {{month|date:"M Y"}}</div>
@@ -26,6 +39,7 @@
 <table id="salaryTable" class="dataTable" border="1">
 <caption>מציג סה"כ {{salaries|length}} עובדים</caption>
 	<tr>
+		<th><input type="checkbox" id="all-checkboxes"/></th>
 		<th></th>
 		<th>מס<BR>העובד</th>
 		<th>שם<br>פרטי</th>
@@ -43,13 +57,14 @@
 		<tr class="{% cycle 'row1' 'row2' %}">
 		{% with salary.employee as e %}
 		{% with salary.employee.account as account %}
+			<td><input type="checkbox" name="salary-{{salary.id}}"/></td>
 			<td><a href="/employees/{{e.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
 			<td>{{ e.id }}</td>
 			<td>{{ e.first_name }}</td>
 			<td>{{ e.last_name }}</td>
 			<td>{{e.pid}}</td>
 			<td>{{account.payee}}</td>
-			<td>{{salary.neto|default_if_none:""}}</td>
+			<td>{{salary.neto|default_if_none:""|commaise}}</td>
 			<td>{{account.num}}</td>
 			<td>{{account.bank}}</td>
 			<td>{{account.branch}}</td>

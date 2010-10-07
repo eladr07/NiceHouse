@@ -729,8 +729,8 @@ def salaries_bank(request):
         form = MonthForm(request.POST)
         if form.is_valid():
             month, year = form.cleaned_data['month'], form.cleaned_data['year']
-            salary_ids = [key.replace('house-','') for key in request.POST if key.startswith('house-')]
-            if len(salary_ids):
+            salary_ids = [key.replace('salary-','') for key in request.POST if key.startswith('salary-')]
+            if request.POST.has_key('pdf'):
                 salaries = EmployeeSalary.objects.filter(pk__in = salary_ids)
                 
                 filename = common.generate_unique_media_filename('pdf')
@@ -744,7 +744,7 @@ def salaries_bank(request):
                 p.close()
                 
                 return response  
-            else:
+            elif request.POST.has_key('filter'):
                 salaries = EmployeeSalary.objects.filter(month=month, year=year)
         else:
             raise ValidationError
