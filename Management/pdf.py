@@ -972,20 +972,19 @@ class SalariesBankWriter:
                 
                 row.reverse()
                 rows.append(row)
-                
-                if len(rows) % 27 == 0 or i == len(self.salaries):
-                    data = [headers]
-                    data.extend(rows)
-                    t = Table(data, colWidths)
-                    t.setStyle(saleTableStyle)
-                    flows.append(t)
-                    if i < len(self.salaries):
-                        flows.extend([PageBreak(), Spacer(0, 50)])
-                    rows = []
             else:
                 logger.warn('skipping salary for employee #%(employee_id)s - %(employee_name)s because he does not have neto salary',
                             {'employee_id':employee.id, 'employee_name':employee})
-                continue
+                
+            if len(rows) % 27 == 0 or i == len(self.salaries):
+                data = [headers]
+                data.extend(rows)
+                t = Table(data, colWidths)
+                t.setStyle(saleTableStyle)
+                flows.append(t)
+                if i < len(self.salaries):
+                    flows.extend([PageBreak(), Spacer(0, 50)])
+                rows = []
 
         logger.info('finished writing salaries for bank')
 
