@@ -959,11 +959,10 @@ class SalariesBankWriter:
         colWidths.reverse()
         rows = []
         i = 0
-        for es in self.salaries:
+        for salary in self.salaries:
             i+=1
-            employee = es.employee
-            terms = employee.employment_terms
-            if not es.neto:
+            employee = salary.get_employee
+            if not salary.neto:
                 logger.warn('skipping salary for employee #(employee_id)s - %(employee_name)s because he does not have neto salary',
                             {'employee_id':employee.id, 'employee_name':employee})
                 continue
@@ -972,7 +971,7 @@ class SalariesBankWriter:
                 account = models.Account()
                 
             row = [employee.id, log2vis(employee.first_name), log2vis(employee.last_name), employee.pid, log2vis(employee.payee),
-                   commaise(es.neto), account.num, log2vis(account.bank), log2vis(account.branch), account.branch_num, '']
+                   commaise(salary.neto), account.num, log2vis(account.bank), log2vis(account.branch), account.branch_num, '']
             
             row.reverse()
             rows.append(row)
