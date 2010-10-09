@@ -962,31 +962,30 @@ class SalariesBankWriter:
         for salary in self.salaries:
             i+=1
             employee = salary.get_employee()
-            if not salary.neto:
+            if salary.neto:
+                account = employee.account
+                if not account:
+                    account = models.Account()
+                    
+                row = [employee.id, log2vis(employee.first_name), log2vis(employee.last_name), employee.pid, log2vis(employee.payee),
+                       commaise(salary.neto), account.num, log2vis(account.bank), log2vis(account.branch), account.branch_num, '']
+                
+                row.reverse()
+                rows.append(row)
+                
+                if len(rows) % 27 == 0 or i == len(self.salaries):
+                    data = [headers]
+                    data.extend(rows)
+                    t = Table(data, colWidths)
+                    t.setStyle(saleTableStyle)
+                    flows.append(t)
+                    if i < len(self.salaries):
+                        flows.extend([PageBreak(), Spacer(0, 50)])
+                    rows = []
+            else:
                 logger.warn('skipping salary for employee #%(employee_id)s - %(employee_name)s because he does not have neto salary',
                             {'employee_id':employee.id, 'employee_name':employee})
                 continue
-            account = employee.account
-            if not account:
-                account = models.Account()
-                
-            row = [employee.id, log2vis(employee.first_name), log2vis(employee.last_name), employee.pid, log2vis(employee.payee),
-                   commaise(salary.neto), account.num, log2vis(account.bank), log2vis(account.branch), account.branch_num, '']
-            
-            row.reverse()
-            rows.append(row)
-            
-            raise TypeError
-
-            if len(rows) % 27 == 0 or i == len(self.salaries):
-                data = [headers]
-                data.extend(rows)
-                t = Table(data, colWidths)
-                t.setStyle(saleTableStyle)
-                flows.append(t)
-                if i < len(self.salaries):
-                    flows.extend([PageBreak(), Spacer(0, 50)])
-                rows = []
 
         logger.info('finished writing salaries for bank')
 
