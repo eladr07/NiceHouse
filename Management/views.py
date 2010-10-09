@@ -762,7 +762,8 @@ def salaries_bank(request):
         elif isinstance(employee, NHEmployee):
             salary.division = unicode(salary.nhbranch)
     
-    salaries = list(salaries).sort(key = lambda salary: salary.division)
+    salaries = list(salaries)
+    salaries.sort(key = lambda salary: salary.division)
 
     return render_to_response('Management/salaries_bank.html', 
                               {'salaries':salaries,'filterForm':form, 'month':datetime(year, month, 1)},
