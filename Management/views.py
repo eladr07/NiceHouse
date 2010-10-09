@@ -760,7 +760,7 @@ def salaries_bank(request):
         if isinstance(employee, Employee):
             salary.division = u'נווה העיר'
         elif isinstance(employee, NHEmployee):
-            salary.division = unicode(salary.nhbranch)
+            salary.division = unicode(salary.nhemployeesalary.nhbranch)
     
     salaries = list(salaries)
     salaries.sort(key = lambda salary: salary.division)
