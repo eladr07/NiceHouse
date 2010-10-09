@@ -57,10 +57,10 @@
 			<tr style="text-align:center; color:#4669D6; font-size:14px"><td colspan="10"><b>{{division.grouper}}</b></td></tr>
 			{% for salary in division.list %}
 				<tr class="{% cycle 'row1' 'row2' %}">
-				{% with salary.employee as e %}
+				{% with salary.get_employee as e %}
 				{% with salary.employee.account as account %}
 					<td><input type="checkbox" name="salary-{{salary.id}}"/></td>
-					<td><a href="/employees/{{e.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
+					<td><a href="{{e.get_absolute_url}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
 					<td>{{ e.id }}</td>
 					<td>{{ e.first_name }}</td>
 					<td>{{ e.last_name }}</td>
