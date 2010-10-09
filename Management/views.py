@@ -731,7 +731,7 @@ def salaries_bank(request):
             month, year = form.cleaned_data['month'], form.cleaned_data['year']
             salary_ids = [key.replace('salary-','') for key in request.POST if key.startswith('salary-')]
             if request.POST.has_key('pdf'):
-                salaries = EmployeeSalary.objects.filter(pk__in = salary_ids)
+                salaries = EmployeeSalaryBase.objects.filter(pk__in = salary_ids)
                 
                 filename = common.generate_unique_media_filename('pdf')
         
@@ -745,7 +745,7 @@ def salaries_bank(request):
                 
                 return response  
             elif request.POST.has_key('filter'):
-                salaries = EmployeeSalary.objects.filter(month=month, year=year)
+                salaries = EmployeeSalaryBase.objects.filter(month=month, year=year)
         else:
             raise ValidationError
     else:
@@ -753,7 +753,16 @@ def salaries_bank(request):
         month, year = now.month, now.year
         args = {'month':month, 'year':year}
         form = MonthForm(initial = args)
-        salaries = EmployeeSalary.objects.filter(**args)
+        salaries = EmployeeSalaryBase.objects.filter(**args)
+    
+    for salary in salaries:
+        employee = salary.get_employee()
+        if isinstance(employee, Employee):
+            salary.division = u'נווה העיר'
+        elif isinstance(employee, NHEmployee):
+            salary.division = unicode(salary.nhbranch)
+    
+    salaries = list(salaries).sort(key = lambda salary: salary.division)
 
     return render_to_response('Management/salaries_bank.html', 
                               {'salaries':salaries,'filterForm':form, 'month':datetime(year, month, 1)},

@@ -52,26 +52,30 @@
 			<th>מס'<br>סניף</th>
 			<th>הערות</th>
 		</tr>
-		{% for salary in salaries %}
-			<tr class="{% cycle 'row1' 'row2' %}">
-			{% with salary.employee as e %}
-			{% with salary.employee.account as account %}
-				<td><input type="checkbox" name="salary-{{salary.id}}"/></td>
-				<td><a href="/employees/{{e.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
-				<td>{{ e.id }}</td>
-				<td>{{ e.first_name }}</td>
-				<td>{{ e.last_name }}</td>
-				<td>{{e.pid}}</td>
-				<td>{{account.payee}}</td>
-				<td>{{salary.neto|default_if_none:""|commaise}}</td>
-				<td>{{account.num}}</td>
-				<td>{{account.bank}}</td>
-				<td>{{account.branch}}</td>
-				<td>{{account.branch_num}}</td>
-				<td></td>
-			{% endwith %}
-			{% endwith %}
-			</tr>
+		{% regroup salaries by division as division_list %}
+		{% for division in division_list %}
+			<tr style="text-align:center; color:#4669D6; font-size:14px"><td colspan="10"><b>{{division.grouper}}</b></td></tr>
+			{% for salary in division.list %}
+				<tr class="{% cycle 'row1' 'row2' %}">
+				{% with salary.employee as e %}
+				{% with salary.employee.account as account %}
+					<td><input type="checkbox" name="salary-{{salary.id}}"/></td>
+					<td><a href="/employees/{{e.id}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
+					<td>{{ e.id }}</td>
+					<td>{{ e.first_name }}</td>
+					<td>{{ e.last_name }}</td>
+					<td>{{e.pid}}</td>
+					<td>{{account.payee}}</td>
+					<td>{{salary.neto|default_if_none:""|commaise}}</td>
+					<td>{{account.num}}</td>
+					<td>{{account.bank}}</td>
+					<td>{{account.branch}}</td>
+					<td>{{account.branch_num}}</td>
+					<td></td>
+				{% endwith %}
+				{% endwith %}
+				</tr>
+			{% endfor %}
 		{% endfor %}
 	</table>
 	<input type="submit" name="pdf" class="button" value="גרסת הדפסה">
