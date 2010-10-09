@@ -492,6 +492,11 @@ class EmployeeBase(Person):
         elif hasattr(self, 'nhemployee'):
             return self.nhemployee
         return self    
+    
+    @property
+    def payee(self):
+        return self.account and self.account.payee or unicode(self)
+    
     class Meta:
         db_table='EmployeeBase'
 

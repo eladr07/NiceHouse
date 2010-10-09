@@ -58,14 +58,14 @@
 			{% for salary in division.list %}
 				<tr class="{% cycle 'row1' 'row2' %}">
 				{% with salary.get_employee as e %}
-				{% with salary.employee.account as account %}
+				{% with e.account as account %}
 					<td><input type="checkbox" name="salary-{{salary.id}}"/></td>
 					<td><a href="{{e.get_absolute_url}}"><img src="/site_media/images/documentinfo-48.png" width="20" height="20" alt="פרטים" border="0" /></a></td>
 					<td>{{ e.id }}</td>
 					<td>{{ e.first_name }}</td>
 					<td>{{ e.last_name }}</td>
 					<td>{{e.pid}}</td>
-					<td>{{account.payee}}</td>
+					<td>{{e.payee}}</td>
 					<td>{{salary.neto|default_if_none:""|commaise}}</td>
 					<td>{{account.num}}</td>
 					<td>{{account.bank}}</td>
