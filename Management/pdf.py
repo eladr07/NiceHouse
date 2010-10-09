@@ -963,7 +963,7 @@ class SalariesBankWriter:
             i+=1
             employee = salary.get_employee()
             if not salary.neto:
-                logger.warn('skipping salary for employee #(employee_id)s - %(employee_name)s because he does not have neto salary',
+                logger.warn('skipping salary for employee #%(employee_id)s - %(employee_name)s because he does not have neto salary',
                             {'employee_id':employee.id, 'employee_name':employee})
                 continue
             account = employee.account
@@ -975,6 +975,8 @@ class SalariesBankWriter:
             
             row.reverse()
             rows.append(row)
+            
+            raise TypeError
 
             if len(rows) % 27 == 0 or i == len(self.salaries):
                 data = [headers]
