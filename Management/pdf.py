@@ -141,6 +141,9 @@ class ProjectListWriter:
     def projectFlows(self):
         flows = [Paragraph(log2vis(u'נווה העיר - %s פרוייקטים' % len(self.projects)), styleSubTitleBold), Spacer(0,10)]
         headers = [log2vis(n) for n in [u'יזם',u'פרוייקט\nשם',u'עיר',u"בניינים\n'מס",u"דירות\nמס'",u'מכירות\nאיש',u'קשר\nאנשי']]
+        colWidths = [None,None,None,None,None,100,100]
+        
+        colWidths.reverse()
         headers.reverse()
         rows=[]
         i=0
@@ -186,10 +189,10 @@ class ProjectListWriter:
             if i % 17 == 0 or i == len(self.projects):
                 data = [headers]
                 data.extend(rows)
-                t = Table(data)
+                t = Table(data,colWidths)
                 t.setStyle(saleTableStyle)
                 flows.append(t)
-                flows.extend([PageBreak(), Spacer(0,70)])
+                flows.extend([PageBreak(), Spacer(0,90)])
                 rows = []
     
         return flows
