@@ -141,7 +141,7 @@ class ProjectListWriter:
     def projectFlows(self):
         flows = [Paragraph(log2vis(u'נווה העיר - %s פרוייקטים' % len(self.projects)), styleSubTitleBold), Spacer(0,10)]
         headers = [log2vis(n) for n in [u'יזם',u'פרוייקט\nשם',u'עיר',u"בניינים\nמס'",u"דירות\nמס'",u'אנשי מכירות',u'אנשי קשר']]
-        colWidths = [None,None,None,None,None,100,130]
+        colWidths = [None,None,None,None,None,150,150]
         
         colWidths.reverse()
         headers.reverse()
