@@ -18,7 +18,7 @@ from django.contrib.contenttypes.models import ContentType
 from forms import *
 from models import *
 from Management import demand_worker, salary_worker
-from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, ProjectListWriter,
+from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, ProjectListWriter
 from pdf import PricelistWriter, BuildingClientsWriter, EmployeeSalariesBookKeepingWriter, SalariesBankWriter
 from mail import mail
 
