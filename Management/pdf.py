@@ -198,7 +198,7 @@ class ProjectListWriter:
         story = [Spacer(0,40)]
         story.append(titlePara(u'מצבת פרוייקטים'))
         story.append(Spacer(0, 10))
-        story.extend(self.employeeFlows())
+        story.extend(self.projectFlows())
         doc.build(story, self.addFirst, self.addLater)
         return doc.canv
 
