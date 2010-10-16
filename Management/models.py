@@ -721,6 +721,10 @@ class NHBranch(models.Model):
 class NHEmployee(EmployeeBase):
     objects = NHEmployeeManager()
 
+    @property
+    def current_nhbrnaches(self):
+        return self.nhbranchemployee_set.filter(end_date__isnull = True)
+        
     def get_open_reminders(self):
         return [r for r in self.reminders.all() if r.statuses.latest().type.id 
                 not in (ReminderStatusType.Deleted,ReminderStatusType.Done)]

@@ -186,7 +186,7 @@ class EmployeeListWriter:
         headers.reverse()
         i, nhbranch_count, nhbranch = (0,0,None)
         for e in self.nhemployees:
-            if e.nhbranch != nhbranch:
+            if nhbranch in e.current_nhbranches:
                 row = [log2vis(unicode(e.nhbranch)), None,None,None,None]
                 row.reverse()
                 rows.append(row)
