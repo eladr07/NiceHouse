@@ -158,24 +158,24 @@ class ProjectListWriter:
                 employees += log2vis(unicode(employee))
                 if employee.phone:
                     employees += ' - ' + employee.phone
-                employees += '<br>'
+                employees += '<br/>'
                     
             contacts = ''
             if project.demand_contact:
                 contacts += log2vis(u'תשלום: ' + unicode(project.demand_contact))
                 if project.demand_contact.phone:
                     contacts += ' - ' + project.demand_contact.phone
-                contacts += '<br>'
+                contacts += '<br/>'
             if project.payment_contact:
                 contacts += log2vis(u"צ'קים: " + unicode(project.payment_contact))
                 if project.payment_contact.phone:
                     contacts += ' - ' + project.payment_contact.phone
-                contacts += '<br>'                
+                contacts += '<br/>'                
             for contact in project.contacts.all():
                 contacts += log2vis(unicode(contact))
                 if contact.phone:
                     contacts += ' - ' + contact.phone
-                contacts += '<br>' 
+                contacts += '<br/>' 
             
             rows.extend([Paragraph(employees, styleRow9), Paragraph(contacts, styleRow9)])
 
