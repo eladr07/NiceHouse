@@ -722,7 +722,7 @@ class NHEmployee(EmployeeBase):
     objects = NHEmployeeManager()
 
     @property
-    def current_nhbrnaches(self):
+    def current_nhbraches(self):
         return self.nhbranchemployee_set.filter(end_date__isnull = True)
         
     def get_open_reminders(self):
