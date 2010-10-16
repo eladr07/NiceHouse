@@ -158,27 +158,27 @@ class ProjectListWriter:
 
             employees = ''
             for employee in project.employees.all():
-                employees += log2vis(unicode(employee))
+                employee_str = unicode(employee)
                 if employee.phone:
-                    employees += ' - ' + employee.phone
-                employees += '<br/>'
+                    employee_str += ' - ' + employee.phone
+                employees += log2vis(employee_str) + '<br/>'
                     
             contacts = ''
             if project.demand_contact:
-                contacts += log2vis(u'תשלום: ' + unicode(project.demand_contact))
+                contact_str = u'תשלום: ' + unicode(project.demand_contact)
                 if project.demand_contact.phone:
-                    contacts += ' - ' + project.demand_contact.phone
-                contacts += '<br/>'
+                    contact_str += ' - ' + project.demand_contact.phone
+                contacts += log2vis(contact_str) + '<br/>'
             if project.payment_contact:
-                contacts += log2vis(u"צ'קים: " + unicode(project.payment_contact))
+                contact_str = u"צ'קים: " + unicode(project.payment_contact)
                 if project.payment_contact.phone:
-                    contacts += ' - ' + project.payment_contact.phone
-                contacts += '<br/>'                
+                    contact_str += ' - ' + project.payment_contact.phone
+                contacts += log2vis(contact_str) + '<br/>'                
             for contact in project.contacts.all():
-                contacts += log2vis(unicode(contact))
+                contact_str = unicode(contact)
                 if contact.phone:
-                    contacts += ' - ' + contact.phone
-                contacts += '<br/>' 
+                    contact_str += ' - ' + contact.phone
+                contacts += log2vis(contact_str) + '<br/>' 
             
             row.extend([Paragraph(employees, styleRow9), Paragraph(contacts, styleRow9)])
 
