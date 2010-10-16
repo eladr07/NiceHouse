@@ -27,7 +27,7 @@ styleN = ParagraphStyle('normal', fontName='David',fontSize=16, leading=15, alig
 styleNormal13 = ParagraphStyle('normal', fontName='David',fontSize=13, leading=15, alignment=TA_RIGHT)
 styleDate = ParagraphStyle('date', fontName='David',fontSize=14, leading=15)
 styleRow = ParagraphStyle('sumRow', fontName='David',fontSize=11, leading=15)
-styleRow9 = ParagraphStyle('sumRow', fontName='David',fontSize=9, leading=15)
+styleRow9 = ParagraphStyle('sumRow', fontName='David',fontSize=9, leading=15, alignment=TA_RIGHT)
 styleSumRow = ParagraphStyle('Row', fontName='David-Bold',fontSize=11, leading=15)
 styleSaleSumRow = ParagraphStyle('Row', fontName='David-Bold',fontSize=9, leading=15)
 styleSubj = ParagraphStyle('subject', fontName='David',fontSize=16, leading=15, alignment=TA_CENTER)
@@ -118,7 +118,7 @@ class ProjectListWriter:
         self.projects = projects
     @property
     def pages_count(self):
-        x = len(self.projects) / 17 + 1
+        x = len(self.projects) / 16 + 1
         return x
     def addLater(self, canv, doc):
         self.current_page += 1
@@ -140,7 +140,7 @@ class ProjectListWriter:
         frame4.addFromList([nhAddr()], canv)
     def projectFlows(self):
         flows = [Paragraph(log2vis(u'נווה העיר - %s פרוייקטים' % len(self.projects)), styleSubTitleBold), Spacer(0,10)]
-        headers = [log2vis(n) for n in [u'יזם',u'פרוייקט\nשם',u'עיר',u"בניינים\n'מס",u"דירות\nמס'",u'אנשי מכירות',u'אנשי קשר']]
+        headers = [log2vis(n) for n in [u'יזם',u'פרוייקט\nשם',u'עיר',u"בניינים\nמס'",u"דירות\nמס'",u'אנשי מכירות',u'אנשי קשר']]
         colWidths = [None,None,None,None,None,100,130]
         
         colWidths.reverse()
@@ -186,7 +186,7 @@ class ProjectListWriter:
             rows.append(row)
             i+=1
             
-            if i % 17 == 0 or i == len(self.projects):
+            if i % 16 == 0 or i == len(self.projects):
                 data = [headers]
                 data.extend(rows)
                 t = Table(data,colWidths)
