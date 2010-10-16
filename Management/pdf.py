@@ -113,6 +113,95 @@ def sigPara():
 def nhAddr():
     return Image(settings.MEDIA_ROOT + 'images/nh_addr.jpg', 300, 50)
 
+class ProjectListWriter:
+    def __init__(self, projects):
+        self.projects = projects
+    @property
+    def pages_count(self):
+        x = len(self.projects) / 17 + 1
+        return x
+    def addLater(self, canv, doc):
+        self.current_page += 1
+        frame1 = Frame(50, 40, 150, 40)
+        frame1.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
+                            ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
+        frame2 = Frame(0, 680, 650, 150)
+        frame2.addFromList([nhLogo(), datePara()], canv)
+        frame4 = Frame(50, 20, 500, 70)
+        frame4.addFromList([nhAddr()], canv)
+    def addFirst(self, canv, doc):
+        self.current_page = 1
+        frame2 = Frame(0, 680, 650, 150)
+        frame2.addFromList([nhLogo(), datePara()], canv)
+        frame3 = Frame(50, 40, 150, 40)
+        frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
+                            ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
+        frame4 = Frame(50, 20, 500, 70)
+        frame4.addFromList([nhAddr()], canv)
+    def projectFlows(self):
+        flows = [Paragraph(log2vis(u'נווה העיר - %s פרוייקטים' % len(self.employees)), styleSubTitleBold), Spacer(0,10)]
+        headers = [log2vis(n) for n in [u'יזם',u'פרוייקט\nשם',u'עיר',u"בניינים\n'מס",u"דירות\nמס'",u'מכירות\nאיש',u'קשר\nאנשי']]
+        headers.reverse()
+        rows=[]
+        i=0
+        for project in self.projects:
+
+            if project.details != None:
+                houses_num, buildings_num = project.details.houses_num, project.details.buildings_num
+            else:
+                houses_num, buildings_num = '---','---'
+                
+            row = [log2vis(project.initiator), log2vis(project.name), log2vis(project.city), buildings_num, houses_num]
+
+            employees = ''
+            for employee in project.employees.all():
+                employees += log2vis(unicode(employee))
+                if employee.phone:
+                    employees += ' - ' + employee.phone
+                employees += '<br>'
+                    
+            contacts = ''
+            if project.demand_contact:
+                contacts += log2vis(u'תשלום: ' + unicode(project.demand_contact))
+                if project.demand_contact.phone:
+                    contacts += ' - ' + project.demand_contact.phone
+                contacts += '<br>'
+            if project.payment_contact:
+                contacts += log2vis(u"צ'קים: " + unicode(project.payment_contact))
+                if project.payment_contact.phone:
+                    contacts += ' - ' + project.payment_contact.phone
+                contacts += '<br>'                
+            for contact in project.contacts.all():
+                contacts += log2vis(unicode(contact))
+                if contact.phone:
+                    contacts += ' - ' + contact.phone
+                contacts += '<br>' 
+            
+            rows.extend([Paragraph(employees, styleRow9), Paragraph(contacts, styleRow9)])
+
+            row.reverse()
+            rows.append(row)
+            i+=1
+            
+            if i % 17 == 0 or i == len(self.projects):
+                data = [headers]
+                data.extend(rows)
+                t = Table(data)
+                t.setStyle(saleTableStyle)
+                flows.append(t)
+                flows.extend([PageBreak(), Spacer(0,70)])
+                rows = []
+    
+        return flows
+    def build(self, filename):
+        doc = SimpleDocTemplate(filename)
+        story = [Spacer(0,40)]
+        story.append(titlePara(u'מצבת פרוייקטים'))
+        story.append(Spacer(0, 10))
+        story.extend(self.employeeFlows())
+        doc.build(story, self.addFirst, self.addLater)
+        return doc.canv
+
 class EmployeeListWriter:
     def __init__(self, employees, nhemployees):
         self.employees = employees

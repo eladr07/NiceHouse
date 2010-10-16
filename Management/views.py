@@ -18,7 +18,7 @@ from django.contrib.contenttypes.models import ContentType
 from forms import *
 from models import *
 from Management import demand_worker, salary_worker
-from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter 
+from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, ProjectListWriter,
 from pdf import PricelistWriter, BuildingClientsWriter, EmployeeSalariesBookKeepingWriter, SalariesBankWriter
 from mail import mail
 
@@ -1800,6 +1800,19 @@ def project_list(request):
     return render_to_response('Management/project_list.html',
                               {'projects': projects}, 
                               context_instance=RequestContext(request))
+
+@permission_required('Management.project_list_pdf')
+def project_list_pdf(request):
+    filename = common.generate_unique_media_filename('pdf')
+    
+    response = HttpResponse(mimetype='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=' + filename
+
+    ProjectListWriter(projects = Project.objects.active()).build(filename)
+    p = open(filename,'r')
+    response.write(p.read())
+    p.close()
+    return response
 
 @permission_required('Management.change_nhsale')
 def nhsale_edit(request, object_id):

@@ -225,7 +225,7 @@ class Project(models.Model):
         verbose_name_plural = ugettext('projects')
         db_table = 'Project'
         ordering = ['initiator','name']
-        permissions = (('projects_profit','Projects profit'),)
+        permissions = (('projects_profit','Projects profit'),('project_list_pdf','Projects list PDF'))
 
 class ParkingType(models.Model):
     name = models.CharField(ugettext('name'), max_length=20, unique=True)
