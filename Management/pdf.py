@@ -139,7 +139,7 @@ class ProjectListWriter:
         frame4 = Frame(50, 20, 500, 70)
         frame4.addFromList([nhAddr()], canv)
     def projectFlows(self):
-        flows = [Paragraph(log2vis(u'נווה העיר - %s פרוייקטים' % len(self.employees)), styleSubTitleBold), Spacer(0,10)]
+        flows = [Paragraph(log2vis(u'נווה העיר - %s פרוייקטים' % len(self.projects)), styleSubTitleBold), Spacer(0,10)]
         headers = [log2vis(n) for n in [u'יזם',u'פרוייקט\nשם',u'עיר',u"בניינים\n'מס",u"דירות\nמס'",u'מכירות\nאיש',u'קשר\nאנשי']]
         headers.reverse()
         rows=[]
