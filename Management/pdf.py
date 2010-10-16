@@ -192,7 +192,7 @@ class ProjectListWriter:
                 t = Table(data,colWidths)
                 t.setStyle(saleTableStyle)
                 flows.append(t)
-                flows.extend([PageBreak(), Spacer(0,70)])
+                flows.extend([PageBreak(), Spacer(0,75)])
                 rows = []
     
         return flows
