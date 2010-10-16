@@ -177,7 +177,7 @@ class ProjectListWriter:
                     contacts += ' - ' + contact.phone
                 contacts += '<br/>' 
             
-            rows.extend([Paragraph(employees, styleRow9), Paragraph(contacts, styleRow9)])
+            row.extend([Paragraph(employees, styleRow9), Paragraph(contacts, styleRow9)])
 
             row.reverse()
             rows.append(row)
