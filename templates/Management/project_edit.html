@@ -266,6 +266,10 @@
 					<td>{{c.registration_amount|default_if_none:""}}</td>
 				</tr>
 				<tr>
+					<th>קזז הוצאות רישום לאחר משפטיות</th>
+					<td>{{c.deduct_registration|default_if_none:"לא משנה"}}</td>
+				</tr>
+				<tr>
 					<th>כולל מע"מ לעמלה</th>
 					<td>
 					{% if c.include_tax != None %}

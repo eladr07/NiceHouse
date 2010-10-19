@@ -1656,13 +1656,17 @@ class ProjectCommission(models.Model):
     add_amount = models.PositiveIntegerField(ugettext('add_amount'), null=True, blank=True)
     add_type = models.CharField(ugettext('add_type'), max_length = 20, null=True, blank=True)
     registration_amount = models.PositiveIntegerField(ugettext('registration_amount'), null=True, blank=True)
+    deduct_registration = models.NullBooleanField(ugettext('deduct_registration_from_price_no_lawyer'), blank=True,
+                                                  choices = (('','לא משנה'),
+                                                                                  (0, 'לא'),
+                                                                                  (1, 'כן'))
+                                                  )
     include_tax = models.NullBooleanField(ugettext('commission_include_tax'), blank=True, default=True)
     include_lawyer = models.NullBooleanField(ugettext('commission_include_lawyer'), blank=True,
-                                             choices = (
-                                                        ('','לא משנה'),
-                                                        (0, 'לא'),
-                                                        (1, 'כן')
-                                                        ))
+                                             choices = (('','לא משנה'),
+                                                                            (0, 'לא'),
+                                                                            (1, 'כן'))
+                                             )
     commission_by_signups = models.BooleanField(ugettext('commission_by_signups'), blank=True)
     max = models.FloatField(ugettext('max_commission'), null=True, blank=True)
     agreement = models.FileField(ugettext('agreement'), upload_to='files', null=True, blank=True)
@@ -2542,6 +2546,8 @@ class Sale(models.Model):
                                                               ))
     price_include_lawyer = models.BooleanField(ugettext('price_include_lawyer'), choices = Boolean)
     price_no_lawyer = models.IntegerField(ugettext('sale_price_no_lawyer'))
+    specification_expense = models.PositiveIntegerField(ugettext('specification_expense'), default=0)
+    other_expense = models.PositiveIntegerField(ugettext('other_expense'), default=0)
     clients = models.TextField(ugettext('clients'))
     clients_phone = models.CharField(ugettext('phone'), max_length = 10)
     price_final = models.IntegerField(editable=False, null=True)
