@@ -2653,6 +2653,10 @@ class Sale(models.Model):
             price = self.include_tax and price or price * self.tax
         else:
             price = self.include_tax and price / self.tax or price
+            
+        if c.deduct_registration:
+            price -= c.registration_amount
+            
         return price
     def employee_price(self, employee=None):
         '''
