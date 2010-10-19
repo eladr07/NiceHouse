@@ -610,8 +610,8 @@ class MonthDemandWriter:
         names.extend([u'שם הרוכשים',u'ודירה\nבניין',u'מכירה\nתאריך', u'חוזה\nמחיר', u'עמלה\nלחישוב\nמחיר'])
         colWidths.extend([65, None,None,45,45])
         if self.demand.project.is_zilber():
-            names.extend([u'מזומן\nהנחת', u'מפרט\nהוצאות',u'עו"ד\nשכ"ט', u'נוספות\nהוצאות'])
-            colWidths.extend([30,30,None,30])
+            names.extend([u'מזומן\nהנחת', u'מפרט\nהוצאות',u'עו"ד\nשכ"ט', u'נוספות\nרישום', u'נוספות\nהוצאות'])
+            colWidths.extend([30,30,None,30,30])
             zilber = True
         if not self.demand.project.id == 5:
             if sales[0].discount or sales[0].allowed_discount:
@@ -648,11 +648,12 @@ class MonthDemandWriter:
             if zilber:
                 lawyer_pay = s.price_include_lawyer and (s.price - s.price_no_lawyer) or s.price * 0.015
                 total_lawyer_pay += lawyer_pay
-                row.extend([None,None,commaise(lawyer_pay)])
+                row.extend([None,commaise(s.specification_expense),commaise(lawyer_pay)])
                 if s.include_registration == False:
-                    row.append(s.house.building.project.commissions.registration_amount)
+                    row.append(commaise(s.house.building.project.commissions.registration_amount))
                 else:
                     row.append(None)
+                row.append(commaise(s.other_expense))
             if discount:
                 row.extend([s.discount, s.allowed_discount])
                 
