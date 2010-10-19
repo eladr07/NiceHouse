@@ -610,7 +610,7 @@ class MonthDemandWriter:
         names.extend([u'שם הרוכשים',u'ודירה\nבניין',u'מכירה\nתאריך', u'חוזה\nמחיר', u'עמלה\nלחישוב\nמחיר'])
         colWidths.extend([65, None,None,45,45])
         if self.demand.project.is_zilber():
-            names.extend([u'מזומן\nהנחת', u'מפרט\nהוצאות',u'עו"ד\nשכ"ט', u'נוספות\nרישום', u'נוספות\nהוצאות'])
+            names.extend([u'מזומן\nהנחת', u'מפרט\nהוצאות',u'עו"ד\nשכ"ט', u'רישום\nהוצאות', u'נוספות\nהוצאות'])
             colWidths.extend([30,30,None,30,30])
             zilber = True
         if not self.demand.project.id == 5:
@@ -679,7 +679,7 @@ class MonthDemandWriter:
                     if zilber:
                         row.extend([None,None])
                         row.append(Paragraph(commaise(total_lawyer_pay), styleSaleSumRow))
-                        row.append(None)
+                        row.append(None,None)
                     if discount:
                         row.extend([None,None])
                     if final:
