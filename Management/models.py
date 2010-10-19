@@ -2662,7 +2662,7 @@ class Sale(models.Model):
         '''
         employee is used in cases where self.employee is null -> when sale is shared for all employees in the project.
         if employee is null and self.employee is null an exception is thrown.
-    a    '''
+        '''
         if not employee: employee = self.employee
         et = employee.employment_terms
         if et.include_lawyer:
