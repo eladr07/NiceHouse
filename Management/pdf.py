@@ -679,7 +679,7 @@ class MonthDemandWriter:
                     if zilber:
                         row.extend([None,None])
                         row.append(Paragraph(commaise(total_lawyer_pay), styleSaleSumRow))
-                        row.append(None,None)
+                        row.extend([None,None])
                     if discount:
                         row.extend([None,None])
                     if final:
