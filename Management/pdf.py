@@ -613,15 +613,8 @@ class MonthDemandWriter:
         colWidths.extend([65, None,None,45])
         
         if zilber:
-            names.append(u'רישום\nהוצאות')
-            colWidths.append(30)
-            
-        names.append(u'עמלה\nלחישוב\nמחיר')
-        colWidths.append(45)
-
-        if zilber:
-            names.extend([u'מזומן\nהנחת', u'מפרט\nהוצאות',u'עו"ד\nשכ"ט', u'נוספות\nהוצאות'])
-            colWidths.extend([30,30,None,30])
+            names.extend([u'רישום\nהוצאות',u'מזומן\nהנחת', u'מפרט\nהוצאות',u'עו"ד\nשכ"ט', u'נוספות\nהוצאות'])
+            colWidths.extend([30,30,30,None,30])
 
         if not self.demand.project.id == 5:
             if sales[0].discount or sales[0].allowed_discount:
@@ -629,8 +622,8 @@ class MonthDemandWriter:
                 colWidths.extend([None,None])
                 discount = True
                 
-        names.extend([u'בסיס\nעמלת\n%',u'בסיס\nעמלת\nשווי'])
-        colWidths.extend([None,None])
+        names.extend([u'עמלה\nלחישוב\nמחיר', u'בסיס\nעמלת\n%',u'בסיס\nעמלת\nשווי'])
+        colWidths.extend([45,None,None])
         if self.demand.project.commissions.b_discount_save_precentage:
             names.extend([u'חסכון\nבונוס\n%',u'חסכון\nבונוס\nשווי', u'סופי\nעמלה\n%',u'סופי\nעמלה\nשווי'])
             colWidths.extend([30,30,None,None])
@@ -663,10 +656,6 @@ class MonthDemandWriter:
                     row.append(None)
                 else:
                     row.append(commaise(commissions.registration_amount))
-                
-            row.append(commaise(s.price_final))
-                
-            if zilber:
                 lawyer_pay = s.price_include_lawyer and (s.price - s.price_no_lawyer) or s.price * 0.015
                 total_lawyer_pay += lawyer_pay
                 row.extend([None,commaise(s.specification_expense),commaise(lawyer_pay),commaise(s.other_expense)])
@@ -674,7 +663,7 @@ class MonthDemandWriter:
             if discount:
                 row.extend([s.discount, s.allowed_discount])
                 
-            row.extend([s.pc_base, commaise(s.pc_base_worth)])
+            row.extend([commaise(s.price_final),s.pc_base, commaise(s.pc_base_worth)])
             total_pc_base_worth += s.pc_base_worth
             
             if final:
