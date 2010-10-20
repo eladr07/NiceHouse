@@ -583,7 +583,6 @@ def demand_old_list(request):
             total_sales_count += d.get_sales().count()
             total_sales_amount += d.get_sales().total_price_final()
             total_amount += d.get_total_amount()
-                
         for p in Project.objects.active():
             query = ds.filter(project=p)
             if query.count() == 0:
