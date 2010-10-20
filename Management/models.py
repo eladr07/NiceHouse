@@ -1515,7 +1515,7 @@ class CZilber(models.Model):
                         continue
                     latest_doh0price = doh0prices.latest().price
                     memudad = latest_doh0price * memudad_multiplier
-                    zdb = (s.price - memudad) * self.b_discount
+                    zdb = (s.price_final - memudad) * self.b_discount
                     s.commission_details.create(commission='c_zilber_discount', value = zdb)
                     s.commission_details.create(commission='latest_doh0price', value = latest_doh0price)
                     s.commission_details.create(commission='memudad', value = memudad)

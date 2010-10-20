@@ -399,7 +399,7 @@ class MonthDemandWriter:
                  tableCaption(caption=log2vis(u'מדד בסיס - %s' % self.demand.project.commissions.c_zilber.base_madad)),
                  Spacer(0,30)]
         
-        headers = [log2vis(n) for n in [u'מס"ד',u'דרישה\nחודש', u'שם הרוכשים', u'ודירה\nבניין', u'חוזה\nתאריך', u'חוזה\nמחיר', u'0 דו"ח\nמחירון', 
+        headers = [log2vis(n) for n in [u'מס"ד',u'דרישה\nחודש', u'שם הרוכשים', u'ודירה\nבניין', u'חוזה\nתאריך', u'עמלה\nלחישוב\nמחיר', u'0 דו"ח\nמחירון', 
                                         u'חדש\nמדד', u'60%\nממודד\nמחירון', u'מחיר\nהפרש', u'בהנחה\nחסכון\nשווי']]
         
         colWidths  =[None,None,100,None,None,None,40,40,40,40,40]
@@ -436,10 +436,10 @@ class MonthDemandWriter:
                 
                 doh0price = commission_details.get('latest_doh0price', 0)
                 memudad = commission_details.get('memudad', 0)
-                price_memduad_diff = s.price - (memudad or 0)
+                price_memduad_diff = s.price_final - memudad
                 
                 row.extend([log2vis(s.clients), '%s/%s' % (unicode(s.house.building), unicode(s.house)), 
-                            s.sale_date.strftime('%d/%m/%y'), commaise(s.price), commaise(doh0price), 
+                            s.sale_date.strftime('%d/%m/%y'), commaise(s.price_final), commaise(doh0price), 
                             current_madad, commaise(memudad), commaise(price_memduad_diff), commaise(s.zdb)])
 
                 row.reverse()
