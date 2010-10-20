@@ -682,16 +682,12 @@ class MonthDemandWriter:
                     row.extend([None,Paragraph(log2vis('%s' % self.demand.get_sales().count()), styleSaleSumRow),None])
                     row.append(Paragraph(commaise(self.demand.get_sales().total_price()), styleSaleSumRow))
                     if zilber:
-                        row.append(None)
-                    row.append(Paragraph(commaise(self.demand.get_sales().total_price_final()), styleSaleSumRow))
-                    if zilber:
-                        row.extend([None,None])
-                        row.append(Paragraph(commaise(total_lawyer_pay), styleSaleSumRow))
-                        row.append(None)
+                        row.extend([None,None,None,Paragraph(commaise(total_lawyer_pay), styleSaleSumRow),None])
                     if discount:
                         row.extend([None,None])
                     if final:
-                        row.extend([None,Paragraph(commaise(total_pc_base_worth), styleSaleSumRow),
+                        row.extend([Paragraph(commaise(self.demand.get_sales().total_price_final()), styleSaleSumRow),
+                                    Paragraph(commaise(total_pc_base_worth), styleSaleSumRow),
                                     None,Paragraph(commaise(total_pb_dsp_worth), styleSaleSumRow),
                                     None,Paragraph(commaise(self.demand.sales_commission), styleSaleSumRow)])
                     else:
