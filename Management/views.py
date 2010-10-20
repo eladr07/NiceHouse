@@ -566,7 +566,7 @@ def projects_profit(request):
 def demand_old_list(request):
     year, month = None, None
     ds, unhandled_projects = [], []
-    total_sales_count,total_sales_amount, total_sales_commission, total_amount, expected_sales_count = 0,0,0,0,0
+    total_sales_count,total_sales_amount, total_amount = 0,0,0
         
     if len(request.GET):
         form = MonthForm(request.GET)
