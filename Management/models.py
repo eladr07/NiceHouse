@@ -471,8 +471,8 @@ class EmploymentTerms(models.Model):
 class EmployeeBase(Person):
     pid = models.PositiveIntegerField(ugettext('pid'), unique=True)
     birth_date = models.DateField(ugettext('birth_date'))
-    home_phone = models.CharField(ugettext('home phone'), max_length=10)
-    mate_phone = models.CharField(ugettext('mate phone'), max_length=10, null=True, blank=True)
+    home_phone = models.CharField(ugettext('home_phone'), max_length=10)
+    mate_phone = models.CharField(ugettext('mate_phone'), max_length=10, null=True, blank=True)
     family_state = models.PositiveIntegerField(ugettext('family state'), choices = Family_State_Types)
     child_num = models.PositiveIntegerField(ugettext('child num'), null=True, blank=True)
     work_start = models.DateField(ugettext('work start'))

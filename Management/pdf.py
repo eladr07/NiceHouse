@@ -264,7 +264,7 @@ class EmployeeListWriter:
                 i+=1
             
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name), Paragraph(get_phones(e), styleRow9), 
-                 log2vis(e.mail), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
+                 log2vis(e.mail), Paragraph(log2vis(e.address), styleRow9), log2vis(e.work_start.strftime('%d/%m/%Y')),
                  log2vis(unicode(e.employment_terms and e.employment_terms.hire_type or '---'))]
             projects = '\n'.join([log2vis(p.name) for p in e.projects.all()])
             row.append(projects)
@@ -295,7 +295,7 @@ class EmployeeListWriter:
                 nhbranch_count+=1
                 i+=1
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name), Paragraph(get_phones(e), styleRow9),
-                 log2vis(e.mail), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
+                 log2vis(e.mail), Paragraph(log2vis(e.address), styleRow9), log2vis(e.work_start.strftime('%d/%m/%Y')),
                  log2vis(unicode(e.employment_terms and e.employment_terms.hire_type or ''))]
             row.reverse()
             rows.append(row)
