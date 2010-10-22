@@ -248,10 +248,13 @@ class EmployeeListWriter:
             
         flows=[Paragraph(log2vis(u'נווה העיר - %s עובדים' % len(self.employees)), styleSubTitleBold),
                Spacer(0,10)]
-        headers=[]
-        for header in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'דוא"ל',u'כתובת',u'העסקה\nתחילת',u'העסקה\nסוג',u'פרוייקטים']:
-            headers.append(log2vis(header))
+
+        headers = [log2vis(name) for name in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'דוא"ל',u'כתובת',u'העסקה\nתחילת',u'העסקה\nסוג',u'פרוייקטים']]
+        colWidths = [None,None,None,70,None,70,None,None,70]
+        
         headers.reverse()
+        colWidths.reverse()
+        
         rows=[]
         i, rank_count, rank = (0,0,None)
         for e in self.employees:
@@ -274,17 +277,20 @@ class EmployeeListWriter:
             if i % 17 == 0 or i == len(self.employees) + rank_count:
                 data = [headers]
                 data.extend(rows)
-                t = Table(data)
+                t = Table(data, colWidths)
                 t.setStyle(saleTableStyle)
                 flows.append(t)
                 flows.extend([PageBreak(), Spacer(0,70)])
                 rows = []
         flows.extend([Paragraph(log2vis(u'נייס האוס - %s עובדים' % len(self.nhemployees)), styleSubTitleBold),
                       Spacer(0,10)])
-        headers=[]
-        for header in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'דוא"ל',u'כתובת',u'העסקה\nתחילת',u'העסקה\nסוג']:
-            headers.append(log2vis(header))
+        
+        headers = [log2vis(name) for name in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'דוא"ל',u'כתובת',u'העסקה\nתחילת',u'העסקה\nסוג']]
+        colWidths = [None,None,None,70,None,70,None,None,None]
+        
+        colWidths.reverse()
         headers.reverse()
+        
         i, nhbranch_count, nhbranch = (0,0,None)
         for e in self.nhemployees:
             if nhbranch in e.current_nhbranches:
@@ -303,7 +309,7 @@ class EmployeeListWriter:
             if i % 17 == 0 or i == len(self.nhemployees) + nhbranch_count:
                 data = [headers]
                 data.extend(rows)
-                t = Table(data)
+                t = Table(data, colWidths)
                 t.setStyle(saleTableStyle)
                 flows.append(t)
                 if i < len(self.nhemployees) + nhbranch_count:
