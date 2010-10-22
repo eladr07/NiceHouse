@@ -206,16 +206,18 @@ class ProjectListWriter:
         return doc.canv
 
 class EmployeeListWriter:
+    ROWS_PER_PAGE = 15
+    
     def __init__(self, employees, nhemployees):
         self.employees = employees
         self.nhemployees = nhemployees
     @property
     def pages_count(self):
-        x = len(self.employees) / 17 + 1
-        if len(self.employees) % 17 == 0:
+        x = len(self.employees) / ROWS_PER_PAGE + 1
+        if len(self.employees) % ROWS_PER_PAGE == 0:
             x+=1
-        y = len(self.nhemployees) / 17 + 1
-        if len(self.nhemployees) % 17 == 0:
+        y = len(self.nhemployees) / ROWS_PER_PAGE + 1
+        if len(self.nhemployees) % ROWS_PER_PAGE == 0:
             y+=1
         return x+y+1
     def addLater(self, canv, doc):
@@ -250,7 +252,7 @@ class EmployeeListWriter:
                Spacer(0,10)]
 
         headers = [log2vis(name) for name in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'דוא"ל',u'כתובת',u'העסקה\nתחילת',u'העסקה\nסוג',u'פרוייקטים']]
-        colWidths = [None,None,None,110,None,70,None,None,80]
+        colWidths = [None,None,None,110,70,70,None,None,80]
         
         headers.reverse()
         colWidths.reverse()
@@ -274,7 +276,7 @@ class EmployeeListWriter:
             row.reverse()
             rows.append(row)
             i+=1
-            if i % 17 == 0 or i == len(self.employees) + rank_count:
+            if i % ROWS_PER_PAGE == 0 or i == len(self.employees) + rank_count:
                 data = [headers]
                 data.extend(rows)
                 t = Table(data, colWidths)
@@ -286,7 +288,7 @@ class EmployeeListWriter:
                       Spacer(0,10)])
         
         headers = [log2vis(name) for name in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'דוא"ל',u'כתובת',u'העסקה\nתחילת',u'העסקה\nסוג']]
-        colWidths = [None,None,None,110,None,70,None,None,None]
+        colWidths = [None,None,None,110,70,70,None,None,None]
         
         colWidths.reverse()
         headers.reverse()
@@ -306,7 +308,7 @@ class EmployeeListWriter:
             row.reverse()
             rows.append(row)
             i+=1
-            if i % 17 == 0 or i == len(self.nhemployees) + nhbranch_count:
+            if i % ROWS_PER_PAGE == 0 or i == len(self.nhemployees) + nhbranch_count:
                 data = [headers]
                 data.extend(rows)
                 t = Table(data, colWidths)
