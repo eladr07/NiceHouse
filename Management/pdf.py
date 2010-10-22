@@ -487,16 +487,16 @@ class MonthDemandWriter:
         
         flows = [tableCaption(caption=log2vis(u'נספח א - הפרשי קצב מכירות לדרישה')),
                  Spacer(0,30)]
-        headers = [log2vis(n) for n in [u'דרישה\nחודש', u'שם הרוכשים', u'ודירה\nבניין',u'מכירה\nתאריך', u'חוזה\nמחיר',
+        headers = [log2vis(n) for n in [u'דרישה\nחודש', u'שם הרוכשים', u'ודירה\nבניין',u'מכירה\nתאריך', u'חוזה\nמחיר', u'עמלה\nלחישוב\nמחיר',
                                         u'בדרישה\nעמלה',u'חדשה\nעמלה', u'הפרש\nאחוז', u'בש"ח\nהפרש']]
-        colWidths = [None,80,None,None,None,None,None,None,None]
+        colWidths = [None,80,None,None,None,None,None,None,None,None]
         colWidths.reverse()
         headers.reverse()
         rows = []
         demand = self.demand
         sales = list(demand.get_sales().select_related('house__building'))
         i = 1
-        total_prices, total_adds = 0, 0
+        total_prices, total_prices_finals, total_adds = 0, 0, 0
         
         while demand.zilber_cycle_index() > 1:
             demand = demand.get_previous_demand()
@@ -513,14 +513,15 @@ class MonthDemandWriter:
                 continue
                                     
             row = [log2vis('%s/%s' % (s.actual_demand.month, s.actual_demand.year)), clientsPara(s.clients), 
-                           '%s/%s' % (unicode(s.house.building), unicode(s.house)), s.sale_date.strftime('%d/%m/%y'), 
-                           commaise(s.price), s.pc_base, sale_base_with_add, sale_base_with_add - s.pc_base, commaise(sale_add)]
+                   '%s/%s' % (unicode(s.house.building), unicode(s.house)), s.sale_date.strftime('%d/%m/%y'), 
+                   commaise(s.price), commaise(s.price_final), s.pc_base, sale_base_with_add, sale_base_with_add - s.pc_base, commaise(sale_add)]
 
             i += 1
             
             row.reverse()
             rows.append(row)
             total_prices += s.price
+            total_prices_finals += s.price_final
             total_adds += round(sale_add)
             
             if i % 16 == 0:
@@ -531,8 +532,9 @@ class MonthDemandWriter:
                 flows.extend([t, PageBreak(), Spacer(0,70)])
                 rows = []
             
-        sum_row = [Paragraph(log2vis(u'סה"כ'), styleSaleSumRow), None, None, None, Paragraph(commaise(total_prices), styleSaleSumRow), 
-                   None, None, None, Paragraph(commaise(total_adds), styleSaleSumRow)]
+        sum_row = [Paragraph(log2vis(u'סה"כ'), styleSaleSumRow), None, None, None, Paragraph(commaise(total_prices), styleSaleSumRow),
+                   Paragraph(commaise(total_prices_finals), styleSaleSumRow), None, None, None, 
+                   Paragraph(commaise(total_adds), styleSaleSumRow)]
         sum_row.reverse()
         rows.append(sum_row)
         data = [headers]
