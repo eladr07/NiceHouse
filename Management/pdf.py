@@ -206,18 +206,18 @@ class ProjectListWriter:
         return doc.canv
 
 class EmployeeListWriter:
-    ROWS_PER_PAGE = 15
-    
+
     def __init__(self, employees, nhemployees):
         self.employees = employees
         self.nhemployees = nhemployees
+        self.rows_per_page = 15
     @property
     def pages_count(self):
-        x = len(self.employees) / ROWS_PER_PAGE + 1
-        if len(self.employees) % ROWS_PER_PAGE == 0:
+        x = len(self.employees) / self.rows_per_page + 1
+        if len(self.employees) % self.rows_per_page == 0:
             x+=1
-        y = len(self.nhemployees) / ROWS_PER_PAGE + 1
-        if len(self.nhemployees) % ROWS_PER_PAGE == 0:
+        y = len(self.nhemployees) / self.rows_per_page + 1
+        if len(self.nhemployees) % self.rows_per_page == 0:
             y+=1
         return x+y+1
     def addLater(self, canv, doc):
@@ -276,7 +276,7 @@ class EmployeeListWriter:
             row.reverse()
             rows.append(row)
             i+=1
-            if i % ROWS_PER_PAGE == 0 or i == len(self.employees) + rank_count:
+            if i % self.rows_per_page == 0 or i == len(self.employees) + rank_count:
                 data = [headers]
                 data.extend(rows)
                 t = Table(data, colWidths)
@@ -308,7 +308,7 @@ class EmployeeListWriter:
             row.reverse()
             rows.append(row)
             i+=1
-            if i % ROWS_PER_PAGE == 0 or i == len(self.nhemployees) + nhbranch_count:
+            if i % self.rows_per_page == 0 or i == len(self.nhemployees) + nhbranch_count:
                 data = [headers]
                 data.extend(rows)
                 t = Table(data, colWidths)
