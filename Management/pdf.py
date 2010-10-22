@@ -210,7 +210,7 @@ class EmployeeListWriter:
     def __init__(self, employees, nhemployees):
         self.employees = employees
         self.nhemployees = nhemployees
-        self.rows_per_page = 15
+        self.rows_per_page = 11
     @property
     def pages_count(self):
         x = len(self.employees) / self.rows_per_page + 1
@@ -252,7 +252,7 @@ class EmployeeListWriter:
                Spacer(0,10)]
 
         headers = [log2vis(name) for name in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'דוא"ל',u'כתובת',u'העסקה\nתחילת',u'העסקה\nסוג',u'פרוייקטים']]
-        colWidths = [None,None,None,110,70,70,None,None,80]
+        colWidths = [None,None,None,110,90,70,None,None,80]
         
         headers.reverse()
         colWidths.reverse()
@@ -288,7 +288,7 @@ class EmployeeListWriter:
                       Spacer(0,10)])
         
         headers = [log2vis(name) for name in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'דוא"ל',u'כתובת',u'העסקה\nתחילת',u'העסקה\nסוג']]
-        colWidths = [None,None,None,110,70,70,None,None,None]
+        colWidths = [None,None,None,110,90,70,None,None,30]
         
         colWidths.reverse()
         headers.reverse()
