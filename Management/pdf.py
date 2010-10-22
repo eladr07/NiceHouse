@@ -237,6 +237,15 @@ class EmployeeListWriter:
         frame4 = Frame(50, 20, 500, 70)
         frame4.addFromList([nhAddr()], canv)
     def employeeFlows(self):
+        #generate phones string for an employee
+        def get_phones(employee):
+            phones = ''
+            for attr in ['phone','cell_phone','mate_phone','work_phone']:
+                attr_value = getattr(e, attr)
+                if attr_value:
+                    phones += log2vis(ugettext(attr) + ': ' + attr_value) + '<br/>'
+            return phones
+            
         flows=[Paragraph(log2vis(u'נווה העיר - %s עובדים' % len(self.employees)), styleSubTitleBold),
                Spacer(0,10)]
         headers=[]
@@ -253,15 +262,8 @@ class EmployeeListWriter:
                 rank = e.rank
                 rank_count+=1
                 i+=1
-                
-            #generate phones paragraph
-            phones = ''
-            for attr in ['phone','cell_phone','mate_phone','work_phone']:
-                attr_value = getattr(e, attr)
-                if attr_value:
-                    phones += log2vis(ugettext(attr) + ': ' + attr_value) + '<br/>'
-                    
-            row=[e.id, log2vis(e.first_name), log2vis(e.last_name), Paragraph(phones, styleRow9), 
+            
+            row=[e.id, log2vis(e.first_name), log2vis(e.last_name), Paragraph(get_phones(e), styleRow9), 
                  log2vis(e.mail), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
                  log2vis(unicode(e.employment_terms and e.employment_terms.hire_type or '---'))]
             projects = '\n'.join([log2vis(p.name) for p in e.projects.all()])
@@ -280,8 +282,7 @@ class EmployeeListWriter:
         flows.extend([Paragraph(log2vis(u'נייס האוס - %s עובדים' % len(self.nhemployees)), styleSubTitleBold),
                       Spacer(0,10)])
         headers=[]
-        for header in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'כתובת',
-                       u'העסקה\nתחילת',u'העסקה\nסוג']:
+        for header in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'דוא"ל',u'כתובת',u'העסקה\nתחילת',u'העסקה\nסוג']:
             headers.append(log2vis(header))
         headers.reverse()
         i, nhbranch_count, nhbranch = (0,0,None)
@@ -293,8 +294,8 @@ class EmployeeListWriter:
                 nhbranch = e.nhbranch
                 nhbranch_count+=1
                 i+=1
-            row=[e.id, log2vis(e.first_name), log2vis(e.last_name),
-                 log2vis(e.phone), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
+            row=[e.id, log2vis(e.first_name), log2vis(e.last_name), Paragraph(get_phones(e), styleRow9),
+                 log2vis(e.mail), log2vis(e.address), log2vis(e.work_start.strftime('%d/%m/%Y')),
                  log2vis(unicode(e.employment_terms and e.employment_terms.hire_type or ''))]
             row.reverse()
             rows.append(row)
