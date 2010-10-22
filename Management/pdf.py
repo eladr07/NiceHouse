@@ -282,8 +282,9 @@ class EmployeeListWriter:
                 t = Table(data, colWidths)
                 t.setStyle(saleTableStyle)
                 flows.append(t)
-                flows.extend([PageBreak(), Spacer(0,70)])
+                flows.extend([PageBreak(), Spacer(0,50)])
                 rows = []
+                
         flows.extend([Paragraph(log2vis(u'נייס האוס - %s עובדים' % len(self.nhemployees)), styleSubTitleBold),
                       Spacer(0,10)])
         
@@ -315,7 +316,7 @@ class EmployeeListWriter:
                 t.setStyle(saleTableStyle)
                 flows.append(t)
                 if i < len(self.nhemployees) + nhbranch_count:
-                    flows.extend([PageBreak(), Spacer(0,70)])
+                    flows.extend([PageBreak(), Spacer(0,50)])
                 rows = []        
         return flows
     def build(self, filename):
