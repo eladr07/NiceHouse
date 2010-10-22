@@ -579,18 +579,14 @@ def demand_old_list(request):
         
     if year and month:
         ds = Demand.objects.filter(year = year, month = month).select_related('project')
+        unhandled_projects.extend(Project.objects.active())
+
         for d in ds:
             total_sales_count += d.get_sales().count()
             total_sales_amount += d.get_sales().total_price_final()
             total_amount += d.get_total_amount()
-        for p in Project.objects.active():
-            query = ds.filter(project=p)
-            if query.count() == 0:
-                unhandled_projects.append(p)
-                continue
-            d = query[0]
-            if d.statuses.count() == 0 or d.statuses.latest().type.id != DemandStatusType.Sent:
-                unhandled_projects.append(p)
+            if d.statuses.count() > 0 and d.statuses.latest().type.id == DemandStatusType.Sent:
+                unhandled_projects.remove(d.project)
         
     return render_to_response('Management/demand_old_list.html', 
                               { 'demands':ds, 'month':date(year, month, 1),
