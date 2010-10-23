@@ -136,6 +136,7 @@ class NumberedCanvas(canvas.Canvas):
                 }
             )
             canvas.Canvas.showPage(self)
+        self._doc.SaveToFile(self._filename, self)
 
 class ProjectListWriter:
     def __init__(self, projects):
