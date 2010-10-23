@@ -210,7 +210,7 @@ class ProjectListWriter(DocumentBase):
         data.extend(rows)
         t = Table(data,colWidths, style = saleTableStyle, repeatRows = 1)
         flows.append(t)
-        flows.extend([PageBreak(), Spacer(0,75)])
+
         return flows
     
     def get_story(self):
@@ -313,7 +313,6 @@ class EmployeeListWriter:
         data.extend(rows)
         t = Table(data, colWidths, style = saleTableStyle, repeatRows = 1)
         flows.append(t)
-        flows.extend([PageBreak()])
                
         return flows
     
