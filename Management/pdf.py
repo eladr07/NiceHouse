@@ -249,11 +249,13 @@ class EmployeeListWriter:
             return phones
         def get_account_str(employee):
             account = employee.account
-            account_str = log2vis(ugettext('payee') + ': ' + account.payee) + '<br/>'
-            account_str += log2vis(ugettext('bank') + ': ' + account.bank) + '<br/>'
-            account_str += log2vis(ugettext('branch') + ': ' + account.branch + ' ' + account.branch_num) + '<br/>'
-            account_str += log2vis(ugettext('account_num') + ': ' + account.num)
-            return account            
+            account_str = ''
+            if account:
+                account_str += log2vis(ugettext('payee') + ': ' + account.payee) + '<br/>'
+                account_str += log2vis(ugettext('bank') + ': ' + account.bank) + '<br/>'
+                account_str += log2vis(ugettext('branch') + ': ' + account.branch + ' ' + account.branch_num) + '<br/>'
+                account_str += log2vis(ugettext('account_num') + ': ' + account.num)
+            return account_str            
             
         flows=[Paragraph(log2vis(u'נווה העיר - %s עובדים' % len(self.employees)), styleSubTitleBold),
                Spacer(0,10)]
