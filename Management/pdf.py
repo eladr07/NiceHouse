@@ -139,13 +139,17 @@ class NumberedCanvas(canvas.Canvas):
 
 class DocumentBase:
     def addLater(self, canv, doc):
-        frame2 = Frame(0, 680, 650, 150)
-        frame2.addFromList([nhLogo(), datePara()], canv)
+        frame1 = Frame(0, 680, 150, 50)
+        frame1.addFromList([datePara()()], canv)
+        frame2 = Frame(0, 680, 500, 150)
+        frame2.addFromList([nhLogo()], canv)
         frame4 = Frame(50, 20, 500, 70)
         frame4.addFromList([nhAddr()], canv)
     def addFirst(self, canv, doc):
-        frame2 = Frame(0, 680, 650, 150)
-        frame2.addFromList([nhLogo(), datePara()], canv)
+        frame1 = Frame(0, 680, 150, 50)
+        frame1.addFromList([datePara()()], canv)
+        frame2 = Frame(0, 680, 500, 150)
+        frame2.addFromList([nhLogo()], canv)
         frame4 = Frame(50, 20, 500, 70)
         frame4.addFromList([nhAddr()], canv)
     def build(self, filename):
