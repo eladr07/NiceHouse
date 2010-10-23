@@ -280,7 +280,7 @@ class EmployeeListWriter:
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name), Paragraph(get_phones(e), styleRow9), 
                  log2vis(e.mail), Paragraph(log2vis(e.address), styleRow9), log2vis(e.work_start.strftime('%d/%m/%Y')),
                  log2vis(unicode(e.employment_terms and e.employment_terms.hire_type or '---')),
-                 Paragraph(get_account_str(e)),
+                 Paragraph(get_account_str(e), styleRow9),
                  Paragraph('<br/>'.join([log2vis(p.name) for p in e.projects.all()]), styleRow9)]
 
             row.reverse()
