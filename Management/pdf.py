@@ -249,13 +249,13 @@ class EmployeeListWriter:
         #frame1 = Frame(50, 40, 150, 40)
         #frame1.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
         #                    ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
-        frame2 = Frame(0, 680, 680, 150)
+        frame2 = Frame(0, 700, 670, 150)
         frame2.addFromList([nhLogo(), datePara()], canv)
         frame4 = Frame(50, 20, 500, 70)
         frame4.addFromList([nhAddr()], canv)
     def addFirst(self, canv, doc):
         self.current_page = 1
-        frame2 = Frame(0, 680, 680, 150)
+        frame2 = Frame(0, 700, 670, 150)
         frame2.addFromList([nhLogo(), datePara()], canv)
         #frame3 = Frame(50, 40, 150, 40)
         #frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
