@@ -234,32 +234,15 @@ class EmployeeListWriter:
     def __init__(self, employees, nhemployees):
         self.employees = employees
         self.nhemployees = nhemployees
-        self.rows_per_page = 11
-    @property
-    def pages_count(self):
-        x = len(self.employees) / self.rows_per_page + 1
-        if len(self.employees) % self.rows_per_page == 0:
-            x+=1
-        y = len(self.nhemployees) / self.rows_per_page + 1
-        if len(self.nhemployees) % self.rows_per_page == 0:
-            y+=1
-        return x+y+1
+
     def addLater(self, canv, doc):
-        self.current_page += 1
-        #frame1 = Frame(50, 40, 150, 40)
-        #frame1.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
-        #                    ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
-        frame2 = Frame(0, 700, 670, 150)
+        frame2 = Frame(0, 680, 650, 150)
         frame2.addFromList([nhLogo(), datePara()], canv)
         frame4 = Frame(50, 20, 500, 70)
         frame4.addFromList([nhAddr()], canv)
     def addFirst(self, canv, doc):
-        self.current_page = 1
-        frame2 = Frame(0, 700, 670, 150)
+        frame2 = Frame(0, 680, 650, 150)
         frame2.addFromList([nhLogo(), datePara()], canv)
-        #frame3 = Frame(50, 40, 150, 40)
-        #frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
-        #                    ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
         frame4 = Frame(50, 20, 500, 70)
         frame4.addFromList([nhAddr()], canv)
     def employeeFlows(self):
@@ -295,16 +278,14 @@ class EmployeeListWriter:
         headers.reverse()
         colWidths.reverse()
         
-        rows=[]
-        i, rank_count, rank = 0,0,None
+        rows = []
+        rank = None
         for e in self.employees:
             if rank != e.rank:
                 row = [log2vis(unicode(e.rank)),None,None,None,None]
                 row.reverse()
                 rows.append(row)
                 rank = e.rank
-                rank_count+=1
-                i+=1
             
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name), Paragraph(get_phones(e), styleRow9), 
                  log2vis(e.mail), Paragraph(log2vis(e.address), styleRow9), log2vis(e.work_start.strftime('%d/%m/%Y')),
@@ -318,45 +299,41 @@ class EmployeeListWriter:
         data = [headers]
         data.extend(rows)
         t = Table(data, colWidths, style = saleTableStyle, repeatRows = 1)
-        #t.setStyle(saleTableStyle)
         flows.append(t)
         flows.extend([PageBreak()])
         
-        rows = []
-                
         flows.extend([Paragraph(log2vis(u'נייס האוס - %s עובדים' % len(self.nhemployees)), styleSubTitleBold),
                       Spacer(0,10)])
         
-        headers = [log2vis(name) for name in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'דוא"ל',u'כתובת',u'העסקה\nתחילת',u'העסקה\nסוג']]
-        colWidths = [None,None,None,110,90,70,None,30]
+        headers = [log2vis(name) for name in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'דוא"ל',u'כתובת',u'העסקה\nתחילת',u'העסקה\nסוג',u'חשבון\nפרטי']]
+        colWidths = [None,None,None,110,90,70,None,30,60]
         
         colWidths.reverse()
         headers.reverse()
         
-        i, nhbranch_count, nhbranch = (0,0,None)
+        rows = []
+        
+        nhbranch = None
         for e in self.nhemployees:
             if nhbranch in e.current_nhbranches:
                 row = [log2vis(unicode(e.nhbranch)), None,None,None,None]
                 row.reverse()
                 rows.append(row)
                 nhbranch = e.nhbranch
-                nhbranch_count+=1
-                i+=1
+
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name), Paragraph(get_phones(e), styleRow9),
                  log2vis(e.mail), Paragraph(log2vis(e.address), styleRow9), log2vis(e.work_start.strftime('%d/%m/%Y')),
-                 log2vis(unicode(e.employment_terms and e.employment_terms.hire_type or ''))]
+                 log2vis(unicode(e.employment_terms and e.employment_terms.hire_type or '')),
+                 Paragraph(get_account_str(e), styleRow9)]
             row.reverse()
             rows.append(row)
-            i+=1
-            if i % self.rows_per_page == 0 or i == len(self.nhemployees) + nhbranch_count:
-                data = [headers]
-                data.extend(rows)
-                t = Table(data, colWidths)
-                t.setStyle(saleTableStyle)
-                flows.append(t)
-                if i < len(self.nhemployees) + nhbranch_count:
-                    flows.extend([PageBreak(), Spacer(0,50)])
-                rows = []        
+                
+        data = [headers]
+        data.extend(rows)
+        t = Table(data, colWidths, style = saleTableStyle, repeatRows = 1)
+        flows.append(t)
+        flows.extend([PageBreak()])
+               
         return flows
     def build(self, filename):
         doc = SimpleDocTemplate(filename)
