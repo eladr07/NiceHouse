@@ -210,7 +210,7 @@ class EmployeeListWriter:
     def __init__(self, employees, nhemployees):
         self.employees = employees
         self.nhemployees = nhemployees
-        self.rows_per_page = 6
+        self.rows_per_page = 11
     @property
     def pages_count(self):
         x = len(self.employees) / self.rows_per_page + 1
@@ -294,8 +294,8 @@ class EmployeeListWriter:
             if i % self.rows_per_page == 0 or i == len(self.employees) + rank_count:
                 data = [headers]
                 data.extend(rows)
-                t = Table(data, colWidths)
-                t.setStyle(saleTableStyle)
+                t = Table(data, colWidths, style = saleTableStyle, repeatRows = 1)
+                #t.setStyle(saleTableStyle)
                 flows.append(t)
                 flows.extend([PageBreak(), Spacer(0,50)])
                 rows = []
