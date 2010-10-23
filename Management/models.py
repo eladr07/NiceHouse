@@ -434,7 +434,6 @@ class Building(models.Model):
 class Person(models.Model):
     first_name = models.CharField(ugettext('first_name'), max_length=20)
     last_name = models.CharField(ugettext('last_name'), max_length=20)
-    phone = models.CharField(ugettext('phone'), max_length=10, null=True, blank=True)
     cell_phone = models.CharField(ugettext('cell_phone'), max_length=10, null=True, blank=True)
     mail = models.EmailField(ugettext('mail'), null=True, blank=True)
     address = models.CharField(ugettext('address'), max_length=40, null=True, blank=True)
@@ -447,6 +446,7 @@ class Person(models.Model):
         verbose_name_plural = ugettext('persons')
         
 class Contact(Person):
+    phone = models.CharField(ugettext('phone'), max_length=10, null=True, blank=True)
     fax = models.CharField(ugettext('fax'), max_length=10, null=True, blank=True);
     company = models.CharField(ugettext('company'), max_length=20, null=True, blank=True)
     remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
@@ -471,6 +471,8 @@ class EmploymentTerms(models.Model):
 class EmployeeBase(Person):
     pid = models.PositiveIntegerField(ugettext('pid'), unique=True)
     birth_date = models.DateField(ugettext('birth_date'))
+    work_phone = models.CharField(ugettext('work_phone'), max_length=10, null=True, blank=True)
+    work_fax = models.CharField(ugettext('work_fax'), max_length=10, null=True, blank=True);
     home_phone = models.CharField(ugettext('home_phone'), max_length=10)
     mate_phone = models.CharField(ugettext('mate_phone'), max_length=10, null=True, blank=True)
     family_state = models.PositiveIntegerField(ugettext('family state'), choices = Family_State_Types)
@@ -2179,6 +2181,7 @@ class NHPay(models.Model):
         db_table='NHPay'
 
 class Lawyer(Person):
+    phone = models.CharField(ugettext('phone'), max_length=10, null=True, blank=True)
     def get_absolute_url(self):
         return '/lawyers/%s' % self.id
     class Meta:

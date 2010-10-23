@@ -242,7 +242,7 @@ class EmployeeListWriter:
         #generate phones string for an employee
         def get_phones(employee):
             phones = ''
-            for attr in ['phone','cell_phone','home_phone','mate_phone']:
+            for attr in ['work_phone','work_fax','cell_phone','home_phone','mate_phone']:
                 attr_value = getattr(e, attr)
                 if attr_value:
                     phones += log2vis(ugettext(attr) + ': ' + attr_value) + '<br/>'
