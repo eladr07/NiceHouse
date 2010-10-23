@@ -236,12 +236,12 @@ class EmployeeListWriter:
         self.nhemployees = nhemployees
 
     def addLater(self, canv, doc):
-        frame2 = Frame(0, 680, 650, 150)
+        frame2 = Frame(0, 680, 700, 150)
         frame2.addFromList([nhLogo(), datePara()], canv)
         frame4 = Frame(50, 20, 500, 70)
         frame4.addFromList([nhAddr()], canv)
     def addFirst(self, canv, doc):
-        frame2 = Frame(0, 680, 650, 150)
+        frame2 = Frame(0, 680, 700, 150)
         frame2.addFromList([nhLogo(), datePara()], canv)
         frame4 = Frame(50, 20, 500, 70)
         frame4.addFromList([nhAddr()], canv)
