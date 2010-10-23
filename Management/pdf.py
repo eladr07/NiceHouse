@@ -180,8 +180,8 @@ class ProjectListWriter(DocumentBase):
             employees = ''
             for employee in project.employees.all():
                 employee_str = unicode(employee)
-                if employee.phone:
-                    employee_str += ' - ' + employee.phone
+                if employee.cell_phone:
+                    employee_str += ' - ' + employee.cell_phone
                 employees += log2vis(employee_str) + '<br/>'
                     
             contacts = ''
