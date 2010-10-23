@@ -251,7 +251,7 @@ class ProjectListWriter:
         doc.build(story, self.addFirst, self.addLater)
         return doc.canv
 
-class EmployeeListWriter:
+class EmployeeListWriter(DocumentBase):
 
     def __init__(self, employees, nhemployees):
         self.employees = employees
