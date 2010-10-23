@@ -254,7 +254,7 @@ class EmployeeListWriter:
                 account_str += log2vis(ugettext('payee') + ': ' + account.payee) + '<br/>'
                 account_str += log2vis(ugettext('bank') + ': ' + account.bank) + '<br/>'
                 account_str += log2vis(u'%s: %s %s' % (ugettext('branch'), account.branch, account.branch_num)) + '<br/>'
-                account_str += log2vis(ugettext('account_num') + ': ' + account.num)
+                account_str += log2vis(u'%s: %s' % (ugettext('account_num'), account.num))
             return account_str            
             
         flows=[Paragraph(log2vis(u'נווה העיר - %s עובדים' % len(self.employees)), styleSubTitleBold),
