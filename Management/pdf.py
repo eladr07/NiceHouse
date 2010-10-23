@@ -139,17 +139,13 @@ class NumberedCanvas(canvas.Canvas):
 
 class DocumentBase:
     def addLater(self, canv, doc):
-        frame1 = Frame(0, 730, 150, 50)
-        frame1.addFromList([datePara()], canv)
-        frame2 = Frame(70, 680, 500, 150)
-        frame2.addFromList([nhLogo()], canv)
+        frame2 = Frame(0, 680, 650, 150)
+        frame2.addFromList([nhLogo(), datePara()], canv)
         frame4 = Frame(50, 20, 500, 70)
         frame4.addFromList([nhAddr()], canv)
     def addFirst(self, canv, doc):
-        frame1 = Frame(0, 730, 150, 50)
-        frame1.addFromList([datePara()], canv)
-        frame2 = Frame(70, 680, 500, 150)
-        frame2.addFromList([nhLogo()], canv)
+        frame2 = Frame(0, 680, 650, 150)
+        frame2.addFromList([nhLogo(), datePara()], canv)
         frame4 = Frame(50, 20, 500, 70)
         frame4.addFromList([nhAddr()], canv)
     def build(self, filename):
@@ -159,31 +155,10 @@ class DocumentBase:
     def get_story(self):
         pass
 
-class ProjectListWriter:
+class ProjectListWriter(DocumentBase):
     def __init__(self, projects):
         self.projects = projects
-    @property
-    def pages_count(self):
-        x = len(self.projects) / 16 + 1
-        return x
-    def addLater(self, canv, doc):
-        self.current_page += 1
-        frame1 = Frame(50, 40, 150, 40)
-        frame1.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
-                            ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
-        frame2 = Frame(0, 680, 650, 150)
-        frame2.addFromList([nhLogo(), datePara()], canv)
-        frame4 = Frame(50, 20, 500, 70)
-        frame4.addFromList([nhAddr()], canv)
-    def addFirst(self, canv, doc):
-        self.current_page = 1
-        frame2 = Frame(0, 680, 650, 150)
-        frame2.addFromList([nhLogo(), datePara()], canv)
-        frame3 = Frame(50, 40, 150, 40)
-        frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
-                            ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
-        frame4 = Frame(50, 20, 500, 70)
-        frame4.addFromList([nhAddr()], canv)
+
     def projectFlows(self):
         flows = [Paragraph(log2vis(u'נווה העיר - %s פרוייקטים' % len(self.projects)), styleSubTitleBold), Spacer(0,10)]
         headers = [log2vis(n) for n in [u'יזם',u'פרוייקט\nשם',u'עיר',u"בניינים\nמס'",u"דירות\nמס'",u'אנשי מכירות',u'אנשי קשר']]
@@ -192,7 +167,7 @@ class ProjectListWriter:
         colWidths.reverse()
         headers.reverse()
         rows=[]
-        i=0
+
         for project in self.projects:
 
             if project.details != None:
@@ -230,28 +205,22 @@ class ProjectListWriter:
 
             row.reverse()
             rows.append(row)
-            i+=1
             
-            if i % 16 == 0 or i == len(self.projects):
-                data = [headers]
-                data.extend(rows)
-                t = Table(data,colWidths)
-                t.setStyle(saleTableStyle)
-                flows.append(t)
-                flows.extend([PageBreak(), Spacer(0,75)])
-                rows = []
-    
+        data = [headers]
+        data.extend(rows)
+        t = Table(data,colWidths, style = saleTableStyle, repeatRows = 1)
+        flows.append(t)
+        flows.extend([PageBreak(), Spacer(0,75)])
         return flows
-    def build(self, filename):
-        doc = SimpleDocTemplate(filename)
+    
+    def get_story(self):
         story = [Spacer(0,40)]
         story.append(titlePara(u'מצבת פרוייקטים'))
         story.append(Spacer(0, 10))
         story.extend(self.projectFlows())
-        doc.build(story, self.addFirst, self.addLater)
-        return doc.canv
+        return story
 
-class EmployeeListWriter(DocumentBase):
+class EmployeeListWriter:
 
     def __init__(self, employees, nhemployees):
         self.employees = employees
