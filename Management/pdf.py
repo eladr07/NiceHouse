@@ -134,8 +134,8 @@ class NumberedCanvas(canvas.Canvas):
 
     def draw_page_number(self, page_count):
         self.setFont("David", 13)
-        self.drawRightString(20*mm, 20*mm,
-            "Page %d of %d" % (self._pageNumber, page_count))
+        self.drawRightString(40*mm, 20*mm,
+                             log2vis(u"עמוד %d מתוך %d" % (self._pageNumber, page_count)))
 
 class ProjectListWriter:
     def __init__(self, projects):
