@@ -210,7 +210,7 @@ class EmployeeListWriter:
     def __init__(self, employees, nhemployees):
         self.employees = employees
         self.nhemployees = nhemployees
-        self.rows_per_page = 11
+        self.rows_per_page = 9
     @property
     def pages_count(self):
         x = len(self.employees) / self.rows_per_page + 1
@@ -245,7 +245,8 @@ class EmployeeListWriter:
             for attr in ['work_phone','work_fax','cell_phone','home_phone','mate_phone']:
                 attr_value = getattr(e, attr)
                 if attr_value:
-                    phones += log2vis(ugettext(attr) + ': ' + attr_value) + '<br/>'
+                    phones += '<u>' + log2vis(ugettext(attr)) + '</u><br/>'
+                    phones += log2vis(attr_value) + '<br/>'
             return phones
         def get_account_str(employee):
             account = employee.account
@@ -265,7 +266,7 @@ class EmployeeListWriter:
                Spacer(0,10)]
 
         headers = [log2vis(name) for name in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'דוא"ל',u'כתובת',u'העסקה\nתחילת',u'העסקה\nסוג',u'חשבון\nפרטי',u'פרוייקטים']]
-        colWidths = [None,None,None,110,90,70,None,None,80,80]
+        colWidths = [None,None,None,110,90,70,None,None,70,80]
         
         headers.reverse()
         colWidths.reverse()
