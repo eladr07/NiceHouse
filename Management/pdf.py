@@ -137,6 +137,24 @@ class NumberedCanvas(canvas.Canvas):
         self.drawRightString(40*mm, 20*mm,
                              log2vis(u"עמוד %d מתוך %d" % (self._pageNumber, page_count)))
 
+class DocumentBase:
+    def addLater(self, canv, doc):
+        frame2 = Frame(0, 680, 650, 150)
+        frame2.addFromList([nhLogo(), datePara()], canv)
+        frame4 = Frame(50, 20, 500, 70)
+        frame4.addFromList([nhAddr()], canv)
+    def addFirst(self, canv, doc):
+        frame2 = Frame(0, 680, 650, 150)
+        frame2.addFromList([nhLogo(), datePara()], canv)
+        frame4 = Frame(50, 20, 500, 70)
+        frame4.addFromList([nhAddr()], canv)
+    def build(self, filename):
+        doc = SimpleDocTemplate(filename)
+        doc.build(self.get_story(), self.addFirst, self.addLater, NumberedCanvas)
+        return doc.canv
+    def get_story(self):
+        pass
+
 class ProjectListWriter:
     def __init__(self, projects):
         self.projects = projects
@@ -235,16 +253,6 @@ class EmployeeListWriter:
         self.employees = employees
         self.nhemployees = nhemployees
 
-    def addLater(self, canv, doc):
-        frame2 = Frame(0, 680, 650, 150)
-        frame2.addFromList([nhLogo(), datePara()], canv)
-        frame4 = Frame(50, 20, 500, 70)
-        frame4.addFromList([nhAddr()], canv)
-    def addFirst(self, canv, doc):
-        frame2 = Frame(0, 680, 650, 150)
-        frame2.addFromList([nhLogo(), datePara()], canv)
-        frame4 = Frame(50, 20, 500, 70)
-        frame4.addFromList([nhAddr()], canv)
     def employeeFlows(self):
         #generate phones string for an employee
         def get_phones(employee):
@@ -335,14 +343,13 @@ class EmployeeListWriter:
         flows.extend([PageBreak()])
                
         return flows
-    def build(self, filename):
-        doc = SimpleDocTemplate(filename)
+    
+    def get_story(self):
         story = [Spacer(0,40)]
         story.append(titlePara(u'מצבת עובדים'))
         story.append(Spacer(0, 10))
         story.extend(self.employeeFlows())
-        doc.build(story, self.addFirst, self.addLater, NumberedCanvas)
-        return doc.canv
+        return story
 
 class MonthDemandWriter:
     @property
