@@ -16,6 +16,7 @@ from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib import colors
 from reportlab.lib.enums import *
+from reportlab.lib.units import mm
 from pyfribidi import log2vis
 
 #register Hebrew fonts
@@ -116,27 +117,25 @@ def nhAddr():
 class NumberedCanvas(canvas.Canvas):
     def __init__(self, *args, **kwargs):
         canvas.Canvas.__init__(self, *args, **kwargs)
-        self._codes = []
+        self._saved_page_states = []
+
     def showPage(self):
-        self._codes.append({'code': self._code, 'stack': self._codeStack})
+        self._saved_page_states.append(dict(self.__dict__))
         self._startPage()
+
     def save(self):
         """add page info to each page (page x of y)"""
-        # reset page counter 
-        self._pageNumber = 0
-        for code in self._codes:
-            # recall saved page
-            self._code = code['code']
-            self._codeStack = code['stack']
-            self.setFont("Helvetica", 7)
-            self.drawRightString(200, 20,
-                "page %(this)i of %(total)i" % {
-                   'this': self._pageNumber+1,
-                   'total': len(self._codes),
-                }
-            )
+        num_pages = len(self._saved_page_states)
+        for state in self._saved_page_states:
+            self.__dict__.update(state)
+            self.draw_page_number(num_pages)
             canvas.Canvas.showPage(self)
-        self._doc.SaveToFile(self._filename, self)
+        canvas.Canvas.save(self)
+
+    def draw_page_number(self, page_count):
+        self.setFont("Helvetica", 7)
+        self.drawRightString(200*mm, 20*mm,
+            "Page %d of %d" % (self._pageNumber, page_count))
 
 class ProjectListWriter:
     def __init__(self, projects):
