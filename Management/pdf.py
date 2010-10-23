@@ -251,10 +251,14 @@ class EmployeeListWriter:
             account = employee.account
             account_str = ''
             if account:
-                account_str += log2vis(ugettext('payee') + ': ' + account.payee) + '<br/>'
-                account_str += log2vis(ugettext('bank') + ': ' + account.bank) + '<br/>'
-                account_str += log2vis(u'%s: %s %s' % (ugettext('branch'), account.branch, account.branch_num)) + '<br/>'
-                account_str += log2vis(u'%s: %s' % (ugettext('account_num'), account.num))
+                account_str += '<u>' + log2vis(ugettext('payee')) + '</u><br/>'
+                account_str += log2vis(account.payee) + '<br/>'
+                account_str += '<u>' + log2vis(ugettext('bank')) + '</u><br/>'
+                account_str += log2vis(account.bank) + '<br/>'
+                account_str += '<u>' + log2vis(ugettext('branch')) + '</u><br/>'
+                account_str += log2vis(u'%s %s' % (account.branch, account.branch_num)) + '<br/>'
+                account_str += '<u>' + log2vis(ugettext('account_num')) + '</u><br/>'
+                account_str += str(account.num) + '<br/>'
             return account_str            
             
         flows=[Paragraph(log2vis(u'נווה העיר - %s עובדים' % len(self.employees)), styleSubTitleBold),
