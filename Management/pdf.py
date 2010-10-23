@@ -147,7 +147,7 @@ class DocumentBase:
         frame4.addFromList([nhAddr()], canv)
     def addFirst(self, canv, doc):
         frame1 = Frame(0, 680, 150, 50)
-        frame1.addFromList([datePara()()], canv)
+        frame1.addFromList([datePara()], canv)
         frame2 = Frame(0, 680, 500, 150)
         frame2.addFromList([nhLogo()], canv)
         frame4 = Frame(50, 20, 500, 70)
