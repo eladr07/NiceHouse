@@ -247,12 +247,19 @@ class EmployeeListWriter:
                 if attr_value:
                     phones += log2vis(ugettext(attr) + ': ' + attr_value) + '<br/>'
             return phones
+        def get_account_str(employee):
+            account = employee.account
+            account_str = log2vis(ugettext('payee') + ': ' + account.payee) + '<br/>'
+            account_str += log2vis(ugettext('bank') + ': ' + account.bank) + '<br/>'
+            account_str += log2vis(ugettext('branch') + ': ' + account.branch + ' ' + account.branch_num) + '<br/>'
+            account_str += log2vis(ugettext('account_num') + ': ' + account.num)
+            return account            
             
         flows=[Paragraph(log2vis(u'נווה העיר - %s עובדים' % len(self.employees)), styleSubTitleBold),
                Spacer(0,10)]
 
-        headers = [log2vis(name) for name in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'דוא"ל',u'כתובת',u'העסקה\nתחילת',u'העסקה\nסוג',u'פרוייקטים']]
-        colWidths = [None,None,None,110,90,70,None,None,80]
+        headers = [log2vis(name) for name in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'דוא"ל',u'כתובת',u'העסקה\nתחילת',u'העסקה\nסוג',u'חשבון\nפרטי',u'פרוייקטים']]
+        colWidths = [None,None,None,110,90,70,None,None,80,80]
         
         headers.reverse()
         colWidths.reverse()
@@ -270,9 +277,10 @@ class EmployeeListWriter:
             
             row=[e.id, log2vis(e.first_name), log2vis(e.last_name), Paragraph(get_phones(e), styleRow9), 
                  log2vis(e.mail), Paragraph(log2vis(e.address), styleRow9), log2vis(e.work_start.strftime('%d/%m/%Y')),
-                 log2vis(unicode(e.employment_terms and e.employment_terms.hire_type or '---'))]
-            projects = '\n'.join([log2vis(p.name) for p in e.projects.all()])
-            row.append(projects)
+                 log2vis(unicode(e.employment_terms and e.employment_terms.hire_type or '---')),
+                 Paragraph(get_account_str(e)),
+                 Paragraph('<br/>'.join([log2vis(p.name) for p in e.projects.all()]), styleRow9)]
+
             row.reverse()
             rows.append(row)
             i+=1
