@@ -272,7 +272,7 @@ class EmployeeListWriter:
         colWidths.reverse()
         
         rows=[]
-        i, rank_count, rank = (0,0,None)
+        i, rank_count, rank = 0,0,None
         for e in self.employees:
             if rank != e.rank:
                 row = [log2vis(unicode(e.rank)),None,None,None,None]
@@ -290,15 +290,15 @@ class EmployeeListWriter:
 
             row.reverse()
             rows.append(row)
-            i+=1
-            if i % self.rows_per_page == 0 or i == len(self.employees) + rank_count:
-                data = [headers]
-                data.extend(rows)
-                t = Table(data, colWidths, style = saleTableStyle, repeatRows = 1)
-                #t.setStyle(saleTableStyle)
-                flows.append(t)
-                flows.extend([PageBreak(), Spacer(0,50)])
-                rows = []
+
+        data = [headers]
+        data.extend(rows)
+        t = Table(data, colWidths, style = saleTableStyle, repeatRows = 1)
+        #t.setStyle(saleTableStyle)
+        flows.append(t)
+        flows.extend([PageBreak()])
+        
+        rows = []
                 
         flows.extend([Paragraph(log2vis(u'נייס האוס - %s עובדים' % len(self.nhemployees)), styleSubTitleBold),
                       Spacer(0,10)])
