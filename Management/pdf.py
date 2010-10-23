@@ -253,7 +253,7 @@ class EmployeeListWriter:
             if account:
                 account_str += log2vis(ugettext('payee') + ': ' + account.payee) + '<br/>'
                 account_str += log2vis(ugettext('bank') + ': ' + account.bank) + '<br/>'
-                account_str += log2vis(ugettext('branch') + ': ' + account.branch + ' ' + account.branch_num) + '<br/>'
+                account_str += log2vis(u'%s: %s %s' % (ugettext('branch'), account.branch, account.branch_num)) + '<br/>'
                 account_str += log2vis(ugettext('account_num') + ': ' + account.num)
             return account_str            
             
