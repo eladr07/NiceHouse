@@ -133,8 +133,8 @@ class NumberedCanvas(canvas.Canvas):
         canvas.Canvas.save(self)
 
     def draw_page_number(self, page_count):
-        self.setFont("Helvetica", 7)
-        self.drawRightString(200*mm, 20*mm,
+        self.setFont("David", 13)
+        self.drawRightString(20*mm, 20*mm,
             "Page %d of %d" % (self._pageNumber, page_count))
 
 class ProjectListWriter:
@@ -246,9 +246,9 @@ class EmployeeListWriter:
         return x+y+1
     def addLater(self, canv, doc):
         self.current_page += 1
-        frame1 = Frame(50, 40, 150, 40)
-        frame1.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
-                            ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
+        #frame1 = Frame(50, 40, 150, 40)
+        #frame1.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
+        #                    ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
         frame2 = Frame(0, 680, 650, 150)
         frame2.addFromList([nhLogo(), datePara()], canv)
         frame4 = Frame(50, 20, 500, 70)
@@ -257,9 +257,9 @@ class EmployeeListWriter:
         self.current_page = 1
         frame2 = Frame(0, 680, 650, 150)
         frame2.addFromList([nhLogo(), datePara()], canv)
-        frame3 = Frame(50, 40, 150, 40)
-        frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
-                            ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
+        #frame3 = Frame(50, 40, 150, 40)
+        #frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
+        #                    ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
         frame4 = Frame(50, 20, 500, 70)
         frame4.addFromList([nhAddr()], canv)
     def employeeFlows(self):
