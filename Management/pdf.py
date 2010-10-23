@@ -266,7 +266,7 @@ class EmployeeListWriter:
                Spacer(0,10)]
 
         headers = [log2vis(name) for name in [u'מס"ד',u'פרטי\nשם',u'משפחה\nשם',u'טלפון',u'דוא"ל',u'כתובת',u'העסקה\nתחילת',u'העסקה\nסוג',u'חשבון\nפרטי',u'פרוייקטים']]
-        colWidths = [None,None,None,80,90,70,None,None,60,80]
+        colWidths = [None,None,None,85,90,70,None,None,60,80]
         
         headers.reverse()
         colWidths.reverse()
