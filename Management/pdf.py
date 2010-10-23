@@ -210,7 +210,7 @@ class EmployeeListWriter:
     def __init__(self, employees, nhemployees):
         self.employees = employees
         self.nhemployees = nhemployees
-        self.rows_per_page = 8
+        self.rows_per_page = 6
     @property
     def pages_count(self):
         x = len(self.employees) / self.rows_per_page + 1
