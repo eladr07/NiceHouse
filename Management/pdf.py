@@ -681,11 +681,9 @@ class MonthDemandWriter(DocumentBase):
         story.append(Paragraph('<u>%s</u>' % log2vis(subTitle), styleSubTitleBold))
         story.extend([Spacer(0,20), self.introPara(), Spacer(0,20)])
         story.extend(self.saleFlows())
-        story.append(sigPara())
-        if self.demand.get_sales().count() == 10:
-            story.append(PageBreak())
         if self.demand.diffs.count() > 0:
             story.extend([Spacer(0, 20), self.addsPara()])
+        story.append(sigPara())
         if self.demand.project.is_zilber() and (self.demand.include_zilber_bonus() or not self.to_mail):
             story.extend([PageBreak(), Spacer(0,30)])
             story.extend(self.zilberAddsFlows())
