@@ -137,9 +137,9 @@ class NumberedCanvas(canvas.Canvas):
         self.drawRightString(40*mm, 20*mm,
                              log2vis(u"עמוד %d מתוך %d" % (self._pageNumber, page_count)))
 
-class DocumentBase:
+class DocumentBase(object):
     def __init__(self):
-        pass
+        super(DocumentBase, self).__init__()
     def addLater(self, canv, doc):
         frame2 = Frame(0, 680, 650, 150)
         frame2.addFromList([nhLogo()], canv)
