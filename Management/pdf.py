@@ -672,12 +672,7 @@ class MonthDemandWriter(DocumentBase):
         s += '<b>%s</b>' % log2vis(u'סה"כ : %s ש"ח' % commaise(self.demand.get_total_amount())) + '<br/>'
         return Paragraph(s, ParagraphStyle(name='addsPara', fontName='David', fontSize=14, 
                                            leading=16, alignment=TA_LEFT))
-    def build(self, filename):
-        logger = logging.getLogger('pdf')
-        
-        logger.info('starting build for %(demand)s', {'demand':self.demand})
-        
-        doc = SimpleDocTemplate(filename)
+    def get_story(self):
         story = [Spacer(0,100)]
         title = u'הנדון : עמלה לפרויקט %s לחודש %s/%s' % (self.demand.project, 
                                                           self.demand.month, 
@@ -704,8 +699,7 @@ class MonthDemandWriter(DocumentBase):
         if self.signup_adds:
             story.extend([PageBreak(), Spacer(0,30), titlePara(u'נספח א')])
             story.extend(self.signupFlows())
-        doc.build(story, self.addFirst, self.addLater)
-        return doc.canv
+        return story
 
 class MultipleDemandWriter:
     def __init__(self, demands, title, show_project, show_month):
