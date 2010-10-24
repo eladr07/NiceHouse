@@ -138,6 +138,8 @@ class NumberedCanvas(canvas.Canvas):
                              log2vis(u"עמוד %d מתוך %d" % (self._pageNumber, page_count)))
 
 class DocumentBase:
+    def __init__(self):
+        pass
     def addLater(self, canv, doc):
         frame2 = Frame(0, 680, 650, 150)
         frame2.addFromList([nhLogo()], canv)
