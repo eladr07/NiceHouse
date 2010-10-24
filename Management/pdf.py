@@ -226,7 +226,7 @@ class ProjectListWriter(DocumentBase):
         story.extend(self.projectFlows())
         return story
 
-class EmployeeListWriter:
+class EmployeeListWriter(DocumentBase):
 
     def __init__(self, employees, nhemployees):
         self.employees = employees
