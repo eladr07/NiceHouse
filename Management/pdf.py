@@ -368,7 +368,7 @@ class MonthDemandWriter:
         frame1 = Frame(50, 40, 150, 40)
         frame1.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
                             ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
-        frame2 = Frame(0, 680, 650, 150)
+        frame2 = Frame(0, 680, 650, 150, overlapAttachedSpace = 10)
         frame2.addFromList([nhLogo(), datePara()], canv)
         if self.current_page == self.pages_count:
             frame3 = Frame(50, 40, 100, 100)
@@ -379,7 +379,7 @@ class MonthDemandWriter:
         self.current_page = 1
         frame1 = Frame(300, 580, 250, 200)
         frame1.addFromList([self.toPara()], canv)
-        frame2 = Frame(0, 680, 650, 150)
+        frame2 = Frame(0, 680, 650, 150, overlapAttachedSpace = 10)
         frame2.addFromList([nhLogo(), datePara()], canv)
         frame3 = Frame(50, 40, 150, 40)
         frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
