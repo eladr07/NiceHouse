@@ -332,6 +332,7 @@ class EmployeeListWriter(DocumentBase):
 class MonthDemandWriter(DocumentBase):
 
     def __init__(self, demand, to_mail=False):
+        super(MonthDemandWriter, self).__init__()
         self.demand = demand
         self.signup_adds = self.demand.project.commissions.commission_by_signups
         self.to_mail = to_mail
