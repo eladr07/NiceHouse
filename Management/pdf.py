@@ -653,7 +653,7 @@ class MonthDemandWriter:
         names.reverse()
         headers = [log2vis(name) for name in names]
         i=1
-        next_break = 10
+        #next_break = 10
         flows = [tableCaption(), Spacer(0,10)]
         if self.signup_adds:
             flows.extend([self.signup_counts_para(), Spacer(0,10)])
@@ -693,38 +693,37 @@ class MonthDemandWriter:
                 
             row.reverse()#reportlab prints columns ltr
             rows.append(row)
-            if i % next_break == 0 or i == sales.count():
-                if i == sales.count():# insert column summaries if last row
-                    row = [Paragraph(log2vis(u'סה"כ'), styleSaleSumRow)]
-                    if contract_num:
-                        row.append(None)
-                    if self.signup_adds:
-                        row.append(None)
-                    row.extend([None,Paragraph(log2vis('%s' % self.demand.get_sales().count()), styleSaleSumRow),None])
-                    row.append(Paragraph(commaise(self.demand.get_sales().total_price()), styleSaleSumRow))
-                    if zilber:
-                        row.extend([None,None,None,Paragraph(commaise(total_lawyer_pay), styleSaleSumRow),None])
-                    if discount:
-                        row.extend([None,None])
-                    if final:
-                        row.extend([None,Paragraph(commaise(total_pc_base_worth), styleSaleSumRow),
-                                    None,Paragraph(commaise(total_pb_dsp_worth), styleSaleSumRow),
-                                    None,Paragraph(commaise(self.demand.sales_commission), styleSaleSumRow)])
-                    else:
-                        row.extend([Paragraph(commaise(self.demand.get_sales().total_price_final()), styleSaleSumRow),
-                                    None,Paragraph(commaise(self.demand.sales_commission), styleSaleSumRow)])
-                    row.reverse()
-                    rows.append(row)
-                data = [headers]
-                data.extend(rows)
-                t = Table(data, colWidths)
-                t.setStyle(saleTableStyle)
-                flows.append(t)
-                if i < sales.count():
-                    flows.extend([PageBreak(), Spacer(0,70)])
-                    next_break += 15
-                rows = []
+                #if i < sales.count():
+                    #flows.extend([PageBreak(), Spacer(0,70)])
+                    #next_break += 15
+                #rows = []
             i+=1
+
+        row = [Paragraph(log2vis(u'סה"כ'), styleSaleSumRow)]
+        if contract_num:
+            row.append(None)
+        if self.signup_adds:
+            row.append(None)
+        row.extend([None,Paragraph(log2vis('%s' % self.demand.get_sales().count()), styleSaleSumRow),None])
+        row.append(Paragraph(commaise(self.demand.get_sales().total_price()), styleSaleSumRow))
+        if zilber:
+            row.extend([None,None,None,Paragraph(commaise(total_lawyer_pay), styleSaleSumRow),None])
+        if discount:
+            row.extend([None,None])
+        if final:
+            row.extend([None,Paragraph(commaise(total_pc_base_worth), styleSaleSumRow),
+                        None,Paragraph(commaise(total_pb_dsp_worth), styleSaleSumRow),
+                        None,Paragraph(commaise(self.demand.sales_commission), styleSaleSumRow)])
+        else:
+            row.extend([Paragraph(commaise(self.demand.get_sales().total_price_final()), styleSaleSumRow),
+                        None,Paragraph(commaise(self.demand.sales_commission), styleSaleSumRow)])
+        row.reverse()
+        rows.append(row)
+        data = [headers]
+        data.extend(rows)
+        t = Table(data, colWidths, style = saleTableStyle, repeatRows = 1)
+        flows.append(t)
+        
         return flows
     def remarkPara(self):
         s = '<b><u>%s</u></b><br/>' % log2vis(u'הערות לדרישה')
