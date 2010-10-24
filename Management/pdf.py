@@ -329,27 +329,8 @@ class EmployeeListWriter(DocumentBase):
         story.extend(self.employeeFlows())
         return story
 
-class MonthDemandWriter:
-    @property
-    def pages_count(self):
-        count = self.demand.get_sales().count()
-        if self.demand.diffs.count():
-            count += self.demand.diffs.count() + 1
-        if self.demand.remarks:
-            count += 1
-        affected_sales_count = 0
-        for subSales in self.demand.get_affected_sales().values():
-            affected_sales_count += subSales.count()
-        base = self.signup_adds and (affected_sales_count + 17)/17 or 0
-        if count <= 9:
-            return base + 1
-        if count <= 25:
-            return base + 2
-        if count <= 40:
-            return base + 3
-        if count <= 55:
-            return base + 4
-        return base + 5
+class MonthDemandWriter(DocumentBase):
+
     def __init__(self, demand, to_mail=False):
         self.demand = demand
         self.signup_adds = self.demand.project.commissions.commission_by_signups
@@ -364,31 +345,17 @@ class MonthDemandWriter:
         s += log2vis(u'א.ג.נ')
         return Paragraph(s, styleN)
     def addLater(self, canv, doc):
-        self.current_page += 1
-        frame1 = Frame(50, 40, 150, 40)
-        frame1.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
-                            ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
-        frame2 = Frame(0, 680, 650, 150, overlapAttachedSpace = 10)
-        frame2.addFromList([nhLogo(), datePara()], canv)
-        if self.current_page == self.pages_count:
-            frame3 = Frame(50, 40, 100, 100)
-            frame3.addFromList([sigPara()], canv)
-        frame4 = Frame(50, 20, 500, 70)
-        frame4.addFromList([nhAddr()], canv)
+        super(MonthDemandWriter, self).addLater(canv, doc)
+        #if self.current_page == self.pages_count:
+        #    frame3 = Frame(50, 40, 100, 100)
+        #    frame3.addFromList([sigPara()], canv)
     def addFirst(self, canv, doc):
-        self.current_page = 1
+        super(MonthDemandWriter, self).addFirst(canv, doc)
         frame1 = Frame(300, 580, 250, 200)
         frame1.addFromList([self.toPara()], canv)
-        frame2 = Frame(0, 680, 650, 150, overlapAttachedSpace = 10)
-        frame2.addFromList([nhLogo(), datePara()], canv)
-        frame3 = Frame(50, 40, 150, 40)
-        frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
-                            ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
-        frame4 = Frame(50, 20, 500, 70)
-        frame4.addFromList([nhAddr()], canv)        
-        if self.pages_count == 1:
-            frame5 = Frame(50, 40, 100, 100)
-            frame5.addFromList([sigPara()], canv)
+        #if self.pages_count == 1:
+        #    frame5 = Frame(50, 40, 100, 100)
+        #    frame5.addFromList([sigPara()], canv)
     def introPara(self):
         project_commissions = self.demand.project.commissions
         if project_commissions.include_lawyer == None:
@@ -469,15 +436,7 @@ class MonthDemandWriter:
                 total_doh0price += doh0price
                 total_memudad += memudad
                 total_diff += price_memduad_diff
-                
-                if i % 17 == 0:
-                    data = [headers]
-                    data.extend(rows)
-                    t = Table(data)
-                    t.setStyle(saleTableStyle)
-                    flows.extend([t, PageBreak(), Spacer(0,70)])
-                    rows = []
-                    
+ 
             if demand.zilber_cycle_index() == 1:
                 break
             
@@ -495,8 +454,7 @@ class MonthDemandWriter:
         rows.append(sum_row)
         data = [headers]
         data.extend(rows)
-        t = Table(data, colWidths)
-        t.setStyle(saleTableStyle)
+        t = Table(data, colWidths, style = saleTableStyle, repeatRows = 1)
         flows.append(t)
         return flows
     
@@ -514,7 +472,6 @@ class MonthDemandWriter:
         rows = []
         demand = self.demand
         sales = list(demand.get_sales().select_related('house__building'))
-        i = 1
         total_prices, total_prices_finals, total_adds = 0, 0, 0
         
         while demand.zilber_cycle_index() > 1:
@@ -535,22 +492,12 @@ class MonthDemandWriter:
                    '%s/%s' % (unicode(s.house.building), unicode(s.house)), s.sale_date.strftime('%d/%m/%y'), 
                    commaise(s.price), commaise(s.price_final), s.pc_base, sale_base_with_add, sale_base_with_add - s.pc_base, commaise(sale_add)]
 
-            i += 1
-            
             row.reverse()
             rows.append(row)
             total_prices += s.price
             total_prices_finals += s.price_final
             total_adds += round(sale_add)
-            
-            if i % 16 == 0:
-                data = [headers]
-                data.extend(rows)
-                t = Table(data)
-                t.setStyle(saleTableStyle)
-                flows.extend([t, PageBreak(), Spacer(0,70)])
-                rows = []
-            
+             
         sum_row = [Paragraph(log2vis(u'סה"כ'), styleSaleSumRow), None, None, None, Paragraph(commaise(total_prices), styleSaleSumRow),
                    Paragraph(commaise(total_prices_finals), styleSaleSumRow), None, None, None, 
                    Paragraph(commaise(total_adds), styleSaleSumRow)]
@@ -558,8 +505,7 @@ class MonthDemandWriter:
         rows.append(sum_row)
         data = [headers]
         data.extend(rows)
-        t = Table(data, colWidths)
-        t.setStyle(saleTableStyle)
+        t = Table(data, colWidths, style = saleTableStyle, repeatRows = 1)
         flows.append(t)
         return flows
                         
@@ -574,10 +520,9 @@ class MonthDemandWriter:
         colWidths.reverse()
         rows = []
         total = 0
-        i = 1
+
         for subSales in self.demand.get_affected_sales().values():
             for s in subSales.all():
-                i += 1
                 singup = s.house.get_signup() 
                 row = [singup.date.strftime('%d/%m/%y'), '%s/%s' % (s.contractor_pay_month, s.contractor_pay_year), 
                        clientsPara(s.clients), '%s/%s' % (unicode(s.house.building), unicode(s.house)), 
@@ -591,20 +536,13 @@ class MonthDemandWriter:
                 row.extend([c_final_old, c_final_new, diff, commaise(diff * s.price_final / 100)])
                 row.reverse()
                 rows.append(row)
-                if i % 17 == 0:
-                    data = [headers]
-                    data.extend(rows)
-                    t = Table(data, colWidths)
-                    t.setStyle(saleTableStyle)
-                    flows.extend([t, PageBreak(), Spacer(0,70)])
-                    rows = []
+
         sum_row = [Paragraph(log2vis(u'סה"כ'), styleSaleSumRow),None,None,None,None,None,None,None,None,Paragraph(commaise(total), styleSaleSumRow)]
         sum_row.reverse()
         rows.append(sum_row)      
         data = [headers]
         data.extend(rows)
-        t = Table(data, colWidths)
-        t.setStyle(saleTableStyle)
+        t = Table(data, colWidths, style = saleTableStyle, repeatRows = 1)
         flows.append(t)
         return flows
     def signup_counts_para(self):
@@ -653,7 +591,6 @@ class MonthDemandWriter:
         names.reverse()
         headers = [log2vis(name) for name in names]
         i=1
-        #next_break = 10
         flows = [tableCaption(), Spacer(0,10)]
         if self.signup_adds:
             flows.extend([self.signup_counts_para(), Spacer(0,10)])
@@ -693,10 +630,6 @@ class MonthDemandWriter:
                 
             row.reverse()#reportlab prints columns ltr
             rows.append(row)
-                #if i < sales.count():
-                    #flows.extend([PageBreak(), Spacer(0,70)])
-                    #next_break += 15
-                #rows = []
             i+=1
 
         row = [Paragraph(log2vis(u'סה"כ'), styleSaleSumRow)]
