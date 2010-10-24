@@ -347,18 +347,10 @@ class MonthDemandWriter(DocumentBase):
         s += log2vis(u'תפקיד : %s</b>' % contact.role) + '<br/></b>'
         s += log2vis(u'א.ג.נ')
         return Paragraph(s, styleN)
-    def addLater(self, canv, doc):
-        super(MonthDemandWriter, self).addLater(canv, doc)
-        #if self.current_page == self.pages_count:
-        #    frame3 = Frame(50, 40, 100, 100)
-        #    frame3.addFromList([sigPara()], canv)
     def addFirst(self, canv, doc):
         super(MonthDemandWriter, self).addFirst(canv, doc)
         frame1 = Frame(300, 580, 250, 200)
         frame1.addFromList([self.toPara()], canv)
-        #if self.pages_count == 1:
-        #    frame5 = Frame(50, 40, 100, 100)
-        #    frame5.addFromList([sigPara()], canv)
     def introPara(self):
         project_commissions = self.demand.project.commissions
         if project_commissions.include_lawyer == None:
@@ -689,6 +681,7 @@ class MonthDemandWriter(DocumentBase):
         story.append(Paragraph('<u>%s</u>' % log2vis(subTitle), styleSubTitleBold))
         story.extend([Spacer(0,20), self.introPara(), Spacer(0,20)])
         story.extend(self.saleFlows())
+        story.append(sigPara())
         if self.demand.get_sales().count() == 10:
             story.append(PageBreak())
         if self.demand.diffs.count() > 0:
