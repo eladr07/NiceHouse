@@ -586,7 +586,10 @@ def demand_old_list(request):
             total_sales_amount += d.get_sales().total_price_final()
             total_amount += d.get_total_amount()
             if d.statuses.count() > 0 and d.statuses.latest().type.id in [DemandStatusType.Sent, DemandStatusType.Finished]:
-                unhandled_projects.remove(d.project)
+                try:
+                    unhandled_projects.remove(d.project)
+                except ValueError:
+                    pass
         
     return render_to_response('Management/demand_old_list.html', 
                               { 'demands':ds, 'month':date(year, month, 1),
