@@ -1500,10 +1500,9 @@ class CZilber(models.Model):
                 logger.warning('skipping sale #%(id)s. commission_include=False', {'id':s.id})
                                 
             prices_date = date(month.month == 12 and month.year+1 or month.year, month.month==12 and 1 or month.month+1, 1)
-            current_madad = max((d.get_madad(), self.base_madad))
-            memudad_multiplier = ((current_madad / self.base_madad) - 1) * 0.6 + 1
+            
                         
-            logger.debug('%(vals)s', {'vals': {'prices_date':prices_date, 'current_madad':current_madad, 'memudad_multiplier':memudad_multiplier}})
+            logger.debug('%(vals)s', {'vals': {'prices_date':prices_date}})
             
             for s in sales:
                 s.commission_details.create(commission = 'c_zilber_base', value = self.base)
@@ -1516,14 +1515,20 @@ class CZilber(models.Model):
                         logger.warning('skipping c_zilber_discount calc for sale #%(id)s. no doh0 prices', {'id':s.id})
                         continue
                     latest_doh0price = doh0prices.latest().price
+                    
+                    # calc the memudad price
+                    current_madad = s.commission_madad_bi or max((d.get_madad(), self.base_madad))
+                    memudad_multiplier = ((current_madad / self.base_madad) - 1) * 0.6 + 1
                     memudad = latest_doh0price * memudad_multiplier
+                    
                     zdb = (s.price_final - memudad) * self.b_discount
                     s.commission_details.create(commission='c_zilber_discount', value = zdb)
                     s.commission_details.create(commission='latest_doh0price', value = latest_doh0price)
                     s.commission_details.create(commission='memudad', value = memudad)
                                     
                     logger.debug('sale #%(id)s c_zilber_discount calc values: %(vals)s',
-                                 {'id':s.id, 'vals':{'latest_doh0price':latest_doh0price,'memudad':memudad,'zdb':zdb}})
+                                 {'id':s.id, 'vals':{'latest_doh0price':latest_doh0price, 'current_madad':current_madad, 
+                                                     'memudad_multiplier':memudad_multiplier, 'memudad':memudad,'zdb':zdb}})
 
             logger.info('starting to calculate ziber adds')
             

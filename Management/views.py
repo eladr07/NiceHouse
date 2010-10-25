@@ -3103,6 +3103,7 @@ def sale_add(request, demand_id=None):
             form.fields['project'].initial = p.id
             form.fields['employee'].queryset = p.employees.all()
             form.fields['building'].queryset = p.buildings.all()
+            form.fields['commission_madad_bi'].initial = demand.get_madad()
     return render_to_response('Management/sale_edit.html', 
                               {'form':form, 'year':year, 'month':month},
                               context_instance=RequestContext(request))
