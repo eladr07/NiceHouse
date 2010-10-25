@@ -277,6 +277,13 @@
 				</td>
 			</tr>
 			<tr>
+				<th>{{ form.commission_madad_bi.label_tag }}</th>
+				<td>
+					{{ form.commission_madad_bi }}
+					{% if form.commission_madad_bi.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.commission_madad_bi.errors|join:""}}'/>{% endif %}
+				</td>
+			</tr>
+			<tr>
 				<th>{{ form.include_registration.label_tag }}</th>
 				<td>
 					{{ form.include_registration }}
