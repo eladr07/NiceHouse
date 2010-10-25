@@ -2541,7 +2541,7 @@ class Sale(models.Model):
     sale_date = models.DateField(ugettext('sale_date'))
     price = models.IntegerField(ugettext('sale_price'))
     company_price = models.IntegerField(ugettext('company_price'), null=True, blank=True)
-    include_registration = models.NullBooleanField(ugettext('include_registration'), blank=True,
+    include_registration = models.NullBooleanField(ugettext('include_registration'), blank=True, default = None,
                                                    choices = (
                                                               (None,'לא משנה'),
                                                               (False, 'לא'),
