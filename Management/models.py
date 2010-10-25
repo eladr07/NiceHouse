@@ -1500,8 +1500,6 @@ class CZilber(models.Model):
                 logger.warning('skipping sale #%(id)s. commission_include=False', {'id':s.id})
                                 
             prices_date = date(month.month == 12 and month.year+1 or month.year, month.month==12 and 1 or month.month+1, 1)
-            
-                        
             logger.debug('%(vals)s', {'vals': {'prices_date':prices_date}})
             
             for s in sales:
@@ -1517,7 +1515,7 @@ class CZilber(models.Model):
                     latest_doh0price = doh0prices.latest().price
                     
                     # calc the memudad price
-                    current_madad = s.commission_madad_bi or max((d.get_madad(), self.base_madad))
+                    current_madad = max(d.get_madad() or s.commission_madad_bi, self.base_madad)
                     memudad_multiplier = ((current_madad / self.base_madad) - 1) * 0.6 + 1
                     memudad = latest_doh0price * memudad_multiplier
                     
