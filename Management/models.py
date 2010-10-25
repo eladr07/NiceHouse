@@ -2659,6 +2659,10 @@ class Sale(models.Model):
             
         if c.deduct_registration:
             price -= c.registration_amount
+        if self.other_expense:
+            price -= self.other_expense
+        if self.specification_expense:
+            price -= self.specification_expense
             
         return price
     def employee_price(self, employee=None):
