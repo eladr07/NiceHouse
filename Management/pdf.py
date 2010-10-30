@@ -387,7 +387,7 @@ class MonthDemandWriter(DocumentBase):
         colWidths.reverse()
         headers.reverse()
         rows = []
-        i = 1
+        i = 0
         total_prices, total_adds, total_doh0price, total_memudad, total_diff = 0, 0, 0, 0, 0
         demand = self.demand
         base_madad = demand.project.commissions.c_zilber.base_madad
