@@ -1515,7 +1515,7 @@ class CZilber(models.Model):
                     latest_doh0price = doh0prices.latest().price
                     
                     # calc the memudad price
-                    current_madad = max(d.get_madad() or s.commission_madad_bi, self.base_madad)
+                    current_madad = max(s.commission_madad_bi or d.get_madad(), self.base_madad)
                     memudad_multiplier = ((current_madad / self.base_madad) - 1) * 0.6 + 1
                     memudad = latest_doh0price * memudad_multiplier
                     
