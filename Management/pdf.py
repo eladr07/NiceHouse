@@ -398,11 +398,7 @@ class MonthDemandWriter(DocumentBase):
             logger.info('starting to write bonuses for %(demand)s', {'demand':demand})
 
             sales = demand.get_sales().select_related('house__building')
-            
-            current_madad = max((demand.get_madad(), base_madad))
-            
-            logger.debug(str({'sales':sales, 'current_madad':current_madad}))
-            
+                        
             for s in sales:
                 logger.info('starting to write bonus for sale #%(id)s', {'id':s.id})
                 
@@ -418,6 +414,7 @@ class MonthDemandWriter(DocumentBase):
                 doh0price = commission_details.get('latest_doh0price', 0)
                 memudad = commission_details.get('memudad', 0)
                 price_memduad_diff = s.price_final - memudad
+                current_madad = commission_details.get('current_madad', 0)
                 
                 row.extend([log2vis(s.clients), '%s/%s' % (unicode(s.house.building), unicode(s.house)), 
                             s.sale_date.strftime('%d/%m/%y'), commaise(s.price_final), commaise(doh0price), 

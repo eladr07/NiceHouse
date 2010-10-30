@@ -1523,6 +1523,7 @@ class CZilber(models.Model):
                     s.commission_details.create(commission='c_zilber_discount', value = zdb)
                     s.commission_details.create(commission='latest_doh0price', value = latest_doh0price)
                     s.commission_details.create(commission='memudad', value = memudad)
+                    s.commission_details.create(commission='current_madad', value = current_madad)
                                     
                     logger.debug('sale #%(id)s c_zilber_discount calc values: %(vals)s',
                                  {'id':s.id, 'vals':{'latest_doh0price':latest_doh0price, 'current_madad':current_madad, 
