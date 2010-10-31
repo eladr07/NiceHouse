@@ -602,10 +602,10 @@ class MonthDemandWriter(DocumentBase):
             row.extend([clientsPara(s.clients), '%s/%s' % (unicode(s.house.building), unicode(s.house)), 
                         s.sale_date.strftime('%d/%m/%y'), commaise(s.price)])
             if zilber:
-                if s.include_registration:
-                    row.append(None)
-                else:
+                if commissions.deduct_registration and s.include_registration:
                     row.append(commaise(commissions.registration_amount))
+                else:
+                    row.append(None)
                 lawyer_pay = s.price_include_lawyer and (s.price - s.price_no_lawyer) or s.price * 0.015
                 total_lawyer_pay += lawyer_pay
                 row.extend([None,commaise(s.specification_expense),commaise(lawyer_pay),commaise(s.other_expense)])

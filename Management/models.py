@@ -2662,7 +2662,7 @@ class Sale(models.Model):
         else:
             price = self.include_tax and price / self.tax or price
             
-        if c.deduct_registration:
+        if c.deduct_registration and self.include_registration:
             price -= c.registration_amount
         if self.other_expense:
             price -= self.other_expense
