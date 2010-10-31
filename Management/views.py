@@ -3,6 +3,7 @@ from datetime import datetime, date
 
 import django.core.paginator
 from django.db import models, transaction
+from django.db.models import Count
 from django.forms.formsets import formset_factory
 from django.shortcuts import render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
@@ -578,14 +579,14 @@ def demand_old_list(request):
         form = MonthForm(initial={'year':year,'month':month})
         
     if year and month:
-        ds = Demand.objects.filter(year = year, month = month).select_related('project')
+        ds = Demand.objects.filter(year = year, month = month).annotate(Count('statuses')).select_related('project')
         unhandled_projects.extend(Project.objects.active())
 
         for d in ds:
             total_sales_count += d.get_sales().count()
             total_sales_amount += d.get_sales().total_price_final()
             total_amount += d.get_total_amount()
-            if d.statuses.count() > 0 and d.statuses.latest().type.id in [DemandStatusType.Sent, DemandStatusType.Finished]:
+            if d.statuses__count > 0 and d.statuses.latest().type.id in [DemandStatusType.Sent, DemandStatusType.Finished]:
                 try:
                     unhandled_projects.remove(d.project)
                 except ValueError:
