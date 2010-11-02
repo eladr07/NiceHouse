@@ -2056,10 +2056,7 @@ class Demand(models.Model):
         
         c = self.project.commissions
         c.calc(demand = self)
-        self.sales_commission = 0
-        for sale in self.get_sales():
-            self.sales_commission += int(sale.c_final_worth)
-
+        self.sales_commission = self.get_sales().total_c_final_worth()
         self.save()
         return self.sales_commission
     def get_total_amount(self):
