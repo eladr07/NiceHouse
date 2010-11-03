@@ -32,8 +32,6 @@ class SaleQuerySet(models.query.QuerySet):
         return self.aggregate(Sum('price'))['price__sum'] or 0
     def total_price_final(self):
         return self.aggregate(Sum('price_final'))['price_final__sum'] or 0
-    def total_c_final_worth(self):
-        return self.aggregate(Sum('c_final_worth'))['c_final_worth__sum'] or 0
     
 class HouseQuerySet(models.query.QuerySet):
     def sold(self):
