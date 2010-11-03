@@ -466,6 +466,8 @@ def demand_calc(request, id):
             if demand.get_next_demand() != None:
                 demand.finish()
                 time.sleep(1)
+            else:
+                demand.close()
     else:
         for s in d.get_sales():
             for scd in s.project_commission_details.all():
