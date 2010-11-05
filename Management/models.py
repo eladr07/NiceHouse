@@ -1269,7 +1269,7 @@ class EPCommission(models.Model):
                 commission = restore_object(commission, restore_date)
                 amount = commission.calc(sales)
                 if amount == 0: 
-                    logger.warning('sales has 0 commission!' % s.id)
+                    logger.warning('sales has 0 commission!')
                     continue
                 total_amount = total_amount + amount
                 scd = SaleCommissionDetail(employee_salary = salary, value = amount, commission = c)
