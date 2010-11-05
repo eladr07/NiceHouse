@@ -918,11 +918,13 @@ class CopyBuildingForm(forms.Form):
     include_parkings = forms.BooleanField(label=ugettext('include_parkings'), initial=True)
     include_storages = forms.BooleanField(label=ugettext('include_storages'), initial=True)
     
-    def clean_new_building_num(self):
-        new_building_num = self.cleaned_data['new_building_num']
-        if Building.objects.filter(num = new_building_num).exists():
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        building, new_building_num = cleaned_data['building'], cleaned_data['new_building_num']
+        project_buildings = building.project.buildings.all()
+        if project_buildings.filter(num = new_building_num).exists():
             raise forms.ValidationError(ugettext('existing_building_num'))
-        return new_building_num
+        return cleaned_data
     
 class ProjectSelectForm(forms.Form):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label = ugettext('project'))
