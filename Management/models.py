@@ -1382,20 +1382,9 @@ class CVar(models.Model):
 class CVarPrecentage(models.Model):
     is_retro = models.BooleanField(ugettext('retroactive'))
     start_retro = models.PositiveSmallIntegerField(ugettext('retroactive_start'),null=True, blank=True, default=1)
-    
-    def __init__(self, *args, **kw):
-        super(CVarPrecentage, self).__init__(*args, **kw)
-        self.restore_date = None
-    
     def calc(self, sales):        
         dic = {}
-        
-        if self.restore_date:
-            precentages = [restore_object(precentage, self.restore_date) for precentage in self.precentages.all()]
-        else:
-            precentages = list(self.precentages.all())
-        
-        precentages = dict((precentage.index, precentage.precentage) for precentage in precentages)
+        precentages = dict(self.precentages.values_list('index','precentage'))
         last_index = self.precentages.latest().index
         
         if self.is_retro and len(sales) >= self.start_retro:
@@ -1774,7 +1763,6 @@ class ProjectCommission(models.Model):
                     continue
                 commission = getattr(self,c)
                 commission = restore_object(commission, restore_date)
-                commission.restore_date = restore_date
                 precentages = commission.calc(sales)
                 for s in precentages:
                     if c in ['c_var_precentage', 'c_var_precentage_fixed'] and self.max and precentages[s] > self.max:
@@ -2080,9 +2068,6 @@ class Demand(models.Model):
             else:
                 # add amount was proboably added after the demand was created
                 self.diffs.create(type=u'קבועה', amount = c.add_amount, reason = c.add_type)
-        
-        # set restore date for the beginning of this month
-        c.restore_date = date(self.year, self.month, 1)
         
         c.calc(demand = self)
         self.sales_commission = 0
