@@ -2056,13 +2056,18 @@ class Demand(models.Model):
         
         c = self.project.commissions
         
-        # check if fixed add amount has changed (either created or the amount has changed)
+        # check if fixed add amount has changed
         fixed_diff = self.fixed_diff
-        if (not fixed_diff and c.add_amount) or fixed_diff.amount != c.add_amount:
-            logger.info('resetting fixed_diff.amount from value %(old_amount)s to %(new_amount)s',
-                        {'old_amount':fixed_diff.amount, 'new_amount':c.add_amount})
-            fixed_diff.amount = c.add_amount
-            fixed_diff.save() 
+        if c.add_amount:
+            if fixed_diff:
+                if c.add_amount != fixed_diff.amount:
+                    logger.info('resetting fixed_diff.amount from value %(old_amount)s to %(new_amount)s',
+                                {'old_amount':fixed_diff.amount, 'new_amount':c.add_amount})
+                    fixed_diff.amount = c.add_amount
+                    fixed_diff.save()
+            else:
+                # add amount was proboably added after the demand was created
+                self.diffs.create(type=u'קבועה', amount = c.add_amount, reason = c.add_type)
         
         c.calc(demand = self)
         self.sales_commission = 0
