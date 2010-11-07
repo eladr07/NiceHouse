@@ -1391,7 +1391,7 @@ class CVarPrecentage(models.Model):
         dic = {}
         
         if self.restore_date:
-            precentages = [restore_object(precentage) for precentage in self.precentages.all()]
+            precentages = [restore_object(precentage, self.restore_date) for precentage in self.precentages.all()]
         else:
             precentages = list(self.precentages.all())
         
