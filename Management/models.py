@@ -1382,9 +1382,19 @@ class CVar(models.Model):
 class CVarPrecentage(models.Model):
     is_retro = models.BooleanField(ugettext('retroactive'))
     start_retro = models.PositiveSmallIntegerField(ugettext('retroactive_start'),null=True, blank=True, default=1)
+    
+    def __init__(self):
+        self.restore_date = None
+    
     def calc(self, sales):        
         dic = {}
-        precentages = dict(self.precentages.values_list('index','precentage'))
+        
+        if self.restore_date:
+            precentages = [restore_object(precentage) for precentage in self.precentages.all()]
+        else:
+            precentages = list(self.precentages.all())
+        
+        precentages = dict((precentage.index, precentage.precentage) for precentage in precentages)
         last_index = self.precentages.latest().index
         
         if self.is_retro and len(sales) >= self.start_retro:
@@ -1763,6 +1773,7 @@ class ProjectCommission(models.Model):
                     continue
                 commission = getattr(self,c)
                 commission = restore_object(commission, restore_date)
+                commission.restore_date = restore_date
                 precentages = commission.calc(sales)
                 for s in precentages:
                     if c in ['c_var_precentage', 'c_var_precentage_fixed'] and self.max and precentages[s] > self.max:
