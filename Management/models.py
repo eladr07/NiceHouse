@@ -2055,8 +2055,19 @@ class Demand(models.Model):
                     {'demand_id':self.id,'project_id':self.project_id,'month':self.month, 'year':self.year})
         
         c = self.project.commissions
+        
+        # check if fixed add amount has changed
+        fixed_diff = self.fixed_diff
+        if fixed_diff and fixed_diff.amount != c.add_amount:
+            logger.info('resetting fixed_diff.amount from value %(old_amount)s to %(new_amount)s',
+                        {'old_amount':fixed_diff.amount, 'new_amount':c.add_amount})
+            fixed_diff.amount = c.add_amount
+            fixed_diff.save() 
+        
         c.calc(demand = self)
         self.sales_commission = 0
+        
+        # calling all to create new (not-cached) queryset
         for sale in self.get_sales().all():
             self.sales_commission += sale.c_final_worth
         self.save()
