@@ -2056,9 +2056,9 @@ class Demand(models.Model):
         
         c = self.project.commissions
         
-        # check if fixed add amount has changed
+        # check if fixed add amount has changed (either created or the amount has changed)
         fixed_diff = self.fixed_diff
-        if fixed_diff and fixed_diff.amount != c.add_amount:
+        if (not fixed_diff and c.add_amount) or fixed_diff.amount != c.add_amount:
             logger.info('resetting fixed_diff.amount from value %(old_amount)s to %(new_amount)s',
                         {'old_amount':fixed_diff.amount, 'new_amount':c.add_amount})
             fixed_diff.amount = c.add_amount
