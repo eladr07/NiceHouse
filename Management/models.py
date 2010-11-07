@@ -2081,6 +2081,9 @@ class Demand(models.Model):
                 # add amount was proboably added after the demand was created
                 self.diffs.create(type=u'קבועה', amount = c.add_amount, reason = c.add_type)
         
+        # set restore date for the beginning of this month
+        c.restore_date = date(self.year, self.month, 1)
+        
         c.calc(demand = self)
         self.sales_commission = 0
         
