@@ -1383,7 +1383,8 @@ class CVarPrecentage(models.Model):
     is_retro = models.BooleanField(ugettext('retroactive'))
     start_retro = models.PositiveSmallIntegerField(ugettext('retroactive_start'),null=True, blank=True, default=1)
     
-    def __init__(self):
+    def __init__(self, *args, **kw):
+        super(CVarPrecentage, self).__init__(*args, **kw)
         self.restore_date = None
     
     def calc(self, sales):        
