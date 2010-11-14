@@ -142,7 +142,7 @@ def gc_view(request):
             self.seq = None
             self.referers_to_last = None
         def __unicode__(self):
-            return '%s (%s) : %s' % (self.cls.__name__, len(self.seq), self.referers_to_last)
+            return '%s (%s) : %s' % (self.cls.__name__, len(self.seq), unicode(self.referers_to_last))
     
     gc_entry_list = []
     
