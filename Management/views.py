@@ -127,7 +127,18 @@ def limited_object_list(request, permission=None, *args, **kwargs):
         return object_list(request, *args, **kwargs)
     else:
         return HttpResponse('No permission. contact Elad.')
+
+@login_required
+def gc_view(request):
+    import gc
+    gc.collect()
+    key_func = lambda obj: obj.__class__
+    objs = gc.get_objects()
+    objs.sort(key=key_func)
     
+    dic = dict([(cls, len(obj_list)) for cls, obj_list in itertools.groupby(objs, key_func)])
+    return HttpResponse(unicode(dic))
+
 @login_required
 def house_details(request, id):
     return render_to_response('Management/house_details.html',
