@@ -132,7 +132,11 @@ def limited_object_list(request, permission=None, *args, **kwargs):
 def gc_view(request):
     import gc
     gc.collect()
-    key_func = lambda obj: obj.__class__
+    def key_func(obj):
+        if hasattr(obj, '__class__'):
+            return obj.__class__
+        return obj
+
     objs = gc.get_objects()
     objs.sort(key=key_func)
     
