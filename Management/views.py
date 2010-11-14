@@ -129,37 +129,6 @@ def limited_object_list(request, permission=None, *args, **kwargs):
         return HttpResponse('No permission. contact Elad.')
 
 @login_required
-def gc_view(request):
-    import gc
-    gc.collect()
-
-    objs = gc.get_objects()
-    objs.sort(key=type)
-    
-    class GcEntry:
-        def __init__(self):
-            self.cls = None
-            self.seq = None
-            self.referers_to_last = None
-        def __unicode__(self):
-            return '%s (%s) : %s' % (self.cls.__name__, len(self.seq), self.referers_to_last)
-    
-    gc_entry_list = []
-    
-    for cls, obj_group in itertools.groupby(objs, type):
-        gc_entry = GcEntry()
-        gc_entry.cls = cls
-        gc_entry.seq = list(obj_group)
-        last_in_seq = gc_entry.seq[-1]
-        gc_entry.referers_to_last = [type(obj).__name__ for obj in gc.get_referrers(last_in_seq,)]
-        gc_entry_list.append(gc_entry)
-        
-    gc_entry_list.sort(key=lambda gc_entry: len(gc_entry.seq), reverse=True)
-        
-    response = '<br>'.join([unicode(gc_entry) for gc_entry in gc_entry_list])
-    return HttpResponse(response)
-
-@login_required
 def house_details(request, id):
     return render_to_response('Management/house_details.html',
                               {'house':House.objects.get(pk=id)},
