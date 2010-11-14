@@ -140,7 +140,7 @@ def gc_view(request):
     objs = gc.get_objects()
     objs.sort(key=key_func)
     
-    dic = dict([(cls, len(obj_list)) for cls, obj_list in itertools.groupby(objs, key_func)])
+    dic = dict([(cls, len(obj_group.list)) for cls, obj_group in itertools.groupby(objs, key_func)])
     return HttpResponse(unicode(dic))
 
 @login_required
