@@ -132,15 +132,11 @@ def limited_object_list(request, permission=None, *args, **kwargs):
 def gc_view(request):
     import gc
     gc.collect()
-    def key_func(obj):
-        if hasattr(obj, '__class__'):
-            return obj.__class__
-        return obj
 
     objs = gc.get_objects()
-    objs.sort(key=key_func)
+    objs.sort(key=type)
     
-    dic = dict([(cls, len(list(obj_group))) for cls, obj_group in itertools.groupby(objs, key_func)])
+    dic = dict([(cls, len(list(obj_group))) for cls, obj_group in itertools.groupby(objs, type)])
     return HttpResponse(unicode(dic))
 
 @login_required
