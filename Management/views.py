@@ -150,7 +150,7 @@ def gc_view(request):
         gc_entry = GcEntry()
         gc_entry.cls = cls
         gc_entry.seq = list(obj_group)
-        gc_entry.referers_to_last = gc.get_referrers(*(gc_entry.seq))
+        #gc_entry.referers_to_last = gc.get_referrers(*(gc_entry.seq))
         gc_entry_list.append(gc_entry)
         
     gc_entry_list.sort(key=lambda gc_entry: len(gc_entry.seq), reverse=True)
