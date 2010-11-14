@@ -142,7 +142,7 @@ def gc_view(request):
             self.seq = None
             self.referers_to_last = None
         def __unicode__(self):
-            return '%s (%s) : %s' % (self.cls.__name__, len(self.seq), unicode(self.referers_to_last))
+            return '%s (%s) : %s' % (self.cls.__name__, len(self.seq), self.referers_to_last)
     
     gc_entry_list = []
     
@@ -151,7 +151,7 @@ def gc_view(request):
         gc_entry.cls = cls
         gc_entry.seq = list(obj_group)
         last_in_seq = gc_entry.seq[-1]
-        gc_entry.referers_to_last = [type(obj) for obj in gc.get_referrers(last_in_seq,)]
+        gc_entry.referers_to_last = [unicode(type(obj)) for obj in gc.get_referrers(last_in_seq,)]
         gc_entry_list.append(gc_entry)
         
     gc_entry_list.sort(key=lambda gc_entry: len(gc_entry.seq), reverse=True)
