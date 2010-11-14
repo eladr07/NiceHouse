@@ -136,10 +136,24 @@ def gc_view(request):
     objs = gc.get_objects()
     objs.sort(key=type)
     
-    objs_counts = [(cls.__name__, len(list(obj_group))) for cls, obj_group in itertools.groupby(objs, type)]
-    objs_counts.sort(key=lambda tup: tup[1], reverse = True)
+    class GcEntry:
+        def __init__(self):
+            self.cls = None
+            self.seq = None
+            self.referers_to_last = None
+        def __unicode__(self):
+            return '%s (%s) : %s' % (self.cls.__name__, len(self.seq), self.referers_to_last)
     
-    response = '<br>'.join([unicode(tup) for tup in objs_counts])
+    gc_entry_list = []
+    
+    for cls, obj_group in itertools.groupby(objs, type):
+        gc_entry = GcEntry()
+        gc_entry.cls = cls
+        gc_entry.seq = list(obj_group)
+        gc_entry.referers_to_last = gc.get_referrers(gc_entry.seq[-1])
+        gc_entry_list.append(gc_entry)
+        
+    response = '<br>'.join([unicode(gc_entry) for gc_entry in gc_entry_list])
     return HttpResponse(response)
 
 @login_required
