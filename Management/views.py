@@ -139,7 +139,7 @@ def gc_view(request):
     objs_counts = [(cls.__name__, len(list(obj_group))) for cls, obj_group in itertools.groupby(objs, type)]
     objs_counts.sort(key=lambda tup: tup[1], reverse = True)
     
-    response = '<br>'.join(objs_counts)
+    response = '<br>'.join([unicode(tup) for tup in objs_counts])
     return HttpResponse(response)
 
 @login_required
