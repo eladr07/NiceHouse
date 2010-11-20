@@ -973,7 +973,7 @@ def nh_season_income(request):
                 nhm.include_tax = True
                 totals['income'] += nhm.total_income
                 totals['net_income'] += nhm.total_net_income
-                totals['sale_count'] += len(nhm.nhsales)
+                totals['sale_count'] += len(nhm.nhsales.all())
                 avg['signed_commission'] += nhm.avg_signed_commission
                 avg['actual_commission'] += nhm.avg_actual_commission
             month_count = len(nhmonth_set)
