@@ -917,7 +917,7 @@ def nh_season_profit(request):
 def nh_season_income(request):
     month, nhmonth_set, employees, y, m = date.today(), NHMonth.objects.none(), [], 0, 0
     totals_notax = {'income':0, 'net_income':0}
-    totals = {'income':0, 'net_income':0}
+    totals = {'income':0, 'net_income':0, 'sale_count':0}
     avg = {'signed_commission':0, 'actual_commission':0}
     avg_notax = {'income':0, 'net_income':0}
     nhbranch = None
@@ -973,6 +973,7 @@ def nh_season_income(request):
                 nhm.include_tax = True
                 totals['income'] += nhm.total_income
                 totals['net_income'] += nhm.total_net_income
+                totals['sale_count'] += len(nhm.nhsales)
                 avg['signed_commission'] += nhm.avg_signed_commission
                 avg['actual_commission'] += nhm.avg_actual_commission
             month_count = len(nhmonth_set)

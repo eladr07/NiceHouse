@@ -73,7 +73,8 @@
 		</tr>
 	{% endfor %}
 	<tr class="rowSumGreen">
-		<td colspan="3">סה"כ כולל מע"מ</td>
+		<td colspan="2">סה"כ כולל מע"מ</td>
+		<td>{{totals.sale_count}}</td>
 		<td>{{avg.signed_commission|floatformat:-2}}</td>
 		<td>{{avg.actual_commission|floatformat:-2}}</td>
 		<td>{{totals.income|commaise}}</td>
