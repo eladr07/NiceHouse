@@ -453,6 +453,10 @@ def demand_calc(request, id):
                 demands.insert(0, demand)
                 demand = demand.get_previous_demand()
             demands.insert(0, demand)
+        
+        # exclude all demands that were already sent! to include them you must manually change their status!!!!!
+        demands = [demand for demand in demands if demand.statuses.latest().type.id != DemandStatusType.Sent]
+            
         #delete all commissions and sale commission details before re-calculating
         for demand in demands:
             for s in demand.statuses.all():
