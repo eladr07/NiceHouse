@@ -352,9 +352,10 @@ class HouseVersion(models.Model):
     house = models.ForeignKey('House', related_name = 'versions', editable=False)
     type = models.ForeignKey('PricelistType', verbose_name = ugettext('pricelist_type'), editable=False)
     date = models.DateTimeField()
+    insert_date = models.DateTimeField(auto_now_add = True)
     price = models.IntegerField(ugettext('price'))    
     class Meta:
-        get_latest_by = 'date'
+        get_latest_by = 'insert_date'
         ordering = ['date']
         db_table = 'HouseVersion'
 
