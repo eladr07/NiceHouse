@@ -2454,6 +2454,8 @@ class NHMonth(models.Model):
         return self.total_net_income - self.total_commission
     @property
     def commission_to_net_income_precentage(self):
+        if self.total_net_income == 0:
+            return 0
         return self.total_commission / self.total_net_income * 100
     def close(self):
         self.is_closed = True
