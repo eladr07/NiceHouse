@@ -977,7 +977,7 @@ def nh_season_income(request):
                 avg['signed_commission'] += nhm.avg_signed_commission
                 avg['actual_commission'] += nhm.avg_actual_commission
             month_count = len(nhmonth_set)
-            month_with_sales_count = len([nhm for nhm in nhmonth_set if len(nhm.nhsales) > 0])
+            month_with_sales_count = len([nhm for nhm in nhmonth_set if len(nhm.nhsales.all()) > 0])
             if month_count > 0:
                 avg['signed_commission'] /= month_with_sales_count
                 avg['actual_commission'] /= month_with_sales_count
