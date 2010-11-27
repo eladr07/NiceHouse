@@ -54,7 +54,7 @@
 		{% for nhe in employees %}
 		<th>{{nhe}}</th>
 		{% endfor %}
-		<th>סיכום</th>
+		<th>סה"כ עמלות<br>סוכנים</th>
 		<th>הכנסה נטו בניכוי<br>עמלות סוכנים</th>
 	</tr>
     {% for nhm in nhmonths %}
@@ -70,8 +70,8 @@
 			{% for nhe in nhm.employees %}
 			<td>{{nhe.month_total|commaise}}</td>
 			{% endfor %}
-			<td>{{nhm.total_commission|commaise}}</td>
-			<td>{{nhm.net_income_no_commission|commaise}} ({{nhm.commission_to_net_income_precentage|floatformat:-2}}%)</td>
+			<td>{{nhm.total_commission|commaise}} ({{nhm.commission_to_net_income_precentage|floatformat:-2}}%)</td>
+			<td>{{nhm.net_income_no_commission|commaise}}</td>
 		</tr>
 	{% endfor %}
 	<tr class="rowSumGreen">
