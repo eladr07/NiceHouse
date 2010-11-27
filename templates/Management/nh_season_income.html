@@ -71,7 +71,7 @@
 			<td>{{nhe.month_total|commaise}}</td>
 			{% endfor %}
 			<td>{{nhm.total_commission|commaise}}</td>
-			<td>{{nhm.net_income_no_commission|commaise}} ({{nhm.commission_to_net_income_precentage}}%)</td>
+			<td>{{nhm.net_income_no_commission|commaise}} ({{nhm.commission_to_net_income_precentage|floatformat:-2}}%)</td>
 		</tr>
 	{% endfor %}
 	<tr class="rowSumGreen">
