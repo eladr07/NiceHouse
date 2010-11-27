@@ -55,6 +55,7 @@
 		<th>{{nhe}}</th>
 		{% endfor %}
 		<th>סיכום</th>
+		<th>הכנסה נטו בניכוי<br>עמלות סוכנים</th>
 	</tr>
     {% for nhm in nhmonths %}
 		<tr class= {% if nhm.is_closed %} "rowLightBlue" {% else %} "{% cycle 'row1' 'row2' %}" {% endif %} objid={{s.id}}>
@@ -70,6 +71,7 @@
 			<td>{{nhe.month_total|commaise}}</td>
 			{% endfor %}
 			<td>{{nhm.total_commission|commaise}}</td>
+			<td>{{nhm.net_income_no_commission|commaise}} ({{nhm.commission_to_net_income_precentage}}%)</td>
 		</tr>
 	{% endfor %}
 	<tr class="rowSumGreen">

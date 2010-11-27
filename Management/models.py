@@ -2449,6 +2449,12 @@ class NHMonth(models.Model):
             for nhss in nhs.nhsaleside_set.all():
                 amount += nhss.all_employee_commission
         return amount
+    @property
+    def net_income_no_commission(self):
+        return self.total_net_income - self.total_commission
+    @property
+    def commission_to_net_income_precentage(self):
+        return self.total_commission / self.total_net_income * 100
     def close(self):
         self.is_closed = True
         self.save()
