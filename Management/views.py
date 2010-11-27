@@ -916,10 +916,10 @@ def nh_season_profit(request):
 @permission_required('Management.nhmonth_season')
 def nh_season_income(request):
     month, nhmonth_set, employees, y, m = date.today(), NHMonth.objects.none(), [], 0, 0
-    totals_notax = {'income':0, 'net_income':0}
-    totals = {'income':0, 'net_income':0, 'sale_count':0}
+    totals_notax = {'income':0, 'net_income':0, 'net_income_no_commission':0}
+    totals = {'income':0, 'net_income':0, 'net_income_no_commission':0, 'sale_count':0}
     avg = {'signed_commission':0, 'actual_commission':0}
-    avg_notax = {'income':0, 'net_income':0}
+    avg_notax = {'income':0, 'net_income':0, 'net_income_no_commission':0}
     nhbranch = None
     
     if len(request.GET):
@@ -968,11 +968,14 @@ def nh_season_income(request):
                 nhm.include_tax = False
                 totals_notax['income'] += nhm.total_income
                 totals_notax['net_income'] += nhm.total_net_income
+                totals_notax['net_income_no_commission'] += nhm.net_income_no_commission
                 avg_notax['income'] += nhm.total_income
                 avg_notax['net_income'] += nhm.total_net_income
+                avg_notax['net_income_no_commission'] += nhm.net_income_no_commission
                 nhm.include_tax = True
                 totals['income'] += nhm.total_income
                 totals['net_income'] += nhm.total_net_income
+                totals['net_income_no_commission'] += nhm.net_income_no_commission
                 totals['sale_count'] += len(nhm.nhsales.all())
                 avg['signed_commission'] += nhm.avg_signed_commission
                 avg['actual_commission'] += nhm.avg_actual_commission
@@ -983,6 +986,7 @@ def nh_season_income(request):
                 avg['actual_commission'] /= month_with_sales_count
                 avg_notax['income'] /= month_count
                 avg_notax['net_income'] /= month_count
+                avg_notax['net_income_no_commission'] /= month_count
                
             for e in employees:
                 e.season_avg_notax = month_count and e.season_total_notax / month_count or 0
