@@ -32,4 +32,4 @@ def init_logging():
 logInitDone=False
 if not logInitDone:
     logInitDone = True
-    #init_logging()
+    init_logging()
