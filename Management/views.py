@@ -726,6 +726,7 @@ def nhemployee_salary_list(request):
                                'filterForm':MonthForm(initial={'year':year,'month':month})},
                                context_instance=RequestContext(request))
 
+@permission_required('Management.salaries_bank')
 def salaries_bank(request):
     if request.method == 'POST':
         form = MonthForm(request.POST)

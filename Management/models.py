@@ -798,6 +798,7 @@ class Loan(models.Model):
         return '/loans/%s' % self.id
     class Meta:
         db_table = 'Loan'
+        permissions = (('list_loan', 'Loans list'), )
 
 class LoanPay(models.Model):
     employee = models.ForeignKey('EmployeeBase', related_name='loan_pays', verbose_name=ugettext('employee'))
@@ -989,6 +990,7 @@ class EmployeeSalaryBase(models.Model):
     class Meta:
         db_table = 'EmployeeSalaryBase'
         ordering = ['year','month']
+        permissions = (('salaries_bank', 'Salaries for bank'), )
 
 class NHEmployeeSalary(EmployeeSalaryBase):
     nhemployee = models.ForeignKey('NHEmployee', verbose_name=ugettext('nhemployee'), related_name='salaries')

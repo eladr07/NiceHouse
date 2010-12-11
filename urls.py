@@ -313,7 +313,7 @@ urlpatterns += patterns('',
      {'model':AdvancePayment, 'post_delete_redirect':'/advancepayments'}),
     
     (r'^loans/$', limited_object_list,
-     {'queryset': Loan.objects.all()}),
+     {'queryset': Loan.objects.all(), 'permission': 'list_loan'}),
     (r'^loans/add$', limited_create_object,
      {'form_class' : Management.forms.LoanForm, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '%(id)s'}),
     (r'^loans/(?P<object_id>\d+)$', limited_update_object,
