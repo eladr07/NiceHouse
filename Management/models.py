@@ -2450,6 +2450,9 @@ class NHMonth(models.Model):
         for nhs in self.nhsales.all():
             for nhss in nhs.nhsaleside_set.all():
                 amount += nhss.all_employee_commission
+        if not self.include_tax:
+            t = Tax.objects.filter(date__lte=date(self.year, self.month,1)).latest().value / 100 + 1
+            amount = amount / t
         return amount
     @property
     def net_income_no_commission(self):
