@@ -1,4 +1,4 @@
-﻿import common, reversion, inspect, itertools, time
+﻿import common, reversion, inspect, itertools, time, threading
 from datetime import datetime, date
 
 import django.core.paginator
@@ -18,7 +18,6 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.contenttypes.models import ContentType
 from forms import *
 from models import *
-from Management import demand_worker, salary_worker
 from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, ProjectListWriter
 from pdf import PricelistWriter, BuildingClientsWriter, EmployeeSalariesBookKeepingWriter, SalariesBankWriter
 from mail import mail
@@ -41,6 +40,33 @@ def object_edit_core(request, form_class, instance,
         form = form_class(instance = instance)
         
     return render_to_response(template_name, {'form':form }, context_instance = context_class(request))
+
+def calc_salaries(salaries):
+    @reversion.revision.create_on_success
+    def calc_salaries_core(salaries):
+        for salary in salaries:
+            try:
+                salary.calculate()
+                salary.save()
+            except:
+                continue
+    
+    thread = threading.Thread(target = lambda: calc_salaries_core(salaries))
+    thread.setDaemon(True)
+    thread.start()
+
+def calc_demands(demands):
+    @reversion.revision.create_on_success
+    def calc_demands_core(demands):
+        for demand in demands:
+            try:
+                demand.calc_sales_commission()
+            except:
+                continue
+    
+    thread = threading.Thread(target = lambda: calc_demands_core(demands))
+    thread.setDaemon(True)
+    thread.start()
 
 @login_required
 def index(request):
@@ -1321,8 +1347,7 @@ def demand_sale_reject(request, id):
     sr.to_year, sr.to_month = to_year, to_month
     sr.save()
     
-    for demand in demands_to_calc:
-        demand_worker.add(demand)
+    calc_demands(demands_to_calc)
     
     return HttpResponseRedirect('/salereject/%s' % sr.id)
 
@@ -1348,8 +1373,7 @@ def demand_sale_pre(request, id):
     sr.to_year, sr.to_month = to_year, to_month
     sr.save()
     
-    for demand in demands_to_calc:
-        demand_worker.add(demand)
+    calc_demands(demands_to_calc)
     
     return HttpResponseRedirect('/salepre/%s' % sr.id)
 
@@ -1366,7 +1390,7 @@ def demand_sale_cancel(request, id):
     sale.save()
     
     #re-calculate the entire demand
-    demand_worker.add(sale.demand)
+    calc_demands([sale.demand])
     
     return HttpResponseRedirect('/salecancel/%s' % sc.id)
 
@@ -3051,14 +3075,14 @@ def sale_edit(request, id):
                     next = '/salehousemod/%s' % shm.id
             form.save()
 
-            demand_worker.add(demand)
+            calc_demands([demand])
 
             year, month = sale.demand.year, sale.demand.month
             employees = demand.project.employees.exclude(work_end__isnull = False, work_end__lt = date(year, month, 1))
             
-            for salary in EmployeeSalary.objects.filter(employee__in = employees, year = year, month = month):
-                salary_worker.add(salary)
-                
+            salaries_to_calc = list(EmployeeSalary.objects.filter(employee__in = employees, year = year, month = month))
+            calc_salaries(salaries_to_calc)
+
             if request.POST.has_key('addanother'):
                 return HttpResponseRedirect(next or '/demands/%s/sale/add' % sale.demand.id)
             elif request.POST.has_key('todemand'):
@@ -3095,12 +3119,12 @@ def sale_add(request, demand_id=None):
                 sp.save()
                 next = '/salepre/%s' % sp.id 
             
-            demand_worker.add(demand)
+            calc_demands([demand])
             
             employees = demand.project.employees.exclude(work_end__isnull = False, work_end__lt = date(year, month, 1))
             
-            for salary in EmployeeSalary.objects.filter(employee__in = employees, year = year, month = month):
-                salary_worker.add(salary)
+            salaries_to_calc = list(EmployeeSalary.objects.filter(employee__in = employees, year = year, month = month))
+            calc_salaries(salaries_to_calc)
                 
             if request.POST.has_key('addanother'):
                 return HttpResponseRedirect(next or reverse(sale_add, args=[demand_id]))
