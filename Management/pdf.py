@@ -1210,7 +1210,7 @@ class DemandFollowupWriter(DocumentBase):
             row.reverse()
             rows.append(row)
             
-        data = [headers, groups]
+        data = [groups, headers]
         data.extend(rows)
         
         table = Table(data, style = demandFollowupTableStyle, repeatRows = 2)
