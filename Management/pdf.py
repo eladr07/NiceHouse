@@ -1185,7 +1185,7 @@ class DemandFollowupWriter(DocumentBase):
         groups_names = [u"הפרשי דרישה", None, None, u"פרטי צ'קים", None, u"פרטי חשבונית", None, None, u"פרטי דרישה"]
         headers = [log2vis(name) for name in headers_names]
         groups = [name and log2vis(name) for name in groups_names]
-        colWidths = [None, None, 30, None, 30, None, 40, None, None, None, None, 30]
+        colWidths = [None, None, 30, None, 30, None, 50, None, None, None, None, 30]
         rows = []
         
         total_amount, total_invoices, total_payments, total_diff_invoice, total_diff_invoice_payment = 0,0,0,0,0
