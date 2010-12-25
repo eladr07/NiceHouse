@@ -1233,8 +1233,8 @@ class DemandFollowupWriter(DocumentBase):
         return [table]
         
     def get_story(self):
-        title_str = u"מעקב דרישות לתקופה"
-        subtitle_str = u"%s %s/%s - %s/%s" %(self.project, self.from_month, self.from_year, self.to_month, self.to_year)
+        title_str = u"מעקב דרישות לתקופה - " + unicode(self.project)
+        subtitle_str = u"%s/%s - %s/%s" %(self.from_month, self.from_year, self.to_month, self.to_year)
         story = [titlePara(title_str), titlePara(subtitle_str), Spacer(0,20)]
         story.extend(self.demandFlows())
         return story
