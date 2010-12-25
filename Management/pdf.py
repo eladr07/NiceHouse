@@ -1191,7 +1191,6 @@ class DemandFollowupWriter(DocumentBase):
         rows = []
         
         headers.reverse()
-        groups.reverse()
         
         for demand in self.demands:
             invoices = demand.invoices.all()
