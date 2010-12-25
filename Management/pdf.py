@@ -777,24 +777,9 @@ class MultipleDemandWriter:
         doc.build(story, self.addTemplate, self.addTemplate)
         return doc.canv
 
-class EmployeeSalariesBookKeepingWriter:
+class EmployeeSalariesBookKeepingWriter(DocumentBase):
     def __init__(self, salaries, title, nhsales = None):
         self.salaries, self.title, self.nhsales = salaries, title, nhsales
-    @property
-    def pages_count(self):
-        pages = len(self.salaries) / 28 + 1
-        if self.nhsales:
-            pages += len(self.nhsales) / 28 + 1
-        return pages
-    def addTemplate(self, canv, doc):
-        frame2 = Frame(0, 680, 650, 150)
-        frame2.addFromList([nhLogo(), datePara()], canv)
-        frame3 = Frame(50, 20, 150, 40)
-        frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
-                            ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
-        frame4 = Frame(50, 30, 500, 70)
-        frame4.addFromList([nhAddr()], canv)
-        self.current_page += 1
     def nhsalesFlows(self):
         flows = []
         headers = [log2vis(n) for n in [u'מס"ד',u'הרוכשים\nשם',u'התשלום\nסכום',u"תיווך\nשרותי\nהזמנת\nמס'",u'חשבונית',
@@ -884,9 +869,7 @@ class EmployeeSalariesBookKeepingWriter:
             flows.append(Paragraph(remarks_str, styleNormal13))
         
         return flows
-    def build(self, filename):
-        self.current_page = 1
-        doc = SimpleDocTemplate(filename)
+    def get_story(self):
         story = [Spacer(0,50)]
         story.append(titlePara(self.title))
         story.append(Spacer(0, 10))
@@ -894,8 +877,7 @@ class EmployeeSalariesBookKeepingWriter:
         if self.nhsales:
             story.extend([PageBreak(),titlePara(u"אישור צ'קים וחשבוניות"),Spacer(0,20)])
             story.extend(self.nhsalesFlows())
-        doc.build(story, self.addTemplate, self.addTemplate)
-        return doc.canv
+        return story
 
 class EmployeeSalariesWriter:
     def __init__(self, salaries, title, show_employee, show_month):
