@@ -858,7 +858,7 @@ class EmployeeSalariesBookKeepingWriter:
         colWidths.reverse()
         rows = []
         remarks_str = ''
-        i = 0
+
         for es in self.salaries:
             employee = es.get_employee()
             terms = employee.employment_terms
@@ -873,17 +873,11 @@ class EmployeeSalariesBookKeepingWriter:
             
             if es.pdf_remarks:
                 remarks_str += '<u><b>' + log2vis(unicode(employee) + '</b></u>' + ' ' + (es.pdf_remarks)) + '<br/>'
-            
-            i += 1
-            if i % 27 == 0 or i == len(self.salaries):
-                data = [groups, headers]
-                data.extend(rows)
-                t = Table(data, colWidths)
-                t.setStyle(salariesTableStyle)
-                flows.append(t)
-                if i < len(self.salaries):
-                    flows.extend([PageBreak(), Spacer(0, 50)])
-                rows = []
+
+        data = [groups, headers]
+        data.extend(rows)
+        t = Table(data, colWidths, style = salariesTableStyle, repeatRows = 2)
+        flows.append(t)
                 
         if remarks_str:
             flows.append(Spacer(0,10))
