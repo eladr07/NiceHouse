@@ -1191,7 +1191,7 @@ class DemandFollowupWriter(DocumentBase):
         
         for demand in self.demands:
             invoices = demand.invoices.all()
-            invoice_num_str = '<br/>'.join([invoice.num for invoice in invoices])
+            invoice_num_str = '<br/>'.join([unicode(invoice.num) for invoice in invoices])
             invoice_amount_str = '<br/>'.join([commaise(invoice.amount) for invoice in invoices])
             invoice_date_str = '<br/>'.join([invoice.date.strftime('%d/%m/%Y') for invoice in invoices])
 
