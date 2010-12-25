@@ -19,7 +19,7 @@ from django.contrib.contenttypes.models import ContentType
 from forms import *
 from models import *
 from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, ProjectListWriter
-from pdf import PricelistWriter, BuildingClientsWriter, EmployeeSalariesBookKeepingWriter, SalariesBankWriter
+from pdf import PricelistWriter, BuildingClientsWriter, EmployeeSalariesBookKeepingWriter, SalariesBankWriter, DemandFollowupWriter
 from mail import mail
 
 def object_edit_core(request, form_class, instance,
@@ -3225,7 +3225,7 @@ def report_projects_month(request, year, month):
     p.close()
     return response
 
-@login_required
+@permission_required('demand_season_pdf')
 def report_project_season(request, project_id=None, from_year=common.current_month().year, from_month=common.current_month().month, 
                           to_year=common.current_month().year, to_month=common.current_month().month):
     from_date = date(int(from_year), int(from_month), 1)
@@ -3240,6 +3240,26 @@ def report_project_season(request, project_id=None, from_year=common.current_mon
 
     MultipleDemandWriter(demands, u'ריכוז דרישות תקופתי לפרוייקט %s' % Project.objects.get(pk=project_id),
                          show_month=True, show_project=False).build(filename)
+    p = open(filename,'r')
+    response.write(p.read())
+    p.close()
+    return response
+
+@permission_required('demand_followup_pdf')
+def report_project_followup(request, project_id=None, from_year=common.current_month().year, from_month=common.current_month().month, 
+                            to_year=common.current_month().year, to_month=common.current_month().month):
+    from_date = date(int(from_year), int(from_month), 1)
+    to_date = date(int(to_year), int(to_month), 1)
+    
+    project = Project.objects.get(pk = project_id)
+    demands = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(project__id = project_id)
+    
+    filename = common.generate_unique_media_filename('pdf')
+    
+    response = HttpResponse(mimetype='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename=' + filename
+
+    DemandFollowupWriter(project, from_month, from_year, to_month, to_year, demands).build(filename)
     p = open(filename,'r')
     response.write(p.read())
     p.close()

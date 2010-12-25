@@ -2106,11 +2106,11 @@ class Demand(models.Model):
         get_latest_by = 'month'
         unique_together = ('project', 'month', 'year')
         permissions = (('list_demand', 'Can list demands'),('demand_pdf', 'Demand PDF'), ('demands_pdf', 'Demands PDF'),
-                       ('demand_season', 'Demand Season'), ('demand_followup', 'Demand Followup'), 
+                       ('demand_season', 'Demand Season'), ('demand_season_pdf', 'Demand Season PDF'), 
                        ('demand_remarks', 'Demand Remarks'), ('demand_sale_count', 'Demand Sale Count'),
                        ('demand_invoices', 'Demand Invoices'), ('demand_payments', 'Demand Payments'),
                        ('season_income', 'Season Income'), ('demand_force_fully_paid', 'Demand Force Fully Paid'),
-                       ('demand_followup', 'Demand followup'))
+                       ('demand_followup', 'Demand followup'), ('demand_followup_pdf', 'Demand followup PDF'))
 
 class SignupCancel(models.Model):
     date = models.DateField(ugettext('cancel_date'))

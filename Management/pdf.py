@@ -70,6 +70,21 @@ salariesTableStyle = TableStyle(
                              ('RIGHTPADDING', (0,0), (-1,-1), 8),
                              ]
                             )
+demandFollowupTableStyle = TableStyle(
+                            [('FONTNAME', (0,0), (-1,1), 'David-Bold'),
+                             ('FONTNAME', (0,2), (-1,-1), 'David'),
+                             ('SPAN',(0,0),(5,0)),
+                             ('SPAN',(6,0),(8,0)),
+                             ('SPAN',(9,0),(10,0)),
+                             ('SPAN',(11,0),(-1,0)),
+                             ('FONTSIZE', (0,0), (-1,-1), 10),
+                             ('ALIGN', (0,0), (-1,-1), 'CENTER'),
+                             ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
+                             ('BOX', (0,0), (-1,-1), 0.25, colors.black),
+                             ('LEFTPADDING', (0,0), (-1,-1), 8),
+                             ('RIGHTPADDING', (0,0), (-1,-1), 8),
+                             ]
+                            )
 projectTableStyle = TableStyle(
                                [('FONTNAME', (0,0), (-1,0), 'David-Bold'),
                                 ('FONTNAME', (0,1), (-1,-1), 'David'),
@@ -1159,3 +1174,51 @@ class BuildingClientsWriter:
         story.extend(self.housesFlows())
         doc.build(story, self.addTemplate, self.addTemplate)
         return doc.canv
+
+class DemandFollowupWriter(DocumentBase):
+    def __init__(self, project, from_month, from_year, to_month, to_year, demands):
+        self.project, self.from_month, self.from_year, self.to_month, self.to_year, self.demands = \
+            project, from_month, from_year, to_month, to_year, demands
+    def demandFlows(self):
+        headers_names = [u"מס'", u"חודש", u"מכירות\nמס'", u"דרישה\nסכום'", u"חשבונית\nמס'", u"סכום", u"תאריך", u"סכום",  u"תאריך", u"לחשבונית\nדרישה", u"לחשבונית\nצ'ק", u"חשבונית\nזיכוי"]
+        groups_names = [u"פרטי דרישה",None,None,None,None, u"פרטי חשבונית", None,None, u"פרטי צ'קים", None, u"הפרשי דרישה",None,None]
+        headers = [log2vis(name) for name in headers_names]
+        groups = [log2vis(name) for name in groups_names]
+        rows = []
+        
+        headers.reverse()
+        groups.reverse()
+        
+        for demand in self.demands:
+            invoices = demand.invoices.all()
+            invoice_num_str = '<br/>'.join([invoice.num for invoice in invoices])
+            invoice_amount_str = '<br/>'.join([commaise(invoice.amount) for invoice in invoices])
+            invoice_date_str = '<br/>'.join([invoice.date.strftime('%d/%m/%Y') for invoice in invoices])
+
+            payments = demand.payments.all()
+            payment_amount_str = '<br/>'.join([commaise(payment.amount) for payment in payments])
+            payment_date_str = '<br/>'.join([payment.payment_date.strftime('%d/%m/%Y') for payment in payments])
+            
+            offsets = [invoice.offset for invoice in invoices if invoice.offset]
+            offset_amount_str = '<br/>'.join([offset.amount for offset in offsets])
+            
+            row = [demand.id, demand.month + "/" + demand.year, len(demand.get_sales), commaise(demand.get_total_amount),
+                   Paragraph(invoice_num_str, styleRow9), Paragraph(invoice_amount_str, styleRow9), Paragraph(invoice_date_str, styleRow9), 
+                   Paragraph(payment_amount_str, styleRow9), Paragraph(payment_date_str, styleRow9), commaise(demand.diff_invoice),
+                   commaise(demand.diff_invoice_payment), Paragraph(offset_amount_str, styleRow9)]
+            
+            row.reverse()
+            rows.append(row)
+            
+        data = [headers, groups]
+        data.extend(rows)
+        
+        table = Table(data, style = demandFollowupTableStyle, repeatRows = 2)
+        return [table]
+        
+    def get_story(self):
+        title_str = u"מעקב דרישות לתקופה"
+        subtitle_str = u"%s %s/%s - %s/%s" %(self.project, self.from_month, self.from_year, self.to_month, self.to_year)
+        story = [titlePara(log2vis(title_str)), titlePara(log2vis(subtitle_str))]
+        story.extend(self.demandFlows())
+        return story
