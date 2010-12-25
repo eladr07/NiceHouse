@@ -1202,7 +1202,7 @@ class DemandFollowupWriter(DocumentBase):
             offsets = [invoice.offset for invoice in invoices if invoice.offset]
             offset_amount_str = '<br/>'.join([offset.amount for offset in offsets])
             
-            row = [demand.id, u'%s/%s' % (demand.month, demand.year), len(demand.get_sales), commaise(demand.get_total_amount),
+            row = [demand.id, u'%s/%s' % (demand.month, demand.year), len(demand.get_sales()), commaise(demand.get_total_amount),
                    Paragraph(invoice_num_str, styleRow9), Paragraph(invoice_amount_str, styleRow9), Paragraph(invoice_date_str, styleRow9), 
                    Paragraph(payment_amount_str, styleRow9), Paragraph(payment_date_str, styleRow9), commaise(demand.diff_invoice),
                    commaise(demand.diff_invoice_payment), Paragraph(offset_amount_str, styleRow9)]
