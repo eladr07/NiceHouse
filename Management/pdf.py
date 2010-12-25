@@ -1181,7 +1181,7 @@ class DemandFollowupWriter(DocumentBase):
             project, from_month, from_year, to_month, to_year, demands
     def demandFlows(self):
         headers_names = [u"מס'", u"חודש", u"מכירות\nמס'", u"דרישה\nסכום'", u"חשבונית\nמס'", u"סכום", u"תאריך", u"סכום",  u"תאריך", u"לחשבונית\nדרישה", u"לחשבונית\nצ'ק", u"חשבונית\nזיכוי"]
-        groups_names = [u"פרטי דרישה", '','','','', u"פרטי חשבונית", '','', u"פרטי צ'קים", '', u"הפרשי דרישה", '','']
+        groups_names = [u"פרטי דרישה", '','','', u"פרטי חשבונית", '','', u"פרטי צ'קים", '', u"הפרשי דרישה", '','']
         headers = [log2vis(name) for name in headers_names]
         groups = [log2vis(name) for name in groups_names]
         rows = []
