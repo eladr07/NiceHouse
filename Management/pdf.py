@@ -1229,7 +1229,7 @@ class DemandFollowupWriter(DocumentBase):
         data.extend(rows)
         data.append(sumRow)
         
-        table = Table(data, style = demandFollowupTableStyle, repeatRows = 2)
+        table = Table(data, colWidths, style = demandFollowupTableStyle, repeatRows = 2)
         return [table]
         
     def get_story(self):
