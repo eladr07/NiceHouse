@@ -1187,6 +1187,8 @@ class DemandFollowupWriter(DocumentBase):
         groups = [name and log2vis(name) for name in groups_names]
         rows = []
         
+        total_amount, total_invoices, total_payments, total_diff_invoice, total_diff_invoice_payment = 0,0,0,0,0
+        
         headers.reverse()
         
         for demand in self.demands:
@@ -1209,6 +1211,23 @@ class DemandFollowupWriter(DocumentBase):
             
             row.reverse()
             rows.append(row)
+
+            total_amount += demand.get_total_amount()
+            total_invoices += demand.invoices.total_amount_offset()
+            total_payments += demand.payments.total_amount()
+            total_diff_invoice += demand.diff_invoice
+            total_diff_invoice_payment += demand.diff_invoice_payment
+            
+        rows.append(None, None, None, 
+                    Paragraph(commaise(total_amount), styleSumRow), 
+                    None, 
+                    Paragraph(commaise(total_invoices), styleSumRow), 
+                    None, 
+                    Paragraph(commaise(total_payments), styleSumRow), 
+                    None, 
+                    Paragraph(commaise(total_diff_invoice), styleSumRow), 
+                    Paragraph(commaise(total_diff_invoice_payment), styleSumRow), 
+                    None)
             
         data = [groups, headers]
         data.extend(rows)
