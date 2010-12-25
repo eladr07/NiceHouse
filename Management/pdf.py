@@ -1217,20 +1217,15 @@ class DemandFollowupWriter(DocumentBase):
             total_payments += demand.payments.total_amount()
             total_diff_invoice += demand.diff_invoice
             total_diff_invoice_payment += demand.diff_invoice_payment
-            
-        rows.append([None, None, None, 
-                     Paragraph(commaise(total_amount), styleSumRow), 
-                     None, 
-                     Paragraph(commaise(total_invoices), styleSumRow), 
-                     None, 
-                     Paragraph(commaise(total_payments), styleSumRow), 
-                     None, 
-                     Paragraph(commaise(total_diff_invoice), styleSumRow), 
-                     Paragraph(commaise(total_diff_invoice_payment), styleSumRow), 
-                     None])
+        
+        sumRow = [None, None, None, Paragraph(commaise(total_amount), styleSumRow), None, Paragraph(commaise(total_invoices), styleSumRow), 
+                  None, Paragraph(commaise(total_payments), styleSumRow), None, Paragraph(commaise(total_diff_invoice), styleSumRow), 
+                  Paragraph(commaise(total_diff_invoice_payment), styleSumRow), None]
+        sumRow.reverse()
             
         data = [groups, headers]
         data.extend(rows)
+        data.append(sumRow)
         
         table = Table(data, style = demandFollowupTableStyle, repeatRows = 2)
         return [table]
