@@ -3066,7 +3066,6 @@ class RevisionExt(models.Model):
         db_table = 'RevisionExt'
 
 #register models with reversion
-
 tracked_models = (BDiscountSave, BDiscountSavePrecentage, BHouseType, BSaleRate,
                   CAmount, CByPrice, CPrecentage, CPriceAmount, CVar,
                   CVarPrecentage, CVarPrecentageFixed, CZilber, EmploymentTerms,
