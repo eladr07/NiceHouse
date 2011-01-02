@@ -2192,21 +2192,10 @@ def project_cvp(request, project_id):
         formset = InlineFormSet(instance=cvp)
         form = CVarPrecentageForm(instance=cvp)
 
-    from reversion.models import Version
-    
-    has_diff = False
-    cvp_versions = Version.objects.get_for_object(cvp)
-    if len(cvp_versions) > 0:
-        has_diff = True
-    else:
-        for precentage in cvp.precentages.all():
-            precentage_versions = Version.objects.get_for_object(precentage)
-            if len(precentage_versions) > 0:
-                has_diff = True
-                break
+    has_versions = common.has_versions(cvp, ['precentages'])
 
     return render_to_response('Management/commission_inline.html', 
-                              { 'formset':formset,'form':form, 'show_house_num':True, 'has_diff':has_diff },
+                              { 'formset':formset,'form':form, 'show_house_num':True, 'has_versions':has_versions },
                               context_instance=RequestContext(request))
 
 @permission_required('Management.add_cvarprecentagefixed')
