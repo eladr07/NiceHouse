@@ -2072,7 +2072,7 @@ class Demand(models.Model):
                 # add amount was proboably added after the demand was created
                 self.diffs.create(type=u'קבועה', amount = c.add_amount, reason = c.add_type)
         
-        c.calc(demand = self)
+        c.calc(demand = self, restore_date = date(self.year, self.month, 1))
         self.sales_commission = 0
         
         # calling all to create new (not-cached) queryset
