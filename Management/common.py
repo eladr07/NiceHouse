@@ -1,6 +1,5 @@
 from datetime import datetime, date
 import settings, reversion
-from RandomArray import ArgumentError
 
 def get_year_choices():
     today = date.today()

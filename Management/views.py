@@ -2191,11 +2191,8 @@ def project_cvp(request, project_id):
     else:
         formset = InlineFormSet(instance=cvp)
         form = CVarPrecentageForm(instance=cvp)
-
-    has_versions = common.has_versions(cvp, ['precentages'])
-
     return render_to_response('Management/commission_inline.html', 
-                              { 'formset':formset,'form':form, 'show_house_num':True, 'has_versions':has_versions },
+                              { 'formset':formset,'form':form, 'show_house_num':True },
                               context_instance=RequestContext(request))
 
 @permission_required('Management.add_cvarprecentagefixed')
