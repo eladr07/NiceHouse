@@ -946,3 +946,7 @@ class MailForm(forms.Form):
     attachment4 = forms.FileField(label = ugettext('attachment') + ' 4', required = False)
     attachment5 = forms.FileField(label = ugettext('attachment') + ' 5', required = False)
     contents = forms.CharField(widget = forms.Textarea(), label = ugettext('contents'), required = False)
+    
+class RevisionFilterForm(forms.Form):
+    content_type = forms.ModelChoiceField(queryset = ContentType.objects.all())
+    object_id = forms.IntegerField()

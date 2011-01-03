@@ -1043,7 +1043,7 @@ class NHEmployeeSalary(EmployeeSalaryBase):
         scds = []
         restore_date = date(self.year, self.month, 1)
         for nhcbi in self.nhemployee.nhcommission_set.filter(nhbranch = self.nhbranch):
-            commission = restore_object(nhcbi, restore_date)
+            commission = common.restore_object(nhcbi, restore_date)
             commission_res = commission.calc(self.year, self.month, self.ratio)
             if commission_res:
                 scds.extend(commission_res)
@@ -1228,7 +1228,7 @@ class EPCommission(models.Model):
                 commission = getattr(self,c)
                 if not commission: 
                     continue
-                commission = restore_object(commission, restore_date)
+                commission = common.restore_object(commission, restore_date)
                 
                 logger.info('calculating commission : %s' % c)
                 
@@ -1243,7 +1243,7 @@ class EPCommission(models.Model):
                 commission = getattr(self,c)
                 if not commission: 
                     continue
-                commission = restore_object(commission, restore_date)
+                commission = common.restore_object(commission, restore_date)
                 
                 logger.info('calculating commission : %s' % c)
                 
@@ -1269,7 +1269,7 @@ class EPCommission(models.Model):
                 
                 logger.info('calculating commission : %s' % c)
                 
-                commission = restore_object(commission, restore_date)
+                commission = common.restore_object(commission, restore_date)
                 amount = commission.calc(sales)
                 if amount == 0: 
                     logger.warning('sales has 0 commission!')
@@ -1755,7 +1755,7 @@ class ProjectCommission(models.Model):
             if getattr(self, 'c_zilber') != None:
                 month = date(demand.year, demand.month, 1)
                 c = getattr(self, 'c_zilber')
-                c = restore_object(c, restore_date) 
+                c = common.restore_object(c, restore_date) 
                 c.calc(month)
                 return
             
@@ -1765,7 +1765,7 @@ class ProjectCommission(models.Model):
                 if getattr(self,c) == None:
                     continue
                 commission = getattr(self,c)
-                commission = restore_object(commission, restore_date)
+                commission = common.restore_object(commission, restore_date)
                 precentages = commission.calc(sales)
                 for s in precentages:
                     if c in ['c_var_precentage', 'c_var_precentage_fixed'] and self.max and precentages[s] > self.max:
@@ -2633,7 +2633,7 @@ class Sale(models.Model):
             q = self.project_commission_details.filter(commission=c)
             if q.count() == 0:
                 continue
-            return self.restore and self.restore_date and restore_object(q[0], self.restore_date).value or q[0].value
+            return self.restore and self.restore_date and common.restore_object(q[0], self.restore_date).value or q[0].value
         return 0
     @property
     def zdb(self):
@@ -2645,12 +2645,12 @@ class Sale(models.Model):
     def pb_dsp(self):
         q = self.project_commission_details.filter(commission='b_discount_save_precentage')
         if q.count() == 0: return 0
-        return self.restore and self.restore_date and restore_object(q[0], self.restore_date).value or q[0].value
+        return self.restore and self.restore_date and common.restore_object(q[0], self.restore_date).value or q[0].value
     @property
     def c_final(self):
         q = self.project_commission_details.filter(commission='final')
         if q.count() == 0: return 0
-        return self.restore and self.restore_date and restore_object(q[0], self.restore_date).value or q[0].value
+        return self.restore and self.restore_date and common.restore_object(q[0], self.restore_date).value or q[0].value
     @property
     def pc_base_worth(self):
         return self.pc_base * self.price_final / 100
@@ -3066,23 +3066,20 @@ class RevisionExt(models.Model):
         db_table = 'RevisionExt'
 
 #register models with reversion
-tracked_models = (BDiscountSave, BDiscountSavePrecentage, BHouseType, BSaleRate,
-                  CAmount, CByPrice, CPrecentage, CPriceAmount, CVar,
-                  CVarPrecentage, CVarPrecentageFixed, CZilber, EmploymentTerms,
-                  ProjectCommission, SaleCommissionDetail, NHCommission)
-
-for model in tracked_models:
-    reversion.register(model)
-
-def restore_object(instance, date):
-    from reversion.models import Version
-    versions = list(Version.objects.get_for_object(instance).filter(revision__revisionext__date__lte = date))
-    if len(versions):
-        versions.sort(key = lambda v: v.revision.revisionext.date)
-        version = versions[-1]
-    else:
-        try:
-            version = Version.objects.get_for_date(instance, date)
-        except ObjectDoesNotExist:
-            return instance
-    return version.object_version.object
+reversion.register(HouseTypeBonus)
+reversion.register(CPrecentage)
+reversion.register(CPriceAmount)
+reversion.register(CAmount)
+reversion.register(BDiscountSave)
+reversion.register(BDiscountSavePrecentage)
+reversion.register(BSaleRate)
+reversion.register(BHouseType, follow = ['bonuses'])
+reversion.register(CByPrice, follow = ['price_amounts'])
+reversion.register(CVar, follow = ['amounts'])
+reversion.register(CVarPrecentage, follow = ['precentages'])
+reversion.register(CVarPrecentageFixed)
+reversion.register(CZilber)
+reversion.register(EmploymentTerms)
+reversion.register(ProjectCommission)
+reversion.register(SaleCommissionDetail)
+reversion.register(NHCommission)

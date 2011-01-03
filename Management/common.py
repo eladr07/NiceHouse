@@ -1,5 +1,6 @@
 from datetime import datetime, date
 import settings, reversion
+from django.core.exceptions import ObjectDoesNotExist
 
 def get_year_choices():
     today = date.today()
@@ -29,6 +30,19 @@ def clone(from_object, save):
         new_object = from_object.__class__(**args)
         return new_object
     
+def restore_object(instance, date):
+    from reversion.models import Version
+    versions = list(Version.objects.get_for_object(instance).filter(revision__revisionext__date__lte = date))
+    if len(versions):
+        versions.sort(key = lambda v: v.revision.revisionext.date)
+        version = versions[-1]
+    else:
+        try:
+            version = Version.objects.get_for_date(instance, date)
+        except ObjectDoesNotExist:
+            return instance
+    return version.object_version.object
+
 def has_versions(obj, additional_fields = None):
     # go over the commission model and its childs to find out if it has a versions (history of changes)
     Version = reversion.models.Version

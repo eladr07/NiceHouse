@@ -41,6 +41,14 @@ def object_edit_core(request, form_class, instance,
         
     return render_to_response(template_name, {'form':form }, context_instance = context_class(request))
 
+def revision_list(request):
+    if len(request.GET):
+        filterForm = RevisionFilterForm(request.GET)
+    else:
+        filterForm = RevisionFilterForm(request.GET)
+        
+    return render_to_response('revision_list.html', {'filterForm':filterForm })
+
 def calc_salaries(salaries):
     @reversion.revision.create_on_success
     def calc_salaries_core(salaries):
