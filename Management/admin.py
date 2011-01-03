@@ -11,8 +11,17 @@ admin.site.register(HouseVersion)
 admin.site.register(Building)
 admin.site.register(Attachment)
 
+
+def get_fields(model):
+    fields = []
+    for attr in dir(model):
+        val = getattr(model, attr)
+        if issubclass(val, models.Field):
+            fields.append(attr)
+    return fields
+
 class CVarPrecentageAdmin(VersionAdmin):
-    list_display = CVarPrecentage.Meta.fields
+    list_display = get_fields(CVarPrecentage)
 
 admin.site.register(CVarPrecentage, CVarPrecentageAdmin)
 admin.site.register(CVarPrecentageFixed, VersionAdmin)
