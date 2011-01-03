@@ -1,6 +1,7 @@
 from django.contrib import admin
 from Management.models import *
 from reversion.admin import VersionAdmin
+from inspect import isclass
 
 admin.site.register(Tag)
 admin.site.register(Project)
@@ -16,7 +17,7 @@ def get_fields(model):
     fields = []
     for attr in dir(model):
         val = getattr(model, attr)
-        if issubclass(val, models.Field):
+        if isclass(val) and issubclass(val, models.Field):
             fields.append(attr)
     return fields
 
