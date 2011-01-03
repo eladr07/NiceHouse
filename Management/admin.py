@@ -14,12 +14,7 @@ admin.site.register(Attachment)
 
 
 def get_fields(model):
-    fields = []
-    for attr in dir(model):
-        val = getattr(model, attr)
-        if isclass(val) and issubclass(val, models.Field):
-            fields.append(attr)
-    return fields
+    return [field.name for field in model._meta.fields]
 
 class CVarPrecentageAdmin(VersionAdmin):
     list_display = get_fields(CVarPrecentage)
