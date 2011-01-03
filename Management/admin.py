@@ -14,11 +14,12 @@ def get_fields_names(model):
     return [field.name for field in model._meta.fields]
 
 class EmployeeAdmin(admin.ModelAdmin):
-    list_display = get_fields_names(Employee)
+    list_display = ('first_name','last_name','pid','work_start','work_end')
     list_filter = ('rank',)
     
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = get_fields_names(Project)
+    list_display = ('name','initiator','city','hood','start_date','end_date')
+    list_filter = ('initiator',)
 
 class CVarPrecentageAdmin(VersionAdmin):
     list_display = get_fields_names(CVarPrecentage)
