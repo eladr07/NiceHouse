@@ -485,7 +485,7 @@ def demand_calc(request, id):
             
             # exclude all demands that were already sent! to include them you must manually change their status!!!!!
             demands = [demand for demand in demands if demand.statuses.count() > 0 and
-                       demand.statuses.latest().type.id != DemandStatusType.Sent]
+                       demand.statuses.latest().type.id not in (DemandStatusType.Sent, DemandStatusType.Finished)]
                 
             #delete all commissions and sale commission details before re-calculating
             for demand in demands:
@@ -508,7 +508,7 @@ def demand_calc(request, id):
         return HttpResponseRedirect('/demandsold/?year=%s&month=%s' % (d.year,d.month))
     except:
         logger.exception("exception in view demand_calc with id: %s" % id)
-        return HttpResponseServerError()
+        return HttpResponseServerError('500.html')
 
 @permission_required('Management.projects_profit')
 def projects_profit(request):
