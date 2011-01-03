@@ -15,6 +15,7 @@ def get_fields_names(model):
 
 class EmployeeAdmin(admin.ModelAdmin):
     list_display = get_fields_names(Employee)
+    list_filter = ('rank',)
     
 class ProjectAdmin(admin.ModelAdmin):
     list_display = get_fields_names(Project)
