@@ -30,6 +30,9 @@ def clone(from_object, save):
         new_object = from_object.__class__(**args)
         return new_object
     
+def get_model_fields(obj):
+    return [field.name for field in obj._meta.fields]
+    
 def restore_object(instance, date):
     from reversion.models import Version
     versions = list(Version.objects.get_for_object(instance).filter(revision__revisionext__date__lte = date))

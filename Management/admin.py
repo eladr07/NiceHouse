@@ -11,7 +11,10 @@ admin.site.register(HouseVersion)
 admin.site.register(Building)
 admin.site.register(Attachment)
 
-admin.site.register(CVarPrecentage, VersionAdmin)
+class CVarPrecentageAdmin(VersionAdmin):
+    list_display = common.get_model_fields
+
+admin.site.register(CVarPrecentage, CVarPrecentageAdmin)
 admin.site.register(CVarPrecentageFixed, VersionAdmin)
 admin.site.register(CVar, VersionAdmin)
 admin.site.register(CByPrice, VersionAdmin)
