@@ -12,7 +12,7 @@ admin.site.register(Building)
 admin.site.register(Attachment)
 
 class CVarPrecentageAdmin(VersionAdmin):
-    list_display = common.get_model_fields
+    list_display = CVarPrecentage.Meta.fields
 
 admin.site.register(CVarPrecentage, CVarPrecentageAdmin)
 admin.site.register(CVarPrecentageFixed, VersionAdmin)
