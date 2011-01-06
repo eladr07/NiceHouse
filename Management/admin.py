@@ -1,5 +1,5 @@
 from django.contrib import admin
-from Management.models import *
+from Management.models import *, SalePre
 from reversion.admin import VersionAdmin
 from inspect import isclass
 
@@ -26,6 +26,9 @@ class CPrecentageInline(admin.StackedInline):
     
 class CAmountInline(admin.StackedInline):
     model = CAmount
+    
+class CPriceAmountInline(admin.StackedInline):
+    model = CPriceAmount
 
 class CVarPrecentageAdmin(VersionAdmin):
     list_display = get_fields_names(CVarPrecentage)
@@ -37,11 +40,52 @@ class CVarPrecentageFixedAdmin(VersionAdmin):
 class CVarAdmin(VersionAdmin):
     list_display = get_fields_names(CVar)
     inlines = [CAmount]
+    
+class CByPriceAdmin(VersionAdmin):
+    list_display = get_fields_names(CByPrice)
+    inlines = [CPriceAmountInline]
+    
+class CZilberAdmin(VersionAdmin):
+    list_display = get_fields_names(CZilber)
+    
+class DemandStatusInline(admin.StackedInline):
+    model = DemandStatus
+    
+class DemandDiffInline(admin.StackedInline):
+    model = DemandDiff
+    
+class DemandAdmin(admin.ModelAdmin):
+    list_display = get_fields_names(Demand)
+    inlines = [DemandStatusInline, DemandDiffInline]
+    
+class SaleCommissionDetailAdmin(admin.StackedInline):
+    model = SaleCommissionDetail
+
+class SaleHouseModInline(admin.StackedInline):
+    model = SaleHouseMod
+    
+class SalePriceModInline(admin.StackedInline):
+    model = SalePriceMod
+    
+class SalePreInline(admin.StackedInline):
+    model = SalePre
+    
+class SaleRejectInline(admin.StackedInline):
+    model = SaleReject
+    
+class SaleCancelInline(admin.StackedInline):
+    model = SaleCancel
+    
+class SaleAdmin(admin.ModelAdmin):
+    list_display = get_fields_names(Sale)
+    inlines = [SaleCommissionDetailAdmin, SaleHouseModInline, SalePriceModInline, SalePreInline, SaleRejectInline, SaleCancelInline]
 
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Employee, EmployeeAdmin)
 admin.site.register(CVarPrecentage, CVarPrecentageAdmin)
 admin.site.register(CVarPrecentageFixed, CVarPrecentageFixedAdmin)
 admin.site.register(CVar, CVarAdmin)
-admin.site.register(CByPrice, VersionAdmin)
-admin.site.register(CZilber, VersionAdmin)
+admin.site.register(CByPrice, CByPriceAdmin)
+admin.site.register(CZilber, CZilberAdmin)
+admin.site.register(Demand, DemandAdmin)
+admin.site.register(Sale, SaleAdmin)
