@@ -1,5 +1,5 @@
 from django.contrib import admin
-from Management.models import *, SalePre
+from Management.models import *
 from reversion.admin import VersionAdmin
 from inspect import isclass
 
