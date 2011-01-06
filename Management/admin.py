@@ -48,10 +48,10 @@ class CByPriceAdmin(VersionAdmin):
 class CZilberAdmin(VersionAdmin):
     list_display = get_fields_names(CZilber)
     
-class DemandStatusInline(admin.StackedInline):
+class DemandStatusInline(admin.TabularInline):
     model = DemandStatus
     
-class DemandDiffInline(admin.StackedInline):
+class DemandDiffInline(admin.TabularInline):
     model = DemandDiff
     
 class DemandAdmin(admin.ModelAdmin):
