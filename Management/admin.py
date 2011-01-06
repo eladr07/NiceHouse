@@ -21,14 +21,22 @@ class ProjectAdmin(admin.ModelAdmin):
     list_display = ('name','initiator','city','hood','start_date','end_date')
     list_filter = ('initiator',)
 
+class CPrecentageInline(admin.StackedInline):
+    model = CPrecentage
+    
+class CAmountInline(admin.StackedInline):
+    model = CAmount
+
 class CVarPrecentageAdmin(VersionAdmin):
     list_display = get_fields_names(CVarPrecentage)
+    inlines = [CPrecentageInline]
     
 class CVarPrecentageFixedAdmin(VersionAdmin):
     list_display = get_fields_names(CVarPrecentageFixed)
     
 class CVarAdmin(VersionAdmin):
     list_display = get_fields_names(CVar)
+    inlines = [CAmount]
 
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Employee, EmployeeAdmin)
