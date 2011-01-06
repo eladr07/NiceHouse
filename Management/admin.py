@@ -58,22 +58,22 @@ class DemandAdmin(admin.ModelAdmin):
     list_display = get_fields_names(Demand)
     inlines = [DemandStatusInline, DemandDiffInline]
     
-class SaleCommissionDetailAdmin(admin.StackedInline):
+class SaleCommissionDetailAdmin(admin.TabularInline):
     model = SaleCommissionDetail
 
-class SaleHouseModInline(admin.StackedInline):
+class SaleHouseModInline(admin.TabularInline):
     model = SaleHouseMod
     
-class SalePriceModInline(admin.StackedInline):
+class SalePriceModInline(admin.TabularInline):
     model = SalePriceMod
     
-class SalePreInline(admin.StackedInline):
+class SalePreInline(admin.TabularInline):
     model = SalePre
     
-class SaleRejectInline(admin.StackedInline):
+class SaleRejectInline(admin.TabularInline):
     model = SaleReject
     
-class SaleCancelInline(admin.StackedInline):
+class SaleCancelInline(admin.TabularInline):
     model = SaleCancel
     
 class SaleAdmin(admin.ModelAdmin):
