@@ -2326,18 +2326,14 @@ def employee_project_remove(request, employee_id, project_id):
 def project_removecontact(request, id, project_id):
     p = Project.objects.get(pk=project_id)
     contact = Contact.objects.get(pk=id)
-    try:
-        contact.projects.remove(p)
-    except:
-        pass
-    try:
-        contact.projects_demand.remove(p)
-    except:
-        pass
-    try:
-        contact.projects_payment.remove(p)
-    except:
-        pass
+    
+    for attr in ['projects','projects_demand','projects_payment']:
+        attr_value = getattr(contact, attr)
+        try:
+            attr_value.remove(p)
+        except:
+            pass
+
     return HttpResponseRedirect('/projects/%s' % p.id)
 
 @permission_required('Management.delete_contact')
