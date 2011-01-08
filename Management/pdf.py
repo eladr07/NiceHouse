@@ -490,7 +490,7 @@ class MonthDemandWriter(DocumentBase):
         
         commission_details = models.SaleCommissionDetail.objects.filter(employee_salary__isnull = True, sale__in = sales,
                                                                         commission__in = ('c_zilber_add', 'c_zilber_base_with_add')) \
-                                                                .orderby('sale')
+                                                                .order_by('sale')
         
         
         sales_commission_details = {}
