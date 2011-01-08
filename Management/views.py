@@ -2193,7 +2193,7 @@ def employee_commission_add(request, employee_id, project_id, commission):
 def project_cvp(request, project_id):
     c = ProjectCommission.objects.get(project__id = project_id)
     cvp = c.c_var_precentage or CVarPrecentage()
-    InlineFormSet = inlineformset_factory(CVarPrecentage, CPrecentage, can_delete=True)
+    InlineFormSet = inlineformset_factory(CVarPrecentage, CPrecentage, extra = 10, max_num = 10)
 
     if request.method == "POST":
         formset = InlineFormSet(request.POST, instance=cvp)
