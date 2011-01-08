@@ -1,5 +1,5 @@
 ﻿import settings, models
-import logging
+import logging, itertools
 from datetime import datetime, date
 from templatetags.management_extras import commaise
 import reportlab.rl_config
@@ -488,12 +488,25 @@ class MonthDemandWriter(DocumentBase):
             demand_sales.extend(sales)
             sales = demand_sales
         
+        commission_details = models.SaleCommissionDetail.objects.filter(employee_salary__isnull = True, sale__in = sales,
+                                                                        commission__in = ('c_zilber_add', 'c_zilber_base_with_add')) \
+                                                                .orderby('sale')
+        
+        
+        sales_commission_details = {}
+        
+        for sale, group in itertools.groupby(commission_details, lambda commission_detail: commission_detail.sale):
+            sales_commission_details[sale] = dict([(cd.commission, cd.value) for cd in list(group)])
+        
+        
         for s in sales:
-            try:
-                sale_add = s.project_commission_details.get(commission='c_zilber_add').value
-                sale_base_with_add = s.project_commission_details.get(commission='c_zilber_base_with_add').value
-            except ObjectDoesNotExist:
-                continue
+            sale_add = sales_commission_details[sale]['c_zilber_add']
+            sale_base_with_add = sales_commission_details[sale]['c_zilber_base_with_add']
+            #try:
+            #    sale_add = s.project_commission_details.get(commission='c_zilber_add').value
+            #    sale_base_with_add = s.project_commission_details.get(commission='c_zilber_base_with_add').value
+            #except ObjectDoesNotExist:
+            #    continue
                                     
             row = [log2vis('%s/%s' % (s.actual_demand.month, s.actual_demand.year)), clientsPara(s.clients), 
                    '%s/%s' % (unicode(s.house.building), unicode(s.house)), s.sale_date.strftime('%d/%m/%y'), 
