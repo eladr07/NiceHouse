@@ -346,7 +346,7 @@
 				<td>{{s.pc_base}}</td>
 				<td>{{s.pc_base_worth|commaise}} ש"ח</td>
 				{% if demand.project.commissions.b_discount_save_precentage %}
-					<td>{{s.pb_dsp|floatformat:3}}</td>
+					<td>{{s.pb_dsp}}</td>
 					<td>{% if s.pb_dsp_worth %}{{s.pb_dsp_worth|commaise}} ש"ח{% endif %}</td>
 				{% endif %}
 				{% if demand.project.commissions.c_zilber %}
