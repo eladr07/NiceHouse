@@ -2297,7 +2297,7 @@ def employee_project_add(request, employee_id):
         if form.is_valid():
             project, employee, start_date = form.cleaned_data['project'], form.cleaned_data['employee'], form.cleaned_data['start_date']
             employee.projects.add(project)
-            employee.commissions.add(EPCommission(project = project, start_date = date.today()))
+            employee.commissions.add(EPCommission(project = project, start_date = start_date))
     else:
         form = EmployeeAddProjectForm(initial={'employee':employee_id})
     return render_to_response('Management/object_edit.html', 
