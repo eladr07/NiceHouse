@@ -413,6 +413,17 @@ class MonthDemandWriter(DocumentBase):
             logger.info('starting to write bonuses for %(demand)s', {'demand':demand})
 
             sales = demand.get_sales().select_related('house__building')
+            
+            # for performance reasons we take all commission details in a single query and store them for later use
+            commission_details = models.SaleCommissionDetail.objects.filter(employee_salary__isnull = True, sale__in = sales,
+                                                                            commission__in = ('latest_doh0price', 'memudad', 'current_madad')) \
+                                                                    .order_by('sale')
+            
+            # creating an easy-to-use dictionary {sale, {cd.commission, cd.value}} where cd is the commission detail
+            sales_commission_details = {}
+            
+            for sale, group in itertools.groupby(commission_details, lambda commission_detail: commission_detail.sale):
+                sales_commission_details[sale] = dict([(cd.commission, cd.value) for cd in list(group)])
                         
             for s in sales:
                 logger.info('starting to write bonus for sale #%(id)s', {'id':s.id})
@@ -423,13 +434,11 @@ class MonthDemandWriter(DocumentBase):
                     row = ['%s-%s' % (actual_demand.id, i),'%s/%s' % (actual_demand.month, actual_demand.year)]
                 else:
                     row = [None, None]
-                    
-                commission_details = dict(s.project_commission_details.values_list('commission','value'))
                 
-                doh0price = commission_details.get('latest_doh0price', 0)
-                memudad = commission_details.get('memudad', 0)
+                doh0price = sales_commission_details[s].get('latest_doh0price', 0)
+                memudad = sales_commission_details[s].get('memudad', 0)
                 price_memduad_diff = s.price_final - memudad
-                current_madad = commission_details.get('current_madad', 0)
+                current_madad = sales_commission_details[s].get('current_madad', 0)
                 
                 row.extend([log2vis(s.clients), '%s/%s' % (unicode(s.house.building), unicode(s.house)), 
                             s.sale_date.strftime('%d/%m/%y'), commaise(s.price_final), commaise(doh0price), 
@@ -488,25 +497,23 @@ class MonthDemandWriter(DocumentBase):
             demand_sales.extend(sales)
             sales = demand_sales
         
+        # for performance reasons we take all commission details in a single query and store them for later use
         commission_details = models.SaleCommissionDetail.objects.filter(employee_salary__isnull = True, sale__in = sales,
                                                                         commission__in = ('c_zilber_add', 'c_zilber_base_with_add')) \
                                                                 .order_by('sale')
         
-        
+        # creating an easy-to-use dictionary {sale, {cd.commission, cd.value}} where cd is the commission detail
         sales_commission_details = {}
         
         for sale, group in itertools.groupby(commission_details, lambda commission_detail: commission_detail.sale):
             sales_commission_details[sale] = dict([(cd.commission, cd.value) for cd in list(group)])
         
-        
         for s in sales:
-            sale_add = sales_commission_details[sale]['c_zilber_add']
-            sale_base_with_add = sales_commission_details[sale]['c_zilber_base_with_add']
-            #try:
-            #    sale_add = s.project_commission_details.get(commission='c_zilber_add').value
-            #    sale_base_with_add = s.project_commission_details.get(commission='c_zilber_base_with_add').value
-            #except ObjectDoesNotExist:
-            #    continue
+            try:
+                sale_add = sales_commission_details[sale]['c_zilber_add']
+                sale_base_with_add = sales_commission_details[sale]['c_zilber_base_with_add']
+            except KeyError:
+                continue
                                     
             row = [log2vis('%s/%s' % (s.actual_demand.month, s.actual_demand.year)), clientsPara(s.clients), 
                    '%s/%s' % (unicode(s.house.building), unicode(s.house)), s.sale_date.strftime('%d/%m/%y'), 
