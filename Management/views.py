@@ -2737,7 +2737,7 @@ def employee_employmentterms(request, id, model):
 def employee_cv(request, employee_id, project_id):
     pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id)
     cv = pc.c_var or CVar()
-    InlineFormSet = inlineformset_factory(CVar, CAmount, can_delete=False, extra=5)
+    InlineFormSet = inlineformset_factory(CVar, CAmount, extra = 10, max_num = 10)
     
     if request.method == "POST":
         formset = InlineFormSet(request.POST, instance=cv)
@@ -2757,7 +2757,7 @@ def employee_cv(request, employee_id, project_id):
 def employee_cvp(request, employee_id, project_id):
     pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id)
     cvp = pc.c_var_precentage or CVarPrecentage()
-    InlineFormSet = inlineformset_factory(CVarPrecentage, CPrecentage, can_delete=False, extra=5)
+    InlineFormSet = inlineformset_factory(CVarPrecentage, CPrecentage, extra = 10, max_num = 10)
     
     if request.method == "POST":
         formset = InlineFormSet(request.POST, instance=cvp)
@@ -2777,7 +2777,7 @@ def employee_cvp(request, employee_id, project_id):
 def employee_cbp(request, employee_id, project_id):
     pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id)
     cbp = pc.c_by_price or CByPrice()
-    InlineFormSet = inlineformset_factory(CByPrice, CPriceAmount,CPriceAmountForm, can_delete=False, extra=5)
+    InlineFormSet = inlineformset_factory(CByPrice, CPriceAmount,CPriceAmountForm, extra = 10, max_num = 10)
     if request.method == "POST":
         formset = InlineFormSet(request.POST, instance=cbp)
         form = CByPriceForm(request.POST, instance=cbp)
@@ -2797,7 +2797,7 @@ def employee_cbp(request, employee_id, project_id):
 def employee_bsr(request, employee_id, project_id):
     pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id)
     bsr = pc.b_sale_rate or BSaleRate()
-    InlineFormSet = inlineformset_factory(BSaleRate, SaleRateBonus, can_delete=False, extra=5)
+    InlineFormSet = inlineformset_factory(BSaleRate, SaleRateBonus, extra = 10, max_num = 10)
     if request.method == "POST":
         formset = InlineFormSet(request.POST, instance=bsr)
         form = BSaleRateForm(request.POST, instance=bsr)
@@ -2817,7 +2817,7 @@ def employee_bsr(request, employee_id, project_id):
 def employee_bht(request, employee_id, project_id):
     pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id)
     htb = pc.b_house_type or BHouseType()
-    InlineFormSet = inlineformset_factory(BHouseType, HouseTypeBonus, can_delete=False, extra=5)
+    InlineFormSet = inlineformset_factory(BHouseType, HouseTypeBonus, extra = 10, max_num = 10)
     if request.method == "POST":
         formset = InlineFormSet(request.POST, instance=htb)
         form = BHouseTypeForm(request.POST, instance=htb)
