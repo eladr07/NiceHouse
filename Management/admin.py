@@ -32,7 +32,7 @@ class CVarPrecentageFixedAdmin(VersionAdmin):
     
 class CVarAdmin(VersionAdmin):
     list_display = get_fields_names(CVar)
-    inlines = [CAmount]
+    inlines = [CAmountInline]
     
 class CByPriceAdmin(VersionAdmin):
     list_display = get_fields_names(CByPrice)
