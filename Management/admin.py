@@ -10,6 +10,9 @@ class EmployeeAdmin(admin.ModelAdmin):
     list_display = ('first_name','last_name','pid','work_start','work_end')
     list_filter = ('rank',)
     
+class NHEmployeeAdmin(admin.ModelAdmin):
+    list_display = ('first_name','last_name','pid','work_start','work_end')
+    
 class ProjectAdmin(admin.ModelAdmin):
     list_display = ('name','initiator','city','hood','start_date','end_date')
     list_filter = ('initiator',)
@@ -75,6 +78,7 @@ class SaleAdmin(admin.ModelAdmin):
 
 admin.site.register(Project, ProjectAdmin)
 admin.site.register(Employee, EmployeeAdmin)
+admin.site.register(NHEmployee, NHEmployeeAdmin)
 admin.site.register(CVarPrecentage, CVarPrecentageAdmin)
 admin.site.register(CVarPrecentageFixed, CVarPrecentageFixedAdmin)
 admin.site.register(CVar, CVarAdmin)
