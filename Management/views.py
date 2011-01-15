@@ -3338,8 +3338,10 @@ def season_income(request):
             ds = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
                 
             for d in ds:
-                project = d.project
-                if not project in projects:
+                if d.project in projects:
+                    project = projects[projects.index(d.project)]
+                else:
+                    d.project = d.project
                     projects.append(project)
                     for attr in ['total_amount', 'total_amount_notax', 'total_sale_count']:
                         setattr(project, attr, 0)
