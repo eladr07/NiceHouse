@@ -1010,9 +1010,6 @@ def nh_season_income(request):
                 totals_notax['income'] += nhm.total_income
                 totals_notax['net_income'] += nhm.total_net_income
                 totals_notax['net_income_no_commission'] += nhm.net_income_no_commission
-                avg_notax['income'] += nhm.total_income
-                avg_notax['net_income'] += nhm.total_net_income
-                avg_notax['net_income_no_commission'] += nhm.net_income_no_commission
                 nhm.include_tax = True
                 totals['income'] += nhm.total_income
                 totals['net_income'] += nhm.total_net_income
@@ -1025,9 +1022,9 @@ def nh_season_income(request):
             if month_count > 0:
                 avg['signed_commission'] /= month_with_sales_count
                 avg['actual_commission'] /= month_with_sales_count
-                avg_notax['income'] /= month_count
-                avg_notax['net_income'] /= month_count
-                avg_notax['net_income_no_commission'] /= month_count
+                avg_notax['income'] = totals_notax['income'] / month_count
+                avg_notax['net_income'] = totals_notax['net_income'] / month_count
+                avg_notax['net_income_no_commission'] = totals_notax['net_income_no_commission'] / month_count
                
             for e in employees:
                 e.season_avg_notax = month_count and e.season_total_notax / month_count or 0
