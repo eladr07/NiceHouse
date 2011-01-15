@@ -3338,25 +3338,22 @@ def season_income(request):
             ds = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
                 
             for d in ds:
+                project = d.project
+                if not project in projects:
+                    projects.append(project)
+                    for attr in ['total_amount', 'total_amount_notax', 'total_sale_count']:
+                        setattr(project, attr, 0)
+                        
                 tax = Tax.objects.filter(date__lte=date(d.year, d.month,1)).latest().value / 100 + 1
-                if not d.project in projects:
-                    projects.append(d.project)
-                p = projects[projects.index(d.project)]
-                if not hasattr(p,'total_amount'): p.total_amount = 0
-                if not hasattr(p,'total_amount_notax'): p.total_amount_notax = 0
-                if not hasattr(p,'total_sale_count'): p.total_sale_count = 0
                 amount = d.get_total_amount()
-                p.total_amount += amount
-                p.total_amount_notax += amount / tax
-                p.total_sale_count += d.get_sales().count()
-                total_sale_count += d.get_sales().count()
+                project.total_amount += amount
+                project.total_amount_notax += amount / tax
+                sales_count = d.get_sales().count()
+                project.total_sale_count += sales_count
+                total_sale_count += sales_count
                 total_amount += amount
                 total_amount_notax += amount / tax
             for p in projects:
-                if p.end_date:
-                    end_date = min(to_date, p.end_date)
-                else:
-                    end_date = to_date
                 start_date = max(p.start_date, from_date)
                 active_months = round((to_date - start_date).days/30) + 1
                 p.avg_sale_count = p.total_sale_count / active_months
