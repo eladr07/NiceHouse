@@ -3341,7 +3341,7 @@ def season_income(request):
                 if d.project in projects:
                     project = projects[projects.index(d.project)]
                 else:
-                    d.project = d.project
+                    project = d.project
                     projects.append(project)
                     for attr in ['total_amount', 'total_amount_notax', 'total_sale_count']:
                         setattr(project, attr, 0)
