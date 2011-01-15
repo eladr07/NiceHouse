@@ -1015,7 +1015,7 @@ def nh_season_income(request):
                 totals['income'] += nhm.total_income
                 totals['net_income'] += nhm.total_net_income
                 totals['net_income_no_commission'] += nhm.net_income_no_commission
-                totals['sale_count'] += nhm.nhsales.count()
+                totals['sale_count'] += nhm.nhsales__count
                 avg['signed_commission'] += nhm.avg_signed_commission
                 avg['actual_commission'] += nhm.avg_actual_commission
             month_count = len(nhmonth_set)
