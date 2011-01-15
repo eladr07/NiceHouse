@@ -973,7 +973,8 @@ def nh_season_income(request):
             to_year, to_month = form.cleaned_data['to_year'], form.cleaned_data['to_month']
             to_date = date(to_month == 12 and to_year + 1 or to_year, to_month == 12 and 1 or to_month + 1, 1)
         
-            nhmonth_set = NHMonth.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhbranch = nhbranch)
+            nhmonth_set = NHMonth.objects.range(from_date.year, from_date.month, to_date.year, to_date.month) \
+                                         .filter(nhbranch = nhbranch).annotate(Count('nhsales'))
                 
             query = NHBranchEmployee.objects.filter(start_date__lt = to_date, nhbranch = nhbranch) \
                                             .exclude(end_date__isnull=False, end_date__lt = from_date)
@@ -1014,11 +1015,11 @@ def nh_season_income(request):
                 totals['income'] += nhm.total_income
                 totals['net_income'] += nhm.total_net_income
                 totals['net_income_no_commission'] += nhm.net_income_no_commission
-                totals['sale_count'] += len(nhm.nhsales.all())
+                totals['sale_count'] += nhm.nhsales.count()
                 avg['signed_commission'] += nhm.avg_signed_commission
                 avg['actual_commission'] += nhm.avg_actual_commission
             month_count = len(nhmonth_set)
-            month_with_sales_count = len([nhm for nhm in nhmonth_set if len(nhm.nhsales.all()) > 0])
+            month_with_sales_count = len([nhm for nhm in nhmonth_set if nhm.nhsales__count > 0])
             if month_count > 0:
                 avg['signed_commission'] /= month_with_sales_count
                 avg['actual_commission'] /= month_with_sales_count
