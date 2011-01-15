@@ -956,7 +956,7 @@ def nh_season_profit(request):
 
 @permission_required('Management.nhmonth_season')
 def nh_season_income(request):
-    month, nhmonth_set, employees, y, m = date.today(), NHMonth.objects.none(), [], 0, 0
+    nhmonth_set, employees = NHMonth.objects.none(), []
     totals_notax = {'income':0, 'net_income':0, 'net_income_no_commission':0}
     totals = {'income':0, 'net_income':0, 'net_income_no_commission':0, 'sale_count':0}
     avg = {'signed_commission':0, 'actual_commission':0}
