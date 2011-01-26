@@ -510,6 +510,9 @@ class MonthDemandWriter(DocumentBase):
         for sale, group in itertools.groupby(commission_details, lambda commission_detail: commission_detail.sale):
             sales_commission_details[sale] = dict([(cd.commission, cd.value) for cd in list(group)])
         
+        logger = logging.getLogger('pdf')
+        logger.info(unicode(sales_commission_details))
+        
         for s in sales:
             try:
                 sale_add = sales_commission_details[s]['c_zilber_add']
