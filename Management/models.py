@@ -1474,7 +1474,7 @@ class CZilber(models.Model):
     base_madad = models.FloatField(ugettext('madad_base'))
     third_start = models.DateField(ugettext('third_start'))
     
-    def calc_zilber_bonus(self, month, sales, d):
+    def calc_bonus(self, month, sales, d):
         logger = logging.getLogger('commission.czilber')
             
         prices_date = date(month.month == 12 and month.year+1 or month.year, month.month==12 and 1 or month.month+1, 1)
@@ -1503,6 +1503,36 @@ class CZilber(models.Model):
                              {'id':s.id, 'vals':{'latest_doh0price':latest_doh0price, 'current_madad':current_madad, 
                                                  'memudad_multiplier':memudad_multiplier, 'memudad':memudad,'zdb':zdb}})
 
+    def calc_adds(self, base, cycle_sales):
+        logger = logging.getLogger('commission.czilber')
+        prev_adds = 0
+        
+        for s in cycle_sales:
+            if base == s.pc_base:
+                logger.debug('sale #%(id)s no zilber add', {'id':s.id})
+                continue
+            
+            # get the sale_add ammount      
+            sale_add = (base - s.pc_base) * s.price_final / 100
+                            
+            # store the new base commission value in the sale commission details.
+            # also updates the commissions for sales from previous month in the cycle. old values will be avaliable
+            # using the reversion framework
+            for commission in ['c_zilber_base','final']:
+                scd, new = s.commission_details.get_or_create(commission = commission, employee_salary = None)
+                scd.value = base
+                scd.save()
+                
+            # store the sale_add value in the sale commission details
+            scd, new = s.commission_details.get_or_create(commission = 'c_zilber_add', employee_salary = None)
+            scd.value = sale_add
+            scd.save()
+            
+            prev_adds += sale_add
+        
+            logger.debug('sale #%(id)s adds calc values: %(vals)s', {'id':s.id, 'vals':{'s.pc_base':s.pc_base,'sale_add':sale_add}})
+        return prev_adds
+
     def calc(self, month):
         '''
         month is datetime
@@ -1521,12 +1551,12 @@ class CZilber(models.Model):
             logger.info('sales count: %(sale_count)s', {'sale_count':len(sales)})
             
             for sale in sales:
-                # store the current pc_base value for later calculations
-                sale.commission_details.create(commission = 'c_zilber_base_prev', value = sale.pc_base)
-                
                 sale.price_final = sale.project_price()
                 sale.save()
                 sale.project_commission_details.delete()
+                
+                # store the current pc_base value for later calculations
+                sale.commission_details.create(commission = 'c_zilber_base_prev', value = sale.pc_base)
                 
                 logger.debug('sale #%(id)s price_final = %(value)s', {'id':sale.id, 'value':sale.price_final})
             
@@ -1538,7 +1568,7 @@ class CZilber(models.Model):
                 s.commission_details.create(commission = 'final', value = 0)
                 logger.warning('skipping sale #%(id)s. commission_include=False', {'id':s.id})
                                 
-            self.calc_zilber_bonus(month, sales, d)
+            self.calc_bonus(month, sales, d)
 
             logger.info('starting to calculate ziber adds')
             
@@ -1563,32 +1593,7 @@ class CZilber(models.Model):
                 logger.info('base commission %(base)s exceeded max commisison %(max)s',{'base':base, 'max':self.b_sale_rate_max})
                 base = self.b_sale_rate_max
             
-            prev_adds = 0
-            
-            for s in cycle_sales:
-                if base == s.pc_base:
-                    logger.debug('sale #%(id)s no zilber add', {'id':s.id})
-                    continue
-                
-                # get the sale_add ammount      
-                sale_add = (base - s.pc_base) * s.price_final / 100
-                                
-                # store the new base commission value in the sale commission details.
-                # also updates the commissions for sales from previous month in the cycle. old values will be avaliable
-                # using the reversion framework
-                for commission in ['c_zilber_base','final']:
-                    scd, new = s.commission_details.get_or_create(commission = commission, employee_salary = None)
-                    scd.value = base
-                    scd.save()
-                    
-                # store the sale_add value in the sale commission details
-                scd, new = s.commission_details.get_or_create(commission = 'c_zilber_add', employee_salary = None)
-                scd.value = sale_add
-                scd.save()
-                
-                prev_adds += sale_add
-            
-                logger.debug('sale #%(id)s adds calc values: %(vals)s', {'id':s.id, 'vals':{'s.pc_base':s.pc_base,'sale_add':sale_add}})
+            prev_adds = self.calc_adds(base, cycle_sales)
             
             if d.include_zilber_bonus():
                 if prev_adds:
