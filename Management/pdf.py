@@ -523,7 +523,7 @@ class MonthDemandWriter(DocumentBase):
             s.restore = True
             prev_demand = s.actual_demand.get_previous_demand()
             if prev_demand != None:
-                s.restore_date = date(prev_demand.year, prev_demand.month, 1)
+                s.restore_date = prev_demand.finish_date
             prev_pc_base = s.pc_base
                   
             row = [log2vis('%s/%s' % (s.actual_demand.month, s.actual_demand.year)), clientsPara(s.clients), 
