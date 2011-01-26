@@ -1480,28 +1480,35 @@ class CZilber(models.Model):
         prices_date = date(month.month == 12 and month.year+1 or month.year, month.month==12 and 1 or month.month+1, 1)
         logger.debug('%(vals)s', {'vals': {'prices_date':prices_date}})
         
-        for s in sales:                                
-            if self.base_madad:
-                doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0, date__lte = prices_date)
-                if doh0prices.count() == 0: 
-                    logger.warning('skipping c_zilber_discount calc for sale #%(id)s. no doh0 prices', {'id':s.id})
-                    continue
-                latest_doh0price = doh0prices.latest().price
-                
-                # calc the memudad price
-                current_madad = max(s.commission_madad_bi or d.get_madad(), self.base_madad)
-                memudad_multiplier = ((current_madad / self.base_madad) - 1) * 0.6 + 1
-                memudad = latest_doh0price * memudad_multiplier
-                
-                zdb = (s.price_final - memudad) * self.b_discount
-                s.commission_details.create(commission='c_zilber_discount', value = zdb)
-                s.commission_details.create(commission='latest_doh0price', value = latest_doh0price)
-                s.commission_details.create(commission='memudad', value = memudad)
-                s.commission_details.create(commission='current_madad', value = current_madad)
-                                
-                logger.debug('sale #%(id)s c_zilber_discount calc values: %(vals)s',
-                             {'id':s.id, 'vals':{'latest_doh0price':latest_doh0price, 'current_madad':current_madad, 
-                                                 'memudad_multiplier':memudad_multiplier, 'memudad':memudad,'zdb':zdb}})
+        total_zdb = 0
+            
+        for s in sales:
+            if not self.base_madad:
+                continue
+            
+            doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0, date__lte = prices_date)
+            if doh0prices.count() == 0: 
+                logger.warning('skipping c_zilber_discount calc for sale #%(id)s. no doh0 prices', {'id':s.id})
+                continue
+            latest_doh0price = doh0prices.latest().price
+            
+            # calc the memudad price
+            current_madad = max(s.commission_madad_bi or d.get_madad(), self.base_madad)
+            memudad_multiplier = ((current_madad / self.base_madad) - 1) * 0.6 + 1
+            memudad = latest_doh0price * memudad_multiplier
+            
+            zdb = (s.price_final - memudad) * self.b_discount
+            s.commission_details.create(commission='c_zilber_discount', value = zdb)
+            s.commission_details.create(commission='latest_doh0price', value = latest_doh0price)
+            s.commission_details.create(commission='memudad', value = memudad)
+            s.commission_details.create(commission='current_madad', value = current_madad)
+            
+            total_zdb += zdb
+              
+            logger.debug('sale #%(id)s c_zilber_discount calc values: %(vals)s',
+                         {'id':s.id, 'vals':{'latest_doh0price':latest_doh0price, 'current_madad':current_madad, 
+                                             'memudad_multiplier':memudad_multiplier, 'memudad':memudad,'zdb':zdb}})
+        return total_zdb
 
     def calc_adds(self, base, cycle_sales):
         logger = logging.getLogger('commission.czilber')
@@ -1513,7 +1520,8 @@ class CZilber(models.Model):
                 continue
                 
             # store the current pc_base value for later calculations
-            s.commission_details.create(commission = 'c_zilber_base_prev', value = s.pc_base)
+            prev_pc_base = s.pc_base
+            s.commission_details.create(commission = 'c_zilber_base_prev', value = prev_pc_base)
             
             # get the sale_add ammount      
             sale_add = (base - s.pc_base) * s.price_final / 100
@@ -1533,7 +1541,8 @@ class CZilber(models.Model):
             
             prev_adds += sale_add
         
-            logger.debug('sale #%(id)s adds calc values: %(vals)s', {'id':s.id, 'vals':{'s.pc_base':s.pc_base,'sale_add':sale_add}})
+            logger.debug('sale #%(id)s adds calc values: %(vals)s', {'id':s.id, 'vals':
+                                                                     {'s.pc_base':s.pc_base,'sale_add':sale_add,'prev_pc_base':prev_pc_base}})
         return prev_adds
 
     def calc(self, month):
@@ -1568,7 +1577,7 @@ class CZilber(models.Model):
                 s.commission_details.create(commission = 'final', value = 0)
                 logger.warning('skipping sale #%(id)s. commission_include=False', {'id':s.id})
                                 
-            self.calc_bonus(month, sales, d)
+            bonus = self.calc_bonus(month, sales, d)
 
             logger.info('starting to calculate ziber adds')
             
@@ -1598,10 +1607,6 @@ class CZilber(models.Model):
             if d.include_zilber_bonus():
                 if prev_adds:
                     d.diffs.create(type=u'משתנה', reason=u'הפרשי קצב מכירות (נספח א)', amount=round(prev_adds))
-                    
-                bonus = 0
-                for s in cycle_sales:
-                    bonus += s.zdb
                 if bonus:
                     d.diffs.create(type=u'בונוס', reason=u'בונוס חסכון בהנחה (נספח ב)', amount=round(bonus))
                     
