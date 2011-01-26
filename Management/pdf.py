@@ -499,7 +499,9 @@ class MonthDemandWriter(DocumentBase):
         
         # for performance reasons we take all commission details in a single query and store them for later use
         commission_details = models.SaleCommissionDetail.objects.filter(employee_salary__isnull = True, sale__in = sales,
-                                                                        commission__in = ('c_zilber_add', 'c_zilber_base_prev')) \
+                                                                        commission__in = ('c_zilber_add', 
+                                                                                          'c_zilber_base_prev',
+                                                                                          'c_zilber_base')) \
                                                                 .order_by('sale')
         
         # creating an easy-to-use dictionary {sale, {cd.commission, cd.value}} where cd is the commission detail
@@ -512,13 +514,10 @@ class MonthDemandWriter(DocumentBase):
             try:
                 sale_add = sales_commission_details[sale]['c_zilber_add']
                 prev_pc_base = sales_commission_details[sale]['c_zilber_base_prev']
-                #sale_base_with_add = sales_commission_details[sale]['c_zilber_base_with_add']
+                pc_base = sales_commission_details[sale]['c_zilber_base']
             except KeyError:
                 continue
-            
-            # get the most current pc_base value
-            pc_base = s.pc_base
-                  
+                              
             row = [log2vis('%s/%s' % (s.actual_demand.month, s.actual_demand.year)), clientsPara(s.clients), 
                    '%s/%s' % (unicode(s.house.building), unicode(s.house)), s.sale_date.strftime('%d/%m/%y'), 
                    commaise(s.price), commaise(s.price_final), prev_pc_base, pc_base, pc_base - prev_pc_base, commaise(sale_add)]
