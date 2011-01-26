@@ -819,6 +819,9 @@ class SaleCommissionDetail(models.Model):
     value = models.FloatField(null=True)
     sale = models.ForeignKey('Sale', null=True, related_name='commission_details')
     
+    def __unicode__(self):
+        return u'%s - %s' % (self.commission, self.value)
+    
     class Meta:
         db_table = 'SaleCommissionDetail'
         ordering=['commission','value']
@@ -1561,7 +1564,9 @@ class CZilber(models.Model):
                 # get the sale_add ammount      
                 sale_add = (base - s.pc_base) * s.price_final / 100
                 
-                # store the new base commission value in the sale commission details
+                # store the new base commission value in the sale commission details.
+                # also updates the commissions for sales from previous month in the cycle. old values will be avaliable
+                # using the reversion framework
                 for commission in ['c_zilber_base','final']:
                     scd, new = s.commission_details.get_or_create(commission = commission, employee_salary = None)
                     scd.value = base
