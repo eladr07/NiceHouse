@@ -1520,7 +1520,6 @@ class CZilber(models.Model):
                 continue
                 
             # store the current pc_base value for later calculations
-            s.restore = False
             prev_pc_base = s.pc_base
             scd, new = s.commission_details.get_or_create(commission = 'c_zilber_base_prev', employee_salary = None)
             scd.value = prev_pc_base
@@ -1605,7 +1604,8 @@ class CZilber(models.Model):
                 logger.info('base commission %(base)s exceeded max commisison %(max)s',{'base':base, 'max':self.b_sale_rate_max})
                 base = self.b_sale_rate_max
             
-            prev_adds = self.calc_adds(base, cycle_sales)
+            previous_sales = [sale for sale in cycle_sales if sale not in sales]
+            prev_adds = self.calc_adds(base, previous_sales)
             
             if d.include_zilber_bonus():
                 if prev_adds:
