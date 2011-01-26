@@ -1605,8 +1605,8 @@ class CZilber(models.Model):
                 base = self.b_sale_rate_max
             
             for sale in sales:
-                s.commission_details.create(commission = 'c_zilber_base', value = base)
-                s.commission_details.create(commission = 'final', value = base)
+                sale.commission_details.create(commission = 'c_zilber_base', value = base)
+                sale.commission_details.create(commission = 'final', value = base)
             
             prev_adds = self.calc_adds(base, cycle_sales)
             
