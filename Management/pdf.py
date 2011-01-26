@@ -512,9 +512,9 @@ class MonthDemandWriter(DocumentBase):
         
         for s in sales:
             try:
-                sale_add = sales_commission_details[sale]['c_zilber_add']
-                prev_pc_base = sales_commission_details[sale]['c_zilber_base_prev']
-                pc_base = sales_commission_details[sale]['c_zilber_base']
+                sale_add = sales_commission_details[s]['c_zilber_add']
+                prev_pc_base = sales_commission_details[s]['c_zilber_base_prev']
+                pc_base = sales_commission_details[s]['c_zilber_base']
             except KeyError:
                 continue
                               

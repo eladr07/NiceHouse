@@ -1520,6 +1520,7 @@ class CZilber(models.Model):
                 continue
                 
             # store the current pc_base value for later calculations
+            s.restore = False
             prev_pc_base = s.pc_base
             scd, new = s.commission_details.get_or_create(commission = 'c_zilber_base_prev', employee_salary = None)
             scd.value = prev_pc_base
