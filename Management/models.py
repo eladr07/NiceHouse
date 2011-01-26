@@ -1544,7 +1544,7 @@ class CZilber(models.Model):
             prev_adds += sale_add
         
             logger.debug('sale #%(id)s adds calc values: %(vals)s', {'id':s.id, 'vals':
-                                                                     {'s.pc_base':s.pc_base,'sale_add':sale_add,'prev_pc_base':prev_pc_base}})
+                                                                     {'base':base,'sale_add':sale_add,'prev_pc_base':prev_pc_base}})
         return prev_adds
 
     def calc(self, month):
