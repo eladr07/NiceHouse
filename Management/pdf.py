@@ -512,6 +512,7 @@ class MonthDemandWriter(DocumentBase):
             try:
                 sale_add = sales_commission_details[sale]['c_zilber_add']
                 prev_pc_base = sales_commission_details[sale]['c_zilber_base_prev']
+                #sale_base_with_add = sales_commission_details[sale]['c_zilber_base_with_add']
             except KeyError:
                 continue
             

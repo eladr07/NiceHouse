@@ -1521,7 +1521,9 @@ class CZilber(models.Model):
                 
             # store the current pc_base value for later calculations
             prev_pc_base = s.pc_base
-            s.commission_details.create(commission = 'c_zilber_base_prev', value = prev_pc_base)
+            scd, new = s.commission_details.get_or_create(commission = 'c_zilber_base_prev', employee_salary = None)
+            scd.value = prev_pc_base
+            scd.save()
             
             # get the sale_add ammount      
             sale_add = (base - s.pc_base) * s.price_final / 100
