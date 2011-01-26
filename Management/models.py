@@ -1563,11 +1563,7 @@ class CZilber(models.Model):
                     scd, new = s.commission_details.get_or_create(commission = commission, employee_salary = None)
                     scd.value = base
                     scd.save()
-                
-                #scd, new = s.commission_details.get_or_create(commission = 'c_zilber_base', employee_salary = None)
-                #scd.value = base
-                #scd.save()
-                
+                                
                 sale_add = (base - s.pc_base) * s.price_final / 100
                 
                 # store the sale_add value in the sale commission details
