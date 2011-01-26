@@ -515,14 +515,20 @@ class MonthDemandWriter(DocumentBase):
             except KeyError:
                 continue
             
+            # get the most current pc_base value
             s.restore = False
             pc_base = s.pc_base
+            
+            # get the pc_base value as of the previous demand (month before)
             s.restore = True
-            old_pc_base = s.pc_base
+            prev_demand = s.actual_demand.get_previous_demand()
+            if prev_demand != None:
+                s.restore_date = date(prev_demand.year, prev_demand.month, 1)
+            prev_pc_base = s.pc_base
                   
             row = [log2vis('%s/%s' % (s.actual_demand.month, s.actual_demand.year)), clientsPara(s.clients), 
                    '%s/%s' % (unicode(s.house.building), unicode(s.house)), s.sale_date.strftime('%d/%m/%y'), 
-                   commaise(s.price), commaise(s.price_final), old_pc_base, pc_base, pc_base - old_pc_base, commaise(sale_add)]
+                   commaise(s.price), commaise(s.price_final), prev_pc_base, pc_base, pc_base - prev_pc_base, commaise(sale_add)]
 
             row.reverse()
             rows.append(row)
