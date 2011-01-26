@@ -1536,17 +1536,17 @@ class CZilber(models.Model):
                 demand = demand.get_previous_demand()
                 demands.append(demand)
             
-            sales = []
+            cycle_sales = []
             for demand in demands:
-                sales.extend(demand.get_sales())
+                cycle_sales.extend(demand.get_sales())
             
-            excluded_sales = [sale for sale in sales if sale.commission_include == False]
-            sales = [sale for sale in sales if sale.commission_include == True]
+            excluded_sales = [sale for sale in cycle_sales if sale.commission_include == False]
+            cycle_sales = [sale for sale in cycle_sales if sale.commission_include == True]
             
             if len(excluded_sales):
                 logger.warning('excluding %(sale_count)s sales from zilber adds calc', {'sale_count':len(excluded_sales)})
         
-            base = self.base + self.b_sale_rate * (len(sales) - 1)
+            base = self.base + self.b_sale_rate * (len(cycle_sales) - 1)
             if base > self.b_sale_rate_max:
                 logger.info('base commission %(base)s exceeded max commisison %(max)s',{'base':base, 'max':self.b_sale_rate_max})
                 base = self.b_sale_rate_max
@@ -1554,6 +1554,13 @@ class CZilber(models.Model):
             prev_adds = 0
             
             for s in sales:
+                # store the new base commission value in the sale commission details
+                for commission in ['c_zilber_base','final']:
+                    scd, new = s.commission_details.create(commission = commission, employee_salary = None)
+                    scd.value = base
+                    scd.save()
+            
+            for s in cycle_sales:
                 if base == s.pc_base:
                     logger.debug('sale #%(id)s no zilber add', {'id':s.id})
                     continue
@@ -1561,12 +1568,6 @@ class CZilber(models.Model):
                 # get the sale_add ammount      
                 sale_add = (base - s.pc_base) * s.price_final / 100
                 
-                # store the new base commission value in the sale commission details
-                for commission in ['c_zilber_base','final']:
-                    scd, new = s.commission_details.get_or_create(commission = commission, employee_salary = None)
-                    scd.value = base
-                    scd.save()
-                    
                 # store the sale_add value in the sale commission details
                 scd, new = s.commission_details.get_or_create(commission = 'c_zilber_add', employee_salary = None)
                 scd.value = sale_add
@@ -1581,7 +1582,7 @@ class CZilber(models.Model):
                     d.diffs.create(type=u'משתנה', reason=u'הפרשי קצב מכירות (נספח א)', amount=round(prev_adds))
                     
                 bonus = 0
-                for s in sales:
+                for s in cycle_sales:
                     bonus += s.zdb
                 if bonus:
                     d.diffs.create(type=u'בונוס', reason=u'בונוס חסכון בהנחה (נספח ב)', amount=round(bonus))
