@@ -511,7 +511,7 @@ class MonthDemandWriter(DocumentBase):
             sales_commission_details[sale] = dict([(cd.commission, cd.value) for cd in list(group)])
         
         logger = logging.getLogger('pdf')
-        logger.info(unicode(sales_commission_details))
+        logger.info(unicode('vals: %s', {'vals': sales_commission_details}))
         
         for s in sales:
             try:
