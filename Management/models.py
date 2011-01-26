@@ -1505,11 +1505,7 @@ class CZilber(models.Model):
             prices_date = date(month.month == 12 and month.year+1 or month.year, month.month==12 and 1 or month.month+1, 1)
             logger.debug('%(vals)s', {'vals': {'prices_date':prices_date}})
             
-            for s in sales:
-                s.commission_details.create(commission = 'c_zilber_base', value = self.base)
-                s.commission_details.create(commission = 'final', value = self.base)
-                logger.debug('sale #%(id)s base commission = %(value)s', {'id':s.id,'value':self.base})
-                                
+            for s in sales:                                
                 if self.base_madad:
                     doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0, date__lte = prices_date)
                     if doh0prices.count() == 0: 
@@ -1563,9 +1559,14 @@ class CZilber(models.Model):
                     continue
                 
                 # store the new base commission value in the sale commission details
-                scd, new = s.commission_details.get_or_create(commission = 'c_zilber_base_with_add', employee_salary = None)
-                scd.value = base
-                scd.save()
+                for commission in ['c_zilber_base','final']:
+                    scd, new = s.commission_details.get_or_create(commission = commission, employee_salary = None)
+                    scd.value = base
+                    scd.save()
+                
+                #scd, new = s.commission_details.get_or_create(commission = 'c_zilber_base', employee_salary = None)
+                #scd.value = base
+                #scd.save()
                 
                 sale_add = (base - s.pc_base) * s.price_final / 100
                 

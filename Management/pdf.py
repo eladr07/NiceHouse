@@ -511,13 +511,18 @@ class MonthDemandWriter(DocumentBase):
         for s in sales:
             try:
                 sale_add = sales_commission_details[sale]['c_zilber_add']
-                sale_base_with_add = sales_commission_details[sale]['c_zilber_base_with_add']
+                #sale_base_with_add = sales_commission_details[sale]['c_zilber_base_with_add']
             except KeyError:
                 continue
-                                    
+            
+            s.restore = False
+            pc_base = s.pc_base
+            s.restore = True
+            old_pc_base = s.pc_base
+                  
             row = [log2vis('%s/%s' % (s.actual_demand.month, s.actual_demand.year)), clientsPara(s.clients), 
                    '%s/%s' % (unicode(s.house.building), unicode(s.house)), s.sale_date.strftime('%d/%m/%y'), 
-                   commaise(s.price), commaise(s.price_final), s.pc_base, sale_base_with_add, sale_base_with_add - s.pc_base, commaise(sale_add)]
+                   commaise(s.price), commaise(s.price_final), old_pc_base, pc_base, pc_base - old_pc_base, commaise(sale_add)]
 
             row.reverse()
             rows.append(row)
