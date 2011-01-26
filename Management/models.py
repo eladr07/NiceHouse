@@ -1473,6 +1473,36 @@ class CZilber(models.Model):
     b_sale_rate_max = models.FloatField(ugettext('max_commission'))
     base_madad = models.FloatField(ugettext('madad_base'))
     third_start = models.DateField(ugettext('third_start'))
+    
+    def calc_zilber_bonus(self, month, sales, d):
+        logger = logging.getLogger('commission.czilber')
+            
+        prices_date = date(month.month == 12 and month.year+1 or month.year, month.month==12 and 1 or month.month+1, 1)
+        logger.debug('%(vals)s', {'vals': {'prices_date':prices_date}})
+        
+        for s in sales:                                
+            if self.base_madad:
+                doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0, date__lte = prices_date)
+                if doh0prices.count() == 0: 
+                    logger.warning('skipping c_zilber_discount calc for sale #%(id)s. no doh0 prices', {'id':s.id})
+                    continue
+                latest_doh0price = doh0prices.latest().price
+                
+                # calc the memudad price
+                current_madad = max(s.commission_madad_bi or d.get_madad(), self.base_madad)
+                memudad_multiplier = ((current_madad / self.base_madad) - 1) * 0.6 + 1
+                memudad = latest_doh0price * memudad_multiplier
+                
+                zdb = (s.price_final - memudad) * self.b_discount
+                s.commission_details.create(commission='c_zilber_discount', value = zdb)
+                s.commission_details.create(commission='latest_doh0price', value = latest_doh0price)
+                s.commission_details.create(commission='memudad', value = memudad)
+                s.commission_details.create(commission='current_madad', value = current_madad)
+                                
+                logger.debug('sale #%(id)s c_zilber_discount calc values: %(vals)s',
+                             {'id':s.id, 'vals':{'latest_doh0price':latest_doh0price, 'current_madad':current_madad, 
+                                                 'memudad_multiplier':memudad_multiplier, 'memudad':memudad,'zdb':zdb}})
+
     def calc(self, month):
         '''
         month is datetime
@@ -1491,6 +1521,9 @@ class CZilber(models.Model):
             logger.info('sales count: %(sale_count)s', {'sale_count':len(sales)})
             
             for sale in sales:
+                # store the current pc_base value for later calculations
+                sale.commission_details.create(commission = 'c_zilber_base_prev', value = sale.pc_base)
+                
                 sale.price_final = sale.project_price()
                 sale.save()
                 sale.project_commission_details.delete()
@@ -1505,31 +1538,7 @@ class CZilber(models.Model):
                 s.commission_details.create(commission = 'final', value = 0)
                 logger.warning('skipping sale #%(id)s. commission_include=False', {'id':s.id})
                                 
-            prices_date = date(month.month == 12 and month.year+1 or month.year, month.month==12 and 1 or month.month+1, 1)
-            logger.debug('%(vals)s', {'vals': {'prices_date':prices_date}})
-            
-            for s in sales:                                
-                if self.base_madad:
-                    doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0, date__lte = prices_date)
-                    if doh0prices.count() == 0: 
-                        logger.warning('skipping c_zilber_discount calc for sale #%(id)s. no doh0 prices', {'id':s.id})
-                        continue
-                    latest_doh0price = doh0prices.latest().price
-                    
-                    # calc the memudad price
-                    current_madad = max(s.commission_madad_bi or d.get_madad(), self.base_madad)
-                    memudad_multiplier = ((current_madad / self.base_madad) - 1) * 0.6 + 1
-                    memudad = latest_doh0price * memudad_multiplier
-                    
-                    zdb = (s.price_final - memudad) * self.b_discount
-                    s.commission_details.create(commission='c_zilber_discount', value = zdb)
-                    s.commission_details.create(commission='latest_doh0price', value = latest_doh0price)
-                    s.commission_details.create(commission='memudad', value = memudad)
-                    s.commission_details.create(commission='current_madad', value = current_madad)
-                                    
-                    logger.debug('sale #%(id)s c_zilber_discount calc values: %(vals)s',
-                                 {'id':s.id, 'vals':{'latest_doh0price':latest_doh0price, 'current_madad':current_madad, 
-                                                     'memudad_multiplier':memudad_multiplier, 'memudad':memudad,'zdb':zdb}})
+            self.calc_zilber_bonus(month, sales, d)
 
             logger.info('starting to calculate ziber adds')
             
@@ -1563,7 +1572,7 @@ class CZilber(models.Model):
                 
                 # get the sale_add ammount      
                 sale_add = (base - s.pc_base) * s.price_final / 100
-                
+                                
                 # store the new base commission value in the sale commission details.
                 # also updates the commissions for sales from previous month in the cycle. old values will be avaliable
                 # using the reversion framework

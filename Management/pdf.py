@@ -499,7 +499,7 @@ class MonthDemandWriter(DocumentBase):
         
         # for performance reasons we take all commission details in a single query and store them for later use
         commission_details = models.SaleCommissionDetail.objects.filter(employee_salary__isnull = True, sale__in = sales,
-                                                                        commission__in = ('c_zilber_add', 'c_zilber_base_with_add')) \
+                                                                        commission__in = ('c_zilber_add', 'c_zilber_base_prev')) \
                                                                 .order_by('sale')
         
         # creating an easy-to-use dictionary {sale, {cd.commission, cd.value}} where cd is the commission detail
@@ -511,20 +511,13 @@ class MonthDemandWriter(DocumentBase):
         for s in sales:
             try:
                 sale_add = sales_commission_details[sale]['c_zilber_add']
+                prev_pc_base = sales_commission_details[sale]['c_zilber_base_prev']
                 #sale_base_with_add = sales_commission_details[sale]['c_zilber_base_with_add']
             except KeyError:
                 continue
             
             # get the most current pc_base value
-            s.restore = False
             pc_base = s.pc_base
-            
-            # get the pc_base value as of the previous demand (month before)
-            s.restore = True
-            prev_demand = s.actual_demand.get_previous_demand()
-            if prev_demand != None:
-                s.restore_date = prev_demand.finish_date
-            prev_pc_base = s.pc_base
                   
             row = [log2vis('%s/%s' % (s.actual_demand.month, s.actual_demand.year)), clientsPara(s.clients), 
                    '%s/%s' % (unicode(s.house.building), unicode(s.house)), s.sale_date.strftime('%d/%m/%y'), 
