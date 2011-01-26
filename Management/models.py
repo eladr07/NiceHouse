@@ -1556,9 +1556,7 @@ class CZilber(models.Model):
             for s in sales:
                 # store the new base commission value in the sale commission details
                 for commission in ['c_zilber_base','final']:
-                    scd, new = s.commission_details.create(commission = commission, employee_salary = None)
-                    scd.value = base
-                    scd.save()
+                    scd = s.commission_details.create(commission = commission, value = base)
             
             for s in cycle_sales:
                 if base == s.pc_base:
