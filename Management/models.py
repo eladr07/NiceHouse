@@ -1604,6 +1604,10 @@ class CZilber(models.Model):
                 logger.info('base commission %(base)s exceeded max commisison %(max)s',{'base':base, 'max':self.b_sale_rate_max})
                 base = self.b_sale_rate_max
             
+            for sale in sales:
+                s.commission_details.create(commission = 'c_zilber_base', value = base)
+                s.commission_details.create(commission = 'final', value = base)
+            
             prev_adds = self.calc_adds(base, cycle_sales)
             
             if d.include_zilber_bonus():
