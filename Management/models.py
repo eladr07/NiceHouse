@@ -1553,11 +1553,6 @@ class CZilber(models.Model):
             
             prev_adds = 0
             
-            for s in sales:
-                # store the new base commission value in the sale commission details
-                for commission in ['c_zilber_base','final']:
-                    scd = s.commission_details.create(commission = commission, value = base)
-            
             for s in cycle_sales:
                 if base == s.pc_base:
                     logger.debug('sale #%(id)s no zilber add', {'id':s.id})
@@ -1566,6 +1561,12 @@ class CZilber(models.Model):
                 # get the sale_add ammount      
                 sale_add = (base - s.pc_base) * s.price_final / 100
                 
+                # store the new base commission value in the sale commission details
+                for commission in ['c_zilber_base','final']:
+                    scd, new = s.commission_details.get_or_create(commission = commission, employee_salary = None)
+                    scd.value = base
+                    scd.save()
+                    
                 # store the sale_add value in the sale commission details
                 scd, new = s.commission_details.get_or_create(commission = 'c_zilber_add', employee_salary = None)
                 scd.value = sale_add
