@@ -1511,6 +1511,9 @@ class CZilber(models.Model):
             if base == s.pc_base:
                 logger.debug('sale #%(id)s no zilber add', {'id':s.id})
                 continue
+                
+            # store the current pc_base value for later calculations
+            s.commission_details.create(commission = 'c_zilber_base_prev', value = s.pc_base)
             
             # get the sale_add ammount      
             sale_add = (base - s.pc_base) * s.price_final / 100
@@ -1554,9 +1557,6 @@ class CZilber(models.Model):
                 sale.price_final = sale.project_price()
                 sale.save()
                 sale.project_commission_details.delete()
-                
-                # store the current pc_base value for later calculations
-                sale.commission_details.create(commission = 'c_zilber_base_prev', value = sale.pc_base)
                 
                 logger.debug('sale #%(id)s price_final = %(value)s', {'id':sale.id, 'value':sale.price_final})
             
