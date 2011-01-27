@@ -1591,7 +1591,7 @@ class CZilber(models.Model):
             
             cycle_sales = []
             for demand in demands:
-                cycle_sales.update(demand.get_sales())
+                cycle_sales.extend(demand.get_sales())
             
             excluded_sales = [sale for sale in cycle_sales if sale.commission_include == False]
             cycle_sales = set([sale for sale in cycle_sales if sale.commission_include == True])
