@@ -1515,8 +1515,8 @@ class CZilber(models.Model):
         prev_adds = 0
         
         for s in cycle_sales:
-            if base == s.pc_base:
-                logger.debug('sale #%(id)s no zilber add', {'id':s.id})
+            if base == s.pc_base or s.pc_base == 0:
+                logger.debug('sale #%(id)s skipping zilber add', {'id':s.id})
                 continue
                 
             # store the current pc_base value for later calculations
