@@ -1515,7 +1515,7 @@ class CZilber(models.Model):
         prev_adds = 0
         
         for s in cycle_sales:
-            if base == s.pc_base or s.pc_base == 0:
+            if base == s.pc_base:
                 logger.debug('sale #%(id)s skipping zilber add', {'id':s.id})
                 continue
                 
@@ -1525,8 +1525,6 @@ class CZilber(models.Model):
             scd.value = prev_pc_base
             scd.save()
             
-            # get the sale_add ammount      
-            sale_add = (base - s.pc_base) * s.price_final / 100
                             
             # store the new base commission value in the sale commission details.
             # also updates the commissions for sales from previous month in the cycle. old values will be avaliable
@@ -1535,13 +1533,18 @@ class CZilber(models.Model):
                 scd, new = s.commission_details.get_or_create(commission = commission, employee_salary = None)
                 scd.value = base
                 scd.save()
-                
-            # store the sale_add value in the sale commission details
-            scd, new = s.commission_details.get_or_create(commission = 'c_zilber_add', employee_salary = None)
-            scd.value = sale_add
-            scd.save()
             
-            prev_adds += sale_add
+            # if the prev_pc_base is 0 it means this sale is from the current month - thus no adds needed
+            if prev_pc_base > 0:
+                # get the sale_add ammount      
+                sale_add = (base - s.pc_base) * s.price_final / 100
+                
+                # store the sale_add value in the sale commission details
+                scd, new = s.commission_details.get_or_create(commission = 'c_zilber_add', employee_salary = None)
+                scd.value = sale_add
+                scd.save()
+            
+                prev_adds += sale_add
         
             logger.debug('sale #%(id)s adds calc values: %(vals)s', {'id':s.id, 'vals':
                                                                      {'base':base,'sale_add':sale_add,'prev_pc_base':prev_pc_base}})
