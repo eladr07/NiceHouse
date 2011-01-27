@@ -517,11 +517,11 @@ class MonthDemandWriter(DocumentBase):
                 continue
             
             # get the pc_base as it was in the actual demand
-            prev_demand = s.actual_demand.get_previous_demand()
-            if prev_demand:
-                s.restore_date = prev_demand.finish_date
+            #prev_demand = s.actual_demand.get_previous_demand()
+            #if prev_demand:
+            #    s.restore_date = prev_demand.finish_date
             orig_pc_base = s.pc_base
-            s.restore_date = s.actual_demand.finish_date
+            #s.restore_date = s.actual_demand.finish_date
             
             row = [log2vis('%s/%s' % (s.actual_demand.month, s.actual_demand.year)), clientsPara(s.clients), 
                    '%s/%s' % (unicode(s.house.building), unicode(s.house)), s.sale_date.strftime('%d/%m/%y'), 
