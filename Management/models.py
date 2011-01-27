@@ -1572,7 +1572,7 @@ class CZilber(models.Model):
                 logger.debug('sale #%(id)s price_final = %(value)s', {'id':sale.id, 'value':sale.price_final})
             
             excluded_sales = [sale for sale in sales if sale.commission_include == False]
-            sales = [sale for sale in sales if sale.commission_include == True]
+            sales = set([sale for sale in sales if sale.commission_include == True])
             
             for s in excluded_sales:
                 s.commission_details.create(commission = 'c_zilber_base', value = 0)
@@ -1591,10 +1591,10 @@ class CZilber(models.Model):
             
             cycle_sales = []
             for demand in demands:
-                cycle_sales.extend(demand.get_sales())
+                cycle_sales.update(demand.get_sales())
             
             excluded_sales = [sale for sale in cycle_sales if sale.commission_include == False]
-            cycle_sales = [sale for sale in cycle_sales if sale.commission_include == True]
+            cycle_sales = set([sale for sale in cycle_sales if sale.commission_include == True])
             
             if len(excluded_sales):
                 logger.warning('excluding %(sale_count)s sales from zilber adds calc', {'sale_count':len(excluded_sales)})
@@ -1604,8 +1604,7 @@ class CZilber(models.Model):
                 logger.info('base commission %(base)s exceeded max commisison %(max)s',{'base':base, 'max':self.b_sale_rate_max})
                 base = self.b_sale_rate_max
             
-            previous_sales = [sale for sale in cycle_sales if sale not in sales]
-            prev_adds = self.calc_adds(base, previous_sales)
+            prev_adds = self.calc_adds(base, cycle_sales - sales)
             
             if d.include_zilber_bonus():
                 if prev_adds:
