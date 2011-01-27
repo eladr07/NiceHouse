@@ -1519,13 +1519,6 @@ class CZilber(models.Model):
                 logger.debug('sale #%(id)s skipping zilber add', {'id':s.id})
                 continue
                 
-            # store the current pc_base value for later calculations
-            prev_pc_base = s.pc_base
-            scd, new = s.commission_details.get_or_create(commission = 'c_zilber_base_prev', employee_salary = None)
-            scd.value = prev_pc_base
-            scd.save()
-            
-                            
             # store the new base commission value in the sale commission details.
             # also updates the commissions for sales from previous month in the cycle. old values will be avaliable
             # using the reversion framework
@@ -1534,20 +1527,18 @@ class CZilber(models.Model):
                 scd.value = base
                 scd.save()
             
-            # if the prev_pc_base is 0 it means this sale is from the current month - thus no adds needed
-            if prev_pc_base > 0:
-                # get the sale_add ammount      
-                sale_add = (base - s.pc_base) * s.price_final / 100
-                
-                # store the sale_add value in the sale commission details
-                scd, new = s.commission_details.get_or_create(commission = 'c_zilber_add', employee_salary = None)
-                scd.value = sale_add
-                scd.save()
+            # get the sale_add ammount      
+            sale_add = (base - s.pc_base) * s.price_final / 100
             
-                prev_adds += sale_add
+            # store the sale_add value in the sale commission details
+            scd, new = s.commission_details.get_or_create(commission = 'c_zilber_add', employee_salary = None)
+            scd.value = sale_add
+            scd.save()
+        
+            prev_adds += sale_add
         
             logger.debug('sale #%(id)s adds calc values: %(vals)s', {'id':s.id, 'vals':
-                                                                     {'base':base,'sale_add':sale_add,'prev_pc_base':prev_pc_base}})
+                                                                     {'base':base,'sale_add':sale_add}})
         return prev_adds
 
     def calc(self, month):
