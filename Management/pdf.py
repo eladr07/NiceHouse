@@ -499,7 +499,8 @@ class MonthDemandWriter(DocumentBase):
         
         # for performance reasons we take all commission details in a single query and store them for later use
         commission_details = models.SaleCommissionDetail.objects.filter(employee_salary__isnull = True, sale__in = sales,
-                                                                        commission__in = ('c_zilber_add',)) \
+                                                                        commission__in = ('c_zilber_add',
+                                                                                          'c_zilber_base')) \
                                                                 .order_by('sale')
         
         # creating an easy-to-use dictionary {sale, {cd.commission, cd.value}} where cd is the commission detail
@@ -511,12 +512,11 @@ class MonthDemandWriter(DocumentBase):
         for s in sales:
             try:
                 sale_add = sales_commission_details[s]['c_zilber_add']
+                pc_base = sales_commission_details[s]['c_zilber_base']
             except KeyError:
                 continue
             
-            s.restore = False
-            pc_base = s.pc_base
-            s.restore = True
+            # get the pc_base as it was in the actual demand
             orig_pc_base = s.pc_base
             
             row = [log2vis('%s/%s' % (s.actual_demand.month, s.actual_demand.year)), clientsPara(s.clients), 
