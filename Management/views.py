@@ -485,7 +485,7 @@ def demand_calc(request, id):
                 demands = list(Demand.objects.filter(project = d.project))
             elif c.c_zilber:
                 demand = d
-                demands = [demand]
+                demands = []
                 while demand.zilber_cycle_index() > 1:
                     demands.insert(0, demand)
                     demand = demand.get_previous_demand()
