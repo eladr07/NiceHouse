@@ -417,7 +417,7 @@ class MonthDemandWriter(DocumentBase):
             # for performance reasons we take all commission details in a single query and store them for later use
             commission_details = models.SaleCommissionDetail.objects.filter(employee_salary__isnull = True, sale__in = sales,
                                                                             commission__in = ('latest_doh0price', 'memudad', 'current_madad')) \
-                                                                    .order_by('sale')
+                                                                    .order_by('sale__id')
             
             # creating an easy-to-use dictionary {sale, {cd.commission, cd.value}} where cd is the commission detail
             sales_commission_details = {}
