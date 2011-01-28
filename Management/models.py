@@ -1529,16 +1529,9 @@ class CZilber(models.Model):
             
             # get the sale_add ammount      
             sale_add = (base - s.pc_base) * s.price_final / 100
-            
-            # store the sale_add value in the sale commission details
-            scd, new = s.commission_details.get_or_create(commission = 'c_zilber_add', employee_salary = None)
-            scd.value = sale_add
-            scd.save()
-        
             prev_adds += sale_add
         
-            logger.debug('sale #%(id)s adds calc values: %(vals)s', {'id':s.id, 'vals':
-                                                                     {'base':base,'sale_add':sale_add}})
+            logger.debug('sale #%(id)s adds calc values: %(vals)s', {'id':s.id, 'vals': {'base':base,'sale_add':sale_add}})
         return prev_adds
 
     def calc(self, month):
