@@ -435,13 +435,17 @@ class MonthDemandWriter(DocumentBase):
                 else:
                     row = [None, None]
                 
-                doh0price = sales_commission_details[s].get('latest_doh0price', 0)
-                memudad = sales_commission_details[s].get('memudad', 0)
-                price_memduad_diff = s.price_final - memudad
-                current_madad = sales_commission_details[s].get('current_madad', 0)
+                if s in sales_commission_details:
+                    latest_doh0price = sales_commission_details[s].get('latest_doh0price', 0)
+                    memudad = sales_commission_details[s].get('memudad', 0)
+                    current_madad = sales_commission_details[s].get('current_madad', 0)
+                    price_memduad_diff = s.price_final - memudad
+                else:
+                    logger.warning('sale #%(sale_id)s has no commission details', {'sale_id': s.id})
+                    latest_doh0price, memudad, current_madad, price_memduad_diff = 0,0,0,0
                 
                 row.extend([log2vis(s.clients), '%s/%s' % (unicode(s.house.building), unicode(s.house)), 
-                            s.sale_date.strftime('%d/%m/%y'), commaise(s.price_final), commaise(doh0price), 
+                            s.sale_date.strftime('%d/%m/%y'), commaise(s.price_final), commaise(latest_doh0price), 
                             current_madad, commaise(memudad), commaise(price_memduad_diff), commaise(s.zdb)])
 
                 row.reverse()
@@ -449,7 +453,7 @@ class MonthDemandWriter(DocumentBase):
                 
                 total_prices += s.price
                 total_adds += s.zdb
-                total_doh0price += doh0price
+                total_doh0price += latest_doh0price
                 total_memudad += memudad
                 total_diff += price_memduad_diff
  
