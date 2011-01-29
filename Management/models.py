@@ -1691,6 +1691,68 @@ class ProjectCommission(models.Model):
     max = models.FloatField(ugettext('max_commission'), null=True, blank=True)
     agreement = models.FileField(ugettext('agreement'), upload_to='files', null=True, blank=True)
     remarks = models.TextField(ugettext('commission_remarks'), null=True, blank=True)
+    
+    def calc_by_signups(self, demand):
+        logger = logging.getLogger('commission')
+            
+        for (m, y) in demand.get_signup_months():
+            # get sales that were signed up for specific month, not including future sales.
+            max_contractor_pay = date(demand.month==12 and demand.year+1 or demand.year, demand.month==12 and 1 or demand.month+1,1) 
+            q = models.Q(contractor_pay_year = max_contractor_pay.year, contractor_pay_month__lt = max_contractor_pay.month) | \
+                models.Q(contractor_pay_year__lt = max_contractor_pay.year)
+            
+            subSales = Sale.objects.filter(q, house__signups__date__year=y,
+                                           house__signups__date__month=m,
+                                           house__signups__cancel=None,
+                                           house__building__project = demand.project,
+                                           commission_include=True)
+            subSales = subSales.order_by('house__signups__date')
+            
+            logger.info('calculating affected sales %(sale_ids)s for month %(month)s/%(year)s',
+                        {'sale_ids':[sale.id for sale in subSales], 'month':m,'year':y})
+            
+            self.calc(subSales)#send these sales to regular processing
+
+        bonus = 0
+        for subSales in demand.get_affected_sales().values():
+            for s in subSales:
+                if not s.commission_include: 
+                    logger.info('skipping sale #%(id)s - commission_include=False', {'id':s.id})
+                    continue
+                signup = s.house.get_signup()
+                if not signup: 
+                    logger.warning('skipping sale #%(id)s - no signup', {'id':s.id})
+                    continue
+                #get the finish date when the demand for the month the signup 
+                #were made we use it to find out what was the commission at
+                #that time
+                if not s.actual_demand or not s.actual_demand.finish_date:
+                    logger.warning('skipping sale #%(id)s - actual_demand=None or actual_demand.finish_date=None', {'id':s.id})
+                    continue
+                q = s.project_commission_details.filter(commission='final')
+                if q.count()==0:
+                    logger.warning('skipping sale #%(id)s - no final commission', {'id':s.id})
+                    continue
+                s.restore_date = demand.get_previous_demand().finish_date
+                diff = (q[0].value - s.c_final) * s.price_final / 100
+                
+                logger.debug('sale #%(id)s bonus calc values: %(vals)s',
+                             {'id': s.id,
+                              'vals': {'diff':diff,
+                                       'q[0].value':q[0].value,
+                                       's.c_final':s.c_final,
+                                       's.price_final':s.price_final}
+                              })
+                
+                bonus += int(diff)
+        if bonus > 0:
+            if demand.bonus_diff:
+                demand.bonus_diff.amount = bonus
+                demand.bonus_diff.save()
+            else:
+                demand.diffs.create(type=u'בונוס', reason = u'הפרשי עמלה (ניספח א)', amount = bonus)
+        return
+    
     def calc(self, sales = (), demand = None, restore_date = date.today()):
         try:
             logger = logging.getLogger('commission')
@@ -1704,64 +1766,7 @@ class ProjectCommission(models.Model):
                 return
 
             if self.commission_by_signups and demand:
-                for (m, y) in demand.get_signup_months():
-                    #get sales that were signed up for specific month, not including future sales.
-                    max_contractor_pay = date(demand.month==12 and demand.year+1 or demand.year, demand.month==12 and 1 or demand.month+1,1) 
-                    q = models.Q(contractor_pay_year = max_contractor_pay.year, contractor_pay_month__lt = max_contractor_pay.month) | \
-                        models.Q(contractor_pay_year__lt = max_contractor_pay.year)
-                    
-                    
-                    subSales = Sale.objects.filter(q, house__signups__date__year=y,
-                                                   house__signups__date__month=m,
-                                                   house__signups__cancel=None,
-                                                   house__building__project = demand.project,
-                                                   commission_include=True)
-                    subSales = subSales.order_by('house__signups__date')
-                    
-                    logger.info('calculating affected sales %(sale_ids)s for month %(month)s/%(year)s',
-                                {'sale_ids':[sale.id for sale in subSales], 'month':m,'year':y})
-                    
-                    self.calc(sales = subSales)#send these sales to regular processing
-
-                bonus = 0
-                for subSales in demand.get_affected_sales().values():
-                    for s in subSales:
-                        if not s.commission_include: 
-                            logger.info('skipping sale #%(id)s - commission_include=False', {'id':s.id})
-                            continue
-                        signup = s.house.get_signup()
-                        if not signup: 
-                            logger.warning('skipping sale #%(id)s - no signup', {'id':s.id})
-                            continue
-                        #get the finish date when the demand for the month the signup 
-                        #were made we use it to find out what was the commission at
-                        #that time
-                        if not s.actual_demand or not s.actual_demand.finish_date:
-                            logger.warning('skipping sale #%(id)s - actual_demand=None or actual_demand.finish_date=None', {'id':s.id})
-                            continue
-                        q = s.project_commission_details.filter(commission='final')
-                        if q.count()==0:
-                            logger.warning('skipping sale #%(id)s - no final commission', {'id':s.id})
-                            continue
-                        s.restore_date = demand.get_previous_demand().finish_date
-                        diff = (q[0].value - s.c_final) * s.price_final / 100
-                        
-                        logger.debug('sale #%(id)s bonus calc values: %(vals)s',
-                                     {'id': s.id,
-                                      'vals': {'diff':diff,
-                                               'q[0].value':q[0].value,
-                                               's.c_final':s.c_final,
-                                               's.price_final':s.price_final}
-                                      })
-                        
-                        bonus += int(diff)
-                if bonus > 0:
-                    if demand.bonus_diff:
-                        demand.bonus_diff.amount = bonus
-                        demand.bonus_diff.save()
-                    else:
-                        demand.diffs.create(type=u'בונוס', reason = u'הפרשי עמלה (ניספח א)', amount = bonus)
-                return
+                self.calc_by_signups(demand)
             
             if getattr(self, 'c_zilber') != None:
                 month = date(demand.year, demand.month, 1)
@@ -1788,6 +1793,7 @@ class ProjectCommission(models.Model):
                     s_details = details.setdefault(s, {})
                     s_details[c] = precentages[s]
                     
+            # enforce the maximum commission for all commissions sum
             if self.max:
                 for s in dic:
                     if dic[s] > self.max:
@@ -1979,7 +1985,7 @@ class Demand(models.Model):
     def get_affected_sales(self):
         '''
         get sales from last months, affected by this month's calculation,
-        excluding sales from current demand
+        excluding sales from current demand. key is (month, year) and value is the sales
         '''
         dic = {}
         if not self.project.commissions.commission_by_signups:

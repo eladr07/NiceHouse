@@ -52,6 +52,7 @@ class DemandDiffInline(admin.TabularInline):
     
 class DemandAdmin(admin.ModelAdmin):
     list_display = get_fields_names(Demand)
+    list_filter = ('project','year','month')
     inlines = [DemandStatusInline, DemandDiffInline]
     
 class SaleCommissionDetailAdmin(admin.TabularInline):
