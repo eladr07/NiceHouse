@@ -2590,6 +2590,7 @@ class Sale(models.Model):
                                                               ))
     price_include_lawyer = models.BooleanField(ugettext('price_include_lawyer'), choices = Boolean)
     price_no_lawyer = models.IntegerField(ugettext('sale_price_no_lawyer'))
+    include_tax = models.BooleanField(ugettext('include_tax'), choices=Boolean, default=True)
     specification_expense = models.PositiveIntegerField(ugettext('specification_expense'), default=0)
     other_expense = models.PositiveIntegerField(ugettext('other_expense'), default=0)
     clients = models.TextField(ugettext('clients'))
@@ -2603,7 +2604,6 @@ class Sale(models.Model):
     
     remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
     contract_num = models.CharField(ugettext('so_contact_num'), max_length=10, null=True, blank=True)
-    include_tax = models.BooleanField(ugettext('include_tax'), choices=Boolean, default=1)
     discount = models.FloatField(ugettext('given_discount'), null=True, blank=True)
     allowed_discount = models.FloatField(ugettext('allowed_discount'), null=True, blank=True)
     commission_include = models.BooleanField(ugettext('commission include'), default=True, blank=True)
