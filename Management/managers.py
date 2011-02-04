@@ -86,6 +86,16 @@ class HouseManager(models.Manager):
     def get_query_set(self):
         return HouseQuerySet(self.model)
 
+class HouseVersionManager(models.Manager):
+    use_for_related_fields = True
+    
+    def company(self):
+        return self.get_query_set().company()
+    def doh0(self):
+        return self.get_query_set().doh0()
+    def get_query_set(self):
+        return HouseVersionQuerySet(self.model)
+
 class CityCallersManager(models.Manager):
     use_for_related_fields = True
     

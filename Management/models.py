@@ -353,7 +353,10 @@ class HouseVersion(models.Model):
     type = models.ForeignKey('PricelistType', verbose_name = ugettext('pricelist_type'), editable=False)
     date = models.DateTimeField()
     insert_date = models.DateTimeField(auto_now_add = True)
-    price = models.IntegerField(ugettext('price'))    
+    price = models.IntegerField(ugettext('price'))
+    
+    objects = HouseVersionManager()
+    
     class Meta:
         get_latest_by = 'insert_date'
         ordering = ['date']
@@ -2636,11 +2639,12 @@ class Sale(models.Model):
                 return 0
             return self.allowed_discount - self.discount
         else:
+
             pass
     @property
     def actual_demand(self):
         demand, new = Demand.objects.get_or_create(month=self.contractor_pay_month, year=self.contractor_pay_year,
-                                              project=self.demand.project)
+                                                   project=self.demand.project)
         return demand
     @property
     def project_commission_details(self):

@@ -1,5 +1,6 @@
 from django.db.models import Avg, Max, Min, Count, Sum
 from django.db import models
+from models import PricelistType
 
 class InvoiceQuerySet(models.query.QuerySet):
     def total_amount_offset(self):
@@ -42,7 +43,13 @@ class HouseQuerySet(models.query.QuerySet):
     def avalible(self):
         q = models.Q(is_sold = False) & models.Q(sales__salecancel__isnull = True) & models.Q(signups__cancel__isnull = True)
         return self.filter(q).annotate(sales_num = Count('sales'), signups_num = Count('signups')).filter(sales_num = 0, signups_num = 0)
-    
+
+class HouseVersionQuerySet(models.query.QuerySet):
+    def company(self):
+        return self.filter(type__id = PricelistType.Company)
+    def doh0(self):
+        return self.filter(type__id = PricelistType.Doh0)
+
 class CityCallersQuerySet(models.query.QuerySet):
     def total_callers_num(self):
         return self.aggregate(Sum('callers_num'))['callers_num__sum'] or 0        
