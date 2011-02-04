@@ -2602,7 +2602,7 @@ class Sale(models.Model):
     contractor_pay_year = models.PositiveSmallIntegerField(ugettext('contractor_pay_year'), editable=False)
     
     remarks = models.TextField(ugettext('remarks'), null=True, blank=True)
-    contract_num = models.CharField(ugettext('so_contact_num'), max_length=10, null=True, blank=True)    
+    contract_num = models.CharField(ugettext('so_contact_num'), max_length=10, null=True, blank=True)
     include_tax = models.BooleanField(ugettext('include_tax'), choices=Boolean, default=1)
     discount = models.FloatField(ugettext('given_discount'), null=True, blank=True)
     allowed_discount = models.FloatField(ugettext('allowed_discount'), null=True, blank=True)

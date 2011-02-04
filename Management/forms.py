@@ -350,11 +350,9 @@ class SaleForm(forms.ModelForm):
         return self.cleaned_data
     def save(self, *args, **kw):
         house, discount, allowed_discount = self.cleaned_data['house'], self.cleaned_data['discount'], self.cleaned_data['allowed_discount']
-        '''checks if entered a allowed discount but not discount -> will fill
-        discount automatically'''
+        '''checks if entered a allowed discount but not discount -> will fill discount automatically'''
         if allowed_discount and not discount:
             max_p = house.versions.filter(type__id = PricelistType.Company).latest().price
-            min_p = max_p * (1 - allowed_discount/100)
             price = self.cleaned_data['price']
             self.cleaned_data['discount'] = 100 - (100 / float(max_p) * price)
             self.cleaned_data['contract_num'] = 0

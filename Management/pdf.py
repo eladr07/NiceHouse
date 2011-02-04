@@ -588,7 +588,7 @@ class MonthDemandWriter(DocumentBase):
         contract_num, discount, final = False, False, False
         zilber = self.demand.project.is_zilber()
         
-        if sales[0].contract_num:
+        if sales[0].contract_num != None:
             names.append(u"חוזה\nמס'")
             colWidths.append(40)
             contract_num = True
