@@ -234,6 +234,13 @@
 				</td>
 			</tr>
 			<tr>
+				<th>{{ form.include_tax.label_tag }}</th>
+				<td>
+					{{ form.include_tax }}
+					{% if form.include_tax.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.include_tax.errors|join:""}}'/>{% endif %}
+				</td>
+			</tr>
+			<tr>
 				<td></td>
 				<td><u><b>נתוני שיכון עובדים</b></u></td>
 			</tr>
@@ -242,13 +249,6 @@
 				<td>
 					{{ form.contract_num }}
 					{% if form.contract_num.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.contract_num.errors|join:""}}'/>{% endif %}
-				</td>
-			</tr>
-			<tr>
-				<th>{{ form.include_tax.label_tag }}</th>
-				<td>
-					{{ form.include_tax }}
-					{% if form.include_tax.errors %}<img src="/site_media/images/error-48.png" width="15" height="15" title='{{form.include_tax.errors|join:""}}'/>{% endif %}
 				</td>
 			</tr>
 			<tr>
