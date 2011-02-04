@@ -1614,12 +1614,7 @@ class BDiscountSave(models.Model):
     def calc(self, sales):
         dic = {}
         for s in sales:
-            if s.allowed_discount and s.discount:
-                saved = s.allowed_discount - s.discount
-            else:
-                saved = 0
-            if saved < 0:
-                saved = 0
+            saved = s.saved_discount
             if self.max_for_bonus and saved > self.max_for_bonus:
                 saved = self.max_for_bonus
             dic[s] = saved * self.precentage_bonus
@@ -1633,12 +1628,7 @@ class BDiscountSavePrecentage(models.Model):
     def calc(self, sales):
         dic = {}
         for s in sales:
-            if s.allowed_discount and s.discount:
-                saved = s.allowed_discount - s.discount
-            else:
-                saved = 0
-            if saved < 0:
-                saved = 0
+            saved = s.saved_discount
             if self.max_for_bonus and saved > self.max_for_bonus:
                 saved = self.max_for_bonus
             dic[s] = saved * self.precentage_bonus
@@ -2630,12 +2620,20 @@ class Sale(models.Model):
         else:
             self.restore_date = None
     @property
+    @cache_method
     def tax(self):
-        if not self.custom_cache.has_key('tax'):
-            tax_date = date(self.contractor_pay_month == 12 and self.contractor_pay_year+ 1 or self.contractor_pay_year,
-                            self.contractor_pay_month == 12 and 1 or self.contractor_pay_month + 1, 1)
-            self.custom_cache['tax'] = Tax.objects.filter(date__lte = tax_date).latest().value / 100 + 1
-        return self.custom_cache['tax']
+        tax_date = date(self.contractor_pay_month == 12 and self.contractor_pay_year+ 1 or self.contractor_pay_year,
+                        self.contractor_pay_month == 12 and 1 or self.contractor_pay_month + 1, 1)
+        return Tax.objects.filter(date__lte = tax_date).latest().value / 100 + 1
+    @property
+    def saved_discount(self):
+        """returns the precentage of discount that was NOT given (hence the name "saved")."""
+        if self.discount and self.allowed_discount:
+            if self.discount > self.allowed_discount:
+                return 0
+            return self.allowed_discount - self.discount
+        else:
+            pass
     @property
     def actual_demand(self):
         demand, new = Demand.objects.get_or_create(month=self.contractor_pay_month, year=self.contractor_pay_year,
