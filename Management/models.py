@@ -2608,6 +2608,9 @@ class Sale(models.Model):
     allowed_discount = models.FloatField(ugettext('allowed_discount'), null=True, blank=True)
     commission_include = models.BooleanField(ugettext('commission include'), default=True, blank=True)
     
+    price_deduction = models.IntegerField(ugettext('price_deduction'), null=True, blank=True)
+    price_deduction_type = models.CharField(ugettext('price_deduction_type'), max_length=20, null=True, blank=True)
+    
     objects = SaleManager()
     
     def __init__(self, *args, **kw):

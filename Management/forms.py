@@ -334,6 +334,11 @@ class SaleForm(forms.ModelForm):
     building = forms.ModelChoiceField(queryset = Building.objects.all(), label=ugettext('building'))
     joined_sale = forms.BooleanField(label = ugettext('joined sale'), required = False)
     signup_date = forms.DateField(label=ugettext('signup_date'), required=False)
+    
+    # optional fields to insert Company price on-the-fly
+    pricelist_price = forms.IntegerField(label = ugettext('pricelist_price'), required = False)
+    pricelist_price_date = forms.DateField(label = ugettext('pricelist_price_date'), required = False)
+       
     def clean_house(self):
         house = self.cleaned_data['house']
         if self.instance.id:
@@ -345,24 +350,37 @@ class SaleForm(forms.ModelForm):
                 raise forms.ValidationError(u"כבר קיימת מכירה לדירה זו")
         return house
     def clean(self):
-        if self.cleaned_data['joined_sale']: 
-            self.cleaned_data['employee'] = None
-        return self.cleaned_data
+        cleaned_data = self.cleaned_data
+        if cleaned_data['joined_sale']: 
+            cleaned_data['employee'] = None
+        if cleaned_data['pricelist_price'] and not cleaned_data['pricelist_price_date']:
+            cleaned_data['pricelist_price_date'] = date.today()
+        return cleaned_data
     def save(self, *args, **kw):
-        house, discount, allowed_discount = self.cleaned_data['house'], self.cleaned_data['discount'], self.cleaned_data['allowed_discount']
+        cleaned_data = self.cleaned_data
+        house, discount, allowed_discount, price, signup_date, pricelist_price, pricelist_price_date = \
+            (cleaned_data['house'], cleaned_data['discount'], cleaned_data['allowed_discount'], cleaned_data['price'], 
+             cleaned_data['signup_date'], cleaned_data['pricelist_price'], cleaned_data['pricelist_price_date'])
+        
         '''checks if entered a allowed discount but not discount -> will fill discount automatically'''
         if allowed_discount and not discount:
             max_p = house.versions.filter(type__id = PricelistType.Company).latest().price
-            price = self.cleaned_data['price']
-            self.cleaned_data['discount'] = 100 - (100 / float(max_p) * price)
-            self.cleaned_data['contract_num'] = 0
+            cleaned_data['discount'] = 100 - (100 / float(max_p) * price)
+            cleaned_data['contract_num'] = 0
+        
         '''fill Signup automatically. it is temp fix until signup_date field will be removed.'''
-        if self.cleaned_data['signup_date'] != None:
+        if signup_date != None:
             signup = house.get_signup() or Signup()
-            signup.date = self.cleaned_data['signup_date']
+            signup.date = signup_date
             for attr in ['house','employee','clients','clients_phone','sale_date','price','price_include_lawyer']:
-                setattr(signup, attr, self.cleaned_data[attr])
+                setattr(signup, attr, cleaned_data[attr])
             signup.save()
+        
+        '''create the house version if needed'''
+        if pricelist_price and pricelist_price_date:
+            pricelist_type = PricelistType.objects.get(pk = PricelistType.Company)
+            HouseVersion.objects.create(house = house, price = pricelist_price, date = pricelist_price_date, type = pricelist_type)
+        
         return forms.ModelForm.save(self, *args, **kw)
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
