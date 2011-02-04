@@ -2639,8 +2639,13 @@ class Sale(models.Model):
                 return 0
             return self.allowed_discount - self.discount
         else:
-
-            pass
+            company_prices = self.house.versions.company()
+            if len(company_prices) == 0:
+                return None
+            latest_company_price = company_prices.latest().price
+            discount_amount = self.price - self.price_deduction - latest_company_price
+            discount = discount_amount * 100 / self.price
+            return discount
     @property
     def actual_demand(self):
         demand, new = Demand.objects.get_or_create(month=self.contractor_pay_month, year=self.contractor_pay_year,
