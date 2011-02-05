@@ -2710,10 +2710,12 @@ class Sale(models.Model):
             
         if c.deduct_registration and self.include_registration:
             price -= c.registration_amount
-        if self.other_expense:
-            price -= self.other_expense
-        if self.specification_expense:
-            price -= self.specification_expense
+            
+        # deduct those attrs from the price if they exist
+        for attr in ['other_expense', 'specification_expense']:
+            attr_val = getattr(self, attr)
+            if attr_val:
+                price -= attr_val
             
         return price
     def employee_price(self, employee=None):
