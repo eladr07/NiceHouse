@@ -1,6 +1,5 @@
 from django.db.models import Avg, Max, Min, Count, Sum
 from django.db import models
-from models import PricelistType
 
 class InvoiceQuerySet(models.query.QuerySet):
     def total_amount_offset(self):
@@ -46,9 +45,9 @@ class HouseQuerySet(models.query.QuerySet):
 
 class HouseVersionQuerySet(models.query.QuerySet):
     def company(self):
-        return self.filter(type__id = PricelistType.Company)
+        return self.filter(type__id = 1)
     def doh0(self):
-        return self.filter(type__id = PricelistType.Doh0)
+        return self.filter(type__id = 2)
 
 class CityCallersQuerySet(models.query.QuerySet):
     def total_callers_num(self):
