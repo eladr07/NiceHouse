@@ -2605,9 +2605,6 @@ class Sale(models.Model):
     allowed_discount = models.FloatField(ugettext('allowed_discount'), null=True, blank=True)
     commission_include = models.BooleanField(ugettext('commission include'), default=True, blank=True)
     
-    price_deduct_bds = models.IntegerField(ugettext('price_deduct_bds'), null=True, blank=True)
-    price_deduct_bds_reason = models.CharField(ugettext('price_deduct_bds_reason'), max_length=20, null=True, blank=True)
-    
     objects = SaleManager()
     
     def __init__(self, *args, **kw):
@@ -2633,9 +2630,7 @@ class Sale(models.Model):
                 return 0
             return self.allowed_discount - self.discount
         else:
-            discount_amount = self.price - self.price_deduction - self.company_price
-            discount = discount_amount * 100 / self.price
-            return discount
+            return None
     @property
     def actual_demand(self):
         demand, new = Demand.objects.get_or_create(month=self.contractor_pay_month, year=self.contractor_pay_year,

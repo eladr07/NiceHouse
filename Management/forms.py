@@ -335,10 +335,6 @@ class SaleForm(forms.ModelForm):
     joined_sale = forms.BooleanField(label = ugettext('joined sale'), required = False)
     signup_date = forms.DateField(label=ugettext('signup_date'), required=False)
     
-    # optional fields to insert Company price on-the-fly
-    pricelist_price = forms.IntegerField(label = ugettext('pricelist_price'), required = False)
-    pricelist_price_date = forms.DateField(label = ugettext('pricelist_price_date'), required = False)
-       
     def clean_house(self):
         house = self.cleaned_data['house']
         if self.instance.id:
@@ -363,7 +359,7 @@ class SaleForm(forms.ModelForm):
         cleaned_data = self.cleaned_data
         house, discount, allowed_discount, price, signup_date, pricelist_price, pricelist_price_date = \
             (cleaned_data['house'], cleaned_data['discount'], cleaned_data['allowed_discount'], cleaned_data['price'], 
-             cleaned_data['signup_date'], cleaned_data['pricelist_price'], cleaned_data['pricelist_price_date'])
+             cleaned_data['signup_date'])
         
         # checks if entered a allowed discount but not discount -> will fill discount automatically
         if allowed_discount and not discount:
@@ -378,11 +374,6 @@ class SaleForm(forms.ModelForm):
             for attr in ['house','employee','clients','clients_phone','sale_date','price','price_include_lawyer']:
                 setattr(signup, attr, cleaned_data[attr])
             signup.save()
-        
-        # create the house version if needed
-        if pricelist_price and pricelist_price_date:
-            pricelist_type = PricelistType.objects.get(pk = PricelistType.Company)
-            HouseVersion.objects.create(house = house, price = pricelist_price, date = pricelist_price_date, type = pricelist_type)
         
         return forms.ModelForm.save(self, *args, **kw)
     def __init__(self, *args, **kw):
