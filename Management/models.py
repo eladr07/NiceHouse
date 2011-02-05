@@ -1617,9 +1617,7 @@ class BDiscountSave(models.Model):
     def calc(self, sales):
         dic = {}
         for s in sales:
-            saved = s.saved_discount
-            if self.max_for_bonus and saved > self.max_for_bonus:
-                saved = self.max_for_bonus
+            saved = max(s.saved_discount, self.max_for_bonus)
             dic[s] = saved * self.precentage_bonus
         return dic
     class Meta:
@@ -1631,9 +1629,7 @@ class BDiscountSavePrecentage(models.Model):
     def calc(self, sales):
         dic = {}
         for s in sales:
-            saved = s.saved_discount
-            if self.max_for_bonus and saved > self.max_for_bonus:
-                saved = self.max_for_bonus
+            saved = max(s.saved_discount, self.max_for_bonus)
             dic[s] = saved * self.precentage_bonus
         return dic
     class Meta:
@@ -1703,8 +1699,8 @@ class ProjectCommission(models.Model):
             
             logger.info('calculating affected sales %(sale_ids)s for month %(month)s/%(year)s',
                         {'sale_ids':[sale.id for sale in subSales], 'month':m,'year':y})
-            
-            self.calc(subSales)#send these sales to regular processing
+            # send these sales to regular processing
+            self.calc(subSales)
 
         bonus = 0
         for subSales in demand.get_affected_sales().values():
@@ -1716,9 +1712,9 @@ class ProjectCommission(models.Model):
                 if not signup: 
                     logger.warning('skipping sale #%(id)s - no signup', {'id':s.id})
                     continue
-                #get the finish date when the demand for the month the signup 
-                #were made we use it to find out what was the commission at
-                #that time
+                # get the finish date when the demand for the month the signup 
+                # were made we use it to find out what was the commission at
+                # that time
                 if not s.actual_demand or not s.actual_demand.finish_date:
                     logger.warning('skipping sale #%(id)s - actual_demand=None or actual_demand.finish_date=None', {'id':s.id})
                     continue
