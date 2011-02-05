@@ -1489,7 +1489,7 @@ class CZilber(models.Model):
             if not self.base_madad:
                 continue
             
-            doh0prices = s.house.versions.filter(type__id = PricelistType.Doh0, date__lte = prices_date)
+            doh0prices = s.house.versions.doh0().filter(date__lte = prices_date)
             if doh0prices.count() == 0: 
                 logger.warning('skipping c_zilber_discount calc for sale #%(id)s. no doh0 prices', {'id':s.id})
                 continue
@@ -2639,11 +2639,7 @@ class Sale(models.Model):
                 return 0
             return self.allowed_discount - self.discount
         else:
-            company_prices = self.house.versions.company()
-            if len(company_prices) == 0:
-                return None
-            latest_company_price = company_prices.latest().price
-            discount_amount = self.price - self.price_deduction - latest_company_price
+            discount_amount = self.price - self.price_deduction - self.company_price
             discount = discount_amount * 100 / self.price
             return discount
     @property

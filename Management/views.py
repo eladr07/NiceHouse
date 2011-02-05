@@ -2050,7 +2050,7 @@ def building_clients(request, object_id):
         if sale:
             total_sale_price += sale.price
         try:
-            h.price = h.versions.filter(type__id = PricelistType.Company).latest().price
+            h.price = h.versions.company().latest().price
         except HouseVersion.DoesNotExist:
             h.price = None
     return render_to_response('Management/building_clients.html',
@@ -2063,7 +2063,7 @@ def building_clients_pdf(request, object_id):
     houses = b.houses.sold()
     for h in houses:
         try:
-            h.price = h.versions.filter(type__id = PricelistType.Company).latest().price
+            h.price = h.versions.company().latest().price
         except HouseVersion.DoesNotExist:
             h.price = None
     
