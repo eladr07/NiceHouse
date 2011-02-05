@@ -2147,8 +2147,6 @@ class Signup(models.Model):
         verbose_name = ugettext('signup')
         get_latest_by = 'date'
 
-LAWYER_TAX = 1.015
-
 class Tax(models.Model):
     date = models.DateField(ugettext('date'))
     value = models.FloatField(ugettext('value'))
@@ -2607,8 +2605,8 @@ class Sale(models.Model):
     allowed_discount = models.FloatField(ugettext('allowed_discount'), null=True, blank=True)
     commission_include = models.BooleanField(ugettext('commission include'), default=True, blank=True)
     
-    price_deduction = models.IntegerField(ugettext('price_deduction'), null=True, blank=True)
-    price_deduction_type = models.CharField(ugettext('price_deduction_type'), max_length=20, null=True, blank=True)
+    price_deduct_bds = models.IntegerField(ugettext('price_deduct_bds'), null=True, blank=True)
+    price_deduct_bds_reason = models.CharField(ugettext('price_deduct_bds_reason'), max_length=20, null=True, blank=True)
     
     objects = SaleManager()
     
@@ -2695,7 +2693,7 @@ class Sale(models.Model):
         pricelist = self.house.building.pricelist
         if pricelist and pricelist.lawyer_fee:
             return pricelist.lawyer_fee
-        return LAWYER_TAX
+        return common.LAWYER_TAX
     def project_price(self):
         c = self.house.building.project.commissions
         if c.include_lawyer == None:

@@ -2,6 +2,8 @@ from datetime import datetime, date
 import settings, reversion
 from django.core.exceptions import ObjectDoesNotExist
 
+LAWYER_TAX = 1.015
+
 def get_year_choices():
     today = date.today()
     return ((i,i) for i in range(today.year - 10, today.year + 10))
