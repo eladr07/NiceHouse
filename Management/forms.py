@@ -349,11 +349,6 @@ class SaleForm(forms.ModelForm):
         cleaned_data = self.cleaned_data
         if cleaned_data['joined_sale']: 
             cleaned_data['employee'] = None
-        if cleaned_data['pricelist_price']:
-            if not cleaned_data['pricelist_price_date']:
-                cleaned_data['pricelist_price_date'] = date.today()
-            # copy the value to the company_price field. TODO find out why company_price is in zilber
-            cleaned_data['company_price'] = cleaned_data['pricelist_price']
         return cleaned_data
     def save(self, *args, **kw):
         cleaned_data = self.cleaned_data
