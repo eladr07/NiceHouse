@@ -1103,7 +1103,7 @@ class EmployeeSalary(EmployeeSalaryBase):
                                         employee_pay_month = self.month,
                                         employee_pay_year = self.year)
             
-        query = query.select_related('house__building__project').order_by('house__building__project')
+        query = query.select_related('house__building__project').order_by('house__building__project','sale_date')
         sales = {}
         
         for project, sale_group in itertools.groupby(query, lambda sale: sale.house.building.project):
