@@ -352,7 +352,7 @@ class SaleForm(forms.ModelForm):
         return cleaned_data
     def save(self, *args, **kw):
         cleaned_data = self.cleaned_data
-        house, discount, allowed_discount, price, signup_date, pricelist_price, pricelist_price_date = \
+        house, discount, allowed_discount, price, signup_date = \
             (cleaned_data['house'], cleaned_data['discount'], cleaned_data['allowed_discount'], cleaned_data['price'], 
              cleaned_data['signup_date'])
         
