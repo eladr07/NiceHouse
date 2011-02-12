@@ -769,7 +769,7 @@ class MultipleDemandWriter:
             if self.show_month:
                 row.append('%s/%s' % (d.month, d.year))
             sales_count = len(d.get_sales())
-            row.extend(sales_count, [commaise(d.get_sales().total_price()), commaise(d.get_total_amount())])
+            row.extend([sales_count, commaise(d.get_sales().total_price()), commaise(d.get_total_amount())])
             row.extend([Paragraph('<br/>'.join([str(i.num) for i in d.invoices.all()]), styleRow9),
                         Paragraph('<br/>'.join([commaise(i.amount) for i in d.invoices.all()]), styleRow9),
                         Paragraph('<br/>'.join([str(p.num) for p in d.payments.all()]), styleRow9),
