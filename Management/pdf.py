@@ -754,13 +754,13 @@ class MultipleDemandWriter:
             headers.append(log2vis(u'חודש'))
             colWidths.append(None)
             sumRow = [None]
-        headers.extend(log2vis(n) for n in[u'סה"כ מכירות', u'סה"כ עמלה', u'מס ח-ן', u'סך ח-ן', u'מס צק', u'סך צק'])
+        headers.extend(log2vis(n) for n in[u"מס' מכירות", u'סה"כ מכירות', u'סה"כ עמלה', u'מס ח-ן', u'סך ח-ן', u'מס צק', u'סך צק'])
         headers.reverse()
         colWidths.extend([60,60,50,50,50,50])
         colWidths.reverse()
         rows = []
         rowHeights = [28]
-        index, total_sales_amount, total_amount = 0,0,0
+        index, total_sales_count, total_sales_amount, total_amount = 0,0,0,0
         for d in self.demands:
             row = []
             if self.show_project:
@@ -768,7 +768,8 @@ class MultipleDemandWriter:
                 row.extend([log2vis(d.project.initiator), project_name])
             if self.show_month:
                 row.append('%s/%s' % (d.month, d.year))
-            row.extend([commaise(d.get_sales().total_price()), commaise(d.get_total_amount())])
+            sales_count = len(d.get_sales())
+            row.extend(sales_count, [commaise(d.get_sales().total_price()), commaise(d.get_total_amount())])
             row.extend([Paragraph('<br/>'.join([str(i.num) for i in d.invoices.all()]), styleRow9),
                         Paragraph('<br/>'.join([commaise(i.amount) for i in d.invoices.all()]), styleRow9),
                         Paragraph('<br/>'.join([str(p.num) for p in d.payments.all()]), styleRow9),
@@ -778,6 +779,7 @@ class MultipleDemandWriter:
             maxSubRows = max([1, d.invoices.count(), d.payments.count()])
             rowHeights.append(18 * maxSubRows)
             index += 1
+            total_sales_count += sales_count
             total_sales_amount += d.get_sales().total_price()
             total_amount += d.get_total_amount()
             
@@ -790,7 +792,8 @@ class MultipleDemandWriter:
                 rows = []
                 rowHeights = [28]
                 
-        sumRow.extend([Paragraph(commaise(total_sales_amount), styleSumRow), 
+        sumRow.extend([Paragraph(total_sales_count, styleSumRow), 
+                       Paragraph(commaise(total_sales_amount), styleSumRow), 
                        Paragraph(commaise(total_amount), styleSumRow), None, None, None, None])
         sumRow.reverse()
         rows.append(sumRow)
@@ -1208,7 +1211,7 @@ class DemandFollowupWriter(DocumentBase):
         colWidths = [None, None, 30, None, 35, None, 60, None, 60, None, None, 30]
         rows = []
         
-        total_amount, total_invoices, total_payments, total_diff_invoice, total_diff_invoice_payment = 0,0,0,0,0
+        total_sales_count, total_amount, total_invoices, total_payments, total_diff_invoice, total_diff_invoice_payment = 0,0,0,0,0,0
         
         headers.reverse()
         colWidths.reverse()
@@ -1226,7 +1229,9 @@ class DemandFollowupWriter(DocumentBase):
             offsets = [invoice.offset for invoice in invoices if invoice.offset]
             offset_amount_str = '<br/>'.join([offset.amount for offset in offsets])
             
-            row = [demand.id, u'%s/%s' % (demand.month, demand.year), len(demand.get_sales()), commaise(demand.get_total_amount()),
+            sales_count = len(demand.get_sales())
+            
+            row = [demand.id, u'%s/%s' % (demand.month, demand.year), sales_count, commaise(demand.get_total_amount()),
                    Paragraph(invoice_num_str, styleRow9), Paragraph(invoice_amount_str, styleRow9), Paragraph(invoice_date_str, styleRow9), 
                    Paragraph(payment_amount_str, styleRow9), Paragraph(payment_date_str, styleRow9), commaise(demand.diff_invoice),
                    commaise(demand.diff_invoice_payment), Paragraph(offset_amount_str, styleRow9)]
@@ -1234,13 +1239,15 @@ class DemandFollowupWriter(DocumentBase):
             row.reverse()
             rows.append(row)
 
+            total_sales_count += sales_count
             total_amount += demand.get_total_amount()
             total_invoices += demand.invoices.total_amount_offset()
             total_payments += demand.payments.total_amount()
             total_diff_invoice += demand.diff_invoice
             total_diff_invoice_payment += demand.diff_invoice_payment
         
-        sumRow = [None, None, None, Paragraph(commaise(total_amount), styleSumRow), None, Paragraph(commaise(total_invoices), styleSumRow), 
+        sumRow = [None, None, Paragraph(total_sales_count, styleSumRow), Paragraph(commaise(total_amount), styleSumRow), 
+                  None, Paragraph(commaise(total_invoices), styleSumRow), 
                   None, Paragraph(commaise(total_payments), styleSumRow), None, Paragraph(commaise(total_diff_invoice), styleSumRow), 
                   Paragraph(commaise(total_diff_invoice_payment), styleSumRow), None]
         sumRow.reverse()
