@@ -792,7 +792,7 @@ class MultipleDemandWriter:
                 rows = []
                 rowHeights = [28]
                 
-        sumRow.extend([Paragraph(total_sales_count, styleSumRow), 
+        sumRow.extend([Paragraph(unicode(total_sales_count), styleSumRow), 
                        Paragraph(commaise(total_sales_amount), styleSumRow), 
                        Paragraph(commaise(total_amount), styleSumRow), None, None, None, None])
         sumRow.reverse()
@@ -1246,7 +1246,7 @@ class DemandFollowupWriter(DocumentBase):
             total_diff_invoice += demand.diff_invoice
             total_diff_invoice_payment += demand.diff_invoice_payment
         
-        sumRow = [None, None, Paragraph(total_sales_count, styleSumRow), Paragraph(commaise(total_amount), styleSumRow), 
+        sumRow = [None, None, Paragraph(unicode(total_sales_count), styleSumRow), Paragraph(commaise(total_amount), styleSumRow), 
                   None, Paragraph(commaise(total_invoices), styleSumRow), 
                   None, Paragraph(commaise(total_payments), styleSumRow), None, Paragraph(commaise(total_diff_invoice), styleSumRow), 
                   Paragraph(commaise(total_diff_invoice_payment), styleSumRow), None]
