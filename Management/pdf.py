@@ -794,7 +794,7 @@ class MultipleDemandWriter(DocumentBase):
         return landscape(A4)
     
     def get_story(self):
-        story = [Spacer(0,50), titlePara(self.title), Spacer(0, 10)]
+        story = [titlePara(self.title), Spacer(0, 10)]
         story.extend(self.projectsFlows())
         return story
 
