@@ -745,9 +745,9 @@ class MultipleDemandWriter(DocumentBase):
             headers.append(log2vis(u'חודש'))
             colWidths.append(None)
             sumRow = [None]
-        headers.extend(log2vis(n) for n in[u"מס' מכירות", u'סה"כ מכירות', u'סה"כ עמלה', u'מס ח-ן', u'סך ח-ן', u'מס צק', u'סך צק'])
+        headers.extend(log2vis(n) for n in[u"מכירות\nמס'", u'סה"כ מכירות', u'סה"כ עמלה', u'מס ח-ן', u'סך ח-ן', u'מס צק', u'סך צק'])
         headers.reverse()
-        colWidths.extend([None,None,None,None,None,None])
+        colWidths.extend([40,None,None,None,None,None])
         colWidths.reverse()
         rows = []
         rowHeights = [28]
