@@ -2619,9 +2619,18 @@ class Sale(models.Model):
     @property
     @cache_method
     def tax(self):
+        """
+        Returns the tax value at the time the sale was made
+        """
         tax_date = date(self.contractor_pay_month == 12 and self.contractor_pay_year+ 1 or self.contractor_pay_year,
                         self.contractor_pay_month == 12 and 1 or self.contractor_pay_month + 1, 1)
         return Tax.objects.filter(date__lte = tax_date).latest().value / 100 + 1
+    @property
+    def project(self):
+        """
+        Returns the project this sale belongs to
+        """
+        return self.house.building.project
     @property
     def saved_discount(self):
         """returns the precentage of discount that was NOT given (hence the name "saved")."""
