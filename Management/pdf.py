@@ -783,7 +783,7 @@ class MultipleDemandWriter(DocumentBase):
         
         data = [headers]
         data.extend(rows)
-        table = Table(data, colWidths, rowHeights, projectTableStyle, 1)
+        table = Table(data, [], rowHeights, projectTableStyle, 1)
         flows.append(table)
         return flows
     
