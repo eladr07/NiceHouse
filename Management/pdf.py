@@ -739,7 +739,7 @@ class MultipleDemandWriter(DocumentBase):
         flows, headers, colWidths = [], [], []
         if self.show_project:
             headers.extend([log2vis(n) for n in [u'שם היזם', u'שם הפרוייקט']])
-            colWidths.extend([90,140])
+            colWidths.extend([110,150])
             sumRow = [None, None]
         if self.show_month:
             headers.append(log2vis(u'חודש'))
@@ -747,7 +747,7 @@ class MultipleDemandWriter(DocumentBase):
             sumRow = [None]
         headers.extend(log2vis(n) for n in[u"מס' מכירות", u'סה"כ מכירות', u'סה"כ עמלה', u'מס ח-ן', u'סך ח-ן', u'מס צק', u'סך צק'])
         headers.reverse()
-        colWidths.extend([60,60,50,50,50,50])
+        colWidths.extend([None,None,None,None,None,None])
         colWidths.reverse()
         rows = []
         rowHeights = [28]
@@ -783,7 +783,7 @@ class MultipleDemandWriter(DocumentBase):
         
         data = [headers]
         data.extend(rows)
-        table = Table(data, rowHeights = rowHeights, style = projectTableStyle, repeatRows = 1)
+        table = Table(data, colWidths, rowHeights, projectTableStyle, 1)
         flows.append(table)
         return flows
     
