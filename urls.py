@@ -360,7 +360,7 @@ urlpatterns += patterns('',
      {'form_class' : Management.forms.MadadBIForm, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '%(id)s'}),
     (r'^madadbi/(?P<object_id>\d+)$', limited_update_object,
      {'form_class' : Management.forms.MadadBIForm, 'template_name' : 'Management/object_edit.html', 'post_save_redirect' : '%(id)s'}),
-    (r'^madadbi/(?P<id>\d+)/del$', limited_delete_object,
+    (r'^madadbi/(?P<object_id>\d+)/del$', limited_delete_object,
      {'model':MadadBI, 'post_delete_redirect':'/madadbi'}),
     
     (r'^madadcp/$', limited_object_list,
