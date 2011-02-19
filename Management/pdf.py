@@ -171,8 +171,10 @@ class DocumentBase(object):
         date_str = log2vis(u'תאריך : %s' % date.today().strftime('%d/%m/%Y'))
         canv.setFont('David',14)
         canv.drawRightString(50*mm, 275*mm, date_str)
+    def get_pagesize(self):
+        return A4
     def build(self, filename):
-        doc = SimpleDocTemplate(filename)
+        doc = SimpleDocTemplate(filename, pagesize = self.get_pagesize())
         doc.build(self.get_story(), self.addFirst, self.addLater, NumberedCanvas)
         return doc.canv
     def get_story(self):
@@ -784,6 +786,12 @@ class MultipleDemandWriter(DocumentBase):
         table = Table(data, colWidths, rowHeights, projectTableStyle, 1)
         flows.append(table)
         return flows
+    
+    def get_pagesize(self):
+        '''
+        Override the default page size to be landscape
+        '''
+        return landscape(A4)
     
     def get_story(self):
         story = [Spacer(0,50), titlePara(self.title), Spacer(0, 10)]
