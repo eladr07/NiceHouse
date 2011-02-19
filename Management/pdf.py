@@ -726,24 +726,13 @@ class MonthDemandWriter(DocumentBase):
             story.extend(self.signupFlows())
         return story
 
-class MultipleDemandWriter:
+class MultipleDemandWriter(DocumentBase):
     def __init__(self, demands, title, show_project, show_month):
         self.demands = demands
         self.title = title
         self.show_month = show_month
         self.show_project = show_project
-    @property
-    def pages_count(self):
-        return len(self.demands) % 20 + 1
-    def addTemplate(self, canv, doc):
-        frame2 = Frame(0, 680, 650, 150)
-        frame2.addFromList([nhLogo(), datePara()], canv)
-        frame3 = Frame(50, 20, 150, 40)
-        frame3.addFromList([Paragraph(log2vis(u'עמוד %s מתוך %s' % (self.current_page, self.pages_count)), 
-                            ParagraphStyle('pages', fontName='David', fontSize=13,))], canv)
-        frame4 = Frame(50, 30, 500, 70)
-        frame4.addFromList([nhAddr()], canv)
-        self.current_page += 1
+
     def projectsFlows(self):
         flows, headers, colWidths = [], [], []
         if self.show_project:
@@ -760,7 +749,7 @@ class MultipleDemandWriter:
         colWidths.reverse()
         rows = []
         rowHeights = [28]
-        index, total_sales_count, total_sales_amount, total_amount = 0,0,0,0
+        total_sales_count, total_sales_amount, total_amount = 0,0,0
         for d in self.demands:
             row = []
             if self.show_project:
@@ -778,42 +767,28 @@ class MultipleDemandWriter:
             rows.append(row)
             maxSubRows = max([1, d.invoices.count(), d.payments.count()])
             rowHeights.append(18 * maxSubRows)
-            index += 1
             total_sales_count += sales_count
             total_sales_amount += d.get_sales().total_price()
             total_amount += d.get_total_amount()
-            
-            if index % 20 == 0:
-                data = [headers]
-                data.extend(rows)
-                table = Table(data, colWidths, rowHeights)
-                table.setStyle(projectTableStyle)
-                flows.extend([table, PageBreak(), Spacer(0,50)])
-                rows = []
-                rowHeights = [28]
-                
+               
         sumRow.extend([Paragraph(unicode(total_sales_count), styleSumRow), 
                        Paragraph(commaise(total_sales_amount), styleSumRow), 
                        Paragraph(commaise(total_amount), styleSumRow), None, None, None, None])
         sumRow.reverse()
+        
         rows.append(sumRow)
         rowHeights.append(28)
+        
         data = [headers]
         data.extend(rows)
-        table = Table(data, colWidths, rowHeights)
-        table.setStyle(projectTableStyle)
+        table = Table(data, colWidths, rowHeights, projectTableStyle, 1)
         flows.append(table)
         return flows
     
-    def build(self, filename):
-        self.current_page = 1
-        doc = SimpleDocTemplate(filename)
-        story = [Spacer(0,50)]
-        story.append(titlePara(self.title))
-        story.append(Spacer(0, 10))
+    def get_story(self):
+        story = [Spacer(0,50), titlePara(self.title), Spacer(0, 10)]
         story.extend(self.projectsFlows())
-        doc.build(story, self.addTemplate, self.addTemplate)
-        return doc.canv
+        return story
 
 class EmployeeSalariesBookKeepingWriter(DocumentBase):
     def __init__(self, salaries, title, nhsales = None):
