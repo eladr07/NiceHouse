@@ -62,6 +62,7 @@ class Builder:
                     row_summaries[field.name] += cell_value
                 if field.is_commaised:
                     cell_value = commaise(cell_value)
+                cell_value = unicode(cell_value)
     
                 row.cells.append(cell_value)
                 

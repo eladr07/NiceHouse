@@ -677,7 +677,6 @@ class MultipleDemandWriter(DocumentBase):
         
         builder = Builder(self.demands, fields)
         table = builder.build()
-        raise '%s %s' % (len(table.rows), len(table.cols))
         tableFlow = Table(table.rows, table.col_widths(), table.row_heights(), projectTableStyle, 1)
         return [tableFlow]
         
