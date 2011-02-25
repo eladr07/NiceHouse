@@ -127,4 +127,3 @@ class PaymentsAmountField(TableField):
         
     class Meta:
         models = (models.Demand,)
-    

@@ -654,7 +654,7 @@ class MonthDemandWriter(DocumentBase):
             story.extend(self.signupFlows())
         return story
 
-from pdf_fields import *
+from table_fields import *
 from helpers import Builder
 
 class MultipleDemandWriter(DocumentBase):
