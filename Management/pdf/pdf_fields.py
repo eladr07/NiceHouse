@@ -5,7 +5,7 @@ from pyfribidi import log2vis
 from styles import *
 
 class TableField(object):
-    def __init__(self, title = '', width = -1, is_summarized = False, is_commaised = False):
+    def __init__(self, title='', width= -1, is_summarized=False, is_commaised=False):
         self.name = self.__class__.__name__
         self.title = title
         self.width = width
@@ -18,7 +18,7 @@ class TableField(object):
         
 class ProjectNameAndCityField(TableField):
     def __init__(self):
-        return super(ProjectNameAndCityField, self).__init__(log2vis(u'הפרוייקט\nשם'),  
+        return super(ProjectNameAndCityField, self).__init__(log2vis(u'הפרוייקט\nשם'),
                                                              130)
     def format(self, item):
         return log2vis(item.project.name_and_city)
@@ -28,7 +28,7 @@ class ProjectNameAndCityField(TableField):
 
 class ProjectInitiatorField(TableField):
     def __init__(self):
-        return super(ProjectInitiatorField, self).__init__(log2vis(u'היזם\nשם'),  
+        return super(ProjectInitiatorField, self).__init__(log2vis(u'היזם\nשם'),
                                                              150)
     def format(self, item):
         return log2vis(item.project.initiator)
@@ -38,7 +38,7 @@ class ProjectInitiatorField(TableField):
 
 class MonthField(TableField):
     def __init__(self):
-        return super(ProjectInitiatorField, self).__init__(log2vis(u'חודש'),  None)
+        return super(ProjectInitiatorField, self).__init__(log2vis(u'חודש'), None)
     def format(self, item):
         return '%s/%s' % (item.month, item.year)
     
@@ -48,7 +48,7 @@ class MonthField(TableField):
 class DemandSalesCountField(TableField):
     def __init__(self):
         return super(DemandSalesCountField, self).__init__(log2vis(u"מכירות\nמס'"),
-                                                           50, is_summarized = True)
+                                                           50, is_summarized=True)
     def format(self, item):
         return len(item.get_sales())
     
@@ -58,7 +58,7 @@ class DemandSalesCountField(TableField):
 class DemandSalesTotalPriceField(TableField):
     def __init__(self):
         return super(DemandSalesTotalPriceField, self).__init__(log2vis(u'מכירות\nסה"כ'),
-                                                           50, is_commaised = True, is_summarized = True)
+                                                           50, is_commaised=True, is_summarized=True)
     def format(self, item):
         return item.get_sales().total_price()
     
@@ -68,7 +68,7 @@ class DemandSalesTotalPriceField(TableField):
 class DemandTotalAmountField(TableField):
     def __init__(self):
         return super(DemandTotalAmountField, self).__init__(log2vis(u'עמלה\nסה"כ'),
-                                                           50, is_commaised = True, is_summarized = True)
+                                                           50, is_commaised=True, is_summarized=True)
     def format(self, item):
         return item.get_total_amount()
     
