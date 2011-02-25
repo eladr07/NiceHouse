@@ -4,7 +4,7 @@ from reportlab.platypus import Paragraph
 from pyfribidi import log2vis
 from styles import *
 
-class TableField:
+class TableField(object):
     def __init__(self, title = '', width = -1, is_summarized = False, is_commaised = False):
         self.name = self.__class__.__name__
         self.title = title
