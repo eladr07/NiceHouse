@@ -670,11 +670,11 @@ class MultipleDemandWriter(DocumentBase):
         fields = []
         if self.show_project:
             fields.append(ProjectNameAndCityField())
-        #if self.show_month:
-        #    fields.append(MonthField())
-        #fields.extend([DemandSalesCountField(), DemandSalesTotalPriceField(), DemandTotalAmountField(), InvoicesNumField(),
-        #               InvoicesAmountField(), PaymentsNumField(), PaymentsAmountField()])
-        #fields.reverse()
+        if self.show_month:
+            fields.append(MonthField())
+        fields.extend([DemandSalesCountField(), DemandSalesTotalPriceField(), DemandTotalAmountField(), InvoicesNumField(),
+                       InvoicesAmountField(), PaymentsNumField(), PaymentsAmountField()])
+        fields.reverse()
         builder = Builder(self.demands, fields)
         table = builder.build()
         tableFlow = Table(table.cells(), table.col_widths(), table.row_heights(), projectTableStyle, 1)
