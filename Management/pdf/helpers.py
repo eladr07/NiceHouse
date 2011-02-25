@@ -8,10 +8,6 @@ class Row(object):
     def __init__(self, cells = [], height = 15):
         self.cells = cells
         self.height = height
-    def __len__(self):
-        return self.cells.__len__()
-    def __iter__(self):
-        return self.cells.__iter__()
 
 class Col(object):
     #__slots__ = ('name', 'title', 'width')
@@ -27,12 +23,7 @@ class Table(object):
     def col_widths(self):
         return [col.width for col in self.cols]
     def cells(self):
-        ret = [row.cells for row in self.rows]
-        raise ''
-    def __len__(self):
-        return self.rows.__len__()
-    def __iter__(self):
-        return self.rows.__iter__()
+        return [row.cells for row in self.rows]
 
 class Builder(object):
     def __init__(self, items, fields):
