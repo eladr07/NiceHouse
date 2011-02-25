@@ -6,7 +6,6 @@ class Row(object):
     #__slots__ = ('cells', 'height')
     
     def __init__(self, cells = [], height = 15):
-        super(Row, self).__init__()
         self.cells = cells
         self.height = height
 
@@ -14,12 +13,10 @@ class Col(object):
     #__slots__ = ('name', 'title', 'width')
     
     def __init__(self, name, title, width):
-        super(Col, self).__init__()
         self.name, self.title, self.width = name, title, width
 
 class Table(object):
     def __init__(self, cols = [], rows = []):
-        super(Table, self).__init__()
         self.cols, self.rows = cols, rows
     def row_heights(self):
         return [row.height for row in self.rows]
@@ -48,7 +45,7 @@ class Builder(object):
         table.rows.append(title_row)
             
         for item in self.items:
-            row = Row()
+            row = []
             cell_heights = []
             
             for field in self.fields:
@@ -60,10 +57,9 @@ class Builder(object):
                 if field.is_commaised:
                     cell_value = commaise(cell_value)
     
-                row.cells.append(cell_value)
+                row.append(cell_value)
 
-            row.height = max(cell_heights)
-            table.rows.append(row)
+            table.rows.append(Row(cells = row, height = max(cell_heights)))
         
         if row_summaries:
             sum_row = Row()
