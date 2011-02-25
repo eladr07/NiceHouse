@@ -12,6 +12,10 @@ class Row:
         return self.cells.__len__()
     def __iter__(self):
         return self.cells.__iter__()
+    def __getitem__(self, y):
+        return self.cells.__getitem__(y)
+    def __setitem__(self, i, y):
+        return self.cells.__setitem__(i, y)
 
 class Col:
     __slots__ = ('name', 'title', 'width')

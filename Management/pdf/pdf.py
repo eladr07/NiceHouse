@@ -674,7 +674,7 @@ class MultipleDemandWriter(DocumentBase):
             fields.append(MonthField())
         fields.extend([DemandSalesCountField(), DemandSalesTotalPriceField(), DemandTotalAmountField(), InvoicesNumField(),
                        InvoicesAmountField(), PaymentsNumField(), PaymentsAmountField()])
-        
+        fields.reverse()
         builder = Builder(self.demands, fields)
         table = builder.build()
         tableFlow = Table(table.rows, table.col_widths(), table.row_heights(), projectTableStyle, 1)
