@@ -12,10 +12,6 @@ class Row:
         return self.cells.__len__()
     def __iter__(self):
         return self.cells.__iter__()
-    def __getitem__(self, y):
-        return self.cells.__getitem__(y)
-    def __setitem__(self, i, y):
-        return self.cells.__setitem__(i, y)
 
 class Col:
     __slots__ = ('name', 'title', 'width')
@@ -30,6 +26,8 @@ class Table:
         return [row.height for row in self.rows]
     def col_widths(self):
         return [col.width for col in self.cols]
+    def cells(self):
+        return [row.cells for row in self.rows]
     def __len__(self):
         return self.rows.__len__()
     def __iter__(self):
@@ -66,7 +64,6 @@ class Builder:
                     row_summaries[field.name] += cell_value
                 if field.is_commaised:
                     cell_value = commaise(cell_value)
-                cell_value = unicode(cell_value)
     
                 row.cells.append(cell_value)
                 
