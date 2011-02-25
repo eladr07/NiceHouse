@@ -27,7 +27,8 @@ class Table(object):
     def col_widths(self):
         return [col.width for col in self.cols]
     def cells(self):
-        return [row.cells for row in self.rows]
+        ret = [row.cells for row in self.rows]
+        raise ''
     def __len__(self):
         return self.rows.__len__()
     def __iter__(self):
@@ -47,7 +48,6 @@ class Builder(object):
             return Table()
         
         table = Table(cols = cols)
-        raise ''
         
         title_row = Row(cells = [field.title for field in self.fields])
         
