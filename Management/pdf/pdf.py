@@ -653,10 +653,11 @@ class MonthDemandWriter(DocumentBase):
             story.extend([PageBreak(), Spacer(0,30), titlePara(u'נספח א')])
             story.extend(self.signupFlows())
         return story
-        
+
+from pdf.fields import *
+from pdf.helpers import Builder
+
 class MultipleDemandWriter(DocumentBase):
-    from fields import *
-    from helpers import Builder
     
     def __init__(self, demands, title, show_project, show_month):
         self.demands = demands
