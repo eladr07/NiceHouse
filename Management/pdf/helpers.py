@@ -57,9 +57,9 @@ class Builder:
                 if field.is_summarized:
                     row_summaries[field.name] += cell_value
                 if field.is_commaised:
-                    field_value = commaise(cell_value)
+                    cell_value = commaise(cell_value)
     
-                row.cells.append(field_value)
+                row.cells.append(cell_value)
                 
             row.height = max(cell_heights)
             table.rows.append(row)
