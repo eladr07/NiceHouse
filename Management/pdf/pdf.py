@@ -655,6 +655,9 @@ class MonthDemandWriter(DocumentBase):
         return story
         
 class MultipleDemandWriter(DocumentBase):
+    from fields import *
+    from helpers import Builder
+    
     def __init__(self, demands, title, show_project, show_month):
         self.demands = demands
         self.title = title
@@ -662,8 +665,6 @@ class MultipleDemandWriter(DocumentBase):
         self.show_project = show_project
 
     def projectsFlows(self):
-        from fields import *
-        from helpers import Builder
         
         fields = []
         if self.show_project:
