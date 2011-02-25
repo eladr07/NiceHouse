@@ -3,7 +3,7 @@ from styles import *
 from reportlab.platypus import Paragraph
 
 class Row:
-    #__slots__ = ('cells', 'height')
+    __slots__ = ('cells', 'height')
     
     def __init__(self, cells = [], height = 15):
         self.cells = cells
@@ -14,9 +14,11 @@ class Row:
         return self.cells.__iter__()
     def __unicode__(self):
         return unicode(self.cells)
+    def __repr__(self):
+        return unicode(self)
 
 class Col:
-    #__slots__ = ('name', 'title', 'width')
+    __slots__ = ('name', 'title', 'width')
     
     def __init__(self, name, title, width):
         self.name, self.title, self.width = name, title, width
