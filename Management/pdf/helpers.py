@@ -6,6 +6,7 @@ class Row(object):
     #__slots__ = ('cells', 'height')
     
     def __init__(self, cells = [], height = 15):
+        super(Row, self).__init__()
         self.cells = cells
         self.height = height
 
@@ -13,10 +14,12 @@ class Col(object):
     #__slots__ = ('name', 'title', 'width')
     
     def __init__(self, name, title, width):
+        super(Col, self).__init__()
         self.name, self.title, self.width = name, title, width
 
 class Table(object):
     def __init__(self, cols = [], rows = []):
+        super(Table, self).__init__()
         self.cols, self.rows = cols, rows
     def row_heights(self):
         return [row.height for row in self.rows]
@@ -58,8 +61,7 @@ class Builder(object):
                     cell_value = commaise(cell_value)
     
                 row.cells.append(cell_value)
-            if len(row.cells) > 1:
-                raise '%s' % len(row.cells)
+
             row.height = max(cell_heights)
             table.rows.append(row)
         
