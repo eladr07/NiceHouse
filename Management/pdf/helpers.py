@@ -12,6 +12,8 @@ class Row:
         return self.cells.__len__()
     def __iter__(self):
         return self.cells.__iter__()
+    def __unicide__(self):
+        return unicode(self.cells)
 
 class Col:
     __slots__ = ('name', 'title', 'width')
@@ -30,6 +32,8 @@ class Table:
         return self.rows.__len__()
     def __iter__(self):
         return self.rows.__iter__()
+    def __unicode__(self):
+        return unicode(self.rows)
 
 class Builder:
     def __init__(self, items, fields):
