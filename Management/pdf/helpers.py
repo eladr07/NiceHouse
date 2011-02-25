@@ -60,6 +60,7 @@ class Builder(object):
                 row.cells.append(cell_value)
                 
             row.height = max(cell_heights)
+            raise ''
             table.rows.append(row)
         
         if row_summaries:
