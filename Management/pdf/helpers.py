@@ -2,7 +2,7 @@ from Management.templatetags.management_extras import commaise
 from styles import *
 from reportlab.platypus import Paragraph
 
-class Row:
+class Row(object):
     __slots__ = ('cells', 'height')
     
     def __init__(self, cells = [], height = 15):
@@ -13,13 +13,13 @@ class Row:
     def __iter__(self):
         return self.cells.__iter__()
 
-class Col:
+class Col(object):
     __slots__ = ('name', 'title', 'width')
     
     def __init__(self, name, title, width):
         self.name, self.title, self.width = name, title, width
 
-class Table:
+class Table(object):
     def __init__(self, cols = [], rows = []):
         self.cols, self.rows = cols, rows
     def row_heights(self):
@@ -33,7 +33,7 @@ class Table:
     def __iter__(self):
         return self.rows.__iter__()
 
-class Builder:
+class Builder(object):
     def __init__(self, items, fields):
         self.items = items
         self.fields = fields
