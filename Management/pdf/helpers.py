@@ -12,7 +12,7 @@ class Row:
         return self.cells.__len__()
     def __iter__(self):
         return self.cells.__iter__()
-    def __unicide__(self):
+    def __unicode__(self):
         return unicode(self.cells)
 
 class Col:
@@ -34,6 +34,8 @@ class Table:
         return self.rows.__iter__()
     def __unicode__(self):
         return unicode(self.rows)
+    def __str__(self):
+        return unicode(self)
 
 class Builder:
     def __init__(self, items, fields):
