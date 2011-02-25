@@ -16,6 +16,9 @@ from pyfribidi import log2vis
 from reportlab.lib.enums import *
 from reportlab.lib.styles import ParagraphStyle
 
+from table_fields import *
+from helpers import Builder
+
 from styles import *
 
 #register Hebrew fonts
@@ -654,9 +657,6 @@ class MonthDemandWriter(DocumentBase):
             story.extend(self.signupFlows())
         return story
 
-from table_fields import *
-from helpers import Builder
-
 class MultipleDemandWriter(DocumentBase):
     
     def __init__(self, demands, title, show_project, show_month):
@@ -679,57 +679,6 @@ class MultipleDemandWriter(DocumentBase):
         table = builder.build()
         tableFlow = Table(table.cells(), table.col_widths(), table.row_heights(), projectTableStyle, 1)
         return [tableFlow]
-        
-        flows, headers, colWidths = [], [], []
-        if self.show_project:
-            headers.extend([log2vis(n) for n in [u'שם היזם', u'שם הפרוייקט']])
-            colWidths.extend([130,150])
-            sumRow = [None, None]
-        if self.show_month:
-            headers.append(log2vis(u'חודש'))
-            colWidths.append(None)
-            sumRow = [None]
-        headers.extend(log2vis(n) for n in[u"מכירות\nמס'", u'מכירות\nסה"כ', u'עמלה\nסה"כ', u'מס ח-ן', u'סך ח-ן', u'מס צק', u'סך צק'])
-        headers.reverse()
-        colWidths.extend([50,50,50,50,50,50,50])
-        colWidths.reverse()
-        rows = []
-        rowHeights = [28]
-        total_sales_count, total_sales_amount, total_amount = 0,0,0
-        for d in self.demands:
-            row = []
-            if self.show_project:
-                project_name = d.project.name.count(d.project.city) > 0 and log2vis(d.project.name) or log2vis(u'%s %s' % (d.project.name, d.project.city))
-                row.extend([log2vis(d.project.initiator), project_name])
-            if self.show_month:
-                row.append('%s/%s' % (d.month, d.year))
-            sales_count = len(d.get_sales())
-            row.extend([sales_count, commaise(d.get_sales().total_price()), commaise(d.get_total_amount())])
-            row.extend([Paragraph('<br/>'.join([str(i.num) for i in d.invoices.all()]), styleRow9),
-                        Paragraph('<br/>'.join([commaise(i.amount) for i in d.invoices.all()]), styleRow9),
-                        Paragraph('<br/>'.join([str(p.num) for p in d.payments.all()]), styleRow9),
-                        Paragraph('<br/>'.join([commaise(p.amount) for p in d.payments.all()]), styleRow9)])
-            row.reverse()
-            rows.append(row)
-            maxSubRows = max([1, d.invoices.count(), d.payments.count()])
-            rowHeights.append(18 * maxSubRows)
-            total_sales_count += sales_count
-            total_sales_amount += d.get_sales().total_price()
-            total_amount += d.get_total_amount()
-               
-        sumRow.extend([Paragraph(unicode(total_sales_count), styleSumRow), 
-                       Paragraph(commaise(total_sales_amount), styleSumRow), 
-                       Paragraph(commaise(total_amount), styleSumRow), None, None, None, None])
-        sumRow.reverse()
-        
-        rows.append(sumRow)
-        rowHeights.append(28)
-        
-        data = [headers]
-        data.extend(rows)
-        table = Table(data, colWidths, rowHeights, projectTableStyle, 1)
-        flows.append(table)
-        return flows
     
     def get_pagesize(self):
         '''
