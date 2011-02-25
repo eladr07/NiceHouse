@@ -3,27 +3,35 @@ from styles import *
 from reportlab.platypus import Paragraph
 
 class Row(object):
-    #__slots__ = ('cells', 'height')
+    __slots__ = ('cells', 'height')
     
-    def __init__(self, cells = [], height = 15):
-        self.cells = cells
+    def __init__(self, cells = None, height = 15):
+        self.cells = cells or []
         self.height = height
+    def __len__(self):
+        return self.cells.__len__()
+    def __iter__(self):
+        return self.cells.__iter__()
 
 class Col(object):
-    #__slots__ = ('name', 'title', 'width')
+    __slots__ = ('name', 'title', 'width')
     
     def __init__(self, name, title, width):
         self.name, self.title, self.width = name, title, width
 
 class Table(object):
-    def __init__(self, cols = [], rows = []):
-        self.cols, self.rows = cols, rows
+    def __init__(self, cols = None, rows = None):
+        self.cols, self.rows = cols or [], rows or []
     def row_heights(self):
         return [row.height for row in self.rows]
     def col_widths(self):
         return [col.width for col in self.cols]
     def cells(self):
         return [row.cells for row in self.rows]
+    def __len__(self):
+        return self.rows.__len__()
+    def __iter__(self):
+        return self.rows.__iter__()
 
 class Builder(object):
     def __init__(self, items, fields):
@@ -45,7 +53,7 @@ class Builder(object):
         table.rows.append(title_row)
             
         for item in self.items:
-            row = []
+            row = Row()
             cell_heights = []
             
             for field in self.fields:
@@ -57,9 +65,10 @@ class Builder(object):
                 if field.is_commaised:
                     cell_value = commaise(cell_value)
     
-                row.append(cell_value)
-
-            table.rows.append(Row(cells = row, height = max(cell_heights)))
+                row.cells.append(cell_value)
+                
+            row.height = max(cell_heights)
+            table.rows.append(row)
         
         if row_summaries:
             sum_row = Row()
