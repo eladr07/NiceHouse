@@ -218,6 +218,12 @@ class Project(models.Model):
     @property
     def is_active(self):
         return self.is_marketing and not self.end_date
+    @property
+    def name_and_city(self):
+        """
+        Returns the name of the project including the name of the city.
+        """
+        return self.city in self.name and self.name or self.name + ' ' + self.city
     def get_absolute_url(self):
         return '/projects/%s' % self.id
     class Meta:

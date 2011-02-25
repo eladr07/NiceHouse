@@ -18,8 +18,8 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.contenttypes.models import ContentType
 from forms import *
 from models import *
-from pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, ProjectListWriter
-from pdf import PricelistWriter, BuildingClientsWriter, EmployeeSalariesBookKeepingWriter, SalariesBankWriter, DemandFollowupWriter
+from pdf.pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, ProjectListWriter
+from pdf.pdf import PricelistWriter, BuildingClientsWriter, EmployeeSalariesBookKeepingWriter, SalariesBankWriter, DemandFollowupWriter
 from mail import mail
 
 def object_edit_core(request, form_class, instance,

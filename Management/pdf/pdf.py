@@ -1,101 +1,27 @@
-﻿import settings, models
+﻿import settings, Management.models
 import logging, itertools
 from datetime import datetime, date
-from templatetags.management_extras import commaise
+from Management.templatetags.management_extras import commaise
 import reportlab.rl_config
 reportlab.rl_config.warnOnMissingFontGlyphs = 0
 
 from reportlab.lib.pagesizes import A4, landscape
 from django.utils.translation import ugettext
-from django.core.exceptions import ObjectDoesNotExist
 from reportlab.pdfgen import canvas
-from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import Paragraph, SimpleDocTemplate, Image, Spacer, Frame, Table, PageBreak
-from reportlab.platypus.tables import TableStyle
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
-from reportlab.lib import colors
-from reportlab.lib.enums import *
 from reportlab.lib.units import mm
 from pyfribidi import log2vis
+from reportlab.lib.enums import *
+from reportlab.lib.styles import ParagraphStyle
+
+from styles import *
 
 #register Hebrew fonts
 pdfmetrics.registerFont(TTFont('David', settings.MEDIA_ROOT + 'fonts/DavidCLM-Medium.ttf'))
 pdfmetrics.registerFont(TTFont('David-Bold', settings.MEDIA_ROOT + 'fonts/DavidCLM-Bold.ttf'))
 pdfmetrics.registerFontFamily('David', normal='David', bold='David-Bold')
-#template styles
-styleN = ParagraphStyle('normal', fontName='David',fontSize=16, leading=15, alignment=TA_RIGHT)
-styleNormal13 = ParagraphStyle('normal', fontName='David',fontSize=13, leading=15, alignment=TA_RIGHT)
-styleDate = ParagraphStyle('date', fontName='David',fontSize=14, leading=15)
-styleRow = ParagraphStyle('sumRow', fontName='David',fontSize=11, leading=15)
-styleRow9 = ParagraphStyle('sumRow', fontName='David',fontSize=9, leading=15, alignment=TA_RIGHT)
-styleSumRow = ParagraphStyle('Row', fontName='David-Bold',fontSize=11, leading=15)
-styleSaleSumRow = ParagraphStyle('Row', fontName='David-Bold',fontSize=9, leading=15)
-styleSubj = ParagraphStyle('subject', fontName='David',fontSize=16, leading=15, alignment=TA_CENTER)
-styleSubTitleBold = ParagraphStyle('subtitle', fontName='David-Bold', fontSize=15, alignment=TA_CENTER)
-styleSubTitle = ParagraphStyle('subtitle', fontName='David', fontSize=15, alignment=TA_CENTER)
-
-saleTableStyle = TableStyle(
-                            [('FONTNAME', (0,0), (-1,0), 'David-Bold'),
-                             ('FONTNAME', (0,1), (-1,-1), 'David'),
-                             ('FONTSIZE', (0,0), (-1,-1), 9),
-                             ('ALIGN', (0,0), (-1,-1), 'CENTER'),
-                             ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
-                             ('BOX', (0,0), (-1,-1), 0.25, colors.black),
-                             ('LEFTPADDING', (0,0), (-1,-1), 8),
-                             ('RIGHTPADDING', (0,0), (-1,-1), 8),
-                             ]
-                            )
-nhsalariesTableStyle = TableStyle(
-                            [('FONTNAME', (0,0), (-1,0), 'David-Bold'),
-                             ('FONTNAME', (0,1), (-1,-1), 'David'),
-                             ('FONTSIZE', (0,0), (-1,-1), 9),
-                             ('ALIGN', (0,0), (-1,-1), 'CENTER'),
-                             ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
-                             ('BOX', (0,0), (-1,-1), 0.25, colors.black),
-                             ('LEFTPADDING', (0,0), (-1,-1), 8),
-                             ('RIGHTPADDING', (0,0), (-1,-1), 8),
-                             ]
-                            )
-salariesTableStyle = TableStyle(
-                            [('FONTNAME', (0,0), (-1,1), 'David-Bold'),
-                             ('FONTNAME', (0,2), (-1,-1), 'David'),
-                             ('SPAN',(0,0),(5,0)),
-                             ('SPAN',(6,0),(-1,0)),
-                             ('FONTSIZE', (0,0), (-1,-1), 10),
-                             ('ALIGN', (0,0), (-1,-1), 'CENTER'),
-                             ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
-                             ('BOX', (0,0), (-1,-1), 0.25, colors.black),
-                             ('LEFTPADDING', (0,0), (-1,-1), 8),
-                             ('RIGHTPADDING', (0,0), (-1,-1), 8),
-                             ]
-                            )
-demandFollowupTableStyle = TableStyle(
-                            [('FONTNAME', (0,0), (-1,1), 'David-Bold'),
-                             ('FONTNAME', (0,2), (-1,-1), 'David'),
-                             ('SPAN',(0,0),(2,0)),
-                             ('SPAN',(3,0),(4,0)),
-                             ('SPAN',(5,0),(7,0)),
-                             ('SPAN',(8,0),(-1,0)),
-                             ('FONTSIZE', (0,0), (-1,-1), 10),
-                             ('ALIGN', (0,0), (-1,-1), 'CENTER'),
-                             ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
-                             ('BOX', (0,0), (-1,-1), 0.25, colors.black),
-                             ('LEFTPADDING', (0,0), (-1,-1), 8),
-                             ('RIGHTPADDING', (0,0), (-1,-1), 8),
-                             ]
-                            )
-projectTableStyle = TableStyle(
-                               [('FONTNAME', (0,0), (-1,0), 'David-Bold'),
-                                ('FONTNAME', (0,1), (-1,-1), 'David'),
-                                ('FONTSIZE', (0,0), (-1,-1), 12),
-                                ('ALIGN', (0,0), (-1,-1), 'CENTER'),
-                                ('INNERGRID', (0,0), (-1,-1), 0.25, colors.black),
-                                ('BOX', (0,0), (-1,-1), 0.25, colors.black),
-                                ('LEFTPADDING', (0,0), (-1,-1), 8),
-                                ('RIGHTPADDING', (0,0), (-1,-1), 8),
-                                ]
-                               )
 
 def clientsPara(str):
     str2=''
@@ -727,7 +653,7 @@ class MonthDemandWriter(DocumentBase):
             story.extend([PageBreak(), Spacer(0,30), titlePara(u'נספח א')])
             story.extend(self.signupFlows())
         return story
-
+        
 class MultipleDemandWriter(DocumentBase):
     def __init__(self, demands, title, show_project, show_month):
         self.demands = demands
@@ -736,6 +662,22 @@ class MultipleDemandWriter(DocumentBase):
         self.show_project = show_project
 
     def projectsFlows(self):
+        from fields import *
+        from helpers import Builder
+        
+        fields = []
+        if self.show_project:
+            fields.append(ProjectNameAndCityField())
+        if self.show_month:
+            fields.append(MonthField())
+        fields.extend([DemandSalesCountField(), DemandSalesTotalPriceField(), DemandTotalAmountField(), InvoicesNumField(),
+                       InvoicesAmountField(), PaymentsNumField(), PaymentsAmountField()])
+        
+        builder = Builder(self.demands, fields)
+        table = builder.build()
+        tableFlow = Table(table.rows, table.col_widths(), table.row_heights(), projectTableStyle, 1)
+        return [tableFlow]
+        
         flows, headers, colWidths = [], [], []
         if self.show_project:
             headers.extend([log2vis(n) for n in [u'שם היזם', u'שם הפרוייקט']])
