@@ -23,7 +23,7 @@ class Table(object):
     def col_widths(self):
         return [col.width for col in self.cols]
     def cells(self):
-        return [len(row.cells) for row in self.rows]
+        return [[len(row.cells)] for row in self.rows]
 
 class Builder(object):
     def __init__(self, items, fields):
