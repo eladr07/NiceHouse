@@ -5,7 +5,7 @@ from reportlab.platypus import Paragraph
 class Row(object):
     __slots__ = ('cells', 'height')
     
-    def __init__(self, cells = None, height = 15):
+    def __init__(self, cells = None, height = None):
         self.cells = cells or []
         self.height = height
     def __len__(self):
