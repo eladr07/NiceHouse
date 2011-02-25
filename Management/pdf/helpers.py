@@ -41,6 +41,9 @@ class Builder:
         
         cols = [Col(field.name, field.title, field.width) for field in self.fields]
         
+        if not cols:
+            return Table()
+        
         table = Table(cols = cols)
         
         title_row = Row(cells = [field.title for field in self.fields])
