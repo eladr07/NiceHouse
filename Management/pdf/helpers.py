@@ -23,7 +23,7 @@ class Table(object):
     def col_widths(self):
         return [col.width for col in self.cols]
     def cells(self):
-        return [row.cells for row in self.rows]
+        return [len(row.cells) for row in self.rows]
 
 class Builder(object):
     def __init__(self, items, fields):
@@ -60,7 +60,6 @@ class Builder(object):
                 row.cells.append(cell_value)
                 
             row.height = max(cell_heights)
-            raise '%s' % row.cells
             table.rows.append(row)
         
         if row_summaries:
