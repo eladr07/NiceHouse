@@ -1,5 +1,5 @@
 from Management.templatetags.management_extras import commaise
-from style import *
+from styles import *
 from reportlab.platypus import Paragraph
 
 class Row:
