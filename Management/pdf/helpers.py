@@ -44,7 +44,9 @@ class Builder:
         
         table = Table(cols = cols)
         
-        table.rows.append([field.title for field in self.fields])
+        title_row = Row(cells = [field.title for field in self.fields])
+        
+        table.rows.append(title_row)
             
         for item in self.items:
             row = Row()
@@ -65,13 +67,13 @@ class Builder:
             table.rows.append(row)
         
         if row_summaries:
-            sum_row = []
+            sum_row = Row()
             for field in self.fields:
                 if field.is_summarized:
                     cell_value = Paragraph(commaise(row_summaries[field.name]), styleSumRow)
-                    sum_row.append(cell_value)
+                    sum_row.cells.append(cell_value)
                 else:
-                    sum_row.append('')
+                    sum_row.cells.append('')
                     
             table.rows.append(sum_row)
         
