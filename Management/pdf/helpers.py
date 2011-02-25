@@ -38,7 +38,7 @@ class Builder:
         self.summarized_fields = [field.name for field in fields]
         
     def build(self):
-        row_summaries = dict([(field.name, 0) for field in self.summarized_fields])
+        row_summaries = dict([(field_name, 0) for field_name in self.summarized_fields])
         
         cols = [Col(field.name, field.title, field.width) for field in self.fields]
         
