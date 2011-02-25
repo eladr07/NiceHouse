@@ -37,6 +37,7 @@ class Builder(object):
     def __init__(self, items, fields):
         self.items = items
         self.fields = fields
+        raise ''
         
     def build(self):
         row_summaries = dict([(field.name, 0) for field in self.fields if field.is_summarized])
