@@ -9,7 +9,7 @@ class TableField(object):
         self.name = self.__class__.__name__
         self.title = title
         self.width = width
-        self.is_summarize = is_summarized
+        self.is_summarized = is_summarized
         self.is_commaised = is_commaised
     def format(self, item):
         raise NotImplementedError
