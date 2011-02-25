@@ -57,7 +57,7 @@ class Builder(object):
             cell_heights = []
             
             for field in self.fields:
-                cell_value = field.format(item)
+                cell_value = unicode(field.format(item))
                 cell_heights.append(field.get_height(item))
                 
                 if field.is_summarized:
