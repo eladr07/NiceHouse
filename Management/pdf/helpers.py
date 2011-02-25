@@ -47,6 +47,7 @@ class Builder(object):
             return Table()
         
         table = Table(cols = cols)
+        raise ''
         
         title_row = Row(cells = [field.title for field in self.fields])
         
