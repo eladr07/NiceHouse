@@ -48,7 +48,7 @@ class Builder(object):
         
         table = Table(cols = cols)
         
-        title_row = Row(cells = [field.title for field in self.fields])
+        title_row = Row(cells = [unicode(field.title) for field in self.fields])
         
         table.rows.append(title_row)
             
@@ -57,7 +57,7 @@ class Builder(object):
             cell_heights = []
             
             for field in self.fields:
-                cell_value = unicode(field.format(item))
+                cell_value = field.format(item)
                 cell_heights.append(field.get_height(item))
                 
                 if field.is_summarized:
