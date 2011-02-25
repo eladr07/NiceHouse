@@ -3,6 +3,7 @@ import Management.models as models
 from reportlab.platypus import Paragraph
 from pyfribidi import log2vis
 from styles import *
+from Management.templatetags.management_extras import commaise
 
 class TableField(object):
     def __init__(self, title='', width= -1, is_summarized=False, is_commaised=False):
@@ -93,7 +94,7 @@ class InvoicesAmountField(TableField):
         return super(InvoicesAmountField, self).__init__(log2vis(u"סך ח-ן"),
                                                            50)
     def format(self, item):
-        return Paragraph('<br/>'.join([str(i.num) for i in item.invoices.all()]), styleRow9)
+        return Paragraph('<br/>'.join([commaise(i.amount) for i in item.invoices.all()]), styleRow9)
     
     def get_height(self, item):
         return 18 * item.invoices.count()
@@ -106,7 +107,7 @@ class PaymentsNumField(TableField):
         return super(PaymentsNumField, self).__init__(log2vis(u"מס' צ'ק"),
                                                            50)
     def format(self, item):
-        return Paragraph('<br/>'.join([str(i.num) for i in item.invoices.all()]), styleRow9)
+        return Paragraph('<br/>'.join([str(p.num) for p in item.payments.all()]), styleRow9)
     
     def get_height(self, item):
         return 18 * item.payments.count()
@@ -119,7 +120,7 @@ class PaymentsAmountField(TableField):
         return super(PaymentsAmountField, self).__init__(log2vis(u"סך צ'ק"),
                                                            50)
     def format(self, item):
-        return Paragraph('<br/>'.join([str(i.num) for i in item.invoices.all()]), styleRow9)
+        return Paragraph('<br/>'.join([commaise(p.amount) for p in item.payments.all()]), styleRow9)
     
     def get_height(self, item):
         return 18 * item.payments.count()
