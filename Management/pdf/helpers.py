@@ -35,10 +35,9 @@ class Builder:
     def __init__(self, items, fields):
         self.items = items
         self.fields = fields
-        self.summarized_fields = [field.name for field in fields]
         
     def build(self):
-        row_summaries = dict([(field_name, 0) for field_name in self.summarized_fields])
+        row_summaries = dict([(field.name, 0) for field in self.fields if field.is_summarized])
         
         cols = [Col(field.name, field.title, field.width) for field in self.fields]
         
@@ -76,5 +75,5 @@ class Builder:
                     sum_row.cells.append('')
                     
             table.rows.append(sum_row)
-        
+        raise ''
         return table
