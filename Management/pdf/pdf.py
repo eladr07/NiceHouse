@@ -669,7 +669,7 @@ class MultipleDemandWriter(DocumentBase):
         
         fields = []
         if self.show_project:
-            fields.append(ProjectNameAndCityField(), ProjectInitiatorField())
+            fields.extend([ProjectNameAndCityField(), ProjectInitiatorField()])
         if self.show_month:
             fields.append(MonthField())
         fields.extend([DemandSalesCountField(), DemandSalesTotalPriceField(), DemandTotalAmountField(), InvoicesNumField(),
