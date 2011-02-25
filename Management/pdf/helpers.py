@@ -23,7 +23,7 @@ class Table(object):
     def col_widths(self):
         return [col.width for col in self.cols]
     def cells(self):
-        return [[len(row.cells)] for row in self.rows]
+        return [row.cells for row in self.rows]
 
 class Builder(object):
     def __init__(self, items, fields):
@@ -58,7 +58,8 @@ class Builder(object):
                     cell_value = commaise(cell_value)
     
                 row.cells.append(cell_value)
-                
+            if len(row.cells) > 1:
+                raise '%s' % len(row.cells)
             row.height = max(cell_heights)
             table.rows.append(row)
         
