@@ -906,10 +906,10 @@ class ContactFilterForm(forms.Form):
     company = forms.CharField(label=ugettext('company'), required=False)
 
 class LocateDemandForm(MonthForm):
-    project = forms.ModelChoiceField(queryset = Project.objects.all(), label=ugettext('project'))
+    project = forms.ModelChoiceField(Project.objects.all(), ugettext('choose_project'), label=ugettext('project'))
     
 class LocateHouseForm(forms.Form):
-    project = forms.ModelChoiceField(queryset = Project.objects.all(), label=ugettext('project'))
+    project = forms.ModelChoiceField(Project.objects.all(), ugettext('choose_project'), label=ugettext('project'))
     building_num = forms.IntegerField(widget=forms.TextInput(attrs={'size':'3'}),
                                       min_value=1, label=ugettext('building_num'))
     house_num = forms.IntegerField(widget=forms.TextInput(attrs={'size':'3'}),
