@@ -4,6 +4,27 @@
 <script>
 	$(document).ready(function() {
 		
+		building_num_cleared = false;
+		house_num_cleared = false;
+		
+		// the text in the house num text field upon first click
+		$("#id_building_num").focus(funtion(event) {
+			if (building_num_cleared == false)
+			{
+				building_num_cleared = true;
+				$(this).removeAttr("value");
+			}
+		});
+		
+		// clears the text in the house num text field upon first click
+		$("#id_house_num").focus(funtion(event) {
+			if (building_num_cleared == false)
+			{
+				building_num_cleared = true;
+				$(this).removeAttr("value");
+			}
+		});
+		
 		$(".listTitle").click(function(event) {
 			$(this).next().toggle();
 		});

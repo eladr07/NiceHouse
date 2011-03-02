@@ -24,7 +24,7 @@ urlpatterns = patterns('',
 
 urlpatterns += patterns('',
     (r'^$', index),
-    (r'^locate_house$', locate_house),
+    (r'^locatehouse$', locate_house),
     
     (r'^contacts/$', limited_object_list,
      {'queryset' : Contact.objects.all(), 'template_name' : 'Management/contact_list.html', 'context_processors':[RequestContext]}),
