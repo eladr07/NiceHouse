@@ -1,6 +1,6 @@
 ﻿from django.conf.urls.defaults import *
 from Management.models import *
-from Management.views import *
+from Management.views import *, locate_demand
 from django.template import RequestContext
 import Management.forms
 
@@ -25,6 +25,7 @@ urlpatterns = patterns('',
 urlpatterns += patterns('',
     (r'^$', index),
     (r'^locatehouse$', locate_house),
+    (r'^locatedemand$', locate_demand)
     
     (r'^contacts/$', limited_object_list,
      {'queryset' : Contact.objects.all(), 'template_name' : 'Management/contact_list.html', 'context_processors':[RequestContext]}),

@@ -103,6 +103,26 @@ def locate_house(request):
                                   context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect('/')
+    
+@login_required  
+def locate_demand(request):
+    error = None
+    if request.method == 'GET':
+        form = LocateDemandForm(request.GET)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            #project, year, month = cleaned_data['project'], cleaned_data['year'], cleaned_data['month']
+            try:
+                demand = Demand.objects.get(**cleaned_data)
+                return HttpResponseRedirect(demand.get_absolute_url())
+            except Demand.DoesNotExist:
+                error = u'לא נמצאה דרישה מתאימה'
+                
+        return render_to_response('Management/index.html',
+                                  {'locateDemandForm':form, 'error':error},
+                                  context_instance=RequestContext(request))
+    else:
+        return HttpResponseRedirect('/')
 
 @login_required
 def limited_direct_to_template(request, permission=None, *args, **kwargs):
