@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-02-25 15:07+0200\n"
+"POT-Creation-Date: 2011-03-02 22:26+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -119,7 +119,7 @@ msgid "mandatory_field"
 msgstr "שדה חובה"
 
 #: Management/forms.py:265 Management/forms.py:273 Management/forms.py:696
-#: Management/forms.py:837 Management/forms.py:938 Management/models.py:554
+#: Management/forms.py:837 Management/forms.py:936 Management/models.py:554
 #: Management/models.py:781 Management/models.py:799 Management/models.py:813
 #: Management/models.py:856 Management/models.py:1085
 #: Management/models.py:2136 Management/models.py:2582
@@ -131,7 +131,7 @@ msgstr "עובד"
 #: Management/forms.py:326 Management/forms.py:333 Management/forms.py:425
 #: Management/forms.py:519 Management/forms.py:523 Management/forms.py:828
 #: Management/forms.py:831 Management/forms.py:909 Management/forms.py:912
-#: Management/forms.py:935 Management/forms.py:941 Management/models.py:230
+#: Management/forms.py:933 Management/forms.py:939 Management/models.py:230
 #: Management/models.py:409 Management/models.py:1916
 #: Management/models.py:3021 Management/models.py:3058
 msgid "project"
@@ -145,7 +145,7 @@ msgstr "תאריך תחילה"
 msgid "end_date"
 msgstr "תאריך סיום"
 
-#: Management/forms.py:290 Management/forms.py:334 Management/forms.py:919
+#: Management/forms.py:290 Management/forms.py:334 Management/forms.py:917
 #: Management/models.py:252 Management/models.py:265 Management/models.py:278
 #: Management/models.py:3022
 msgid "building"
@@ -329,60 +329,64 @@ msgstr "תפקיד"
 msgid "company"
 msgstr "חברה"
 
-#: Management/forms.py:914 Management/models.py:410
+#: Management/forms.py:909 Management/forms.py:912
+msgid "choose_project"
+msgstr "בחר פרוייקט"
+
+#: Management/forms.py:913 Management/models.py:410
 msgid "building_num"
 msgstr "מס' בניין"
 
-#: Management/forms.py:916 Management/models.py:280
+#: Management/forms.py:914 Management/models.py:280
 msgid "house_num"
-msgstr "מספר דירה"
+msgstr "מס' דירה"
 
-#: Management/forms.py:920
+#: Management/forms.py:918
 msgid "new_building_num"
 msgstr "מס' בניין חדש"
 
-#: Management/forms.py:921
+#: Management/forms.py:919
 msgid "include_houses"
 msgstr "כולל דירות"
 
-#: Management/forms.py:922
+#: Management/forms.py:920
 msgid "include_house_prices"
 msgstr "כולל מחירים"
 
-#: Management/forms.py:923
+#: Management/forms.py:921
 msgid "include_parkings"
 msgstr "כולל חניות"
 
-#: Management/forms.py:924
+#: Management/forms.py:922
 msgid "include_storages"
 msgstr "כולל מחסנים"
 
-#: Management/forms.py:931
+#: Management/forms.py:929
 msgid "existing_building_num"
 msgstr "מס' בניין כבר קיים"
 
-#: Management/forms.py:944
+#: Management/forms.py:942
 msgid "to"
 msgstr "נמען"
 
-#: Management/forms.py:945
+#: Management/forms.py:943
 msgid "CC"
 msgstr "עותק"
 
-#: Management/forms.py:946
+#: Management/forms.py:944
 msgid "BCC"
 msgstr "עותק חסוי"
 
-#: Management/forms.py:947
+#: Management/forms.py:945
 msgid "subject"
 msgstr "נושא"
 
-#: Management/forms.py:948 Management/forms.py:949 Management/forms.py:950
-#: Management/forms.py:951 Management/forms.py:952
+#: Management/forms.py:946 Management/forms.py:947 Management/forms.py:948
+#: Management/forms.py:949 Management/forms.py:950
 msgid "attachment"
 msgstr "קובץ מצורף"
 
-#: Management/forms.py:953
+#: Management/forms.py:951
 msgid "contents"
 msgstr "תוכן"
 
@@ -1353,38 +1357,38 @@ msgstr "שכפול בניין"
 msgid "pdf_project_name"
 msgstr "הפרוייקט\nשם"
 
-#: Management/pdf/table_fields.py:33
+#: Management/pdf/table_fields.py:32
 msgid "pdf_initiator"
 msgstr "היזם\nשם"
 
-#: Management/pdf/table_fields.py:43
+#: Management/pdf/table_fields.py:41
 msgid "pdf_month"
 msgstr "חודש"
 
-#: Management/pdf/table_fields.py:52
+#: Management/pdf/table_fields.py:50
 msgid "pdf_demand_sales_count"
-msgstr "מכירות\nמס"
+msgstr "מכירות\nמס'"
 
-#: Management/pdf/table_fields.py:62
+#: Management/pdf/table_fields.py:59
 msgid "pdf_demand_total_sales_price"
-msgstr "מכירות\nסה\"כ"
+msgstr "מכירות\nסך"
 
-#: Management/pdf/table_fields.py:72
+#: Management/pdf/table_fields.py:69
 msgid "pdf_demand_total_amount"
-msgstr "עמלה\nסה\"כ"
+msgstr "עמלה\nסך"
 
-#: Management/pdf/table_fields.py:82
+#: Management/pdf/table_fields.py:79
 msgid "pdf_invoices_num"
 msgstr "מס' ח-ן"
 
-#: Management/pdf/table_fields.py:95
+#: Management/pdf/table_fields.py:91
 msgid "pdf_invoices_amount"
 msgstr "סך ח-ן"
 
-#: Management/pdf/table_fields.py:108
+#: Management/pdf/table_fields.py:103
 msgid "pdf_payments_num"
 msgstr "מס' צ'ק"
 
-#: Management/pdf/table_fields.py:121
+#: Management/pdf/table_fields.py:115
 msgid "pdf_payments_amount"
 msgstr "סך צ'ק"
