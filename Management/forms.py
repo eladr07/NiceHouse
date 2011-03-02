@@ -906,7 +906,7 @@ class ContactFilterForm(forms.Form):
     company = forms.CharField(label=ugettext('company'), required=False)
 
 class LocateDemandForm(forms.Form):
-    project = forms.ModelChoiceField(Project.objects.all(), ugettext('choose_project'), initial = ugettext('choose_project'))
+    project = forms.ModelChoiceField(Project.objects.all(), ugettext('choose_project'))
     year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
                              initial = datetime.now().year)
     month = forms.ChoiceField(choices=((i,i) for i in range(1,13)), initial = common.current_month().month)  
@@ -917,7 +917,7 @@ class LocateDemandForm(forms.Form):
         return int(self.cleaned_data['month'])
     
 class LocateHouseForm(forms.Form):
-    project = forms.ModelChoiceField(Project.objects.all(), ugettext('choose_project'), label=ugettext('project'))
+    project = forms.ModelChoiceField(Project.objects.all(), ugettext('choose_project'))
     building_num = forms.IntegerField(widget=forms.TextInput(attrs={'size':'3'}), min_value=1, initial = ugettext('building_num'))
     house_num = forms.IntegerField(widget=forms.TextInput(attrs={'size':'3'}), min_value=1, initial = ugettext('house_num'))
     
