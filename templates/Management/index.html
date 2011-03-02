@@ -8,20 +8,20 @@
 		house_num_cleared = false;
 		
 		// the text in the house num text field upon first click
-		$("#id_building_num").click(function(event) {
+		$("#id_building_num").focus(function(event) {
 			if (building_num_cleared == false)
 			{
 				building_num_cleared = true;
-				$(this).attr("value","");
+				$(this).removeAttr("value");
 			}
 		});
 		
 		// clears the text in the house num text field upon first click
-		$("#id_house_num").click(function(event) {
+		$("#id_house_num").focus(function(event) {
 			if (building_num_cleared == false)
 			{
 				building_num_cleared = true;
-				$(this).attr("value", "");
+				$(this).removeAttr("value");
 			}
 		});
 		
