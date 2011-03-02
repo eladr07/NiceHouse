@@ -86,8 +86,8 @@ def index(request):
 @login_required  
 def locate_house(request):
     error = None
-    if request.method == 'POST':
-        form = LocateHouseForm(request.POST)
+    if request.method == 'GET':
+        form = LocateHouseForm(request.GET)
         if form.is_valid():
             project = form.cleaned_data['project']
             try:

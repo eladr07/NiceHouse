@@ -3,12 +3,6 @@
 {{ block.super }}
 <script>
 	$(document).ready(function() {
-		fieldset = $("#locateHouse").next();
-		fieldset.hide();
-		$("#locateHouse").click(function (event) {
-			event.preventDefault();
-			fieldset.toggle();
-		});
 		
 		$(".listTitle").click(function(event) {
 			$(this).next().toggle();
@@ -58,21 +52,6 @@
 			<li><a href="demandseason">ריכוז דרישות תקופתי לפרוייקט</a></li>
 			<li><a href="demandfollowup">מעקב דרישות תקופתי לפרוייקט</a></li>
 			<li><a href="/demandsall">מעקב דרישות יזמים</a></li>
-			<li><a id="locateHouse" href="#">איתור דירה</a>
-			<fieldset class="cardFieldset" style="width:55%;">
-				<form method="POST" action="locate_house">
-					<table class="formTable">			
-					{% for field in locateHouseForm %}
-					<tr>
-						<th>{{field.label_tag}}</th>
-						<td>{{field}}</td>
-						<td>{{field.errors|join:" "}}</td>
-					</tr>
-					{% endfor %}
-					</table>
-					<input class="button" type="submit" value="אתר"/>
-				</form>
-			</fieldset></li>
 		</ul>
 		<div>דו"חות</div>
 		<div class="listTitle">עובדים</div>
@@ -195,6 +174,15 @@
 	<div style="float: right; width: 28%;">
 		<fieldset class="cardFieldset">
 			<legend>כלים</legend>
+			<ul>
+				<li>איתור דירה</li>
+				<form method="GET" action="locatehouse">
+					{% for field in locateHouseForm %}
+						{{ field }}
+					{% endfor%}
+					<input type="submit" class="button" value="חפש" />
+				</form>
+			</ul>
 		</fieldset>
 	</div>
 	<div class="clearBoth"></div> 

@@ -910,10 +910,8 @@ class LocateDemandForm(MonthForm):
     
 class LocateHouseForm(forms.Form):
     project = forms.ModelChoiceField(Project.objects.all(), ugettext('choose_project'), label=ugettext('project'))
-    building_num = forms.IntegerField(widget=forms.TextInput(attrs={'size':'3'}),
-                                      min_value=1, label=ugettext('building_num'))
-    house_num = forms.IntegerField(widget=forms.TextInput(attrs={'size':'3'}),
-                                   min_value=1, label=ugettext('house_num'))
+    building_num = forms.IntegerField(widget=forms.TextInput(attrs={'size':'3'}), min_value=1, initial = ugettext('building_num'))
+    house_num = forms.IntegerField(widget=forms.TextInput(attrs={'size':'3'}), min_value=1, initial = ugettext('house_num'))
     
 class CopyBuildingForm(forms.Form):
     building = forms.ModelChoiceField(queryset = Building.objects.all(), label=ugettext('building'))
