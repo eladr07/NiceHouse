@@ -1,6 +1,6 @@
 ﻿from django.conf.urls.defaults import *
 from Management.models import *
-from Management.views import *, locate_demand
+from Management.views import *
 from django.template import RequestContext
 import Management.forms
 
