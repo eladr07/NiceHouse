@@ -905,7 +905,7 @@ class ContactFilterForm(forms.Form):
     role = forms.CharField(label=ugettext('role'), required=False)
     company = forms.CharField(label=ugettext('company'), required=False)
 
-class LocateDemandForm(MonthForm):
+class LocateDemandForm(forms.Form):
     project = forms.ModelChoiceField(Project.objects.all(), ugettext('choose_project'), initial = ugettext('choose_project'))
     year = forms.ChoiceField(choices=((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
                              initial = datetime.now().year)
