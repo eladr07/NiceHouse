@@ -84,7 +84,6 @@ def index(request):
   
 @login_required  
 def locate_house(request):
-    error = None
     if request.method == 'GET':
         form = LocateHouseForm(request.GET)
         if form.is_valid():
@@ -97,29 +96,31 @@ def locate_house(request):
                 error = u'לא נמצאה דירה מס %s בבניין מס %s בפרוייקט %s' % (form.cleaned_data['house_num'],
                                                                            form.cleaned_data['building_num'],
                                                                            project)
-        return render_to_response('Management/index.html',
-                                  {'locateHouseForm':form, 'error':error},
-                                  context_instance=RequestContext(request))
+                return render_to_response('Management/error.html', {'error': error}, context_instance=RequestContext(request))
+            
+        return render_to_response('Management/index.html', {'locateHouseForm':form}, context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect('/')
     
 @login_required  
 def locate_demand(request):
-    error = None
     if request.method == 'GET':
         form = LocateDemandForm(request.GET)
         if form.is_valid():
             cleaned_data = form.cleaned_data
-            #project, year, month = cleaned_data['project'], cleaned_data['year'], cleaned_data['month']
             try:
                 demand = Demand.objects.get(**cleaned_data)
-                return HttpResponseRedirect(demand.get_absolute_url())
+                
+                if request.GET.has_key('find'):
+                    return HttpResponseRedirect(demand.get_absolute_url())
+                elif request.GET.has_key('pdf'):
+                    return report_project_month(request, demand = demand)
+                
             except Demand.DoesNotExist:
                 error = u'לא נמצאה דרישה מתאימה'
+                return render_to_response('Management/error.html', {'error': error}, context_instance=RequestContext(request))
                 
-        return render_to_response('Management/index.html',
-                                  {'locateDemandForm':form, 'error':error},
-                                  context_instance=RequestContext(request))
+        return render_to_response('Management/index.html', {'locateDemandForm':form}, context_instance=RequestContext(request))
     else:
         return HttpResponseRedirect('/')
 
@@ -3219,12 +3220,15 @@ def demand_sales(request, project_id, year, month):
 							  context_instance=RequestContext(request))
 
 @permission_required('Management.report_project_month')
-def report_project_month(request, project_id, year, month):
+def report_project_month(request, project_id = 0, year = 0, month = 0, demand = None):
+    if not (demand or (project_id and year and month)):
+        raise ValueError % 'must supply either demand or project_id, year and month'
+    
     demand = Demand.objects.get(project__id = project_id, year = year, month = month)
+    
     if demand.get_sales().count() == 0:
-        return render_to_response('Management/error.html', 
-                                  {'error':u'לדרישה שנבחרה אין מכירות'},
-                                  context_instance=RequestContext(request))
+        return render_to_response('Management/error.html', {'error':u'לדרישה שנבחרה אין מכירות'}, context_instance=RequestContext(request))
+    
     filename = common.generate_unique_media_filename('pdf')
     
     response = HttpResponse(mimetype='application/pdf')

@@ -24,28 +24,7 @@
 				$(this).removeAttr("value");
 			}
 		});
-		
-		month_cleared = false;
-		year_cleared = false;
-		
-		// the text in the month text field upon first click
-		$("#id_month").focus(function(event) {
-			if (month_cleared == false)
-			{
-				month_cleared = true;
-				$(this).removeAttr("value");
-			}
-		});
-		
-		// clears the text in the year text field upon first click
-		$("#id_year").focus(function(event) {
-			if (year_cleared == false)
-			{
-				year_cleared = true;
-				$(this).removeAttr("value");
-			}
-		});
-		
+				
 		$(".listTitle").click(function(event) {
 			$(this).next().toggle();
 		});
@@ -231,7 +210,8 @@
 					{% for field in locateDemandForm %}
 						{{ field }}
 					{% endfor%}
-					<input type="submit" class="button" value="חפש" />
+					<input type="submit" class="button" name="find" value="חפש" />
+					<input type="submit" class="button" name="pdf" value="PDF" />
 				</form>
 			</ul>
 		</fieldset>
