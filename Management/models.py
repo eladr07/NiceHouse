@@ -5,7 +5,6 @@ import common
 from datetime import datetime, date
 from decimal import InvalidOperation
 from django.db import models
-from django.core.exceptions import ObjectDoesNotExist
 from django.db.backends.dummy.base import IntegrityError
 from django.utils.translation import ugettext
 from django.contrib.auth.models import User

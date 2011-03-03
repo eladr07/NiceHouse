@@ -3225,7 +3225,8 @@ def report_project_month(request, project_id = 0, year = 0, month = 0, demand = 
     if not (demand or (project_id and year and month)):
         raise ValueError % 'must supply either demand or project_id, year and month'
     
-    demand = Demand.objects.get(project__id = project_id, year = year, month = month)
+    if not demand:
+        demand = Demand.objects.get(project__id = project_id, year = year, month = month)
     
     if demand.get_sales().count() == 0:
         return render_to_response('Management/error.html', {'error':u'לדרישה שנבחרה אין מכירות'}, context_instance=RequestContext(request))
