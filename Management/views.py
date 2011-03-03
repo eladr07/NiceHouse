@@ -92,16 +92,14 @@ def locate_house(request):
             try:
                 building = project.buildings.get(num=form.cleaned_data['building_num'])
                 house = building.houses.get(num=form.cleaned_data['house_num'])
-                return HttpResponseRedirect('/buildings/%s/house/%s/type1' % (project.id, building.id, house.id))
+                return HttpResponseRedirect('/buildings/%s/house/%s/type1' % (building.id, house.id))
             except ObjectDoesNotExist:
                 error = u'לא נמצאה דירה מס %s בבניין מס %s בפרוייקט %s' % (form.cleaned_data['house_num'],
                                                                            form.cleaned_data['building_num'],
                                                                            project)
                 return render_to_response('Management/error.html', {'error': error}, context_instance=RequestContext(request))
-            
-        return render_to_response('Management/index.html', {'locateHouseForm':form}, context_instance=RequestContext(request))
-    else:
-        return HttpResponseRedirect('/')
+
+    return HttpResponseRedirect('/')
     
 @login_required  
 def locate_demand(request):
@@ -120,10 +118,8 @@ def locate_demand(request):
             except Demand.DoesNotExist:
                 error = u'לא נמצאה דרישה מתאימה'
                 return render_to_response('Management/error.html', {'error': error}, context_instance=RequestContext(request))
-                
-        return render_to_response('Management/index.html', {'locateDemandForm':form}, context_instance=RequestContext(request))
-    else:
-        return HttpResponseRedirect('/')
+
+    return HttpResponseRedirect('/')
 
 @login_required
 def limited_direct_to_template(request, permission=None, *args, **kwargs):
