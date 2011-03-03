@@ -10,6 +10,7 @@ from django.http import HttpResponse, HttpResponseRedirect, HttpResponseServerEr
 from django.forms.models import inlineformset_factory, modelformset_factory, modelform_factory
 from django.template import RequestContext
 from django.core import serializers
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
 from django.views.generic.create_update import create_object, update_object
 from django.views.generic.list_detail import object_list, object_detail
@@ -92,7 +93,7 @@ def locate_house(request):
                 building = project.buildings.get(num=form.cleaned_data['building_num'])
                 house = building.houses.get(num=form.cleaned_data['house_num'])
                 return HttpResponseRedirect('/buildings/%s/house/%s/type1' % (project.id, building.id, house.id))
-            except:
+            except ObjectDoesNotExist:
                 error = u'לא נמצאה דירה מס %s בבניין מס %s בפרוייקט %s' % (form.cleaned_data['house_num'],
                                                                            form.cleaned_data['building_num'],
                                                                            project)
