@@ -918,8 +918,8 @@ class LocateDemandForm(forms.Form):
     
 class LocateHouseForm(forms.Form):
     project = forms.ModelChoiceField(Project.objects.all(), ugettext('choose_project'))
-    building_num = forms.CharField(widget=forms.TextInput(attrs={'size':'3'}), min_value=1, initial = ugettext('building_num'))
-    house_num = forms.CharField(widget=forms.TextInput(attrs={'size':'3'}), min_value=1, initial = ugettext('house_num'))
+    building_num = forms.CharField(widget=forms.TextInput(attrs={'size':'3'}), initial = ugettext('building_num'))
+    house_num = forms.CharField(widget=forms.TextInput(attrs={'size':'3'}), initial = ugettext('house_num'))
     
 class CopyBuildingForm(forms.Form):
     building = forms.ModelChoiceField(queryset = Building.objects.all(), label=ugettext('building'))
