@@ -6,12 +6,17 @@ from inspect import isclass
 def get_fields_names(model):
     return [field.name for field in model._meta.fields]
 
+class EmploymentTermsInline(admin.StackedInline):
+    model = EmploymentTerms
+
 class EmployeeAdmin(admin.ModelAdmin):
     list_display = ('first_name','last_name','pid','work_start','work_end')
     list_filter = ('rank',)
+    inlines = [EmploymentTermsInline]
     
 class NHEmployeeAdmin(admin.ModelAdmin):
     list_display = ('first_name','last_name','pid','work_start','work_end')
+    inlines = [EmploymentTermsInline]
 
 class NHBranchEmployeeAdmin(admin.ModelAdmin):
     list_display = get_fields_names(NHBranchEmployee)
