@@ -1177,7 +1177,7 @@ def nhemployee_add(request):
         form = NHEmployeeForm(request.POST)
         if form.is_valid():
             nhemployee = form.save()
-            nhbranch = form.cleaned_data['nhbrnach']
+            nhbranch = form.cleaned_data['nhbranch']
             NHBranchEmployee.objects.create(nhemployee = nhemployee, nhbranch = nhbranch, start_date = nhemployee.work_start, 
                                             is_manager = False)
             return HttpResponseRedirect(nhemployee.get_absolute_url())
