@@ -112,8 +112,7 @@ class MediaReferralsManager(models.Manager):
 
 class DivisionTypeManager(models.Manager):
     def nh_divisions(self):
-        q = models.Q(pk = DivisionType.NHShoham) | models.Q(pk = DivisionType.NHModiin) | models.Q(pk = DivisionType.NHNesZiona)
-        return self.filter(q)
+        return self.filter(pk__in = (2,3,4))
     
 class ProjectManager(models.Manager):
     def active(self):
