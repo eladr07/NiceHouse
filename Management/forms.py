@@ -252,6 +252,7 @@ class NHEmployeeForm(forms.ModelForm):
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
         self.fields['remarks'].widget.attrs = {'cols':'20', 'rows':'3'}
+        self.fields['birth_date'].widget.attrs = {'class':'vDateField'}
         self.fields['work_start'].widget.attrs = {'class':'vDateField'}
         self.fields['work_end'].widget.attrs = {'class':'vDateField'}
     class Meta:
