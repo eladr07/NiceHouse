@@ -282,10 +282,11 @@ class EmployeeRemoveProjectForm(forms.Form):
         self.fields['end_date'].widget.attrs = {'class':'vDateField'}
 
 class CPriceAmountForm(forms.ModelForm):
-    def save(self, *args, **kw):
-        if self.instance.price == 0:
-            self.instance.price = sys.maxint
-        return super(CPriceAmountForm, self).save(*args, **kw)
+    def clean_price(self):
+        price = self.cleaned_data['price']
+        if not price:
+            price = sys.maxint
+        return price
     class Meta:
         model = CPriceAmount
  
