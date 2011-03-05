@@ -8,7 +8,7 @@ def get_fields_names(model):
 
 class EmploymentTermsInline(admin.StackedInline):
     model = EmploymentTerms
-    fk_name = 'NHEmployee'
+    fk_name = 'nhemployee'
 
 class EmployeeAdmin(admin.ModelAdmin):
     list_display = ('first_name','last_name','pid','work_start','work_end')
