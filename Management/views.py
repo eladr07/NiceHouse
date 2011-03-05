@@ -1171,6 +1171,20 @@ def employee_remarks(request, year, month):
     return render_to_response('Management/employee_salary_edit.html', 
                               { 'form':form, 'month':month, 'year':year },
                               context_instance=RequestContext(request))
+    
+def nhemployee_add(request):
+    if request.method == 'POST':
+        form = NHEmployeeForm(request.POST)
+        if form.is_valid():
+            nhemployee = form.save()
+            nhbranch = form.cleaned_data['nhbrnach']
+            nhbe = NHBranchEmployee(nhemployee = nhemployee, nhbranch = nhbranch, start_date = nhemployee.work_start, is_manager = False)
+            nhbe.save()
+            return HttpResponseRedirect(nhemployee.get_absolute_url())
+    else:
+        form = NHEmployeeForm()
+        
+    return render_to_response('Management/nhemployee_form.html', {'form':form}, context_instance=RequestContext(request))
 
 def nhemployee_sales(request, id, year, month):
     es = NHEmployeeSalary.objects.get(nhemployee__id = id, year = year, month = month)

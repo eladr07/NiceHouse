@@ -247,6 +247,8 @@ class EmployeeForm(forms.ModelForm):
         model = Employee
 
 class NHEmployeeForm(forms.ModelForm):
+    nhbranch = forms.ModelChoiceField(NHBranch.objects.all(), ugettext('choose_branch'), label = ugettext('nhbranch'))
+    
     def __init__(self, *args, **kw):
         forms.ModelForm.__init__(self,*args,**kw)
         self.fields['remarks'].widget.attrs = {'cols':'20', 'rows':'3'}
