@@ -6,6 +6,9 @@ from inspect import isclass
 def get_fields_names(model):
     return [field.name for field in model._meta.fields]
 
+class EmploymentTermsAdmin(admin.ModelAdmin):
+    list_display = get_fields_names(EmploymentTerms)
+
 class EmployeeAdmin(admin.ModelAdmin):
     list_display = ('first_name','last_name','pid','work_start','work_end')
     list_filter = ('rank',)
@@ -81,6 +84,7 @@ class SaleAdmin(admin.ModelAdmin):
     inlines = [SaleCommissionDetailAdmin, SaleHouseModInline, SalePriceModInline, SalePreInline, SaleRejectInline, SaleCancelInline]
 
 admin.site.register(Project, ProjectAdmin)
+admin.site.register(EmploymentTerms, EmploymentTermsAdmin)
 admin.site.register(Employee, EmployeeAdmin)
 admin.site.register(NHEmployee, NHEmployeeAdmin)
 admin.site.register(NHBranchEmployee, NHBranchEmployeeAdmin)
