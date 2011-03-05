@@ -1622,7 +1622,7 @@ class BDiscountSave(models.Model):
     def calc(self, sales):
         dic = {}
         for s in sales:
-            saved = max(s.saved_discount, self.max_for_bonus)
+            saved = min(s.saved_discount, self.max_for_bonus)
             dic[s] = saved * self.precentage_bonus
         return dic
     class Meta:
@@ -1634,7 +1634,7 @@ class BDiscountSavePrecentage(models.Model):
     def calc(self, sales):
         dic = {}
         for s in sales:
-            saved = max(s.saved_discount, self.max_for_bonus)
+            saved = min(s.saved_discount, self.max_for_bonus)
             dic[s] = saved * self.precentage_bonus
         return dic
     class Meta:
