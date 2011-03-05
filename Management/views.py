@@ -2198,10 +2198,11 @@ def employee_commission_del(request, employee_id, project_id, commission):
     for field in c._meta.fields:
         if abbrevate(field.name) == commission:
             obj = getattr(c, field.name)
+            #unlink commission from employee
+            setattr(c, field.name, None)
+            c.save()
             break
-    #unlink commission from employee
-    setattr(c, commission, None)
-    c.save()
+
     #delete commission
     obj.delete()
     return HttpResponseRedirect('/employees/%s' % employee.id)
