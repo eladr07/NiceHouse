@@ -772,7 +772,7 @@ def nhemployee_salary_list(request):
     for nhbe in NHBranchEmployee.objects.month(year, month):
         es, new = NHEmployeeSalary.objects.get_or_create(nhemployee = nhbe.nhemployee, nhbranch = nhbe.nhbranch,
                                                          month = month, year = year)
-        if new or not es.commissions or not es.base or not es.admin_commission: 
+        if (new or not es.commissions or not es.base or not es.admin_commission) and es.approved_date == None: 
             es.calculate()
             es.save()
         branch_sales = branch_list.setdefault(nhbe.nhbranch, [])
