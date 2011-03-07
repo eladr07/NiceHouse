@@ -1107,7 +1107,7 @@ class EmployeeSalesWriter(DocumentBase):
             houses_rows = houses_table.cells()
             
             # merge all sale rows with house rows
-            rows = [sales_rows[i] + houses_rows[i] for i in range(len(sales))]
+            rows = [sales_rows[i] + houses_rows[i] for i in range(len(sales)) + 1]
             row_heights = [max(sales_table.rows[i].height, houses_table.rows[i].height) for i in range(len(sales))]
             col_widths = sales_table.col_widths() + houses_table.col_widths()
             
