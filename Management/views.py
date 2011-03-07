@@ -3243,13 +3243,17 @@ def report_employee_sales(request):
                 cleaned_data['from_year'], cleaned_data['to_month'], cleaned_data['to_year']
                 
             demands = Demand.objects.range(from_year, from_month, to_year, to_month).filter(project = project)
+            sales = []
+            
+            for demand in demands:
+                sales.extend(demand.get_sales())
             
             filename = common.generate_unique_media_filename('pdf')
     
             response = HttpResponse(mimetype='application/pdf')
             response['Content-Disposition'] = 'attachment; filename=' + filename
             
-            EmployeeSalesWriter(demands).build(filename)
+            EmployeeSalesWriter(project, from_month, from_year, to_month, to_year, sales).build(filename)
             
             p = open(filename,'r')
             response.write(p.read())
