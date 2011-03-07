@@ -165,7 +165,7 @@ class SaleEmployeeNameField(TableField):
     def __init__(self):
         return super(SaleEmployeeNameField, self).__init__(log2vis(ugettext('pdf_employee_name')), 60)
     def format(self, item):
-        return log2vis(unicode(item.employee))
+        return log2vis(unicode(item.employee or ''))
     
     class Meta:
         models = (models.Sale,)
