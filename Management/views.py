@@ -3247,7 +3247,7 @@ def report_employee_sales(request):
             
             for demand in demands:
                 sales.extend(demand.get_sales())
-            
+            raise ''
             filename = common.generate_unique_media_filename('pdf')
     
             response = HttpResponse(mimetype='application/pdf')
