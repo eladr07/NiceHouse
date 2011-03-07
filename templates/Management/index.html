@@ -217,9 +217,11 @@
 			<ul>
 				<li><a href="">דו"ח מכירות לסוכן</a></li>
 				<form method="GET" action="reports/employeesales">
-					{% for field in employeeSalesForm %}
-						{{ field }}
-					{% endfor%}
+					{{ employeeSalesForm.project }}
+					{{ employeeSalesForm.from_month }}
+					{{ employeeSalesForm.from_year }}
+					{{ employeeSalesForm.to_month }}
+					{{ employeeSalesForm.to_year }}
 					<input type="submit" class="button" value="PDF" />
 				</form>
 			</ul>

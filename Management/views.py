@@ -3248,18 +3248,17 @@ def report_employee_sales(request):
             for demand in demands:
                 sales.extend(demand.get_sales())
             
-            if len(sales):
-                filename = common.generate_unique_media_filename('pdf')
-        
-                response = HttpResponse(mimetype='application/pdf')
-                response['Content-Disposition'] = 'attachment; filename=' + filename
-                
-                EmployeeSalesWriter(project, from_month, from_year, to_month, to_year, sales).build(filename)
-                
-                p = open(filename,'r')
-                response.write(p.read())
-                p.close()
-                return response
+            filename = common.generate_unique_media_filename('pdf')
+    
+            response = HttpResponse(mimetype='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename=' + filename
+            
+            EmployeeSalesWriter(project, from_month, from_year, to_month, to_year, sales).build(filename)
+            
+            p = open(filename,'r')
+            response.write(p.read())
+            p.close()
+            return response
 
     error = u'לא ניתן להפיק את הדו"ח. אנא ודא שכל הנתונים הוזנו כראוי.'
     return render_to_response('Management/error.html', {'error': error}, context_instance=RequestContext(request))
