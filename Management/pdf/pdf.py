@@ -1111,8 +1111,8 @@ class EmployeeSalesWriter(DocumentBase):
             row_heights = [max(sales_table.rows[i].height, houses_table.rows[i].height) for i in range(len(sales))]
             col_widths = sales_table.col_widths() + houses_table.col_widths()
             
-            if demand.month ==3 and demand.year == 2010:
-                raise  ''
+            if len(rows) == 1:
+                raise ''
 
             tableFlow = Table(rows, col_widths, row_heights, projectTableStyle, 1)
             flows.append(tableFlow)
