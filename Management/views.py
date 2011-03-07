@@ -3242,7 +3242,7 @@ def report_employee_sales(request):
             project, from_month, from_year, to_month, to_year = cleaned_data['project'], cleaned_data['from_month'], \
                 cleaned_data['from_year'], cleaned_data['to_month'], cleaned_data['to_year']
                 
-            demands = Demand.objects.filter(project = project).range(from_year, from_month, to_year, to_month)
+            demands = Demand.objects.range(from_year, from_month, to_year, to_month).filter(project = project)
             
             filename = common.generate_unique_media_filename('pdf')
     
