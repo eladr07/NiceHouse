@@ -122,6 +122,15 @@ class PaymentsAmountField(TableField):
     class Meta:
         models = (models.Demand,)
 
+class SaleActualMonthField(TableField):
+    def __init__(self):
+        return super(SaleActualMonthField, self).__init__(log2vis(ugettext('pdf_sale_month')), 50)
+    def format(self, item):
+        return '%s/%s' % (item.contractor_pay_month, item.contractor_pay_year)
+    
+    class Meta:
+        models = (models.Sale,)
+        
 class SaleClientsField(TableField):
     def __init__(self):
         return super(SaleClientsField, self).__init__(log2vis(ugettext('pdf_clients_name')), 65)

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-05 12:59+0200\n"
+"POT-Creation-Date: 2011-03-07 23:03+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -33,7 +33,7 @@ msgstr "עד שנה"
 msgid "to_month"
 msgstr "עד חודש"
 
-#: Management/forms.py:31 Management/forms.py:431 Management/forms.py:529
+#: Management/forms.py:31 Management/forms.py:432 Management/forms.py:530
 #: Management/models.py:782 Management/models.py:801 Management/models.py:814
 #: Management/models.py:857 Management/models.py:886 Management/models.py:1917
 #: Management/models.py:2166 Management/models.py:2185
@@ -42,7 +42,7 @@ msgstr "עד חודש"
 msgid "year"
 msgstr "שנה"
 
-#: Management/forms.py:32 Management/forms.py:432 Management/forms.py:530
+#: Management/forms.py:32 Management/forms.py:433 Management/forms.py:531
 #: Management/models.py:781 Management/models.py:800 Management/models.py:813
 #: Management/models.py:856 Management/models.py:885 Management/models.py:1916
 #: Management/models.py:2167 Management/models.py:2186
@@ -113,8 +113,8 @@ msgstr "מחיר"
 msgid "price_date"
 msgstr "ת. מחיר"
 
-#: Management/forms.py:208 Management/forms.py:211 Management/forms.py:496
-#: Management/forms.py:498
+#: Management/forms.py:208 Management/forms.py:211 Management/forms.py:497
+#: Management/forms.py:499
 msgid "mandatory_field"
 msgstr "שדה חובה"
 
@@ -122,14 +122,14 @@ msgstr "שדה חובה"
 msgid "choose_branch"
 msgstr "בחר סניף"
 
-#: Management/forms.py:250 Management/forms.py:801 Management/forms.py:838
+#: Management/forms.py:250 Management/forms.py:802 Management/forms.py:839
 #: Management/models.py:594 Management/models.py:680 Management/models.py:1008
 #: Management/models.py:2401 Management/models.py:3079
 msgid "nhbranch"
 msgstr "סניף"
 
-#: Management/forms.py:269 Management/forms.py:277 Management/forms.py:700
-#: Management/forms.py:841 Management/forms.py:948 Management/models.py:553
+#: Management/forms.py:269 Management/forms.py:277 Management/forms.py:701
+#: Management/forms.py:842 Management/forms.py:949 Management/models.py:553
 #: Management/models.py:780 Management/models.py:798 Management/models.py:812
 #: Management/models.py:855 Management/models.py:1084
 #: Management/models.py:2135 Management/models.py:2581
@@ -137,10 +137,10 @@ msgstr "סניף"
 msgid "employee"
 msgstr "עובד"
 
-#: Management/forms.py:270 Management/forms.py:278 Management/forms.py:293
-#: Management/forms.py:330 Management/forms.py:337 Management/forms.py:429
-#: Management/forms.py:523 Management/forms.py:527 Management/forms.py:832
-#: Management/forms.py:835 Management/forms.py:945 Management/forms.py:951
+#: Management/forms.py:270 Management/forms.py:278 Management/forms.py:294
+#: Management/forms.py:331 Management/forms.py:338 Management/forms.py:430
+#: Management/forms.py:524 Management/forms.py:528 Management/forms.py:833
+#: Management/forms.py:836 Management/forms.py:946 Management/forms.py:952
 #: Management/models.py:229 Management/models.py:408 Management/models.py:1915
 #: Management/models.py:3020 Management/models.py:3057
 msgid "project"
@@ -154,38 +154,38 @@ msgstr "תאריך תחילה"
 msgid "end_date"
 msgstr "תאריך סיום"
 
-#: Management/forms.py:294 Management/forms.py:338 Management/forms.py:929
+#: Management/forms.py:295 Management/forms.py:339 Management/forms.py:930
 #: Management/models.py:251 Management/models.py:264 Management/models.py:277
 #: Management/models.py:3021
 msgid "building"
 msgstr "בניין"
 
-#: Management/forms.py:317 Management/forms.py:467 Management/models.py:1671
+#: Management/forms.py:318 Management/forms.py:468 Management/models.py:1671
 msgid "add_type"
 msgstr "סוג תוספת"
 
-#: Management/forms.py:331
+#: Management/forms.py:332
 msgid "include_clients"
 msgstr "כולל רוכשים"
 
-#: Management/forms.py:333 Management/models.py:1358 Management/models.py:2495
+#: Management/forms.py:334 Management/models.py:1358 Management/models.py:2495
 msgid "house_type"
 msgstr "סוג דירה"
 
-#: Management/forms.py:334 Management/models.py:281 Management/models.py:2493
+#: Management/forms.py:335 Management/models.py:281 Management/models.py:2493
 #: Management/models.py:2941 Management/models.py:3001
 msgid "rooms"
 msgstr "חדרים"
 
-#: Management/forms.py:339
+#: Management/forms.py:340
 msgid "joined sale"
 msgstr "מכירה משותפת"
 
-#: Management/forms.py:340 Management/models.py:2138
+#: Management/forms.py:341 Management/models.py:2138
 msgid "signup_date"
 msgstr "ת. הרשמה"
 
-#: Management/forms.py:417 Management/models.py:66 Management/models.py:152
+#: Management/forms.py:418 Management/models.py:66 Management/models.py:152
 #: Management/models.py:255 Management/models.py:268 Management/models.py:284
 #: Management/models.py:402 Management/models.py:415 Management/models.py:461
 #: Management/models.py:476 Management/models.py:492 Management/models.py:804
@@ -200,12 +200,12 @@ msgstr "ת. הרשמה"
 msgid "remarks"
 msgstr "הערות"
 
-#: Management/forms.py:464 Management/forms.py:707 Management/forms.py:736
+#: Management/forms.py:465 Management/forms.py:708 Management/forms.py:737
 #: Management/models.py:1822
 msgid "invoice_num"
 msgstr "מס' חשבונית"
 
-#: Management/forms.py:524 Management/models.py:783 Management/models.py:799
+#: Management/forms.py:525 Management/models.py:783 Management/models.py:799
 #: Management/models.py:815 Management/models.py:1359
 #: Management/models.py:1825 Management/models.py:1840
 #: Management/models.py:1864 Management/models.py:1902
@@ -213,183 +213,183 @@ msgstr "מס' חשבונית"
 msgid "amount"
 msgstr "סכום"
 
-#: Management/forms.py:561 Management/forms.py:562
+#: Management/forms.py:562 Management/forms.py:563
 msgid "lawyer_pay"
 msgstr "תשלום לעו\"ד"
 
-#: Management/forms.py:619 Management/forms.py:625 Management/forms.py:682
-#: Management/forms.py:692 Management/forms.py:701 Management/models.py:2799
+#: Management/forms.py:620 Management/forms.py:626 Management/forms.py:683
+#: Management/forms.py:693 Management/forms.py:702 Management/models.py:2799
 #: Management/models.py:2915
 msgid "division_type"
 msgstr "חטיבה עסקית"
 
-#: Management/forms.py:623
+#: Management/forms.py:624
 msgid "all"
 msgstr "כל החטיבות"
 
-#: Management/forms.py:624
+#: Management/forms.py:625
 msgid "all_nh"
 msgstr "חטיבות נייס האוס"
 
-#: Management/forms.py:636
+#: Management/forms.py:637
 msgid "status"
 msgstr "מצב"
 
-#: Management/forms.py:658
+#: Management/forms.py:659
 msgid "tag_new"
 msgstr "תגית נושא חדשה"
 
-#: Management/forms.py:684 Management/models.py:600 Management/models.py:606
+#: Management/forms.py:685 Management/models.py:600 Management/models.py:606
 #: Management/models.py:2916
 msgid "income_type"
 msgstr "סוג הכנסה"
 
-#: Management/forms.py:686
+#: Management/forms.py:687
 msgid "client_name"
 msgstr "שם הלקוח"
 
-#: Management/forms.py:688 Management/models.py:2917
+#: Management/forms.py:689 Management/models.py:2917
 msgid "income_producer_type"
 msgstr "מייצר הכנסה"
 
-#: Management/forms.py:694 Management/forms.py:703 Management/models.py:2800
+#: Management/forms.py:695 Management/forms.py:704 Management/models.py:2800
 msgid "expense_type"
 msgstr "סוג הוצאה"
 
-#: Management/forms.py:696 Management/models.py:2836
+#: Management/forms.py:697 Management/models.py:2836
 msgid "supplier_type"
 msgstr "ספק"
 
-#: Management/forms.py:709 Management/forms.py:738 Management/forms.py:763
+#: Management/forms.py:710 Management/forms.py:739 Management/forms.py:764
 msgid "new_division_type"
 msgstr "ח. עסקית חדשה"
 
-#: Management/forms.py:710 Management/forms.py:739
+#: Management/forms.py:711 Management/forms.py:740
 msgid "new_expense_type"
 msgstr "סוג הוצאה חדש"
 
-#: Management/forms.py:711
+#: Management/forms.py:712
 msgid "new_supplier_type"
 msgstr "ספק חדש"
 
-#: Management/forms.py:764
+#: Management/forms.py:765
 msgid "new_income_type"
 msgstr "סוג הכנסה חדש"
 
-#: Management/forms.py:765
+#: Management/forms.py:766
 msgid "new_income_producer_type"
 msgstr "מייצר הכנסה חדש"
 
-#: Management/forms.py:766
+#: Management/forms.py:767
 msgid "new_client_type"
 msgstr "לקוח חדש"
 
-#: Management/forms.py:770
+#: Management/forms.py:771
 msgid "missing_division_type"
 msgstr "ח. עסקית חסרה"
 
-#: Management/forms.py:772
+#: Management/forms.py:773
 msgid "missing_income_type"
 msgstr "סוג הכנסה חסר"
 
-#: Management/forms.py:774
+#: Management/forms.py:775
 msgid "missing_income_producer_type"
 msgstr "מייצר הכנסה חסר"
 
-#: Management/forms.py:776
+#: Management/forms.py:777
 msgid "missing_client_type"
 msgstr "לקוח חסר"
 
-#: Management/forms.py:785
+#: Management/forms.py:786
 msgid "new_client_status_type"
 msgstr "סטטוס לקוח חדש"
 
-#: Management/forms.py:793
+#: Management/forms.py:794
 msgid "missing_client_status_type"
 msgstr "סטטוס לקוח חסר"
 
-#: Management/forms.py:858
-msgid "new_city"
-msgstr "עיר חדשה"
-
-#: Management/forms.py:865
-msgid "new_media"
-msgstr "מדיה חדשה"
-
-#: Management/forms.py:907 Management/models.py:444
-msgid "first_name"
-msgstr "שם פרטי"
-
-#: Management/forms.py:908 Management/models.py:445
-msgid "last_name"
-msgstr "שם משפחה"
-
-#: Management/forms.py:909 Management/models.py:449
-msgid "role"
-msgstr "תפקיד"
-
-#: Management/forms.py:910 Management/models.py:460
-msgid "company"
-msgstr "חברה"
-
-#: Management/forms.py:913 Management/forms.py:924
+#: Management/forms.py:836 Management/forms.py:914 Management/forms.py:925
 msgid "choose_project"
 msgstr "בחר פרוייקט"
 
-#: Management/forms.py:925 Management/models.py:409
+#: Management/forms.py:859
+msgid "new_city"
+msgstr "עיר חדשה"
+
+#: Management/forms.py:866
+msgid "new_media"
+msgstr "מדיה חדשה"
+
+#: Management/forms.py:908 Management/models.py:444
+msgid "first_name"
+msgstr "שם פרטי"
+
+#: Management/forms.py:909 Management/models.py:445
+msgid "last_name"
+msgstr "שם משפחה"
+
+#: Management/forms.py:910 Management/models.py:449
+msgid "role"
+msgstr "תפקיד"
+
+#: Management/forms.py:911 Management/models.py:460
+msgid "company"
+msgstr "חברה"
+
+#: Management/forms.py:926 Management/models.py:409
 msgid "building_num"
 msgstr "מס' בניין"
 
-#: Management/forms.py:926 Management/models.py:279
+#: Management/forms.py:927 Management/models.py:279
 msgid "house_num"
 msgstr "מס' דירה"
 
-#: Management/forms.py:930
+#: Management/forms.py:931
 msgid "new_building_num"
 msgstr "מס' בניין חדש"
 
-#: Management/forms.py:931
+#: Management/forms.py:932
 msgid "include_houses"
 msgstr "כולל דירות"
 
-#: Management/forms.py:932
+#: Management/forms.py:933
 msgid "include_house_prices"
 msgstr "כולל מחירים"
 
-#: Management/forms.py:933
+#: Management/forms.py:934
 msgid "include_parkings"
 msgstr "כולל חניות"
 
-#: Management/forms.py:934
+#: Management/forms.py:935
 msgid "include_storages"
 msgstr "כולל מחסנים"
 
-#: Management/forms.py:941
+#: Management/forms.py:942
 msgid "existing_building_num"
 msgstr "מס' בניין כבר קיים"
 
-#: Management/forms.py:954
+#: Management/forms.py:955
 msgid "to"
 msgstr "נמען"
 
-#: Management/forms.py:955
+#: Management/forms.py:956
 msgid "CC"
 msgstr "עותק"
 
-#: Management/forms.py:956
+#: Management/forms.py:957
 msgid "BCC"
 msgstr "עותק חסוי"
 
-#: Management/forms.py:957
+#: Management/forms.py:958
 msgid "subject"
 msgstr "נושא"
 
-#: Management/forms.py:958 Management/forms.py:959 Management/forms.py:960
-#: Management/forms.py:961 Management/forms.py:962
+#: Management/forms.py:959 Management/forms.py:960 Management/forms.py:961
+#: Management/forms.py:962 Management/forms.py:963
 msgid "attachment"
 msgstr "קובץ מצורף"
 
-#: Management/forms.py:963
+#: Management/forms.py:964
 msgid "contents"
 msgstr "תוכן"
 
@@ -1352,7 +1352,7 @@ msgstr "מס' פגישות חוזרות"
 msgid "new_meetings_from_phone_num"
 msgstr "מס' פגישות חדשות מתאום טלפוני"
 
-#: Management/views.py:2595
+#: Management/views.py:2598
 msgid "copy_building"
 msgstr "שכפול בניין"
 
@@ -1405,3 +1405,55 @@ msgstr "מס' צ'ק"
 #: Management/pdf/table_fields.py:115
 msgid "pdf_payments_amount"
 msgstr "סך צ'ק"
+
+#: Management/pdf/table_fields.py:127
+msgid "pdf_sale_month"
+msgstr "חודש"
+
+#: Management/pdf/table_fields.py:136
+msgid "pdf_clients_name"
+msgstr "שם\nהרוכשים"
+
+#: Management/pdf/table_fields.py:151
+msgid "pdf_price_with_tax"
+msgstr "עו\"ד\nכולל"
+
+#: Management/pdf/table_fields.py:161
+msgid "pdf_include_lawyer_tax"
+msgstr "ע\"וד\nכולל"
+
+#: Management/pdf/table_fields.py:166
+msgid "no"
+msgstr "לא"
+
+#: Management/pdf/table_fields.py:168
+msgid "yes"
+msgstr "כן"
+
+#: Management/pdf/table_fields.py:175
+msgid "pdf_employee_name"
+msgstr "העובד\nשם"
+
+#: Management/pdf/table_fields.py:184
+msgid "pdf_house_num"
+msgstr "דירה\nמס'"
+
+#: Management/pdf/table_fields.py:193
+msgid "pdf_rooms_num"
+msgstr "חדרים\nמס'"
+
+#: Management/pdf/table_fields.py:202
+msgid "pdf_floor"
+msgstr "קומה"
+
+#: Management/pdf/table_fields.py:211
+msgid "pdf_house_size"
+msgstr "דירה\nשטח"
+
+#: Management/pdf/table_fields.py:220
+msgid "pdf_garden_size"
+msgstr "גינה/מרפסת\nשטח"
+
+#: Management/pdf/table_fields.py:229
+msgid "pdf_house_type"
+msgstr "דירה\nסוג"

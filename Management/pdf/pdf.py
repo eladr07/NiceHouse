@@ -1083,6 +1083,9 @@ class EmployeeSalesWriter(DocumentBase):
                         HouseTypeField()]
         sale_fields = [SaleClientsField(), SalePriceWithTaxField(), SaleIncludeLawyerTaxField(), SaleEmployeeNameField()]
         
+        house_fields.reverse()
+        sale_fields.reverse()
+        
         sales = self.sales
         houses = [sale.house for sale in sales]
         
