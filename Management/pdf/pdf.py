@@ -16,8 +16,8 @@ from pyfribidi import log2vis
 from reportlab.lib.enums import *
 from reportlab.lib.styles import ParagraphStyle
 
-from table_fields import *
 from helpers import Builder
+from table_fields import *
 
 from styles import *
 
@@ -1073,6 +1073,41 @@ class BuildingClientsWriter:
         story.extend(self.housesFlows())
         doc.build(story, self.addTemplate, self.addTemplate)
         return doc.canv
+
+class EmployeeSalesWriter(DocumentBase):
+    def __init__(self, project, from_month, from_year, to_month, to_year, sales):
+        self.project, self.from_month, self.from_year, self.to_month, self.to_year, self.sales = \
+            project, from_month, from_year,to_month , to_year, sales
+    def get_flows(self):
+        house_fields = [HouseNumField(),HouseRoomsField(), HouseFloorField(), HouseSizeField(), HouseGardenSizeField(),
+                        HouseTypeField()]
+        sale_fields = [SaleClientsField(), SalePriceWithTaxField(), SaleIncludeLawyerTaxField(), SaleEmployeeNameField()]
+        
+        sales = self.sales
+        houses = [sale.house for sale in sales]
+        
+        builder = Builder(sales, sale_fields)
+        sales_table = builder.build()
+        sales_rows = sales_table.cells()
+        
+        builder = Builder(houses, house_fields)
+        houses_table = builder.build()
+        houses_rows = houses_table.cells()
+        
+        # merge all sale rows with house rows
+        rows = [houses_rows[i] + sales_rows for i in range(len(sales))]
+            
+        tableFlow = Table(rows, sales_table.col_widths() + houses_table.col_widths(), 
+                          sales_table.row_heights() + houses_table.row_heights(), projectTableStyle, 1)
+        
+        return [tableFlow]
+        
+    def get_story(self):
+        title_str = u'דו"ח מכירות לסוכן - ' + unicode(self.project)
+        subtitle_str = u"%s/%s - %s/%s" %(self.from_month, self.from_year, self.to_month, self.to_year)
+        story = [titlePara(title_str), titlePara(subtitle_str), Spacer(0,20)]
+        story.extend(self.get_flows())
+        return story
 
 class DemandFollowupWriter(DocumentBase):
     def __init__(self, project, from_month, from_year, to_month, to_year, demands):

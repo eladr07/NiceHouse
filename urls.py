@@ -353,6 +353,7 @@ urlpatterns += patterns('',
     (r'^reports/project_season/(?P<project_id>\d+)/(?P<from_year>\d+)/(?P<from_month>\d+)/(?P<to_year>\d+)/(?P<to_month>\d+)$', report_project_season),
     (r'^reports/project_followup/(?P<project_id>\d+)/(?P<from_year>\d+)/(?P<from_month>\d+)/(?P<to_year>\d+)/(?P<to_month>\d+)$', report_project_followup),
     (r'^reports/employeesalary_season/(?P<employee_id>\d+)/(?P<from_year>\d+)/(?P<from_month>\d+)/(?P<to_year>\d+)/(?P<to_month>\d+)$', report_employeesalary_season),
+    (r'^reports/employeesales$', report_employee_sales),
     
     (r'^madadbi/$', limited_object_list,
      {'queryset':MadadBI.objects.all(), 'template_name':'Management/madadbi_list.html', 'context_processors':[RequestContext]}),

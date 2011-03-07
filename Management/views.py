@@ -21,6 +21,7 @@ from forms import *
 from models import *
 from pdf.pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, ProjectListWriter
 from pdf.pdf import PricelistWriter, BuildingClientsWriter, EmployeeSalariesBookKeepingWriter, SalariesBankWriter, DemandFollowupWriter
+from pdf.pdf import EmployeeSalesWriter
 from mail import mail
 
 def object_edit_core(request, form_class, instance,
@@ -81,6 +82,7 @@ def calc_demands(demands):
 def index(request):
     return render_to_response('Management/index.html',
                               {'locateHouseForm':LocateHouseForm(), 'locateDemandForm': LocateDemandForm(),
+                               'employeeSalesForm': ProjectSeasonForm(),
                                'nhbranches':NHBranch.objects.all()}, context_instance=RequestContext(request))
   
 @login_required  
@@ -3230,6 +3232,34 @@ def demand_sales(request, project_id, year, month):
     return render_to_response('Management/sale_table.html',
 							  {'sales':sales},
 							  context_instance=RequestContext(request))
+
+@permission_required('Management.report_employee_sales')
+def report_employee_sales(request):
+    if len(request.GET):
+        form = ProjectSeasonForm(request.GET)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            project, from_month, from_year, to_month, to_year = cleaned_data['project'], cleaned_data['from_month'], \
+                cleaned_data['from_year'], cleaned_data['to_month'], cleaned_data['to_year']
+                
+            demands = Demand.objects.filter(project = project).range(from_year, from_month, to_year, to_month)
+            
+            filename = common.generate_unique_media_filename('pdf')
+    
+            response = HttpResponse(mimetype='application/pdf')
+            response['Content-Disposition'] = 'attachment; filename=' + filename
+            
+            EmployeeSalesWriter(demands).build(filename)
+            
+            p = open(filename,'r')
+            response.write(p.read())
+            p.close()
+            return response
+
+    error = u'לא ניתן להפיק את הדו"ח. אנא ודא שכל הנתונים הוזנו כראוי.'
+    return render_to_response('Management/error.html', {'error': error}, context_instance=RequestContext(request))
+        
+    
 
 @permission_required('Management.report_project_month')
 def report_project_month(request, project_id = 0, year = 0, month = 0, demand = None):

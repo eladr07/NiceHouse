@@ -8,6 +8,7 @@ styleNormal13 = ParagraphStyle('normal', fontName='David',fontSize=13, leading=1
 styleDate = ParagraphStyle('date', fontName='David',fontSize=14, leading=15)
 styleRow = ParagraphStyle('sumRow', fontName='David',fontSize=11, leading=15)
 styleRow9 = ParagraphStyle('sumRow', fontName='David',fontSize=9, leading=15, alignment=TA_RIGHT)
+styleRow10 = ParagraphStyle('clients', fontName = 'David', fontSize=10, alignment = TA_CENTER)
 styleSumRow = ParagraphStyle('Row', fontName='David-Bold',fontSize=11, leading=15)
 styleSaleSumRow = ParagraphStyle('Row', fontName='David-Bold',fontSize=9, leading=15)
 styleSubj = ParagraphStyle('subject', fontName='David',fontSize=16, leading=15, alignment=TA_CENTER)

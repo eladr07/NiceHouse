@@ -2,9 +2,9 @@ import Management.models as models
 
 from reportlab.platypus import Paragraph
 from pyfribidi import log2vis
-from styles import *
 from Management.templatetags.management_extras import commaise
 from django.utils.translation import ugettext
+from styles import *
 
 class TableField(object):
     def __init__(self, title='', width= -1, is_summarized=False, is_commaised=False):
@@ -38,7 +38,7 @@ class ProjectInitiatorField(TableField):
 
 class MonthField(TableField):
     def __init__(self):
-        return super(ProjectInitiatorField, self).__init__(log2vis(ugettext('pdf_month')))
+        return super(MonthField, self).__init__(log2vis(ugettext('pdf_month')))
     def format(self, item):
         return '%s/%s' % (item.month, item.year)
     
@@ -121,3 +121,100 @@ class PaymentsAmountField(TableField):
         
     class Meta:
         models = (models.Demand,)
+
+class SaleClientsField(TableField):
+    def __init__(self):
+        return super(SaleClientsField, self).__init__(log2vis(ugettext('pdf_clients_name')), 65)
+    def format(self, item):
+        clients = item.clients
+        str2 = ''
+        parts = clients.strip().split('\r\n')
+        parts.reverse()
+        for s in parts:
+            str2 += log2vis(s)
+        return Paragraph(str2, styleRow10)
+    
+    class Meta:
+        models = (models.Sale,)
+        
+class SalePriceWithTaxField(TableField):
+    def __init__(self):
+        return super(SalePriceWithTaxField, self).__init__(log2vis(ugettext('pdf_price_with_tax')), 50, is_commaised = True,
+                                                           is_summarized = True)
+    def format(self, item):
+        return item.price_taxed
+    
+    class Meta:
+        models = (models.Sale,)
+        
+class SaleIncludeLawyerTaxField(TableField):
+    def __init__(self):
+        return super(SaleIncludeLawyerTaxField, self).__init__(log2vis(ugettext('pdf_include_lawyer_tax')), 50)
+    def format(self, item):
+        return ugettext(item.include_lawyer)
+    
+    class Meta:
+        models = (models.Sale,)
+        
+class SaleEmployeeNameField(TableField):
+    def __init__(self):
+        return super(SaleEmployeeNameField, self).__init__(log2vis(ugettext('pdf_employee_name')), 50)
+    def format(self, item):
+        return item.employee
+    
+    class Meta:
+        models = (models.Sale,)
+
+class HouseNumField(TableField):
+    def __init__(self):
+        return super(HouseNumField, self).__init__(log2vis(ugettext('pdf_house_num')),50)
+    def format(self, item):
+        return item.num
+    
+    class Meta:
+        models = (models.House,)
+        
+class HouseRoomsField(TableField):
+    def __init__(self):
+        return super(HouseRoomsField, self).__init__(log2vis(ugettext('pdf_rooms_num')),50)
+    def format(self, item):
+        return item.rooms
+    
+    class Meta:
+        models = (models.House,)
+        
+class HouseFloorField(TableField):
+    def __init__(self):
+        return super(HouseFloorField, self).__init__(log2vis(ugettext('pdf_floor')),50)
+    def format(self, item):
+        return item.floor
+    
+    class Meta:
+        models = (models.House,)
+        
+class HouseSizeField(TableField):
+    def __init__(self):
+        return super(HouseSizeField, self).__init__(log2vis(ugettext('pdf_house_size')),50)
+    def format(self, item):
+        return item.net_size
+    
+    class Meta:
+        models = (models.House,)
+        
+class HouseGardenSizeField(TableField):
+    def __init__(self):
+        return super(HouseGardenSizeField, self).__init__(log2vis(ugettext('pdf_garden_size')),50)
+    def format(self, item):
+        return item.garden_size
+    
+    class Meta:
+        models = (models.House,)
+        
+class HouseTypeField(TableField):
+    def __init__(self):
+        return super(HouseTypeField, self).__init__(log2vis(ugettext('pdf_house_type')),50)
+    def format(self, item):
+        return item.type
+    
+    class Meta:
+        models = (models.House,)

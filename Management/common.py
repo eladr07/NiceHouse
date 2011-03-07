@@ -45,36 +45,36 @@ def restore_object(instance, date):
             return instance
     return version.object_version.object
 
-def has_versions(obj, additional_fields = None):
-    # go over the commission model and its childs to find out if it has a versions (history of changes)
-    Version = reversion.models.Version
-    
-    has_versions = False
-    obj_versions = Version.objects.get_for_object(obj)
-    
-    # every models has at leasy 1 version
-    if len(obj_versions) > 1:
-        has_versions = True
-    # if we haven't found a version on the model itself, we go over 'additional_fields' if exist
-    elif additional_fields:
-        additional_fields_metas = [field for field in obj._meta.fields if field.name in additional_fields]
-        for field_meta in additional_fields_metas:
-            if has_versions:
-                break
-            
-            if not field_meta.rel:
-                continue
-            
-            # get the actual field valud on 'obj'
-            field_val = getattr(obj, field.name)
-            
-            if not field.rel.multiple:
-                # recursively run this function on the field
-                has_versions = has_versions(field_val)
-            else:
-                for field_val_item in field_val.all():
-                    if has_versions:
-                        break
-                    has_versions = has_versions(field_val_item)                        
-        
-    return has_versions
+#def has_versions(obj, additional_fields = None):
+#    # go over the commission model and its childs to find out if it has a versions (history of changes)
+#    Version = reversion.models.Version
+#    
+#    has_versions = False
+#    obj_versions = Version.objects.get_for_object(obj)
+#    
+#    # every models has at leasy 1 version
+#    if len(obj_versions) > 1:
+#        has_versions = True
+#    # if we haven't found a version on the model itself, we go over 'additional_fields' if exist
+#    elif additional_fields:
+#        additional_fields_metas = [field for field in obj._meta.fields if field.name in additional_fields]
+#        for field_meta in additional_fields_metas:
+#            if has_versions:
+#                break
+#            
+#            if not field_meta.rel:
+#                continue
+#            
+#            # get the actual field valud on 'obj'
+#            field_val = getattr(obj, field.name)
+#            
+#            if not field.rel.multiple:
+#                # recursively run this function on the field
+#                has_versions = has_versions(field_val)
+#            else:
+#                for field_val_item in field_val.all():
+#                    if has_versions:
+#                        break
+#                    has_versions = has_versions(field_val_item)                        
+#        
+#    return has_versions
