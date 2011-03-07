@@ -1090,7 +1090,7 @@ class EmployeeSalesWriter(DocumentBase):
         
         for demand in self.demands:
             flows.append(titlePara(u'חודש - %s\%s' % (demand.month, demand.year)))
-            flows.append(Spacer(10))
+            flows.append(Spacer(0, 10))
             
             sales = demand.get_sales()
             houses = [sale.house for sale in sales]
