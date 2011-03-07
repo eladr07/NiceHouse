@@ -1096,9 +1096,10 @@ class EmployeeSalesWriter(DocumentBase):
         
         # merge all sale rows with house rows
         rows = [houses_rows[i] + sales_rows for i in range(len(sales))]
+        row_heights = [max(sales_table.rows[i].height, houses_table.rows[i].height) for i in range(len(sales))]
+        col_widths = sales_table.col_widths() + houses_table.col_widths()
             
-        tableFlow = Table(rows, sales_table.col_widths() + houses_table.col_widths(), 
-                          sales_table.row_heights() + houses_table.row_heights(), projectTableStyle, 1)
+        tableFlow = Table(rows, col_widths, row_heights, projectTableStyle, 1)
         
         return [tableFlow]
         
