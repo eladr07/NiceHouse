@@ -181,7 +181,7 @@ class SaleEmployeeNameField(TableField):
 
 class HouseNumField(TableField):
     def __init__(self):
-        return super(HouseNumField, self).__init__(log2vis(ugettext('pdf_house_num')),50)
+        return super(HouseNumField, self).__init__(log2vis(ugettext('pdf_house_num')),35)
     def format(self, item):
         return item.num
     
@@ -190,7 +190,7 @@ class HouseNumField(TableField):
         
 class HouseRoomsField(TableField):
     def __init__(self):
-        return super(HouseRoomsField, self).__init__(log2vis(ugettext('pdf_rooms_num')),50)
+        return super(HouseRoomsField, self).__init__(log2vis(ugettext('pdf_rooms_num')),35)
     def format(self, item):
         return item.rooms
     
@@ -199,7 +199,7 @@ class HouseRoomsField(TableField):
         
 class HouseFloorField(TableField):
     def __init__(self):
-        return super(HouseFloorField, self).__init__(log2vis(ugettext('pdf_floor')),50)
+        return super(HouseFloorField, self).__init__(log2vis(ugettext('pdf_floor')),35)
     def format(self, item):
         return item.floor
     
@@ -208,7 +208,7 @@ class HouseFloorField(TableField):
         
 class HouseSizeField(TableField):
     def __init__(self):
-        return super(HouseSizeField, self).__init__(log2vis(ugettext('pdf_house_size')),50)
+        return super(HouseSizeField, self).__init__(log2vis(ugettext('pdf_house_size')),40)
     def format(self, item):
         return item.net_size
     
@@ -217,7 +217,7 @@ class HouseSizeField(TableField):
         
 class HouseGardenSizeField(TableField):
     def __init__(self):
-        return super(HouseGardenSizeField, self).__init__(log2vis(ugettext('pdf_garden_size')),50)
+        return super(HouseGardenSizeField, self).__init__(log2vis(ugettext('pdf_garden_size')),55)
     def format(self, item):
         return item.garden_size
     

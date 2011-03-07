@@ -1412,7 +1412,7 @@ msgstr "חודש"
 
 #: Management/pdf/table_fields.py:136
 msgid "pdf_clients_name"
-msgstr "שם\nהרוכשים"
+msgstr "הרוכשים\nשם"
 
 #: Management/pdf/table_fields.py:151
 msgid "pdf_price_with_tax"
