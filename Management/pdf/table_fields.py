@@ -151,7 +151,7 @@ class SaleIncludeLawyerTaxField(TableField):
     def __init__(self):
         return super(SaleIncludeLawyerTaxField, self).__init__(log2vis(ugettext('pdf_include_lawyer_tax')), 50)
     def format(self, item):
-        return ugettext(item.include_lawyer)
+        return ugettext(item.price_include_lawyer)
     
     class Meta:
         models = (models.Sale,)
