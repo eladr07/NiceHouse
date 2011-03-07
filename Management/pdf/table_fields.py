@@ -154,9 +154,9 @@ class SaleIncludeLawyerTaxField(TableField):
         if item.price_include_lawyer == None:
             return '---'
         elif item.price_include_lawyer == False:
-            return ugettext('no')
+            return log2vis(ugettext('no'))
         elif item.price_include_lawyer == True:
-            return ugettext('yes')
+            return log2vis(ugettext('yes'))
     
     class Meta:
         models = (models.Sale,)
@@ -165,7 +165,7 @@ class SaleEmployeeNameField(TableField):
     def __init__(self):
         return super(SaleEmployeeNameField, self).__init__(log2vis(ugettext('pdf_employee_name')), 50)
     def format(self, item):
-        return item.employee
+        return log2vis(unicode(item.employee))
     
     class Meta:
         models = (models.Sale,)
@@ -219,7 +219,7 @@ class HouseTypeField(TableField):
     def __init__(self):
         return super(HouseTypeField, self).__init__(log2vis(ugettext('pdf_house_type')),50)
     def format(self, item):
-        return item.type
+        return log2vis(unicode(item.type))
     
     class Meta:
         models = (models.House,)
