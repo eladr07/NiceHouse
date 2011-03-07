@@ -1075,36 +1075,43 @@ class BuildingClientsWriter:
         return doc.canv
 
 class EmployeeSalesWriter(DocumentBase):
-    def __init__(self, project, from_month, from_year, to_month, to_year, sales):
-        self.project, self.from_month, self.from_year, self.to_month, self.to_year, self.sales = \
-            project, from_month, from_year,to_month , to_year, sales
+    def __init__(self, project, from_month, from_year, to_month, to_year, demands):
+        self.project, self.from_month, self.from_year, self.to_month, self.to_year, self.demands = \
+            project, from_month, from_year,to_month , to_year, demands
     def get_flows(self):
         house_fields = [HouseNumField(),HouseRoomsField(), HouseFloorField(), HouseSizeField(), HouseGardenSizeField(),
                         HouseTypeField()]
         sale_fields = [SaleClientsField(), SalePriceWithTaxField(), SaleIncludeLawyerTaxField(), SaleEmployeeNameField()]
-        
+
         house_fields.reverse()
         sale_fields.reverse()
+                
+        flows = []
         
-        sales = self.sales
-        houses = [sale.house for sale in sales]
-        
-        builder = Builder(sales, sale_fields)
-        sales_table = builder.build()
-        sales_rows = sales_table.cells()
-        
-        builder = Builder(houses, house_fields)
-        houses_table = builder.build()
-        houses_rows = houses_table.cells()
-        
-        # merge all sale rows with house rows
-        rows = [sales_rows[i] + houses_rows[i] for i in range(len(sales))]
-        row_heights = [max(sales_table.rows[i].height, houses_table.rows[i].height) for i in range(len(sales))]
-        col_widths = sales_table.col_widths() + houses_table.col_widths()
+        for demand in self.demands:
+            flows.append(titlePara(u'חודש - %s\%s' % (demand.month, demand.year)))
+            flows.append(Spacer(10))
             
-        tableFlow = Table(rows, col_widths, row_heights, projectTableStyle, 1)
+            sales = demand.get_sales()
+            houses = [sale.house for sale in sales]
+            
+            builder = Builder(sales, sale_fields)
+            sales_table = builder.build()
+            sales_rows = sales_table.cells()
+            
+            builder = Builder(houses, house_fields)
+            houses_table = builder.build()
+            houses_rows = houses_table.cells()
+            
+            # merge all sale rows with house rows
+            rows = [sales_rows[i] + houses_rows[i] for i in range(len(sales))]
+            row_heights = [max(sales_table.rows[i].height, houses_table.rows[i].height) for i in range(len(sales))]
+            col_widths = sales_table.col_widths() + houses_table.col_widths()
+                
+            tableFlow = Table(rows, col_widths, row_heights, projectTableStyle, 1)
+            flows.append(tableFlow)
         
-        return [tableFlow]
+        return flows
         
     def get_story(self):
         title_str = u'דו"ח מכירות לסוכן - ' + unicode(self.project)
