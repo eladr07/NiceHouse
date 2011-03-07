@@ -830,16 +830,16 @@ class TaskFilterForm(forms.Form):
     sender = forms.ChoiceField(choices = [('me', 'אני שלחתי'), ('others','נשלחו אלי')])
 
 class DemandReportForm(MonthForm):
-    project = forms.ModelChoiceField(queryset = Project.objects.all(), label=ugettext('project'))
+    project = forms.ModelChoiceField(Project.objects.all(), label=ugettext('project'))
 
 class ProjectSeasonForm(SeasonForm):
-    project = forms.ModelChoiceField(queryset = Project.objects.all(), label=ugettext('project'))
+    project = forms.ModelChoiceField(Project.objects.all(), ugettext('choose_project'), label=ugettext('project'))
 
 class NHBranchSeasonForm(SeasonForm):
-    nhbranch = forms.ModelChoiceField(queryset = NHBranch.objects.all(), label=ugettext('nhbranch'))
+    nhbranch = forms.ModelChoiceField(NHBranch.objects.all(), label=ugettext('nhbranch'))
 
 class EmployeeSeasonForm(SeasonForm):
-    employee = forms.ModelChoiceField(queryset = EmployeeBase.objects.all(), label=ugettext('employee'))
+    employee = forms.ModelChoiceField(EmployeeBase.objects.all(), label=ugettext('employee'))
     
 class MadadBIForm(forms.ModelForm):
     def __init__(self, *args, **kw):
