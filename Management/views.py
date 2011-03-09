@@ -3603,16 +3603,17 @@ def sale_analysis(request):
             rooms_num, house_type = form.cleaned_data['rooms_num'], form.cleaned_data['house_type']
             from_year, from_month, to_year, to_month = (form.cleaned_data['from_year'], form.cleaned_data['from_month'],
                                                         form.cleaned_data['to_year'], form.cleaned_data['to_month'])
-
-            house_attrs = ('net_size', 'garden_size', 'rooms', 'floor', 'perfect_size')
-            sale_attrs = ('price_taxed', 'price_taxed_for_perfect_size')
             
+            # query all the sales needed
             q = models.Q(contractor_pay_year = from_year, contractor_pay_month__gte = from_month) | models.Q(contractor_pay_year__gt = from_year, contractor_pay_year__lt = to_year) | models.Q(contractor_pay_year = to_year, contractor_pay_month__lte = to_month)
             all_sales = Sale.objects.filter(q, house__building__project = project).order_by('contractor_pay_year', 'contractor_pay_month').select_related('house')
             if rooms_num:
                 all_sales = all_sales.filter(house__rooms = rooms_num)
             if house_type:
                 all_sales = all_sales.filter(house__type = house_type)
+                
+            house_attrs = ('net_size', 'garden_size', 'rooms', 'floor', 'perfect_size')
+            sale_attrs = ('price_taxed', 'price_taxed_for_perfect_size')
             
             for (month, year), sales in itertools.groupby(all_sales, lambda sale: (sale.contractor_pay_month, sale.contractor_pay_year)):
                 sales_list = list(sales)
