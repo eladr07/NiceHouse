@@ -163,7 +163,7 @@ class SaleIncludeLawyerTaxField(TableField):
         
 class SaleEmployeeNameField(TableField):
     def __init__(self):
-        return super(SaleEmployeeNameField, self).__init__(log2vis(ugettext('pdf_employee_name')), 70)
+        return super(SaleEmployeeNameField, self).__init__(log2vis(ugettext('pdf_employee_name')), 75)
     def format(self, item):
         return log2vis(unicode(item.employee or ''))
     
@@ -217,7 +217,7 @@ class HouseGardenSizeField(TableField):
         
 class HouseTypeField(TableField):
     def __init__(self):
-        return super(HouseTypeField, self).__init__(log2vis(ugettext('pdf_house_type')),50)
+        return super(HouseTypeField, self).__init__(log2vis(ugettext('pdf_house_type')),55)
     def format(self, item):
         return log2vis(unicode(item.type))
     
