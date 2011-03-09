@@ -186,7 +186,7 @@ class SaleEmployeeNameField(TableField):
 
 class SaleDateField(TableField):
     def __init__(self):
-        return super(SaleDateField, self).__init__(ugettext('sale_date'), 40)
+        return super(SaleDateField, self).__init__(ugettext('sale_date'), 45)
     def format(self, item):
         return item.sale_date.strftime('%d/%m/%y')
     
