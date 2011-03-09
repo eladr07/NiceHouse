@@ -1358,15 +1358,11 @@ msgstr "שכפול בניין"
 
 #: Management/pdf/table_fields.py:23
 msgid "pdf_project_name"
-msgstr ""
-"הפרוייקט\n"
-"שם"
+msgstr "הפרוייקט\nשם"
 
 #: Management/pdf/table_fields.py:32
 msgid "pdf_initiator"
-msgstr ""
-"היזם\n"
-"שם"
+msgstr "היזם\nשם"
 
 #: Management/pdf/table_fields.py:41
 msgid "pdf_month"
@@ -1374,21 +1370,15 @@ msgstr "חודש"
 
 #: Management/pdf/table_fields.py:50
 msgid "pdf_demand_sales_count"
-msgstr ""
-"מכירות\n"
-"מס'"
+msgstr "מכירות\nמס'"
 
 #: Management/pdf/table_fields.py:59
 msgid "pdf_demand_total_sales_price"
-msgstr ""
-"מכירות\n"
-"סך"
+msgstr "מכירות\nסך"
 
 #: Management/pdf/table_fields.py:69
 msgid "pdf_demand_total_amount"
-msgstr ""
-"עמלה\n"
-"סך"
+msgstr "עמלה\nסך"
 
 #: Management/pdf/table_fields.py:79
 msgid "pdf_invoices_num"
