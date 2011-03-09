@@ -137,16 +137,26 @@ class SaleClientsField(TableField):
     class Meta:
         models = (models.Sale,)
         
-class SalePriceWithTaxField(TableField):
+class SalePriceTaxedField(TableField):
     def __init__(self):
-        return super(SalePriceWithTaxField, self).__init__(log2vis(ugettext('pdf_price_with_tax')), 50, is_commaised = True,
+        return super(SalePriceTaxedField, self).__init__(log2vis(ugettext('pdf_price_with_tax')), 50, is_commaised = True,
                                                            is_summarized = True)
     def format(self, item):
         return item.price_taxed
     
     class Meta:
         models = (models.Sale,)
-        
+
+class SalePriceTaxedForPerfectSizeField(TableField):
+    def __init__(self):
+        return super(SalePriceTaxedForPerfectSizeField, self).__init__(log2vis(ugettext('pdf_price_for_size')), 35, is_commaised = True,
+                                                                       is_summarized = True)
+    def format(self, item):
+        return item.price_taxed_for_perfect_size
+    
+    class Meta:
+        models = (models.Sale,) 
+
 class SaleIncludeLawyerTaxField(TableField):
     def __init__(self):
         return super(SaleIncludeLawyerTaxField, self).__init__(log2vis(ugettext('pdf_include_lawyer_tax')), 50)
@@ -166,6 +176,15 @@ class SaleEmployeeNameField(TableField):
         return super(SaleEmployeeNameField, self).__init__(log2vis(ugettext('pdf_employee_name')), 75)
     def format(self, item):
         return log2vis(unicode(item.employee or ''))
+    
+    class Meta:
+        models = (models.Sale,)
+
+class SaleDateField(TableField):
+    def __init__(self):
+        return super(SaleDateField, self).__init__(log2vis(ugettext('pdf_sale_date')), 35)
+    def format(self, item):
+        return item.sale_date.strftime('%d/%m/%Y')
     
     class Meta:
         models = (models.Sale,)
@@ -215,11 +234,29 @@ class HouseGardenSizeField(TableField):
     class Meta:
         models = (models.House,)
         
+class HousePerfectSizeField(TableField):
+    def __init__(self):
+        return super(HousePerfectSizeField, self).__init__(log2vis(ugettext('pdf_perfect_size')),55)
+    def format(self, item):
+        return item.perfect_size
+    
+    class Meta:
+        models = (models.House,)
+        
 class HouseTypeField(TableField):
     def __init__(self):
         return super(HouseTypeField, self).__init__(log2vis(ugettext('pdf_house_type')),55)
     def format(self, item):
         return log2vis(unicode(item.type))
+    
+    class Meta:
+        models = (models.House,)
+        
+class HouseSettleDateField(TableField):
+    def __init__(self):
+        return super(HouseSettleDateField, self).__init__(log2vis(ugettext('pdf_settle_date')),35)
+    def format(self, item):
+        return item.settle_date.strftime('%d/%m/%Y')
     
     class Meta:
         models = (models.House,)

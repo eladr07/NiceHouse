@@ -1081,7 +1081,7 @@ class EmployeeSalesWriter(DocumentBase):
     def get_flows(self):
         house_fields = [HouseNumField(),HouseRoomsField(), HouseFloorField(), HouseSizeField(), HouseGardenSizeField(),
                         HouseTypeField()]
-        sale_fields = [SaleClientsField(), SalePriceWithTaxField(), SaleIncludeLawyerTaxField(), SaleEmployeeNameField()]
+        sale_fields = [SaleClientsField(), SalePriceTaxedField(), SaleIncludeLawyerTaxField(), SaleEmployeeNameField()]
 
         house_fields.reverse()
         sale_fields.reverse()
