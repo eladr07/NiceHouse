@@ -1155,7 +1155,7 @@ class SaleAnalysisWriter(DocumentBase):
             rows, row_heights, col_widths = [], [], []
             
             # +2 to include sum rows also
-            for i in range(len(sales) + 1):
+            for i in range(len(sales) + 2):
                 rows.append([])
                 row_heights.append(None)
                 
@@ -1163,7 +1163,7 @@ class SaleAnalysisWriter(DocumentBase):
                 builder = Builder(field_group.items, field_group.fields)
                 table = builder.build()
                 table_rows = table.cells()
-                for i in range(len(rows) + 1):
+                for i in range(len(rows)):
                     rows[i] += table_rows[i]
                     row_heights[i] = max(row_heights[i], table.rows[i].height)
                 col_widths += table.col_widths()
