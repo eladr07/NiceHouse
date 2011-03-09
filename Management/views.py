@@ -21,7 +21,7 @@ from forms import *
 from models import *
 from pdf.pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, ProjectListWriter
 from pdf.pdf import PricelistWriter, BuildingClientsWriter, EmployeeSalariesBookKeepingWriter, SalariesBankWriter, DemandFollowupWriter
-from pdf.pdf import EmployeeSalesWriter
+from pdf.pdf import EmployeeSalesWriter, SaleAnalysisWriter
 from mail import mail
 
 def object_edit_core(request, form_class, instance,
@@ -3645,7 +3645,17 @@ def sale_analysis(request):
                     
                 include_clients = int(form.cleaned_data['include_clients'])
             elif request.GET.has_key('pdf'):
-                pass
+                filename = common.generate_unique_media_filename('pdf')
+    
+                response = HttpResponse(mimetype='application/pdf')
+                response['Content-Disposition'] = 'attachment; filename=' + filename
+                
+                SaleAnalysisWriter(project, from_month, from_year, to_month, to_year, all_sales).build(filename)
+                
+                p = open(filename,'r')
+                response.write(p.read())
+                p.close()
+                return response
     else:
         form = SaleAnalysisForm()
         

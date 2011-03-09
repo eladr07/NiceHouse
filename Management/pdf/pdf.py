@@ -1124,6 +1124,54 @@ class EmployeeSalesWriter(DocumentBase):
         story.extend(self.get_flows())
         return story
 
+class SaleAnalysisWriter(DocumentBase):
+    def __init__(self, project, from_month, from_year, to_month, to_year, sales):
+        self.project, self.from_month, self.from_year, self.to_month, self.to_year, self.sales = \
+            project, from_month, from_year,to_month , to_year, sales
+            
+    def get_flows(self):
+        flows = []
+        
+        for (month, year), sales_gen in itertools.groupby(self.sales, lambda sale: (sale.contractor_pay_month, sale.contractor_pay_year)):
+            sales = list(sales_gen)
+            houses = [sale.house for sale in sales]
+            
+            field_groups = []
+            field_groups.append(sales, [SaleDateField(),SaleClientsField()])
+            field_groups.append(houses, [HouseBuildingNumField(), HouseNumField(), HouseTypeField(), HouseRoomsField(), HouseSettleDateField(),
+                                         HouseFloorField(), HouseSizeField(), HouseGardenSizeField(), HousePerfectSizeField()])
+            field_groups.append(sales, [SalePriceTaxedField(), SalePriceTaxedForPerfectSizeField()])
+            
+            flows.append(titlePara(u"%s/%s - %s מכירות" 
+                                   % (month, year, len(sales))))
+            flows.append(Spacer(0, 10))
+            
+            rows, row_heights, col_widths = [], [], []
+            for i in range(len(sales) + 1):
+                rows.append([])
+                row_heights.append(None)
+                
+            for items, fields in field_groups:
+                builder = Builder(items, fields)
+                table = builder.build()
+                table_rows = table.cells()
+                for i in range(len(sales) + 1):
+                    rows[i] += table_rows[i]
+                    row_heights[i] = max(row_heights[i], table.rows[i].height)
+                col_widths += table.col_widths()
+            
+            tableFlow = Table(rows, col_widths, row_heights, projectTableStyle, 1)
+            flows.append(tableFlow)
+        
+        return flows
+    
+    def get_story(self):
+        title_str = u'דו"ח ניתוח וריכוז מכירות - ' + unicode(self.project)
+        subtitle_str = u"%s/%s - %s/%s" %(self.from_month, self.from_year, self.to_month, self.to_year)
+        story = [titlePara(title_str), titlePara(subtitle_str), Spacer(0,20)]
+        story.extend(self.get_flows())
+        return story
+
 class DemandFollowupWriter(DocumentBase):
     def __init__(self, project, from_month, from_year, to_month, to_year, demands):
         self.project, self.from_month, self.from_year, self.to_month, self.to_year, self.demands = \

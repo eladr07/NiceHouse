@@ -9,7 +9,7 @@
 	<form method="GET">
 		<table class="dataTable">
 			<tr class="row1">
-				<td colspan="9" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש תקופה</td>
+				<td colspan="10" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש תקופה</td>
 			</tr>
 			<tr class="row2">
 				{% for field in filterForm %}
@@ -18,7 +18,8 @@
 					{{ field }}
 				</td>
 				{% endfor %}
-				<td><input type="submit" value="חפש" class="button"/></td>
+				<td><input type="submit" value="חפש" name="html" class="button"/></td>
+				<td><input type="submit" value="גרסה להדפסה" name="pdf" class="button"/></td>
 			</tr>
 		</table>
 	</form>
