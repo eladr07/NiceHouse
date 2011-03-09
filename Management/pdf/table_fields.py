@@ -15,9 +15,9 @@ class TableField(object):
         self.is_commaised = is_commaised
         self._format_title()
     def _format_title(self):
-        parts = self.title.split()
+        parts = [log2vis(part) for part in self.title.split()]
         parts.reverse()
-        return log2vis('\n'.join(parts))
+        self.title = '\n'.join(parts)
     def format(self, item):
         raise NotImplementedError
     def get_height(self, item):
