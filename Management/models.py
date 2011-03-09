@@ -292,6 +292,9 @@ class House(models.Model):
     objects = HouseManager()
     
     @property
+    def settle_date(self):
+        return self.building.pricelist.settle_date
+    @property
     def perfect_size(self):
         balcony_size = self.garden_size or 0
         return self.net_size + balcony_size * 0.3
