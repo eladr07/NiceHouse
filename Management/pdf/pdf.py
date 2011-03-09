@@ -16,7 +16,7 @@ from pyfribidi import log2vis
 from reportlab.lib.enums import *
 from reportlab.lib.styles import ParagraphStyle
 
-from helpers import Builder
+from helpers import Builder, FieldsGroup
 from table_fields import *
 
 from styles import *
@@ -1136,18 +1136,26 @@ class SaleAnalysisWriter(DocumentBase):
             sales = list(sales_gen)
             houses = [sale.house for sale in sales]
             
-            field_groups = []
-            field_groups.append((sales, [SaleDateField(),SaleClientsField()]))
-            field_groups.append((houses, [HouseBuildingNumField(), HouseNumField(), HouseTypeField(), HouseRoomsField(), HouseSettleDateField(),
-                                         HouseFloorField(), HouseSizeField(), HouseGardenSizeField(), HousePerfectSizeField()]))
-            field_groups.append((sales, [SalePriceTaxedField(), SalePriceTaxedForPerfectSizeField()]))
+            field_groups = [
+                            FieldsGroup(sales, [SaleDateField(),SaleClientsField()]),
+                            FieldsGroup(houses, [HouseBuildingNumField(), HouseNumField(), HouseTypeField(), HouseRoomsField(), HouseSettleDateField(),
+                                                 HouseFloorField(), HouseSizeField(), HouseGardenSizeField(), HousePerfectSizeField()]),
+                            FieldsGroup(sales, [SalePriceTaxedField(), SalePriceTaxedForPerfectSizeField()])
+                            ]
+
+            # reverse the groups and their orders
+            field_groups.reverse()
+            for field_group in field_groups:
+                field_group.reverse()
             
             flows.append(titlePara(u"%s/%s - %s מכירות" 
                                    % (month, year, len(sales))))
             flows.append(Spacer(0, 10))
             
             rows, row_heights, col_widths = [], [], []
-            for i in range(len(sales) + 1):
+            
+            # +2 to include sum rows also
+            for i in range(len(sales) + 2):
                 rows.append([])
                 row_heights.append(None)
                 
@@ -1155,7 +1163,7 @@ class SaleAnalysisWriter(DocumentBase):
                 builder = Builder(items, fields)
                 table = builder.build()
                 table_rows = table.cells()
-                for i in range(len(sales) + 1):
+                for i in range(len(rows) + 1):
                     rows[i] += table_rows[i]
                     row_heights[i] = max(row_heights[i], table.rows[i].height)
                 col_widths += table.col_widths()

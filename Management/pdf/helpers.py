@@ -19,6 +19,12 @@ class Col(object):
     def __init__(self, name, title, width):
         self.name, self.title, self.width = name, title, width
 
+class FieldsGroup(object):
+    def __init__(self, items, fields):
+        self.items, self.fields = items, fields
+    def reverse(self):
+        self.fields.reverse()
+
 class Table(object):
     def __init__(self, cols = None, rows = None):
         self.cols, self.rows = cols or [], rows or []
