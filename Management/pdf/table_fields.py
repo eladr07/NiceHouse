@@ -191,9 +191,18 @@ class SaleDateField(TableField):
 
 class HouseNumField(TableField):
     def __init__(self):
-        return super(HouseNumField, self).__init__(log2vis(ugettext('pdf_house_num')),35)
+        return super(HouseNumField, self).__init__(log2vis(ugettext('pdf_house_num')), 35)
     def format(self, item):
         return item.num
+    
+    class Meta:
+        models = (models.House,)
+
+class HouseBuildingNumField(TableField):
+    def __init__(self):
+        return super(HouseNumField, self).__init__(log2vis(ugettext('pdf_building_num')), 35)
+    def format(self, item):
+        return item.building.num
     
     class Meta:
         models = (models.House,)
