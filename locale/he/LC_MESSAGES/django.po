@@ -1416,7 +1416,7 @@ msgstr "הרוכשים\nשם"
 
 #: Management/pdf/table_fields.py:151
 msgid "pdf_price_with_tax"
-msgstr "עו\"ד\nכולל"
+msgstr "מע\"מ\nמחיר כולל"
 
 #: Management/pdf/table_fields.py:161
 msgid "pdf_include_lawyer_tax"

@@ -163,7 +163,7 @@ class SaleIncludeLawyerTaxField(TableField):
         
 class SaleEmployeeNameField(TableField):
     def __init__(self):
-        return super(SaleEmployeeNameField, self).__init__(log2vis(ugettext('pdf_employee_name')), 60)
+        return super(SaleEmployeeNameField, self).__init__(log2vis(ugettext('pdf_employee_name')), 70)
     def format(self, item):
         return log2vis(unicode(item.employee or ''))
     

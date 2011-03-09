@@ -1095,7 +1095,8 @@ class EmployeeSalesWriter(DocumentBase):
             if len(sales) == 0:
                 continue
             
-            flows.append(titlePara(u"%s/%s" % (demand.month, demand.year)))
+            flows.append(titlePara(u"%s/%s - %s מכירות" 
+                                   % (demand.month, demand.year, len(sales))))
             flows.append(Spacer(0, 10))
             
             builder = Builder(sales, sale_fields)
