@@ -16,7 +16,7 @@ class TableField(object):
     def format(self, item):
         raise NotImplementedError
     def get_height(self, item):
-        return 25
+        return None
         
 class ProjectNameAndCityField(TableField):
     def __init__(self):
