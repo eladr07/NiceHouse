@@ -1155,7 +1155,7 @@ class SaleAnalysisWriter(DocumentBase):
             rows, row_heights, col_widths = [], [], []
             
             # +2 to include sum rows also
-            for i in range(len(sales) + 2):
+            for i in range(len(sales) + 1):
                 rows.append([])
                 row_heights.append(None)
                 
