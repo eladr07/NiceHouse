@@ -184,8 +184,7 @@ class SaleDateField(TableField):
     def __init__(self):
         return super(SaleDateField, self).__init__(log2vis(ugettext('pdf_sale_date')), 35)
     def format(self, item):
-        sale_date = item.sale_date
-        return sale_date and sale_date.strftime('%d/%m/%Y') or ''
+        return item.sale_date.strftime('%d/%m/%Y')
     
     class Meta:
         models = (models.Sale,)
@@ -266,7 +265,8 @@ class HouseSettleDateField(TableField):
     def __init__(self):
         return super(HouseSettleDateField, self).__init__(log2vis(ugettext('pdf_settle_date')),35)
     def format(self, item):
-        return item.settle_date.strftime('%d/%m/%Y')
+        settle_date = item.settle_date
+        return settle_date and settle_date.strftime('%d/%m/%Y') or ''
     
     class Meta:
         models = (models.House,)
