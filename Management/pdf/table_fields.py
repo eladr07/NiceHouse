@@ -16,7 +16,7 @@ class TableField(object):
         self._format_title()
     def _format_title(self):
         parts = [log2vis(part) for part in self.title.split()]
-        parts.reverse()
+
         self.title = '\n'.join(parts)
     def format(self, item):
         raise NotImplementedError
