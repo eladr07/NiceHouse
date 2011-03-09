@@ -44,7 +44,7 @@ class Builder(object):
         self.items = items
         self.fields = fields
         
-    def build(self):
+    def build(self, force_sum_row = False):
         row_summaries = dict([(field.name, 0) for field in self.fields if field.is_summarized])
         
         cols = [Col(field.name, field.title, field.width) for field in self.fields]
@@ -76,7 +76,7 @@ class Builder(object):
             row.height = max(cell_heights)
             table.rows.append(row)
         
-        if row_summaries:
+        if row_summaries or force_sum_row:
             sum_row = Row()
             for field in self.fields:
                 if field.is_summarized:

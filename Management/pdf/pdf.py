@@ -1161,7 +1161,7 @@ class SaleAnalysisWriter(DocumentBase):
                 
             for field_group in field_groups:
                 builder = Builder(field_group.items, field_group.fields)
-                table = builder.build()
+                table = builder.build(True)
                 table_rows = table.cells()
                 for i in range(len(rows)):
                     rows[i] += table_rows[i]
