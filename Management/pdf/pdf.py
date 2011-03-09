@@ -1159,8 +1159,8 @@ class SaleAnalysisWriter(DocumentBase):
                 rows.append([])
                 row_heights.append(None)
                 
-            for items, fields in field_groups:
-                builder = Builder(items, fields)
+            for field_group in field_groups:
+                builder = Builder(field_group.items, field_group.fields)
                 table = builder.build()
                 table_rows = table.cells()
                 for i in range(len(rows) + 1):
