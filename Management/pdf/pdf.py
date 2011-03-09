@@ -1137,10 +1137,10 @@ class SaleAnalysisWriter(DocumentBase):
             houses = [sale.house for sale in sales]
             
             field_groups = []
-            field_groups.append(sales, [SaleDateField(),SaleClientsField()])
-            field_groups.append(houses, [HouseBuildingNumField(), HouseNumField(), HouseTypeField(), HouseRoomsField(), HouseSettleDateField(),
-                                         HouseFloorField(), HouseSizeField(), HouseGardenSizeField(), HousePerfectSizeField()])
-            field_groups.append(sales, [SalePriceTaxedField(), SalePriceTaxedForPerfectSizeField()])
+            field_groups.append((sales, [SaleDateField(),SaleClientsField()]))
+            field_groups.append((houses, [HouseBuildingNumField(), HouseNumField(), HouseTypeField(), HouseRoomsField(), HouseSettleDateField(),
+                                         HouseFloorField(), HouseSizeField(), HouseGardenSizeField(), HousePerfectSizeField()]))
+            field_groups.append((sales, [SalePriceTaxedField(), SalePriceTaxedForPerfectSizeField()]))
             
             flows.append(titlePara(u"%s/%s - %s מכירות" 
                                    % (month, year, len(sales))))
