@@ -3599,7 +3599,7 @@ def sale_analysis(request):
     if len(request.GET):
         form = SaleAnalysisForm(request.GET)
         if form.is_valid():
-            project = form.cleaned_data['project']
+            project, include_clients = form.cleaned_data['project'], int(form.cleaned_data['include_clients'])
             rooms_num, house_type = form.cleaned_data['rooms_num'], form.cleaned_data['house_type']
             from_year, from_month, to_year, to_month = (form.cleaned_data['from_year'], form.cleaned_data['from_month'],
                                                         form.cleaned_data['to_year'], form.cleaned_data['to_month'])
@@ -3643,14 +3643,13 @@ def sale_analysis(request):
                     curr_row['diff_avg_price_taxed_for_perfect_size'] = curr_row['avg_price_taxed_for_perfect_size'] - \
                         prev_row['avg_price_taxed_for_perfect_size']
                     
-                include_clients = int(form.cleaned_data['include_clients'])
             elif request.GET.has_key('pdf'):
                 filename = common.generate_unique_media_filename('pdf')
     
                 response = HttpResponse(mimetype='application/pdf')
                 response['Content-Disposition'] = 'attachment; filename=' + filename
                 
-                SaleAnalysisWriter(project, from_month, from_year, to_month, to_year, all_sales).build(filename)
+                SaleAnalysisWriter(project, from_month, from_year, to_month, to_year, all_sales, include_clients).build(filename)
                 
                 p = open(filename,'r')
                 response.write(p.read())

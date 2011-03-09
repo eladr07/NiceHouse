@@ -1125,9 +1125,9 @@ class EmployeeSalesWriter(DocumentBase):
         return story
 
 class SaleAnalysisWriter(DocumentBase):
-    def __init__(self, project, from_month, from_year, to_month, to_year, sales):
-        self.project, self.from_month, self.from_year, self.to_month, self.to_year, self.sales = \
-            project, from_month, from_year,to_month , to_year, sales
+    def __init__(self, project, from_month, from_year, to_month, to_year, sales, include_clients):
+        self.project, self.from_month, self.from_year, self.to_month, self.to_year, self.sales, self.include_clients = \
+            project, from_month, from_year,to_month , to_year, sales, include_clients
             
     def get_flows(self):
         flows = []
@@ -1136,8 +1136,11 @@ class SaleAnalysisWriter(DocumentBase):
             sales = list(sales_gen)
             houses = [sale.house for sale in sales]
             
-            field_groups = [
-                            FieldsGroup(sales, [SaleDateField(),SaleClientsField()]),
+            fields = [SaleDateField()]
+            if self.include_clients:
+                fields.append(SaleClientsField())
+                
+            field_groups = [FieldsGroup(sales, fields),
                             FieldsGroup(houses, [HouseBuildingNumField(), HouseNumField(), HouseTypeField(), HouseRoomsField(), HouseSettleDateField(),
                                                  HouseFloorField(), HouseSizeField(), HouseGardenSizeField(), HousePerfectSizeField()]),
                             FieldsGroup(sales, [SalePriceTaxedField(), SalePriceTaxedForPerfectSizeField()])
