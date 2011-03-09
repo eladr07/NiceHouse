@@ -16,7 +16,6 @@ class TableField(object):
         self._format_title()
     def _format_title(self):
         parts = [log2vis(part) for part in self.title.split()]
-
         self.title = '\n'.join(parts)
     def format(self, item):
         raise NotImplementedError
@@ -187,7 +186,7 @@ class SaleEmployeeNameField(TableField):
 
 class SaleDateField(TableField):
     def __init__(self):
-        return super(SaleDateField, self).__init__(ugettext('sale_date'), 35)
+        return super(SaleDateField, self).__init__(ugettext('sale_date'), 40)
     def format(self, item):
         return item.sale_date.strftime('%d/%m/%y')
     
