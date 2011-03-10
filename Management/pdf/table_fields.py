@@ -83,11 +83,10 @@ class InvoicesNumField(TableField):
         return super(InvoicesNumField, self).__init__(ugettext('invoices_num'),50)
     def format(self, item):
         return '\n'.join([str(i.num) for i in item.invoices.all()])
-        return Paragraph('<br/>'.join([str(i.num) for i in item.invoices.all()]), styleRow9)
     
     def get_height(self, item):
         invoices_count = item.invoices.count()
-        return invoices_count * 18 or None
+        return invoices_count * 15 or None
     
     class Meta:
         models = (models.Demand,)
@@ -97,11 +96,10 @@ class InvoicesAmountField(TableField):
         return super(InvoicesAmountField, self).__init__(ugettext('invoices_amount'), 50)
     def format(self, item):
         return '\n'.join([str(i.amount) for i in item.invoices.all()])
-        return Paragraph('<br/>'.join([commaise(i.amount) for i in item.invoices.all()]), styleRow9)
     
     def get_height(self, item):
         invoices_count = item.invoices.count()
-        return invoices_count * 18 or None
+        return invoices_count * 15 or None
     
     class Meta:
         models = (models.Demand,)
@@ -110,12 +108,11 @@ class PaymentsNumField(TableField):
     def __init__(self):
         return super(PaymentsNumField, self).__init__(ugettext('payments_num'),50)
     def format(self, item):
-        return '\n'.join([str(i.num) for i in item.payments.all()])
-        return Paragraph('<br/>'.join([str(p.num) for p in item.payments.all()]), styleRow9)
+        return '\n'.join([str(p.num) for p in item.payments.all()])
     
     def get_height(self, item):
         payments_count = item.payments.count()
-        return payments_count * 18 or None
+        return payments_count * 15 or None
     
     class Meta:
         models = (models.Demand,)
@@ -124,12 +121,11 @@ class PaymentsAmountField(TableField):
     def __init__(self):
         return super(PaymentsAmountField, self).__init__(ugettext('payments_amount'),50)
     def format(self, item):
-        return '\n'.join([str(i.amount) for i in item.payments.all()])
-        return Paragraph('<br/>'.join([commaise(p.amount) for p in item.payments.all()]), styleRow9)
+        return '\n'.join([str(p.amount) for p in item.payments.all()])
     
     def get_height(self, item):
         payments_count = item.payments.count()
-        return payments_count * 18 or None
+        return payments_count * 15 or None
         
     class Meta:
         models = (models.Demand,)
