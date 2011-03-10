@@ -85,7 +85,8 @@ class InvoicesNumField(TableField):
         return Paragraph('<br/>'.join([str(i.num) for i in item.invoices.all()]), styleRow9)
     
     def get_height(self, item):
-        return 18 * item.invoices.count()
+        invoices_count = item.invoices.count()
+        return invoices_count * 18 or None
     
     class Meta:
         models = (models.Demand,)
@@ -97,7 +98,8 @@ class InvoicesAmountField(TableField):
         return Paragraph('<br/>'.join([commaise(i.amount) for i in item.invoices.all()]), styleRow9)
     
     def get_height(self, item):
-        return 18 * item.invoices.count()
+        invoices_count = item.invoices.count()
+        return invoices_count * 18 or None
     
     class Meta:
         models = (models.Demand,)
@@ -109,7 +111,8 @@ class PaymentsNumField(TableField):
         return Paragraph('<br/>'.join([str(p.num) for p in item.payments.all()]), styleRow9)
     
     def get_height(self, item):
-        return 18 * item.payments.count()
+        payments_count = item.payments.count()
+        return payments_count * 18 or None
     
     class Meta:
         models = (models.Demand,)
@@ -121,7 +124,8 @@ class PaymentsAmountField(TableField):
         return Paragraph('<br/>'.join([commaise(p.amount) for p in item.payments.all()]), styleRow9)
     
     def get_height(self, item):
-        return 18 * item.payments.count()
+        payments_count = item.payments.count()
+        return payments_count * 18 or None
         
     class Meta:
         models = (models.Demand,)
