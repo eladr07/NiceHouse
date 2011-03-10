@@ -82,6 +82,7 @@ class InvoicesNumField(TableField):
     def __init__(self):
         return super(InvoicesNumField, self).__init__(ugettext('invoices_num'),50)
     def format(self, item):
+        return '\n'.join([str(i.num) for i in item.invoices.all()])
         return Paragraph('<br/>'.join([str(i.num) for i in item.invoices.all()]), styleRow9)
     
     def get_height(self, item):
@@ -95,6 +96,7 @@ class InvoicesAmountField(TableField):
     def __init__(self):
         return super(InvoicesAmountField, self).__init__(ugettext('invoices_amount'), 50)
     def format(self, item):
+        return '\n'.join([str(i.amount) for i in item.invoices.all()])
         return Paragraph('<br/>'.join([commaise(i.amount) for i in item.invoices.all()]), styleRow9)
     
     def get_height(self, item):
@@ -108,6 +110,7 @@ class PaymentsNumField(TableField):
     def __init__(self):
         return super(PaymentsNumField, self).__init__(ugettext('payments_num'),50)
     def format(self, item):
+        return '\n'.join([str(i.num) for i in item.payments.all()])
         return Paragraph('<br/>'.join([str(p.num) for p in item.payments.all()]), styleRow9)
     
     def get_height(self, item):
@@ -121,6 +124,7 @@ class PaymentsAmountField(TableField):
     def __init__(self):
         return super(PaymentsAmountField, self).__init__(ugettext('payments_amount'),50)
     def format(self, item):
+        return '\n'.join([str(i.amount) for i in item.payments.all()])
         return Paragraph('<br/>'.join([commaise(p.amount) for p in item.payments.all()]), styleRow9)
     
     def get_height(self, item):
