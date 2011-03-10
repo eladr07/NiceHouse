@@ -86,7 +86,7 @@ class InvoicesNumField(TableField):
     
     def get_height(self, item):
         invoices_count = item.invoices.count()
-        return invoices_count * 15 or None
+        return invoices_count * 14 or None
     
     class Meta:
         models = (models.Demand,)
@@ -99,7 +99,7 @@ class InvoicesAmountField(TableField):
     
     def get_height(self, item):
         invoices_count = item.invoices.count()
-        return invoices_count * 15 or None
+        return invoices_count * 14 or None
     
     class Meta:
         models = (models.Demand,)
@@ -112,7 +112,7 @@ class PaymentsNumField(TableField):
     
     def get_height(self, item):
         payments_count = item.payments.count()
-        return payments_count * 15 or None
+        return payments_count * 14 or None
     
     class Meta:
         models = (models.Demand,)
@@ -125,7 +125,7 @@ class PaymentsAmountField(TableField):
     
     def get_height(self, item):
         payments_count = item.payments.count()
-        return payments_count * 15 or None
+        return payments_count * 14 or None
         
     class Meta:
         models = (models.Demand,)
