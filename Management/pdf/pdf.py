@@ -1100,11 +1100,11 @@ class EmployeeSalesWriter(DocumentBase):
             flows.append(Spacer(0, 10))
             
             builder = Builder(sales, sale_fields)
-            sales_table = builder.build()
+            sales_table = builder.build(True)
             sales_rows = sales_table.rows
             
             builder = Builder(houses, house_fields)
-            houses_table = builder.build()
+            houses_table = builder.build(True)
             houses_rows = houses_table.rows
             
             # merge all sale rows with house rows
