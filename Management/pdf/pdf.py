@@ -677,7 +677,7 @@ class MultipleDemandWriter(DocumentBase):
         fields.reverse()
         builder = Builder(self.demands, fields)
         table = builder.build()
-        tableFlow = Table(table.cells(), table.col_widths(), table.row_heights(), projectTableStyle, 1)
+        tableFlow = Table(table.rows, table.col_widths(), table.row_heights(), projectTableStyle, 1)
         return [tableFlow]
     
     def get_pagesize(self):
@@ -1165,9 +1165,8 @@ class SaleAnalysisWriter(DocumentBase):
             for field_group in field_groups:
                 builder = Builder(field_group.items, field_group.fields)
                 table = builder.build(True)
-                table_rows = table.cells()
                 for i in range(len(rows)):
-                    rows[i] += table_rows[i]
+                    rows[i] += table.rows[i]
                     row_heights[i] = max(row_heights[i], table.rows[i].height)
                 col_widths += table.col_widths()
             
