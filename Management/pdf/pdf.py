@@ -1101,11 +1101,11 @@ class EmployeeSalesWriter(DocumentBase):
             
             builder = Builder(sales, sale_fields)
             sales_table = builder.build()
-            sales_rows = sales_table.cells()
+            sales_rows = sales_table.rows
             
             builder = Builder(houses, house_fields)
             houses_table = builder.build()
-            houses_rows = houses_table.cells()
+            houses_rows = houses_table.rows
             
             # merge all sale rows with house rows
             rows = [sales_rows[i] + houses_rows[i] for i in range(len(sales) + 1)]

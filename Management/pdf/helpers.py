@@ -2,16 +2,10 @@ from Management.templatetags.management_extras import commaise
 from styles import *
 from reportlab.platypus import Paragraph
 
-class Row(object):
-    __slots__ = ('cells', 'height')
-    
-    def __init__(self, cells = None, height = None):
-        self.cells = cells or []
-        self.height = height
-    def __len__(self):
-        return self.cells.__len__()
-    def __iter__(self):
-        return self.cells.__iter__()
+class Row(list):
+    def __init__(self, *args, **kw):
+        super(Row, self).__init__(*args, **kw)
+        self.height = None
 
 class Col(object):
     __slots__ = ('name', 'title', 'width')
@@ -32,8 +26,6 @@ class Table(object):
         return [row.height for row in self.rows]
     def col_widths(self):
         return [col.width for col in self.cols]
-    def cells(self):
-        return [row.cells for row in self.rows]
     def __len__(self):
         return self.rows.__len__()
     def __iter__(self):
@@ -54,26 +46,25 @@ class Builder(object):
         
         table = Table(cols = cols)
         
-        title_row = Row(cells = [unicode(field.title) for field in self.fields])
+        title_row = Row([unicode(field.title) for field in self.fields])
         
         table.rows.append(title_row)
             
         for item in self.items:
             row = Row()
-            cell_heights = []
             
             for field in self.fields:
                 cell_value = field.format(item)
-                cell_heights.append(field.get_height(item))
+                row.height = max(row.height, field.get_height(item))
                 
                 if field.is_summarized:
                     row_summaries[field.name] += cell_value
+                    
                 if field.is_commaised:
                     cell_value = commaise(cell_value)
     
-                row.cells.append(cell_value)
+                row.append(cell_value)
                 
-            row.height = max(cell_heights)
             table.rows.append(row)
         
         if row_summaries or force_sum_row:
@@ -81,9 +72,9 @@ class Builder(object):
             for field in self.fields:
                 if field.is_summarized:
                     cell_value = Paragraph(commaise(row_summaries[field.name]), styleSumRow)
-                    sum_row.cells.append(cell_value)
+                    sum_row.append(cell_value)
                 else:
-                    sum_row.cells.append('')
+                    sum_row.append('')
                     
             table.rows.append(sum_row)
 
