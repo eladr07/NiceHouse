@@ -26,8 +26,8 @@ class Table(object):
         return self.rows.__iter__()
 
 class MassBuilder(object):
-    def __init__(self, *args):
-        self.builders = args
+    def __init__(self, builders):
+        self.builders = builders
     @property
     def has_sum_row(self):
         for builder in self.builders:
