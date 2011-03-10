@@ -1108,8 +1108,8 @@ class EmployeeSalesWriter(DocumentBase):
             houses_rows = houses_table.rows
             
             # merge all sale rows with house rows
-            rows = [sales_rows[i] + houses_rows[i] for i in range(len(sales_rows) + 1)]
-            row_heights = [max(sales_table.rows[i].height, houses_table.rows[i].height) for i in range(len(sales_rows) + 1)]
+            rows = [sales_rows[i] + houses_rows[i] for i in range(len(sales_rows))]
+            row_heights = [max(sales_table.rows[i].height, houses_table.rows[i].height) for i in range(len(sales_rows))]
             col_widths = sales_table.col_widths() + houses_table.col_widths()
 
             tableFlow = Table(rows, col_widths, row_heights, projectTableStyle, 1)
