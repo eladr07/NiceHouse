@@ -13,12 +13,6 @@ class Col(object):
     def __init__(self, name, title, width):
         self.name, self.title, self.width = name, title, width
 
-class FieldsGroup(object):
-    def __init__(self, items, fields):
-        self.items, self.fields = items, fields
-    def reverse(self):
-        self.fields.reverse()
-
 class Table(object):
     def __init__(self, cols = None, rows = None):
         self.cols, self.rows = cols or [], rows or []
@@ -31,12 +25,48 @@ class Table(object):
     def __iter__(self):
         return self.rows.__iter__()
 
+class MassBuilder(object):
+    def __init__(self, *args):
+        self.builders = args
+    @property
+    def has_sum_row(self):
+        for builder in self.builders:
+            if builder.has_sum_row:
+                return True
+        return False
+    
+    def build(self):
+        has_sum_row = self.has_sum_row
+        
+        root_table = Table()
+        
+        for builder in self.builders:
+            builder.force_sum_row = has_sum_row
+            table = builder.build()
+            root_table.cols.extend(table.cols)
+            
+            for i in range(len(table.rows)):
+                if i == len(root_table.rows):
+                    root_table.rows.append(Row())
+                root_table.rows[i] += table.rows[i]
+                root_table.rows[i].height = max(root_table.rows[i].height, table.rows[i].height)
+        
+        return root_table
+
 class Builder(object):
     def __init__(self, items, fields):
         self.items = items
         self.fields = fields
-        
-    def build(self, force_sum_row = False):
+        self.force_sum_row = False
+    
+    @property
+    def has_sum_row(self):
+        for field in self.fields:
+            if field.is_commaised:
+                return True
+        return False
+    
+    def build(self):
         row_summaries = dict([(field.name, 0) for field in self.fields if field.is_summarized])
         
         cols = [Col(field.name, field.title, field.width) for field in self.fields]
@@ -67,7 +97,7 @@ class Builder(object):
                 
             table.rows.append(row)
         
-        if row_summaries or force_sum_row:
+        if row_summaries or self.force_sum_row:
             sum_row = Row()
             for field in self.fields:
                 if field.is_summarized:

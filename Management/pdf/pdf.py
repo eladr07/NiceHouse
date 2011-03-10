@@ -16,7 +16,7 @@ from pyfribidi import log2vis
 from reportlab.lib.enums import *
 from reportlab.lib.styles import ParagraphStyle
 
-from helpers import Builder, FieldsGroup
+from helpers import Builder, MassBuilder
 from table_fields import *
 
 from styles import *
@@ -1139,38 +1139,27 @@ class SaleAnalysisWriter(DocumentBase):
             fields = [SaleDateField()]
             if self.include_clients:
                 fields.append(SaleClientsField())
-                
-            field_groups = [FieldsGroup(sales, fields),
-                            FieldsGroup(houses, [HouseBuildingNumField(), HouseNumField(), HouseTypeField(), HouseRoomsField(), HouseSettleDateField(),
-                                                 HouseFloorField(), HouseSizeField(), HouseGardenSizeField(), HousePerfectSizeField()]),
-                            FieldsGroup(sales, [SalePriceTaxedField(), SalePriceTaxedForPerfectSizeField()])
-                            ]
+            
+            
+            builders = [Builder(sales, fields),
+                        Builder(houses, [HouseBuildingNumField(), HouseNumField(), HouseTypeField(), HouseRoomsField(), HouseSettleDateField(),
+                                         HouseFloorField(), HouseSizeField(), HouseGardenSizeField(), HousePerfectSizeField()]),
+                        Builder(sales, [SalePriceTaxedField(), SalePriceTaxedForPerfectSizeField()])
+                        ]
 
-            # reverse the groups and their orders
-            field_groups.reverse()
-            for field_group in field_groups:
-                field_group.reverse()
+            # reverse the builders and their fields
+            builders.reverse()
+            for builder in builders:
+                builder.fields.reverse()
             
             flows.append(titlePara(u"%s/%s - %s מכירות" 
                                    % (month, year, len(sales))))
             flows.append(Spacer(0, 10))
             
-            rows, row_heights, col_widths = [], [], []
+            mass_builder = MassBuilder(builders)
+            table = mass_builder.build()
             
-            # +2 to include sum rows also
-            for i in range(len(sales) + 2):
-                rows.append([])
-                row_heights.append(None)
-                
-            for field_group in field_groups:
-                builder = Builder(field_group.items, field_group.fields)
-                table = builder.build(True)
-                for i in range(len(rows)):
-                    rows[i] += table.rows[i]
-                    row_heights[i] = max(row_heights[i], table.rows[i].height)
-                col_widths += table.col_widths()
-            
-            tableFlow = Table(rows, col_widths, row_heights, projectTableStyle, 1)
+            tableFlow = Table(table.rows, table.col_widths(), table.row_heights(), projectTableStyle, 1)
             flows.append(tableFlow)
         
         return flows
