@@ -95,7 +95,7 @@ class InvoicesAmountField(TableField):
     def __init__(self):
         return super(InvoicesAmountField, self).__init__(ugettext('invoices_amount'), 50)
     def format(self, item):
-        return '\n'.join([str(i.amount) for i in item.invoices.all()])
+        return '\n'.join([commaise(i.amount) for i in item.invoices.all()])
     
     def get_height(self, item):
         invoices_count = item.invoices.count()
@@ -121,7 +121,7 @@ class PaymentsAmountField(TableField):
     def __init__(self):
         return super(PaymentsAmountField, self).__init__(ugettext('payments_amount'),50)
     def format(self, item):
-        return '\n'.join([str(p.amount) for p in item.payments.all()])
+        return '\n'.join([commaise(p.amount) for p in item.payments.all()])
     
     def get_height(self, item):
         payments_count = item.payments.count()
