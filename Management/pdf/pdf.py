@@ -1101,12 +1101,13 @@ class EmployeeSalesWriter(DocumentBase):
             
             builder = Builder(sales, sale_fields)
             builder.build_sum_row = True
-            builder.build_avg_row = True
+            builder.build_avg_row = False
             sales_table = builder.build()
             sales_rows = sales_table.rows
             
             builder = Builder(houses, house_fields)
             builder.build_sum_row = True
+            builder.build_avg_row = False
             houses_table = builder.build()
             houses_rows = houses_table.rows
             
