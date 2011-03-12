@@ -1082,6 +1082,9 @@ class EmployeeSalesWriter(DocumentBase):
         house_fields = [HouseNumField(),HouseRoomsField(), HouseFloorField(), HouseSizeField(), HouseGardenSizeField(),
                         HouseTypeField()]
         sale_fields = [SaleClientsField(), SalePriceTaxedField(), SaleIncludeLawyerTaxField(), SaleEmployeeNameField()]
+
+        house_fields.reverse()
+        sale_fields.reverse()
                 
         flows = []
         
@@ -1096,12 +1099,8 @@ class EmployeeSalesWriter(DocumentBase):
                                    % (demand.month, demand.year, len(sales))))
             flows.append(Spacer(0, 10))
             
-            builders = [Builder(houses, house_fields), Builder(sales, sale_fields)]
-            
-            builders.reverse()
-            for builder in builders:
-                builder.fields.reverse()
-                
+            builders = [Builder(sales, sale_fields), Builder(houses, house_fields)]
+                            
             mass_builder = MassBuilder(builders)
             mass_builder.build_avg_row = False
             table = mass_builder.build()
