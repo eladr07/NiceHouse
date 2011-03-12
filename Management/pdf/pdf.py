@@ -1096,7 +1096,7 @@ class EmployeeSalesWriter(DocumentBase):
                                    % (demand.month, demand.year, len(sales))))
             flows.append(Spacer(0, 10))
             
-            builders = [Builder(sales, sale_fields), Builder(houses, house_fields)]
+            builders = [Builder(houses, house_fields), Builder(sales, sale_fields)]
             
             builders.reverse()
             for builder in builders:
