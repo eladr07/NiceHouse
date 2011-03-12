@@ -7,12 +7,13 @@ from django.utils.translation import ugettext
 from styles import *
 
 class TableField(object):
-    def __init__(self, title='', width= -1, is_summarized=False, is_commaised=False):
+    def __init__(self, title='', width= -1, is_summarized=False, is_commaised=False, is_averaged = False):
         self.name = self.__class__.__name__
         self.title = title
         self.width = width
         self.is_summarized = is_summarized
         self.is_commaised = is_commaised
+        self.is_averaged = is_averaged
         self._format_title()
     def _format_title(self):
         parts = [log2vis(part) for part in self.title.split()]
@@ -148,7 +149,7 @@ class SaleClientsField(TableField):
 class SalePriceTaxedField(TableField):
     def __init__(self):
         return super(SalePriceTaxedField, self).__init__(ugettext('price_with_tax'), 50, is_commaised = True,
-                                                           is_summarized = True)
+                                                           is_summarized = True, is_averaged = True)
     def format(self, item):
         return item.price_taxed
     
@@ -158,7 +159,7 @@ class SalePriceTaxedField(TableField):
 class SalePriceTaxedForPerfectSizeField(TableField):
     def __init__(self):
         return super(SalePriceTaxedForPerfectSizeField, self).__init__(ugettext('price_for_size'), 35, is_commaised = True,
-                                                                       is_summarized = True)
+                                                                       is_summarized = True, is_averaged = True)
     def format(self, item):
         return item.price_taxed_for_perfect_size
     
@@ -217,7 +218,7 @@ class HouseBuildingNumField(TableField):
         
 class HouseRoomsField(TableField):
     def __init__(self):
-        return super(HouseRoomsField, self).__init__(ugettext('rooms_num'),35)
+        return super(HouseRoomsField, self).__init__(ugettext('rooms_num'),35, is_averaged = True)
     def format(self, item):
         return item.rooms
     
@@ -226,7 +227,7 @@ class HouseRoomsField(TableField):
         
 class HouseFloorField(TableField):
     def __init__(self):
-        return super(HouseFloorField, self).__init__(ugettext('floor'),35)
+        return super(HouseFloorField, self).__init__(ugettext('floor'),35, is_averaged = True)
     def format(self, item):
         return item.floor
     
@@ -235,7 +236,7 @@ class HouseFloorField(TableField):
         
 class HouseSizeField(TableField):
     def __init__(self):
-        return super(HouseSizeField, self).__init__(ugettext('house_size'),40)
+        return super(HouseSizeField, self).__init__(ugettext('house_size'),40, is_averaged = True)
     def format(self, item):
         return item.net_size
     
@@ -244,7 +245,7 @@ class HouseSizeField(TableField):
         
 class HouseGardenSizeField(TableField):
     def __init__(self):
-        return super(HouseGardenSizeField, self).__init__(ugettext('garden_size'),55)
+        return super(HouseGardenSizeField, self).__init__(ugettext('garden_size'),55, is_averaged = True)
     def format(self, item):
         return item.garden_size
     
@@ -253,7 +254,7 @@ class HouseGardenSizeField(TableField):
         
 class HousePerfectSizeField(TableField):
     def __init__(self):
-        return super(HousePerfectSizeField, self).__init__(ugettext('perfect_size'),55)
+        return super(HousePerfectSizeField, self).__init__(ugettext('perfect_size'),55, is_averaged = True)
     def format(self, item):
         return item.perfect_size
     

@@ -41,7 +41,7 @@ class MassBuilder(object):
         root_table = Table()
         
         for builder in self.builders:
-            builder.force_sum_row = has_sum_row
+            builder.build_sum_row = has_sum_row
             table = builder.build()
             root_table.cols.extend(table.cols)
             
@@ -57,7 +57,8 @@ class Builder(object):
     def __init__(self, items, fields):
         self.items = items
         self.fields = fields
-        self.force_sum_row = False
+        self.build_sum_row = self.has_sum_row
+        self.build_avg_row = self.has_avg_row
     
     @property
     def has_sum_row(self):
@@ -66,8 +67,37 @@ class Builder(object):
                 return True
         return False
     
+    @property
+    def has_avg_row(self):
+        for field in self.fields:
+            if field.is_averaged:
+                return True
+        return False
+    
+    def _build_sum_row(self, row_summaries):
+        sum_row = Row()
+        for field in self.fields:
+            if field.is_summarized:
+                cell_value = Paragraph(commaise(row_summaries[field.name]), styleSumRow)
+                sum_row.append(cell_value)
+            else:
+                sum_row.append('')
+        return sum_row
+
+    def _build_avg_row(self, row_averages):
+        avg_row = Row()
+        for field in self.fields:
+            if field.is_averaged:
+                avg = row_averages[field.name] / len(self.items)
+                cell_value = Paragraph(avg, styleSumRow)
+                avg_row.append(cell_value)
+            else:
+                avg_row.append('')
+        return avg_row
+    
     def build(self):
         row_summaries = dict([(field.name, 0) for field in self.fields if field.is_summarized])
+        row_averages = dict([(field.name, 0) for field in self.fields if field.is_averaged])
         
         cols = [Col(field.name, field.title, field.width) for field in self.fields]
         
@@ -89,6 +119,8 @@ class Builder(object):
                 
                 if field.is_summarized:
                     row_summaries[field.name] += cell_value
+                if field.is_averaged:
+                    row_averages[field.name] += cell_value
                     
                 if field.is_commaised:
                     cell_value = commaise(cell_value)
@@ -97,15 +129,12 @@ class Builder(object):
                 
             table.rows.append(row)
         
-        if row_summaries or self.force_sum_row:
-            sum_row = Row()
-            for field in self.fields:
-                if field.is_summarized:
-                    cell_value = Paragraph(commaise(row_summaries[field.name]), styleSumRow)
-                    sum_row.append(cell_value)
-                else:
-                    sum_row.append('')
-                    
+        if self.build_sum_row:
+            sum_row = self._build_sum_row(row_summaries)
             table.rows.append(sum_row)
+            
+        if self.build_avg_row:
+            avg_row = self._build_avg_row(row_averages)
+            table.rows.append(avg_row)
 
         return table
