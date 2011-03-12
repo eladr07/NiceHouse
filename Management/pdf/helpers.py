@@ -78,7 +78,8 @@ class Builder(object):
         sum_row = Row()
         for field in self.fields:
             if field.is_summarized:
-                col_sum = sum(self.col_values[field.name])
+                col_values = [val for val in self.col_values[field.name] if val != None]
+                col_sum = sum(col_values)
                 cell_value = Paragraph(commaise(col_sum), styleSumRow)
                 sum_row.append(cell_value)
             else:
@@ -89,7 +90,9 @@ class Builder(object):
         avg_row = Row()
         for field in self.fields:
             if field.is_averaged:
-                avg = sum(self.col_values[field.name], 0.0) / len(self.col_values[field.name])
+                # exclude null values because it causes inavlid arithmatic
+                col_values = [val for val in self.col_values[field.name] if val != None]
+                avg = sum(col_values, 0.0) / len(col_values)
                 cell_value = Paragraph(unicode(avg), styleSumRow)
                 avg_row.append(cell_value)
             else:
