@@ -1099,24 +1099,17 @@ class EmployeeSalesWriter(DocumentBase):
                                    % (demand.month, demand.year, len(sales))))
             flows.append(Spacer(0, 10))
             
-            builder = Builder(sales, sale_fields)
-            builder.build_sum_row = True
-            builder.build_avg_row = False
-            sales_table = builder.build()
-            sales_rows = sales_table.rows
+            builders = [Builder(sales, sale_fields), Builder(houses, house_fields)]
             
-            builder = Builder(houses, house_fields)
-            builder.build_sum_row = True
-            builder.build_avg_row = False
-            houses_table = builder.build()
-            houses_rows = houses_table.rows
+            builders.reverse()
+            for builder in builders:
+                builder.fields.reverse()
+                
+            mass_builder = MassBuilder(builders)
+            mass_builder.build_avg_row = False
+            table = mass_builder.build()
             
-            # merge all sale rows with house rows
-            rows = [sales_rows[i] + houses_rows[i] for i in range(len(sales_rows))]
-            row_heights = [max(sales_table.rows[i].height, houses_table.rows[i].height) for i in range(len(sales_rows))]
-            col_widths = sales_table.col_widths() + houses_table.col_widths()
-
-            tableFlow = Table(rows, col_widths, row_heights, projectTableStyle, 1)
+            tableFlow = Table(table.rows, table.col_widths(), table.row_heights(), projectTableStyle, 1)
             flows.append(tableFlow)
         
         return flows

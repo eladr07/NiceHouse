@@ -30,6 +30,9 @@ class Table(object):
 class MassBuilder(object):
     def __init__(self, builders):
         self.builders = builders
+        self.build_sum_row = self.has_sum_row
+        self.build_avg_row = self.has_avg_row
+        
     @property
     def has_sum_row(self):
         for builder in self.builders:
@@ -43,15 +46,12 @@ class MassBuilder(object):
                 return True
         return False
     
-    def build(self):
-        has_sum_row = self.has_sum_row
-        has_avg_row = self.has_avg_row
-        
+    def build(self):        
         root_table = Table()
         
         for builder in self.builders:
-            builder.build_sum_row = has_sum_row
-            builder.build_avg_row = has_avg_row
+            builder.build_sum_row = self.build_sum_row
+            builder.build_avg_row = self.build_avg_row
             
             table = builder.build()
             root_table.cols.extend(table.cols)
