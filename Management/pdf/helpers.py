@@ -2,6 +2,8 @@ from Management.templatetags.management_extras import commaise
 from styles import *
 from reportlab.platypus import Paragraph
 
+import decimal
+
 class Row(list):
     def __init__(self, *args, **kw):
         super(Row, self).__init__(*args, **kw)
@@ -93,7 +95,9 @@ class Builder(object):
             if field.is_averaged:
                 # exclude null values because it causes inavlid arithmatic
                 col_values = [val for val in self.col_values[field.name] if val != None]
-                avg = round(sum(col_values, 0.0) / len(col_values), 2)
+                avg = sum(col_values, 0.0) / len(col_values)
+                avg = avg > 1000 and int(avg) or round(avg, 2)
+                decimal.Decimal()
                 cell_value = Paragraph(unicode(avg), styleSumRow)
                 avg_row.append(cell_value)
             else:
