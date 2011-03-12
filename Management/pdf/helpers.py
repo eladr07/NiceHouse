@@ -96,7 +96,7 @@ class Builder(object):
                 # exclude null values because it causes inavlid arithmatic
                 col_values = [val for val in self.col_values[field.name] if val != None]
                 avg = sum(col_values, 0.0) / len(col_values)
-                avg = avg > 1000 and int(avg) or round(avg, 2)
+                avg = avg > 1000 and commaise(avg) or round(avg, 2)
                 decimal.Decimal()
                 cell_value = Paragraph(unicode(avg), styleSumRow)
                 avg_row.append(cell_value)
