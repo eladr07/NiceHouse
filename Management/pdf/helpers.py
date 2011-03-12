@@ -89,7 +89,7 @@ class Builder(object):
         for field in self.fields:
             if field.is_averaged:
                 avg = row_averages[field.name] / len(self.items)
-                cell_value = Paragraph(avg, styleSumRow)
+                cell_value = Paragraph(unicode(avg), styleSumRow)
                 avg_row.append(cell_value)
             else:
                 avg_row.append('')
