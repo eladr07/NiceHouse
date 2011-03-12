@@ -74,21 +74,22 @@ class Builder(object):
                 return True
         return False
     
-    def _build_sum_row(self, row_summaries):
+    def _build_sum_row(self):
         sum_row = Row()
         for field in self.fields:
             if field.is_summarized:
-                cell_value = Paragraph(commaise(row_summaries[field.name]), styleSumRow)
+                col_sum = sum(self.col_values[field.name])
+                cell_value = Paragraph(commaise(col_sum), styleSumRow)
                 sum_row.append(cell_value)
             else:
                 sum_row.append('')
         return sum_row
 
-    def _build_avg_row(self, row_averages):
+    def _build_avg_row(self):
         avg_row = Row()
         for field in self.fields:
             if field.is_averaged:
-                avg = row_averages[field.name] / len(self.items)
+                avg = sum(self.col_values[field.name], 0.0) / len(self.col_values[field.name])
                 cell_value = Paragraph(unicode(avg), styleSumRow)
                 avg_row.append(cell_value)
             else:
@@ -96,8 +97,7 @@ class Builder(object):
         return avg_row
     
     def build(self):
-        row_summaries = dict([(field.name, 0) for field in self.fields if field.is_summarized])
-        row_averages = dict([(field.name, 0) for field in self.fields if field.is_averaged])
+        col_values = dict([(field.name, []) for field in self.fields])
         
         cols = [Col(field.name, field.title, field.width) for field in self.fields]
         
@@ -117,10 +117,7 @@ class Builder(object):
                 cell_value = field.format(item)
                 row.height = max(row.height, field.get_height(item))
                 
-                if field.is_summarized:
-                    row_summaries[field.name] += cell_value
-                if field.is_averaged:
-                    row_averages[field.name] += cell_value
+                col_values[field.name].append(cell_value)
                     
                 if field.is_commaised:
                     cell_value = commaise(cell_value)
@@ -129,12 +126,14 @@ class Builder(object):
                 
             table.rows.append(row)
         
+        self.col_values = col_values
+        
         if self.build_sum_row:
-            sum_row = self._build_sum_row(row_summaries)
+            sum_row = self._build_sum_row()
             table.rows.append(sum_row)
             
         if self.build_avg_row:
-            avg_row = self._build_avg_row(row_averages)
+            avg_row = self._build_avg_row()
             table.rows.append(avg_row)
 
         return table
