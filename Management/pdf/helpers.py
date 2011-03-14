@@ -88,39 +88,34 @@ class Builder(object):
     
     def _build_sum_row(self):
         sum_row = Row()
-        for i, field in enumerate(self.fields):
-            # first column will show the 'summary' header
-            if i == 0:
-                sum_row.append(ugettext('summary'))
-                continue
+        for field in self.fields:
             if field.is_summarized:
                 # exclude null values because it causes inavlid arithmatic
                 col_values = [val for val in self.col_values[field.name] if val != None]
                 col_sum = sum(col_values)
                 cell_value = Paragraph(commaise(col_sum), styleSumRow)
-                sum_row.append(cell_value)
             else:
-                sum_row.append('')
+                cell_value = ''
+                
+            sum_row.append(cell_value)
+            
         return sum_row
 
     def _build_avg_row(self):
         avg_row = Row()
-        for i, field in enumerate(self.fields):
-            # first column will show the 'average' header
-            if i == 0:
-                avg_row.append(ugettext('average'))
-                continue
+        for field in self.fields:
             if field.is_averaged:
                 # exclude null values because it causes inavlid arithmatic
                 col_values = [val for val in self.col_values[field.name] if val != None]
                 avg = sum(col_values, 0.0) / len(col_values)
                 avg = avg > 1000 and commaise(avg) or round(avg, 2)
                 decimal.Decimal()
-                cell_value = Paragraph(unicode(avg), styleSumRow)
-                avg_row.append(cell_value)
+                cell_value = Paragraph(unicode(avg), styleBoldGreenRow)
             else:
-                avg_row.append('')
+                cell_value = ''
 
+            avg_row.append(cell_value)
+            
         return avg_row
     
     def build(self):
