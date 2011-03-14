@@ -2,6 +2,7 @@ from reportlab.platypus.tables import TableStyle
 from reportlab.lib import colors
 from reportlab.lib.enums import *
 from reportlab.lib.styles import ParagraphStyle
+from reportlab.lib.colors import darkblue
 
 styleN = ParagraphStyle('normal', fontName='David',fontSize=16, leading=15, alignment=TA_RIGHT)
 styleNormal13 = ParagraphStyle('normal', fontName='David',fontSize=13, leading=15, alignment=TA_RIGHT)
@@ -9,7 +10,7 @@ styleDate = ParagraphStyle('date', fontName='David',fontSize=14, leading=15)
 styleRow = ParagraphStyle('sumRow', fontName='David',fontSize=11, leading=15)
 styleRow9 = ParagraphStyle('sumRow', fontName='David',fontSize=9, leading=15, alignment=TA_RIGHT)
 styleRow10 = ParagraphStyle('clients', fontName = 'David', fontSize=10, alignment = TA_CENTER)
-styleSumRow = ParagraphStyle('Row', fontName='David-Bold',fontSize=11, leading=15)
+styleSumRow = ParagraphStyle('Row', fontName='David-Bold',fontSize=11, leading=15, textColor=darkblue)
 styleSaleSumRow = ParagraphStyle('Row', fontName='David-Bold',fontSize=9, leading=15)
 styleSubj = ParagraphStyle('subject', fontName='David',fontSize=16, leading=15, alignment=TA_CENTER)
 styleSubTitleBold = ParagraphStyle('subtitle', fontName='David-Bold', fontSize=15, alignment=TA_CENTER)
