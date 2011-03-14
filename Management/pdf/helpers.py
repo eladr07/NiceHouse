@@ -1,6 +1,7 @@
 from Management.templatetags.management_extras import commaise
 from styles import *
 from reportlab.platypus import Paragraph
+from django.utils.translation import ugettext
 
 import decimal
 
@@ -87,7 +88,11 @@ class Builder(object):
     
     def _build_sum_row(self):
         sum_row = Row()
-        for field in self.fields:
+        for i, field in enumerate(self.fields):
+            # first column will show the 'summary' header
+            if i == 0:
+                sum_row.append(ugettext('summary'))
+                continue
             if field.is_summarized:
                 # exclude null values because it causes inavlid arithmatic
                 col_values = [val for val in self.col_values[field.name] if val != None]
@@ -100,7 +105,11 @@ class Builder(object):
 
     def _build_avg_row(self):
         avg_row = Row()
-        for field in self.fields:
+        for i, field in enumerate(self.fields):
+            # first column will show the 'average' header
+            if i == 0:
+                avg_row.append(ugettext('average'))
+                continue
             if field.is_averaged:
                 # exclude null values because it causes inavlid arithmatic
                 col_values = [val for val in self.col_values[field.name] if val != None]
@@ -111,6 +120,7 @@ class Builder(object):
                 avg_row.append(cell_value)
             else:
                 avg_row.append('')
+
         return avg_row
     
     def build(self):
