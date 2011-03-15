@@ -954,7 +954,7 @@ class DemandSelectForm(MonthForm):
 class DemandPayBalanceForm(ProjectSeasonForm):
     demand_pay_balance_choices = ((1, ugettext('un-paid')),
                                   (2, ugettext('mis-paid')))
-    demand_pay_balance = forms.ChoiceField(demand_pay_balance_choices, label = ugettext('demand_pay_balance'))
+    demand_pay_balance = forms.ChoiceField(demand_pay_balance_choices, label = ugettext('pay_balance'))
     
     def __init__(self, *args, **kw):
         super(DemandPayBalanceForm, self).__init__(*args, **kw)
