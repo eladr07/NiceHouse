@@ -952,7 +952,8 @@ class DemandSelectForm(MonthForm):
     project = forms.ModelChoiceField(Project.objects.all(), label = ugettext('project'))
 
 class DemandPayBalanceForm(SeasonForm):
-    project = forms.ModelChoiceField(Project.objects.all(), ugettext('all_projects'), label = ugettext('project'))
+    project = forms.ModelChoiceField(Project.objects.all(), ugettext('all_projects'), label = ugettext('project'),
+                                     required = False)
     
     demand_pay_balance_choices = ((1, ugettext('un-paid')),
                                   (2, ugettext('mis-paid')))
