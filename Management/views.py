@@ -3405,7 +3405,7 @@ def demand_pay_balance_list(request):
             if project:
                 query = query.filter(project = project)
             else:
-                query = query.order_by('project')
+                query = query.order_by('project', 'year', 'month')
             if from_year and from_month and to_year and to_month:
                 query = query.range(from_year, from_month, to_year, to_month)
             if demand_pay_balance == '1': # un-paid
