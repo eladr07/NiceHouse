@@ -1,6 +1,15 @@
 from django.db.models import Avg, Max, Min, Count, Sum
 from django.db import models
 
+class SeasonQuerySet(models.query.QuerySet):
+    def range(self, from_year, from_month, to_year, to_month):
+        q = models.Q(year = from_year, month__gte = from_month)
+        if from_year == to_year:
+            q = q & models.Q(month__lte = to_month)
+        else:
+            q = q | models.Q(year__gt = from_year, year__lt = to_year) | models.Q(year = to_year, month__lte = to_month)
+        return self.filter(q)
+
 class InvoiceQuerySet(models.query.QuerySet):
     def total_amount_offset(self):
         invoices_amount = self.aggregate(Sum('amount'))['amount__sum'] or 0
@@ -15,7 +24,7 @@ class DemandDiffQuerySet(models.query.QuerySet):
     def total_amount(self):
         return self.aggregate(Sum('amount'))['amount__sum'] or 0
     
-class DemandQuerySet(models.query.QuerySet):
+class DemandQuerySet(SeasonQuerySet):
     def total_sales_commission(self):
         return self.aggregate(Sum('sales_commission'))['sales_commission__sum'] or 0
     def total_sale_count(self):
