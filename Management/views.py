@@ -3408,10 +3408,9 @@ def demand_pay_balance_list(request):
                 query = query.order_by('project')
             if from_year and from_month and to_year and to_month:
                 query = query.range(from_year, from_month, to_year, to_month)
-            if demand_pay_balance == 1:
+            if demand_pay_balance == '1':
                 query = query.nopayment()
-                raise ''
-            elif demand_pay_balance == 2:
+            elif demand_pay_balance == '2':
                 query = query.annotate(invoices_num = Count('invoices'), payments_num = Count('payments'))
                 query = query.filter(invoices_num__gte = 0, payments_num__gt = 0)
                 
