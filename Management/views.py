@@ -3401,7 +3401,7 @@ def demand_pay_balance_list(request):
                 cleaned_data['from_month'], cleaned_data['to_year'], cleaned_data['to_month']
             
             # compose the query to db
-            query = Demand.objects.all()
+            query = Demand.objects.annotate(payments_num = Count('payments'))
             if project:
                 query = query.filter(project = project)
             else:
@@ -3409,10 +3409,9 @@ def demand_pay_balance_list(request):
             if from_year and from_month and to_year and to_month:
                 query = query.range(from_year, from_month, to_year, to_month)
             if demand_pay_balance == '1':
-                query = query.nopayment()
+                query = query.filter(payments_num = 0)
             elif demand_pay_balance == '2':
-                query = query.annotate(invoices_num = Count('invoices'), payments_num = Count('payments'))
-                query = query.filter(invoices_num__gte = 0, payments_num__gt = 0)
+                query = query.filter(payments_num__gt = 0)
                 
             # filter demands manually
             demands = [demand for demand in query if (demand.diff_invoice_payment or demand.diff_invoice) 

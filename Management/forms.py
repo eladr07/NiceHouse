@@ -951,14 +951,16 @@ class EmployeeSelectForm(forms.Form):
 class DemandSelectForm(MonthForm):
     project = forms.ModelChoiceField(Project.objects.all(), label = ugettext('project'))
 
-class DemandPayBalanceForm(ProjectSeasonForm):
+class DemandPayBalanceForm(SeasonForm):
+    project = forms.ModelChoiceField(Project.objects.all(), ugettext('all_projects'), label = ugettext('project'))
+    
     demand_pay_balance_choices = ((1, ugettext('un-paid')),
                                   (2, ugettext('mis-paid')))
     demand_pay_balance = forms.ChoiceField(demand_pay_balance_choices, label = ugettext('pay_balance'))
     
     def __init__(self, *args, **kw):
         super(DemandPayBalanceForm, self).__init__(*args, **kw)
-        for attr in ['project', 'from_month', 'from_year', 'to_month', 'to_year']:
+        for attr in ['from_month', 'from_year', 'to_month', 'to_year']:
             self.fields[attr].required = False
 
 class MailForm(forms.Form):
