@@ -3415,7 +3415,8 @@ def demand_pay_balance_list(request):
                 query = query.filter(invoices_num__gte = 0, payments_num__gt = 0)
                 
             # filter demands manually
-            demands = [demand for demand in query if demand.diff_invoice_payment != 0 and demand.force_fully_paid == False]
+            demands = [demand for demand in query if (demand.diff_invoice_payment or demand.diff_invoice) 
+                       and demand.force_fully_paid == False]
             
             # group the demands by project
             project_demands = {}
