@@ -3418,6 +3418,7 @@ def demand_pay_balance_list(request):
             demands = [demand for demand in query if demand.diff_invoice_payment != 0 and demand.force_fully_paid == False]
             
             # group the demands by project
+            project_demands = {}
             for project, demand_iter in itertools.groupby(demands, lambda demand: demand.project):
                 project_demands[project] = list(demand_iter)
                 
