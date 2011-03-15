@@ -3389,6 +3389,49 @@ def demand_season_list(request):
                                 'total_amount':total_amount},
                               context_instance=RequestContext(request))
 
+@permission_required('Management.demand_pay_balance')
+def demand_pay_balance_list(request):
+    if len(request.GET):
+        form = DemandPayBalanceForm(request.GET)
+        if form.is_valid():
+            # gather form data
+            cleaned_data = form.cleaned_data
+            demand_pay_balance = cleaned_data['demand_pay_balance']
+            project, from_year, from_month, to_year, to_month = cleaned_data['project'], cleaned_data['from_year'], \
+                cleaned_data['from_month'], cleaned_data['to_year'], cleaned_data['to_month']
+            
+            # compose the query to db
+            query = Demand.objects.all()
+            if project:
+                query = query.filter(project = project)
+            else:
+                query = query.order_by('project')
+            if from_year and from_month and to_year and to_month:
+                query = query.range(from_year, from_month, to_year, to_month)
+            if demand_pay_balance == 1:
+                query = query.nopayment()
+            elif demand_pay_balance == 2:
+                query = query.annotate(invoices_num = Count('invoices'), payments_num = Count('payments'))
+                query = query.filter(invoices_num__gte = 0, payments_num__gt = 0)
+                
+            # filter demands manually
+            demands = [demand for demand in query if demand.diff_invoice_payment != 0 and demand.force_fully_paid == False]
+            
+            # group the demands by project
+            for project, demand_iter in itertools.groupby(demands, lambda demand: demand.project):
+                project_demands[project] = list(demand_iter)
+                
+            if request.GET.has_key('html'):
+                return render_to_response('Management/demand_pay_balance_list.html', 
+                                          { 'filterForm': form, 'project_demands': project_demands},
+                                          context_instance=RequestContext(request))
+            elif request.GET.has_key('pdf'):
+                pass
+    else:
+        return render_to_response('Management/demand_pay_balance_list.html', 
+                                  { 'filterForm': DemandPayBalanceForm(), 'project_demands': {}},
+                                  context_instance=RequestContext(request))
+
 @permission_required('Management.season_income')
 def season_income(request):
     total_sale_count, total_amount, total_amount_notax = 0,0,0

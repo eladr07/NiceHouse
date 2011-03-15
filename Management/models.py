@@ -2124,7 +2124,8 @@ class Demand(models.Model):
                        ('demand_remarks', 'Demand Remarks'), ('demand_sale_count', 'Demand Sale Count'),
                        ('demand_invoices', 'Demand Invoices'), ('demand_payments', 'Demand Payments'),
                        ('season_income', 'Season Income'), ('demand_force_fully_paid', 'Demand Force Fully Paid'),
-                       ('demand_followup', 'Demand followup'), ('demand_followup_pdf', 'Demand followup PDF'))
+                       ('demand_followup', 'Demand followup'), ('demand_pay_balance', 'Demand pay balance'), 
+                       ('demand_followup_pdf', 'Demand followup PDF'))
 
 class SignupCancel(models.Model):
     date = models.DateField(ugettext('cancel_date'))

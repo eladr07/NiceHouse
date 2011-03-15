@@ -943,14 +943,24 @@ class CopyBuildingForm(forms.Form):
         return cleaned_data
     
 class ProjectSelectForm(forms.Form):
-    project = forms.ModelChoiceField(queryset = Project.objects.all(), label = ugettext('project'))
+    project = forms.ModelChoiceField(Project.objects.all(), label = ugettext('project'))
     
 class EmployeeSelectForm(forms.Form):
-    employee = forms.ModelChoiceField(queryset = EmployeeBase.objects.all(), label = ugettext('employee'))
+    employee = forms.ModelChoiceField(EmployeeBase.objects.all(), label = ugettext('employee'))
     
 class DemandSelectForm(MonthForm):
-    project = forms.ModelChoiceField(queryset = Project.objects.all(), label = ugettext('project'))
+    project = forms.ModelChoiceField(Project.objects.all(), label = ugettext('project'))
+
+class DemandPayBalanceForm(ProjectSeasonForm):
+    demand_pay_balance_choices = (1, ugettext('un-paid'),
+                                  2, ugettext('mis-paid'))
+    demand_pay_balance = forms.ChoiceField(demand_pay_balance_choices, label = ugettext('demand_pay_balance'))
     
+    def __init__(self, *args, **kw):
+        super(DemandPayBalanceForm, self).__init__(*args, **kw)
+        for attr in ['project', 'from_month', 'from_year', 'to_month', 'to_year']:
+            self.fields[attr].required = False
+
 class MailForm(forms.Form):
     to = forms.EmailField(label = ugettext('to'))
     Cc = forms.EmailField(label = ugettext('CC'), required = False)
