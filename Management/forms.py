@@ -621,7 +621,7 @@ class DivisionTypeSeasonForm(SeasonForm):
 
 class GloablProfitLossForm(SeasonForm):
     division_choices = [(division.id, unicode(division)) for division in DivisionType.objects.all()]
-    division_choices.extend([(-1, ugettext('all')),
+    division_choices.extend([(-1, ugettext('all_divisions')),
                              (-2, ugettext('all_nh'))])
     divisions = forms.ChoiceField(label = ugettext('division_type'), choices = division_choices)
         

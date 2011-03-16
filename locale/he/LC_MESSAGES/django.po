@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-16 22:11+0200\n"
+"POT-Creation-Date: 2011-03-16 22:23+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -225,8 +225,8 @@ msgstr "תשלום לעו\"ד"
 msgid "division_type"
 msgstr "חטיבה עסקית"
 
-#: Management/forms.py:624 Management/forms.py:969
-msgid "all"
+#: Management/forms.py:624
+msgid "all_divisions"
 msgstr "כל החטיבות"
 
 #: Management/forms.py:625
@@ -379,6 +379,10 @@ msgstr "כל הזמנים"
 #: Management/forms.py:966
 msgid "all_projects"
 msgstr "כל הפרוייקטים"
+
+#: Management/forms.py:969
+msgid "all"
+msgstr "הכל"
 
 #: Management/forms.py:969
 msgid "un-paid"
