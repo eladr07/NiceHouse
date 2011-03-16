@@ -3397,8 +3397,8 @@ def demand_pay_balance_list(request):
             # gather form data
             cleaned_data = form.cleaned_data
             demand_pay_balance = cleaned_data['demand_pay_balance']
-            project, from_year, from_month, to_year, to_month = cleaned_data['project'], cleaned_data['from_year'], \
-                cleaned_data['from_month'], cleaned_data['to_year'], cleaned_data['to_month']
+            project, from_year, from_month, to_year, to_month, all_times = cleaned_data['project'], cleaned_data['from_year'], \
+                cleaned_data['from_month'], cleaned_data['to_year'], cleaned_data['to_month'], cleaned_data['all_times']
             
             # compose the query to db
             query = Demand.objects.annotate(payments_num = Count('payments'))
@@ -3406,7 +3406,7 @@ def demand_pay_balance_list(request):
                 query = query.filter(project = project)
             else:
                 query = query.order_by('project', 'year', 'month')
-            if from_year and from_month and to_year and to_month:
+            if from_year and from_month and to_year and to_month and not all_times:
                 query = query.range(from_year, from_month, to_year, to_month)
             if demand_pay_balance == '1': # un-paid
                 query = query.filter(payments_num = 0)
