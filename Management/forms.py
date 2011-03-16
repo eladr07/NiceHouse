@@ -952,13 +952,13 @@ class DemandSelectForm(MonthForm):
     project = forms.ModelChoiceField(Project.objects.all(), label = ugettext('project'))
 
 class DemandPayBalanceForm(forms.Form):
-    from_year = forms.ChoiceField(((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), False,
+    from_year = forms.ChoiceField(((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
                                   label = ugettext('from_year'), initial = common.current_month().year)
-    from_month = forms.ChoiceField(((i,i) for i in range(1,13)), False, label = ugettext('from_month'),
+    from_month = forms.ChoiceField(((i,i) for i in range(1,13)), label = ugettext('from_month'),
                                    initial = common.current_month().month)
-    to_year = forms.ChoiceField(((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), False,
+    to_year = forms.ChoiceField(((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
                                 label = ugettext('to_year'), initial = common.current_month().year)
-    to_month = forms.ChoiceField(((i,i) for i in range(1,13)), False, label = ugettext('to_month'),
+    to_month = forms.ChoiceField(((i,i) for i in range(1,13)), label = ugettext('to_month'),
                                  initial = common.current_month().month)
 
     all_times = forms.BooleanField(label = ugettext('all_times'))
@@ -982,15 +982,6 @@ class DemandPayBalanceForm(forms.Form):
         return int(self.cleaned_data['to_year'])
     def clean_to_month(self):
         return int(self.cleaned_data['to_month'])
-     
-    def clean(self):
-        cleaned_data = self.cleaned_data
-        all_times = cleaned_data['all_times']
-        if all_times == False:
-            for field in ['from_year', 'from_month', 'to_year', 'to_month']:
-                if cleaned_data[field] == None:
-                    raise forms.ValidationError()
-        return cleaned_data
 
 class MailForm(forms.Form):
     to = forms.EmailField(label = ugettext('to'))
