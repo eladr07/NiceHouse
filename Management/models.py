@@ -2028,7 +2028,6 @@ class Demand(models.Model):
         return self.sales.exclude(salehousemod=None, salepricemod=None, salepre=None, salereject=None).count() > 0
     @property
     def diff_invoice(self):
-        if self.invoices.count() == 0: return 0
         return self.invoices.total_amount_offset() - int(self.get_total_amount())
     @property
     def diff_invoice_payment(self):
