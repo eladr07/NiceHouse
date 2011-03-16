@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-15 21:17+0200\n"
+"POT-Creation-Date: 2011-03-16 22:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,19 +17,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: Management/forms.py:13
+#: Management/forms.py:13 Management/forms.py:956
 msgid "from_year"
 msgstr "משנה"
 
-#: Management/forms.py:14
+#: Management/forms.py:14 Management/forms.py:957
 msgid "from_month"
 msgstr "מחודש"
 
-#: Management/forms.py:17
+#: Management/forms.py:17 Management/forms.py:960
 msgid "to_year"
 msgstr "עד שנה"
 
-#: Management/forms.py:18
+#: Management/forms.py:18 Management/forms.py:961
 msgid "to_month"
 msgstr "עד חודש"
 
@@ -141,7 +141,7 @@ msgstr "עובד"
 #: Management/forms.py:331 Management/forms.py:338 Management/forms.py:430
 #: Management/forms.py:524 Management/forms.py:528 Management/forms.py:833
 #: Management/forms.py:836 Management/forms.py:946 Management/forms.py:952
-#: Management/forms.py:955 Management/models.py:229 Management/models.py:411
+#: Management/forms.py:966 Management/models.py:229 Management/models.py:411
 #: Management/models.py:1918 Management/models.py:3024
 #: Management/models.py:3061
 msgid "project"
@@ -225,7 +225,7 @@ msgstr "תשלום לעו\"ד"
 msgid "division_type"
 msgstr "חטיבה עסקית"
 
-#: Management/forms.py:624
+#: Management/forms.py:624 Management/forms.py:969
 msgid "all"
 msgstr "כל החטיבות"
 
@@ -372,44 +372,48 @@ msgstr "כולל מחסנים"
 msgid "existing_building_num"
 msgstr "מס' בניין כבר קיים"
 
-#: Management/forms.py:955
+#: Management/forms.py:964
+msgid "all_times"
+msgstr "כל הזמנים"
+
+#: Management/forms.py:966
 msgid "all_projects"
 msgstr "כל הפרוייקטים"
 
-#: Management/forms.py:957
+#: Management/forms.py:969
 msgid "un-paid"
 msgstr "לא שולמו"
 
-#: Management/forms.py:958
+#: Management/forms.py:969
 msgid "mis-paid"
 msgstr "שולמו בחסר\\ביתר"
 
-#: Management/forms.py:959
+#: Management/forms.py:970
 msgid "pay_balance"
 msgstr "מאזן תשלום"
 
-#: Management/forms.py:967
+#: Management/forms.py:987
 msgid "to"
 msgstr "נמען"
 
-#: Management/forms.py:968
+#: Management/forms.py:988
 msgid "CC"
 msgstr "עותק"
 
-#: Management/forms.py:969
+#: Management/forms.py:989
 msgid "BCC"
 msgstr "עותק חסוי"
 
-#: Management/forms.py:970
+#: Management/forms.py:990
 msgid "subject"
 msgstr "נושא"
 
-#: Management/forms.py:971 Management/forms.py:972 Management/forms.py:973
-#: Management/forms.py:974 Management/forms.py:975
+#: Management/forms.py:991 Management/forms.py:992 Management/forms.py:993
+#: Management/forms.py:994 Management/forms.py:995
 msgid "attachment"
 msgstr "קובץ מצורף"
 
-#: Management/forms.py:976
+#: Management/forms.py:996
 msgid "contents"
 msgstr "תוכן"
 
@@ -554,6 +558,7 @@ msgid "project fax"
 msgstr "פקס בפרוייקט"
 
 #: Management/models.py:167 Management/models.py:450 Management/models.py:703
+#: templates/Management/demand_pay_balance_list.html:63
 msgid "mail"
 msgstr "דואר אלקטרוני"
 
@@ -728,10 +733,12 @@ msgstr "אנשים"
 #: Management/models.py:461 Management/models.py:702 Management/models.py:2145
 #: Management/models.py:2219 Management/models.py:2238
 #: Management/models.py:2239 Management/models.py:2603
+#: templates/Management/demand_pay_balance_list.html:63
 msgid "phone"
 msgstr "טלפון"
 
 #: Management/models.py:462 Management/models.py:704
+#: templates/Management/demand_pay_balance_list.html:63
 msgid "fax"
 msgstr "פקס"
 
