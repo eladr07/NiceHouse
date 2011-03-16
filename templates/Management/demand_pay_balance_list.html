@@ -55,7 +55,14 @@
 	{% for project, demands in project_demands.items %}
 		<tr class="row1">
 			<td colspan="17" style="text-align:center;">
-				<a href="{{project.get_absolute_url}}">{{project}}</a>
+				<a href="{{project.get_absolute_url}}">
+					{{project}}
+					{% if project.demand_contact %}
+					{% with project.demand_contact as demand_contact %}
+						- {{ demand_contact }} ,{% trans "phone" %}: {{demand_contact.phone}}, {% trans "fax" %}: {{ demand_contact.fax }}, {% trans "mail" %}: {{demand_contact.mail}}
+					{% endwith %}
+					{% endif %}
+				</a>
 			</td>
 		</tr>
 		{% for d in demands %}

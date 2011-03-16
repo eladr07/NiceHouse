@@ -951,18 +951,46 @@ class EmployeeSelectForm(forms.Form):
 class DemandSelectForm(MonthForm):
     project = forms.ModelChoiceField(Project.objects.all(), label = ugettext('project'))
 
-class DemandPayBalanceForm(SeasonForm):
+class DemandPayBalanceForm(forms.Form):
+    from_year = forms.ChoiceField(((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), False,
+                                  label = ugettext('from_year'), initial = common.current_month().year)
+    from_month = forms.ChoiceField(((i,i) for i in range(1,13)), False, label = ugettext('from_month'),
+                                   initial = common.current_month().month)
+    to_year = forms.ChoiceField(((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), False,
+                                label = ugettext('to_year'), initial = common.current_month().year)
+    to_month = forms.ChoiceField(((i,i) for i in range(1,13)), False, label = ugettext('to_month'),
+                                 initial = common.current_month().month)
+
+    all_times = forms.BooleanField(label = ugettext('all_times'))
+    
     project = forms.ModelChoiceField(Project.objects.all(), ugettext('all_projects'), label = ugettext('project'),
                                      required = False)
     
-    demand_pay_balance_choices = ((1, ugettext('un-paid')),
-                                  (2, ugettext('mis-paid')))
+    demand_pay_balance_choices = ((0, ugettext('all')), (1, ugettext('un-paid')), (2, ugettext('mis-paid')))
     demand_pay_balance = forms.ChoiceField(demand_pay_balance_choices, label = ugettext('pay_balance'))
     
     def __init__(self, *args, **kw):
         super(DemandPayBalanceForm, self).__init__(*args, **kw)
         for attr in ['from_month', 'from_year', 'to_month', 'to_year']:
             self.fields[attr].required = False
+           
+    def clean_from_year(self):
+        return int(self.cleaned_data['from_year'])
+    def clean_from_month(self):
+        return int(self.cleaned_data['from_month'])
+    def clean_to_year(self):
+        return int(self.cleaned_data['to_year'])
+    def clean_to_month(self):
+        return int(self.cleaned_data['to_month'])
+     
+    def clean(self):
+        cleaned_data = self.cleaned_data
+        all_times = cleaned_data['all_times']
+        if all_times == False:
+            for field in ['from_year', 'from_month', 'to_year', 'to_month']:
+                if cleaned_data[field] == None:
+                    raise forms.ValidationError()
+        return cleaned_data
 
 class MailForm(forms.Form):
     to = forms.EmailField(label = ugettext('to'))
