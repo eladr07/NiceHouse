@@ -961,7 +961,7 @@ class DemandPayBalanceForm(forms.Form):
     to_month = forms.ChoiceField(((i,i) for i in range(1,13)), label = ugettext('to_month'),
                                  initial = common.current_month().month)
 
-    all_times = forms.BooleanField(label = ugettext('all_times'))
+    all_times = forms.BooleanField(False, label = ugettext('all_times'))
     
     project = forms.ModelChoiceField(Project.objects.all(), ugettext('all_projects'), label = ugettext('project'),
                                      required = False)
