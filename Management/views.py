@@ -3408,6 +3408,8 @@ def demand_pay_balance_list(request):
                 query = query.order_by('project', 'year', 'month')
             if from_year and from_month and to_year and to_month and not all_times:
                 query = query.range(from_year, from_month, to_year, to_month)
+            else:
+                query = query.all()
             if demand_pay_balance == '1': # un-paid
                 query = query.filter(payments_num = 0)
             elif demand_pay_balance == '2': # mis-paid
