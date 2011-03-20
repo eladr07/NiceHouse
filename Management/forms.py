@@ -329,7 +329,8 @@ class DemandDiffForm(forms.ModelForm):
         
 class SaleAnalysisForm(SeasonForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label=ugettext('project'))
-    building_num = forms.CharField(4, 1, required = False, label = ugettext('building_num'))
+    building_num = forms.CharField(4, 1, required = False, label = ugettext('building_num'),
+                                   widget = forms.TextInput(attrs = {'size':'3'}))
     include_clients = forms.ChoiceField(label = ugettext('include_clients'), required = False, choices = ((0,u'לא'),
                                                                                                           (1,u'כן')))
     house_type = forms.ModelChoiceField(queryset=HouseType.objects.all(), required = False, label = ugettext('house_type'))
