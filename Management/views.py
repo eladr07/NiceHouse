@@ -3651,8 +3651,8 @@ def sale_analysis(request):
                                                         cleaned_data['to_year'], cleaned_data['to_month'])
             
             # query all the sales needed
-            q = models.Q(contractor_pay_year = from_year, contractor_pay_month__gte = from_month) | models.Q(contractor_pay_year__gt = from_year, contractor_pay_year__lt = to_year) | models.Q(contractor_pay_year = to_year, contractor_pay_month__lte = to_month)
-            all_sales = Sale.objects.filter(q, house__building__project = project).order_by('contractor_pay_year', 'contractor_pay_month').select_related('house')
+            all_sales = Sale.objects.range(from_year, from_month, to_year, to_month)
+            all_sales = all_sales.filter(house__building__project = project).order_by('contractor_pay_year', 'contractor_pay_month').select_related('house')
             if rooms_num:
                 all_sales = all_sales.filter(house__rooms = rooms_num)
             if house_type:
