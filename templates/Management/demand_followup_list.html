@@ -35,11 +35,6 @@
 					location.reload(true);
 				});
 			});
-		//add filters
-		var filterSelect = $("#filterSelect");
-		$("#demandTable th").each(function (index, elem) {
-			filterSelect.append("<option value='" + index + "'>" + $(elem).text() + "</option>");
-		});
 	});
 </script>
 {% endblock header %}
@@ -52,7 +47,7 @@
 	<form method="GET">
 		<table class="dataTable">
 			<tr class="row1">
-				<td colspan="6" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש תקופה</td>
+				<td colspan={{filterForm.fields|length|add:"1"}} style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש תקופה</td>
 			</tr>
 			<tr class="row2">
 				{% for field in filterForm %}

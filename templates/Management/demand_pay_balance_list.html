@@ -1,6 +1,44 @@
 ﻿{% extends "./base.html" %}
 {% load management_extras %}
 {% load i18n %}
+{% block header %}
+{{ block.super }}
+<script>
+	var selectedID = 0;
+	var prev_class;
+	$(document).ready(function() {
+		$("#demandTable tr").click(function() { 
+			var tr = $(this);
+			if (selectedID > 0)
+				$("#demandTable tr[objid='"+selectedID+"']").attr("class", prev_class);
+			selectedID = tr.attr("objid");
+			if (!selectedID)
+				return;
+			prev_class = tr.attr("class");
+			tr.attr("class","selectedRow");
+			//sync links
+			if (selectedID > 0)
+				$("#demandEdit").attr("href", "/demands/" + selectedID);
+				$("#demandAdjust").attr("href", "/demands/" + selectedID + "/adddiffadjust");
+				$("#demandAdjust").attr("href", "/demands/" + selectedID + "/adddiffadjust");
+				$("#demandForceFullyPaid").attr("href", "/demands/" + selectedID + "/forcefullypaid");
+			});
+		$(".fancybox").fancybox();
+		$(".bigfancybox").fancybox({'frameWidth':800});	
+		$("#demandCalc").click(function(event) {
+			if (!confirm("האם אתה בטוח שברצונך לחשב את העמלות מחדש ?"))
+				event.preventDefault();
+		});		
+		$("#demandForceFullyPaid").click(function (event) {
+			event.preventDefault();
+			$.get($(this).attr("href"), function(data){
+				if (data == "ok")
+					location.reload(true);
+				});
+			});
+	});
+</script>
+{% endblock header %}
 {% block content %}
 <div class="title">
 	<div class="pageTitle">מצב תשלום דרישות יזמים</div>
@@ -24,6 +62,31 @@
 			</tr>
 		</table>
 	</form>
+</div>
+<div class="clearBoth"></div>
+<div class="someIcon" style="width:110px;">
+	<img src="/site_media/images/documentinfo-48.png" width="20" height="20"  alt="שינוי" /> 
+	<a href="{{project.get_absolute_url}}">כרטיס פרויקט</a>
+</div>
+<div class="someIcon" style="width:100px;">
+	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
+	<a id="demandEdit">שינוי דרישה</a>
+</div>
+<div class="someIcon" style="width:100px;">
+	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
+	<a class="fancybox" id="demandAdjust">התאמת דרישה</a>
+</div>
+<div class="someIcon" style="width:100px;">
+	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
+	<a id="demandForceFullyPaid">התאמה כפויה</a>
+</div>
+<div class="someIcon"style="width:130px;">
+	<img src="/site_media/images/advanced-48.png" width="20" height="20"  alt="שליחה" /> 
+	<a id="demandCalc">חישוב עמלות מחדש</a>
+</div>
+<div class="someIcon" style="width:100px;">
+	<img src="/site_media/images/print-48.png" width="20" height="20"  alt="הדפסה" /> 
+	<a href="/reports/project_followup/{{project.id}}/{{start.year}}/{{start.month}}/{{end.year}}/{{end.month}}">גרסה להדפסה</a>
 </div>
 <div class="clearBoth"></div>
 <br>
