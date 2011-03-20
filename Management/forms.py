@@ -329,11 +329,12 @@ class DemandDiffForm(forms.ModelForm):
         
 class SaleAnalysisForm(SeasonForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label=ugettext('project'))
+    building_num = forms.CharField(4, 1, required = False, label = ugettext('building_num'))
     include_clients = forms.ChoiceField(label = ugettext('include_clients'), required = False, choices = ((0,u'לא'),
                                                                                                           (1,u'כן')))
     house_type = forms.ModelChoiceField(queryset=HouseType.objects.all(), required = False, label = ugettext('house_type'))
     rooms_num = forms.ChoiceField(label = ugettext('rooms'), required = False, choices = RoomsChoices)
-            
+                
 class SaleForm(forms.ModelForm):
     project = forms.ModelChoiceField(queryset = Project.objects.all(), label=ugettext('project'))
     building = forms.ModelChoiceField(queryset = Building.objects.all(), label=ugettext('building'))

@@ -3644,10 +3644,11 @@ def sale_analysis(request):
     if len(request.GET):
         form = SaleAnalysisForm(request.GET)
         if form.is_valid():
-            project, include_clients = form.cleaned_data['project'], int(form.cleaned_data['include_clients'])
-            rooms_num, house_type = form.cleaned_data['rooms_num'], form.cleaned_data['house_type']
-            from_year, from_month, to_year, to_month = (form.cleaned_data['from_year'], form.cleaned_data['from_month'],
-                                                        form.cleaned_data['to_year'], form.cleaned_data['to_month'])
+            cleaned_data = form.cleaned_data
+            project, include_clients = cleaned_data['project'], int(cleaned_data['include_clients'])
+            building_num, rooms_num, house_type = cleaned_data['building_num'], cleaned_data['rooms_num'], cleaned_data['house_type']
+            from_year, from_month, to_year, to_month = (cleaned_data['from_year'], cleaned_data['from_month'],
+                                                        cleaned_data['to_year'], cleaned_data['to_month'])
             
             # query all the sales needed
             q = models.Q(contractor_pay_year = from_year, contractor_pay_month__gte = from_month) | models.Q(contractor_pay_year__gt = from_year, contractor_pay_year__lt = to_year) | models.Q(contractor_pay_year = to_year, contractor_pay_month__lte = to_month)
@@ -3656,6 +3657,8 @@ def sale_analysis(request):
                 all_sales = all_sales.filter(house__rooms = rooms_num)
             if house_type:
                 all_sales = all_sales.filter(house__type = house_type)
+            if building_num:
+                all_sales = all_sales.filter(house__building__num = building_num)
             
             if request.GET.has_key('html'):    
                 house_attrs = ('net_size', 'garden_size', 'rooms', 'floor', 'perfect_size')
