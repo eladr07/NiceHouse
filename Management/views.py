@@ -3420,8 +3420,18 @@ def demand_pay_balance_list(request):
             
             # group the demands by project
             project_demands = {}
+            
             for project, demand_iter in itertools.groupby(demands, lambda demand: demand.project):
-                project_demands[project] = list(demand_iter)
+                demands = list(demand_iter)
+                project_demands[project] = demands
+                for attr in ['total_amount', 'total_payments', 'total_invoices', 'total_diff_invoice', 'total_diff_invoice_payment']:
+                    setattr(project, attr, 0)
+                for demand in demands:
+                    project.total_amount += demand.get_total_amount()
+                    project.total_payments += demand.payments.total_amount()
+                    project.total_invoices += demand.invoices.total_amount()
+                    project.total_diff_invoice += demand.diff_invoice
+                    project.total_diff_invoice_payment += demand.diff_invoice_payment
                 
             if request.GET.has_key('html'):
                 return render_to_response('Management/demand_pay_balance_list.html', 

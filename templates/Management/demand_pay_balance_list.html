@@ -134,6 +134,17 @@
 				</td>
 			</tr>
 		{% endfor %}
+		<tr height="30px" class="rowSum">
+			<td colspan="4" align="center">סיכום</td>
+			<td>{{project.total_amount|commaise}} ש"ח</td>
+			<td></td>
+			<td>{{project.total_invoices|commaise}}</td>
+			<td></td>
+			<td>{{project.total_payments|commaise}}</td>
+			<td></td>
+			<td>{{project.total_diff_invoice|commaise}}</td>
+			<td>{{project.total_diff_invoice_payment|commaise}}</td>
+		</tr>
 	{% endfor %}
 </table>
 {% endblock content %}
