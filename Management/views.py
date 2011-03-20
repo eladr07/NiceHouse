@@ -3429,7 +3429,7 @@ def demand_pay_balance_list(request):
                 for demand in demands:
                     project.total_amount += demand.get_total_amount()
                     project.total_payments += demand.payments.total_amount()
-                    project.total_invoices += demand.invoices.total_amount()
+                    project.total_invoices += demand.invoices.total_amount_offset()
                     project.total_diff_invoice += demand.diff_invoice
                     project.total_diff_invoice_payment += demand.diff_invoice_payment
                 
