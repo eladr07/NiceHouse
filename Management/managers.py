@@ -68,8 +68,8 @@ class DemandDiffManager(models.Manager):
 class SaleManager(models.Manager):
     use_for_related_fields = True
     
-    def range(self, from_year, from_month, to_year, to_month):
-        return self.get_query_set().range(from_year, from_month, to_year, to_month)
+    def contractor_pay_range(self, from_year, from_month, to_year, to_month):
+        return self.get_query_set().contractor_pay_range(from_year, from_month, to_year, to_month)
     def get_query_set(self):
         return SaleQuerySet(self.model)
     
