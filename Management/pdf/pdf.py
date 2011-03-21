@@ -1146,7 +1146,7 @@ class DemandPayBalanceWriter(DocumentBase):
         return flows
     
     def get_story(self):
-        title_str = u'דו"ח ניתוח וריכוז מכירות - ' + unicode(self.project)
+        title_str = u'דו"ח מצב תשלום דרישות יזמים'
         subtitle_str = u"%s/%s - %s/%s" %(self.from_month, self.from_year, self.to_month, self.to_year)
         story = [titlePara(title_str), titlePara(subtitle_str), Spacer(0,20)]
         story.extend(self.get_flows())
