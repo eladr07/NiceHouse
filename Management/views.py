@@ -3428,9 +3428,8 @@ def demand_pay_balance_list(request):
                 demand.invoices_offsets_amount = demand.invoices_offsets_amount or 0
             
             # predicate to determine if the demand is paid or not
-            pred = lambda demand: (demand.payments_amount == (demand.invoices_amount or 0 + 
-                                                              demand.invoices_offsets_amount or 0) or
-                                    demand.force_fully_paid == True)
+            pred = lambda demand: (demand.payments_amount == (demand.invoices_amount + demand.invoices_offsets_amount) or
+                                   demand.force_fully_paid == True)
             
             if demand_pay_balance == '4':
                 demands = [demand for demand in demands if pred(demand)]
