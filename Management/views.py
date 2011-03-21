@@ -3418,7 +3418,7 @@ def demand_pay_balance_list(request):
             elif demand_pay_balance == '3': # partially-paid
                 q = models.Q(payments_amount = 0) | models.Q(invoices_amount = 0) | models.Q(invoices_amount__isnull = True)
                 query = query.filter(q)
-                raise unicode(query.query)
+                raise str(query.query)
             
             demands = list(query)
             
