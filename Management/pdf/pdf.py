@@ -1125,7 +1125,7 @@ class DemandPayBalanceWriter(DocumentBase):
     def get_flows(self):
         flows = []
         
-        for project, demands in self.project_demands:
+        for project, demands in self.project_demands.items():
             flows.append(titlePara(unicode(project)))
             flows.append(Spacer(0, 10))
                         
