@@ -3401,7 +3401,9 @@ def demand_pay_balance_list(request):
                 cleaned_data['from_month'], cleaned_data['to_year'], cleaned_data['to_month'], cleaned_data['all_times']
             
             # compose the query to db
-            query = Demand.objects.annotate(payments_num = Count('payments'))
+            query = Demand.objects.annotate(payments_amount = Sum('payments__amount'), 
+                                            invoices_amount = Sum('invoices__amount'),
+                                            invoices_offsets_amount = Sum('invoices__offset__amount'))
             if project:
                 query = query.filter(project = project)
             else:
@@ -3409,14 +3411,20 @@ def demand_pay_balance_list(request):
             if from_year and from_month and to_year and to_month and not all_times:
                 query = query.range(from_year, from_month, to_year, to_month)
             
-            if demand_pay_balance == '1': # un-paid
-                query = query.filter(payments_num = 0)
-            elif demand_pay_balance == '2': # mis-paid
-                query = query.filter(payments_num__gt = 0)
-                
-            # filter demands manually
-            demands = [demand for demand in query if (demand.diff_invoice_payment or demand.diff_invoice) 
-                       and demand.force_fully_paid == False]
+            if demand_pay_balance != '4':
+                if demand_pay_balance == '1': # un-paid
+                    query = query.filter(payments_amount = 0, invoices_amount__gt = 0)
+                elif demand_pay_balance == '2': # mis-paid
+                    query = query.filter(payments_amount__gt = 0, invoices_amount__gt = 0)
+                elif demand_pay_balance == '3': # partially-paid
+                    q = models.Q(payments_amount = 0) | models.Q(invoices_amount = 0)
+                    query = query.filter(q)
+                    
+                demands = [demand for demand in query if (demand.payments_amount != (demand.invoices_amount + demand.invoices_offsets_amount) and
+                                                          demand.force_fully_paid == False)]
+            else:
+                demands = [demand for demand in query if (demand.payments_amount == (demand.invoices_amount + demand.invoices_offsets_amount) or
+                                                          demand.force_fully_paid == True)]
             
             # group the demands by project
             project_demands = {}
@@ -3428,8 +3436,8 @@ def demand_pay_balance_list(request):
                     setattr(project, attr, 0)
                 for demand in demands:
                     project.total_amount += demand.get_total_amount()
-                    project.total_payments += demand.payments.total_amount()
-                    project.total_invoices += demand.invoices.total_amount_offset()
+                    project.total_payments += demand.payments_amount
+                    project.total_invoices += demand.invoices_amount + demand.invoices_offsets_amount
                     project.total_diff_invoice += demand.diff_invoice
                     project.total_diff_invoice_payment += demand.diff_invoice_payment
                 

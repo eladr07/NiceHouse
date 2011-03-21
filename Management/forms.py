@@ -968,7 +968,8 @@ class DemandPayBalanceForm(forms.Form):
     project = forms.ModelChoiceField(Project.objects.all(), ugettext('all_projects'), label = ugettext('project'),
                                      required = False)
     
-    demand_pay_balance_choices = ((0, ugettext('all')), (1, ugettext('un-paid')), (2, ugettext('mis-paid')))
+    demand_pay_balance_choices = ((0, ugettext('all')), (1, ugettext('un-paid')), (2, ugettext('mis-paid')),
+                                  (3, ugettext('partially-paid')), (4, ugettext('fully-paid')))
     demand_pay_balance = forms.ChoiceField(demand_pay_balance_choices, label = ugettext('pay_balance'))
     
     def __init__(self, *args, **kw):
