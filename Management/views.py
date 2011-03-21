@@ -3410,23 +3410,32 @@ def demand_pay_balance_list(request):
                 query = query.order_by('project', 'year', 'month')
             if from_year and from_month and to_year and to_month and not all_times:
                 query = query.range(from_year, from_month, to_year, to_month)
+        
+            if demand_pay_balance == '1': # un-paid
+                query = query.filter(payments_amount = 0, invoices_amount__gt = 0)
+            elif demand_pay_balance == '2': # mis-paid
+                query = query.filter(payments_amount__gt = 0, invoices_amount__gt = 0)
+            elif demand_pay_balance == '3': # partially-paid
+                q = models.Q(payments_amount = 0) | models.Q(invoices_amount = 0)
+                query = query.filter(q)
             
-            if demand_pay_balance != '4':
-                if demand_pay_balance == '1': # un-paid
-                    query = query.filter(payments_amount = 0, invoices_amount__gt = 0)
-                elif demand_pay_balance == '2': # mis-paid
-                    query = query.filter(payments_amount__gt = 0, invoices_amount__gt = 0)
-                elif demand_pay_balance == '3': # partially-paid
-                    q = models.Q(payments_amount = 0) | models.Q(invoices_amount = 0)
-                    query = query.filter(q)
-                    
-                demands = [demand for demand in query if (demand.payments_amount != (demand.invoices_amount or 0 + 
-                                                                                     demand.invoices_offsets_amount or 0) and
-                                                          demand.force_fully_paid == False)]
+            demands = list(query)
+            
+            # override null values
+            for demand in demands:
+                demand.payments_amount = demand.payments_amount or 0
+                demand.invoices_amount = demand.invoices_amount or 0
+                demand.invoices_offsets_amount = demand.invoices_offsets_amount or 0
+            
+            # predicate to determine if the demand is paid or not
+            pred = lambda demand: (demand.payments_amount == (demand.invoices_amount or 0 + 
+                                                              demand.invoices_offsets_amount or 0) or
+                                    demand.force_fully_paid == True)
+            
+            if demand_pay_balance == '4':
+                demands = [demand for demand in demands if pred(demand)]
             else:
-                demands = [demand for demand in query if (demand.payments_amount == (demand.invoices_amount or 0 + 
-                                                                                     demand.invoices_offsets_amount or 0) or
-                                                          demand.force_fully_paid == True)]
+                demands = [demand for demand in demands if not pred(demand)]
             
             # group the demands by project
             project_demands = {}
