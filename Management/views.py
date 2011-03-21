@@ -3415,10 +3415,6 @@ def demand_pay_balance_list(request):
                 query = query.filter(payments_amount = 0, invoices_amount__gt = 0)
             elif demand_pay_balance == '2': # mis-paid
                 query = query.filter(payments_amount__gt = 0, invoices_amount__gt = 0)
-            elif demand_pay_balance == '3': # partially-paid
-                q = models.Q(payments_amount = 0) | models.Q(invoices_amount = 0) | models.Q(invoices_amount__isnull = True)
-                query = query.filter(q)
-                raise str(query.query)
             
             demands = list(query)
             
@@ -3427,6 +3423,10 @@ def demand_pay_balance_list(request):
                 demand.payments_amount = demand.payments_amount or 0
                 demand.invoices_amount = demand.invoices_amount or 0
                 demand.invoices_offsets_amount = demand.invoices_offsets_amount or 0
+            
+            # this is here because there seems to be a bug when using Q for referenced objects
+            if demand_pay_balance == '3': # partially-paid
+                demands = [demand for demand in demands if demand.payments_amount == 0 or demand.invoices_amount == 0]
             
             # predicate to determine if the demand is paid or not
             pred = lambda demand: (demand.payments_amount == (demand.invoices_amount + demand.invoices_offsets_amount) or
