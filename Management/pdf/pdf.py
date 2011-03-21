@@ -1130,7 +1130,8 @@ class DemandPayBalanceWriter(DocumentBase):
             flows.append(Spacer(0, 10))
                         
             fields = [MonthField(), DemandSalesCountField(), DemandTotalAmountField(), InvoicesNumField(), InvoicesAmountField(),
-                      InvoicesDateField(), PaymentsAmountField(), PaymentsDateField()]
+                      InvoicesDateField(), PaymentsAmountField(), PaymentsDateField(), DemandDiffInvoiceField(),
+                      DemandDiffInvoicePaymentField()]
             fields.reverse()
             
             builder = Builder(demands, fields)

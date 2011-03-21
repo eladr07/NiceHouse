@@ -78,6 +78,26 @@ class DemandTotalAmountField(TableField):
     
     class Meta:
         models = (models.Demand,)
+
+class DemandDiffInvoiceField(TableField):
+    def __init__(self):
+        return super(DemandDiffInvoiceField, self).__init__(ugettext('demand_diff_invoice_'),50, is_commaised=True, 
+                                                            is_summarized=True)
+    def format(self, item):
+        return item.diff_invoice_payment
+    
+    class Meta:
+        models = (models.Demand,)
+
+class DemandDiffInvoicePaymentField(TableField):
+    def __init__(self):
+        return super(DemandDiffInvoicePaymentField, self).__init__(ugettext('demand_diff_invoice_payment'),50, is_commaised=True, 
+                                                                   is_summarized=True)
+    def format(self, item):
+        return item.diff_invoice
+    
+    class Meta:
+        models = (models.Demand,)
         
 class InvoicesNumField(TableField):
     def __init__(self):
