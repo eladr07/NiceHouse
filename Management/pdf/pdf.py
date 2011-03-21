@@ -1118,19 +1118,17 @@ class EmployeeSalesWriter(DocumentBase):
         return story
 
 class DemandPayBalanceWriter(DocumentBase):
-    def __init__(self, from_month, from_year, to_month, to_year, demands):
-        self.from_month, self.from_year, self.to_month, self.to_year, self.demands = \
-            from_month, from_year, to_month, to_year, demands
+    def __init__(self, from_month, from_year, to_month, to_year, project_demands):
+        self.from_month, self.from_year, self.to_month, self.to_year, self.project_demands = \
+            from_month, from_year, to_month, to_year, project_demands
             
     def get_flows(self):
         flows = []
         
-        for project, demands_iter in itertools.groupby(self.demands, lambda demand: demand.project):
+        for project, demands in self.project_demands:
             flows.append(titlePara(unicode(project)))
             flows.append(Spacer(0, 10))
-            
-            demands = list(demands_iter)
-            
+                        
             fields = [MonthField(), DemandSalesCountField(), DemandTotalAmountField(), InvoicesNumField(), InvoicesAmountField(),
                       InvoicesDateField(), PaymentsAmountField(), PaymentsDateField()]
             fields.reverse()

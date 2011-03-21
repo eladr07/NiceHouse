@@ -3462,7 +3462,7 @@ def demand_pay_balance_list(request):
                 response = HttpResponse(mimetype='application/pdf')
                 response['Content-Disposition'] = 'attachment; filename=' + filename
                 
-                DemandPayBalanceWriter(from_month, from_year, to_month, to_year, demands).build(filename)
+                DemandPayBalanceWriter(from_month, from_year, to_month, to_year, project_demands).build(filename)
                 
                 p = open(filename,'r')
                 response.write(p.read())
