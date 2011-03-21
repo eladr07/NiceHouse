@@ -43,7 +43,7 @@ class ProjectInitiatorField(TableField):
 
 class MonthField(TableField):
     def __init__(self):
-        return super(MonthField, self).__init__(ugettext('pdf_month'))
+        return super(MonthField, self).__init__(ugettext('pdf_month'), 45)
     def format(self, item):
         return '%s/%s' % (item.month, item.year)
     
