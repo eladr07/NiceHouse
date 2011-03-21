@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-21 23:35+0200\n"
+"POT-Creation-Date: 2011-03-21 23:39+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -166,7 +166,7 @@ msgid "add_type"
 msgstr "סוג תוספת"
 
 #: Management/forms.py:332 Management/forms.py:928 Management/models.py:412
-#: Management/pdf/table_fields.py:238
+#: Management/pdf/table_fields.py:258
 msgid "building_num"
 msgstr "מס' בניין"
 
@@ -175,7 +175,7 @@ msgid "include_clients"
 msgstr "כולל רוכשים"
 
 #: Management/forms.py:336 Management/models.py:1361 Management/models.py:2498
-#: Management/pdf/table_fields.py:292
+#: Management/pdf/table_fields.py:312
 msgid "house_type"
 msgstr "סוג דירה"
 
@@ -344,7 +344,7 @@ msgid "company"
 msgstr "חברה"
 
 #: Management/forms.py:929 Management/models.py:279
-#: Management/pdf/table_fields.py:229
+#: Management/pdf/table_fields.py:249
 msgid "house_num"
 msgstr "מס' דירה"
 
@@ -620,7 +620,7 @@ msgid "asset_type"
 msgstr "סוג נכס"
 
 #: Management/models.py:280 Management/models.py:2497
-#: Management/models.py:2945 Management/pdf/table_fields.py:256
+#: Management/models.py:2945 Management/pdf/table_fields.py:276
 msgid "floor"
 msgstr "קומה"
 
@@ -628,7 +628,7 @@ msgstr "קומה"
 msgid "net_size"
 msgstr "שטח נטו"
 
-#: Management/models.py:283 Management/pdf/table_fields.py:274
+#: Management/models.py:283 Management/pdf/table_fields.py:294
 msgid "garden_size"
 msgstr "גודל גינה/מרפסת"
 
@@ -684,7 +684,7 @@ msgstr "כולל הוצאות רישום"
 msgid "include_guarantee"
 msgstr "כולל ערבות"
 
-#: Management/models.py:397 Management/pdf/table_fields.py:301
+#: Management/models.py:397 Management/pdf/table_fields.py:321
 msgid "settle_date"
 msgstr "מועד אכלוס"
 
@@ -1200,7 +1200,7 @@ msgid "sale_num"
 msgstr "מס' עסקה"
 
 #: Management/models.py:2500 Management/models.py:2586
-#: Management/pdf/table_fields.py:220
+#: Management/pdf/table_fields.py:240
 msgid "sale_date"
 msgstr "ת. מכירה"
 
@@ -1417,65 +1417,73 @@ msgid "demand_total_amount"
 msgstr "סך עמלה"
 
 #: Management/pdf/table_fields.py:84
+msgid "demand_diff_invoice"
+msgstr "הפרש דרישה לחשבונית"
+
+#: Management/pdf/table_fields.py:94
+msgid "demand_diff_invoice_payment"
+msgstr "הפרש צ'ק לחשבונית"
+
+#: Management/pdf/table_fields.py:104
 msgid "invoices_num"
 msgstr "מס' חשבונית"
 
-#: Management/pdf/table_fields.py:97
+#: Management/pdf/table_fields.py:117
 msgid "invoices_amount"
 msgstr "סך ח-ן"
 
-#: Management/pdf/table_fields.py:110
+#: Management/pdf/table_fields.py:130
 msgid "invoices_date"
 msgstr "ת. חשבונית"
 
-#: Management/pdf/table_fields.py:123
+#: Management/pdf/table_fields.py:143
 msgid "payments_num"
 msgstr "מס' צ'ק"
 
-#: Management/pdf/table_fields.py:136
+#: Management/pdf/table_fields.py:156
 msgid "payments_amount"
 msgstr "סך צ'ק"
 
-#: Management/pdf/table_fields.py:149
+#: Management/pdf/table_fields.py:169
 msgid "payments_date"
 msgstr "ת. תשלום"
 
-#: Management/pdf/table_fields.py:162
+#: Management/pdf/table_fields.py:182
 msgid "clients_name"
 msgstr "שם הרוכשים"
 
-#: Management/pdf/table_fields.py:177
+#: Management/pdf/table_fields.py:197
 msgid "price_with_tax"
 msgstr "מחיר כולל מע\"מ"
 
-#: Management/pdf/table_fields.py:187
+#: Management/pdf/table_fields.py:207
 msgid "price_for_size"
 msgstr "מחיר ממוצע למ\"ר"
 
-#: Management/pdf/table_fields.py:197
+#: Management/pdf/table_fields.py:217
 msgid "include_lawyer_tax"
 msgstr "כולל עו\"ד"
 
-#: Management/pdf/table_fields.py:202
+#: Management/pdf/table_fields.py:222
 msgid "no"
 msgstr "לא"
 
-#: Management/pdf/table_fields.py:204
+#: Management/pdf/table_fields.py:224
 msgid "yes"
 msgstr "כן"
 
-#: Management/pdf/table_fields.py:211
+#: Management/pdf/table_fields.py:231
 msgid "employee_name"
 msgstr "שם העובד"
 
-#: Management/pdf/table_fields.py:247
+#: Management/pdf/table_fields.py:267
 msgid "rooms_num"
 msgstr "מס' חדרים"
 
-#: Management/pdf/table_fields.py:265
+#: Management/pdf/table_fields.py:285
 msgid "house_size"
 msgstr "שטח דירה"
 
-#: Management/pdf/table_fields.py:283
+#: Management/pdf/table_fields.py:303
 msgid "perfect_size"
 msgstr "שטח משוכלל"
