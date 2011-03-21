@@ -3420,10 +3420,12 @@ def demand_pay_balance_list(request):
                     q = models.Q(payments_amount = 0) | models.Q(invoices_amount = 0)
                     query = query.filter(q)
                     
-                demands = [demand for demand in query if (demand.payments_amount != (demand.invoices_amount + demand.invoices_offsets_amount) and
+                demands = [demand for demand in query if (demand.payments_amount != (demand.invoices_amount or 0 + 
+                                                                                     demand.invoices_offsets_amount or 0) and
                                                           demand.force_fully_paid == False)]
             else:
-                demands = [demand for demand in query if (demand.payments_amount == (demand.invoices_amount + demand.invoices_offsets_amount) or
+                demands = [demand for demand in query if (demand.payments_amount == (demand.invoices_amount or 0 + 
+                                                                                     demand.invoices_offsets_amount or 0) or
                                                           demand.force_fully_paid == True)]
             
             # group the demands by project
