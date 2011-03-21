@@ -105,6 +105,19 @@ class InvoicesAmountField(TableField):
     class Meta:
         models = (models.Demand,)
         
+class InvoicesDateField(TableField):
+    def __init__(self):
+        return super(InvoicesDateField, self).__init__(ugettext('invoices_date'), 50)
+    def format(self, item):
+        return '\n'.join([i.date.strftime('%d/%m/%y') for i in item.invoices.all()])
+    
+    def get_height(self, item):
+        invoices_count = item.invoices.count()
+        return invoices_count * 14 or None
+    
+    class Meta:
+        models = (models.Demand,)
+        
 class PaymentsNumField(TableField):
     def __init__(self):
         return super(PaymentsNumField, self).__init__(ugettext('payments_num'),50)
@@ -128,6 +141,19 @@ class PaymentsAmountField(TableField):
         payments_count = item.payments.count()
         return payments_count * 14 or None
         
+    class Meta:
+        models = (models.Demand,)
+
+class PaymentsDateField(TableField):
+    def __init__(self):
+        return super(PaymentsDateField, self).__init__(ugettext('payments_date'), 50)
+    def format(self, item):
+        return '\n'.join([p.payment_date.strftime('%d/%m/%y') for p in item.payments.all()])
+    
+    def get_height(self, item):
+        invoices_count = item.payments.count()
+        return invoices_count * 14 or None
+    
     class Meta:
         models = (models.Demand,)
         

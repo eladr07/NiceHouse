@@ -1117,6 +1117,41 @@ class EmployeeSalesWriter(DocumentBase):
         story.extend(self.get_flows())
         return story
 
+class DemandPayBalanceWriter(DocumentBase):
+    def __init__(self, from_month, from_year, to_month, to_year, demands):
+        self.from_month, self.from_year, self.to_month, self.to_year, self.demands = \
+            from_month, from_year, to_month, to_year, demands
+            
+    def get_flows(self):
+        flows = []
+        
+        for project, demands_iter in itertools.groupby(self.demands, lambda demand: demand.project):
+            demands = list(demands_iter)
+            
+            fields = [MonthField(), DemandSalesCountField(), DemandTotalAmountField(), InvoicesNumField(), InvoicesAmountField(),
+                      InvoicesDateField(), PaymentsAmountField(), PaymentsDateField()]
+                        
+            fields.reverse()
+            
+            builder = Builder(demands, fields)
+            
+            flows.append(titlePara(unicode(project)))
+            flows.append(Spacer(0, 10))
+            
+            table = builder.build()
+            
+            tableFlow = Table(table.rows, table.col_widths(), table.row_heights(), projectTableStyle, 1)
+            flows.append(tableFlow)
+        
+        return flows
+    
+    def get_story(self):
+        title_str = u'דו"ח ניתוח וריכוז מכירות - ' + unicode(self.project)
+        subtitle_str = u"%s/%s - %s/%s" %(self.from_month, self.from_year, self.to_month, self.to_year)
+        story = [titlePara(title_str), titlePara(subtitle_str), Spacer(0,20)]
+        story.extend(self.get_flows())
+        return story
+
 class SaleAnalysisWriter(DocumentBase):
     def __init__(self, project, from_month, from_year, to_month, to_year, sales, include_clients):
         self.project, self.from_month, self.from_year, self.to_month, self.to_year, self.sales, self.include_clients = \

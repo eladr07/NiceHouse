@@ -21,7 +21,7 @@ from forms import *
 from models import *
 from pdf.pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, ProjectListWriter
 from pdf.pdf import PricelistWriter, BuildingClientsWriter, EmployeeSalariesBookKeepingWriter, SalariesBankWriter, DemandFollowupWriter
-from pdf.pdf import EmployeeSalesWriter, SaleAnalysisWriter
+from pdf.pdf import EmployeeSalesWriter, SaleAnalysisWriter, DemandPayBalanceWriter
 from mail import mail
 
 def object_edit_core(request, form_class, instance,
@@ -3457,7 +3457,17 @@ def demand_pay_balance_list(request):
                                           { 'filterForm': form, 'project_demands': project_demands},
                                           context_instance=RequestContext(request))
             elif request.GET.has_key('pdf'):
-                pass
+                filename = common.generate_unique_media_filename('pdf')
+    
+                response = HttpResponse(mimetype='application/pdf')
+                response['Content-Disposition'] = 'attachment; filename=' + filename
+                
+                DemandPayBalanceWriter(from_month, from_year, to_month, to_year, demands).build(filename)
+                
+                p = open(filename,'r')
+                response.write(p.read())
+                p.close()
+                return response
     else:
         return render_to_response('Management/demand_pay_balance_list.html', 
                                   { 'filterForm': DemandPayBalanceForm(), 'project_demands': {}},
