@@ -1126,18 +1126,16 @@ class DemandPayBalanceWriter(DocumentBase):
         flows = []
         
         for project, demands_iter in itertools.groupby(self.demands, lambda demand: demand.project):
+            flows.append(titlePara(unicode(project)))
+            flows.append(Spacer(0, 10))
+            
             demands = list(demands_iter)
             
             fields = [MonthField(), DemandSalesCountField(), DemandTotalAmountField(), InvoicesNumField(), InvoicesAmountField(),
                       InvoicesDateField(), PaymentsAmountField(), PaymentsDateField()]
-                        
             fields.reverse()
             
             builder = Builder(demands, fields)
-            
-            flows.append(titlePara(unicode(project)))
-            flows.append(Spacer(0, 10))
-            
             table = builder.build()
             
             tableFlow = Table(table.rows, table.col_widths(), table.row_heights(), projectTableStyle, 1)
@@ -1167,8 +1165,7 @@ class SaleAnalysisWriter(DocumentBase):
             fields = [SaleDateField()]
             if self.include_clients:
                 fields.append(SaleClientsField())
-            
-            
+
             builders = [Builder(sales, fields),
                         Builder(houses, [HouseBuildingNumField(), HouseNumField(), HouseTypeField(), HouseRoomsField(), HouseSettleDateField(),
                                          HouseFloorField(), HouseSizeField(), HouseGardenSizeField(), HousePerfectSizeField()]),
