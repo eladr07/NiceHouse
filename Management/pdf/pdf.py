@@ -95,7 +95,7 @@ class DocumentBase(object):
     def addFirst(self, canv, doc):
         frame2 = Frame(0, 680, 650, 150)
         frame2.addFromList([nhLogo()], canv)
-        frame4 = Frame(50, 20, 500, 70)
+        frame4 = Frame(50, 10, 500, 70)
         frame4.addFromList([nhAddr()], canv)
         date_str = log2vis(u'תאריך : %s' % date.today().strftime('%d/%m/%Y'))
         canv.setFont('David',14)
