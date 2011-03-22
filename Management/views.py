@@ -3434,7 +3434,7 @@ def demand_pay_balance_list(request):
             
             if demand_pay_balance == 'fully-paid':
                 demands = [demand for demand in demands if pred(demand)]
-            else:
+            else if demand_pay_balance != 'all':
                 demands = [demand for demand in demands if not pred(demand)]
             
             # group the demands by project
