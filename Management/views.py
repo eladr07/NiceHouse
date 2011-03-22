@@ -3412,7 +3412,7 @@ def demand_pay_balance_list(request):
                 query = query.range(from_year, from_month, to_year, to_month)
         
             if demand_pay_balance.id == 'un-paid':
-                query = query.filter(payments_amount = 0, invoices_amount__gt = 0)
+                query = query.filter(payments_amount = 0)
             elif demand_pay_balance.id == 'mis-paid':
                 query = query.filter(payments_amount__gt = 0, invoices_amount__gt = 0)
             
@@ -3426,7 +3426,7 @@ def demand_pay_balance_list(request):
             
             # this is here because there seems to be a bug when using Q for referenced objects
             if demand_pay_balance.id == 'partially-paid':
-                demands = [demand for demand in demands if demand.payments_amount == 0 or demand.invoices_amount == 0]
+                demands = [demand for demand in demands if demand.payments_amount > 0 or demand.invoices_amount > 0]
             
             # predicate to determine if the demand is paid or not
             pred = lambda demand: (demand.payments_amount == (demand.invoices_amount + demand.invoices_offsets_amount) or
