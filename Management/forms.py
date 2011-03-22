@@ -954,6 +954,17 @@ class DemandSelectForm(MonthForm):
     project = forms.ModelChoiceField(Project.objects.all(), label = ugettext('project'))
 
 class DemandPayBalanceForm(forms.Form):
+    
+    class DemandPayBalanceType(object):
+        __slots__ = ('id', 'name')
+        
+        def __init__(self, id = None, name = None):
+            self.id, self.name = id, name
+    
+    demand_pay_balance_choices = [DemandPayBalanceType('all', ugettext('all')), DemandPayBalanceType('un-paid', ugettext('un-paid')),
+                                  DemandPayBalanceType('mis-paid', ugettext('mis-paid')), DemandPayBalanceType('partially-paid', ugettext('partially-paid')),
+                                  DemandPayBalanceType('fully-paid', ugettext('fully-paid')),]
+    
     from_year = forms.ChoiceField(((i,i) for i in range(datetime.now().year - 10, datetime.now().year+10)), 
                                   label = ugettext('from_year'), initial = common.current_month().year)
     from_month = forms.ChoiceField(((i,i) for i in range(1,13)), label = ugettext('from_month'),
@@ -968,9 +979,7 @@ class DemandPayBalanceForm(forms.Form):
     project = forms.ModelChoiceField(Project.objects.all(), ugettext('all_projects'), label = ugettext('project'),
                                      required = False)
     
-    demand_pay_balance_choices = ((0, ugettext('all')), (1, ugettext('un-paid')), (2, ugettext('mis-paid')),
-                                  (3, ugettext('partially-paid')), (4, ugettext('fully-paid')))
-    demand_pay_balance = forms.ChoiceField(demand_pay_balance_choices, label = ugettext('pay_balance'))
+    demand_pay_balance = forms.ChoiceField([(x.id, x.name) for x in demand_pay_balance_choices], label = ugettext('pay_balance'))
     
     def __init__(self, *args, **kw):
         super(DemandPayBalanceForm, self).__init__(*args, **kw)
