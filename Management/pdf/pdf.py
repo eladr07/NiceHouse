@@ -1118,9 +1118,14 @@ class EmployeeSalesWriter(DocumentBase):
         return story
 
 class DemandPayBalanceWriter(DocumentBase):
-    def __init__(self, from_month, from_year, to_month, to_year, project_demands):
-        self.from_month, self.from_year, self.to_month, self.to_year, self.project_demands = \
-            from_month, from_year, to_month, to_year, project_demands
+    def __init__(self, from_month, from_year, to_month, to_year, project_demands, demand_pay_balance, all_times):
+        """
+        project_demands: dictionary of demands by project
+        pay_balance_type: instance of DemandPayBalanceType to indicate the type of the report
+        all_times: boolean to indicate if the report is limited by time range or not
+        """
+        self.from_month, self.from_year, self.to_month, self.to_year, self.project_demands, self.demand_pay_balance, self.all_times = \
+            from_month, from_year, to_month, to_year, project_demands, demand_pay_balance, all_times
             
     def get_flows(self):
         flows = []
@@ -1143,8 +1148,13 @@ class DemandPayBalanceWriter(DocumentBase):
         return flows
     
     def get_story(self):
-        title_str = u'דו"ח מצב תשלום דרישות יזמים'
-        subtitle_str = u"%s/%s - %s/%s" %(self.from_month, self.from_year, self.to_month, self.to_year)
+        title_str = u'דו"ח מצב תשלום דרישות יזמים - ' + self.demand_pay_balance.name
+        
+        if self.all_times == False:
+            subtitle_str = u"%s/%s - %s/%s" %(self.from_month, self.from_year, self.to_month, self.to_year)
+        else:
+            subtitle_str = u"כל הזמנים"
+            
         story = [titlePara(title_str), titlePara(subtitle_str), Spacer(0,20)]
         story.extend(self.get_flows())
         return story

@@ -3411,9 +3411,9 @@ def demand_pay_balance_list(request):
             if from_year and from_month and to_year and to_month and not all_times:
                 query = query.range(from_year, from_month, to_year, to_month)
         
-            if demand_pay_balance == 'un-paid':
+            if demand_pay_balance.id == 'un-paid':
                 query = query.filter(payments_amount = 0, invoices_amount__gt = 0)
-            elif demand_pay_balance == 'mis-paid':
+            elif demand_pay_balance.id == 'mis-paid':
                 query = query.filter(payments_amount__gt = 0, invoices_amount__gt = 0)
             
             demands = list(query)
@@ -3425,16 +3425,16 @@ def demand_pay_balance_list(request):
                 demand.invoices_offsets_amount = demand.invoices_offsets_amount or 0
             
             # this is here because there seems to be a bug when using Q for referenced objects
-            if demand_pay_balance == 'partially-paid':
+            if demand_pay_balance.id == 'partially-paid':
                 demands = [demand for demand in demands if demand.payments_amount == 0 or demand.invoices_amount == 0]
             
             # predicate to determine if the demand is paid or not
             pred = lambda demand: (demand.payments_amount == (demand.invoices_amount + demand.invoices_offsets_amount) or
                                    demand.force_fully_paid == True)
             
-            if demand_pay_balance == 'fully-paid':
+            if demand_pay_balance.id == 'fully-paid':
                 demands = [demand for demand in demands if pred(demand)]
-            elif demand_pay_balance != 'all':
+            elif demand_pay_balance.id != 'all':
                 demands = [demand for demand in demands if not pred(demand)]
             
             # group the demands by project
@@ -3462,7 +3462,13 @@ def demand_pay_balance_list(request):
                 response = HttpResponse(mimetype='application/pdf')
                 response['Content-Disposition'] = 'attachment; filename=' + filename
                 
-                DemandPayBalanceWriter(from_month, from_year, to_month, to_year, project_demands).build(filename)
+                # build arguments to the writer
+                kwargs = {}
+                for key in 'all_times', 'from_month', 'from_year', 'to_month', 'to_year', 'demand_pay_balance':
+                    kwargs[key] = cleaned_data[key]
+                kwargs['project_demands'] = project_demands
+                
+                DemandPayBalanceWriter(**kwargs).build(filename)
                 
                 p = open(filename,'r')
                 response.write(p.read())

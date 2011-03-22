@@ -985,7 +985,9 @@ class DemandPayBalanceForm(forms.Form):
         super(DemandPayBalanceForm, self).__init__(*args, **kw)
         for attr in ['from_month', 'from_year', 'to_month', 'to_year']:
             self.fields[attr].required = False
-           
+    def clean_demand_pay_balance(self):
+        demand_pay_balance = self.cleaned_data['demand_pay_balance']
+        return [dpb for dpb in DemandPayBalanceForm.demand_pay_balance_choices if dpb.id == demand_pay_balance][0]
     def clean_from_year(self):
         return int(self.cleaned_data['from_year'])
     def clean_from_month(self):
