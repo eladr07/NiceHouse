@@ -1133,7 +1133,7 @@ class DemandPayBalanceWriter(DocumentBase):
             flows.append(titlePara(unicode(project)))
             
             demand_contact = project.demand_contact
-            contact_str = unicode(demand_contact) + ", " + ugettext('phone') + ": " + demand_contact.phone + ", " + ugettext('fax') ": " + \
+            contact_str = unicode(demand_contact) + ", " + ugettext('phone') + ": " + demand_contact.phone + ", " + ugettext('fax') + ": " + \
                 demand_contact.fax + ", " + ugettext('mail') + ": " + demand_contact.mail
             flows.append(titlePara(contact_str))
             
