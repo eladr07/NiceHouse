@@ -1131,13 +1131,14 @@ class DemandPayBalanceWriter(DocumentBase):
         
         for project, demands in self.project_demands.items():
             flows.append(titlePara(unicode(project)))
+            flows.append(Spacer(0, 10))
             
             demand_contact = project.demand_contact
             contact_str = unicode(demand_contact) + ", " + ugettext('phone') + ": " + demand_contact.phone + ", " + ugettext('fax') + ": " + \
                 demand_contact.fax + ", " + ugettext('mail') + ": " + demand_contact.mail
-            paragraph = Paragraph(contact_str, ParagraphStyle('contact_para', fontName='David',fontSize=12, alignment=TA_CENTER))
+            paragraph = Paragraph(ugettext(contact_str), 
+                                  ParagraphStyle('contact_para', fontName='David',fontSize=12, alignment=TA_CENTER))
             flows.append(paragraph)
-            
             flows.append(Spacer(0, 10))
                         
             fields = [MonthField(), DemandSalesCountField(), DemandTotalAmountField(), InvoicesNumField(), InvoicesAmountField(),
