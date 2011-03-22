@@ -1136,7 +1136,7 @@ class DemandPayBalanceWriter(DocumentBase):
             demand_contact = project.demand_contact
             contact_str = unicode(demand_contact) + ", " + ugettext('phone') + ": " + demand_contact.phone + ", " + ugettext('fax') + ": " + \
                 demand_contact.fax + ", " + ugettext('mail') + ": " + demand_contact.mail
-            paragraph = Paragraph(ugettext(contact_str), 
+            paragraph = Paragraph(log2vis(contact_str), 
                                   ParagraphStyle('contact_para', fontName='David',fontSize=12, alignment=TA_CENTER))
             flows.append(paragraph)
             flows.append(Spacer(0, 10))
