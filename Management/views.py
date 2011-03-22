@@ -19,9 +19,9 @@ from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.contenttypes.models import ContentType
 from forms import *
 from models import *
-from pdf.pdf import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, ProjectListWriter
-from pdf.pdf import PricelistWriter, BuildingClientsWriter, EmployeeSalariesBookKeepingWriter, SalariesBankWriter, DemandFollowupWriter
-from pdf.pdf import EmployeeSalesWriter, SaleAnalysisWriter, DemandPayBalanceWriter
+from pdf.writers import MonthDemandWriter, MultipleDemandWriter, EmployeeListWriter, EmployeeSalariesWriter, ProjectListWriter
+from pdf.writers import PricelistWriter, BuildingClientsWriter, EmployeeSalariesBookKeepingWriter, SalariesBankWriter, DemandFollowupWriter
+from pdf.writers import EmployeeSalesWriter, SaleAnalysisWriter, DemandPayBalanceWriter
 from mail import mail
 
 def object_edit_core(request, form_class, instance,
@@ -3414,7 +3414,7 @@ def demand_pay_balance_list(request):
             if demand_pay_balance.id == 'un-paid':
                 query = query.filter(payments_amount = 0)
             elif demand_pay_balance.id == 'mis-paid':
-                query = query.filter(payments_amount__gt = 0, invoices_amount__gt = 0)
+                query = query.filter(payments_amount__gt = 0)
             
             demands = list(query)
             
@@ -3426,7 +3426,7 @@ def demand_pay_balance_list(request):
             
             # this is here because there seems to be a bug when using Q for referenced objects
             if demand_pay_balance.id == 'partially-paid':
-                demands = [demand for demand in demands if demand.payments_amount > 0 or demand.invoices_amount > 0]
+                demands = [demand for demand in demands if demand.payments_amount > 0 and demand.invoices_amount > 0]
             
             # predicate to determine if the demand is paid or not
             pred = lambda demand: (demand.payments_amount == (demand.invoices_amount + demand.invoices_offsets_amount) or

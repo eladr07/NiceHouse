@@ -18,7 +18,6 @@ from reportlab.lib.styles import ParagraphStyle
 
 from helpers import Builder, MassBuilder
 from table_fields import *
-
 from styles import *
 
 #register Hebrew fonts
@@ -1132,6 +1131,12 @@ class DemandPayBalanceWriter(DocumentBase):
         
         for project, demands in self.project_demands.items():
             flows.append(titlePara(unicode(project)))
+            
+            demand_contact = project.demand_contact
+            contact_str = unicode(demand_contact) + ", " + ugettext('phone') + ": " + demand_contact.phone + ", " + ugettext('fax') ": " + \
+                demand_contact.fax + ", " + ugettext('mail') + ": " + demand_contact.mail
+            flows.append(titlePara(contact_str))
+            
             flows.append(Spacer(0, 10))
                         
             fields = [MonthField(), DemandSalesCountField(), DemandTotalAmountField(), InvoicesNumField(), InvoicesAmountField(),
