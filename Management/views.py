@@ -3413,9 +3413,7 @@ def demand_pay_balance_list(request):
                 query = query.range(from_year, from_month, to_year, to_month)
         
             if demand_pay_balance.id == 'un-paid':
-                query = query.filter(payments_amount = 0)
-            elif demand_pay_balance.id == 'mis-paid':
-                query = query.filter(payments_amount__gt = 0)
+                query = query.filter(payments_amount = 0, payments_amount__isnull = True)
             
             demands = list(query)
             
@@ -3425,18 +3423,15 @@ def demand_pay_balance_list(request):
                 demand.invoices_amount = demand.invoices_amount or 0
                 demand.invoices_offsets_amount = demand.invoices_offsets_amount or 0
             
-            # this is here because there seems to be a bug when using Q for referenced objects
-            if demand_pay_balance.id == 'partially-paid':
-                demands = [demand for demand in demands if demand.payments_amount > 0 and demand.invoices_amount > 0]
-            
-            # predicate to determine if the demand is paid or not
-            pred = lambda demand: (demand.payments_amount == (demand.invoices_amount + demand.invoices_offsets_amount) or
-                                   demand.force_fully_paid == True)
-            
+            if demand_pay_balance.id == 'mis-paid':
+                demands = [demand for demand in demands if demand.diff_invoice_payment]
+            elif demand_pay_balance.id == 'partially-paid':
+                demands = [demand for demand in demands if demand.diff_invoice]
+                        
             if demand_pay_balance.id == 'fully-paid':
-                demands = [demand for demand in demands if pred(demand)]
+                demands = [demand for demand in demands if demand.is_fully_paid]
             elif demand_pay_balance.id != 'all':
-                demands = [demand for demand in demands if not pred(demand)]
+                demands = [demand for demand in demands if not demand.is_fully_paid]
             
             # group the demands by project
             project_demands = {}
