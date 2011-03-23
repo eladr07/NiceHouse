@@ -3411,20 +3411,12 @@ def demand_pay_balance_list(request):
                 query = query.order_by('project', 'year', 'month')
             if from_year and from_month and to_year and to_month and not all_times:
                 query = query.range(from_year, from_month, to_year, to_month)
-        
-            if demand_pay_balance.id == 'un-paid':
-                q = models.Q(payments_amount = 0) | models.Q(payments_amount__isnull = True)
-                query = query.filter(q)
-            
+
             demands = list(query)
-            
-            # override null values
-            for demand in demands:
-                demand.payments_amount = demand.payments_amount or 0
-                demand.invoices_amount = demand.invoices_amount or 0
-                demand.invoices_offsets_amount = demand.invoices_offsets_amount or 0
-            
-            if demand_pay_balance.id == 'mis-paid':
+                        
+            if demand_pay_balance.id == 'un-paid':
+                demands = [demand for demand in demands if not demand.payments_amount]
+            elif demand_pay_balance.id == 'mis-paid':
                 demands = [demand for demand in demands if demand.diff_invoice]
             elif demand_pay_balance.id == 'partially-paid':
                 demands = [demand for demand in demands if demand.diff_invoice_payment]
