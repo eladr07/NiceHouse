@@ -3413,7 +3413,8 @@ def demand_pay_balance_list(request):
                 query = query.range(from_year, from_month, to_year, to_month)
         
             if demand_pay_balance.id == 'un-paid':
-                query = query.filter(payments_amount = 0, payments_amount__isnull = True)
+                q = models.Q(payments_amount = 0) | models.Q(payments_amount__isnull = True)
+                query = query.filter(q)
             
             demands = list(query)
             
