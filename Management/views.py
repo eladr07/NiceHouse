@@ -82,8 +82,9 @@ def calc_demands(demands):
 def index(request):
     return render_to_response('Management/index.html',
                               {'locateHouseForm':LocateHouseForm(), 'locateDemandForm': LocateDemandForm(),
-                               'employeeSalesForm': ProjectSeasonForm(),
-                               'nhbranches':NHBranch.objects.all()}, context_instance=RequestContext(request))
+                               'employeeSalesForm': ProjectSeasonForm(), 'employeeSalarySeasonForm': EmployeeSeasonForm(),
+                               'nhbranches':NHBranch.objects.all()}, 
+                               context_instance=RequestContext(request))
   
 @login_required  
 def locate_house(request):

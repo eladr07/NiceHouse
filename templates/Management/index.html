@@ -226,6 +226,17 @@
 					<input type="submit" class="button" value="PDF" />
 				</form>
 			</ul>
+			<ul>
+				<li><a href="">ריכוז משכורות לפי תקופה</a></li>
+				<form method="GET" action="employeesalaryseason">
+					{{ employeeSalarySeasonForm.employee }}
+					{{ employeeSalarySeasonForm.from_year }}
+					{{ employeeSalarySeasonForm.from_month }}
+					{{ employeeSalarySeasonForm.to_year }}
+					{{ employeeSalarySeasonForm.to_month }}
+					<input type="submit" class="button" value="PDF" />
+				</form>
+			</ul>
 		</fieldset>
 	</div>
 	<div class="clearBoth"></div> 
