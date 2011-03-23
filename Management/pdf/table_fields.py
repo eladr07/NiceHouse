@@ -84,7 +84,7 @@ class DemandDiffInvoiceField(TableField):
         return super(DemandDiffInvoiceField, self).__init__(ugettext('demand_diff_invoice'),50, is_commaised=True, 
                                                             is_summarized=True)
     def format(self, item):
-        return item.diff_invoice_payment
+        return item.diff_invoice
     
     class Meta:
         models = (models.Demand,)
@@ -94,7 +94,7 @@ class DemandDiffInvoicePaymentField(TableField):
         return super(DemandDiffInvoicePaymentField, self).__init__(ugettext('demand_diff_invoice_payment'),50, is_commaised=True, 
                                                                    is_summarized=True)
     def format(self, item):
-        return item.diff_invoice
+        return item.diff_invoice_payment
     
     class Meta:
         models = (models.Demand,)
