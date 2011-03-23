@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2011-03-21 23:39+0200\n"
+"POT-Creation-Date: 2011-03-23 21:28+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,19 +17,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: Management/forms.py:13 Management/forms.py:958
+#: Management/forms.py:13 Management/forms.py:969
 msgid "from_year"
 msgstr "משנה"
 
-#: Management/forms.py:14 Management/forms.py:959
+#: Management/forms.py:14 Management/forms.py:970
 msgid "from_month"
 msgstr "מחודש"
 
-#: Management/forms.py:17 Management/forms.py:962
+#: Management/forms.py:17 Management/forms.py:973
 msgid "to_year"
 msgstr "עד שנה"
 
-#: Management/forms.py:18 Management/forms.py:963
+#: Management/forms.py:18 Management/forms.py:974
 msgid "to_month"
 msgstr "עד חודש"
 
@@ -141,7 +141,7 @@ msgstr "עובד"
 #: Management/forms.py:331 Management/forms.py:340 Management/forms.py:432
 #: Management/forms.py:526 Management/forms.py:530 Management/forms.py:835
 #: Management/forms.py:838 Management/forms.py:948 Management/forms.py:954
-#: Management/forms.py:968 Management/models.py:229 Management/models.py:411
+#: Management/forms.py:979 Management/models.py:229 Management/models.py:411
 #: Management/models.py:1918 Management/models.py:3023
 #: Management/models.py:3060
 msgid "project"
@@ -166,7 +166,7 @@ msgid "add_type"
 msgstr "סוג תוספת"
 
 #: Management/forms.py:332 Management/forms.py:928 Management/models.py:412
-#: Management/pdf/table_fields.py:258
+#: Management/pdf/table_fields.py:267
 msgid "building_num"
 msgstr "מס' בניין"
 
@@ -175,7 +175,7 @@ msgid "include_clients"
 msgstr "כולל רוכשים"
 
 #: Management/forms.py:336 Management/models.py:1361 Management/models.py:2498
-#: Management/pdf/table_fields.py:312
+#: Management/pdf/table_fields.py:321
 msgid "house_type"
 msgstr "סוג דירה"
 
@@ -344,7 +344,7 @@ msgid "company"
 msgstr "חברה"
 
 #: Management/forms.py:929 Management/models.py:279
-#: Management/pdf/table_fields.py:249
+#: Management/pdf/table_fields.py:258
 msgid "house_num"
 msgstr "מס' דירה"
 
@@ -372,60 +372,60 @@ msgstr "כולל מחסנים"
 msgid "existing_building_num"
 msgstr "מס' בניין כבר קיים"
 
-#: Management/forms.py:966
-msgid "all_times"
-msgstr "כל הזמנים"
-
-#: Management/forms.py:968
-msgid "all_projects"
-msgstr "כל הפרוייקטים"
-
-#: Management/forms.py:971
+#: Management/forms.py:964
 msgid "all"
 msgstr "הכל"
 
-#: Management/forms.py:971
+#: Management/forms.py:964
 msgid "un-paid"
 msgstr "לא שולמו"
 
-#: Management/forms.py:971
+#: Management/forms.py:965
 msgid "mis-paid"
 msgstr "שולמו בחסר\\ביתר"
 
-#: Management/forms.py:972
+#: Management/forms.py:965
 msgid "partially-paid"
-msgstr "אי התאמה"
+msgstr "אי התאמה בין צ'ק לחשבונית"
 
-#: Management/forms.py:972
+#: Management/forms.py:966
 msgid "fully-paid"
 msgstr "שולמו במלואן"
 
-#: Management/forms.py:973
+#: Management/forms.py:977
+msgid "all_times"
+msgstr "כל הזמנים"
+
+#: Management/forms.py:979
+msgid "all_projects"
+msgstr "כל הפרוייקטים"
+
+#: Management/forms.py:982
 msgid "pay_balance"
 msgstr "מאזן תשלום"
 
-#: Management/forms.py:990
+#: Management/forms.py:1001
 msgid "to"
 msgstr "נמען"
 
-#: Management/forms.py:991
+#: Management/forms.py:1002
 msgid "CC"
 msgstr "עותק"
 
-#: Management/forms.py:992
+#: Management/forms.py:1003
 msgid "BCC"
 msgstr "עותק חסוי"
 
-#: Management/forms.py:993
+#: Management/forms.py:1004
 msgid "subject"
 msgstr "נושא"
 
-#: Management/forms.py:994 Management/forms.py:995 Management/forms.py:996
-#: Management/forms.py:997 Management/forms.py:998
+#: Management/forms.py:1005 Management/forms.py:1006 Management/forms.py:1007
+#: Management/forms.py:1008 Management/forms.py:1009
 msgid "attachment"
 msgstr "קובץ מצורף"
 
-#: Management/forms.py:999
+#: Management/forms.py:1010
 msgid "contents"
 msgstr "תוכן"
 
@@ -570,7 +570,8 @@ msgid "project fax"
 msgstr "פקס בפרוייקט"
 
 #: Management/models.py:167 Management/models.py:450 Management/models.py:703
-#: templates/Management/demand_pay_balance_list.html:126
+#: Management/pdf/writers.py:1138
+#: templates/Management/demand_pay_balance_list.html:122
 msgid "mail"
 msgstr "דואר אלקטרוני"
 
@@ -620,7 +621,7 @@ msgid "asset_type"
 msgstr "סוג נכס"
 
 #: Management/models.py:280 Management/models.py:2497
-#: Management/models.py:2945 Management/pdf/table_fields.py:276
+#: Management/models.py:2945 Management/pdf/table_fields.py:285
 msgid "floor"
 msgstr "קומה"
 
@@ -628,7 +629,7 @@ msgstr "קומה"
 msgid "net_size"
 msgstr "שטח נטו"
 
-#: Management/models.py:283 Management/pdf/table_fields.py:294
+#: Management/models.py:283 Management/pdf/table_fields.py:303
 msgid "garden_size"
 msgstr "גודל גינה/מרפסת"
 
@@ -684,7 +685,7 @@ msgstr "כולל הוצאות רישום"
 msgid "include_guarantee"
 msgstr "כולל ערבות"
 
-#: Management/models.py:397 Management/pdf/table_fields.py:321
+#: Management/models.py:397 Management/pdf/table_fields.py:330
 msgid "settle_date"
 msgstr "מועד אכלוס"
 
@@ -700,15 +701,15 @@ msgstr "יש היתר"
 msgid "permit_date"
 msgstr "ת. קבלת היתר"
 
-#: Management/models.py:401 Management/pdf/pdf.py:998
+#: Management/models.py:401 Management/pdf/writers.py:997
 msgid "lawyer_fee"
 msgstr "שכר טרחת עו\"ד"
 
-#: Management/models.py:402 Management/pdf/pdf.py:994
+#: Management/models.py:402 Management/pdf/writers.py:993
 msgid "register_amount"
 msgstr "הוצאות רישום"
 
-#: Management/models.py:403 Management/pdf/pdf.py:996
+#: Management/models.py:403 Management/pdf/writers.py:995
 msgid "guarantee_amount"
 msgstr "סכות ערבות"
 
@@ -745,12 +746,14 @@ msgstr "אנשים"
 #: Management/models.py:461 Management/models.py:702 Management/models.py:2144
 #: Management/models.py:2218 Management/models.py:2237
 #: Management/models.py:2238 Management/models.py:2602
-#: templates/Management/demand_pay_balance_list.html:126
+#: Management/pdf/writers.py:1137
+#: templates/Management/demand_pay_balance_list.html:122
 msgid "phone"
 msgstr "טלפון"
 
 #: Management/models.py:462 Management/models.py:704
-#: templates/Management/demand_pay_balance_list.html:126
+#: Management/pdf/writers.py:1137
+#: templates/Management/demand_pay_balance_list.html:122
 msgid "fax"
 msgstr "פקס"
 
@@ -1068,7 +1071,7 @@ msgid "support_num"
 msgstr "מס' אסמכתא"
 
 #: Management/models.py:1862 Management/models.py:2781
-#: Management/pdf/pdf.py:199
+#: Management/pdf/writers.py:198
 msgid "bank"
 msgstr "בנק"
 
@@ -1200,7 +1203,7 @@ msgid "sale_num"
 msgstr "מס' עסקה"
 
 #: Management/models.py:2500 Management/models.py:2586
-#: Management/pdf/table_fields.py:240
+#: Management/pdf/table_fields.py:249
 msgid "sale_date"
 msgstr "ת. מכירה"
 
@@ -1272,15 +1275,15 @@ msgstr "% הנחה בלוח תשלומים"
 msgid "commission include"
 msgstr "לחישוב עמלה"
 
-#: Management/models.py:2780 Management/pdf/pdf.py:203
+#: Management/models.py:2780 Management/pdf/writers.py:202
 msgid "account_num"
 msgstr "מס' חשבון"
 
-#: Management/models.py:2782 Management/pdf/pdf.py:201
+#: Management/models.py:2782 Management/pdf/writers.py:200
 msgid "branch"
 msgstr "סניף"
 
-#: Management/models.py:2784 Management/pdf/pdf.py:197
+#: Management/models.py:2784 Management/pdf/writers.py:196
 msgid "payee"
 msgstr "שם המוטב"
 
@@ -1425,65 +1428,69 @@ msgid "demand_diff_invoice_payment"
 msgstr "הפרש צ'ק לחשבונית"
 
 #: Management/pdf/table_fields.py:104
+msgid "amount_yet_paid"
+msgstr "סכום שטרם שולם"
+
+#: Management/pdf/table_fields.py:113
 msgid "invoices_num"
 msgstr "מס' חשבונית"
 
-#: Management/pdf/table_fields.py:117
+#: Management/pdf/table_fields.py:126
 msgid "invoices_amount"
 msgstr "סך ח-ן"
 
-#: Management/pdf/table_fields.py:130
+#: Management/pdf/table_fields.py:139
 msgid "invoices_date"
 msgstr "ת. חשבונית"
 
-#: Management/pdf/table_fields.py:143
+#: Management/pdf/table_fields.py:152
 msgid "payments_num"
 msgstr "מס' צ'ק"
 
-#: Management/pdf/table_fields.py:156
+#: Management/pdf/table_fields.py:165
 msgid "payments_amount"
 msgstr "סך צ'ק"
 
-#: Management/pdf/table_fields.py:169
+#: Management/pdf/table_fields.py:178
 msgid "payments_date"
 msgstr "ת. תשלום"
 
-#: Management/pdf/table_fields.py:182
+#: Management/pdf/table_fields.py:191
 msgid "clients_name"
 msgstr "שם הרוכשים"
 
-#: Management/pdf/table_fields.py:197
+#: Management/pdf/table_fields.py:206
 msgid "price_with_tax"
 msgstr "מחיר כולל מע\"מ"
 
-#: Management/pdf/table_fields.py:207
+#: Management/pdf/table_fields.py:216
 msgid "price_for_size"
 msgstr "מחיר ממוצע למ\"ר"
 
-#: Management/pdf/table_fields.py:217
+#: Management/pdf/table_fields.py:226
 msgid "include_lawyer_tax"
 msgstr "כולל עו\"ד"
 
-#: Management/pdf/table_fields.py:222
+#: Management/pdf/table_fields.py:231
 msgid "no"
 msgstr "לא"
 
-#: Management/pdf/table_fields.py:224
+#: Management/pdf/table_fields.py:233
 msgid "yes"
 msgstr "כן"
 
-#: Management/pdf/table_fields.py:231
+#: Management/pdf/table_fields.py:240
 msgid "employee_name"
 msgstr "שם העובד"
 
-#: Management/pdf/table_fields.py:267
+#: Management/pdf/table_fields.py:276
 msgid "rooms_num"
 msgstr "מס' חדרים"
 
-#: Management/pdf/table_fields.py:285
+#: Management/pdf/table_fields.py:294
 msgid "house_size"
 msgstr "שטח דירה"
 
-#: Management/pdf/table_fields.py:303
+#: Management/pdf/table_fields.py:312
 msgid "perfect_size"
 msgstr "שטח משוכלל"

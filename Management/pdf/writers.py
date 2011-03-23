@@ -1142,8 +1142,18 @@ class DemandPayBalanceWriter(DocumentBase):
             flows.append(Spacer(0, 10))
                         
             fields = [MonthField(), DemandSalesCountField(), DemandTotalAmountField(), InvoicesNumField(), InvoicesAmountField(),
-                      InvoicesDateField(), PaymentsAmountField(), PaymentsDateField(), DemandDiffInvoiceField(),
-                      DemandDiffInvoicePaymentField()]
+                      InvoicesDateField(), PaymentsAmountField(), PaymentsDateField()]
+            
+            # add fields sepecific to the pay balance type
+            if self.demand_pay_balance.id == 'un-paid':
+                fields.append(DemandAmountYetPaid())
+            elif self.demand_pay_balance.id == 'mis-paid':
+                fields.append(DemandDiffInvoiceField())
+            elif self.demand_pay_balance.id == 'partially-paid':
+                fields.append(DemandDiffInvoicePaymentField())
+            elif self.demand_pay_balance.id == 'all':
+                fields.extend([DemandDiffInvoiceField() ,DemandDiffInvoicePaymentField()])
+                
             fields.reverse()
             
             builder = Builder(demands, fields)
