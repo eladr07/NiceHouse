@@ -3436,8 +3436,8 @@ def demand_pay_balance_list(request):
                     setattr(project, attr, 0)
                 for demand in demands:
                     project.total_amount += demand.get_total_amount()
-                    project.total_payments += demand.payments_amount
-                    project.total_invoices += demand.invoices_amount + demand.invoices_offsets_amount
+                    project.total_payments += demand.payments_amount or 0
+                    project.total_invoices += demand.invoices_amount or 0 + demand.invoices_offsets_amount or 0
                     project.total_diff_invoice += demand.diff_invoice
                     project.total_diff_invoice_payment += demand.diff_invoice_payment
                 
