@@ -3580,8 +3580,8 @@ def employeesalary_season_list(request):
             # aggregate to get total values
             for salary in salaries:
                 for attr in total_attrs:
-                    attr_value = getattr(salary, attr, 0)
-                    totals['total_' + attr] += attr_value
+                    attr_value = getattr(salary, attr)
+                    totals['total_' + attr] += attr_value or 0
     else:
         form = EmployeeSeasonForm()
     
