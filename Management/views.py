@@ -3561,7 +3561,9 @@ def demand_followup_list(request):
 def employeesalary_season_list(request):
     salaries = []
     from_date, to_date, employee_base = None,None,None
-    total_neto, total_check_amount, total_loan_pay, total_bruto, total_refund = 0,0,0,0,0
+    
+    total_attrs = ['neto', 'check_amount', 'loan_pay', 'bruto', 'refund']
+    totals = dict([('total_' + attr, 0) for attr in total_attrs])
     
     if len(request.GET):
         form = EmployeeSeasonForm(request.GET)
@@ -3575,22 +3577,18 @@ def employeesalary_season_list(request):
             elif isinstance(employee_base.derived, NHEmployee):
                 salaries = NHEmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhemployee__id = employee_base.id)
                 
+            # aggregate to get total values
             for salary in salaries:
-                total_neto += salary.neto or 0
-                total_check_amount += salary.check_amount or 0
-                total_loan_pay += salary.loan_pay or 0
-                total_bruto += salary.bruto or 0
-                total_refund += salary.refund or 0
+                for attr in total_attrs:
+                    attr_value = getattr(salary, attr, 0)
+                    totals['total_' + attr] += attr_value
     else:
         form = EmployeeSeasonForm()
-        
-    return render_to_response('Management/employeesalary_season_list.html', 
-                              { 'salaries':salaries, 'start':from_date, 'end':to_date,
-                                'employee':employee_base, 'filterForm':form,
-                                'total_neto':total_neto,'total_check_amount':total_check_amount,
-                                'total_loan_pay':total_loan_pay,'total_bruto':total_bruto,
-                                'total_refund':total_refund},
-                              context_instance=RequestContext(request))
+    
+    context = { 'salaries':salaries, 'start':from_date, 'end':to_date, 'employee':employee_base, 'filterForm':form }
+    context.update(totals)
+    
+    return render_to_response('Management/employeesalary_season_list.html', context, context_instance=RequestContext(request))
 
 @permission_required('Management.season_salaryexpenses')
 def employeesalary_season_expenses(request):
