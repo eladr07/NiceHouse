@@ -9,7 +9,7 @@ TEMPLATE_DEBUG = DEBUG
 SITE_ROOT = '/var/www/NiceHouse/trunk/'
 
 ADMINS = (
-    ('Elad Reuveni', 'adush07@gmail.com'),
+    ('Elad Reuveni', 'eladr07@gmail.com'),
 )
 
 MANAGERS = ADMINS
