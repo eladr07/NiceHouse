@@ -822,10 +822,11 @@ class EmployeeSalariesWriter:
         rows = []
         i = 0
         for es in self.salaries:
-            terms = es.employee.employment_terms
+            employee = es.get_employee()
+            terms = employee.employment_terms
             row = []
             if self.show_employee:
-                row.append(log2vis(unicode(es.employee)))
+                row.append(log2vis(unicode(employee)))
             if self.show_month:
                 row.append('%s/%s' % (es.month, es.year))
             row.extend([log2vis(u'%s - %s' % (terms.hire_type.name, terms.salary_net and u'נטו' or u'ברוטו'))])
