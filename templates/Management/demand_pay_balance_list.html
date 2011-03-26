@@ -132,7 +132,7 @@
 		</tr>
 		{% for d in demands %}
 			{% if d.is_fully_paid %}
-			<tr class="rowGreen" objid={{d.id}}>
+			<tr class="row5" objid={{d.id}}>
 			{% else %}
 			<tr class="{% cycle 'row1' 'row2'" objid={{d.id}}>
 			{% endif %}
