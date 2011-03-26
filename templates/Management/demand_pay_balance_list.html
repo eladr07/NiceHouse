@@ -118,13 +118,15 @@
 				<a href="{{project.get_absolute_url}}">
 					{{project}}
 					{% if project.demand_contact %}
+					<br>
 					{% with project.demand_contact as contact %}
-						| {{ contact }} ,{% trans "phone" %}: {{contact.phone}}, {% trans "fax" %}: {{ contact.fax }}, {% trans "mail" %}: {{contact.mail}}
+						{{ contact }} ,{% trans "phone" %}: {{contact.phone}}, {% trans "fax" %}: {{ contact.fax }}, {% trans "mail" %}: {{contact.mail}}
 					{% endwith %}
 					{% endif %}
 					{% if project.payment_contact %}
+					<br>
 					{% with project.payment_contact as contact %}
-						| {{ contact }} ,{% trans "phone" %}: {{contact.phone}}, {% trans "fax" %}: {{ contact.fax }}, {% trans "mail" %}: {{contact.mail}}
+						{{ contact }} ,{% trans "phone" %}: {{contact.phone}}, {% trans "fax" %}: {{ contact.fax }}, {% trans "mail" %}: {{contact.mail}}
 					{% endwith %}
 					{% endif %}
 				</a>
