@@ -3565,12 +3565,25 @@ def employeesalary_season_list(request):
                 salaries = EmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(employee__id = employee_base.id)
             elif isinstance(employee_base.derived, NHEmployee):
                 salaries = NHEmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhemployee__id = employee_base.id)
+            
+            if request.GET.has_key('list'):    
+                # aggregate to get total values
+                for salary in salaries:
+                    for attr in total_attrs:
+                        attr_value = getattr(salary, attr)
+                        totals['total_' + attr] += attr_value or 0
+            elif request.GET.has_key('pdf'):
+                filename = common.generate_unique_media_filename('pdf')
                 
-            # aggregate to get total values
-            for salary in salaries:
-                for attr in total_attrs:
-                    attr_value = getattr(salary, attr)
-                    totals['total_' + attr] += attr_value or 0
+                response = HttpResponse(mimetype='application/pdf')
+                response['Content-Disposition'] = 'attachment; filename=' + filename
+            
+                EmployeeSalariesWriter(salaries, u'ריכוז שכר תקופתי לעובד - %s' % employee_base,
+                                       show_month=True, show_employee=False).build(filename)
+                p = open(filename,'r')
+                response.write(p.read())
+                p.close()
+                return response
     else:
         form = EmployeeSeasonForm()
     
