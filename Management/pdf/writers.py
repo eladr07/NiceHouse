@@ -1152,7 +1152,9 @@ class DemandPayBalanceWriter(DocumentBase):
             
             # add fields sepecific to the pay balance type
             if self.demand_pay_balance.id == 'un-paid':
-                fields.append(DemandAmountYetPaid())
+                field = DemandTotalAmountField()
+                field.title = ugettext('amount_yet_paid')
+                fields.append(field)
             elif self.demand_pay_balance.id == 'mis-paid':
                 fields.append(DemandDiffInvoiceField())
             elif self.demand_pay_balance.id == 'partially-paid':

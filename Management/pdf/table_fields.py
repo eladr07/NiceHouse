@@ -14,10 +14,18 @@ class TableField(object):
         self.is_summarized = is_summarized
         self.is_commaised = is_commaised
         self.is_averaged = is_averaged
-        self._format_title()
+    
     def _format_title(self):
         parts = [log2vis(part) for part in self.title.split()]
         self.title = '\n'.join(parts)
+    
+    def get_title(self):
+        return self._title
+    def set_title(self, value):
+        self._title = value
+        self._format_title()
+    title = property(get_title, set_title)
+    
     def format(self, item):
         raise NotImplementedError
     def get_height(self, item):
@@ -95,15 +103,6 @@ class DemandDiffInvoicePaymentField(TableField):
                                                                    is_summarized=True)
     def format(self, item):
         return item.diff_invoice_payment
-    
-    class Meta:
-        models = (models.Demand,)
-        
-class DemandAmountYetPaid(TableField):
-    def __init__(self):
-        return super(DemandAmountYetPaid, self).__init__(ugettext('amount_yet_paid'), 50, is_commaised=True, is_summarized=True)
-    def format(self, item):
-        return item.get_total_amount()
     
     class Meta:
         models = (models.Demand,)
