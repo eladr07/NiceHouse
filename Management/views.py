@@ -3340,26 +3340,6 @@ def report_project_followup(request, project_id=None, from_year=common.current_m
     p.close()
     return response
 
-@login_required
-def report_employeesalary_season(request, employee_id=None, from_year=common.current_month().year, from_month=common.current_month().month, 
-                          to_year=common.current_month().year, to_month=common.current_month().month):
-    from_date = date(int(from_year), int(from_month), 1)
-    to_date = date(int(to_year), int(to_month), 1)  
-    
-    salaries = EmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(employee__id = employee_id)
-    
-    filename = common.generate_unique_media_filename('pdf')
-    
-    response = HttpResponse(mimetype='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename=' + filename
-
-    EmployeeSalariesWriter(salaries, u'ריכוז שכר תקופתי לעובד - %s' % Employee.objects.get(pk=employee_id),
-                           show_month=True, show_employee=False).build(filename)
-    p = open(filename,'r')
-    response.write(p.read())
-    p.close()
-    return response
-
 @permission_required('Management.demand_season')
 def demand_season_list(request):
     ds = Demand.objects.none()
