@@ -3399,7 +3399,7 @@ def demand_pay_balance_list(request):
             elif demand_pay_balance.id == 'mis-paid':
                 demands = [demand for demand in demands if demand.diff_invoice]
             elif demand_pay_balance.id == 'partially-paid':
-                demands = [demand for demand in demands if demand.diff_invoice_payment]
+                demands = [demand for demand in demands if demand.diff_invoice_payment and demand.payments_amount != None]
                         
             if demand_pay_balance.id == 'fully-paid':
                 demands = [demand for demand in demands if demand.is_fully_paid]
