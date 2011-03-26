@@ -103,7 +103,7 @@ class DemandAmountYetPaid(TableField):
     def __init__(self):
         return super(DemandAmountYetPaid, self).__init__(ugettext('amount_yet_paid'), 50, is_commaised=True, is_summarized=True)
     def format(self, item):
-        return item.diff_invoice_payment * -1
+        return item.get_total_amount()
     
     class Meta:
         models = (models.Demand,)
