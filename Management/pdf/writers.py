@@ -8,7 +8,7 @@ reportlab.rl_config.warnOnMissingFontGlyphs = 0
 from reportlab.lib.pagesizes import A4, landscape
 from django.utils.translation import ugettext
 from reportlab.pdfgen import canvas
-from reportlab.platypus import Paragraph, SimpleDocTemplate, Image, Spacer, Frame, Table, PageBreak
+from reportlab.platypus import Paragraph, SimpleDocTemplate, Image, Spacer, Frame, Table, PageBreak, KeepTogether
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.lib.units import mm
@@ -1131,17 +1131,21 @@ class DemandPayBalanceWriter(DocumentBase):
         flows = []
         
         for project, demands in self.project_demands.items():
-            flows.append(titlePara(unicode(project)))
-            flows.append(Spacer(0, 10))
+            projectFlow = []
+            projectFlow.append(titlePara(unicode(project)))
+            projectFlow.append(Spacer(0, 10))
             
             for attr in ['demand_contact', 'payment_contact']:
                 contact = getattr(project, attr)
+                # skip if the project does not have some contact person
+                if not contact:
+                    continue
                 contact_str = unicode(contact) + ", " + ugettext('phone') + ": " + contact.phone + ", " + ugettext('fax') + ": " + \
                     contact.fax + ", " + ugettext('mail') + ": " + contact.mail
                 style = ParagraphStyle('contact_para', fontName='David',fontSize=12, alignment=TA_CENTER)
                 paragraph = Paragraph(log2vis(contact_str), style)
-                flows.append(paragraph)
-                flows.append(Spacer(0, 10))
+                projectFlow.append(paragraph)
+                projectFlow.append(Spacer(0, 10))
                         
             fields = [MonthField(), DemandSalesCountField(), DemandTotalAmountField(), InvoicesNumField(), InvoicesAmountField(),
                       InvoicesDateField(), PaymentsAmountField(), PaymentsDateField()]
@@ -1162,7 +1166,8 @@ class DemandPayBalanceWriter(DocumentBase):
             table = builder.build()
             
             tableFlow = Table(table.rows, table.col_widths(), table.row_heights(), projectTableStyle, 1)
-            flows.append(tableFlow)
+            projectFlow.append(tableFlow)
+            flows.append(KeepTogether(projectFlow))
         
         return flows
     
