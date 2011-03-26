@@ -8,7 +8,7 @@
 <form method="GET">
 	<table class="dataTable" style="width: 70%;" border="1">
 		<tr class="row1">
-			<td colspan="6" style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש</td>
+			<td colspan={{filterForm.fields|length|add:"2"}} style="background-color: #0065BD; color: #FFFFFF; font-weight: bold;">חיפוש</td>
 		</tr>
 		<tr class="row2">
 			{% for field in filterForm %}
@@ -18,7 +18,7 @@
 			</td>
 			{% endfor %}
 			<td><input type="submit" value="חפש" class="button" name="list" /></td>
-			<td><input type="submit" value="חפש" class="button" name="pdf" /></td>
+			<td><input type="submit" value="PDF" class="button" name="pdf" /></td>
 		</tr>
 	</table>
 </form>
