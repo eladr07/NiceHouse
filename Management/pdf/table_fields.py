@@ -16,8 +16,8 @@ class TableField(object):
         self.is_averaged = is_averaged
     
     def _format_title(self):
-        parts = [log2vis(part) for part in self.title.split()]
-        self.title = '\n'.join(parts)
+        parts = [log2vis(part) for part in self._title.split()]
+        self._title = '\n'.join(parts)
     
     def get_title(self):
         return self._title
