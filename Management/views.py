@@ -936,10 +936,11 @@ def nh_season_profit(request):
         form = NHBranchSeasonForm(request.GET)
         if form.is_valid():
             nhbranch = form.cleaned_data['nhbranch']
-            from_date = date(form.cleaned_data['from_year'], form.cleaned_data['from_month'], 1)
-            to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
+            cleaned_data = form.cleaned_data
+            from_year, from_month, to_year, to_month = cleaned_data['from_year'], cleaned_data['from_month'], \
+                cleaned_data['to_year'], cleaned_data['to_month']
             total_profit, total_net_income = 0,0
-            nhmonths = NHMonth.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhbranch = nhbranch)
+            nhmonths = NHMonth.objects.range(from_year, from_month, to_year, to_month).filter(nhbranch = nhbranch)
             for nhm in nhmonths:
                 nhm.include_tax = False
                 salary_expenses = 0
@@ -971,7 +972,8 @@ def nh_season_profit(request):
         form = NHBranchSeasonForm()
         
     return render_to_response('Management/nh_season_profit.html', 
-                              { 'months':months,'totals':totals, 'filterForm':form, 'from_date':from_date, 'to_date':to_date },
+                              { 'months':months,'totals':totals, 'filterForm':form, 'from_year':from_year, 'from_month': from_month,
+                               'to_year': to_year, 'to_month': to_month },
                               context_instance=RequestContext(request))
 
 @permission_required('Management.nhmonth_season')
