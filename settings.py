@@ -1,6 +1,6 @@
 # Django settings for NiceHouse project.
 
-DEBUG = True
+DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 
 #if DEBUG:
