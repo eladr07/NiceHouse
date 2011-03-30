@@ -938,7 +938,6 @@ def employee_list_pdf(request):
 def nh_season_profit(request):
     months = []
     totals = {}
-    from_date, to_date = None, None
     
     if len(request.GET):
         form = NHBranchSeasonForm(request.GET)
@@ -978,6 +977,8 @@ def nh_season_profit(request):
                     totals[key] += month[key]
     else:
         form = NHBranchSeasonForm()
+        month = common.current_month()
+        from_year, from_month, to_year, to_month = month.year, month.month, month.year, month.month
         
     return render_to_response('Management/nh_season_profit.html', 
                               { 'months':months,'totals':totals, 'filterForm':form, 'from_year':from_year, 'from_month': from_month,
