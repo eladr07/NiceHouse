@@ -546,19 +546,17 @@ def projects_profit(request):
     to_year = int(request.GET.get('to_year', month.year))
     to_month = int(request.GET.get('to_month', month.month))
     
-    demands = Demand.objects.range(from_year, from_month, to_year, to_month)
+    demands = Demand.objects.range(from_year, from_month, to_year, to_month).order_by('project')
     salaries = EmployeeSalary.objects.range(from_year, from_month, to_year, to_month)
             
-    projects = set([demand.project for demand in demands])
+    projects = []
     total_income, total_expense, total_profit, avg_relative_expense_income, avg_relative_sales_expense, total_sale_count = 0,0,0,0,0,0
     
-    for p in projects:
+    for p, demand_iter in itertools.groupby(demands, lambda demand: demand.project):
         p.sale_count, p.total_income, p.total_expense, p.profit, p.total_sales_amount = 0,0,0,0,0
         p.employee_expense = {}
         
-        project_demands = demands.filter(project = p)
-        
-        for d in project_demands:
+        for d in demand_iter:
             tax_val = Tax.objects.filter(date__lte=date(d.year, d.month,1)).latest().value / 100 + 1
 
             total_amount = d.get_total_amount() / tax_val
@@ -570,6 +568,8 @@ def projects_profit(request):
             p.sale_count += sale_count
             total_sale_count += sale_count
             total_income += total_amount
+        
+        projects.append(p)
 
     for s in salaries:
         tax_val = Tax.objects.filter(date__lte=date(s.year, s.month,1)).latest().value / 100 + 1
