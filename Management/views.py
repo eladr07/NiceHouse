@@ -577,17 +577,16 @@ def projects_profit(request):
         if not terms: continue
         s.calculate()
         for project, salary in s.project_salary().items():
-            for p in projects:
-                if p.id == project.id:
-                    if not p.employee_expense.has_key(s.employee):
-                        p.employee_expense[s.employee]=0
-                    fixed_salary = salary
-                    if terms.hire_type.id == HireType.SelfEmployed:
-                        fixed_salary = salary / tax_val
-                    p.employee_expense[s.employee] += fixed_salary
-                    p.total_expense += fixed_salary
-                    total_expense += fixed_salary
-                    break
+            p = projects[projects.index(project)]
+            if not p.employee_expense.has_key(s.employee):
+                p.employee_expense[s.employee]=0
+            fixed_salary = salary
+            if terms.hire_type.id == HireType.SelfEmployed:
+                fixed_salary = salary / tax_val
+            p.employee_expense[s.employee] += fixed_salary
+            p.total_expense += fixed_salary
+            total_expense += fixed_salary
+
     project_count = 0
     for p in projects:
         if p.sale_count > 0:
