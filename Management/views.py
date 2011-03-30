@@ -621,6 +621,7 @@ def projects_profit(request):
     else:
         month = common.current_month()
         form = SeasonForm(initial = {'from_year': month.year, 'from_month': month.month, 'to_year': month.year, 'to_month': month.month})
+        from_year, from_month, to_year, to_month = month.year, month.month, month.year, month.month
         total_income, total_expense, total_profit, avg_relative_expense_income, total_sale_count, avg_relative_sales_expense = 0,0,0,0,0,0
         projects = []
 
