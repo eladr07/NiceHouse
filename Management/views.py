@@ -575,7 +575,7 @@ def projects_profit(request):
     projects = _process_demands(demands)
     
     total_sale_count = sum([project.sale_count for project in projects])
-    total_income = sum([project.total_amount for project in projects])
+    total_income = sum([project.total_income for project in projects])
 
     for s in salaries:
         tax_val = Tax.objects.filter(date__lte=date(s.year, s.month,1)).latest().value / 100 + 1
