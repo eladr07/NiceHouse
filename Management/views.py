@@ -587,10 +587,7 @@ def projects_profit(request):
     projects = _process_demands(demands)
     _process_salaries(salaries, projects)
     
-    total_sale_count = sum([project.sale_count for project in projects])
     total_income = sum([project.total_income for project in projects])
-    total_expense = sum([project.total_expense for project in projects])
-    total_profit = sum([project.profit for project in projects])
     avg_relative_expense_income, avg_relative_sales_expense = 0,0
 
     project_count = 0
@@ -613,6 +610,10 @@ def projects_profit(request):
             elif p.total_income == 0: p.relative_expense_income_str = u'גרעון'
             elif p.total_expense == 0: p.relative_expense_income_str = u'עודף'
         p.profit = p.total_income - p.total_expense
+        
+    total_sale_count = sum([project.sale_count for project in projects])
+    total_expense = sum([project.total_expense for project in projects])
+    total_profit = sum([project.profit for project in projects])
 
     if project_count:
         avg_relative_expense_income = avg_relative_expense_income / project_count
