@@ -972,8 +972,7 @@ def nh_season_profit(request):
                 month['relative_profit'] = month['profit'] / total_profit * 100
                 month['relative_net_income'] = month['net_income_no_tax'] / total_net_income * 100
                 for key in ['sales_worth_no_tax','income_no_tax','lawyers_pay','net_income_no_tax','salary_expenses','profit']:
-                    if not totals.has_key(key):
-                        totals[key] = 0
+                    totals.setdefault(key, 0)
                     totals[key] += month[key]
     else:
         form = NHBranchSeasonForm()
