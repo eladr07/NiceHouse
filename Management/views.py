@@ -541,6 +541,7 @@ def demand_calc(request, id):
 @permission_required('Management.projects_profit')
 def projects_profit(request):
     def _process_demands(demands):
+        projects = []
         for p, demand_iter in itertools.groupby(demands, lambda demand: demand.project):
             p.sale_count, p.total_income, p.total_expense, p.profit, p.total_sales_amount = 0,0,0,0,0
             p.employee_expense = {}
@@ -557,8 +558,8 @@ def projects_profit(request):
                     p.total_sales_amount += s.include_tax and s.price or (s.price / tax_val)
             
             projects.append(p)
+            
         return projects
-        
         
     month = common.current_month()
     from_year = int(request.GET.get('from_year', month.year))
