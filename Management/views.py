@@ -560,6 +560,20 @@ def projects_profit(request):
             projects.append(p)
             
         return projects
+    def _process_salaries(salaries, projects):
+        for s in salaries:
+            tax_val = Tax.objects.filter(date__lte=date(s.year, s.month,1)).latest().value / 100 + 1
+            terms = s.employee.employment_terms
+            if not terms: continue
+            s.calculate()
+            for project, salary in s.project_salary().items():
+                fixed_salary = salary
+                if terms.hire_type.id == HireType.SelfEmployed:
+                    fixed_salary = salary / tax_val
+                p = projects[projects.index(project)]
+                p.employee_expense.setdefault(s.employee, 0)
+                p.employee_expense[s.employee] += fixed_salary
+                p.total_expense += fixed_salary
         
     month = common.current_month()
     from_year = int(request.GET.get('from_year', month.year))
@@ -569,28 +583,15 @@ def projects_profit(request):
     
     demands = Demand.objects.range(from_year, from_month, to_year, to_month).order_by('project')
     salaries = EmployeeSalary.objects.range(from_year, from_month, to_year, to_month)
-            
-    total_expense, total_profit, avg_relative_expense_income, avg_relative_sales_expense = 0,0,0,0
     
     projects = _process_demands(demands)
+    _process_salaries(salaries, projects)
     
     total_sale_count = sum([project.sale_count for project in projects])
     total_income = sum([project.total_income for project in projects])
-
-    for s in salaries:
-        tax_val = Tax.objects.filter(date__lte=date(s.year, s.month,1)).latest().value / 100 + 1
-        terms = s.employee.employment_terms
-        if not terms: continue
-        s.calculate()
-        for project, salary in s.project_salary().items():
-            fixed_salary = salary
-            if terms.hire_type.id == HireType.SelfEmployed:
-                fixed_salary = salary / tax_val
-            p = projects[projects.index(project)]
-            p.employee_expense.setdefault(s.employee, 0)
-            p.employee_expense[s.employee] += fixed_salary
-            p.total_expense += fixed_salary
-            total_expense += fixed_salary
+    total_expense = sum([project.total_expense for project in projects])
+    total_profit = sum([project.profit for project in projects])
+    avg_relative_expense_income, avg_relative_sales_expense = 0,0
 
     project_count = 0
     for p in projects:
@@ -612,7 +613,7 @@ def projects_profit(request):
             elif p.total_income == 0: p.relative_expense_income_str = u'גרעון'
             elif p.total_expense == 0: p.relative_expense_income_str = u'עודף'
         p.profit = p.total_income - p.total_expense
-        total_profit += p.profit
+
     if project_count:
         avg_relative_expense_income = avg_relative_expense_income / project_count
         avg_relative_sales_expense = avg_relative_sales_expense / project_count
