@@ -1577,7 +1577,7 @@ class CZilber(models.Model):
                 s.commission_details.create(commission = 'final', value = 0)
                 logger.warning('skipping sale #%(id)s. commission_include=False', {'id':s.id})
                                 
-            bonus = self.calc_bonus(month, sales, d)
+            self.calc_bonus(month, sales, d)
 
             logger.info('starting to calculate ziber adds')
             
@@ -1607,6 +1607,7 @@ class CZilber(models.Model):
             if d.include_zilber_bonus():
                 if prev_adds:
                     d.diffs.create(type=u'משתנה', reason=u'הפרשי קצב מכירות (נספח א)', amount=round(prev_adds))
+                bonus = sum([sale.zdb for sale in cycle_sales])
                 if bonus:
                     d.diffs.create(type=u'בונוס', reason=u'בונוס חסכון בהנחה (נספח ב)', amount=round(bonus))
                     
