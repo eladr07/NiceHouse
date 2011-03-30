@@ -622,6 +622,7 @@ def projects_profit(request):
         month = common.current_month()
         form = SeasonForm(initial = {'from_year': month.year, 'from_month': month.month, 'to_year': month.year, 'to_month': month.month})
         total_income, total_expense, total_profit, avg_relative_expense_income, total_sale_count, avg_relative_sales_expense = 0,0,0,0,0,0
+        projects = []
 
     return render_to_response('Management/projects_profit.html', 
                               { 'projects':projects,'from_year':from_year,'from_month':from_month, 
