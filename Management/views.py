@@ -555,19 +555,22 @@ def projects_profit(request):
     for p in projects:
         p.sale_count, p.total_income, p.total_expense, p.profit, p.total_sales_amount = 0,0,0,0,0
         p.employee_expense = {}
-    for d in demands:
-        tax_val = Tax.objects.filter(date__lte=date(d.year, d.month,1)).latest().value / 100 + 1
-        for p in projects:
-            if p.id == d.project.id:
-                total_amount = d.get_total_amount() / tax_val
-                sale_count = d.get_sales().count()
-                p.total_income += total_amount
-                for s in d.get_sales().all():
-                    p.total_sales_amount += s.include_tax and s.price or (s.price / tax_val)
-                p.sale_count += sale_count
-                total_sale_count += sale_count
-                total_income += total_amount
-                break
+        
+        project_demands = demands.filter(project = p)
+        
+        for d in project_demands:
+            tax_val = Tax.objects.filter(date__lte=date(d.year, d.month,1)).latest().value / 100 + 1
+
+            total_amount = d.get_total_amount() / tax_val
+            sales = d.get_sales()
+            sale_count = len(sales)
+            p.total_income += total_amount
+            for s in sales:
+                p.total_sales_amount += s.include_tax and s.price or (s.price / tax_val)
+            p.sale_count += sale_count
+            total_sale_count += sale_count
+            total_income += total_amount
+
     for s in salaries:
         tax_val = Tax.objects.filter(date__lte=date(s.year, s.month,1)).latest().value / 100 + 1
         terms = s.employee.employment_terms
