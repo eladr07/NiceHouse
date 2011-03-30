@@ -574,60 +574,62 @@ def projects_profit(request):
                 p.employee_expense.setdefault(s.employee, 0)
                 p.employee_expense[s.employee] += fixed_salary
                 p.total_expense += fixed_salary
+    
+    if len(request.GET):
+        form = SeasonForm(request.GET)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            from_year, from_month, to_year, to_month = cleaned_data['from_year'], cleaned_data['from_month'], cleaned_data['to_year'], cleaned_data['to_month']
+            
+            demands = Demand.objects.range(from_year, from_month, to_year, to_month).order_by('project')
+            salaries = EmployeeSalary.objects.range(from_year, from_month, to_year, to_month)
+            
+            projects = _process_demands(demands)
+            _process_salaries(salaries, projects)
+            
+            total_income = sum([project.total_income for project in projects])
+            avg_relative_expense_income, avg_relative_sales_expense = 0,0
         
-    month = common.current_month()
-    from_year = int(request.GET.get('from_year', month.year))
-    from_month = int(request.GET.get('from_month', month.month))
-    to_year = int(request.GET.get('to_year', month.year))
-    to_month = int(request.GET.get('to_month', month.month))
-    
-    demands = Demand.objects.range(from_year, from_month, to_year, to_month).order_by('project')
-    salaries = EmployeeSalary.objects.range(from_year, from_month, to_year, to_month)
-    
-    projects = _process_demands(demands)
-    _process_salaries(salaries, projects)
-    
-    total_income = sum([project.total_income for project in projects])
-    avg_relative_expense_income, avg_relative_sales_expense = 0,0
-
-    project_count = 0
-    for p in projects:
-        if p.sale_count > 0:
-            project_count += 1
-        p.relative_income = total_income and (p.total_income / total_income * 100) or 100
-        if p.total_expense and p.total_sales_amount:
-            p.relative_sales_expense = float(p.total_expense) / p.total_sales_amount * 100
-            avg_relative_sales_expense += p.relative_sales_expense
-        else:
-            if p.total_expense == 0 and p.total_sales_amount == 0: p.relative_sales_expense_str = 'אפס'
-            elif p.total_sales_amount == 0: p.relative_sales_expense_str = u'גרעון'
-            elif p.total_expense == 0: p.relative_sales_expense_str = u'עודף'
-        if p.total_income and p.total_expense:
-            p.relative_expense_income = p.total_expense / p.total_income * 100
-            avg_relative_expense_income += p.relative_expense_income
-        else:
-            if p.total_income == 0 and p.total_expense == 0: p.relative_expense_income_str = u'אפס'
-            elif p.total_income == 0: p.relative_expense_income_str = u'גרעון'
-            elif p.total_expense == 0: p.relative_expense_income_str = u'עודף'
-        p.profit = p.total_income - p.total_expense
+            project_count = 0
+            for p in projects:
+                if p.sale_count > 0:
+                    project_count += 1
+                p.relative_income = total_income and (p.total_income / total_income * 100) or 100
+                if p.total_expense and p.total_sales_amount:
+                    p.relative_sales_expense = float(p.total_expense) / p.total_sales_amount * 100
+                    avg_relative_sales_expense += p.relative_sales_expense
+                else:
+                    if p.total_expense == 0 and p.total_sales_amount == 0: p.relative_sales_expense_str = 'אפס'
+                    elif p.total_sales_amount == 0: p.relative_sales_expense_str = u'גרעון'
+                    elif p.total_expense == 0: p.relative_sales_expense_str = u'עודף'
+                if p.total_income and p.total_expense:
+                    p.relative_expense_income = p.total_expense / p.total_income * 100
+                    avg_relative_expense_income += p.relative_expense_income
+                else:
+                    if p.total_income == 0 and p.total_expense == 0: p.relative_expense_income_str = u'אפס'
+                    elif p.total_income == 0: p.relative_expense_income_str = u'גרעון'
+                    elif p.total_expense == 0: p.relative_expense_income_str = u'עודף'
+                p.profit = p.total_income - p.total_expense
+                
+            total_sale_count = sum([project.sale_count for project in projects])
+            total_expense = sum([project.total_expense for project in projects])
+            total_profit = sum([project.profit for project in projects])
         
-    total_sale_count = sum([project.sale_count for project in projects])
-    total_expense = sum([project.total_expense for project in projects])
-    total_profit = sum([project.profit for project in projects])
+            if project_count:
+                avg_relative_expense_income = avg_relative_expense_income / project_count
+                avg_relative_sales_expense = avg_relative_sales_expense / project_count
+    else:
+        month = common.current_month()
+        form = SeasonForm(initial = {'from_year': month.year, 'from_month': month.month, 'to_year': month.year, 'to_month': month.month})
+        total_income, total_expense, total_profit, avg_relative_expense_income, total_sale_count, avg_relative_sales_expense = 0,0,0,0,0,0
 
-    if project_count:
-        avg_relative_expense_income = avg_relative_expense_income / project_count
-        avg_relative_sales_expense = avg_relative_sales_expense / project_count
-    
     return render_to_response('Management/projects_profit.html', 
                               { 'projects':projects,'from_year':from_year,'from_month':from_month, 
-                                'to_year':to_year,'to_month':to_month,
-                                'filterForm':SeasonForm(initial={'from_year':from_year,'from_month':from_month,
-                                                                 'to_year':to_year,'to_month':to_month}),
+                                'to_year':to_year,'to_month':to_month, 'filterForm':form,
                                 'total_income':total_income,'total_expense':total_expense, 'total_profit':total_profit,
                                 'avg_relative_expense_income':avg_relative_expense_income,'total_sale_count':total_sale_count,
                                 'avg_relative_sales_expense':avg_relative_sales_expense},
-                              context_instance=RequestContext(request))
+                                context_instance = RequestContext(request))
 
 @permission_required('Management.list_demand')
 def demand_old_list(request):
