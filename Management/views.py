@@ -549,11 +549,9 @@ def projects_profit(request):
     demands = Demand.objects.range(from_year, from_month, to_year, to_month)
     salaries = EmployeeSalary.objects.range(from_year, from_month, to_year, to_month)
             
-    projects = []
-    for d in demands:
-        if d.project not in projects:
-            projects.append(d.project)
+    projects = set([demand.project for demand in demands])
     total_income, total_expense, total_profit, avg_relative_expense_income, avg_relative_sales_expense, total_sale_count = 0,0,0,0,0,0
+    
     for p in projects:
         p.sale_count, p.total_income, p.total_expense, p.profit, p.total_sales_amount = 0,0,0,0,0
         p.employee_expense = {}
