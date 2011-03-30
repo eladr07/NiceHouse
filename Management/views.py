@@ -546,11 +546,8 @@ def projects_profit(request):
     to_year = int(request.GET.get('to_year', month.year))
     to_month = int(request.GET.get('to_month', month.month))
     
-    from_date = date(int(from_year), int(from_month), 1)
-    to_date = date(int(to_year), int(to_month), 1)
-    
-    demands = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
-    salaries = EmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
+    demands = Demand.objects.range(from_year, from_month, to_year, to_month)
+    salaries = EmployeeSalary.objects.range(from_year, from_month, to_year, to_month)
             
     projects = []
     for d in demands:
