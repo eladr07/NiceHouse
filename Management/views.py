@@ -540,6 +540,26 @@ def demand_calc(request, id):
 
 @permission_required('Management.projects_profit')
 def projects_profit(request):
+    def _process_demands(demands):
+        for p, demand_iter in itertools.groupby(demands, lambda demand: demand.project):
+            p.sale_count, p.total_income, p.total_expense, p.profit, p.total_sales_amount = 0,0,0,0,0
+            p.employee_expense = {}
+            
+            for d in demand_iter:
+                tax_val = Tax.objects.filter(date__lte=date(d.year, d.month,1)).latest().value / 100 + 1
+    
+                total_amount = d.get_total_amount() / tax_val
+                sales = d.get_sales()
+                sale_count = len(sales)
+                p.total_income += total_amount
+                p.sale_count += sale_count
+                for s in sales:
+                    p.total_sales_amount += s.include_tax and s.price or (s.price / tax_val)
+            
+            projects.append(p)
+        return projects
+        
+        
     month = common.current_month()
     from_year = int(request.GET.get('from_year', month.year))
     from_month = int(request.GET.get('from_month', month.month))
@@ -549,27 +569,12 @@ def projects_profit(request):
     demands = Demand.objects.range(from_year, from_month, to_year, to_month).order_by('project')
     salaries = EmployeeSalary.objects.range(from_year, from_month, to_year, to_month)
             
-    projects = []
-    total_income, total_expense, total_profit, avg_relative_expense_income, avg_relative_sales_expense, total_sale_count = 0,0,0,0,0,0
+    total_expense, total_profit, avg_relative_expense_income, avg_relative_sales_expense = 0,0,0,0
     
-    for p, demand_iter in itertools.groupby(demands, lambda demand: demand.project):
-        p.sale_count, p.total_income, p.total_expense, p.profit, p.total_sales_amount = 0,0,0,0,0
-        p.employee_expense = {}
-        
-        for d in demand_iter:
-            tax_val = Tax.objects.filter(date__lte=date(d.year, d.month,1)).latest().value / 100 + 1
-
-            total_amount = d.get_total_amount() / tax_val
-            sales = d.get_sales()
-            sale_count = len(sales)
-            p.total_income += total_amount
-            for s in sales:
-                p.total_sales_amount += s.include_tax and s.price or (s.price / tax_val)
-            p.sale_count += sale_count
-            total_sale_count += sale_count
-            total_income += total_amount
-        
-        projects.append(p)
+    projects = _process_demands(demands)
+    
+    total_sale_count = sum([project.sale_count for project in projects])
+    total_income = sum([project.total_amount for project in projects])
 
     for s in salaries:
         tax_val = Tax.objects.filter(date__lte=date(s.year, s.month,1)).latest().value / 100 + 1
@@ -577,10 +582,10 @@ def projects_profit(request):
         if not terms: continue
         s.calculate()
         for project, salary in s.project_salary().items():
-            p = projects[projects.index(project)]
             fixed_salary = salary
             if terms.hire_type.id == HireType.SelfEmployed:
                 fixed_salary = salary / tax_val
+            p = projects[projects.index(project)]
             p.employee_expense.setdefault(s.employee, 0)
             p.employee_expense[s.employee] += fixed_salary
             p.total_expense += fixed_salary
