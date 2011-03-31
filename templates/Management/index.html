@@ -202,7 +202,7 @@
 					{% for field in locateHouseForm %}
 						{{ field }}
 					{% endfor%}
-					<input type="submit" value="חפש" />
+					<input type="submit" class="button" value="חפש" />
 				</form>
 			</ul>
 			<ul>
@@ -211,8 +211,8 @@
 					{% for field in locateDemandForm %}
 						{{ field }}
 					{% endfor%}
-					<input type="submit" name="find" value="חפש" />
-					<input type="submit" name="pdf" value="PDF" />
+					<input type="submit" class="button" name="find" value="חפש" />
+					<input type="submit" class="button" name="pdf" value="PDF" />
 				</form>
 			</ul>
 			<ul>
@@ -223,7 +223,7 @@
 					{{ employeeSalesForm.from_month }}
 					{{ employeeSalesForm.to_year }}
 					{{ employeeSalesForm.to_month }}
-					<input type="submit" value="PDF" />
+					<input type="submit" class="button" value="PDF" />
 				</form>
 			</ul>
 			<ul>
@@ -234,8 +234,8 @@
 					{{ employeeSalarySeasonForm.from_month }}
 					{{ employeeSalarySeasonForm.to_year }}
 					{{ employeeSalarySeasonForm.to_month }}
-					<input type="submit" value="חפש" name="find" />
-					<input type="submit" value="PDF" name="pdf"/>
+					<input type="submit" class="button" value="חפש" name="find" />
+					<input type="submit" class="button" value="PDF" name="pdf"/>
 				</form>
 			</ul>
 		</fieldset>
