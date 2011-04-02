@@ -20,6 +20,7 @@
 			if (selectedID > 0)
 				$("#demandEdit").attr("href", "/demands/" + selectedID);
 				$("#demandCalc").attr("href", "/demands/" + selectedID + "/calc");
+				$("#demandReturnToCalc").attr("href", "/demands/" + selectedID + "/returntocalc");
 				$("#demandRemarks").attr("href", "/demands/" + selectedID + "/remarks");
 			});
 		$(".fancybox").fancybox();
@@ -124,11 +125,15 @@
 	<a href="/demands/sendall">אשר ושלח דרישות</a>
 </div>
 <div class="someIcon"style="width:130px;">
-	<img src="/site_media/images/advanced-48.png" width="20" height="20"  alt="שליחה" /> 
+	<img src="/site_media/images/advanced-48.png" width="20" height="20"  /> 
+	<a id="demandReturnToCalc">החזר לחישוב עמלות</a>
+</div>
+<div class="someIcon"style="width:130px;">
+	<img src="/site_media/images/advanced-48.png" width="20" height="20" /> 
 	<a id="demandCalc">חישוב עמלות מחדש</a>
 </div>
 <div class="someIcon" style="width:100px;">
-	<img src="/site_media/images/print-48.png" width="20" height="20"  alt="הדפסה" /> 
+	<img src="/site_media/images/print-48.png" width="20" height="20" /> 
 	<a href="#">שלח להנה"ח</a>
 </div>
 <div class="someIcon" style="width:100px;">

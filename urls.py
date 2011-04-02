@@ -419,6 +419,7 @@ urlpatterns += patterns('',
     
     (r'^demands/$', demand_list),
     (r'^demands/(?P<id>\d+)/calc$', demand_calc),
+    (r'^demands/(?P<id>\d+)/returntocalc$', demand_return_to_calc),
     (r'^demandsold/$', demand_old_list),
     (r'^demandseason/$', demand_season_list),
     (r'^demandfollowup/$', demand_followup_list),

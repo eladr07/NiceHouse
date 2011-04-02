@@ -491,6 +491,12 @@ def demand_function(request,id , function):
     return HttpResponse('ok')
 
 @permission_required('Management.list_demand')
+def demand_return_to_calc(request, id):
+    demand = Demand.objects.get(pk = id)
+    demand.close()
+    return HttpResponseRedirect('/demandsold/?year=%s&month=%s' % (demand.year,demand.month))
+
+@permission_required('Management.list_demand')
 def demand_calc(request, id):
     # end the revision created by the middleware - i want manual control of the revision
     reversion.revision.end()
