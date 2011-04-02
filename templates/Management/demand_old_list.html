@@ -40,6 +40,10 @@
 			if (!confirm("האם אתה בטוח שברצונך לחשב את העמלות מחדש ?"))
 				event.preventDefault();
 		});
+		$("#demandReturnToCalc").click(function(event) {
+			if (!confirm("האם אתה בטוח שברצונך להחזיר את הדרישה לחישוב עמלות ?"))
+				event.preventDefault();
+		});
 		//add filters
 		var filterSelect = $("#filterSelect");
 		$("#demandTable th").each(function (index, elem) {
