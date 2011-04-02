@@ -1079,9 +1079,9 @@ class EmployeeSalesWriter(DocumentBase):
         self.project, self.from_month, self.from_year, self.to_month, self.to_year, self.demands = \
             project, from_month, from_year,to_month , to_year, demands
     def get_flows(self):
-        house_fields = [HouseNumField(),HouseRoomsField(), HouseFloorField(), HouseSizeField(), HouseGardenSizeField(),
-                        HouseTypeField()]
-        sale_fields = [SaleClientsField(), SalePriceTaxedField(), SaleIncludeLawyerTaxField(), SaleEmployeeNameField()]
+        house_fields = [HouseNumField(), HouseBuildingNumField(), HouseRoomsField(), HouseFloorField(), HouseSizeField(), 
+                        HouseGardenSizeField(), HouseTypeField()]
+        sale_fields = [SaleDateField(), SaleClientsField(), SalePriceTaxedField(), SaleIncludeLawyerTaxField(), SaleEmployeeNameField()]
 
         house_fields.reverse()
         sale_fields.reverse()
