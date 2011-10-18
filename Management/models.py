@@ -222,7 +222,7 @@ class Project(models.Model):
         """
         Returns the name of the project including the name of the city.
         """
-        return self.city in self.name and self.name or self.name + ' ' + self.city
+        return self.city.strip() in self.name and self.name or self.name + ' ' + self.city
     def get_absolute_url(self):
         return '/projects/%s' % self.id
     class Meta:
