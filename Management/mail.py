@@ -34,7 +34,7 @@ def mail(to, cc='', bcc='', subject='', contents='', attachments = ()):
         part.add_header(u'Content-Disposition', 'attachment; filename="%s"' % filename)
         msg.attach(part)
 
-    mailServer = smtplib.SMTP("smtp.gmail.com", 465)
+    mailServer = smtplib.SMTP("smtp.gmail.com", 587)
     mailServer.ehlo()
     mailServer.starttls()
     mailServer.ehlo()
