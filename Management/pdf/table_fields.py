@@ -33,7 +33,7 @@ class TableField(object):
         
 class ProjectNameAndCityField(TableField):
     def __init__(self):
-        return super(ProjectNameAndCityField, self).__init__(ugettext('project_name'),130)
+        return super(ProjectNameAndCityField, self).__init__(ugettext('project_name'),135)
     def format(self, item):
         return log2vis(item.project.name_and_city)
     
