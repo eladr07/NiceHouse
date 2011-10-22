@@ -55,7 +55,7 @@ BODY {
 
 #header #Nice {
 	font-family: Tahoma;
-	color: #FF003F;
+	color: #0065BD;
 	cursor: pointer; /* Defines the Cursor type when the mouse is over the object of that class.. in out design it's the NiceHouse title.. */
 	margin-bottom: 0px; /* I defined that the space between the bottom border and the element is zero pixels. */
 	font-size: 34px;
