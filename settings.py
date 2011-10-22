@@ -100,3 +100,66 @@ INSTALLED_APPS = (
 )
 
 CACHE_BACKEND = 'dummy://'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'form01': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+    },
+    'handlers': {
+        'hand01': {
+            'level':'DEBUG',
+            'class':'logging.handlers.FileHandler',
+            'args':('/var/www/NiceHouse/trunk/logs/commission.log', 'a'),
+            'formatter': 'form01'
+        },
+        'hand02': {
+            'level':'DEBUG',
+            'class':'logging.handlers.FileHandler',
+            'args':('/var/www/NiceHouse/trunk/logs/pdf.log', 'a'),
+            'formatter': 'form01'
+        },
+        'hand04': {
+            'level':'DEBUG',
+            'class':'logging.handlers.FileHandler',
+            'args':('/var/www/NiceHouse/trunk/logs/salary.log', 'a'),
+            'formatter': 'form01'
+        },
+        'hand05': {
+            'level':'DEBUG',
+            'class':'logging.handlers.FileHandler',
+            'args':('/var/www/NiceHouse/trunk/logs/views.log', 'a'),
+            'formatter': 'form01'
+        },
+    },
+    'loggers': {
+        'root': {
+            'handlers':['hand01'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+        'commission': {
+            'handlers':['hand01'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+        'pdf': {
+            'handlers':['hand02'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+        'salary': {
+            'handlers':['hand04'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+        'views': {
+            'handlers':['hand05'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+    }
+}
