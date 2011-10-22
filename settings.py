@@ -112,7 +112,7 @@ LOGGING = {
     'handlers': {
         'hand01': {
             'level':'DEBUG',
-            'class':'logging.handlers.FileHandler',
+            'class':'FileHandler',
             'args':('/var/www/NiceHouse/trunk/logs/commission.log', 'a'),
             'formatter': 'form01'
         },
