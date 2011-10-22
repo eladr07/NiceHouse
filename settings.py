@@ -113,8 +113,8 @@ LOGGING = {
         'hand01': {
             'level':'DEBUG',
             'class':'logging.FileHandler',
-            'filename':'logs/commission.log', 
-            'mode':'a',
+            'filename':'commission.log', 
+            'mode':'a+',
             'formatter': 'form01'
         },
         'hand02': {
