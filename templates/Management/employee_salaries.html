@@ -199,6 +199,17 @@
 	<tr class="rowSum">
 		<td colspan="4"></td>
 		<td>{{salaries|attrsum:"sales_count"}}</td>
+		<td>{{salaries|attrsum:"base"|commaise}} + {{salaries|attrsum:"commissions"|commaise}} </td>
+		<td>{{salaries|attrsum:"safety_net"|commaise}}</td>
+		<td>{{salaries|attrsum:"var_pay"|commaise}}</td>
+		<td>{{salaries|attrsum:"deduction"|commaise}}</td>
+		<td>{{salaries|attrsum:"neto"|commaise}}</td>
+		<td></td>
+		<td>{{salaries|attrsum:"check_amount"|commaise}}</td>
+		<td>{{salaries|attrsum:"bruto"|commaise}}</td>
+		<td></td>
+		<td>{{salaries|attrsum:"invoice_amount"|commaise}}</td>
+		<td>{{salaries|attrsum:"refund"|commaise}}</td>
 	</tr>
 </table>
 {% endblock content %}
