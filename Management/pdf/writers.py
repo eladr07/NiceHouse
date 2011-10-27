@@ -703,7 +703,7 @@ class EmployeeSalariesBookKeepingWriter(DocumentBase):
         colWidths.reverse()
         rows = []
         remarks_str = ''
-        i = 0
+
         for s in self.nhsales:
             for side in s.nhsaleside_set.all():
                 clients = log2vis(side.name1) + '<br/>' + log2vis(side.name2 or '')
@@ -727,16 +727,12 @@ class EmployeeSalariesBookKeepingWriter(DocumentBase):
                 rows.append(row)
                 if side.remarks:
                     remarks_str += log2vis(side.name1 + ' ' + (side.name2 or '') + ' - ' + side.remarks) + '<br/>'
-            i += 1
-            if i % 27 == 0 or i == len(self.nhsales):
-                data = [headers]
-                data.extend(rows)
-                t = Table(data, colWidths)
-                t.setStyle(nhsalariesTableStyle)
-                flows.append(t)
-                if i < len(self.nhsales):
-                    flows.extend([PageBreak(), Spacer(0, 50)])
-                rows = []
+                
+        data = [headers]
+        data.extend(rows)
+        t = Table(data, colWidths, style = nhsalariesTableStyle, repeatRows = 2)
+        flows.append(t)
+            
         flows.append(Spacer(0,10))
         flows.append(Paragraph(remarks_str, styleNormal13))
         flows.append(Spacer(0,10))
