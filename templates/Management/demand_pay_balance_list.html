@@ -22,6 +22,8 @@
 				$("#demandAdjust").attr("href", "/demands/" + selectedID + "/adddiffadjust");
 				$("#demandAdjust").attr("href", "/demands/" + selectedID + "/adddiffadjust");
 				$("#demandForceFullyPaid").attr("href", "/demands/" + selectedID + "/forcefullypaid");
+				$("#demandAddInvoice").attr("href", "/demands/" + selectedID + "/invoice/add");
+				$("#demandAddPayment").attr("href", "/demands/" + selectedID + "/payment/add");
 			});
 		$(".fancybox").fancybox();
 		$(".bigfancybox").fancybox({'frameWidth':800});	
@@ -79,6 +81,14 @@
 <div class="someIcon" style="width:100px;">
 	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
 	<a id="demandForceFullyPaid">התאמה כפויה</a>
+</div>
+<div class="someIcon" style="width:100px;">
+	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
+	<a class="fancybox" id="demandAddInvoice">הזנת חשבונית</a>
+</div>
+<div class="someIcon" style="width:100px;">
+	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
+	<a class="fancybox" id="demandAddPayment">הזנת תשלום</a>
 </div>
 <div class="someIcon"style="width:130px;">
 	<img src="/site_media/images/advanced-48.png" width="20" height="20"  alt="שליחה" /> 
