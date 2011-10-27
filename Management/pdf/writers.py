@@ -771,7 +771,17 @@ class EmployeeSalariesBookKeepingWriter(DocumentBase):
             
             if es.pdf_remarks:
                 remarks_str += '<u><b>' + log2vis(unicode(employee) + '</b></u>' + ' ' + (es.pdf_remarks)) + '<br/>'
-
+        
+        sum_row = [None, None, None, 
+                   [commaise(sum(s.check_amount)) for s in self.salaries],
+                   [commaise(sum(s.refund)) for s in self.salaries],
+                   [commaise(sum(s.bruto)) for s in self.salaries],
+                   [commaise(sum(s.invoice_amount)) for s in self.salaries], None,
+                   [commaise(sum(s.loan_pay)) for s in self.salaries],
+                   [commaise(sum(s.neto)) for s in self.salaries], None]
+        sum_row.reverse()
+        rows.append(sum_row)
+        
         data = [groups, headers]
         data.extend(rows)
         t = Table(data, colWidths, style = salariesTableStyle, repeatRows = 2)

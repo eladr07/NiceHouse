@@ -197,7 +197,7 @@
 		{% endfor %}
 	{% endfor %}
 	<tr class="rowSum">
-		<td colspan="4">סיכום</td>
+		<td colspan="4" align="center">סיכום</td>
 		<td>{{salaries|attrsum:"sales_count"}}</td>
 		<td>{{salaries|attrsum:"base"|commaise}} + {{salaries|attrsum:"commissions"|commaise}} </td>
 		<td>{{salaries|attrsum:"safety_net"|commaise}}</td>
