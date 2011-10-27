@@ -779,7 +779,7 @@ class EmployeeSalariesBookKeepingWriter(DocumentBase):
                    commaise(sum([s.invoice_amount or 0 for s in self.salaries])), None,
                    commaise(sum([s.loan_pay or 0 for s in self.salaries])),
                    commaise(sum([s.neto or 0 for s in self.salaries])), None]
-        sum_row = [Paragraph(value, styleSumRow) for value in sum_row]
+        sum_row = [value and Paragraph(value, styleSumRow) or None for value in sum_row]
         sum_row.reverse()
         rows.append(sum_row)
         
