@@ -742,15 +742,17 @@ def employee_salary_list(request):
             terms = e.employment_terms
             if not terms:
                 continue
+            # do not include employees who did not start working by the month selected
             if year < e.work_start.year or (year == e.work_start.year and month < e.work_start.month):
                 continue
+            # do not include employees who finished working by the month selected
             if e.work_end and (year > e.work_end.year or (year == e.work_end.year and month > e.work_end.month)):
                 continue
             es, new = EmployeeSalary.objects.get_or_create(employee = e, month = month, year = year)
 	    if new:
-		es.calculate()
-		es.save()
-            salaries.append(es)
+    		es.calculate()
+    		es.save()
+        salaries.append(es)
     return render_to_response('Management/employee_salaries.html', 
                               {'salaries':salaries, 'month': date(int(year), int(month), 1),
                                'filterForm':MonthForm(initial={'year':year,'month':month})},

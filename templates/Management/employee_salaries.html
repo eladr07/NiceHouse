@@ -196,5 +196,9 @@
 		</tr>
 		{% endfor %}
 	{% endfor %}
+	<tr class="rowSum">
+		<td colspan="4"></td>
+		<td>{{salaries|attrsum:"sales_count"}}</td>
+	</tr>
 </table>
 {% endblock content %}
