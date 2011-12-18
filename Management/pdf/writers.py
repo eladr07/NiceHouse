@@ -285,12 +285,16 @@ class MonthDemandWriter(DocumentBase):
         self.to_mail = to_mail
     def toPara(self):
         contact = self.demand.project.demand_contact
-        s = log2vis(u'בס"ד') + '<br/><br/>'
-        s += '<u>%s</u><br/>' % log2vis(u'לכבוד')
-        s += '<b>' + log2vis(u'חברת %s' % contact.company) + '<br/>'
-        s += log2vis(u'לידי %s' % unicode(contact)) + '<br/>'
-        s += log2vis(u'תפקיד : %s</b>' % contact.role) + '<br/></b>'
-        s += log2vis(u'א.ג.נ')
+        if contact:
+            s = log2vis(u'בס"ד') + '<br/><br/>'
+            s += '<u>%s</u><br/>' % log2vis(u'לכבוד')
+            s += '<b>' + log2vis(u'חברת %s' % contact.company) + '<br/>'
+            s += log2vis(u'לידי %s' % unicode(contact)) + '<br/>'
+            s += log2vis(u'תפקיד : %s</b>' % contact.role) + '<br/></b>'
+            s += log2vis(u'א.ג.נ')
+        else:
+            s = log2vis(u'--לא הוזן איש קשר') + '<br/>'
+            s += log2vis(u'לדרישות לתשלום--')
         return Paragraph(s, styleN)
     def addFirst(self, canv, doc):
         super(MonthDemandWriter, self).addFirst(canv, doc)
