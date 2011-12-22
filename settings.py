@@ -138,10 +138,15 @@ LOGGING = {
             'mode':'a',
             'formatter': 'form01'
         },
+        'mail_admins': {
+            'level':'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': True,
+        },
     },
     'loggers': {
         'root': {
-            'handlers':['hand01'],
+            'handlers':['hand01', 'mail_admins'],
             'propagate': True,
             'level':'DEBUG',
         },
