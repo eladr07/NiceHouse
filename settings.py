@@ -86,6 +86,8 @@ TEMPLATE_DIRS = (
     'templates',
 )
 
+SERVER_EMAIL = 'server@nicehouse.com'
+
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 
 INSTALLED_APPS = (
