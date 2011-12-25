@@ -3400,9 +3400,9 @@ def demand_pay_balance_list(request):
                 cleaned_data['from_month'], cleaned_data['to_year'], cleaned_data['to_month'], cleaned_data['all_times']
             
             if project:
-                query = query.filter(project = project)
+                query = Demand.objects.filter(project = project)
             else:
-                query = query.order_by('project', 'year', 'month')
+                query = Demand.objects.all().order_by('project', 'year', 'month')
             if from_year and from_month and to_year and to_month and not all_times:
                 query = query.range(from_year, from_month, to_year, to_month)
 
