@@ -2097,11 +2097,11 @@ class Demand(models.Model):
     def get_total_amount(self):
         return self.sales_commission + self.diffs.total_amount()
     def invoices_amount(self):
-        return sum([invoice.amount for invoice in self.invoices().all()])
+        return sum([invoice.amount for invoice in self.invoices.all()])
     def payments_amount(self):
-        return sum([payment.amount for payment in self.payments().all()])
+        return sum([payment.amount for payment in self.payments.all()])
     def invoice_offsets_amount(self):
-        return sum([invoice.offset.amount for invoice in self.invoices().all() if invoice.offset != None])
+        return sum([invoice.offset.amount for invoice in self.invoices.all() if invoice.offset != None])
     @property
     def is_fully_paid(self):
         if self.force_fully_paid:
