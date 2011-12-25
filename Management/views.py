@@ -3399,10 +3399,6 @@ def demand_pay_balance_list(request):
             project, from_year, from_month, to_year, to_month, all_times = cleaned_data['project'], cleaned_data['from_year'], \
                 cleaned_data['from_month'], cleaned_data['to_year'], cleaned_data['to_month'], cleaned_data['all_times']
             
-            # compose the query to db
-            query = Demand.objects.annotate(payments_amount = Sum('payments__amount'), 
-                                            invoices_amount = Sum('invoices__amount'),
-                                            invoices_offsets_amount = Sum('invoices__offset__amount'))
             if project:
                 query = query.filter(project = project)
             else:
@@ -3411,7 +3407,7 @@ def demand_pay_balance_list(request):
                 query = query.range(from_year, from_month, to_year, to_month)
 
             demands = list(query)
-                        
+
             if demand_pay_balance.id == 'un-paid':
                 demands = [demand for demand in demands if not demand.payments_amount]
             elif demand_pay_balance.id == 'mis-paid':
@@ -3434,8 +3430,8 @@ def demand_pay_balance_list(request):
                     setattr(project, attr, 0)
                 for demand in demands:
                     project.total_amount += demand.get_total_amount()
-                    project.total_payments += (demand.payments_amount or 0)
-                    project.total_invoices += (demand.invoices_amount or 0) + (demand.invoices_offsets_amount or 0)
+                    project.total_payments += demand.payments_amount()
+                    project.total_invoices += demand.invoices_amount() + demand.invoices_offsets_amount()
                     project.total_diff_invoice += demand.diff_invoice
                     project.total_diff_invoice_payment += demand.diff_invoice_payment
                 
