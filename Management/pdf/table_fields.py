@@ -122,7 +122,7 @@ class InvoicesNumField(TableField):
         
 class InvoicesAmountField(TableField):
     def __init__(self):
-        return super(InvoicesAmountField, self).__init__(ugettext('invoices_amount'), 50)
+        return super(InvoicesAmountField, self).__init__(ugettext('invoices_amount'), 50, is_summarized=True)
     def format(self, item):
         return '\n'.join([commaise(i.amount) for i in item.invoices.all()])
     
@@ -161,7 +161,7 @@ class PaymentsNumField(TableField):
         
 class PaymentsAmountField(TableField):
     def __init__(self):
-        return super(PaymentsAmountField, self).__init__(ugettext('payments_amount'),50)
+        return super(PaymentsAmountField, self).__init__(ugettext('payments_amount'),50, is_summarized=True)
     def format(self, item):
         return '\n'.join([commaise(p.amount) for p in item.payments.all()])
     
