@@ -153,7 +153,9 @@
 				{% for p,sales in s.sales.items %}
 					{{p}} - {{sales|length}}<br>
 				{% endfor %}
-				<a class="fancybox" href="{{s.employee.get_absolute_url}}/sales/{{s.year}}/{{s.month}}">פירוט</a>
+				{% if s.sales|length %}
+					<a class="fancybox" href="{{s.employee.get_absolute_url}}/sales/{{s.year}}/{{s.month}}">פירוט</a>
+				{% endif %}
 			</td>
 			<td><a href="{{s.get_absolute_url}}/totaldetails" class="fancybox">{{s.neto|default_if_none:""|commaise}}</a></td>
 			<td>{{s.loan_pay|commaise}}</td>
