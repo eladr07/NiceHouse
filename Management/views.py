@@ -588,7 +588,7 @@ def projects_profit(request):
             from_year, from_month, to_year, to_month = cleaned_data['from_year'], cleaned_data['from_month'], cleaned_data['to_year'], cleaned_data['to_month']
             
             demands = Demand.objects.range(from_year, from_month, to_year, to_month).order_by('project')
-            salaries = EmployeeSalary.objects.range(from_year, from_month, to_year, to_month)
+            salaries = EmployeeSalary.objects.nondeleted().range(from_year, from_month, to_year, to_month)
             
             projects = _process_demands(demands)
             _process_salaries(salaries, projects)
@@ -687,7 +687,7 @@ def nhemployee_salary_pdf(request, nhbranch_id, year, month):
     response['Content-Disposition'] = 'attachment; filename=' + filename
     
     nhb = NHBranch.objects.get(pk = nhbranch_id)
-    salaries = [salary for salary in NHEmployeeSalary.objects.filter(nhbranch = nhb, month = month, year = year) if salary.approved_date]
+    salaries = [salary for salary in NHEmployeeSalary.objects.nondeleted().filter(nhbranch = nhb, month = month, year = year) if salary.approved_date]
 
     nhsales = NHSale.objects.filter(nhmonth__year__exact = year, nhmonth__month__exact = month, nhmonth__nhbranch = nhb)
     title = u'שכר עבודה לסניף %s לחודש %s\%s' % (nhb, year, month)
@@ -763,7 +763,7 @@ def salary_expenses_list(request):
     current = common.current_month()
     year = int(request.GET.get('year', current.year))
     month = int(request.GET.get('month', current.month))
-    salaries = list(EmployeeSalary.objects.filter(year = year, month= month))
+    salaries = list(EmployeeSalary.objects.nondeleted().filter(year = year, month= month))
     return render_to_response('Management/salaries_expenses.html', 
                               {'salaries':salaries, 'month': date(int(year), int(month), 1),
                                'filterForm':MonthForm(initial={'year':year,'month':month})},
@@ -774,7 +774,7 @@ def nh_salary_expenses_list(request):
     current = common.current_month()
     year = int(request.GET.get('year', current.year))
     month = int(request.GET.get('month', current.month))
-    salaries = list(NHEmployeeSalary.objects.filter(year = year, month= month))
+    salaries = list(NHEmployeeSalary.objects.nondeleted().filter(year = year, month= month))
     return render_to_response('Management/nh_salaries_expenses.html', 
                               {'salaries':salaries, 'month': date(int(year), int(month), 1),
                                'filterForm':MonthForm(initial={'year':year,'month':month})},
@@ -854,7 +854,7 @@ def employee_salary_pdf(request, year, month):
     response = HttpResponse(mimetype='application/pdf')
     response['Content-Disposition'] = 'attachment; filename=' + filename
 
-    EmployeeSalariesBookKeepingWriter([es for es in EmployeeSalary.objects.filter(year = year, month= month)
+    EmployeeSalariesBookKeepingWriter([es for es in EmployeeSalary.objects.nondeleted().filter(year = year, month= month)
                                        if es.approved_date], u'שכר עבודה למנהלי פרויקטים לחודש %s\%s' % (year, month),
                                        ).build(filename)
     p = open(filename,'r')
@@ -865,6 +865,16 @@ def employee_salary_pdf(request, year, month):
 def employee_salary_calc(request, model, id):
     es = model.objects.get(pk=id)
     es.calculate()
+    es.save()
+    if model == EmployeeSalary:
+        return HttpResponseRedirect('/employeesalaries/?year=%s&month=%s' % (es.year, es.month))
+    elif model == NHEmployeeSalary:
+        return HttpResponseRedirect('/nhemployeesalaries/?year=%s&month=%s' % (es.year, es.month))
+
+@permission_required('Management.employee_salary_delete')
+def employee_salary_delete(request, model, id):
+    es = model.object.get(pk=id)
+    es.mark_deleted()
     es.save()
     if model == EmployeeSalary:
         return HttpResponseRedirect('/employeesalaries/?year=%s&month=%s' % (es.year, es.month))
@@ -960,7 +970,7 @@ def nh_season_profit(request):
                 nhm.include_tax = False
                 salary_expenses = 0
                 #collect all employee expenses for this month
-                for salary in NHEmployeeSalary.objects.filter(nhbranch = nhm.nhbranch, year = nhm.year, month = nhm.month):
+                for salary in NHEmployeeSalary.objects.nondeleted().filter(nhbranch = nhm.nhbranch, year = nhm.year, month = nhm.month):
                     salary_expenses += salary.check_amount or 0
                 #calculate commulative sales prices for this month
                 sales_worth = 0
@@ -1374,7 +1384,7 @@ def salepaymod_edit(request, model, object_id):
             # need to calc origin and destination salaries for all project employees
             if object.employee_pay_year != employee_pay_year or object.employee_pay_month != employee_pay_month:
                 q = models.Q(year = object.employee_pay_year, month = object.employee_pay_month) | models.Q(year = employee_pay_year, month = employee_pay_month)
-                salaries = EmployeeSalary.objects.filter(q, employee__in = project.employees.all())
+                salaries = EmployeeSalary.objects.nondeleted().filter(q, employee__in = project.employees.all())
                 salaries_to_calc.extend(salaries)
             
             for demand in demands_to_calc:
@@ -3141,7 +3151,7 @@ def sale_edit(request, id):
             year, month = sale.demand.year, sale.demand.month
             employees = demand.project.employees.exclude(work_end__isnull = False, work_end__lt = date(year, month, 1))
             
-            salaries_to_calc = list(EmployeeSalary.objects.filter(employee__in = employees, year = year, month = month))
+            salaries_to_calc = list(EmployeeSalary.objects.nondeleted().filter(employee__in = employees, year = year, month = month))
             calc_salaries(salaries_to_calc)
 
             if request.POST.has_key('addanother'):
@@ -3184,7 +3194,7 @@ def sale_add(request, demand_id=None):
             
             employees = demand.project.employees.exclude(work_end__isnull = False, work_end__lt = date(year, month, 1))
             
-            salaries_to_calc = list(EmployeeSalary.objects.filter(employee__in = employees, year = year, month = month))
+            salaries_to_calc = list(EmployeeSalary.objects.nondeleted().filter(employee__in = employees, year = year, month = month))
             calc_salaries(salaries_to_calc)
                 
             if request.POST.has_key('addanother'):
@@ -3556,9 +3566,9 @@ def employeesalary_season_list(request):
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
 
             if isinstance(employee_base.derived, Employee):
-                salaries = EmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(employee__id = employee_base.id)
+                salaries = EmployeeSalary.objects.nondeleted().range(from_date.year, from_date.month, to_date.year, to_date.month).filter(employee__id = employee_base.id)
             elif isinstance(employee_base.derived, NHEmployee):
-                salaries = NHEmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhemployee__id = employee_base.id)
+                salaries = NHEmployeeSalary.objects.nondeleted().range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhemployee__id = employee_base.id)
             
             if request.GET.has_key('list'):    
                 # aggregate to get total values
@@ -3601,10 +3611,10 @@ def employeesalary_season_expenses(request):
             to_date = date(form.cleaned_data['to_year'], form.cleaned_data['to_month'], 1)
 
             if isinstance(employee_base.derived, Employee):
-                salaries = EmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(employee__id = employee_base.id)
+                salaries = EmployeeSalary.objects.nondeleted().range(from_date.year, from_date.month, to_date.year, to_date.month).filter(employee__id = employee_base.id)
                 template = 'Management/employeesalary_season_expenses.html'
             elif isinstance(employee_base.derived, NHEmployee):
-                salaries = NHEmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhemployee__id = employee_base.id)
+                salaries = NHEmployeeSalary.objects.nondeleted().range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhemployee__id = employee_base.id)
                 template = 'Management/nhemployeesalary_season_expenses.html'
                 
             for salary in salaries:
@@ -3766,7 +3776,7 @@ def global_profit_lost(request):
                 
                 if division.id == DivisionType.Marketing:
                     demands = Demand.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
-                    salaries = EmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month)
+                    salaries = EmployeeSalary.objects.nondeleted().range(from_date.year, from_date.month, to_date.year, to_date.month)
                     
                     demands_amount, salaries_amount = 0,0
                     for demand in demands:
@@ -3794,7 +3804,7 @@ def global_profit_lost(request):
                     elif division.id == DivisionType.NHNesZiona:
                         nhbranch = NHBranch.objects.get(pk = NHBranch.NesZiona)
                     
-                    salaries = NHEmployeeSalary.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhbranch = nhbranch)
+                    salaries = NHEmployeeSalary.objects.nondeleted().range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhbranch = nhbranch)
                     nhmonths = NHMonth.objects.range(from_date.year, from_date.month, to_date.year, to_date.month).filter(nhbranch = nhbranch)
                     
                     nhmonths_amount, salary_amount = 0,0

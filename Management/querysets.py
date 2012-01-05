@@ -10,6 +10,10 @@ class SeasonQuerySet(models.query.QuerySet):
             q = q | models.Q(year__gt = from_year, year__lt = to_year) | models.Q(year = to_year, month__lte = to_month)
         return self.filter(q)
 
+class EmployeeSalaryBaseQuerySet(SeasonQuerySet):
+    def nondeleted(self):
+        return self.filter(is_deleted=False)
+
 class InvoiceQuerySet(models.query.QuerySet):
     def total_amount_offset(self):
         invoices_amount = self.aggregate(Sum('amount'))['amount__sum'] or 0

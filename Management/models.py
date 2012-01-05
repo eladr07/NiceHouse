@@ -898,8 +898,9 @@ class EmployeeSalaryBase(models.Model):
     deduction_type = models.CharField(ugettext('deduction_type'), max_length=20, null=True, blank=True)
     remarks = models.TextField(ugettext('remarks'),null=True, blank=True)
     pdf_remarks = models.TextField(ugettext('pdf_remarks'),null=True, blank=True)
+    is_deleted = models.BooleanField(default = False, editable = False)
     
-    objects = SeasonManager()
+    objects = EmployeeSalaryBaseManager()
     
     @property
     def expenses(self):
@@ -996,6 +997,8 @@ class EmployeeSalaryBase(models.Model):
         for lp in self.get_employee().loans.filter(year = self.year, month = self.month):
             amount += lp.amount
         return amount
+    def mark_deleted(self):
+        self.is_deleted = True
     def get_employee(self):
         if hasattr(self, 'employeesalary'):
             return self.employeesalary.employee
@@ -1004,7 +1007,7 @@ class EmployeeSalaryBase(models.Model):
     class Meta:
         db_table = 'EmployeeSalaryBase'
         ordering = ['year','month']
-        permissions = (('salaries_bank', 'Salaries for bank'), )
+        permissions = (('salaries_bank', 'Salaries for bank'), ('employee_salary_delete', 'Delete salary'))
 
 class NHEmployeeSalary(EmployeeSalaryBase):
     nhemployee = models.ForeignKey('NHEmployee', verbose_name=ugettext('nhemployee'), related_name='salaries')

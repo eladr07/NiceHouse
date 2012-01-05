@@ -19,6 +19,12 @@ class SeasonManager(models.Manager):
         return self.get_query_set().range(from_year, from_month, to_year, to_month)
     def get_query_set(self):
         return SeasonQuerySet(self.model)
+
+class EmployeeSalaryBaseManager(SeasonManager):
+    def nondeleted(self):
+        return self.get_query_set().nondeleted()
+    def get_query_set(self):
+        return EmployeeSalaryBaseQuerySet()
     
 class InvoiceManager(models.Manager):
     use_for_related_fields = True
