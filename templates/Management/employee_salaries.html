@@ -20,6 +20,7 @@
 				$("#loanPay").attr("href", "/employees/" + selectedID + "/loanpay");
 				$("#loanAdd").attr("href", "/employees/" + selectedID + "/addloan");
 				$("#calcSalary").attr("href", "" + tr.attr("objid") + "/calc");
+				$("#deleteSalary").attr("href", "" + tr.attr("objid") + "/delete");
 				$("#approve").attr("href", "" + tr.attr("objid") + "/approve");
 				$("#edit").attr("href", tr.attr("objid"));
 				$("#expenses").attr("href", "/salary/" + tr.attr("objid") + "/expenses");
@@ -71,23 +72,27 @@
 	<a id="edit" class="fancybox">שינוי מרכיבי שכר - חד פעמי</a>
 </div>
 <div class="someIcon" style="width:100px;">
-	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
+	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="הוצאות שכר" /> 
 	<a id="expenses" class="fancybox">הוצאות שכר</a>
 </div>
 <div class="someIcon"style="width:130px;">
-	<img src="/site_media/images/advanced-48.png" width="20" height="20"  alt="שליחה" /> 
+	<img src="/site_media/images/advanced-48.png" width="20" height="20"  alt="חישוב עמלות מחדש" /> 
 	<a id="calcSalary">חישוב עמלות מחדש</a>
 </div>
 <div class="someIcon" style="width:120px;">
-	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
+	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="אישור שכר לתשלום" /> 
 	<a id="approve" >אישור שכר לתשלום</a>
+</div>
+<div class="someIcon" style="width:120px;">
+	<img src="/site_media/images/delete_48.png" width="20" height="20"  alt="מחיקה" /> 
+	<a id="deleteSalary" >מחיקה</a>
 </div>
 <div class="someIcon" style="width:100px;">
 	<img src="/site_media/images/edit_48.png" width="20" height="20"  alt="שינוי" /> 
 	<a id="#" >תיק עובד</a>
 </div>
 <div class="someIcon" style="width:100px;">
-	<img src="/site_media/images/print-48.png" width="20" height="20"  alt="שינוי" /> 
+	<img src="/site_media/images/print-48.png" width="20" height="20"  alt="שלח להנהח" /> 
 	<a id="#" >שלח להנה"ח</a>
 </div>
 <div class="someIcon" style="width:100px;">
@@ -173,7 +178,8 @@
 				{% endif %}
 			</td>
 			<td>
-				{% if s.employee.employment_terms.salary_net == None %}					הנהלת חשבונות
+				{% if s.employee.employment_terms.salary_net == None %}
+					הנהלת חשבונות
 				{% else %}
 					<a href="{{s.id}}/checkdetails" class="fancybox">{{s.check_amount|default_if_none:""|commaise}}</a>
 				{% endif %}
