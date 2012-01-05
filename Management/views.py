@@ -752,6 +752,9 @@ def employee_salary_list(request):
             if new:
                 es.calculate()
                 es.save()
+            else:
+                if es.is_deleted:
+                    continue
             salaries.append(es)
     return render_to_response('Management/employee_salaries.html', 
                               {'salaries':salaries, 'month': date(int(year), int(month), 1),
@@ -791,6 +794,8 @@ def nhemployee_salary_list(request):
     for nhbe in NHBranchEmployee.objects.month(year, month):
         es, new = NHEmployeeSalary.objects.get_or_create(nhemployee = nhbe.nhemployee, nhbranch = nhbe.nhbranch,
                                                          month = month, year = year)
+        if not new and es.is_deleted:
+            continue
         if (new or not es.commissions or not es.base or not es.admin_commission) and es.approved_date == None: 
             es.calculate()
             es.save()
