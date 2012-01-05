@@ -873,7 +873,7 @@ def employee_salary_calc(request, model, id):
 
 @permission_required('Management.employee_salary_delete')
 def employee_salary_delete(request, model, id):
-    es = model.object.get(pk=id)
+    es = model.objects.get(pk = id)
     es.mark_deleted()
     es.save()
     if model == EmployeeSalary:

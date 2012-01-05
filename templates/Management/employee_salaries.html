@@ -34,6 +34,10 @@
 			if (!confirm("האם אתה בטוח שברצונך לחשב את העמלות מחדש ?"))
 				event.preventDefault();
 		});
+		$("#deleteSalary").click(function(event) {
+			if (!confirm("האם אתה בטוח שברצונך למחוק את השכר ?"))
+				event.preventDefault();
+		});
 	});
 </script>
 {% endblock header %}
