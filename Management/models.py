@@ -1014,7 +1014,7 @@ class NHEmployeeSalary(EmployeeSalaryBase):
     nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'), null=True)
     admin_commission = models.IntegerField(editable=False, null=True)
     
-    objects = EmployeeSalaryBaseManager()
+    #objects = EmployeeSalaryBaseManager()
     
     @property
     @cache_method
