@@ -24,7 +24,7 @@ class EmployeeSalaryBaseManager(SeasonManager):
     def nondeleted(self):
         return self.get_query_set().nondeleted()
     def get_query_set(self):
-        return EmployeeSalaryBaseQuerySet()
+        return EmployeeSalaryBaseQuerySet(self.model)
     
 class InvoiceManager(models.Manager):
     use_for_related_fields = True
