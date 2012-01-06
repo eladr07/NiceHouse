@@ -1014,7 +1014,7 @@ class NHEmployeeSalary(EmployeeSalaryBase):
     nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'), null=True)
     admin_commission = models.IntegerField(editable=False, null=True)
     
-    objects = SeasonManager()
+    objects = EmployeeSalaryBaseManager()
     
     @property
     @cache_method
@@ -1089,7 +1089,7 @@ class NHEmployeeSalary(EmployeeSalaryBase):
 class EmployeeSalary(EmployeeSalaryBase):
     employee = models.ForeignKey('Employee', verbose_name=ugettext('employee'), related_name='salaries')
     
-    objects = SeasonManager()
+    objects = EmployeeSalaryBaseManager()
     
     def __init__(self, *args, **kw):
         super(EmployeeSalary, self).__init__(*args, **kw)
