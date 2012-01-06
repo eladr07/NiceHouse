@@ -899,9 +899,7 @@ class EmployeeSalaryBase(models.Model):
     remarks = models.TextField(ugettext('remarks'),null=True, blank=True)
     pdf_remarks = models.TextField(ugettext('pdf_remarks'),null=True, blank=True)
     is_deleted = models.BooleanField(default = False, editable = False)
-    
-    objects = EmployeeSalaryBaseManager()
-    
+       
     @property
     def expenses(self):
         q = SalaryExpenses.objects.filter(employee = self.get_employee())
@@ -1013,9 +1011,7 @@ class NHEmployeeSalary(EmployeeSalaryBase):
     nhemployee = models.ForeignKey('NHEmployee', verbose_name=ugettext('nhemployee'), related_name='salaries')
     nhbranch = models.ForeignKey('NHBranch', verbose_name=ugettext('nhbranch'), null=True)
     admin_commission = models.IntegerField(editable=False, null=True)
-    
-    #objects = EmployeeSalaryBaseManager()
-    
+        
     @property
     @cache_method
     def total_amount(self):
