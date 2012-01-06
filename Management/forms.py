@@ -831,9 +831,6 @@ class TaskFilterForm(forms.Form):
     status = forms.ChoiceField(choices = [('done', 'בוצעו'), ('undone','לא בוצעו'), ('all','הכל')])
     sender = forms.ChoiceField(choices = [('me', 'אני שלחתי'), ('others','נשלחו אלי')])
 
-class DemandReportForm(MonthForm):
-    project = forms.ModelChoiceField(Project.objects.all(), label=ugettext('project'))
-
 class ProjectSeasonForm(SeasonForm):
     project = forms.ModelChoiceField(Project.objects.all(), ugettext('choose_project'), label=ugettext('project'))
 
