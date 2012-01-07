@@ -1101,6 +1101,9 @@ class EmployeeSalary(EmployeeSalaryBase):
     @property
     @cache_method
     def sales(self):
+        '''
+        Returns a dictionary of project-->sales
+        '''
         if self.employee.rank.id == RankType.RegionalSaleManager:
             query = Sale.objects.filter(house__building__project__in = self.employee.projects.all(), 
                                         employee_pay_month = self.month, employee_pay_year = self.year)
