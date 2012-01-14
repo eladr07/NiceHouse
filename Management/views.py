@@ -3424,12 +3424,12 @@ def demand_pay_balance_list(request):
             demands = list(query)
 
             if demand_pay_balance.id == 'un-paid':
-                demands = [demand for demand in demands if not demand.payments_amount]
+                demands = [demand for demand in demands if not demand.payments_amount()]
                 raise TypeError()
             elif demand_pay_balance.id == 'mis-paid':
-                demands = [demand for demand in demands if demand.diff_invoice and demand.invoices_amount != None]
+                demands = [demand for demand in demands if demand.diff_invoice and demand.invoices_amount() != None]
             elif demand_pay_balance.id == 'partially-paid':
-                demands = [demand for demand in demands if demand.diff_invoice_payment and demand.payments_amount != None]
+                demands = [demand for demand in demands if demand.diff_invoice_payment and demand.payments_amount() != None]
                         
             if demand_pay_balance.id == 'fully-paid':
                 demands = [demand for demand in demands if demand.is_fully_paid]
