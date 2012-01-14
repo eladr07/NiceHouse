@@ -3424,6 +3424,7 @@ def demand_pay_balance_list(request):
             demands = list(query)
 
             if demand_pay_balance.id == 'un-paid':
+                raise TypeError()
                 demands = [demand for demand in demands if not demand.payments_amount]
             elif demand_pay_balance.id == 'mis-paid':
                 demands = [demand for demand in demands if demand.diff_invoice and demand.invoices_amount != None]
