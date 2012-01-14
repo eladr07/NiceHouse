@@ -2099,9 +2099,15 @@ class Demand(models.Model):
     def get_total_amount(self):
         return self.sales_commission + self.diffs.total_amount()
     def invoices_amount(self):
-        return sum([invoice.amount for invoice in self.invoices.all()])
+        amounts = [invoice.amount for invoice in self.invoices.all()]
+        if len(amounts) == 0:
+            return None
+        return sum(amounts)
     def payments_amount(self):
-        return sum([payment.amount for payment in self.payments.all()])
+        amounts = [payment.amount for payment in self.payments.all()]
+        if len(amounts) == 0:
+            return None
+        return sum(amounts)
     def invoice_offsets_amount(self):
         return sum([invoice.offset.amount for invoice in self.invoices.all() if invoice.offset != None])
     @property
