@@ -2102,16 +2102,13 @@ class Demand(models.Model):
         return self.sales_commission + self.diffs.total_amount()
     def invoices_amount(self):
         amounts = [invoice.amount for invoice in self.invoices.all()]
-        if len(amounts) == 0:
-            return None
-        return sum(amounts)
+        return len(amounts) > 0 and sum(amounts) or None
     def payments_amount(self):
         amounts = [payment.amount for payment in self.payments.all()]
-        if len(amounts) == 0:
-            return None
-        return sum(amounts)
+        return len(amounts) > 0 and sum(amounts) or None
     def invoice_offsets_amount(self):
-        return sum([invoice.offset.amount for invoice in self.invoices.all() if invoice.offset != None])
+        amounts = [invoice.offset.amount for invoice in self.invoices.all() if invoice.offset != None]
+        return len(amounts) > 0 and sum(amounts) or None
     @property
     def is_fully_paid(self):
         if self.force_fully_paid:
