@@ -1984,6 +1984,11 @@ class Demand(models.Model):
                                       month = self.month == 12 and 1 or self.month + 1)
         except Demand.DoesNotExist:
             return None
+    def sales_with_discount(self):
+        for sale in self.get_sales():
+            if sale.discount != None:
+                return True
+        return False
     def get_affected_sales(self):
         '''
         get sales from last months, affected by this month's calculation,
