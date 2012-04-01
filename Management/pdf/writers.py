@@ -764,7 +764,8 @@ class EmployeeSalariesBookKeepingWriter(DocumentBase):
             if terms and not terms.salary_net and terms.hire_type.id == models.HireType.Salaried:
                 hire_type += u' - ברוטו'
             check_amount = terms.salary_net == False and log2vis(u'הנהלת חשבונות') or commaise(es.check_amount)
-            row = [es.id, log2vis(unicode(employee)), log2vis(hire_type), check_amount, commaise(es.refund),
+            employee_name = unicode(employee).split()
+            row = [es.id, log2vis(employee_name), log2vis(hire_type), check_amount, commaise(es.refund),
                    commaise(es.bruto),commaise(es.invoice_amount),None,commaise(es.loan_pay), commaise(es.neto), es.pdf_remarks and '*' or '']
             row.reverse()
             rows.append(row)
