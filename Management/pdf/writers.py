@@ -25,6 +25,11 @@ pdfmetrics.registerFont(TTFont('David', settings.MEDIA_ROOT + 'fonts/DavidCLM-Me
 pdfmetrics.registerFont(TTFont('David-Bold', settings.MEDIA_ROOT + 'fonts/DavidCLM-Bold.ttf'))
 pdfmetrics.registerFontFamily('David', normal='David', bold='David-Bold')
 
+def break_to_lines(s):
+    tmp = log2vis(s).split()
+    tmp.reverse()
+    return '<br/>'.join(tmp)
+
 def clientsPara(str):
     str2=''
     parts = str.strip().split('\r\n')
@@ -763,7 +768,8 @@ class EmployeeSalariesBookKeepingWriter(DocumentBase):
             hire_type = terms and unicode(terms.hire_type) or ''
             if terms and not terms.salary_net and terms.hire_type.id == models.HireType.Salaried:
                 hire_type += u' - ברוטו'
-            check_amount = terms.salary_net == False and log2vis(u'הנהלת חשבונות') or commaise(es.check_amount)
+            
+            check_amount = terms.salary_net == False and Paragraph(break_to_lines(u"הנהלת חשבונות"), styleRow9) or commaise(es.check_amount)
             employee_name = '<br/>'.join(log2vis(unicode(employee)).split())
             row = [es.id, Paragraph(employee_name, styleRow9), '', check_amount, commaise(es.refund),
                    commaise(es.bruto),commaise(es.invoice_amount),None,commaise(es.loan_pay), commaise(es.neto), es.pdf_remarks and '*' or '']
