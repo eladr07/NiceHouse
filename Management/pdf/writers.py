@@ -758,6 +758,7 @@ class EmployeeSalariesBookKeepingWriter(DocumentBase):
         groups = [log2vis(u'לשימוש הנה"ח בלבד'), None, None, None, None, None, log2vis(u'תשלום צקים לעובד')]
         headers.reverse()
         colWidths = [None for i in headers]
+        colWidths[1] = 90
         colWidths.reverse()
         rows = []
         remarks_str = ''
