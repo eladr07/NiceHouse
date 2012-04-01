@@ -770,8 +770,7 @@ class EmployeeSalariesBookKeepingWriter(DocumentBase):
                 hire_type += u' - ברוטו'
             
             check_amount = terms.salary_net == False and Paragraph(break_to_lines(u"הנהלת חשבונות"), styleRow9) or commaise(es.check_amount)
-            employee_name = '<br/>'.join(log2vis(unicode(employee)).split())
-            row = [es.id, Paragraph(employee_name, styleRow9), '', check_amount, commaise(es.refund),
+            row = [es.id, Paragraph(break_to_lines(unicode(employee)), styleRow9), '', check_amount, commaise(es.refund),
                    commaise(es.bruto),commaise(es.invoice_amount),None,commaise(es.loan_pay), commaise(es.neto), es.pdf_remarks and '*' or '']
             row.reverse()
             rows.append(row)
