@@ -316,7 +316,7 @@
 				<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}}>
 			{% endif %}
 				<td><a href="/sale/{{s.id}}">{{demand.id}}-{{forloop.counter}}</a></td>
-				<td>{% if s.contract_num %}{{s.contract_num}}{% endif %}</td>
+				{% if s.contract_num %}<td>{{s.contract_num}}</td>{% endif %}
 				<td>
 					{{s.clients}}
 				</td>
