@@ -1492,7 +1492,7 @@ class CZilber(models.Model):
     def calc_bonus(self, month, sales, d):
         logger = logging.getLogger('commission.czilber')
             
-        prices_date = date(month.month == 12 and month.year+1 or month.year, month.month==12 and 1 or month.month+1, 1)
+        prices_date = date(month.month == 12 and month.year+1 or month.year, month.month % 12 + 1, 1)
         logger.debug('%(vals)s', {'vals': {'prices_date':prices_date}})
         
         total_zdb = 0
