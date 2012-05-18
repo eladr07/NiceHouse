@@ -26,7 +26,8 @@ TaxDeductionTypes = (
 Family_State_Types = (
                       (1, u'רווק'),
                       (2, u'נשוי'),
-                      (3, u'גרוש')
+                      (3, u'גרוש'),
+                      (4, u'אלמן')
                       )
 Boolean = (
            (False, u'לא'),
