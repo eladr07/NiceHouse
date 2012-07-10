@@ -2362,8 +2362,14 @@ def employee_project_add(request, employee_id):
         form = EmployeeAddProjectForm(request.POST)
         if form.is_valid():
             project, employee, start_date = form.cleaned_data['project'], form.cleaned_data['employee'], form.cleaned_data['start_date']
-            employee.projects.add(project)
-            employee.commissions.add(EPCommission(project = project, start_date = start_date))
+            # check if the employee already has an open commission for this project
+            open_commissions = employee.commissions.filter(project = project, end_date = None)
+            if len(open_commissions) == 0:
+                employee.projects.add(project)
+                employee.commissions.add(EPCommission(project = project, start_date = start_date))
+            else:
+                # TODO: something
+                pass
     else:
         form = EmployeeAddProjectForm(initial={'employee':employee_id})
     return render_to_response('Management/object_edit.html', 
