@@ -3301,7 +3301,7 @@ def report_employee_sales(request):
         
     
 
-@permission_required('Management.report_project_month')
+@permission_required('Management.demand_pdf')
 def report_project_month(request, project_id = 0, year = 0, month = 0, demand = None):
     if not (demand or (project_id and year and month)):
         raise ValueError % 'must supply either demand or project_id, year and month'
