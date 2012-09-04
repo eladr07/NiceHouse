@@ -2803,7 +2803,7 @@ def employee_employmentterms(request, id, model):
     
 @permission_required('Management.add_cvar')
 def employee_cv(request, employee_id, project_id):
-    pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id)
+    pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id, end_date__lte = datetime.date())
     cv = pc.c_var or CVar()
     InlineFormSet = inlineformset_factory(CVar, CAmount, extra = 10, max_num = 10)
     
@@ -2823,7 +2823,7 @@ def employee_cv(request, employee_id, project_id):
     
 @permission_required('Management.add_cvarprecentage')
 def employee_cvp(request, employee_id, project_id):
-    pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id)
+    pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id, end_date__lte = datetime.date())
     cvp = pc.c_var_precentage or CVarPrecentage()
     InlineFormSet = inlineformset_factory(CVarPrecentage, CPrecentage, extra = 10, max_num = 10)
     
@@ -2843,7 +2843,7 @@ def employee_cvp(request, employee_id, project_id):
     
 @permission_required('Management.add_cbyprice')
 def employee_cbp(request, employee_id, project_id):
-    pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id)
+    pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id, end_date__lte = datetime.date())
     cbp = pc.c_by_price or CByPrice()
     InlineFormSet = inlineformset_factory(CByPrice, CPriceAmount,CPriceAmountForm, extra = 10, max_num = 10)
     if request.method == "POST":
@@ -2863,7 +2863,7 @@ def employee_cbp(request, employee_id, project_id):
 
 @permission_required('Management.add_bsalerate')
 def employee_bsr(request, employee_id, project_id):
-    pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id)
+    pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id, end_date__lte = datetime.date())
     bsr = pc.b_sale_rate or BSaleRate()
     InlineFormSet = inlineformset_factory(BSaleRate, SaleRateBonus, extra = 10, max_num = 10)
     if request.method == "POST":
@@ -2883,7 +2883,7 @@ def employee_bsr(request, employee_id, project_id):
     
 @permission_required('Management.add_bhousetype')
 def employee_bht(request, employee_id, project_id):
-    pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id)
+    pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id, end_date__lte = datetime.date())
     htb = pc.b_house_type or BHouseType()
     InlineFormSet = inlineformset_factory(BHouseType, HouseTypeBonus, extra = 10, max_num = 10)
     if request.method == "POST":
@@ -2903,7 +2903,7 @@ def employee_bht(request, employee_id, project_id):
     
 @permission_required('Management.add_bdiscountsave')
 def employee_bds(request, employee_id, project_id):
-    pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id)
+    pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id, end_date__lte = datetime.date())
     bds = pc.b_discount_save or BDiscountSave()
     
     if request.method == 'POST':
@@ -2920,7 +2920,7 @@ def employee_bds(request, employee_id, project_id):
 
 @permission_required('Management.add_bdiscountsaveprecentage')
 def employee_bdsp(request, employee_id, project_id):
-    pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id)
+    pc = EPCommission.objects.get(employee__id = employee_id, project__id = project_id, end_date__lte = datetime.date())
     bdsp = pc.b_discount_save_precentage or BDiscountSavePrecentage()
     
     if request.method == 'POST':
