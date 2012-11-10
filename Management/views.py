@@ -1332,7 +1332,7 @@ def demands_send(request):
                     if mail:
                         demand_send_mail(d, mail)
                     else:
-                        error = u'לפרויקט %s לא הוגדר מייל לשליחת דרישות'
+                        error = u'לפרויקט %s לא הוגדר מייל לשליחת דרישות' % d.project
                 if by_fax:
                     pass
             forms.append(f)
