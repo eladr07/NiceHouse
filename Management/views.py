@@ -1325,16 +1325,20 @@ def demands_send(request):
         for d in ds:
             f = DemandSendForm(request.POST, instance=d, prefix = str(d.id))
             if f.is_valid():
-                if f.cleaned_data['is_finished']:
+                is_finished, by_mail, by_fax, mail = f.cleaned_data['is_finished'], f.cleaned_data['by_mail'], f.cleaned_data['by_fax'], f.cleaned_data['mail']
+                if is_finished:
                     d.finish()
-                if f.cleaned_data['by_mail'] and d.get_sales().count() > 0:
-                    demand_send_mail(d, f.cleaned_data['mail'])
-                if f.cleaned_data['by_fax']:
+                if by_mail and d.get_sales().count() > 0:
+                    if mail:
+                        demand_send_mail(d, mail)
+                    else:
+                        error = u'לפרויקט %s לא הוגדר מייל לשליחת דרישות'
+                if by_fax:
                     pass
-            else:
-                error=True
             forms.append(f)
-        if not error:
+        if error:
+            return render_to_response('Management/error.html', {'error': error}, context_instance=RequestContext(request))
+        else:
             return HttpResponseRedirect('/demandsold')
     else:
         for d in ds:
