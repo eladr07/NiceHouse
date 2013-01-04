@@ -183,7 +183,9 @@
 									<td>{{c.c_var.is_retro|yesno:"רטרואקטיבי,לא רטרואקטיבי"}}</td>
 								</tr>
 							</table>
+							{% if not c.end_date %}
 							<a id="edit_cv" href="cv/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
+							{% endif %}
 							<a id="commission_delete_cv" href="cv/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
 						</div>
 					{% endif %}
