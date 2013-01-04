@@ -109,6 +109,8 @@
 					</a>
 				{% endif %}
 			</fieldset>
+		{% endif %}
+		{% if perms.Management.add_employmentterms %}
 			<fieldset class="cardFieldset" style="float:right; width:45%">
 				<legend>פרטי חשבון</legend>
 				{% if form.instance.account %}
@@ -136,10 +138,12 @@
 						</tr>						
 					{% endwith %}
 					</table>
+					{% if perms.Management.change_employmentterms %}
 					<a href="account" class="fancybox" style="text-decoration:none;">
 						שינוי פרטי חשבון
 						<img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="שינוי" />
 					</a>
+					{% endif %}
 				{% else %}
 					<a href="account" class="fancybox" style="text-decoration:none;">
 						הזנת פרטי חשבון
@@ -147,6 +151,7 @@
 					</a>
 				{% endif %}
 			</fieldset>
+		{% endif %}
 			<div class="clearBoth"></div>
 			{% for c in form.instance.commissions.all %}
 			<fieldset class="cardFieldset">
