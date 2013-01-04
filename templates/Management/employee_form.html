@@ -185,8 +185,9 @@
 							</table>
 							{% if not c.end_date %}
 							<a id="edit_cv" href="cv/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
-							{% endif %}
+							
 							<a id="commission_delete_cv" href="cv/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+							{% endif %}
 						</div>
 					{% endif %}
 					{% if c.c_var_precentage %} 
@@ -210,9 +211,11 @@
 										{% endif %}
 									</td>
 								</tr>
-							</table>			
+							</table>
+							{% if not c.end_date %}	
 							<a id="edit_cvp" href="cvp/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
 							<a id="commission_delete_cvp" href="cvp/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+							{% endif %}
 						</div>
 					{% endif %}
 					{% if c.c_by_price %}	
@@ -226,9 +229,11 @@
 										<td>{{pa.amount}} ש"ח</td>
 									</tr>
 								{% endfor %}
-							</table>		
+							</table>
+							{% if not c.end_date %}	
 							<a id="edit_cbp" href="cbp/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
 							<a id="commission_delete_cbp" href="cbp/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+							{% endif %}
 						</div>
 					{% endif %}
 					{% if c.b_sale_rate %}
@@ -242,9 +247,11 @@
 										<td>{{b.amount}} ש"ח</td>
 									</tr>
 								{% endfor %}
-							</table>			
+							</table>
+							{% if not c.end_date %}	
 							<a id="edit_bsr" href="bsr/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
 							<a id="commission_delete_bsr" href="bsr/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+							{% endif %}
 						</div>
 					{% endif %}
 					{% if c.b_house_type %}		
@@ -258,9 +265,11 @@
 										<td>{{b.amount}} ש"ח</td>
 									</tr>
 								{% endfor %}
-							</table>		
+							</table>	
+							{% if not c.end_date %}	
 							<a id="edit_bht" href="bht/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
 							<a id="commission_delete_bht" href="bht/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+							{% endif %}
 						</div>
 					{% endif %}
 					{% if c.b_discount_save %}	
@@ -271,8 +280,10 @@
 								עד מקס' של
 								{{c.b_discount_save.max_for_bonus}}%
 							{% endif %}
+							{% if not c.end_date %}
 							<a id="edit_bds" href="bds/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
 							<a id="commission_delete_bds" href="bds/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+							{% endif %}
 						</div>
 					{% endif %}			
 					{% if c.b_discount_save_precentage %}	
@@ -283,8 +294,10 @@
 								עד מקס' של
 								{{c.b_discount_save_precentage.max_for_bonus}}%
 							{% endif %}
+							{% if not c.end_date %}
 							<a id="edit_bdsp" href="bdsp/project/{{c.project.id}}" class="fancybox"><img src="/site_media/images/edit_48.png" width="15" height="15" border="0" alt="עריכה" /></a>
 							<a href="bdsp/project/{{c.project.id}}/del"><img src="/site_media/images/delete_48.png" width="15" height="15" border="0" alt="מחיקה" /></a>
+							{% endif %}
 						</div>
 					{% endif %}
 				</div>
