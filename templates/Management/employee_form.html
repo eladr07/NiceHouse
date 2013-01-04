@@ -152,6 +152,7 @@
 				{% endif %}
 			</fieldset>
 		{% endif %}
+		{% if user.is_staff %}
 			<div class="clearBoth"></div>
 			{% for c in form.instance.commissions.all %}
 			<fieldset class="cardFieldset">
