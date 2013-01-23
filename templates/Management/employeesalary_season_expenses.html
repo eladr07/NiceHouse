@@ -46,7 +46,11 @@
 {% endblock header %}
 {% block content %}
 <div class="title">
-	<div class="pageTitle">ריכוז שכר לעובד כולל הוצאות מעביד תקופתי<br><a href="{{employee.get_absolute_url}}">{{employee}}</a></div>
+	<div class="pageTitle">
+		{% if employee %}
+ריכוז שכר לעובד כולל הוצאות מעביד תקופתי<br><a href="{{employee.get_absolute_url}}">{{employee}}</a>
+		{% endif %}
+	</div>
 </div>
 <div class="clearBoth"></div>
 <form method="GET">
@@ -100,6 +104,7 @@
 </div>
 <div class="clearBoth"></div>
 <br>
+{% if salaries %}
 <table id="salaryTable" class="dataTable" border="1">
 <caption>מציג סה"כ {{salaries|length}} משכורות לעובד {{employee}}</caption>
 	<tr>
@@ -195,4 +200,5 @@
 			<td>{{total_bruto_employer|commaise}}</td>
 		</tr>
 </table>
+{% endif %}
 {% endblock content %}
