@@ -70,7 +70,7 @@
 				</td>
 				<td><a href="{{f.instance.project.get_absolute_url}}" target="_blank">{{ f.instance.project }}</a></td>
 				<td>{{ f.instance.month }}/{{f.instance.year}}</a></td>
-				<td><a href="/demands/{{f.instance.id}}/sales" class="fancybox">{{ f.instance.get_sales.count|default:"אין מכירות" }}</a></td>
+				<td><a href="/demandsales/?demand_id={{d.id}}" class="bigfancybox">{{ d.get_sales.count|default:"אין מכירות" }}</a></td>
 				<td>{{f.is_finished}}</td>
 				<td>{{f.by_mail}}</td>
 				<td>

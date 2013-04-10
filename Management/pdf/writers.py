@@ -17,7 +17,7 @@ from reportlab.lib.enums import *
 from reportlab.lib.styles import ParagraphStyle
 
 from helpers import Builder, MassBuilder
-from table_fields import *
+from table_fields, salary_table_fields import *
 from styles import *
 
 #register Hebrew fonts
@@ -872,6 +872,24 @@ class EmployeeSalariesWriter:
         doc.build(story, self.addTemplate, self.addTemplate)
         return doc.canv
     
+class EmployeeSalariesSeasonExpensesWriter:
+        def __init__(self, salaries, title):
+            self.salaries, self.title = salaries, title
+        def flows(self):
+            project_fields = [MonthField()]
+            employee_fields = [EmployeeHireTypeField()]
+            project_fields = [ProjectNameAndCityField()]
+            employee_salary_fields = [EmployeeSalarySalesField(), EmployeeSalaryNetoField(), EmployeeSalaryLoanPayField(), 
+                                      EmployeeSalaryCheckAmountField()]
+            salary_expenses_fields = [SalaryExpensesIncomeTaxField(), SalaryExpensesNationalInsuranceField(),
+                                      SalaryExpensesHealthField(), SalaryExpensesPensionInsuranceField(),
+                                      SalaryExpensesVacationField(), SalaryExpensesConvalescencePayField()]
+            employee_salary_fields2 = [EmployeeSalaryBrutoField()]
+            salary_expenses_fields2 = [SalaryExpensesNationalInsuranceField, SalaryExpensesEmployerBenefitField(),
+                                       SalaryExpensesCompensationAllocationField()]
+            employee_salary_fields3 = [EmployeeSalaryBrutoWithEmployerField()]
+
+
 class SalariesBankWriter:
     def __init__(self, salaries, month, year):
         self.salaries = salaries
