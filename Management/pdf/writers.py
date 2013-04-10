@@ -17,7 +17,8 @@ from reportlab.lib.enums import *
 from reportlab.lib.styles import ParagraphStyle
 
 from helpers import Builder, MassBuilder
-from table_fields, salary_table_fields import *
+from table_fields import *
+from salary_table_fields import *
 from styles import *
 
 #register Hebrew fonts
