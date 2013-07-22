@@ -2635,7 +2635,7 @@ def building_copy(request, building_id):
             return HttpResponseRedirect(reverse(project_buildings, args=[building.project_id]))
     else:
         form = CopyBuildingForm()
-        form.fields['building'].queryset = building.project.buildings.all()
+        form.fields['building'].queryset = building.project.buildings.filter(is_deleted=False)
         form.fields['building'].initial = building.id
         
     return render_to_response('Management/object_edit.html',
