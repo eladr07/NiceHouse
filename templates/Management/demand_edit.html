@@ -342,6 +342,24 @@
 				<td>{{s.allowed_discount|floatformat:3}}</td>
 				{% endif %}
 
+				<td>
+					{% if s.salepricemod %}
+						<a href="/salepricemod/{{s.salepricemod.id}}"><img src="/site_media/images/money-48.png" width="20" height="20" /></a>
+					{% endif %}
+					{% if s.salehousemod %}
+						<a href="/salehousemod/{{s.salehousemod.id}}"><img src="/site_media/images/home-48.png" width="20" height="20" /></a>
+					{% endif %}
+					{% if s.salepre %}
+						<a href="/salepre/{{s.salepre.id}}"><img src="/site_media/images/agt_forward-48.png" width="20" height="20" /></a>
+					{% endif %}
+					{% if s.salereject %}
+						<a href="/salereject/{{s.salereject.id}}"><img src="/site_media/images/agt_back-48.png" width="20" height="20" /></a>
+					{% endif %}
+					{% if s.salecancel %}
+						<a href="/salecancel/{{s.salecancel.id}}"><img src="/site_media/images/delete_48.png" width="20" height="20" /></a>
+					{% endif %}
+				</td>
+				<td>{{s.remarks}}</td>
 			</tr>
 			{% endfor %}
 			{% if demand.get_excluded_sales %}
