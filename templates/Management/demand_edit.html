@@ -315,33 +315,7 @@
 			{% else %}
 				<tr class="{% cycle 'row1' 'row2' %}" objid={{s.id}}>
 			{% endif %}
-				<td><a href="/sale/{{s.id}}">{{demand.id}}-{{forloop.counter}}</a></td>
-				{% if s.contract_num %}<td>{{s.contract_num}}</td>{% endif %}
-				<td>
-					{{s.clients}}
-				</td>
-				<td>
-					<a href="/buildings/{{s.house.building.id}}/pricelist/type1">
-					{{s.house.building}}
-					</a>
-				</td>
-				<td {% if s.salehousemod.id %}style="background-color: #F69F9F;"{% endif %}>
-					<a href="/buildings/{{s.house.building.id}}/house/{{s.house.id}}/type1">
-						{{s.house}}
-					</a>
-				</td>
-				<td>{{s.house.get_signup.date|date:"j/m/Y"}}</td>
-				<td>{{s.sale_date|date:"j/m/Y"}}</td>
-				<td {% if s.salepricemod.id %}style="background-color: #F69F9F;"{% endif %}>
-					{{s.price|commaise}} ש"ח
-				</td>
-				<td>{{s.price_final|commaise}} ש"ח</td>
-				{% if demand.sales_with_discount %}
-				<td>{{s.price_taxed|commaise}}</td>
-				<td>{{s.discount|floatformat:3}}</td>
-				<td>{{s.allowed_discount|floatformat:3}}</td>
-				{% endif %}
-				<td>{{s.pc_base}}</td>
+
 				<td>{{s.pc_base_worth|commaise}} ש"ח</td>
 				{% if demand.project.commissions.b_discount_save_precentage %}
 					<td>{{s.pb_dsp|floatformat:3}}</td>
