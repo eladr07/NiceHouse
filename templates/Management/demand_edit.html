@@ -321,10 +321,14 @@
 					{{s.clients}}
 				</td>
 				<td>
-					
+					<a href="/buildings/{{s.house.building.id}}/pricelist/type1">
+					{{s.house.building}}
+					</a>
 				</td>
 				<td {% if s.salehousemod.id %}style="background-color: #F69F9F;"{% endif %}>
-					
+					<a href="/buildings/{{s.house.building.id}}/house/{{s.house.id}}/type1">
+						{{s.house}}
+					</a>
 				</td>
 				<td>{{s.house.get_signup.date|date:"j/m/Y"}}</td>
 				<td>{{s.sale_date|date:"j/m/Y"}}</td>
