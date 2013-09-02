@@ -341,6 +341,17 @@
 				<td>{{s.discount|floatformat:3}}</td>
 				<td>{{s.allowed_discount|floatformat:3}}</td>
 				{% endif %}
+				<td>{{s.pc_base}}</td>
+				<td>{{s.pc_base_worth|commaise}} ש"ח</td>
+				{% if demand.project.commissions.b_discount_save_precentage %}
+					<td>{{s.pb_dsp|floatformat:3}}</td>
+					<td>{% if s.pb_dsp_worth %}{{s.pb_dsp_worth|commaise}} ש"ח{% endif %}</td>
+				{% endif %}
+				{% if demand.project.commissions.c_zilber %}
+					<td>---</td>
+					<td>{% if s.zdb %}{{s.zdb|commaise}} ש"ח{% endif %}</td>
+				{% endif %}
+				<td>{{s.c_final|floatformat:3}}</td>
 
 				<td>
 					{% if s.salepricemod %}
