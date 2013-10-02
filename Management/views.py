@@ -2719,7 +2719,7 @@ def house_edit(request,id , type_id):
 def house_delete(request, building_id, type_id, house_id):
     house = House.objects.get(pk = house_id)
     house.delete()
-    return HttpResponseRedirect("../../../")
+    return HttpResponseRedirect("../../")
         
 @permission_required('Management.add_loan')
 def employee_addloan(request, employee_id):
