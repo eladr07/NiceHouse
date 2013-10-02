@@ -19,7 +19,7 @@
 			if (selectedID > 0)
 			{//sync links
 				$("#houseEdit").attr("href", "../house/" + selectedID + "/type{{type.id}}");
-				$("#houseDelete").attr("href", "ho456use/" + selectedID + "/del");
+				$("#houseDelete").attr("href", "type{{type.id}}/house/" + selectedID + "/del");
 			}
 		});
 		$(".fancybox").fancybox();
