@@ -22,6 +22,10 @@
 				$("#houseDelete").attr("href", "type{{type.id}}/house/" + selectedID + "/del");
 			}
 		});
+		$("#houseDelete").click(function(event) {
+			if (!confirm("האם אתה בטוח שברצונך למחוק את הדירה ?"))
+				event.preventDefault();
+		});
 		$(".fancybox").fancybox();
 		$(".bigfancybox").fancybox({'frameWidth':800});
 		$("#changeType").change(function() {
