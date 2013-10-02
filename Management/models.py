@@ -2638,7 +2638,7 @@ class Sale(models.Model):
     def __init__(self, *args, **kw):
         models.Model.__init__(self, *args, **kw)
         self.custom_cache = {}
-        self.restore = False
+        self.restore = True
         if self.id:
             actual_demand = self.actual_demand
             self.restore_date = actual_demand and actual_demand.finish_date or None

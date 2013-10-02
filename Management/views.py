@@ -2714,6 +2714,12 @@ def house_edit(request,id , type_id):
         form.fields[f].queryset = ss
     return render_to_response('Management/house_edit.html', 
                               {'form' : form, 'type':PricelistType.objects.get(pk = type_id) })
+
+@permission_required('Management.delete_house')
+def house_delete(request, building_id, type_id, house_id):
+    house = House.objects.get(pk = house_id)
+    house.delete()
+    return HttpResponseRedirect("buildings/%s/pricelist/type%s" % (building_id, type_id))
         
 @permission_required('Management.add_loan')
 def employee_addloan(request, employee_id):
