@@ -2665,7 +2665,7 @@ class Sale(models.Model):
     @property
     def saved_discount(self):
         """returns the precentage of discount that was NOT given (hence the name "saved")."""
-        if self.discount and self.allowed_discount:
+        if self.discount is not None and self.allowed_discount is not None:
             return max(self.allowed_discount - self.discount, 0)
         else:
             return None
