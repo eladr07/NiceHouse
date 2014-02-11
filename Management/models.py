@@ -1643,7 +1643,9 @@ class BDiscountSavePrecentage(models.Model):
     def calc(self, sales):
         dic = {}
         for s in sales:
-            if self.max_for_bonus is not None:
+            if self.max_for_bonus is None:
+                saved = s.saved_discount
+            else:
                 saved = min(s.saved_discount, self.max_for_bonus)
             dic[s] = saved * self.precentage_bonus
         return dic
