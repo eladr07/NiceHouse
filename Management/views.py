@@ -2670,7 +2670,8 @@ def building_addhouse(request, type_id, building_id):
     for f in ['storage1','storage2']:
         form.fields[f].queryset = ss
     return render_to_response('Management/house_edit.html', 
-                              {'form' : form, 'type':PricelistType.objects.get(pk = type_id) })
+                              {'form' : form, 'type':PricelistType.objects.get(pk = type_id) },
+                              context_instance=RequestContext(request))
 
 @permission_required('Management.house_versionlog')
 def house_version_log(request,id , type_id):
@@ -2713,7 +2714,8 @@ def house_edit(request,id , type_id):
     for f in ['storage1','storage2']:
         form.fields[f].queryset = ss
     return render_to_response('Management/house_edit.html', 
-                              {'form' : form, 'type':PricelistType.objects.get(pk = type_id) })
+                              {'form' : form, 'type':PricelistType.objects.get(pk = type_id) },
+                              context_instance=RequestContext(request))
 
 @permission_required('Management.delete_house')
 def house_delete(request, building_id, type_id, house_id):
