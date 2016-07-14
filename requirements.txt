@@ -1,5 +1,6 @@
 Django==1.4
 gunicorn==19.4.5
+whitenoise==2.0.6
 reportlab==2.7
 django-reversion==1.5.1
 pyfribidi==0.11.0
