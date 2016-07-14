@@ -1,3 +1,5 @@
+# coding: utf-8
+
 import common
 from django.db import models
 from querysets import *

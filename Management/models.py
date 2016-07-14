@@ -1,4 +1,6 @@
-﻿import itertools
+﻿# coding: utf-8
+
+import itertools
 import logging
 import reversion
 import common

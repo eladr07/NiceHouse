@@ -1,4 +1,6 @@
-﻿import Management.models
+# coding: utf-8
+
+import Management.models
 from Management import settings
 import logging, itertools
 from datetime import datetime, date
