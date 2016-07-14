@@ -117,25 +117,21 @@ LOGGING = {
         'hand01': {
             'level':'DEBUG',
             'class':'logging.StreamHandler', 
-            'mode':'a',
             'formatter': 'form01'
         },
         'hand02': {
             'level':'DEBUG',
             'class':'logging.StreamHandler',
-            'mode':'a',
             'formatter': 'form01'
         },
         'hand04': {
             'level':'DEBUG',
             'class':'logging.StreamHandler', 
-            'mode':'a',
             'formatter': 'form01'
         },
         'hand05': {
             'level':'DEBUG',
             'class':'logging.StreamHandler',
-            'mode':'a',
             'formatter': 'form01'
         },
         'mail_admins': {
