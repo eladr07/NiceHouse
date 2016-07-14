@@ -116,29 +116,25 @@ LOGGING = {
     'handlers': {
         'hand01': {
             'level':'DEBUG',
-            'class':'logging.FileHandler',
-            'filename':'/var/www/NiceHouse/trunk/logs/commission.log', 
+            'class':'logging.StreamHandler', 
             'mode':'a',
             'formatter': 'form01'
         },
         'hand02': {
             'level':'DEBUG',
-            'class':'logging.FileHandler',
-            'filename':'/var/www/NiceHouse/trunk/logs/pdf.log',
+            'class':'logging.StreamHandler',
             'mode':'a',
             'formatter': 'form01'
         },
         'hand04': {
             'level':'DEBUG',
-            'class':'logging.FileHandler',
-            'filename':'/var/www/NiceHouse/trunk/logs/salary.log', 
+            'class':'logging.StreamHandler', 
             'mode':'a',
             'formatter': 'form01'
         },
         'hand05': {
             'level':'DEBUG',
-            'class':'logging.FileHandler',
-            'filename':'/var/www/NiceHouse/trunk/logs/views.log',
+            'class':'logging.StreamHandler',
             'mode':'a',
             'formatter': 'form01'
         },
