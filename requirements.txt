@@ -1,4 +1,4 @@
-Django==1.3.1
+Django==1.4
 reportlab==2.7
 django-reversion==1.5.1
 pyfribidi==0.11.0
