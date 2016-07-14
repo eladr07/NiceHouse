@@ -1,3 +1,5 @@
+import os
+
 # Django settings for NiceHouse project.
 
 DEBUG = False
@@ -6,7 +8,7 @@ TEMPLATE_DEBUG = DEBUG
 #if DEBUG:
 #    SITE_ROOT = '/home/elad/workspace/NiceHouse/NiceHouse/'
 #else:
-SITE_ROOT = '/var/www/NiceHouse/trunk/'
+SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
 ADMINS = (
     ('Elad Reuveni', 'eladr07@gmail.com'),
@@ -22,7 +24,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'USER': 'root',
         'PASSWORD': 'HwMqJY8',
-        'HOST': 'localhost',
+        'HOST': '62.90.102.41',
         'PORT': '3306'
     },
 }
@@ -46,12 +48,12 @@ USE_I18N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = SITE_ROOT + 'media/'
+MEDIA_ROOT = os.path.join(SITE_ROOT, 'media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = 'http://62.90.102.41/site_media/'
+#MEDIA_URL = 'http://62.90.102.41/site_media/'
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -82,7 +84,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    SITE_ROOT + 'templates',
+    os.path.join(SITE_ROOT, 'templates'),
     'templates',
 )
 
