@@ -1,4 +1,5 @@
-﻿import settings, Management.models
+﻿import Management.models
+from Management import settings
 import logging, itertools
 from datetime import datetime, date
 from Management.templatetags.management_extras import commaise
@@ -22,8 +23,8 @@ from salary_table_fields import *
 from styles import *
 
 #register Hebrew fonts
-pdfmetrics.registerFont(TTFont('David', settings.MEDIA_ROOT + 'fonts/DavidCLM-Medium.ttf'))
-pdfmetrics.registerFont(TTFont('David-Bold', settings.MEDIA_ROOT + 'fonts/DavidCLM-Bold.ttf'))
+pdfmetrics.registerFont(TTFont('David', Management.settings.MEDIA_ROOT + 'fonts/DavidCLM-Medium.ttf'))
+pdfmetrics.registerFont(TTFont('David-Bold', Management.settings.MEDIA_ROOT + 'fonts/DavidCLM-Bold.ttf'))
 pdfmetrics.registerFontFamily('David', normal='David', bold='David-Bold')
 
 def break_to_lines(s):
@@ -54,14 +55,14 @@ def tableCaption(caption=log2vis(u'ולהלן פירוט העסקאות')):
                      ParagraphStyle(name='tableCaption', fontName='David-Bold', fontSize=15,
                                     alignment=TA_CENTER))
 def nhLogo():
-    return Image(settings.MEDIA_ROOT + 'images/nh_logo.jpg', 300, 50)
+    return Image(Management.settings.MEDIA_ROOT + 'images/nh_logo.jpg', 300, 50)
 def sigPara():
     s = log2vis('ברגשי כבוד,') + '<br/>'
     s += log2vis('אלי בר-און')
     return Paragraph(s, ParagraphStyle(name='sig', fontName='David-Bold', fontSize=15,
                                        alignment=TA_LEFT))
 def nhAddr():
-    return Image(settings.MEDIA_ROOT + 'images/nh_addr.jpg', 300, 50)
+    return Image(Management.settings.MEDIA_ROOT + 'images/nh_addr.jpg', 300, 50)
 
 class NumberedCanvas(canvas.Canvas):
     def __init__(self, *args, **kwargs):

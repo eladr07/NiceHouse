@@ -1,5 +1,6 @@
 from datetime import datetime, date
-import settings, reversion
+import reversion
+from Management import settings
 from django.core.exceptions import ObjectDoesNotExist
 
 LAWYER_TAX = 1.015
@@ -20,7 +21,7 @@ def current_month():
     return now
 
 def generate_unique_media_filename(ext):
-    return settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.' + ext
+    return Management.settings.MEDIA_ROOT + 'temp/' + datetime.now().strftime('%Y%m%d%H%M%S') + '.' + ext
 
 def clone(from_object, save):
     args = dict([(fld.name, getattr(from_object, fld.name)) 
