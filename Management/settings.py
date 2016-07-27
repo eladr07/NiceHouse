@@ -1,4 +1,7 @@
 import os
+import dj_database_url
+
+db_from_env = dj_database_url.config()
 
 # Django settings for NiceHouse project.
 
@@ -19,14 +22,7 @@ MANAGERS = ADMINS
 LOGIN_REDIRECT_URL = '/'
 
 DATABASES = {
-    'default': {
-        'NAME': 'Management',
-        'ENGINE': 'django.db.backends.mysql',
-        'USER': 'root',
-        'PASSWORD': 'HwMqJY8',
-        'HOST': '62.90.102.41',
-        'PORT': '3306'
-    },
+    'default': db_from_env,
 }
 
 # Local time zone for this installation. Choices can be found here:
