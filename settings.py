@@ -51,8 +51,12 @@ MEDIA_ROOT = STATIC_ROOT + "/"
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
+<<<<<<< HEAD:Management/settings.py
 STATIC_URL = '/site_media/'
 MEDIA_URL = STATIC_URL
+=======
+#MEDIA_URL = 'http://62.90.102.41/site_media/'
+>>>>>>> parent of c196158... fixed settings:settings.py
 
 # URL prefix for admin media -- CSS, JavaScript and images. Make sure to use a
 # trailing slash.
@@ -104,66 +108,66 @@ INSTALLED_APPS = (
 
 CACHE_BACKEND = 'dummy://'
 
-# LOGGING = {
-#     'version': 1,
-#     'disable_existing_loggers': True,
-#     'formatters': {
-#         'form01': {
-#             'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
-#         },
-#     },
-#     'handlers': {
-#         'hand01': {
-#             'level':'DEBUG',
-#             'class':'logging.StreamHandler', 
-#             'formatter': 'form01'
-#         },
-#         'hand02': {
-#             'level':'DEBUG',
-#             'class':'logging.StreamHandler',
-#             'formatter': 'form01'
-#         },
-#         'hand04': {
-#             'level':'DEBUG',
-#             'class':'logging.StreamHandler', 
-#             'formatter': 'form01'
-#         },
-#         'hand05': {
-#             'level':'DEBUG',
-#             'class':'logging.StreamHandler',
-#             'formatter': 'form01'
-#         },
-#         'mail_admins': {
-#             'level':'ERROR',
-#             'class': 'django.utils.log.AdminEmailHandler',
-#             'include_html': True,
-#         },
-#     },
-#     'loggers': {
-#         'root': {
-#             'handlers':['hand01', 'mail_admins'],
-#             'propagate': True,
-#             'level':'DEBUG',
-#         },
-#         'commission': {
-#             'handlers':['hand01'],
-#             'propagate': True,
-#             'level':'DEBUG',
-#         },
-#         'pdf': {
-#             'handlers':['hand02'],
-#             'propagate': True,
-#             'level':'DEBUG',
-#         },
-#         'salary': {
-#             'handlers':['hand04'],
-#             'propagate': True,
-#             'level':'DEBUG',
-#         },
-#         'views': {
-#             'handlers':['hand05'],
-#             'propagate': True,
-#             'level':'DEBUG',
-#         },
-#     }
-# }
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'form01': {
+            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+        },
+    },
+    'handlers': {
+        'hand01': {
+            'level':'DEBUG',
+            'class':'logging.StreamHandler', 
+            'formatter': 'form01'
+        },
+        'hand02': {
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+            'formatter': 'form01'
+        },
+        'hand04': {
+            'level':'DEBUG',
+            'class':'logging.StreamHandler', 
+            'formatter': 'form01'
+        },
+        'hand05': {
+            'level':'DEBUG',
+            'class':'logging.StreamHandler',
+            'formatter': 'form01'
+        },
+        'mail_admins': {
+            'level':'ERROR',
+            'class': 'django.utils.log.AdminEmailHandler',
+            'include_html': True,
+        },
+    },
+    'loggers': {
+        'root': {
+            'handlers':['hand01', 'mail_admins'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+        'commission': {
+            'handlers':['hand01'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+        'pdf': {
+            'handlers':['hand02'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+        'salary': {
+            'handlers':['hand04'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+        'views': {
+            'handlers':['hand05'],
+            'propagate': True,
+            'level':'DEBUG',
+        },
+    }
+}
