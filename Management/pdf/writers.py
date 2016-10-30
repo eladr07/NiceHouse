@@ -57,14 +57,14 @@ def tableCaption(caption=log2vis(u'ולהלן פירוט העסקאות')):
                      ParagraphStyle(name='tableCaption', fontName='David-Bold', fontSize=15,
                                     alignment=TA_CENTER))
 def nhLogo():
-    return Image(Management.settings.MEDIA_ROOT + 'images/nh_logo.jpg', 300, 50)
+    return Image(Management.settings.SITE_ROOT + 'images/nh_logo.jpg', 300, 50)
 def sigPara():
     s = log2vis('ברגשי כבוד,') + '<br/>'
     s += log2vis('אלי בר-און')
     return Paragraph(s, ParagraphStyle(name='sig', fontName='David-Bold', fontSize=15,
                                        alignment=TA_LEFT))
 def nhAddr():
-    return Image(Management.settings.MEDIA_ROOT + 'images/nh_addr.jpg', 300, 50)
+    return Image(Management.settings.SITE_ROOT + 'images/nh_addr.jpg', 300, 50)
 
 class NumberedCanvas(canvas.Canvas):
     def __init__(self, *args, **kwargs):
