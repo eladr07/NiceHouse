@@ -1,12 +1,13 @@
+import os
 # Django settings for NiceHouse project.
 
-DEBUG = False
+DEBUG = True
 TEMPLATE_DEBUG = DEBUG
 
 #if DEBUG:
 #    SITE_ROOT = '/home/elad/workspace/NiceHouse/NiceHouse/'
 #else:
-SITE_ROOT = '/var/www/NiceHouse/trunk/'
+SITE_ROOT = os.path.dirname(os.path.realpath(__file__))
 
 ADMINS = (
     ('Elad Reuveni', 'eladr07@gmail.com'),
@@ -46,7 +47,7 @@ USE_I18N = True
 
 # Absolute path to the directory that holds media.
 # Example: "/home/media/media.lawrence.com/"
-MEDIA_ROOT = SITE_ROOT + 'media/'
+MEDIA_ROOT = os.path.join(SITE_ROOT, 'media')
 
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
@@ -82,7 +83,7 @@ TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or "C:/www/django/templates".
     # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
-    SITE_ROOT + 'templates',
+    os.path.join(SITE_ROOT, 'templates'),
     'templates',
 )
 
@@ -115,28 +116,28 @@ LOGGING = {
         'hand01': {
             'level':'DEBUG',
             'class':'logging.FileHandler',
-            'filename':'/var/www/NiceHouse/trunk/logs/commission.log', 
+            'filename': os.path.join(SITE_ROOT, 'logs/commission.log'), 
             'mode':'a',
             'formatter': 'form01'
         },
         'hand02': {
             'level':'DEBUG',
             'class':'logging.FileHandler',
-            'filename':'/var/www/NiceHouse/trunk/logs/pdf.log',
+            'filename': os.path.join(SITE_ROOT, 'logs/pdf.log'),
             'mode':'a',
             'formatter': 'form01'
         },
         'hand04': {
             'level':'DEBUG',
             'class':'logging.FileHandler',
-            'filename':'/var/www/NiceHouse/trunk/logs/salary.log', 
+            'filename': os.path.join(SITE_ROOT, 'logs/salary.log'), 
             'mode':'a',
             'formatter': 'form01'
         },
         'hand05': {
             'level':'DEBUG',
             'class':'logging.FileHandler',
-            'filename':'/var/www/NiceHouse/trunk/logs/views.log',
+            'filename': os.path.join(SITE_ROOT, 'logs/views.log'),
             'mode':'a',
             'formatter': 'form01'
         },

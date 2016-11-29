@@ -22,8 +22,9 @@ from salary_table_fields import *
 from styles import *
 
 #register Hebrew fonts
-pdfmetrics.registerFont(TTFont('David', settings.MEDIA_ROOT + 'fonts/DavidCLM-Medium.ttf'))
-pdfmetrics.registerFont(TTFont('David-Bold', settings.MEDIA_ROOT + 'fonts/DavidCLM-Bold.ttf'))
+import os
+pdfmetrics.registerFont(TTFont('David', os.path.join(settings.MEDIA_ROOT, 'fonts/DavidCLM-Medium.ttf')))
+pdfmetrics.registerFont(TTFont('David-Bold', os.path.join(settings.MEDIA_ROOT, 'fonts/DavidCLM-Bold.ttf')))
 pdfmetrics.registerFontFamily('David', normal='David', bold='David-Bold')
 
 def break_to_lines(s):
