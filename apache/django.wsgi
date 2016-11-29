@@ -3,7 +3,7 @@ import os
 
 os.environ['PYTHON_EGG_CACHE']='/tmp/hoge'
 
-sys.path.insert(0,'/var/www/NiceHouse/trunk')
+sys.path.insert(0,'/var/www/NiceHouse-git')
 
 import settings
 
